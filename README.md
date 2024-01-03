@@ -29,9 +29,7 @@ Whoosh might be useful in the following circumstances:
 * When an easy-to-use Pythonic interface is more important to you than raw
   speed. 
 
-Whoosh was created by Matt Chaput and is maintained currently by the Sygil-Dev Organization. It was originally created for use in the online help system of Side Effects Software's 3D animation
-software Houdini. Side Effects Software Inc. graciously agreed to open-source
-the code.
+Whoosh was created by Matt Chaput and is maintained currently by the Sygil-Dev Organization. It was originally created for use in the online help system of Side Effects Software's 3D animation software Houdini. Side Effects Software Inc. graciously agreed to open-source the code.
 
 This software is licensed under the terms of the simplified BSD (A.K.A. "two
 clause" or "FreeBSD") license. See LICENSE.txt for information.
