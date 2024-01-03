@@ -360,7 +360,7 @@ def test_strings_dfa():
 
     domain = "abcd"
     words = set()
-    for i in range(1, len(domain) + 1):  # Replace xrange with range since xrange is failing in Pypy3.9 and 3.10
+    for i in xrange(1, len(domain) + 1):
         words.update("".join(p) for p in permutations(domain[:i]))
     words = sorted(words)
     dfa = fsa.strings_dfa(words)
