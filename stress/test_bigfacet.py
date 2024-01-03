@@ -28,8 +28,8 @@ if reindex or not index.exists_in(dirname):
             doc = u" ".join(random.sample(tags, random.randint(10, 20)))
             w.add_document(tags=doc)
             if not i % 10000:
-                print i
-    print now() - t
+                print(i)
+    print(now() - t)
 
 
 ix = index.open_dir(dirname)
@@ -37,11 +37,11 @@ with ix.searcher() as s:
     tags = list(s.lexicon("tags"))
     facet = sorting.FieldFacet("tags", allow_overlap=True)
     qtag = random.choice(tags)
-    print "tag=", qtag
+    print("tag=", qtag)
     q = query.Term("tags", qtag)
     r = s.search(q, groupedby={"tags": facet})
-    print r.runtime
+    print(r.runtime)
 
     facet = sorting.StoredFieldFacet("tags", allow_overlap=True)
     r = s.search(q, groupedby={"tags": facet})
-    print r.runtime
+    print(r.runtime)
