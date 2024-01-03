@@ -3,6 +3,10 @@ import pytest
 
 
 def test_jieba_segmentation():
+    """
+    Tests the segmentation of a Chinese text string using the jieba library.
+    This function does not take any parameters and does not return anything.
+    """
     text = "我爱自然语言处理"
     seg_list = jieba.cut(text, cut_all=False)
     assert list(seg_list) == ['我', '爱', '自然语言处理']
