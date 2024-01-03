@@ -12,6 +12,9 @@ def test_jieba_segmentation():
     assert list(seg_list) == ['我', '爱', '自然语言处理']
 
 def test_jieba_import():
+    """
+    Tests the import of the jieba library. This function does not take any parameters and does not return anything.
+    """
     assert jieba is not None
 
 def test_jieba_tokenization():
