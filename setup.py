@@ -45,7 +45,7 @@ if __name__ == "__main__":
         url="http://bitbucket.org/mchaput/whoosh",
 
         zip_safe=True,
-        install_requires=['cached-property'],
+        install_requires=['cached-property', 'jieba'],
         tests_require=['pytest', 'jieba'],
         cmdclass={'test': PyTest},
 
