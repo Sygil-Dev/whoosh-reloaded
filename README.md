@@ -29,10 +29,7 @@ Whoosh might be useful in the following circumstances:
 * When an easy-to-use Pythonic interface is more important to you than raw
   speed. 
 
-Whoosh was created and is maintained by Matt Chaput. It was originally created
-for use in the online help system of Side Effects Software's 3D animation
-software Houdini. Side Effects Software Inc. graciously agreed to open-source
-the code.
+Whoosh was created by Matt Chaput and is maintained currently by the Sygil-Dev Organization. It was originally created for use in the online help system of Side Effects Software's 3D animation software Houdini. Side Effects Software Inc. graciously agreed to open-source the code.
 
 This software is licensed under the terms of the simplified BSD (A.K.A. "two
 clause" or "FreeBSD") license. See LICENSE.txt for information.
@@ -43,28 +40,29 @@ Installing Whoosh
 If you have ``setuptools`` or ``pip`` installed, you can use ``easy_install``
 or ``pip`` to download and install Whoosh automatically::
 
+    # install the old version from Pypi
     $ easy_install Whoosh
-
+    
     or
-
+    
     $ pip install Whoosh
+    
+    
+    # Install the development version from Github.
+    $ pip install git+https://github.com/Sygil-Dev/whoosh.git
 
 Learning more
 =============
 
-* Read the online documentation at https://whoosh.readthedocs.org/en/latest/
+* Read the online documentation at https://docs.red-dove.com/whoosh/ (Search DOES work).
 
-* Join the Whoosh mailing list at http://groups.google.com/group/whoosh
+* Read the old online documentation at https://whoosh.readthedocs.org/en/latest/ (Search DOES NOT work).
 
-* File bug reports and view the Whoosh wiki at
-  http://bitbucket.org/mchaput/whoosh/
+* File bug reports and issues at https://github.com/Sygil-Dev/whoosh/issues
 
-Getting the source
+Getting the source.
 ==================
 
-Download source releases from PyPI at http://pypi.python.org/pypi/Whoosh/
+You can check out the latest version of the source code on GitHub using git:
 
-You can check out the latest version of the source code using Mercurial::
-
-    hg clone http://bitbucket.org/mchaput/whoosh
-
+    $ git clone https://github.com/Sygil-Dev/whoosh.git
