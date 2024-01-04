@@ -224,6 +224,13 @@ class DFA(FSA):
         self.final_states = set()
         self.outlabels = {}
 
+    def __repr__(self) -> str:
+        import io
+
+        with io.StringIO() as string_io:
+            self.dump(string_io)
+            return f"{self.__class__.__name__}: {string_io.getvalue()}"
+
     def dump(self, stream=sys.stdout):
         for src in sorted(self.transitions):
             beg = "@" if src == self.initial else " "
