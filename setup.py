@@ -1,6 +1,8 @@
 #!python
 
-import os.path, sys
+import os.path
+import sys
+
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
@@ -20,7 +22,7 @@ class PyTest(TestCommand):
         self.test_suite = True
 
     def run_tests(self):
-        #import here, cause outside the eggs aren't loaded
+        # import here, cause outside the eggs aren't loaded
         import pytest
         pytest.main(self.test_args)
 
@@ -43,19 +45,28 @@ if __name__ == "__main__":
         url="http://bitbucket.org/mchaput/whoosh",
 
         zip_safe=True,
-        install_requires=['cached-property'],
-        tests_require=['pytest'],
+        install_requires=['cached-property', 'jieba'],
+        tests_require=['pytest', 'jieba'],
         cmdclass={'test': PyTest},
 
         classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: BSD License",
-        "Natural Language :: English",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2.5",
-        "Programming Language :: Python :: 3",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        "Topic :: Text Processing :: Indexing",
+            "Programming Language :: Python :: 3",
+            "Development Status :: 5 - Production/Stable",
+            "Intended Audience :: Developers",
+            "License :: OSI Approved :: BSD License",
+            "Natural Language :: English",
+            "Operating System :: OS Independent",
+            "Programming Language :: Python :: 2.7",
+            "Programming Language :: Python :: 3.4",
+            "Programming Language :: Python :: 3.5",
+            "Programming Language :: Python :: 3.6",
+            "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
+            "Programming Language :: Python :: 3.12",
+            "Topic :: Software Development :: Libraries :: Python Modules",
+            "Topic :: Text Processing :: Indexing",
         ],
     )

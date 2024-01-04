@@ -885,7 +885,7 @@ class DATETIME(NUMERIC):
         if is_ambiguous(at):
             startnum = datetime_to_long(at.floor())
             endnum = datetime_to_long(at.ceil())
-            return query.NumericRange(fieldname, startnum, endnum)
+            return query.NumericRange(fieldname, startnum, endnum, boost=boost)
         else:
             return query.Term(fieldname, at, boost=boost)
 
@@ -1224,8 +1224,12 @@ class NGRAM(FieldType):
     def parse_query(self, fieldname, qstring, boost=1.0):
         from whoosh import query
 
-        terms = [query.Term(fieldname, g)
-                 for g in self.process_text(qstring, mode='query')]
+        terms = []
+        for g in self.process_text(qstring, mode='query'):
+            if g == "*":
+                terms.append(query.Wildcard(fieldname, g, boost=boost))
+            else:
+                terms.append(query.Term(fieldname, g, boost=boost))
         cls = query.Or if self.queryor else query.And
 
         return cls(terms, boost=boost)
