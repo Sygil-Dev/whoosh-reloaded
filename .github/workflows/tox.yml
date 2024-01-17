@@ -7,7 +7,7 @@ jobs:
       max-parallel: 7
       matrix:
         os: [ubuntu-latest]  # [macos-latest, ubuntu-latest, windows-latest]
-        python: ['3.8', '3.9', '3.10', '3.11', '3.12', 'pypy-3.8-v7.3.6', 'pypy-3.9-v7.3.14', 'pypy-3.10-v7.3.14']
+        python: ['3.8', '3.9', '3.10', '3.11', '3.12', 'pypy-3.9', 'pypy-3.10']
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
