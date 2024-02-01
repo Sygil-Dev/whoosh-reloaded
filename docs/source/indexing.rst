@@ -8,7 +8,7 @@ Creating an Index object
 To create an index in a directory, use ``index.create_in``::
 
     import os, os.path
-    from whoosh-reloaded import index
+    from whoosh_reloaded import index
 
     if not os.path.exists("indexdir"):
         os.mkdir("indexdir")
@@ -17,13 +17,13 @@ To create an index in a directory, use ``index.create_in``::
 
 To open an existing index in a directory, use ``index.open_dir``::
 
-    import whoosh-reloaded.index as index
+    import whoosh_reloaded.index as index
 
     ix = index.open_dir("indexdir")
 
 These are convenience methods for::
 
-    from whoosh-reloaded.filedb.filestore import FileStorage
+    from whoosh_reloaded.filedb.filestore import FileStorage
     storage = FileStorage("indexdir")
 
     # Create an index
@@ -256,7 +256,7 @@ For ``update_document`` to work, you must have marked at least one of the fields
 in the schema as "unique". Whoosh will then use the contents of the "unique"
 field(s) to search for documents to delete::
 
-    from whoosh-reloaded.fields import Schema, ID, TEXT
+    from whoosh_reloaded.fields import Schema, ID, TEXT
 
     schema = Schema(path = ID(unique=True), content=TEXT)
 
@@ -293,8 +293,8 @@ add/update documents according to user actions).
 Indexing everything from scratch is pretty easy. Here's a simple example::
 
     import os.path
-    from whoosh-reloaded import index
-    from whoosh-reloaded.fields import Schema, ID, TEXT
+    from whoosh_reloaded import index
+    from whoosh_reloaded.fields import Schema, ID, TEXT
 
     def clean_index(dirname):
       # Always create the index from scratch
@@ -418,7 +418,7 @@ Clearing the index
 In some cases you may want to re-index from scratch. To clear the index without
 disrupting any existing readers::
 
-    from whoosh-reloaded import writing
+    from whoosh_reloaded import writing
 
     with myindex.writer() as mywriter:
         # You can optionally add documents to the writer here

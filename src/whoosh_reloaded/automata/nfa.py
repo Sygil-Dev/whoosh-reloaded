@@ -25,12 +25,12 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.automata.fst import Arc
+from whoosh_reloaded.automata.fst import Arc
 
 
 class Instruction(object):
     def __repr__(self):
-        return "%s()" % (self.__class__.__name__, )
+        return "%s()" % (self.__class__.__name__,)
 
 
 class Char(Instruction):
@@ -43,6 +43,7 @@ class Char(Instruction):
 
     def __repr__(self):
         return "Char(%r)" % self.c
+
 
 class Lit(Instruction):
     """
@@ -178,7 +179,7 @@ class ThreadList(object):
 
 
 class Thread(object):
-    def __init__(self, pc, address, sofar='', accept=False):
+    def __init__(self, pc, address, sofar="", accept=False):
         self.pc = pc
         self.address = address
         self.sofar = sofar
@@ -291,10 +292,10 @@ def regex_limit(graph, mode, program, address):
 
 
 # if __name__ == "__main__":
-#     from whoosh-reloaded import index, query
-#     from whoosh-reloaded.filedb.filestore import RamStorage
-#     from whoosh-reloaded.automata import fst
-#     from whoosh-reloaded.util.testing import timing
+#     from whoosh_reloaded import index, query
+#     from whoosh_reloaded.filedb.filestore import RamStorage
+#     from whoosh_reloaded.automata import fst
+#     from whoosh_reloaded.util.testing import timing
 #
 #     st = RamStorage()
 #     gw = fst.GraphWriter(st.create_file("test"))

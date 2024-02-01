@@ -25,7 +25,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.automata.fsa import ANY, EPSILON, NFA
+from whoosh_reloaded.automata.fsa import ANY, EPSILON, NFA
 
 
 # Constants for glob
@@ -36,8 +36,9 @@ _QUEST = 3
 _RANGE = 4
 
 
-def parse_glob(pattern, _glob_multi="*", _glob_single="?",
-               _glob_range1="[", _glob_range2="]"):
+def parse_glob(
+    pattern, _glob_multi="*", _glob_single="?", _glob_range1="[", _glob_range2="]"
+):
     pos = 0
     last = None
     while pos < len(pattern):

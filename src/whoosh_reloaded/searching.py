@@ -34,10 +34,10 @@ import copy
 import weakref
 from math import ceil
 
-from whoosh-reloaded import classify, highlight, query, scoring
-from whoosh-reloaded.compat import iteritems, itervalues, iterkeys, xrange
-from whoosh-reloaded.idsets import DocIdSet, BitSet
-from whoosh-reloaded.reading import TermNotFound
+from whoosh_reloaded import classify, highlight, query, scoring
+from whoosh_reloaded.compat import iteritems, itervalues, iterkeys, xrange
+from whoosh_reloaded.idsets import DocIdSet, BitSet
+from whoosh_reloaded.reading import TermNotFound
 
 
 class NoTermsException(Exception):
@@ -61,13 +61,13 @@ class TimeLimit(Exception):
 
 # Context class
 
+
 class SearchContext(object):
     """A container for information about the current search that may be used
     by the collector or the query objects to change how they operate.
     """
 
-    def __init__(self, needs_current=False, weighting=None, top_query=None,
-                 limit=0):
+    def __init__(self, needs_current=False, weighting=None, top_query=None, limit=0):
         """
         :param needs_current: if True, the search requires that the matcher
             tree be "valid" and able to access information about the current
@@ -97,13 +97,20 @@ class SearchContext(object):
 
 # Searcher class
 
+
 class Searcher(object):
     """Wraps an :class:`~whoosh-reloaded.reading.IndexReader` object and provides
     methods for searching the index.
     """
 
-    def __init__(self, reader, weighting=scoring.BM25F, closereader=True,
-                 fromindex=None, parent=None):
+    def __init__(
+        self,
+        reader,
+        weighting=scoring.BM25F,
+        closereader=True,
+        fromindex=None,
+        parent=None,
+    ):
         """
         :param reader: An :class:`~whoosh-reloaded.reading.IndexReader` object for
             the index to search.
@@ -144,14 +151,26 @@ class Searcher(object):
         self.subsearchers = None
         if not self.ixreader.is_atomic():
             self.leafreaders = self.ixreader.leaf_readers()
-            self.subsearchers = [(self._subsearcher(r), offset) for r, offset
-                                 in self.leafreaders]
+            self.subsearchers = [
+                (self._subsearcher(r), offset) for r, offset in self.leafreaders
+            ]
 
         # Copy attributes/methods from wrapped reader
-        for name in ("stored_fields", "all_stored_fields", "has_vector",
-                     "vector", "vector_as", "lexicon", "field_terms",
-                     "frequency", "doc_frequency", "term_info",
-                     "doc_field_length", "corrector", "iter_docs"):
+        for name in (
+            "stored_fields",
+            "all_stored_fields",
+            "has_vector",
+            "vector",
+            "vector_as",
+            "lexicon",
+            "field_terms",
+            "frequency",
+            "doc_frequency",
+            "term_info",
+            "doc_field_length",
+            "corrector",
+            "iter_docs",
+        ):
             setattr(self, name, getattr(self.ixreader, name))
 
     def __enter__(self):
@@ -161,8 +180,9 @@ class Searcher(object):
         self.close()
 
     def _subsearcher(self, reader):
-        return self.__class__(reader, fromindex=self._ix,
-                              weighting=self.weighting, parent=self)
+        return self.__class__(
+            reader, fromindex=self._ix, weighting=self.weighting, parent=self
+        )
 
     def _offset_for_subsearcher(self, subsearcher):
         for ss, offset in self.subsearchers:
@@ -193,8 +213,7 @@ class Searcher(object):
             return self
 
     def doc_count(self):
-        """Returns the number of UNDELETED documents in the index.
-        """
+        """Returns the number of UNDELETED documents in the index."""
 
         return self.ixreader.doc_count()
 
@@ -248,8 +267,7 @@ class Searcher(object):
         # possible
         self.is_closed = True
         newreader = self._ix.reader(reuse=self.ixreader)
-        return self.__class__(newreader, fromindex=self._ix,
-                              weighting=self.weighting)
+        return self.__class__(newreader, fromindex=self._ix, weighting=self.weighting)
 
     def close(self):
         if self._closereader:
@@ -262,13 +280,11 @@ class Searcher(object):
         return self.field_length(fieldname) / (self._doccount or 1)
 
     def reader(self):
-        """Returns the underlying :class:`~whoosh-reloaded.reading.IndexReader`.
-        """
+        """Returns the underlying :class:`~whoosh-reloaded.reading.IndexReader`."""
         return self.ixreader
 
     def context(self, **kwargs):
-        """Generates a :class:`SearchContext` for this searcher.
-        """
+        """Generates a :class:`SearchContext` for this searcher."""
 
         if "weighting" not in kwargs:
             kwargs["weighting"] = self.weighting
@@ -295,7 +311,7 @@ class Searcher(object):
         if self.is_atomic():
             return self.ixreader.postings(fieldname, text, scorer=globalscorer)
         else:
-            from whoosh-reloaded.matching import MultiMatcher
+            from whoosh_reloaded.matching import MultiMatcher
 
             matchers = []
             docoffsets = []
@@ -372,8 +388,9 @@ class Searcher(object):
         """
 
         ixreader = self.ixreader
-        return (ixreader.stored_fields(docnum)
-                for docnum in self.document_numbers(**kw))
+        return (
+            ixreader.stored_fields(docnum) for docnum in self.document_numbers(**kw)
+        )
 
     def _kw_to_text(self, kw):
         for k, v in iteritems(kw):
@@ -457,8 +474,7 @@ class Searcher(object):
         elif isinstance(obj, query.Query):
             c = self._query_to_comb(obj)
         else:
-            raise Exception("Don't know what to do with filter object %r"
-                            % obj)
+            raise Exception("Don't know what to do with filter object %r" % obj)
 
         return c
 
@@ -492,8 +508,9 @@ class Searcher(object):
         c = self.reader().corrector(fieldname)
         return c.suggest(text, limit=limit, maxdist=maxdist, prefix=prefix)
 
-    def key_terms(self, docnums, fieldname, numterms=5,
-                  model=classify.Bo1Model, normalize=True):
+    def key_terms(
+        self, docnums, fieldname, numterms=5, model=classify.Bo1Model, normalize=True
+    ):
         """Returns the 'numterms' most important terms from the documents
         listed (by number) in 'docnums'. You can get document numbers for the
         documents your interested in with the document_number() and
@@ -527,8 +544,9 @@ class Searcher(object):
             expander.add_document(docnum)
         return expander.expanded_terms(numterms, normalize=normalize)
 
-    def key_terms_from_text(self, fieldname, text, numterms=5,
-                            model=classify.Bo1Model, normalize=True):
+    def key_terms_from_text(
+        self, fieldname, text, numterms=5, model=classify.Bo1Model, normalize=True
+    ):
         """Return the 'numterms' most important terms from the given text.
 
         :param numterms: Return this number of important terms.
@@ -540,8 +558,17 @@ class Searcher(object):
         expander.add_text(text)
         return expander.expanded_terms(numterms, normalize=normalize)
 
-    def more_like(self, docnum, fieldname, text=None, top=10, numterms=5,
-                  model=classify.Bo1Model, normalize=False, filter=None):
+    def more_like(
+        self,
+        docnum,
+        fieldname,
+        text=None,
+        top=10,
+        numterms=5,
+        model=classify.Bo1Model,
+        normalize=False,
+        filter=None,
+    ):
         """Returns a :class:`Results` object containing documents similar to
         the given document, based on "key terms" in the given field::
 
@@ -573,14 +600,17 @@ class Searcher(object):
         """
 
         if text:
-            kts = self.key_terms_from_text(fieldname, text, numterms=numterms,
-                                           model=model, normalize=normalize)
+            kts = self.key_terms_from_text(
+                fieldname, text, numterms=numterms, model=model, normalize=normalize
+            )
         else:
-            kts = self.key_terms([docnum], fieldname, numterms=numterms,
-                                 model=model, normalize=normalize)
+            kts = self.key_terms(
+                [docnum], fieldname, numterms=numterms, model=model, normalize=normalize
+            )
         # Create an Or query from the key terms
-        q = query.Or([query.Term(fieldname, word, boost=weight)
-                      for word, weight in kts])
+        q = query.Or(
+            [query.Term(fieldname, word, boost=weight) for word, weight in kts]
+        )
 
         return self.search(q, limit=top, filter=filter, mask=set([docnum]))
 
@@ -639,7 +669,8 @@ class Searcher(object):
         return ResultsPage(results, pagenum, pagelen)
 
     def find(self, defaultfield, querystring, **kwargs):
-        from whoosh-reloaded.qparser import QueryParser
+        from whoosh_reloaded.qparser import QueryParser
+
         qp = QueryParser(defaultfield, schema=self.ixreader.schema)
         q = qp.parse(querystring)
         return self.search(q, **kwargs)
@@ -665,10 +696,22 @@ class Searcher(object):
             for docnum in method(self):
                 yield docnum
 
-    def collector(self, limit=10, sortedby=None, reverse=False, groupedby=None,
-                  collapse=None, collapse_limit=1, collapse_order=None,
-                  optimize=True, filter=None, mask=None, terms=False,
-                  maptype=None, scored=True):
+    def collector(
+        self,
+        limit=10,
+        sortedby=None,
+        reverse=False,
+        groupedby=None,
+        collapse=None,
+        collapse_limit=1,
+        collapse_order=None,
+        optimize=True,
+        filter=None,
+        mask=None,
+        terms=False,
+        maptype=None,
+        scored=True,
+    ):
         """Low-level method: returns a configured
         :class:`whoosh-reloaded.collectors.Collector` object based on the given
         arguments. You can use this object with
@@ -690,14 +733,14 @@ class Searcher(object):
 
             # Wrap it with a TimeLimitedCollector with a time limit of
             # 10.5 seconds
-            from whoosh-reloaded.collectors import TimeLimitedCollector
+            from whoosh_reloaded.collectors import TimeLimitedCollector
             c = TimeLimitCollector(c, 10.5)
 
             # Search using the custom collector
             results = mysearcher.search_with_collector(myquery, c)
         """
 
-        from whoosh-reloaded import collectors
+        from whoosh_reloaded import collectors
 
         if limit is not None and limit < 1:
             raise ValueError("limit must be >= 1")
@@ -705,8 +748,7 @@ class Searcher(object):
         if not scored and not sortedby:
             c = collectors.UnsortedCollector()
         elif sortedby:
-            c = collectors.SortingCollector(sortedby, limit=limit,
-                                            reverse=reverse)
+            c = collectors.SortingCollector(sortedby, limit=limit, reverse=reverse)
         elif groupedby or reverse or not limit or limit >= self.doc_count():
             # A collector that gathers every matching document
             c = collectors.UnlimitedCollector(reverse=reverse)
@@ -720,8 +762,9 @@ class Searcher(object):
         if terms:
             c = collectors.TermsCollector(c)
         if collapse:
-            c = collectors.CollapseCollector(c, collapse, limit=collapse_limit,
-                                             order=collapse_order)
+            c = collectors.CollapseCollector(
+                c, collapse, limit=collapse_limit, order=collapse_order
+            )
 
         # Filtering wraps last so it sees the docs first
         if filter or mask:
@@ -817,8 +860,9 @@ class Searcher(object):
 
         collector.run()
 
-    def correct_query(self, q, qstring, correctors=None, terms=None, maxdist=2,
-                      prefix=0, aliases=None):
+    def correct_query(
+        self, q, qstring, correctors=None, terms=None, maxdist=2, prefix=0, aliases=None
+    ):
         """
         Returns a corrected version of the given user query using a default
         :class:`whoosh-reloaded.spelling.ReaderCorrector`.
@@ -840,7 +884,7 @@ class Searcher(object):
         attribute containing the corrected :class:`whoosh-reloaded.query.Query` object
         and a ``string`` attributes containing the corrected query string.
 
-        >>> from whoosh-reloaded import qparser, highlight
+        >>> from whoosh_reloaded import qparser, highlight
         >>> qtext = 'mary "litle lamb"'
         >>> q = qparser.QueryParser("text", myindex.schema)
         >>> mysearcher = myindex.searcher()
@@ -925,9 +969,11 @@ class Searcher(object):
                     terms.append((token.fieldname, token.text))
 
         # Make q query corrector
-        from whoosh-reloaded import spelling
-        sqc = spelling.SimpleQueryCorrector(correctors, terms, aliases,
-                                            maxdist=maxdist, prefix=prefix)
+        from whoosh_reloaded import spelling
+
+        sqc = spelling.SimpleQueryCorrector(
+            correctors, terms, aliases, maxdist=maxdist, prefix=prefix
+        )
         return sqc.correct_query(q, qstring)
 
 
@@ -942,8 +988,16 @@ class Results(object):
     so keeps all files used by it open.
     """
 
-    def __init__(self, searcher, q, top_n, docset=None, facetmaps=None,
-                 runtime=0, highlighter=None):
+    def __init__(
+        self,
+        searcher,
+        q,
+        top_n,
+        docset=None,
+        facetmaps=None,
+        runtime=0,
+        highlighter=None,
+    ):
         """
         :param searcher: the :class:`Searcher` object that produced these
             results.
@@ -964,9 +1018,11 @@ class Results(object):
         self._char_cache = {}
 
     def __repr__(self):
-        return "<Top %s Results for %r runtime=%s>" % (len(self.top_n),
-                                                       self.q,
-                                                       self.runtime)
+        return "<Top %s Results for %r runtime=%s>" % (
+            len(self.top_n),
+            self.q,
+            self.runtime,
+        )
 
     def __len__(self):
         """Returns the total number of documents that matched the query. Note
@@ -989,24 +1045,25 @@ class Results(object):
     def __getitem__(self, n):
         if isinstance(n, slice):
             start, stop, step = n.indices(len(self.top_n))
-            return [Hit(self, self.top_n[i][1], i, self.top_n[i][0])
-                    for i in xrange(start, stop, step)]
+            return [
+                Hit(self, self.top_n[i][1], i, self.top_n[i][0])
+                for i in xrange(start, stop, step)
+            ]
         else:
             if n >= len(self.top_n):
-                raise IndexError("results[%r]: Results only has %s hits"
-                                 % (n, len(self.top_n)))
+                raise IndexError(
+                    "results[%r]: Results only has %s hits" % (n, len(self.top_n))
+                )
             return Hit(self, self.top_n[n][1], n, self.top_n[n][0])
 
     def __iter__(self):
-        """Yields a :class:`Hit` object for each result in ranked order.
-        """
+        """Yields a :class:`Hit` object for each result in ranked order."""
 
         for i in xrange(len(self.top_n)):
             yield Hit(self, self.top_n[i][1], i, self.top_n[i][0])
 
     def __contains__(self, docnum):
-        """Returns True if the given document number matched the query.
-        """
+        """Returns True if the given document number matched the query."""
 
         return docnum in self.docs()
 
@@ -1016,8 +1073,7 @@ class Results(object):
     __bool__ = __nonzero__
 
     def is_empty(self):
-        """Returns True if not documents matched the query.
-        """
+        """Returns True if not documents matched the query."""
 
         return self.scored_length() == 0
 
@@ -1089,8 +1145,7 @@ class Results(object):
             # for Python 3
             name = list(self._facetmaps.keys())[0]
         elif name not in self._facetmaps:
-            raise KeyError("%r not in facet names %r"
-                           % (name, self.facet_names()))
+            raise KeyError("%r not in facet names %r" % (name, self.facet_names()))
         return self._facetmaps[name].as_dict()
 
     def has_exact_length(self):
@@ -1149,8 +1204,7 @@ class Results(object):
         return self.docset
 
     def copy(self):
-        """Returns a deep copy of this results object.
-        """
+        """Returns a deep copy of this results object."""
 
         # Shallow copy self to get attributes
         r = copy.copy(self)
@@ -1174,8 +1228,9 @@ class Results(object):
         return self.top_n[n][1]
 
     def query_terms(self, expand=False, fieldname=None):
-        return self.q.existing_terms(self.searcher.reader(),
-                                     fieldname=fieldname, expand=expand)
+        return self.q.existing_terms(
+            self.searcher.reader(), fieldname=fieldname, expand=expand
+        )
 
     def has_matched_terms(self):
         """Returns True if the search recorded which terms matched in which
@@ -1244,8 +1299,9 @@ class Results(object):
 
     order = property(_get_order, _set_order)
 
-    def key_terms(self, fieldname, docs=10, numterms=5,
-                  model=classify.Bo1Model, normalize=True):
+    def key_terms(
+        self, fieldname, docs=10, numterms=5, model=classify.Bo1Model, normalize=True
+    ):
         """Returns the 'numterms' most important terms from the top 'docs'
         documents in these results. "Most important" is generally defined as
         terms that occur frequently in the top hits but relatively infrequently
@@ -1287,8 +1343,7 @@ class Results(object):
         self._total = len(self.docset)
 
     def filter(self, results):
-        """Removes any hits that are not also in the other results object.
-        """
+        """Removes any hits that are not also in the other results object."""
 
         if not len(results):
             return
@@ -1427,7 +1482,7 @@ class Hit(object):
         To change the fragmeter, formatter, order, or scorer used in
         highlighting, you can set attributes on the results object::
 
-            from whoosh-reloaded import highlight
+            from whoosh_reloaded import highlight
 
             results = searcher.search(myquery, terms=True)
             results.fragmenter = highlight.SentenceFragmenter()
@@ -1449,11 +1504,25 @@ class Hit(object):
         """
 
         hliter = self.results.highlighter
-        return hliter.highlight_hit(self, fieldname, text=text, top=top,
-                                    minscore=minscore, strict_phrase=strict_phrase)
+        return hliter.highlight_hit(
+            self,
+            fieldname,
+            text=text,
+            top=top,
+            minscore=minscore,
+            strict_phrase=strict_phrase,
+        )
 
-    def more_like_this(self, fieldname, text=None, top=10, numterms=5,
-                       model=classify.Bo1Model, normalize=True, filter=None):
+    def more_like_this(
+        self,
+        fieldname,
+        text=None,
+        top=10,
+        numterms=5,
+        model=classify.Bo1Model,
+        normalize=True,
+        filter=None,
+    ):
         """Returns a new Results object containing documents similar to this
         hit, based on "key terms" in the given field::
 
@@ -1480,9 +1549,16 @@ class Hit(object):
         :param normalize: whether to normalize term weights.
         """
 
-        return self.searcher.more_like(self.docnum, fieldname, text=text,
-                                       top=top, numterms=numterms, model=model,
-                                       normalize=normalize, filter=filter)
+        return self.searcher.more_like(
+            self.docnum,
+            fieldname,
+            text=text,
+            top=top,
+            numterms=numterms,
+            model=model,
+            normalize=normalize,
+            filter=filter,
+        )
 
     def __repr__(self):
         return "<%s %r>" % (self.__class__.__name__, self.fields())
@@ -1513,8 +1589,7 @@ class Hit(object):
         raise KeyError(fieldname)
 
     def __contains__(self, key):
-        return (key in self.fields()
-                or self.reader.has_column(key))
+        return key in self.fields() or self.reader.has_column(key)
 
     def items(self):
         return list(self.fields().items())
@@ -1621,13 +1696,12 @@ class ResultsPage(object):
         offset = self.offset
         if isinstance(n, slice):
             start, stop, step = n.indices(self.pagelen)
-            return self.results.__getitem__(slice(start + offset,
-                                                  stop + offset, step))
+            return self.results.__getitem__(slice(start + offset, stop + offset, step))
         else:
             return self.results.__getitem__(n + offset)
 
     def __iter__(self):
-        return iter(self.results[self.offset:self.offset + self.pagelen])
+        return iter(self.results[self.offset : self.offset + self.pagelen])
 
     def __len__(self):
         return self.total
@@ -1636,8 +1710,7 @@ class ResultsPage(object):
         return self.results.scored_length()
 
     def score(self, n):
-        """Returns the score of the hit at the nth position on this page.
-        """
+        """Returns the score of the hit at the nth position on this page."""
         return self.results.score(n + self.offset)
 
     def docnum(self, n):
@@ -1647,7 +1720,6 @@ class ResultsPage(object):
         return self.results.docnum(n + self.offset)
 
     def is_last_page(self):
-        """Returns True if this object represents the last page of results.
-        """
+        """Returns True if this object represents the last page of results."""
 
         return self.pagecount == 0 or self.pagenum == self.pagecount

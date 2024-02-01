@@ -3,11 +3,11 @@
 from __future__ import with_statement
 import random
 
-from whoosh-reloaded.compat import b, xrange, iteritems
-from whoosh-reloaded.filedb.filestore import RamStorage
-from whoosh-reloaded.filedb.filetables import HashReader, HashWriter
-from whoosh-reloaded.filedb.filetables import OrderedHashWriter, OrderedHashReader
-from whoosh-reloaded.util.testing import TempStorage
+from whoosh_reloaded.compat import b, xrange, iteritems
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.filedb.filetables import HashReader, HashWriter
+from whoosh_reloaded.filedb.filetables import OrderedHashWriter, OrderedHashReader
+from whoosh_reloaded.util.testing import TempStorage
 
 
 def test_hash_single():
@@ -51,11 +51,20 @@ def test_hash_extras():
 
 
 def test_hash_contents():
-    samp = [('alfa', 'bravo'), ('charlie', 'delta'), ('echo', 'foxtrot'),
-            ('golf', 'hotel'), ('india', 'juliet'), ('kilo', 'lima'),
-            ('mike', 'november'), ('oskar', 'papa'), ('quebec', 'romeo'),
-            ('sierra', 'tango'), ('ultra', 'victor'), ('whiskey', 'xray'),
-            ]
+    samp = [
+        ("alfa", "bravo"),
+        ("charlie", "delta"),
+        ("echo", "foxtrot"),
+        ("golf", "hotel"),
+        ("india", "juliet"),
+        ("kilo", "lima"),
+        ("mike", "november"),
+        ("oskar", "papa"),
+        ("quebec", "romeo"),
+        ("sierra", "tango"),
+        ("ultra", "victor"),
+        ("whiskey", "xray"),
+    ]
     # Convert to bytes
     samp = set((b(k), b(v)) for k, v in samp)
 
@@ -121,8 +130,22 @@ def test_random_access():
 
 
 def test_ordered_closest():
-    keys = ['alfa', 'bravo', 'charlie', 'delta', 'echo', 'foxtrot', 'golf',
-            'hotel', 'india', 'juliet', 'kilo', 'lima', 'mike', 'november']
+    keys = [
+        "alfa",
+        "bravo",
+        "charlie",
+        "delta",
+        "echo",
+        "foxtrot",
+        "golf",
+        "hotel",
+        "india",
+        "juliet",
+        "kilo",
+        "lima",
+        "mike",
+        "november",
+    ]
     # Make into bytes for Python 3
     keys = [b(k) for k in keys]
     values = [str(len(k)).encode("ascii") for k in keys]
@@ -134,16 +157,16 @@ def test_ordered_closest():
 
         hr = OrderedHashReader.open(st, "test.hsh")
         ck = hr.closest_key
-        assert ck(b('')) == b('alfa')
-        assert ck(b(' ')) == b('alfa')
-        assert ck(b('alfa')) == b('alfa')
-        assert ck(b('bravot')) == b('charlie')
-        assert ck(b('charlie')) == b('charlie')
-        assert ck(b('kiloton')) == b('lima')
-        assert ck(b('oskar')) is None
+        assert ck(b("")) == b("alfa")
+        assert ck(b(" ")) == b("alfa")
+        assert ck(b("alfa")) == b("alfa")
+        assert ck(b("bravot")) == b("charlie")
+        assert ck(b("charlie")) == b("charlie")
+        assert ck(b("kiloton")) == b("lima")
+        assert ck(b("oskar")) is None
         assert list(hr.keys()) == keys
         assert list(hr.values()) == values
-        assert list(hr.keys_from(b('f'))) == keys[5:]
+        assert list(hr.keys_from(b("f"))) == keys[5:]
         hr.close()
 
 
@@ -176,7 +199,7 @@ def test_extras():
 
 
 def test_checksum_file():
-    from whoosh-reloaded.filedb.structfile import ChecksumFile
+    from whoosh_reloaded.filedb.structfile import ChecksumFile
     from zlib import crc32
 
     def wr(f):
@@ -193,7 +216,7 @@ def test_checksum_file():
     f.close()
     # Checksum the contents
     f = st.open_file("control")
-    target = crc32(f.read()) & 0xffffffff
+    target = crc32(f.read()) & 0xFFFFFFFF
     f.close()
 
     # Write a file with checksumming

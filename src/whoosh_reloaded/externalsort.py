@@ -34,20 +34,20 @@ from __future__ import with_statement
 import os, tempfile
 from heapq import heapify, heappop, heapreplace
 
-from whoosh-reloaded.compat import dump, load
+from whoosh_reloaded.compat import dump, load
 
 
 ## Python 3.2 had a bug that make marshal.load unusable
-#if (hasattr(platform, "python_implementation")
+# if (hasattr(platform, "python_implementation")
 #    and platform.python_implementation() == "CPython"
 #    and platform.python_version() == "3.2.0"):
 #    # Use pickle instead of marshal on Python 3.2
-#    from whoosh-reloaded.compat import dump as dump_pickle
-#    from whoosh-reloaded.compat import load
+#    from whoosh_reloaded.compat import dump as dump_pickle
+#    from whoosh_reloaded.compat import load
 #
 #    def dump(obj, f):
 #        dump_pickle(obj, f, -1)
-#else:
+# else:
 #    from marshal import dump, load
 
 
@@ -56,7 +56,9 @@ try:
 
     def imerge(iterables):
         return merge(*iterables)
+
 except ImportError:
+
     def imerge(iterables):
         _hpop, _hreplace, _Stop = (heappop, heapreplace, StopIteration)
         h = []
@@ -100,8 +102,7 @@ class SortingPool(object):
     tuples, lists, and dicts).
     """
 
-    def __init__(self, maxsize=1000000, tempdir=None, prefix="",
-                 suffix=".run"):
+    def __init__(self, maxsize=1000000, tempdir=None, prefix="", suffix=".run"):
         """
         :param maxsize: the maximum number of items to keep in memory at once.
         :param tempdir: the path of a directory to use for temporary file
@@ -122,8 +123,9 @@ class SortingPool(object):
         self.runs = []
 
     def _new_run(self):
-        fd, path = tempfile.mkstemp(prefix=self.prefix, suffix=self.suffix,
-                                    dir=self.tempdir)
+        fd, path = tempfile.mkstemp(
+            prefix=self.prefix, suffix=self.suffix, dir=self.tempdir
+        )
         f = os.fdopen(fd, "wb")
         return path, f
 
@@ -150,8 +152,7 @@ class SortingPool(object):
             yield item
 
     def add(self, item):
-        """Adds `item` to the pool to be sorted.
-        """
+        """Adds `item` to the pool to be sorted."""
 
         if len(self.current) >= self.maxsize:
             self.save()

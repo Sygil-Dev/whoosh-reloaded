@@ -25,19 +25,17 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.automata.fsa import ANY, EPSILON, NFA
+from whoosh_reloaded.automata.fsa import ANY, EPSILON, NFA
 
 
 # Operator precedence
-CHOICE = ("|", )
+CHOICE = ("|",)
 ops = ()
 
 
 def parse(pattern):
     stack = []
     ops = []
-
-
 
 
 class RegexBuilder(object):
@@ -127,8 +125,3 @@ class RegexBuilder(object):
 
     def question(self, n):
         return self.choice(n, self.epsilon())
-
-
-
-
-

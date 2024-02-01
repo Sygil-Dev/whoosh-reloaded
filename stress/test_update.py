@@ -1,11 +1,11 @@
 from __future__ import with_statement
 import random
 
-from nose.tools import assert_equal  #@UnresolvedImport
+from nose.tools import assert_equal  # @UnresolvedImport
 
-from whoosh-reloaded import fields, query
-from whoosh-reloaded.compat import xrange, text_type
-from whoosh-reloaded.util.testing import TempIndex
+from whoosh_reloaded import fields, query
+from whoosh_reloaded.compat import xrange, text_type
+from whoosh_reloaded.util.testing import TempIndex
 
 
 def test_many_updates():

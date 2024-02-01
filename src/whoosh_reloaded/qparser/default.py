@@ -27,13 +27,14 @@
 
 import sys
 
-from whoosh-reloaded import query
-from whoosh-reloaded.compat import text_type
-from whoosh-reloaded.qparser import syntax
-from whoosh-reloaded.qparser.common import print_debug, QueryParserError
+from whoosh_reloaded import query
+from whoosh_reloaded.compat import text_type
+from whoosh_reloaded.qparser import syntax
+from whoosh_reloaded.qparser.common import print_debug, QueryParserError
 
 
 # Query parser object
+
 
 class QueryParser(object):
     """A hand-written query parser built on modular plug-ins. The default
@@ -44,7 +45,7 @@ class QueryParser(object):
     the default list of plug-ins, and/or use ``add_plugin()`` and/or
     ``remove_plugin_class()`` to change the plug-ins included in the parser.
 
-    >>> from whoosh-reloaded import qparser
+    >>> from whoosh_reloaded import qparser
     >>> parser = qparser.QueryParser("content", schema)
     >>> parser.remove_plugin_class(qparser.WildcardPlugin)
     >>> parser.add_plugin(qparser.PrefixPlugin())
@@ -52,8 +53,15 @@ class QueryParser(object):
     And([Term("content", u"hello"), Term("content", u"there")])
     """
 
-    def __init__(self, fieldname, schema, plugins=None, termclass=query.Term,
-                 phraseclass=query.Phrase, group=syntax.AndGroup):
+    def __init__(
+        self,
+        fieldname,
+        schema,
+        plugins=None,
+        termclass=query.Term,
+        phraseclass=query.Phrase,
+        group=syntax.AndGroup,
+    ):
         """
         :param fieldname: the default field -- the parser uses this as the
             field for any terms without an explicit field.
@@ -87,23 +95,22 @@ class QueryParser(object):
         self.add_plugins(plugins)
 
     def default_set(self):
-        """Returns the default list of plugins to use.
-        """
+        """Returns the default list of plugins to use."""
 
-        from whoosh-reloaded.qparser import plugins
+        from whoosh_reloaded.qparser import plugins
 
         return [
-                # plugins.WhitespacePlugin(),
-                plugins.SingleQuotePlugin(),
-                plugins.FieldsPlugin(),
-                plugins.WildcardPlugin(),
-                plugins.PhrasePlugin(),
-                plugins.RangePlugin(),
-                plugins.GroupPlugin(),
-                plugins.OperatorsPlugin(),
-                plugins.BoostPlugin(),
-                plugins.EveryPlugin(),
-                ]
+            # plugins.WhitespacePlugin(),
+            plugins.SingleQuotePlugin(),
+            plugins.FieldsPlugin(),
+            plugins.WildcardPlugin(),
+            plugins.PhrasePlugin(),
+            plugins.RangePlugin(),
+            plugins.GroupPlugin(),
+            plugins.OperatorsPlugin(),
+            plugins.BoostPlugin(),
+            plugins.EveryPlugin(),
+        ]
 
     def add_plugins(self, pins):
         """Adds the given list of plugins to the list of plugins in this
@@ -114,15 +121,15 @@ class QueryParser(object):
             self.add_plugin(pin)
 
     def add_plugin(self, pin):
-        """Adds the given plugin to the list of plugins in this parser.
-        """
+        """Adds the given plugin to the list of plugins in this parser."""
 
         if isinstance(pin, type):
             pin = pin()
         self.plugins.append(pin)
 
     def _add_ws_plugin(self):
-        from whoosh-reloaded.qparser.plugins import WhitespacePlugin
+        from whoosh_reloaded.qparser.plugins import WhitespacePlugin
+
         self.add_plugin(WhitespacePlugin())
 
     def remove_plugin(self, pi):
@@ -133,8 +140,7 @@ class QueryParser(object):
         self.plugins.remove(pi)
 
     def remove_plugin_class(self, cls):
-        """Removes any plugins of the given class from this parser.
-        """
+        """Removes any plugins of the given class from this parser."""
 
         self.plugins = [pi for pi in self.plugins if not isinstance(pi, cls)]
 
@@ -196,13 +202,12 @@ class QueryParser(object):
             elif spec == "or":
                 qclass = query.Or
             else:
-                raise QueryParserError("Unknown multitoken_query value %r"
-                                       % spec)
-            return qclass([termclass(fieldname, t, boost=boost)
-                           for t in texts])
+                raise QueryParserError("Unknown multitoken_query value %r" % spec)
+            return qclass([termclass(fieldname, t, boost=boost) for t in texts])
 
-    def term_query(self, fieldname, text, termclass, boost=1.0, tokenize=True,
-                   removestops=True):
+    def term_query(
+        self, fieldname, text, termclass, boost=1.0, tokenize=True, removestops=True
+    ):
         """Returns the appropriate query object for a single term in the query
         string.
         """
@@ -222,16 +227,19 @@ class QueryParser(object):
 
             # Otherwise, ask the field to process the text into a list of
             # tokenized strings
-            texts = list(field.process_text(text, mode="query",
-                                            tokenize=tokenize,
-                                            removestops=removestops))
+            texts = list(
+                field.process_text(
+                    text, mode="query", tokenize=tokenize, removestops=removestops
+                )
+            )
 
             # If the analyzer returned more than one token, use the field's
             # multitoken_query attribute to decide what query class, if any, to
             # use to put the tokens together
             if len(texts) > 1:
-                return self.multitoken_query(field.multitoken_query, texts,
-                                             fieldname, termclass, boost)
+                return self.multitoken_query(
+                    field.multitoken_query, texts, fieldname, termclass, boost
+                )
 
             # It's possible field.process_text() will return an empty list (for
             # example, on a stop word)
@@ -287,8 +295,10 @@ class QueryParser(object):
                 node = tagger.match(self, text, pos)
                 if node is not None:
                     if node.endchar <= pos:
-                        raise Exception("Token %r did not move cursor forward."
-                                        " (%r, %s)" % (tagger, text, pos))
+                        raise Exception(
+                            "Token %r did not move cursor forward."
+                            " (%r, %s)" % (tagger, text, pos)
+                        )
                     if prev < pos:
                         tween = inter(prev, pos)
                         if debug:
@@ -296,8 +306,7 @@ class QueryParser(object):
                         stack.append(tween)
 
                     if debug:
-                        print_debug(debug, "Tagger: %r at %s: %r"
-                                    % (tagger, pos, node))
+                        print_debug(debug, "Tagger: %r at %s: %r" % (tagger, pos, node))
                     stack.append(node)
                     prev = pos = node.endchar
                     break
@@ -382,6 +391,7 @@ class QueryParser(object):
 
 # Premade parser configurations
 
+
 def MultifieldParser(fieldnames, schema, fieldboosts=None, **kwargs):
     """Returns a QueryParser configured to search in multiple fields.
 
@@ -396,7 +406,7 @@ def MultifieldParser(fieldnames, schema, fieldboosts=None, **kwargs):
     :param fieldboosts: an optional dictionary mapping field names to boosts.
     """
 
-    from whoosh-reloaded.qparser.plugins import MultifieldPlugin
+    from whoosh_reloaded.qparser.plugins import MultifieldPlugin
 
     p = QueryParser(None, schema, **kwargs)
     mfp = MultifieldPlugin(fieldnames, fieldboosts=fieldboosts)
@@ -409,14 +419,11 @@ def SimpleParser(fieldname, schema, **kwargs):
     syntax.
     """
 
-    from whoosh-reloaded.qparser import plugins, syntax
+    from whoosh_reloaded.qparser import plugins, syntax
 
-    pins = [plugins.WhitespacePlugin,
-            plugins.PlusMinusPlugin,
-            plugins.PhrasePlugin]
+    pins = [plugins.WhitespacePlugin, plugins.PlusMinusPlugin, plugins.PhrasePlugin]
     orgroup = syntax.OrGroup
-    return QueryParser(fieldname, schema, plugins=pins, group=orgroup,
-                       **kwargs)
+    return QueryParser(fieldname, schema, plugins=pins, group=orgroup, **kwargs)
 
 
 def DisMaxParser(fieldboosts, schema, tiebreak=0.0, **kwargs):
@@ -427,14 +434,16 @@ def DisMaxParser(fieldboosts, schema, tiebreak=0.0, **kwargs):
     :param fieldboosts: a dictionary mapping field names to boosts.
     """
 
-    from whoosh-reloaded.qparser import plugins, syntax
+    from whoosh_reloaded.qparser import plugins, syntax
 
-    mfp = plugins.MultifieldPlugin(list(fieldboosts.keys()),
-                                   fieldboosts=fieldboosts,
-                                   group=syntax.DisMaxGroup)
-    pins = [plugins.WhitespacePlugin,
-            plugins.PlusMinusPlugin,
-            plugins.PhrasePlugin,
-            mfp]
+    mfp = plugins.MultifieldPlugin(
+        list(fieldboosts.keys()), fieldboosts=fieldboosts, group=syntax.DisMaxGroup
+    )
+    pins = [
+        plugins.WhitespacePlugin,
+        plugins.PlusMinusPlugin,
+        plugins.PhrasePlugin,
+        mfp,
+    ]
     orgroup = syntax.OrGroup
     return QueryParser(None, schema, plugins=pins, group=orgroup, **kwargs)

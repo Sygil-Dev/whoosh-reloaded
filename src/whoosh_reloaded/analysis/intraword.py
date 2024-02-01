@@ -28,9 +28,9 @@
 import re
 from collections import deque
 
-from whoosh-reloaded.compat import u, text_type
-from whoosh-reloaded.compat import xrange
-from whoosh-reloaded.analysis.filters import Filter
+from whoosh_reloaded.compat import u, text_type
+from whoosh_reloaded.compat import xrange
+from whoosh_reloaded.analysis.filters import Filter
 
 
 class CompoundWordFilter(Filter):
@@ -279,12 +279,22 @@ class IntraWordFilter(Filter):
 
     is_morph = True
 
-    __inittypes__ = dict(delims=text_type, splitwords=bool, splitnums=bool,
-                         mergewords=bool, mergenums=bool)
+    __inittypes__ = dict(
+        delims=text_type,
+        splitwords=bool,
+        splitnums=bool,
+        mergewords=bool,
+        mergenums=bool,
+    )
 
-    def __init__(self, delims=u("-_'\"()!@#$%^&*[]{}<>\\|;:,./?`~=+"),
-                 splitwords=True, splitnums=True,
-                 mergewords=False, mergenums=False):
+    def __init__(
+        self,
+        delims=u("-_'\"()!@#$%^&*[]{}<>\\|;:,./?`~=+"),
+        splitwords=True,
+        splitnums=True,
+        mergewords=False,
+        mergenums=False,
+    ):
         """
         :param delims: a string of delimiter characters.
         :param splitwords: if True, split at case transitions,
@@ -297,15 +307,14 @@ class IntraWordFilter(Filter):
             additional token with the same position as the last subword.
         """
 
-        from whoosh-reloaded.support.unicode import digits, lowercase, uppercase
+        from whoosh_reloaded.support.unicode import digits, lowercase, uppercase
 
         self.delims = re.escape(delims)
 
         # Expression for text between delimiter characters
         self.between = re.compile(u("[^%s]+") % (self.delims,), re.UNICODE)
         # Expression for removing "'s" from the end of sub-words
-        dispat = u("(?<=[%s%s])'[Ss](?=$|[%s])") % (lowercase, uppercase,
-                                                    self.delims)
+        dispat = u("(?<=[%s%s])'[Ss](?=$|[%s])") % (lowercase, uppercase, self.delims)
         self.possessive = re.compile(dispat, re.UNICODE)
 
         # Expression for finding case and letter-number transitions
@@ -313,8 +322,7 @@ class IntraWordFilter(Filter):
         letter2digit = u("[%s%s][%s]") % (lowercase, uppercase, digits)
         digit2letter = u("[%s][%s%s]") % (digits, lowercase, uppercase)
         if splitwords and splitnums:
-            splitpat = u("(%s|%s|%s)") % (lower2upper, letter2digit,
-                                          digit2letter)
+            splitpat = u("(%s|%s|%s)") % (lower2upper, letter2digit, digit2letter)
             self.boundary = re.compile(splitpat, re.UNICODE)
         elif splitwords:
             self.boundary = re.compile(text_type(lower2upper), re.UNICODE)
@@ -327,8 +335,11 @@ class IntraWordFilter(Filter):
         self.mergenums = mergenums
 
     def __eq__(self, other):
-        return other and self.__class__ is other.__class__\
-        and self.__dict__ == other.__dict__
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.__dict__ == other.__dict__
+        )
 
     def _split(self, string):
         bound = self.boundary
@@ -414,8 +425,11 @@ class IntraWordFilter(Filter):
                 this = None
 
             # Is this the same type as the previous part?
-            if (buf and (this == last == 1 and mergewords)
-                or (this == last == 2 and mergenums)):
+            if (
+                buf
+                and (this == last == 1 and mergewords)
+                or (this == last == 2 and mergenums)
+            ):
                 # This part is the same type as the previous. Add it to the
                 # buffer of parts to merge.
                 buf.append(item)
@@ -455,8 +469,9 @@ class IntraWordFilter(Filter):
                     # Token doesn't have positions, just use 0
                     newpos = 0
 
-            if ((text.isalpha() and (text.islower() or text.isupper()))
-                or text.isdigit()):
+            if (
+                text.isalpha() and (text.islower() or text.isupper())
+            ) or text.isdigit():
                 # Short-circuit the common cases of no delimiters, no case
                 # transitions, only digits, etc.
                 t.pos = newpos
@@ -467,8 +482,10 @@ class IntraWordFilter(Filter):
                 # boundaries into a list of (text, pos, startchar, endchar)
                 # tuples
                 ranges = self._split(text)
-                parts = [(text[sc:ec], i + newpos, sc, ec)
-                         for i, (sc, ec) in enumerate(ranges)]
+                parts = [
+                    (text[sc:ec], i + newpos, sc, ec)
+                    for i, (sc, ec) in enumerate(ranges)
+                ]
 
                 # Did the split yield more than one part?
                 if len(parts) > 1:

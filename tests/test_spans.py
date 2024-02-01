@@ -1,11 +1,11 @@
 from __future__ import with_statement
 
-from whoosh-reloaded import analysis, fields, formats
-from whoosh-reloaded.compat import u, xrange, permutations
-from whoosh-reloaded.filedb.filestore import RamStorage
-from whoosh-reloaded.query import spans
-from whoosh-reloaded.query import And, Or, Term, Phrase
-from whoosh-reloaded.util.testing import TempIndex
+from whoosh_reloaded import analysis, fields, formats
+from whoosh_reloaded.compat import u, xrange, permutations
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.query import spans
+from whoosh_reloaded.query import And, Or, Term, Phrase
+from whoosh_reloaded.util.testing import TempIndex
 
 
 domain = ("alfa", "bravo", "bravo", "charlie", "delta", "echo")
@@ -18,9 +18,9 @@ def get_index():
     if _ix is not None:
         return _ix
 
-    charfield = fields.FieldType(formats.Characters(),
-                                 analysis.SimpleAnalyzer(),
-                                 scorable=True, stored=True)
+    charfield = fields.FieldType(
+        formats.Characters(), analysis.SimpleAnalyzer(), scorable=True, stored=True
+    )
     schema = fields.Schema(text=charfield)
     st = RamStorage()
     _ix = st.create_index(schema)
@@ -142,44 +142,50 @@ def test_span_first():
 def test_span_near():
     ix = get_index()
     with ix.searcher() as s:
+
         def test(q):
             m = q.matcher(s)
             while m.is_active():
                 yield s.stored_fields(m.id())["text"], m.spans()
                 m.next()
 
-        for orig, sps in test(spans.SpanNear(Term("text", "alfa"),
-                                             Term("text", "bravo"),
-                                             ordered=True)):
+        for orig, sps in test(
+            spans.SpanNear(Term("text", "alfa"), Term("text", "bravo"), ordered=True)
+        ):
             assert orig[sps[0].start] == "alfa"
             assert orig[sps[0].end] == "bravo"
 
-        for orig, sps in test(spans.SpanNear(Term("text", "alfa"),
-                                             Term("text", "bravo"),
-                                             ordered=False)):
+        for orig, sps in test(
+            spans.SpanNear(Term("text", "alfa"), Term("text", "bravo"), ordered=False)
+        ):
             first = orig[sps[0].start]
             second = orig[sps[0].end]
-            assert ((first == "alfa" and second == "bravo") or (first == "bravo" and second == "alfa"))
+            assert (first == "alfa" and second == "bravo") or (
+                first == "bravo" and second == "alfa"
+            )
 
-        for orig, sps in test(spans.SpanNear(Term("text", "bravo"),
-                                             Term("text", "bravo"),
-                                             ordered=True)):
+        for orig, sps in test(
+            spans.SpanNear(Term("text", "bravo"), Term("text", "bravo"), ordered=True)
+        ):
             text = " ".join(orig)
             assert text.find("bravo bravo") > -1
 
-        q = spans.SpanNear(spans.SpanNear(Term("text", "alfa"),
-                                          Term("text", "charlie")),
-                           Term("text", "echo"))
+        q = spans.SpanNear(
+            spans.SpanNear(Term("text", "alfa"), Term("text", "charlie")),
+            Term("text", "echo"),
+        )
         for orig, sps in test(q):
             text = " ".join(orig)
             assert text.find("alfa charlie echo") > -1
 
-        q = spans.SpanNear(Or([Term("text", "alfa"), Term("text", "charlie")]),
-                           Term("text", "echo"), ordered=True)
+        q = spans.SpanNear(
+            Or([Term("text", "alfa"), Term("text", "charlie")]),
+            Term("text", "echo"),
+            ordered=True,
+        )
         for orig, sps in test(q):
             text = " ".join(orig)
-            assert (text.find("alfa echo") > -1
-                    or text.find("charlie echo") > -1)
+            assert text.find("alfa echo") > -1 or text.find("charlie echo") > -1
 
 
 def test_near_unordered():
@@ -194,10 +200,14 @@ def test_near_unordered():
     w.commit()
 
     with ix.searcher() as s:
-        q = spans.SpanNear(Term("text", "bravo"), Term("text", "charlie"),
-                           ordered=False)
+        q = spans.SpanNear(
+            Term("text", "bravo"), Term("text", "charlie"), ordered=False
+        )
         r = sorted(d["text"] for d in s.search(q))
-        assert r == [u('alfa bravo charlie delta echo'), u('alfa charlie bravo delta echo')]
+        assert r == [
+            u("alfa bravo charlie delta echo"),
+            u("alfa charlie bravo delta echo"),
+        ]
 
 
 def test_span_near_tree():
@@ -206,8 +216,12 @@ def test_span_near_tree():
     st = RamStorage()
     ix = st.create_index(schema)
     w = ix.writer()
-    w.add_document(text=u("The Lucene library is by Doug Cutting and Whoosh " +
-                          "was made by Matt Chaput"))
+    w.add_document(
+        text=u(
+            "The Lucene library is by Doug Cutting and Whoosh "
+            + "was made by Matt Chaput"
+        )
+    )
     w.commit()
 
     nq1 = spans.SpanNear(Term("text", "lucene"), Term("text", "doug"), slop=5)
@@ -222,16 +236,15 @@ def test_spannear2():
     schema = fields.Schema(id=fields.STORED, text=fields.TEXT)
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(id="a", text=u"alfa echo")
-            w.add_document(id="b", text=u"alfa bravo echo")
-            w.add_document(id="c", text=u"alfa bravo charlie echo")
-            w.add_document(id="d", text=u"alfa bravo charlie delta echo")
-            w.add_document(id="e", text=u"alfa bravo charlie fox delta echo")
-            w.add_document(id="f", text=u"charlie delta echo fox golf hotel")
+            w.add_document(id="a", text="alfa echo")
+            w.add_document(id="b", text="alfa bravo echo")
+            w.add_document(id="c", text="alfa bravo charlie echo")
+            w.add_document(id="d", text="alfa bravo charlie delta echo")
+            w.add_document(id="e", text="alfa bravo charlie fox delta echo")
+            w.add_document(id="f", text="charlie delta echo fox golf hotel")
 
         with ix.searcher() as s:
-            q = spans.SpanNear2([Term("text", "bravo"), Term("text", "echo")],
-                                slop=3)
+            q = spans.SpanNear2([Term("text", "bravo"), Term("text", "echo")], slop=3)
             assert q.estimate_size(s.reader()) == 4
 
             ids = "".join(sorted(hit["id"] for hit in s.search(q)))
@@ -241,8 +254,7 @@ def test_spannear2():
 def test_span_not():
     ix = get_index()
     with ix.searcher() as s:
-        nq = spans.SpanNear(Term("text", "alfa"), Term("text", "charlie"),
-                            slop=2)
+        nq = spans.SpanNear(Term("text", "alfa"), Term("text", "charlie"), slop=2)
         bq = Term("text", "bravo")
         q = spans.SpanNot(nq, bq)
         m = q.matcher(s)
@@ -260,8 +272,7 @@ def test_span_not():
 def test_span_or():
     ix = get_index()
     with ix.searcher() as s:
-        nq = spans.SpanNear(Term("text", "alfa"), Term("text", "charlie"),
-                            slop=2)
+        nq = spans.SpanNear(Term("text", "alfa"), Term("text", "charlie"), slop=2)
         bq = Term("text", "bravo")
         q = spans.SpanOr([nq, bq])
         m = q.matcher(s)
@@ -274,8 +285,7 @@ def test_span_or():
 def test_span_contains():
     ix = get_index()
     with ix.searcher() as s:
-        nq = spans.SpanNear(Term("text", "alfa"), Term("text", "charlie"),
-                            slop=3)
+        nq = spans.SpanNear(Term("text", "alfa"), Term("text", "charlie"), slop=3)
         cq = spans.SpanContains(nq, Term("text", "echo"))
 
         m = cq.matcher(s)
@@ -285,13 +295,20 @@ def test_span_contains():
             ls.append(" ".join(orig))
             m.next()
         ls.sort()
-        assert ls == ['alfa bravo echo charlie', 'alfa bravo echo charlie',
-                      'alfa delta echo charlie', 'alfa echo bravo charlie',
-                      'alfa echo bravo charlie', 'alfa echo charlie bravo',
-                      'alfa echo charlie bravo', 'alfa echo charlie delta',
-                      'alfa echo delta charlie', 'bravo alfa echo charlie',
-                      'bravo alfa echo charlie', 'delta alfa echo charlie',
-                      ]
+        assert ls == [
+            "alfa bravo echo charlie",
+            "alfa bravo echo charlie",
+            "alfa delta echo charlie",
+            "alfa echo bravo charlie",
+            "alfa echo bravo charlie",
+            "alfa echo charlie bravo",
+            "alfa echo charlie bravo",
+            "alfa echo charlie delta",
+            "alfa echo delta charlie",
+            "bravo alfa echo charlie",
+            "bravo alfa echo charlie",
+            "delta alfa echo charlie",
+        ]
 
 
 def test_span_before():

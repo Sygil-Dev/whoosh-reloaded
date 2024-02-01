@@ -25,14 +25,15 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.compat import text_type
-from whoosh-reloaded.compat import xrange
-from whoosh-reloaded.analysis.acore import Token
-from whoosh-reloaded.analysis.filters import Filter, LowercaseFilter
-from whoosh-reloaded.analysis.tokenizers import Tokenizer, RegexTokenizer
+from whoosh_reloaded.compat import text_type
+from whoosh_reloaded.compat import xrange
+from whoosh_reloaded.analysis.acore import Token
+from whoosh_reloaded.analysis.filters import Filter, LowercaseFilter
+from whoosh_reloaded.analysis.tokenizers import Tokenizer, RegexTokenizer
 
 
 # Tokenizer
+
 
 class NgramTokenizer(Tokenizer):
     """Splits input text into N-grams instead of words.
@@ -68,9 +69,18 @@ class NgramTokenizer(Tokenizer):
                 return True
         return False
 
-    def __call__(self, value, positions=False, chars=False, keeporiginal=False,
-                 removestops=True, start_pos=0, start_char=0, mode='',
-                 **kwargs):
+    def __call__(
+        self,
+        value,
+        positions=False,
+        chars=False,
+        keeporiginal=False,
+        removestops=True,
+        start_pos=0,
+        start_char=0,
+        mode="",
+        **kwargs
+    ):
         assert isinstance(value, text_type), "%r is not unicode" % value
 
         inlen = len(value)
@@ -116,6 +126,7 @@ class NgramTokenizer(Tokenizer):
 
 # Filter
 
+
 class NgramFilter(Filter):
     """Splits token text into N-grams.
 
@@ -147,8 +158,12 @@ class NgramFilter(Filter):
             self.at = 1
 
     def __eq__(self, other):
-        return other and self.__class__ is other.__class__\
-        and self.min == other.min and self.max == other.max
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.min == other.min
+            and self.max == other.max
+        )
 
     def __call__(self, tokens):
         assert hasattr(tokens, "__iter__")
@@ -173,13 +188,13 @@ class NgramFilter(Filter):
                         t.endchar = startchar + size
                     yield t
                 elif at == 1:
-                    t.text = text[0 - size:]
+                    t.text = text[0 - size :]
                     if chars:
                         t.startchar = t.endchar - size
                     yield t
                 else:
                     for start in xrange(0, len(text) - size + 1):
-                        t.text = text[start:start + size]
+                        t.text = text[start : start + size]
                         if chars:
                             t.startchar = startchar + start
                             t.endchar = startchar + start + size
@@ -219,6 +234,7 @@ class NgramFilter(Filter):
 
 
 # Analyzers
+
 
 def NgramAnalyzer(minsize, maxsize=None):
     """Composes an NgramTokenizer and a LowercaseFilter.

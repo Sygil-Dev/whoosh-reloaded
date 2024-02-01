@@ -2,7 +2,7 @@
 ``query`` module
 ================
 
-.. automodule:: whoosh-reloaded.query
+.. automodule:: whoosh_reloaded.query
 
 See also :mod:`whoosh-reloaded.qparser` which contains code for parsing user queries
 into query objects.

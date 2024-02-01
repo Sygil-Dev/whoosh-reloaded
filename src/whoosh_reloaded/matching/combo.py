@@ -28,8 +28,8 @@
 from __future__ import division
 from array import array
 
-from whoosh-reloaded.compat import xrange
-from whoosh-reloaded.matching import mcore
+from whoosh_reloaded.compat import xrange
+from whoosh_reloaded.matching import mcore
 
 
 class CombinationMatcher(mcore.Matcher):
@@ -41,8 +41,10 @@ class CombinationMatcher(mcore.Matcher):
         return all(m.supports_block_quality() for m in self._submatchers)
 
     def max_quality(self):
-        return max(m.max_quality() for m in self._submatchers
-                   if m.is_active()) * self._boost
+        return (
+            max(m.max_quality() for m in self._submatchers if m.is_active())
+            * self._boost
+        )
 
     def supports(self, astype):
         return all(m.supports(astype) for m in self._submatchers)
@@ -115,7 +117,7 @@ class PreloadedUnionMatcher(CombinationMatcher):
         self._docnum = place + offset
 
     def max_quality(self):
-        return max(self._a[self._docnum - self._offset:])
+        return max(self._a[self._docnum - self._offset :])
 
     def block_quality(self):
         return self.max_quality()
@@ -169,8 +171,7 @@ class ArrayUnionMatcher(CombinationMatcher):
     current document, just an array of scores.
     """
 
-    def __init__(self, submatchers, doccount, boost=1.0, scored=True,
-                 partsize=2048):
+    def __init__(self, submatchers, doccount, boost=1.0, scored=True, partsize=2048):
         CombinationMatcher.__init__(self, submatchers, boost=boost)
         self._scored = scored
         self._doccount = doccount
@@ -184,9 +185,13 @@ class ArrayUnionMatcher(CombinationMatcher):
         self._read_part()
 
     def __repr__(self):
-        return ("%s(%r, boost=%f, scored=%r, partsize=%d)"
-                % (self.__class__.__name__, self._submatchers, self._boost,
-                   self._scored, self._partsize))
+        return "%s(%r, boost=%f, scored=%r, partsize=%d)" % (
+            self.__class__.__name__,
+            self._submatchers,
+            self._boost,
+            self._scored,
+            self._partsize,
+        )
 
     def _min_id(self):
         active = [subm for subm in self._submatchers if subm.is_active()]

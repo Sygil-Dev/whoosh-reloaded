@@ -1,8 +1,8 @@
 from __future__ import with_statement
 import os.path, random, string
 
-from whoosh-reloaded import fields, formats, index, query, sorting
-from whoosh-reloaded.util import now
+from whoosh_reloaded import fields, formats, index, query, sorting
+from whoosh_reloaded.util import now
 
 
 tagcount = 100
@@ -18,14 +18,14 @@ reindex = False
 if reindex or not index.exists_in(dirname):
     tags = []
     for _ in xrange(tagcount):
-        tag = u"".join(random.choice(string.ascii_lowercase) for _ in xrange(5))
+        tag = "".join(random.choice(string.ascii_lowercase) for _ in xrange(5))
         tags.append(tag)
 
     ix = index.create_in(dirname, schema)
     t = now()
     with ix.writer() as w:
         for i in xrange(doccount):
-            doc = u" ".join(random.sample(tags, random.randint(10, 20)))
+            doc = " ".join(random.sample(tags, random.randint(10, 20)))
             w.add_document(tags=doc)
             if not i % 10000:
                 print(i)

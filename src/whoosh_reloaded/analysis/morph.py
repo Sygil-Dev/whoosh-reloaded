@@ -25,11 +25,11 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.analysis.filters import Filter
-from whoosh-reloaded.compat import integer_types
-from whoosh-reloaded.lang.dmetaphone import double_metaphone
-from whoosh-reloaded.lang.porter import stem
-from whoosh-reloaded.util.cache import lfu_cache, unbound_cache
+from whoosh_reloaded.analysis.filters import Filter
+from whoosh_reloaded.compat import integer_types
+from whoosh_reloaded.lang.dmetaphone import double_metaphone
+from whoosh_reloaded.lang.porter import stem
+from whoosh_reloaded.util.cache import lfu_cache, unbound_cache
 
 
 class StemFilter(Filter):
@@ -92,8 +92,7 @@ class StemFilter(Filter):
     def __getstate__(self):
         # Can't pickle a dynamic function, so we have to remove the _stem
         # attribute from the state
-        return dict([(k, self.__dict__[k]) for k in self.__dict__
-                      if k != "_stem"])
+        return dict([(k, self.__dict__[k]) for k in self.__dict__ if k != "_stem"])
 
     def __setstate__(self, state):
         # Check for old instances of StemFilter class, which didn't have a
@@ -115,7 +114,8 @@ class StemFilter(Filter):
 
     def clear(self):
         if self.lang:
-            from whoosh-reloaded.lang import stemmer_for_language
+            from whoosh_reloaded.lang import stemmer_for_language
+
             stemfn = stemmer_for_language(self.lang)
         else:
             stemfn = self.stemfn
@@ -134,8 +134,9 @@ class StemFilter(Filter):
         return self._stem.cache_info()
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.stemfn == other.stemfn)
+        return (
+            other and self.__class__ is other.__class__ and self.stemfn == other.stemfn
+        )
 
     def __call__(self, tokens):
         stemfn = self._stem
@@ -196,8 +197,7 @@ class PyStemmerFilter(StemFilter):
     def __getstate__(self):
         # Can't pickle a dynamic function, so we have to remove the _stem
         # attribute from the state
-        return dict([(k, self.__dict__[k]) for k in self.__dict__
-                     if k != "_stem"])
+        return dict([(k, self.__dict__[k]) for k in self.__dict__ if k != "_stem"])
 
     def __setstate__(self, state):
         # Check for old instances of StemFilter class, which didn't have a
@@ -241,9 +241,11 @@ class DoubleMetaphoneFilter(Filter):
         self.combine = combine
 
     def __eq__(self, other):
-        return (other
-                and self.__class__ is other.__class__
-                and self.primary_boost == other.primary_boost)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.primary_boost == other.primary_boost
+        )
 
     def __call__(self, tokens):
         primary_boost = self.primary_boost

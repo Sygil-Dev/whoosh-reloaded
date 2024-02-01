@@ -10,7 +10,7 @@ Whoosh lets you index and search dates/times using the
 field in ``add_document()``, you use a Python ``datetime.datetime`` object::
 
     from datetime import datetime, timedelta
-    from whoosh-reloaded import fields, index
+    from whoosh_reloaded import fields, index
 
     schema = fields.Schema(title=fields.TEXT, content=fields.TEXT,
                            date=fields.DATETIME)
@@ -30,9 +30,9 @@ Parsing date queries
 Once you've have an indexed ``DATETIME`` field, you can search it using a rich
 date parser contained in the :class:`whoosh-reloaded.qparser.dateparse.DateParserPlugin`::
 
-    from whoosh-reloaded import index
-    from whoosh-reloaded.qparser import QueryParser
-    from whoosh-reloaded.qparser.dateparse import DateParserPlugin
+    from whoosh_reloaded import index
+    from whoosh_reloaded.qparser import QueryParser
+    from whoosh_reloaded.qparser.dateparse import DateParserPlugin
 
     ix = index.open_dir("indexdir")
 
@@ -90,8 +90,8 @@ If you don't use the ``DateParserPlugin``, users can still search DATETIME
 fields using a simple numeric form ``YYYY[MM[DD[hh[mm[ss]]]]]`` that is built
 into the ``DATETIME`` field::
 
-    from whoosh-reloaded import index
-    from whoosh-reloaded.qparser import QueryParser
+    from whoosh_reloaded import index
+    from whoosh_reloaded.qparser import QueryParser
 
     ix = index.open_dir("indexdir")
     qp = QueryParser("content", schema=ix.schema)

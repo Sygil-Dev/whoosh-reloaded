@@ -103,8 +103,8 @@ Creating a Schema
 
 To create a schema::
 
-    from whoosh-reloaded.fields import Schema, TEXT, KEYWORD, ID, STORED
-    from whoosh-reloaded.analysis import StemmingAnalyzer
+    from whoosh_reloaded.fields import Schema, TEXT, KEYWORD, ID, STORED
+    from whoosh_reloaded.analysis import StemmingAnalyzer
 
     schema = Schema(from_addr=ID(stored=True),
                     to_addr=ID(stored=True),
@@ -119,7 +119,7 @@ of ``fieldname=TEXT()``). Whoosh will instantiate the class for you.
 Alternatively you can create a schema declaratively using the ``SchemaClass``
 base class::
 
-    from whoosh-reloaded.fields import SchemaClass, TEXT, KEYWORD, ID, STORED
+    from whoosh_reloaded.fields import SchemaClass, TEXT, KEYWORD, ID, STORED
 
     class MySchema(SchemaClass):
         path = ID(stored=True)

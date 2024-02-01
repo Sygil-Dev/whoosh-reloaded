@@ -30,7 +30,7 @@ import random, sys, time
 from bisect import insort
 from functools import wraps
 
-from whoosh-reloaded.compat import xrange
+from whoosh_reloaded.compat import xrange
 
 
 # These must be valid separate characters in CASE-INSENSTIVE filenames
@@ -39,7 +39,7 @@ IDCHARS = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 if hasattr(time, "perf_counter"):
     now = time.perf_counter
-elif sys.platform == 'win32':
+elif sys.platform == "win32":
     now = time.clock
 else:
     now = time.time
@@ -75,8 +75,11 @@ def make_binary_tree(fn, args, **kwargs):
         return args[0]
 
     half = count // 2
-    return fn(make_binary_tree(fn, args[:half], **kwargs),
-              make_binary_tree(fn, args[half:], **kwargs), **kwargs)
+    return fn(
+        make_binary_tree(fn, args[:half], **kwargs),
+        make_binary_tree(fn, args[half:], **kwargs),
+        **kwargs
+    )
 
 
 def make_weighted_tree(fn, ls, **kwargs):
@@ -102,8 +105,7 @@ _fib_cache = {}
 
 
 def fib(n):
-    """Returns the nth value in the Fibonacci sequence.
-    """
+    """Returns the nth value in the Fibonacci sequence."""
 
     if n <= 2:
         return n
@@ -115,6 +117,7 @@ def fib(n):
 
 
 # Decorators
+
 
 def synchronized(func):
     """Decorator for storage-access methods, which synchronizes on a threading
@@ -139,4 +142,5 @@ def unclosed(method):
         if self.closed:
             raise ValueError("Operation on a closed object")
         return method(self, *args, **kwargs)
+
     return unclosed_wrapper

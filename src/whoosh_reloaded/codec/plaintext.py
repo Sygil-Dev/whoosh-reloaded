@@ -27,20 +27,23 @@
 
 from ast import literal_eval
 
-from whoosh-reloaded.compat import b, bytes_type, text_type, integer_types, PY3
-from whoosh-reloaded.compat import iteritems, dumps, loads, xrange
-from whoosh-reloaded.codec import base
-from whoosh-reloaded.matching import ListMatcher
-from whoosh-reloaded.reading import TermInfo, TermNotFound
+from whoosh_reloaded.compat import b, bytes_type, text_type, integer_types, PY3
+from whoosh_reloaded.compat import iteritems, dumps, loads, xrange
+from whoosh_reloaded.codec import base
+from whoosh_reloaded.matching import ListMatcher
+from whoosh_reloaded.reading import TermInfo, TermNotFound
 
 if not PY3:
+
     class memoryview:
         pass
+
 
 _reprable = (bytes_type, text_type, integer_types, float)
 
 
 # Mixin classes for producing and consuming the simple text format
+
 
 class LineWriter(object):
     def _print_line(self, indent, command, **kwargs):
@@ -116,6 +119,7 @@ class LineReader(object):
 
 
 # Codec class
+
 
 class PlainTextCodec(base.Codec):
     length_stats = False
@@ -217,7 +221,6 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
     def doc_field_length(self, docnum, fieldname, default=0):
         for dn in self._iter_docs():
             if dn == docnum:
-
                 c = self._find_line(2, "DOCFIELD", fn=fieldname)
                 if c is not None:
                     return c.get("len", default)
@@ -229,13 +232,15 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
     def _column_values(self, fieldname):
         for i, docnum in enumerate(self._iter_docs()):
             if i != docnum:
-                raise Exception("Missing column value for field %r doc %d?"
-                                % (fieldname, i))
+                raise Exception(
+                    "Missing column value for field %r doc %d?" % (fieldname, i)
+                )
 
             c = self._find_line(2, "COLVAL", fn=fieldname)
             if c is None:
-                raise Exception("Missing column value for field %r doc %d?"
-                                % (fieldname, docnum))
+                raise Exception(
+                    "Missing column value for field %r doc %d?" % (fieldname, docnum)
+                )
 
             yield c.get("v")
 
@@ -278,7 +283,12 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
             values.append(c["v"])
             c = self._find_line(3, "VPOST")
 
-        return ListMatcher(ids, weights, values, format_,)
+        return ListMatcher(
+            ids,
+            weights,
+            values,
+            format_,
+        )
 
     def _read_stored_fields(self):
         sfs = {}
@@ -331,11 +341,17 @@ class PlainFieldWriter(base.FieldWriter, LineWriter):
 
     def finish_term(self):
         ti = self._terminfo
-        self._print_line(3, "TERMINFO",
-                         df=ti.doc_frequency(), weight=ti.weight(),
-                         minlength=ti.min_length(), maxlength=ti.max_length(),
-                         maxweight=ti.max_weight(),
-                         minid=ti.min_id(), maxid=ti.max_id())
+        self._print_line(
+            3,
+            "TERMINFO",
+            df=ti.doc_frequency(),
+            weight=ti.weight(),
+            minlength=ti.min_length(),
+            maxlength=ti.max_length(),
+            maxweight=ti.max_weight(),
+            minid=ti.min_id(),
+            maxid=ti.max_id(),
+        )
 
     def add_spell_word(self, fieldname, text):
         self._print_line(2, "SPELL", fn=fieldname, t=text)

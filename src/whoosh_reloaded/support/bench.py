@@ -30,8 +30,8 @@ import os.path
 from optparse import OptionParser
 from shutil import rmtree
 
-from whoosh-reloaded import index, qparser, query, scoring
-from whoosh-reloaded.util import now, find_object
+from whoosh_reloaded import index, qparser, query, scoring
+from whoosh_reloaded.util import now, find_object
 
 try:
     import xappy
@@ -52,6 +52,7 @@ try:
     class ZDoc(Persistent):
         def __init__(self, d):
             self.__dict__.update(d)
+
 except ImportError:
     pass
 
@@ -132,9 +133,10 @@ class Spec(object):
 
 class WhooshModule(Module):
     def indexer(self, create=True):
-        schema = self.bench.spec.whoosh-reloaded_schema()
-        path = os.path.join(self.options.dir, "%s_whoosh-reloaded"
-                            % self.options.indexname)
+        schema = self.bench.spec.whoosh - reloaded_schema()
+        path = os.path.join(
+            self.options.dir, "%s_whoosh-reloaded" % self.options.indexname
+        )
 
         if not os.path.exists(path):
             os.mkdir(path)
@@ -147,15 +149,17 @@ class WhooshModule(Module):
         if self.options.pool:
             poolclass = find_object(self.options.pool)
 
-        self.writer = ix.writer(limitmb=int(self.options.limitmb),
-                                poolclass=poolclass,
-                                dir=self.options.tempdir,
-                                procs=int(self.options.procs),
-                                batchsize=int(self.options.batch),
-                                multisegment=self.options.xms)
+        self.writer = ix.writer(
+            limitmb=int(self.options.limitmb),
+            poolclass=poolclass,
+            dir=self.options.tempdir,
+            procs=int(self.options.procs),
+            batchsize=int(self.options.batch),
+            multisegment=self.options.xms,
+        )
         self._procdoc = None
         if hasattr(self.bench.spec, "process_document_whoosh-reloaded"):
-            self._procdoc = self.bench.spec.process_document_whoosh-reloaded
+            self._procdoc = self.bench.spec.process_document_whoosh - reloaded
 
     def index_document(self, d):
         _procdoc = self._procdoc
@@ -167,20 +171,21 @@ class WhooshModule(Module):
         self.writer.commit(merge=merge, optimize=optimize)
 
     def searcher(self):
-        path = os.path.join(self.options.dir, "%s_whoosh-reloaded"
-                            % self.options.indexname)
+        path = os.path.join(
+            self.options.dir, "%s_whoosh-reloaded" % self.options.indexname
+        )
         ix = index.open_dir(path)
         self.srch = ix.searcher(weighting=scoring.PL2())
-        self.parser = qparser.QueryParser(self.bench.spec.main_field,
-                                          schema=ix.schema)
+        self.parser = qparser.QueryParser(self.bench.spec.main_field, schema=ix.schema)
 
     def query(self):
         qstring = " ".join(self.args).decode("utf-8")
         return self.parser.parse(qstring)
 
     def find(self, q):
-        return self.srch.search(q, limit=int(self.options.limit),
-                                optimize=self.options.optimize)
+        return self.srch.search(
+            q, limit=int(self.options.limit), optimize=self.options.optimize
+        )
 
     def findterms(self, terms):
         limit = int(self.options.limit)
@@ -193,8 +198,7 @@ class WhooshModule(Module):
 
 class XappyModule(Module):
     def indexer(self, **kwargs):
-        path = os.path.join(self.options.dir, "%s_xappy"
-                            % self.options.indexname)
+        path = os.path.join(self.options.dir, "%s_xappy" % self.options.indexname)
         conn = self.bench.spec.xappy_connection(path)
         return conn
 
@@ -213,8 +217,7 @@ class XappyModule(Module):
         conn.flush()
 
     def searcher(self):
-        path = os.path.join(self.options.dir, "%s_xappy"
-                            % self.options.indexname)
+        path = os.path.join(self.options.dir, "%s_xappy" % self.options.indexname)
         return xappy.SearchConnection(path)
 
     def query(self, conn):
@@ -238,8 +241,7 @@ class XappyModule(Module):
 
 class XapianModule(Module):
     def indexer(self, **kwargs):
-        path = os.path.join(self.options.dir, "%s_xapian"
-                            % self.options.indexname)
+        path = os.path.join(self.options.dir, "%s_xapian" % self.options.indexname)
         self.database = xapian.WritableDatabase(path, xapian.DB_CREATE_OR_OPEN)
         self.ixer = xapian.TermGenerator()
 
@@ -257,8 +259,7 @@ class XapianModule(Module):
         self.database.flush()
 
     def searcher(self):
-        path = os.path.join(self.options.dir, "%s_xappy"
-                            % self.options.indexname)
+        path = os.path.join(self.options.dir, "%s_xappy" % self.options.indexname)
         self.db = xapian.Database(path)
         self.enq = xapian.Enquire(self.db)
         self.qp = xapian.QueryParser()
@@ -282,8 +283,9 @@ class XapianModule(Module):
         hf = self.bench.spec.headline_field
         mf = self.bench.spec.main_field
         for m in matches:
-            yield self._process_result({hf: m.document.get_value(0),
-                                        mf: m.document.get_data()})
+            yield self._process_result(
+                {hf: m.document.get_value(0), mf: m.document.get_data()}
+            )
 
 
 class SolrModule(Module):
@@ -327,8 +329,7 @@ class ZcatalogModule(Module):
         from zcatalog import catalog  # @UnresolvedImport
         import transaction  # @UnresolvedImport
 
-        dir = os.path.join(self.options.dir, "%s_zcatalog"
-                           % self.options.indexname)
+        dir = os.path.join(self.options.dir, "%s_zcatalog" % self.options.indexname)
         if os.path.exists(dir):
             rmtree(dir)
         os.mkdir(dir)
@@ -352,11 +353,13 @@ class ZcatalogModule(Module):
         self.zcatalog_count += 1
         if self.zcatalog_count >= 100:
             import transaction  # @UnresolvedImport
+
             transaction.commit()
             self.zcatalog_count = 0
 
     def finish(self, **kwargs):
         import transaction  # @UnresolvedImport
+
         transaction.commit()
         del self.zcatalog_count
 
@@ -364,8 +367,9 @@ class ZcatalogModule(Module):
         from ZODB.FileStorage import FileStorage  # @UnresolvedImport
         from ZODB.DB import DB  # @UnresolvedImport
 
-        path = os.path.join(self.options.dir, "%s_zcatalog"
-                            % self.options.indexname, "index")
+        path = os.path.join(
+            self.options.dir, "%s_zcatalog" % self.options.indexname, "index"
+        )
         storage = FileStorage(path)
         db = DB(storage)
         conn = db.open()
@@ -387,8 +391,7 @@ class ZcatalogModule(Module):
         mf = self.bench.spec.main_field
         for hit in r:
             # Have to access the attributes for them to be retrieved
-            yield self._process_result({hf: getattr(hit, hf),
-                                        mf: getattr(hit, mf)})
+            yield self._process_result({hf: getattr(hit, hf), mf: getattr(hit, mf)})
 
 
 class NucularModule(Module):
@@ -396,8 +399,7 @@ class NucularModule(Module):
         import shutil
         from nucular import Nucular
 
-        dir = os.path.join(self.options.dir, "%s_nucular"
-                           % self.options.indexname)
+        dir = os.path.join(self.options.dir, "%s_nucular" % self.options.indexname)
         if create:
             if os.path.exists(dir):
                 shutil.rmtree(dir)
@@ -428,8 +430,7 @@ class NucularModule(Module):
     def searcher(self):
         from nucular import Nucular
 
-        dir = os.path.join(self.options.dir, "%s_nucular"
-                           % self.options.indexname)
+        dir = os.path.join(self.options.dir, "%s_nucular" % self.options.indexname)
         self.archive = Nucular.Nucular(dir)
 
     def query(self):
@@ -446,9 +447,14 @@ class NucularModule(Module):
 
 
 class Bench(object):
-    libs = {"whoosh-reloaded": WhooshModule, "xappy": XappyModule,
-            "xapian": XapianModule, "solr": SolrModule,
-            "zcatalog": ZcatalogModule, "nucular": NucularModule}
+    libs = {
+        "whoosh-reloaded": WhooshModule,
+        "xappy": XappyModule,
+        "xapian": XapianModule,
+        "solr": SolrModule,
+        "zcatalog": ZcatalogModule,
+        "nucular": NucularModule,
+    }
 
     def index(self, lib):
         print("Indexing with %s..." % lib)
@@ -475,7 +481,10 @@ class Bench(object):
                 if chunk and not count % chunk:
                     t = now()
                     sofar = t - starttime
-                    print("Done %d docs, %0.3f secs for %d, %0.3f total, %0.3f docs/s" % (count, t - chunkstarttime, chunk, sofar, count / sofar))
+                    print(
+                        "Done %d docs, %0.3f secs for %d, %0.3f total, %0.3f docs/s"
+                        % (count, t - chunkstarttime, chunk, sofar, count / sofar)
+                    )
                     chunkstarttime = t
                 if count > upto:
                     break
@@ -490,7 +499,10 @@ class Bench(object):
         committime = now()
         print("Commit time:", committime - spooltime)
         totaltime = committime - starttime
-        print("Total time to index %d documents: %0.3f secs (%0.3f minutes)" % (count, totaltime, totaltime / 60.0))
+        print(
+            "Total time to index %d documents: %0.3f secs (%0.3f minutes)"
+            % (count, totaltime, totaltime / 60.0)
+        )
         print("Indexed %0.3f docs/s" % (count / totaltime))
 
     def search(self, lib):
@@ -521,62 +533,190 @@ class Bench(object):
 
     def _parser(self, name):
         p = OptionParser()
-        p.add_option("-x", "--lib", dest="lib",
-                     help="Name of the library to use to index/search.",
-                     default="whoosh-reloaded")
-        p.add_option("-d", "--dir", dest="dir", metavar="DIRNAME",
-                     help="Directory in which to store index.", default=".")
-        p.add_option("-s", "--setup", dest="setup", action="store_true",
-                     help="Set up any support files or caches.", default=False)
-        p.add_option("-i", "--index", dest="index", action="store_true",
-                     help="Index the documents.", default=False)
-        p.add_option("-n", "--name", dest="indexname", metavar="PREFIX",
-                     help="Index name prefix.", default="%s_index" % name)
-        p.add_option("-U", "--url", dest="url", metavar="URL",
-                     help="Solr URL", default="http://localhost:8983/solr")
-        p.add_option("-m", "--mb", dest="limitmb",
-                     help="Max. memory usage, in MB", default="128")
-        p.add_option("-c", "--chunk", dest="chunk",
-                     help="Number of documents to index between progress messages.",
-                     default=1000)
-        p.add_option("-B", "--batch", dest="batch",
-                     help="Batch size for batch adding documents.",
-                     default=1000)
-        p.add_option("-k", "--skip", dest="skip", metavar="N",
-                     help="Index every Nth document.", default=1)
-        p.add_option("-e", "--commit-every", dest="every", metavar="NUM",
-                      help="Commit every NUM documents", default=None)
-        p.add_option("-M", "--no-merge", dest="merge", action="store_false",
-                     help="Don't merge segments when doing multiple commits",
-                     default=True)
-        p.add_option("-u", "--upto", dest="upto", metavar="N",
-                     help="Index up to this document number.", default=600000)
-        p.add_option("-p", "--procs", dest="procs", metavar="NUMBER",
-                     help="Number of processors to use.", default=0)
-        p.add_option("-l", "--limit", dest="limit", metavar="N",
-                     help="Maximum number of search results to retrieve.",
-                     default=10)
-        p.add_option("-b", "--body", dest="showbody", action="store_true",
-                     help="Show the body text in search results.",
-                     default=False)
-        p.add_option("-g", "--gen", dest="generate", metavar="N",
-                     help="Generate a list at most N terms present in all libraries.",
-                     default=None)
-        p.add_option("-f", "--file", dest="termfile", metavar="FILENAME",
-                     help="Search using the list of terms in this file.",
-                     default=None)
-        p.add_option("-t", "--tempdir", dest="tempdir", metavar="DIRNAME",
-                     help="Whoosh temp dir", default=None)
-        p.add_option("-P", "--pool", dest="pool", metavar="CLASSNAME",
-                     help="Whoosh pool class", default=None)
-        p.add_option("-X", "--xms", dest="xms", action="store_true",
-                     help="Experimental Whoosh feature", default=False)
-        p.add_option("-Z", "--storebody", dest="storebody", action="store_true",
-                     help="Store the body text in index", default=False)
-        p.add_option("-q", "--snippets", dest="snippets", action="store_true",
-                     help="Show highlighted snippets", default=False)
-        p.add_option("-O", "--no-optimize", dest="optimize", action="store_false",
-                     help="Turn off searcher optimization", default=True)
+        p.add_option(
+            "-x",
+            "--lib",
+            dest="lib",
+            help="Name of the library to use to index/search.",
+            default="whoosh-reloaded",
+        )
+        p.add_option(
+            "-d",
+            "--dir",
+            dest="dir",
+            metavar="DIRNAME",
+            help="Directory in which to store index.",
+            default=".",
+        )
+        p.add_option(
+            "-s",
+            "--setup",
+            dest="setup",
+            action="store_true",
+            help="Set up any support files or caches.",
+            default=False,
+        )
+        p.add_option(
+            "-i",
+            "--index",
+            dest="index",
+            action="store_true",
+            help="Index the documents.",
+            default=False,
+        )
+        p.add_option(
+            "-n",
+            "--name",
+            dest="indexname",
+            metavar="PREFIX",
+            help="Index name prefix.",
+            default="%s_index" % name,
+        )
+        p.add_option(
+            "-U",
+            "--url",
+            dest="url",
+            metavar="URL",
+            help="Solr URL",
+            default="http://localhost:8983/solr",
+        )
+        p.add_option(
+            "-m", "--mb", dest="limitmb", help="Max. memory usage, in MB", default="128"
+        )
+        p.add_option(
+            "-c",
+            "--chunk",
+            dest="chunk",
+            help="Number of documents to index between progress messages.",
+            default=1000,
+        )
+        p.add_option(
+            "-B",
+            "--batch",
+            dest="batch",
+            help="Batch size for batch adding documents.",
+            default=1000,
+        )
+        p.add_option(
+            "-k",
+            "--skip",
+            dest="skip",
+            metavar="N",
+            help="Index every Nth document.",
+            default=1,
+        )
+        p.add_option(
+            "-e",
+            "--commit-every",
+            dest="every",
+            metavar="NUM",
+            help="Commit every NUM documents",
+            default=None,
+        )
+        p.add_option(
+            "-M",
+            "--no-merge",
+            dest="merge",
+            action="store_false",
+            help="Don't merge segments when doing multiple commits",
+            default=True,
+        )
+        p.add_option(
+            "-u",
+            "--upto",
+            dest="upto",
+            metavar="N",
+            help="Index up to this document number.",
+            default=600000,
+        )
+        p.add_option(
+            "-p",
+            "--procs",
+            dest="procs",
+            metavar="NUMBER",
+            help="Number of processors to use.",
+            default=0,
+        )
+        p.add_option(
+            "-l",
+            "--limit",
+            dest="limit",
+            metavar="N",
+            help="Maximum number of search results to retrieve.",
+            default=10,
+        )
+        p.add_option(
+            "-b",
+            "--body",
+            dest="showbody",
+            action="store_true",
+            help="Show the body text in search results.",
+            default=False,
+        )
+        p.add_option(
+            "-g",
+            "--gen",
+            dest="generate",
+            metavar="N",
+            help="Generate a list at most N terms present in all libraries.",
+            default=None,
+        )
+        p.add_option(
+            "-f",
+            "--file",
+            dest="termfile",
+            metavar="FILENAME",
+            help="Search using the list of terms in this file.",
+            default=None,
+        )
+        p.add_option(
+            "-t",
+            "--tempdir",
+            dest="tempdir",
+            metavar="DIRNAME",
+            help="Whoosh temp dir",
+            default=None,
+        )
+        p.add_option(
+            "-P",
+            "--pool",
+            dest="pool",
+            metavar="CLASSNAME",
+            help="Whoosh pool class",
+            default=None,
+        )
+        p.add_option(
+            "-X",
+            "--xms",
+            dest="xms",
+            action="store_true",
+            help="Experimental Whoosh feature",
+            default=False,
+        )
+        p.add_option(
+            "-Z",
+            "--storebody",
+            dest="storebody",
+            action="store_true",
+            help="Store the body text in index",
+            default=False,
+        )
+        p.add_option(
+            "-q",
+            "--snippets",
+            dest="snippets",
+            action="store_true",
+            help="Show highlighted snippets",
+            default=False,
+        )
+        p.add_option(
+            "-O",
+            "--no-optimize",
+            dest="optimize",
+            action="store_false",
+            help="Turn off searcher optimization",
+            default=True,
+        )
 
         return p
 

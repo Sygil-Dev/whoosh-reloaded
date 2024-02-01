@@ -2,7 +2,7 @@
 ``support.levenshtein`` module
 ==============================
 
-.. automodule:: whoosh-reloaded.support.levenshtein
+.. automodule:: whoosh_reloaded.support.levenshtein
 
 .. autofunction:: relative
 

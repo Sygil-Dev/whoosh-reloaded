@@ -1,8 +1,8 @@
 from __future__ import with_statement
 
-from whoosh-reloaded import fields
-from whoosh-reloaded.compat import u, b
-from whoosh-reloaded.util.testing import TempIndex
+from whoosh_reloaded import fields
+from whoosh_reloaded.compat import u, b
+from whoosh_reloaded.util.testing import TempIndex
 
 
 def test_addfield():
@@ -49,9 +49,9 @@ def test_addfield_spelling():
 
 
 def test_removefield():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           content=fields.TEXT,
-                           city=fields.KEYWORD(stored=True))
+    schema = fields.Schema(
+        id=fields.ID(stored=True), content=fields.TEXT, city=fields.KEYWORD(stored=True)
+    )
     with TempIndex(schema, "removefield") as ix:
         w = ix.writer()
         w.add_document(id=u("b"), content=u("bravo"), city=u("baghdad"))
@@ -77,9 +77,9 @@ def test_removefield():
 
 
 def test_optimize_away():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           content=fields.TEXT,
-                           city=fields.KEYWORD(stored=True))
+    schema = fields.Schema(
+        id=fields.ID(stored=True), content=fields.TEXT, city=fields.KEYWORD(stored=True)
+    )
     with TempIndex(schema, "optimizeaway") as ix:
         w = ix.writer()
         w.add_document(id=u("b"), content=u("bravo"), city=u("baghdad"))

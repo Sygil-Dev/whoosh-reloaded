@@ -13,8 +13,8 @@ A quick introduction
 
 ::
 
-    >>> from whoosh-reloaded.index import create_in
-    >>> from whoosh-reloaded.fields import *
+    >>> from whoosh_reloaded.index import create_in
+    >>> from whoosh_reloaded.fields import *
     >>> schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT)
     >>> ix = create_in("indexdir", schema)
     >>> writer = ix.writer()
@@ -23,7 +23,7 @@ A quick introduction
     >>> writer.add_document(title=u"Second document", path=u"/b",
     ...                     content=u"The second one is even more interesting!")
     >>> writer.commit()
-    >>> from whoosh-reloaded.qparser import QueryParser
+    >>> from whoosh_reloaded.qparser import QueryParser
     >>> with ix.searcher() as searcher:
     ...     query = QueryParser("content", ix.schema).parse("first")
     ...     results = searcher.search(query)
@@ -44,7 +44,7 @@ with the results; this is useful for fields such as the title).
 
 This schema has two fields, "title" and "content"::
 
-    from whoosh-reloaded.fields import Schema, TEXT
+    from whoosh_reloaded.fields import Schema, TEXT
 
     schema = Schema(title=TEXT, content=TEXT)
 
@@ -93,7 +93,7 @@ types, and you can easily create your own.
 (As a shortcut, if you don't need to pass any arguments to the field type, you
 can just give the class name and Whoosh will instantiate the object for you.) ::
 
-    from whoosh-reloaded.fields import Schema, STORED, ID, KEYWORD, TEXT
+    from whoosh_reloaded.fields import Schema, STORED, ID, KEYWORD, TEXT
 
     schema = Schema(title=TEXT(stored=True), content=TEXT,
                     path=ID(stored=True), tags=KEYWORD, icon=STORED)
@@ -104,7 +104,7 @@ Once you have the schema, you can create an index using the ``create_in``
 function::
 
     import os.path
-    from whoosh-reloaded.index import create_in
+    from whoosh_reloaded.index import create_in
 
     if not os.path.exists("index"):
         os.mkdir("index")
@@ -118,7 +118,7 @@ in a directory.)
 After you've created an index, you can open it using the ``open_dir``
 convenience function::
 
-    from whoosh-reloaded.index import open_dir
+    from whoosh_reloaded.index import open_dir
 
     ix = open_dir("index")
 
@@ -194,7 +194,7 @@ For example, this query would match documents that contain both "apple" and
 
     # Construct query objects directly
 
-    from whoosh-reloaded.query import *
+    from whoosh_reloaded.query import *
     myquery = And([Term("content", u"apple"), Term("content", "bear")])
 
 To parse a query string, you can use the default query parser in the ``qparser``
@@ -204,7 +204,7 @@ argument is a schema to use to understand how to parse the fields::
 
     # Parse a query string
 
-    from whoosh-reloaded.qparser import QueryParser
+    from whoosh_reloaded.qparser import QueryParser
     parser = QueryParser("content", ix.schema)
     myquery = parser.parse(querystring)
 

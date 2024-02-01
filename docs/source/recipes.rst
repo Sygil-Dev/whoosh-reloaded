@@ -103,7 +103,7 @@ The following scoring function uses the position of the first occurance of a
 term in each document to calculate the score, so documents with the given term
 earlier in the document will score higher::
 
-    from whoosh-reloaded import scoring
+    from whoosh_reloaded import scoring
 
     def pos_score_fn(searcher, fieldname, text, matcher):
         poses = matcher.value_as("positions")

@@ -63,7 +63,7 @@ strings, or a file object with one word on each line.)
 
 To create a :class:`whoosh-reloaded.spelling.Corrector` object from a sorted word list::
 
-    from whoosh-reloaded.spelling import ListCorrector
+    from whoosh_reloaded.spelling import ListCorrector
 
     # word_list must be a sorted list of unicocde strings
     corrector = ListCorrector(word_list)
@@ -87,7 +87,7 @@ Correcting user queries
 You can spell-check a user query using the
 :meth:`whoosh-reloaded.searching.Searcher.correct_query` method::
 
-    from whoosh-reloaded import qparser
+    from whoosh_reloaded import qparser
 
     # Parse the user query string
     qp = qparser.QueryParser("content", myindex.schema)
@@ -120,7 +120,7 @@ corrected query string. For example, use the
 :class:`~whoosh-reloaded.highlight.HtmlFormatter` to format the corrected string
 as HTML::
 
-    from whoosh-reloaded import highlight
+    from whoosh_reloaded import highlight
 
     hf = highlight.HtmlFormatter()
     corrected = s.correct_query(q, qstring, formatter=hf)

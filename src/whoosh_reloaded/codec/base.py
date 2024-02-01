@@ -31,21 +31,23 @@ This module contains base classes/interfaces for "codec" objects.
 
 from bisect import bisect_right
 
-from whoosh-reloaded import columns
-from whoosh-reloaded.automata import lev
-from whoosh-reloaded.compat import abstractmethod, izip, unichr, xrange
-from whoosh-reloaded.filedb.compound import CompoundStorage
-from whoosh-reloaded.system import emptybytes
-from whoosh-reloaded.util import random_name
+from whoosh_reloaded import columns
+from whoosh_reloaded.automata import lev
+from whoosh_reloaded.compat import abstractmethod, izip, unichr, xrange
+from whoosh_reloaded.filedb.compound import CompoundStorage
+from whoosh_reloaded.system import emptybytes
+from whoosh_reloaded.util import random_name
 
 
 # Exceptions
+
 
 class OutOfOrderError(Exception):
     pass
 
 
 # Base classes
+
 
 class Codec(object):
     length_stats = True
@@ -106,8 +108,9 @@ class WrappingCodec(Codec):
         return self._child.postings_writer(dbfile, byteids=byteids)
 
     def postings_reader(self, dbfile, terminfo, format_, term=None, scorer=None):
-        return self._child.postings_reader(dbfile, terminfo, format_, term=term,
-                                           scorer=scorer)
+        return self._child.postings_reader(
+            dbfile, terminfo, format_, term=term, scorer=scorer
+        )
 
     def automata(self, storage, segment):
         return self._child.automata(storage, segment)
@@ -123,6 +126,7 @@ class WrappingCodec(Codec):
 
 
 # Writer classes
+
 
 class PerDocumentWriter(object):
     @abstractmethod
@@ -149,6 +153,7 @@ class PerDocumentWriter(object):
                 valuestring = vmatcher.value()
                 yield (text, weight, valuestring)
                 vmatcher.next()
+
         self.add_vector_items(fieldname, fieldobj, readitems())
 
     def finish_doc(self):
@@ -189,8 +194,9 @@ class FieldWriter(object):
             if lastfn is not None and fieldname < lastfn:
                 raise OutOfOrderError("Field %r .. %r" % (lastfn, fieldname))
             if fieldname == lastfn and lasttext and btext < lasttext:
-                raise OutOfOrderError("Term %s:%r .. %s:%r"
-                                      % (lastfn, lasttext, fieldname, btext))
+                raise OutOfOrderError(
+                    "Term %s:%r .. %s:%r" % (lastfn, lasttext, fieldname, btext)
+                )
 
             # If the fieldname of this posting is different from the last one,
             # tell the writer we're starting a new field
@@ -263,6 +269,7 @@ class FieldWriter(object):
 
 # Postings
 
+
 class PostingsWriter(object):
     @abstractmethod
     def start_postings(self, format_, terminfo):
@@ -277,13 +284,13 @@ class PostingsWriter(object):
 
     @abstractmethod
     def written(self):
-        """Returns True if this object has already written to disk.
-        """
+        """Returns True if this object has already written to disk."""
 
         raise NotImplementedError
 
 
 # Reader classes
+
 
 class FieldCursor(object):
     def first(self):
@@ -379,6 +386,7 @@ class Automata(object):
 
 # Per-doc value reader
 
+
 class PerDocumentReader(object):
     def close(self):
         pass
@@ -411,8 +419,9 @@ class PerDocumentReader(object):
         """
 
         is_deleted = self.is_deleted
-        return (docnum for docnum in xrange(self.doc_count_all())
-                if not is_deleted(docnum))
+        return (
+            docnum for docnum in xrange(self.doc_count_all()) if not is_deleted(docnum)
+        )
 
     def iter_docs(self):
         for docnum in self.all_doc_ids():
@@ -477,6 +486,7 @@ class PerDocumentReader(object):
 
 
 # Segment base class
+
 
 class Segment(object):
     """Do not instantiate this object directly. It is used by the Index object
@@ -640,6 +650,7 @@ class Segment(object):
 
 # Wrapping Segment
 
+
 class WrappingSegment(Segment):
     def __init__(self, child):
         self._child = child
@@ -703,6 +714,7 @@ class WrappingSegment(Segment):
 
 
 # Multi per doc reader
+
 
 class MultiPerDocumentReader(PerDocumentReader):
     def __init__(self, readers, offset=0):
@@ -801,6 +813,7 @@ class MultiPerDocumentReader(PerDocumentReader):
 
 # Extended base classes
 
+
 class PerDocWriterWithColumns(PerDocumentWriter):
     def __init__(self):
         PerDocumentWriter.__init__(self)
@@ -828,6 +841,7 @@ class PerDocWriterWithColumns(PerDocumentWriter):
 
 
 # FieldCursor implementations
+
 
 class EmptyCursor(FieldCursor):
     def first(self):

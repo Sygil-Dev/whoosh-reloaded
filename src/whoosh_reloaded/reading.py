@@ -34,16 +34,17 @@ from heapq import heapify, heapreplace, heappop, nlargest
 
 from cached_property import cached_property
 
-from whoosh-reloaded import columns
-from whoosh-reloaded.compat import abstractmethod
-from whoosh-reloaded.compat import xrange, zip_, next, iteritems
-from whoosh-reloaded.filedb.filestore import OverlayStorage
-from whoosh-reloaded.matching import MultiMatcher
-from whoosh-reloaded.support.levenshtein import distance
-from whoosh-reloaded.system import emptybytes
+from whoosh_reloaded import columns
+from whoosh_reloaded.compat import abstractmethod
+from whoosh_reloaded.compat import xrange, zip_, next, iteritems
+from whoosh_reloaded.filedb.filestore import OverlayStorage
+from whoosh_reloaded.matching import MultiMatcher
+from whoosh_reloaded.support.levenshtein import distance
+from whoosh_reloaded.system import emptybytes
 
 
 # Exceptions
+
 
 class ReaderClosed(Exception):
     """Exception raised when you try to do some operation on a closed searcher
@@ -59,14 +60,23 @@ class TermNotFound(Exception):
 
 # Term Info base class
 
+
 class TermInfo(object):
     """Represents a set of statistics about a term. This object is returned by
     :meth:`IndexReader.term_info`. These statistics may be useful for
     optimizations and scoring algorithms.
     """
 
-    def __init__(self, weight=0, df=0, minlength=None,
-                 maxlength=0, maxweight=0, minid=None, maxid=0):
+    def __init__(
+        self,
+        weight=0,
+        df=0,
+        minlength=None,
+        maxlength=0,
+        maxweight=0,
+        minid=None,
+        maxid=0,
+    ):
         self._weight = weight
         self._df = df
         self._minlength = minlength
@@ -91,14 +101,12 @@ class TermInfo(object):
             self._maxlength = max(self._maxlength, length)
 
     def weight(self):
-        """Returns the total frequency of the term across all documents.
-        """
+        """Returns the total frequency of the term across all documents."""
 
         return self._weight
 
     def doc_frequency(self):
-        """Returns the number of documents the term appears in.
-        """
+        """Returns the number of documents the term appears in."""
 
         return self._df
 
@@ -124,23 +132,21 @@ class TermInfo(object):
         return self._maxweight
 
     def min_id(self):
-        """Returns the lowest document ID this term appears in.
-        """
+        """Returns the lowest document ID this term appears in."""
 
         return self._minid
 
     def max_id(self):
-        """Returns the highest document ID this term appears in.
-        """
+        """Returns the highest document ID this term appears in."""
 
         return self._maxid
 
 
 # Reader base class
 
+
 class IndexReader(object):
-    """Do not instantiate this object directly. Instead use Index.reader().
-    """
+    """Do not instantiate this object directly. Instead use Index.reader()."""
 
     def __enter__(self):
         return self
@@ -172,8 +178,7 @@ class IndexReader(object):
         return None
 
     def segments(self):
-        """Returns a list of :class:`whoosh-reloaded.index.Segment` objects used by this reader.
-        """
+        """Returns a list of :class:`whoosh-reloaded.index.Segment` objects used by this reader."""
 
         return None
 
@@ -194,8 +199,7 @@ class IndexReader(object):
         return self.schema[fieldname].to_bytes(text)
 
     def close(self):
-        """Closes the open files associated with this reader.
-        """
+        """Closes the open files associated with this reader."""
 
         pass
 
@@ -217,8 +221,7 @@ class IndexReader(object):
 
     @abstractmethod
     def all_terms(self):
-        """Yields (fieldname, text) tuples for every term in the index.
-        """
+        """Yields (fieldname, text) tuples for every term in the index."""
 
         raise NotImplementedError
 
@@ -242,8 +245,7 @@ class IndexReader(object):
         raise NotImplementedError
 
     def expand_prefix(self, fieldname, prefix):
-        """Yields terms in the given field that start with the given prefix.
-        """
+        """Yields terms in the given field that start with the given prefix."""
 
         prefix = self._text_to_bytes(fieldname, prefix)
         for fn, text in self.terms_from(fieldname, prefix):
@@ -252,8 +254,7 @@ class IndexReader(object):
             yield text
 
     def lexicon(self, fieldname):
-        """Yields all bytestrings in the given field.
-        """
+        """Yields all bytestrings in the given field."""
 
         for fn, btext in self.terms_from(fieldname, emptybytes):
             if fn != fieldname:
@@ -288,9 +289,8 @@ class IndexReader(object):
         for term in self.terms_from(fieldname, text):
             yield (term, term_info(*term))
 
-    def iter_field(self, fieldname, prefix=''):
-        """Yields (text, terminfo) tuples for all terms in the given field.
-        """
+    def iter_field(self, fieldname, prefix=""):
+        """Yields (text, terminfo) tuples for all terms in the given field."""
 
         prefix = self._text_to_bytes(fieldname, prefix)
         for (fn, text), terminfo in self.iter_from(fieldname, prefix):
@@ -318,12 +318,12 @@ class IndexReader(object):
         raise NotImplementedError
 
     def all_doc_ids(self):
-        """Returns an iterator of all (undeleted) document IDs in the reader.
-        """
+        """Returns an iterator of all (undeleted) document IDs in the reader."""
 
         is_deleted = self.is_deleted
-        return (docnum for docnum in xrange(self.doc_count_all())
-                if not is_deleted(docnum))
+        return (
+            docnum for docnum in xrange(self.doc_count_all()) if not is_deleted(docnum)
+        )
 
     def iter_docs(self):
         """Yields a series of ``(docnum, stored_fields_dict)``
@@ -335,8 +335,7 @@ class IndexReader(object):
 
     @abstractmethod
     def is_deleted(self, docnum):
-        """Returns True if the given document number is marked deleted.
-        """
+        """Returns True if the given document number is marked deleted."""
 
         raise NotImplementedError
 
@@ -351,8 +350,7 @@ class IndexReader(object):
         raise NotImplementedError
 
     def all_stored_fields(self):
-        """Yields the stored fields for all non-deleted documents.
-        """
+        """Yields the stored fields for all non-deleted documents."""
 
         is_deleted = self.is_deleted
         for docnum in xrange(self.doc_count_all()):
@@ -369,8 +367,7 @@ class IndexReader(object):
 
     @abstractmethod
     def doc_count(self):
-        """Returns the total number of UNDELETED documents in this reader.
-        """
+        """Returns the total number of UNDELETED documents in this reader."""
 
         return self.doc_count_all() - self.deleted_count()
 
@@ -383,8 +380,7 @@ class IndexReader(object):
 
     @abstractmethod
     def doc_frequency(self, fieldname, text):
-        """Returns how many documents the given term appears in.
-        """
+        """Returns how many documents the given term appears in."""
         raise NotImplementedError
 
     @abstractmethod
@@ -514,7 +510,7 @@ class IndexReader(object):
         corrections based on the terms in the given field.
         """
 
-        from whoosh-reloaded.spelling import ReaderCorrector
+        from whoosh_reloaded.spelling import ReaderCorrector
 
         fieldobj = self.schema[fieldname]
         return ReaderCorrector(self, fieldname, fieldobj)
@@ -548,23 +544,27 @@ class IndexReader(object):
             if k <= maxdist:
                 yield word
 
-    def most_frequent_terms(self, fieldname, number=5, prefix=''):
+    def most_frequent_terms(self, fieldname, number=5, prefix=""):
         """Returns the top 'number' most frequent terms in the given field as a
         list of (frequency, text) tuples.
         """
 
-        gen = ((terminfo.weight(), text) for text, terminfo
-               in self.iter_prefix(fieldname, prefix))
+        gen = (
+            (terminfo.weight(), text)
+            for text, terminfo in self.iter_prefix(fieldname, prefix)
+        )
         return nlargest(number, gen)
 
-    def most_distinctive_terms(self, fieldname, number=5, prefix=''):
+    def most_distinctive_terms(self, fieldname, number=5, prefix=""):
         """Returns the top 'number' terms with the highest `tf*idf` scores as
         a list of (score, text) tuples.
         """
 
         N = float(self.doc_count())
-        gen = ((terminfo.weight() * log(N / terminfo.doc_frequency()), text)
-               for text, terminfo in self.iter_prefix(fieldname, prefix))
+        gen = (
+            (terminfo.weight() * log(N / terminfo.doc_frequency()), text)
+            for text, terminfo in self.iter_prefix(fieldname, prefix)
+        )
         return nlargest(number, gen)
 
     def leaf_readers(self):
@@ -581,8 +581,7 @@ class IndexReader(object):
     def has_column(self, fieldname):
         return False
 
-    def column_reader(self, fieldname, column=None, reverse=False,
-                      translate=False):
+    def column_reader(self, fieldname, column=None, reverse=False, translate=False):
         """
 
         :param fieldname: the name of the field for which to get a reader.
@@ -600,6 +599,7 @@ class IndexReader(object):
 
 
 # Segment-based reader
+
 
 class SegmentReader(IndexReader):
     def __init__(self, storage, schema, segment, generation=None, codec=None):
@@ -664,8 +664,7 @@ class SegmentReader(IndexReader):
         return self._gen
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self._storage,
-                               self._segment)
+        return "%s(%r, %r)" % (self.__class__.__name__, self._storage, self._segment)
 
     def __contains__(self, term):
         if self.is_closed:
@@ -757,16 +756,21 @@ class SegmentReader(IndexReader):
         if self.is_closed:
             raise ReaderClosed
         schema = self.schema
-        return ((fieldname, text) for fieldname, text in self._terms.terms()
-                if fieldname in schema)
+        return (
+            (fieldname, text)
+            for fieldname, text in self._terms.terms()
+            if fieldname in schema
+        )
 
     def terms_from(self, fieldname, prefix):
         self._test_field(fieldname)
         prefix = self._text_to_bytes(fieldname, prefix)
         schema = self.schema
-        return ((fname, text) for fname, text
-                in self._terms.terms_from(fieldname, prefix)
-                if fname in schema)
+        return (
+            (fname, text)
+            for fname, text in self._terms.terms_from(fieldname, prefix)
+            if fname in schema
+        )
 
     def term_info(self, fieldname, text):
         self._test_field(fieldname)
@@ -789,8 +793,11 @@ class SegmentReader(IndexReader):
         if self.is_closed:
             raise ReaderClosed
         schema = self.schema
-        return ((term, terminfo) for term, terminfo in self._terms.items()
-                if term[0] in schema)
+        return (
+            (term, terminfo)
+            for term, terminfo in self._terms.items()
+            if term[0] in schema
+        )
 
     def iter_from(self, fieldname, text):
         self._test_field(fieldname)
@@ -822,7 +829,7 @@ class SegmentReader(IndexReader):
         return frozenset(self._perdoc.deleted_docs())
 
     def postings(self, fieldname, text, scorer=None):
-        from whoosh-reloaded.matching.wrappers import FilterMatcher
+        from whoosh_reloaded.matching.wrappers import FilterMatcher
 
         if self.is_closed:
             raise ReaderClosed
@@ -870,16 +877,14 @@ class SegmentReader(IndexReader):
         coltype = self.schema[fieldname].column_type
         return coltype and self._perdoc.has_column(fieldname)
 
-    def column_reader(self, fieldname, column=None, reverse=False,
-                      translate=True):
+    def column_reader(self, fieldname, column=None, reverse=False, translate=True):
         if self.is_closed:
             raise ReaderClosed
 
         fieldobj = self.schema[fieldname]
         column = column or fieldobj.column_type
         if not column:
-            raise Exception("No column for field %r in %r"
-                            % (fieldname, self))
+            raise Exception("No column for field %r in %r" % (fieldname, self))
 
         if self._perdoc.has_column(fieldname):
             creader = self._perdoc.column_reader(fieldname, column)
@@ -902,6 +907,7 @@ class SegmentReader(IndexReader):
 
 # Fake IndexReader class for empty indexes
 
+
 class EmptyReader(IndexReader):
     def __init__(self, schema):
         self.schema = schema
@@ -916,7 +922,7 @@ class EmptyReader(IndexReader):
         return None
 
     def cursor(self, fieldname):
-        from whoosh-reloaded.codec.base import EmptyCursor
+        from whoosh_reloaded.codec.base import EmptyCursor
 
         return EmptyCursor()
 
@@ -932,10 +938,10 @@ class EmptyReader(IndexReader):
     def iter_from(self, fieldname, text):
         return iter([])
 
-    def iter_field(self, fieldname, prefix=''):
+    def iter_field(self, fieldname, prefix=""):
         return iter([])
 
-    def iter_prefix(self, fieldname, prefix=''):
+    def iter_prefix(self, fieldname, prefix=""):
         return iter([])
 
     def lexicon(self, fieldname):
@@ -986,7 +992,7 @@ class EmptyReader(IndexReader):
     def vector(self, docnum, fieldname, format_=None):
         raise KeyError("No document number %s" % docnum)
 
-    def most_frequent_terms(self, fieldname, number=5, prefix=''):
+    def most_frequent_terms(self, fieldname, number=5, prefix=""):
         return iter([])
 
     def most_distinctive_terms(self, fieldname, number=5, prefix=None):
@@ -995,9 +1001,9 @@ class EmptyReader(IndexReader):
 
 # Multisegment reader class
 
+
 class MultiReader(IndexReader):
-    """Do not instantiate this object directly. Instead use Index.reader().
-    """
+    """Do not instantiate this object directly. Instead use Index.reader()."""
 
     def __init__(self, readers, generation=None):
         self.readers = readers
@@ -1026,7 +1032,9 @@ class MultiReader(IndexReader):
         return MultiCursor([r.cursor(fieldname) for r in self.readers])
 
     def segments(self):
-        return [reader.segment() for reader in self.readers if reader.segment() is not None]
+        return [
+            reader.segment() for reader in self.readers if reader.segment() is not None
+        ]
 
     def is_atomic(self):
         return False
@@ -1122,15 +1130,19 @@ class MultiReader(IndexReader):
         return self._merge_terms([r.all_terms() for r in self.readers])
 
     def terms_from(self, fieldname, prefix):
-        return self._merge_terms([r.terms_from(fieldname, prefix)
-                                  for r in self.readers])
+        return self._merge_terms(
+            [r.terms_from(fieldname, prefix) for r in self.readers]
+        )
 
     def term_info(self, fieldname, text):
         term = (fieldname, text)
 
         # Get the term infos for the sub-readers containing the term
-        tis = [(r.term_info(fieldname, text), offset) for r, offset
-               in zip_(self.readers, self.doc_offsets) if term in r]
+        tis = [
+            (r.term_info(fieldname, text), offset)
+            for r, offset in zip_(self.readers, self.doc_offsets)
+            if term in r
+        ]
 
         # If only one reader had the term, return its terminfo with the offset
         # added
@@ -1196,14 +1208,14 @@ class MultiReader(IndexReader):
     def has_column(self, fieldname):
         return any(r.has_column(fieldname) for r in self.readers)
 
-    def column_reader(self, fieldname, column=None, reverse=False,
-                      translate=True):
+    def column_reader(self, fieldname, column=None, reverse=False, translate=True):
         crs = []
         doc_offsets = []
         for i, r in enumerate(self.readers):
             if r.has_column(fieldname):
-                cr = r.column_reader(fieldname, column=column, reverse=reverse,
-                                     translate=translate)
+                cr = r.column_reader(
+                    fieldname, column=column, reverse=reverse, translate=translate
+                )
                 crs.append(cr)
                 doc_offsets.append(self.doc_offsets[i])
         return columns.MultiColumnReader(crs, doc_offsets)
@@ -1245,8 +1257,7 @@ class MultiReader(IndexReader):
 
     def vector_as(self, astype, docnum, fieldname):
         segmentnum, segmentdoc = self._segment_and_docnum(docnum)
-        return self.readers[segmentnum].vector_as(astype, segmentdoc,
-                                                  fieldname)
+        return self.readers[segmentnum].vector_as(astype, segmentdoc, fieldname)
 
 
 def combine_terminfos(tis):

@@ -204,7 +204,7 @@ Improvements
 
   For example, to sort by first name and then score::
 
-      from whoosh-reloaded import sorting
+      from whoosh_reloaded import sorting
 
       mf = sorting.MultiFacet([sorting.FieldFacet("firstname"),
                                sorting.ScoreFacet()])
@@ -239,7 +239,7 @@ Improvements
   queries, with optional highlighting of corrections using the
   ``whoosh-reloaded.highlight`` module::
 
-      from whoosh-reloaded import highlight, qparser
+      from whoosh_reloaded import highlight, qparser
 
       # User query string
       qstring = request.get("q")

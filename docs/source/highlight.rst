@@ -368,7 +368,7 @@ Usage
 The following function lets you retokenize and highlight a piece of text using
 an analyzer::
 
-    from whoosh-reloaded.highlight import highlight
+    from whoosh_reloaded.highlight import highlight
 
     excerpts = highlight(text, terms, analyzer, fragmenter, formatter, top=3,
                          scorer=BasicFragmentScorer, minscore=1, order=FIRST)

@@ -54,17 +54,17 @@ from collections import deque
 from heapq import nlargest
 from itertools import groupby
 
-from whoosh-reloaded.analysis import Token
-from whoosh-reloaded.compat import htmlescape
+from whoosh_reloaded.analysis import Token
+from whoosh_reloaded.compat import htmlescape
 
 # The default value for the maximum chars to examine when fragmenting
-DEFAULT_CHARLIMIT = 2 ** 15
+DEFAULT_CHARLIMIT = 2**15
 
 
 # Fragment object
 
-def mkfrag(text, tokens, startchar=None, endchar=None,
-           charsbefore=0, charsafter=0):
+
+def mkfrag(text, tokens, startchar=None, endchar=None, charsbefore=0, charsafter=0):
     """Returns a :class:`Fragment` object based on the :class:`analysis.Token`
     objects in ``tokens`.
     """
@@ -131,8 +131,11 @@ class Fragment(object):
                 self.matched_terms.add(t.text)
 
     def __repr__(self):
-        return "<Fragment %d:%d has %d matches>" % (self.startchar, self.endchar,
-                                                    len(self.matches))
+        return "<Fragment %d:%d has %d matches>" % (
+            self.startchar,
+            self.endchar,
+            len(self.matches),
+        )
 
     def __len__(self):
         return self.endchar - self.startchar
@@ -156,6 +159,7 @@ class Fragment(object):
 
 
 # Tokenizing
+
 
 def set_matched_filter(tokens, termset):
     """
@@ -207,8 +211,12 @@ def set_matched_filter_phrases(tokens, text, terms, phrases):
             if phrase.words[0] == text[i]:  # If first word matched
                 if slop == 1:
                     # Simple substring match
-                    if text[i + 1:i + n_phrase_words] == phrase.words[1:]:  # If rest of phrase matches
-                        any(map(matches.add, range(i, i + n_phrase_words)))  # Collect matching indices
+                    if (
+                        text[i + 1 : i + n_phrase_words] == phrase.words[1:]
+                    ):  # If rest of phrase matches
+                        any(
+                            map(matches.add, range(i, i + n_phrase_words))
+                        )  # Collect matching indices
                         # Advance past match area.
                         # Choosing to ignore possible overlapping matches for efficiency due to low probability.
                         i += n_phrase_words
@@ -226,14 +234,20 @@ def set_matched_filter_phrases(tokens, text, terms, phrases):
                             For example, phrase is: 'one two three'~2
                             Target substring is:    'one two two six three', which is a valid match.
                                                      [0] [1] [2] [3] [4]
-                            
+
                             Looking for the first match will find [0], then [1] then fail since [3] is more than ~2 words away
                             Looking for the last match will find [0], then, given a choice between [1] or [2], will pick [2],
                             making [4] visible from there
                             """
-                            text_sub = text[current_word_index + 1:current_word_index + 1 + slop][::-1]  # Substring to scan (reversed)
+                            text_sub = text[
+                                current_word_index + 1 : current_word_index + 1 + slop
+                            ][
+                                ::-1
+                            ]  # Substring to scan (reversed)
                             len_sub = len(text_sub)
-                            next_word_index = len_sub - text_sub.index(word) - 1  # Map index back to unreversed list
+                            next_word_index = (
+                                len_sub - text_sub.index(word) - 1
+                            )  # Map index back to unreversed list
                             last_slop_match = current_word_index + next_word_index + 1
                             slop_matches.append(last_slop_match)
                             current_word_index = last_slop_match
@@ -260,6 +274,7 @@ def set_matched_filter_phrases(tokens, text, terms, phrases):
 
 
 # Fragmenters
+
 
 class Fragmenter(object):
     def must_retokenize(self):
@@ -351,8 +366,7 @@ class SentenceFragmenter(Fragmenter):
         sa = StandardAnalyzer(stoplist=None)
     """
 
-    def __init__(self, maxchars=200, sentencechars=".!?",
-                 charlimit=DEFAULT_CHARLIMIT):
+    def __init__(self, maxchars=200, sentencechars=".!?", charlimit=DEFAULT_CHARLIMIT):
         """
         :param maxchars: The maximum number of characters allowed in a
             fragment.
@@ -508,8 +522,9 @@ class PinpointFragmenter(Fragmenter):
     positions of the matched terms.
     """
 
-    def __init__(self, maxchars=200, surround=20, autotrim=False,
-                 charlimit=DEFAULT_CHARLIMIT):
+    def __init__(
+        self, maxchars=200, surround=20, autotrim=False, charlimit=DEFAULT_CHARLIMIT
+    ):
         """
         :param maxchars: The maximum number of characters allowed in a
             fragment.
@@ -577,19 +592,20 @@ class PinpointFragmenter(Fragmenter):
                 if ec - right <= surround and ec - left <= maxchars:
                     j += 1
                     right = ec
-                    currentlen += (ec - next.startchar)
+                    currentlen += ec - next.startchar
                 else:
                     break
 
             left = max(0, left - surround)
             right = min(len(text), right + surround)
-            fragment = Fragment(text, tokens[i:j + 1], left, right)
+            fragment = Fragment(text, tokens[i : j + 1], left, right)
             if autotrim:
                 self._autotrim(fragment)
             yield fragment
 
 
 # Fragment scorers
+
 
 class FragmentScorer(object):
     pass
@@ -608,6 +624,7 @@ class BasicFragmentScorer(FragmentScorer):
 
 
 # Fragment sorters
+
 
 def SCORE(fragment):
     "Sorts higher scored passages first."
@@ -631,6 +648,7 @@ def SHORTER(fragment):
 
 # Formatters
 
+
 def get_text(original, token, replace):
     """Convenience function for getting the text to use for a match when
     formatting.
@@ -643,7 +661,7 @@ def get_text(original, token, replace):
     if replace:
         return token.text
     else:
-        return original[token.startchar:token.endchar]
+        return original[token.startchar : token.endchar]
 
 
 class Formatter(object):
@@ -700,16 +718,19 @@ class Formatter(object):
         # Because the formatter is sequential, it will only pick the first
         # token for a given position to highlight. This makes sure it picks
         # the longest overlapping token.
-        for t in sorted(fragment.matches, key=lambda token: (token.startchar, -(token.endchar - token.startchar))):
+        for t in sorted(
+            fragment.matches,
+            key=lambda token: (token.startchar, -(token.endchar - token.startchar)),
+        ):
             if t.startchar is None:
                 continue
             if t.startchar < index:
                 continue
             if t.startchar > index:
-                output.append(self._text(text[index:t.startchar]))
+                output.append(self._text(text[index : t.startchar]))
             output.append(self.format_token(text, t, replace))
             index = t.endchar
-        output.append(self._text(text[index:fragment.endchar]))
+        output.append(self._text(text[index : fragment.endchar]))
 
         out_string = "".join(output)
         return out_string
@@ -719,8 +740,7 @@ class Formatter(object):
         :class:`Fragment` objects.
         """
 
-        formatted = [self.format_fragment(f, replace=replace)
-                     for f in fragments]
+        formatted = [self.format_fragment(f, replace=replace) for f in fragments]
         return self.between.join(formatted)
 
     def __call__(self, text, fragments):
@@ -729,16 +749,14 @@ class Formatter(object):
 
 
 class NullFormatter(Formatter):
-    """Formatter that does not modify the string.
-    """
+    """Formatter that does not modify the string."""
 
     def format_token(self, text, token, replace=False):
         return get_text(text, token, replace)
 
 
 class UppercaseFormatter(Formatter):
-    """Returns a string in which the matched terms are in UPPERCASE.
-    """
+    """Returns a string in which the matched terms are in UPPERCASE."""
 
     def __init__(self, between="..."):
         """
@@ -773,11 +791,17 @@ class HtmlFormatter(Formatter):
     between searches to clear the mapping.
     """
 
-    template = '<%(tag)s class=%(q)s%(cls)s%(tn)s%(q)s>%(t)s</%(tag)s>'
+    template = "<%(tag)s class=%(q)s%(cls)s%(tn)s%(q)s>%(t)s</%(tag)s>"
 
-    def __init__(self, tagname="strong", between="...",
-                 classname="match", termclass="term", maxclasses=5,
-                 attrquote='"'):
+    def __init__(
+        self,
+        tagname="strong",
+        between="...",
+        classname="match",
+        termclass="term",
+        maxclasses=5,
+        attrquote='"',
+    ):
         """
         :param tagname: the tag to wrap around matching terms.
         :param between: the text to add between fragments.
@@ -813,13 +837,16 @@ class HtmlFormatter(Formatter):
             termnum = len(seen) % self.maxclasses
             seen[ttext] = termnum
 
-        return self.template % {"tag": self.tagname, "q": self.attrquote,
-                                "cls": self.htmlclass, "t": ttext,
-                                "tn": termnum}
+        return self.template % {
+            "tag": self.tagname,
+            "q": self.attrquote,
+            "cls": self.htmlclass,
+            "t": ttext,
+            "tn": termnum,
+        }
 
     def clean(self):
-        """Clears the dictionary mapping terms to HTML classnames.
-        """
+        """Clears the dictionary mapping terms to HTML classnames."""
         self.seen = {}
 
 
@@ -839,6 +866,7 @@ class GenshiFormatter(Formatter):
 
         from genshi.core import START, END, TEXT  # @UnresolvedImport
         from genshi.core import Attrs, Stream  # @UnresolvedImport
+
         self.START, self.END, self.TEXT = START, END, TEXT
         self.Attrs, self.Stream = Attrs, Stream
 
@@ -851,9 +879,13 @@ class GenshiFormatter(Formatter):
     def format_token(self, text, token, replace=False):
         qn = self.qname
         txt = get_text(text, token, replace)
-        return self.Stream([(self.START, (qn, self.Attrs()), (None, -1, -1)),
-                            (self.TEXT, txt, (None, -1, -1)),
-                            (self.END, qn, (None, -1, -1))])
+        return self.Stream(
+            [
+                (self.START, (qn, self.Attrs()), (None, -1, -1)),
+                (self.TEXT, txt, (None, -1, -1)),
+                (self.END, qn, (None, -1, -1)),
+            ]
+        )
 
     def format_fragment(self, fragment, replace=False):
         output = []
@@ -862,7 +894,7 @@ class GenshiFormatter(Formatter):
 
         for t in fragment.matches:
             if t.startchar > index:
-                self._add_text(text[index:t.startchar], output)
+                self._add_text(text[index : t.startchar], output)
             output.append((text, t, replace))
             index = t.endchar
         if index < len(text):
@@ -882,6 +914,7 @@ class GenshiFormatter(Formatter):
 
 # Highlighting
 
+
 def top_fragments(fragments, count, scorer, order, minscore=1):
     scored_fragments = ((scorer(f), f) for f in fragments)
     scored_fragments = nlargest(count, scored_fragments)
@@ -890,8 +923,18 @@ def top_fragments(fragments, count, scorer, order, minscore=1):
     return best_fragments
 
 
-def highlight(text, terms, analyzer, fragmenter, formatter, top=3,
-              scorer=None, minscore=1, order=FIRST, mode="query"):
+def highlight(
+    text,
+    terms,
+    analyzer,
+    fragmenter,
+    formatter,
+    top=3,
+    scorer=None,
+    minscore=1,
+    order=FIRST,
+    mode="query",
+):
     if scorer is None:
         scorer = BasicFragmentScorer()
 
@@ -914,8 +957,14 @@ def highlight(text, terms, analyzer, fragmenter, formatter, top=3,
 
 
 class Highlighter(object):
-    def __init__(self, fragmenter=None, scorer=None, formatter=None,
-                 always_retokenize=False, order=FIRST):
+    def __init__(
+        self,
+        fragmenter=None,
+        scorer=None,
+        formatter=None,
+        always_retokenize=False,
+        order=FIRST,
+    ):
         self.fragmenter = fragmenter or ContextFragmenter()
         self.scorer = scorer or BasicFragmentScorer()
         self.formatter = formatter or HtmlFormatter(tagname="b")
@@ -981,7 +1030,7 @@ class Highlighter(object):
                 token = t.copy()
             elif t.startchar <= token.endchar:
                 if t.endchar > token.endchar:
-                    token.text += t.text[token.endchar - t.endchar:]
+                    token.text += t.text[token.endchar - t.endchar :]
                     token.endchar = t.endchar
             else:
                 yield token
@@ -992,7 +1041,9 @@ class Highlighter(object):
         if token is not None:
             yield token
 
-    def highlight_hit(self, hitobj, fieldname, text=None, top=3, minscore=1, strict_phrase=False):
+    def highlight_hit(
+        self, hitobj, fieldname, text=None, top=3, minscore=1, strict_phrase=False
+    ):
         results = hitobj.results
         schema = results.searcher.schema
         field = schema[fieldname]
@@ -1006,8 +1057,7 @@ class Highlighter(object):
 
         # Get the terms searched for/matched in this field
         if results.has_matched_terms():
-            bterms = (term for term in results.matched_terms()
-                      if term[0] == fieldname)
+            bterms = (term for term in results.matched_terms() if term[0] == fieldname)
         else:
             bterms = results.query_terms(expand=True, fieldname=fieldname)
         # Convert bytes to unicode
@@ -1019,8 +1069,11 @@ class Highlighter(object):
             if fieldname not in results._char_cache:
                 self._load_chars(results, fieldname, words, to_bytes)
 
-            hitterms = (from_bytes(term[1]) for term in hitobj.matched_terms()
-                        if term[0] == fieldname)
+            hitterms = (
+                from_bytes(term[1])
+                for term in hitobj.matched_terms()
+                if term[0] == fieldname
+            )
 
             # Grab the word->[(startchar, endchar)] map for this docnum
             cmap = results._char_cache[fieldname][hitobj.docnum]
@@ -1032,17 +1085,21 @@ class Highlighter(object):
                 for pos, startchar, endchar in chars:
                     if charlimit and endchar > charlimit:
                         break
-                    tokens.append(Token(text=word, pos=pos,
-                                        startchar=startchar, endchar=endchar))
+                    tokens.append(
+                        Token(text=word, pos=pos, startchar=startchar, endchar=endchar)
+                    )
             tokens.sort(key=lambda t: t.startchar)
-            tokens = [max(group, key=lambda t: t.endchar - t.startchar)
-                      for key, group in groupby(tokens, lambda t: t.startchar)]
+            tokens = [
+                max(group, key=lambda t: t.endchar - t.startchar)
+                for key, group in groupby(tokens, lambda t: t.startchar)
+            ]
             fragments = self.fragmenter.fragment_matches(text, tokens)
         else:
             # Retokenize the text
             analyzer = results.searcher.schema[fieldname].analyzer
-            tokens = analyzer(text, positions=True, chars=True, mode="index",
-                              removestops=False)
+            tokens = analyzer(
+                text, positions=True, chars=True, mode="index", removestops=False
+            )
 
             # Set Token.matched attribute for tokens that match a query term
             if strict_phrase:
@@ -1053,7 +1110,8 @@ class Highlighter(object):
             tokens = self._merge_matched_tokens(tokens)
             fragments = self.fragmenter.fragment_tokens(text, tokens)
 
-        fragments = top_fragments(fragments, top, self.scorer, self.order,
-                                  minscore=minscore)
+        fragments = top_fragments(
+            fragments, top, self.scorer, self.order, minscore=minscore
+        )
         output = self.formatter.format(fragments)
         return output

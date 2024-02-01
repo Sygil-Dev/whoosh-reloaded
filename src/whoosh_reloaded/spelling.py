@@ -32,11 +32,12 @@ This module contains helper functions for correcting typos in user queries.
 from bisect import bisect_left
 from heapq import heappush, heapreplace
 
-from whoosh-reloaded import highlight
-from whoosh-reloaded.compat import iteritems, xrange
+from whoosh_reloaded import highlight
+from whoosh_reloaded.compat import iteritems, xrange
 
 
 # Corrector objects
+
 
 class Corrector(object):
     """
@@ -124,8 +125,8 @@ class ListCorrector(Corrector):
         self.wordlist = wordlist
 
     def _suggestions(self, text, maxdist, prefix):
-        from whoosh-reloaded.automata.lev import levenshtein_automaton
-        from whoosh-reloaded.automata.fsa import find_all_matches
+        from whoosh_reloaded.automata.lev import levenshtein_automaton
+        from whoosh_reloaded.automata.fsa import find_all_matches
 
         seen = set()
         for mxd in xrange(1, maxdist + 1):
@@ -175,6 +176,7 @@ class MultiCorrector(Corrector):
 
 # Query correction
 
+
 class Correction(object):
     """
     Represents the corrected version of a user query string. Has the
@@ -196,7 +198,7 @@ class Correction(object):
     For example, to display the corrected query string as HTML with the
     changed words emphasized::
 
-        from whoosh-reloaded import highlight
+        from whoosh_reloaded import highlight
 
         correction = mysearcher.correct_query(q, qstring)
 
@@ -213,11 +215,10 @@ class Correction(object):
         if self.original_string:
             self.string = self.format_string(highlight.NullFormatter())
         else:
-            self.string = ''
+            self.string = ""
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self.query,
-                               self.string)
+        return "%s(%r, %r)" % (self.__class__.__name__, self.query, self.string)
 
     def format_string(self, formatter):
         """
@@ -229,7 +230,7 @@ class Correction(object):
         """
 
         if not self.original_string:
-            return ''
+            return ""
         if isinstance(formatter, type):
             formatter = formatter()
 
@@ -239,6 +240,7 @@ class Correction(object):
 
 
 # QueryCorrector objects
+
 
 class QueryCorrector(object):
     """
@@ -333,8 +335,7 @@ class SimpleQueryCorrector(QueryCorrector):
 
                     # Return a new copy of the original query with this word
                     # replaced by the correction
-                    corrected_q = corrected_q.replace(token.fieldname,
-                                                      token.text, sug)
+                    corrected_q = corrected_q.replace(token.fieldname, token.text, sug)
                     # Add the token to the list of corrected tokens (for the
                     # formatter to use later)
                     token.original = token.text

@@ -27,7 +27,7 @@
 
 import codecs, re
 
-from whoosh-reloaded.compat import string_type, u, byte
+from whoosh_reloaded.compat import string_type, u, byte
 
 
 # Note: these functions return a tuple of (text, length), so when you call
@@ -38,6 +38,7 @@ utf8decode = codecs.getdecoder("utf-8")
 
 
 # Prefix encoding functions
+
 
 def first_diff(a, b):
     """
@@ -70,7 +71,7 @@ def prefix_encode_all(ls):
     as UTF-8.
     """
 
-    last = u('')
+    last = u("")
     for w in ls:
         i = first_diff(last, w)
         yield chr(i) + w[i:].encode("utf-8")
@@ -78,10 +79,9 @@ def prefix_encode_all(ls):
 
 
 def prefix_decode_all(ls):
-    """Decompresses a list of strings compressed by prefix_encode().
-    """
+    """Decompresses a list of strings compressed by prefix_encode()."""
 
-    last = u('')
+    last = u("")
     for w in ls:
         i = ord(w[0])
         decoded = last[:i] + w[1:].decode("utf-8")
@@ -118,6 +118,7 @@ def natural_key(s):
 
 
 # Regular expression functions
+
 
 def rcompile(pattern, flags=0, verbose=False):
     """A wrapper for re.compile that checks whether "pattern" is a regex object

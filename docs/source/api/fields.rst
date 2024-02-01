@@ -2,7 +2,7 @@
 ``fields`` module
 =================
 
-.. automodule:: whoosh-reloaded.fields
+.. automodule:: whoosh_reloaded.fields
 
 Schema class
 ============

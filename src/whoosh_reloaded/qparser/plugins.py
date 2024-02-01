@@ -27,18 +27,17 @@
 
 import copy
 
-from whoosh-reloaded import query
-from whoosh-reloaded.compat import u
-from whoosh-reloaded.compat import iteritems, xrange
-from whoosh-reloaded.qparser import syntax
-from whoosh-reloaded.qparser.common import attach
-from whoosh-reloaded.qparser.taggers import RegexTagger, FnTagger
-from whoosh-reloaded.util.text import rcompile
+from whoosh_reloaded import query
+from whoosh_reloaded.compat import u
+from whoosh_reloaded.compat import iteritems, xrange
+from whoosh_reloaded.qparser import syntax
+from whoosh_reloaded.qparser.common import attach
+from whoosh_reloaded.qparser.taggers import RegexTagger, FnTagger
+from whoosh_reloaded.util.text import rcompile
 
 
 class Plugin(object):
-    """Base class for parser plugins.
-    """
+    """Base class for parser plugins."""
 
     def taggers(self, parser):
         """Should return a list of ``(Tagger, priority)`` tuples to add to the
@@ -262,7 +261,7 @@ class BoostPlugin(TaggingPlugin):
         bnode = self.BoostNode
         for i, node in enumerate(group):
             if isinstance(node, bnode):
-                if (not i or not group[i - 1].has_boost):
+                if not i or not group[i - 1].has_boost:
                     group[i] = syntax.to_word(node)
         return group
 
@@ -276,7 +275,7 @@ class BoostPlugin(TaggingPlugin):
             if isinstance(node, syntax.GroupNode):
                 node = self.do_boost(parser, node)
             elif isinstance(node, self.BoostNode):
-                if (newgroup and newgroup[-1].has_boost):
+                if newgroup and newgroup[-1].has_boost:
                     # Apply the BoostNode's boost to the previous node
                     newgroup[-1].set_boost(node.boost)
                     # Skip adding the BoostNode to the new group
@@ -288,8 +287,7 @@ class BoostPlugin(TaggingPlugin):
 
 
 class GroupPlugin(Plugin):
-    """Adds the ability to group clauses using parentheses.
-    """
+    """Adds the ability to group clauses using parentheses."""
 
     # Marker nodes for open and close bracket
 
@@ -306,8 +304,10 @@ class GroupPlugin(Plugin):
         self.closeexpr = closeexpr
 
     def taggers(self, parser):
-        return [(FnTagger(self.openexpr, self.OpenBracket, "openB"), 0),
-                (FnTagger(self.closeexpr, self.CloseBracket, "closeB"), 0)]
+        return [
+            (FnTagger(self.openexpr, self.OpenBracket, "openB"), 0),
+            (FnTagger(self.closeexpr, self.CloseBracket, "closeB"), 0),
+        ]
 
     def filters(self, parser):
         return [(self.do_groups, 0)]
@@ -366,8 +366,7 @@ class EveryPlugin(TaggingPlugin):
 
 
 class FieldsPlugin(TaggingPlugin):
-    """Adds the ability to specify the field of a clause.
-    """
+    """Adds the ability to specify the field of a clause."""
 
     class FieldnameTagger(RegexTagger):
         def create(self, parser, match):
@@ -436,8 +435,7 @@ class FieldsPlugin(TaggingPlugin):
             elif isinstance(node, syntax.GroupNode):
                 node = self.do_fieldnames(parser, node)
 
-            if i > 0 and not node.is_ws() and isinstance(group[i - 1],
-                                                         fnclass):
+            if i > 0 and not node.is_ws() and isinstance(group[i - 1], fnclass):
                 node.set_fieldname(group[i - 1].fieldname, override=False)
                 i -= 1
 
@@ -481,14 +479,17 @@ class FuzzyTermPlugin(TaggingPlugin):
         johannson~/3
     """
 
-    expr = rcompile("""
+    expr = rcompile(
+        """
     (?<=\\S)                          # Only match right after non-space
     ~                                 # Initial tilde
     (?P<maxdist>[0-9])?               # Optional maxdist
     (/                                # Optional prefix slash
         (?P<prefix>[1-9][0-9]*)       # prefix
     )?                                # (end prefix group)
-    """, verbose=True)
+    """,
+        verbose=True,
+    )
 
     class FuzzinessNode(syntax.SyntaxNode):
         def __init__(self, maxdist, prefixlength, original):
@@ -544,8 +545,9 @@ class FuzzyTermPlugin(TaggingPlugin):
             if i < len(group) - 1 and isinstance(node, syntax.WordNode):
                 nextnode = group[i + 1]
                 if isinstance(nextnode, self.FuzzinessNode):
-                    node = self.FuzzyTermNode(node, nextnode.maxdist,
-                                              nextnode.prefixlength)
+                    node = self.FuzzyTermNode(
+                        node, nextnode.maxdist, nextnode.prefixlength
+                    )
                     i += 1
             if isinstance(node, self.FuzzinessNode):
                 node = syntax.to_word(node)
@@ -564,14 +566,17 @@ class FunctionPlugin(TaggingPlugin):
     This is unfinished and experimental.
     """
 
-    expr = rcompile("""
+    expr = rcompile(
+        """
     [#](?P<name>[A-Za-z_][A-Za-z0-9._]*)  # function name
     (                                     # optional args
         \\[                               # inside square brackets
         (?P<args>.*?)
         \\]
     )?
-    """, verbose=True)
+    """,
+        verbose=True,
+    )
 
     class FunctionNode(syntax.SyntaxNode):
         has_fieldname = False
@@ -650,9 +655,11 @@ class FunctionPlugin(TaggingPlugin):
         i = 0
         while i < len(group):
             node = group[i]
-            if (isinstance(node, self.FunctionNode)
+            if (
+                isinstance(node, self.FunctionNode)
                 and i < len(group) - 1
-                and isinstance(group[i + 1], syntax.GroupNode)):
+                and isinstance(group[i + 1], syntax.GroupNode)
+            ):
                 nextnode = group[i + 1]
                 node.nodes = list(self.do_functions(parser, nextnode))
 
@@ -669,14 +676,13 @@ class FunctionPlugin(TaggingPlugin):
 
 
 class PhrasePlugin(Plugin):
-    """Adds the ability to specify phrase queries inside double quotes.
-    """
+    """Adds the ability to specify phrase queries inside double quotes."""
 
     # Didn't use TaggingPlugin because I need to add slop parsing at some
     # point
 
     # Expression used to find words if a schema isn't available
-    wordexpr = rcompile(r'\S+')
+    wordexpr = rcompile(r"\S+")
 
     class PhraseNode(syntax.TextNode):
         def __init__(self, text, textstartchar, slop=1):
@@ -688,8 +694,12 @@ class PhrasePlugin(Plugin):
             return "%s %r~%s" % (self.__class__.__name__, self.text, self.slop)
 
         def apply(self, fn):
-            return self.__class__(self.type, [fn(node) for node in self.nodes],
-                                  slop=self.slop, boost=self.boost)
+            return self.__class__(
+                self.type,
+                [fn(node) for node in self.nodes],
+                slop=self.slop,
+                boost=self.boost,
+            )
 
         def query(self, parser):
             text = self.text
@@ -726,8 +736,13 @@ class PhrasePlugin(Plugin):
                     char_ranges.append((sc + match.start(), sc + match.end()))
 
             qclass = parser.phraseclass
-            q = qclass(fieldname, words, slop=self.slop, boost=self.boost,
-                       char_ranges=char_ranges)
+            q = qclass(
+                fieldname,
+                words,
+                slop=self.slop,
+                boost=self.boost,
+                char_ranges=char_ranges,
+            )
             return attach(q, self)
 
     class PhraseTagger(RegexTagger):
@@ -823,10 +838,10 @@ class SequencePlugin(Plugin):
 
 
 class RangePlugin(Plugin):
-    """Adds the ability to specify term ranges.
-    """
+    """Adds the ability to specify term ranges."""
 
-    expr = rcompile(r"""
+    expr = rcompile(
+        r"""
     (?P<open>\{|\[)               # Open paren
     (?P<start>
         ('[^']*?'\s+)             # single-quoted
@@ -840,7 +855,9 @@ class RangePlugin(Plugin):
         ([^\]}]+?)                # everything until "]" or "}"
     )?
     (?P<close>}|])                # Close paren
-    """, verbose=True)
+    """,
+        verbose=True,
+    )
 
     class RangeTagger(RegexTagger):
         def __init__(self, expr, excl_start, excl_end):
@@ -904,8 +921,9 @@ class OperatorsPlugin(Plugin):
     """
 
     class OpTagger(RegexTagger):
-        def __init__(self, expr, grouptype, optype=syntax.InfixOperator,
-                     leftassoc=True, memo=""):
+        def __init__(
+            self, expr, grouptype, optype=syntax.InfixOperator, leftassoc=True, memo=""
+        ):
             RegexTagger.__init__(self, expr)
             self.grouptype = grouptype
             self.optype = optype
@@ -913,19 +931,26 @@ class OperatorsPlugin(Plugin):
             self.memo = memo
 
         def __repr__(self):
-            return "<%s %r (%s)>" % (self.__class__.__name__,
-                                     self.expr.pattern, self.memo)
+            return "<%s %r (%s)>" % (
+                self.__class__.__name__,
+                self.expr.pattern,
+                self.memo,
+            )
 
         def create(self, parser, match):
             return self.optype(match.group(0), self.grouptype, self.leftassoc)
 
-    def __init__(self, ops=None, clean=False,
-                 And=r"(?<=\s)AND(?=\s)",
-                 Or=r"(?<=\s)OR(?=\s)",
-                 AndNot=r"(?<=\s)ANDNOT(?=\s)",
-                 AndMaybe=r"(?<=\s)ANDMAYBE(?=\s)",
-                 Not=r"(^|(?<=(\s|[()])))NOT(?=\s)",
-                 Require=r"(^|(?<=\s))REQUIRE(?=\s)"):
+    def __init__(
+        self,
+        ops=None,
+        clean=False,
+        And=r"(?<=\s)AND(?=\s)",
+        Or=r"(?<=\s)OR(?=\s)",
+        AndNot=r"(?<=\s)ANDNOT(?=\s)",
+        AndMaybe=r"(?<=\s)ANDMAYBE(?=\s)",
+        Not=r"(^|(?<=(\s|[()])))NOT(?=\s)",
+        Require=r"(^|(?<=\s))REQUIRE(?=\s)",
+    ):
         if ops:
             ops = list(ops)
         else:
@@ -934,21 +959,19 @@ class OperatorsPlugin(Plugin):
         if not clean:
             ot = self.OpTagger
             if Not:
-                ops.append((ot(Not, syntax.NotGroup, syntax.PrefixOperator,
-                               memo="not"), 0))
+                ops.append(
+                    (ot(Not, syntax.NotGroup, syntax.PrefixOperator, memo="not"), 0)
+                )
             if And:
                 ops.append((ot(And, syntax.AndGroup, memo="and"), 0))
             if Or:
                 ops.append((ot(Or, syntax.OrGroup, memo="or"), 0))
             if AndNot:
-                ops.append((ot(AndNot, syntax.AndNotGroup,
-                               memo="anot"), -5))
+                ops.append((ot(AndNot, syntax.AndNotGroup, memo="anot"), -5))
             if AndMaybe:
-                ops.append((ot(AndMaybe, syntax.AndMaybeGroup,
-                               memo="amaybe"), -5))
+                ops.append((ot(AndMaybe, syntax.AndMaybeGroup, memo="amaybe"), -5))
             if Require:
-                ops.append((ot(Require, syntax.RequireGroup,
-                               memo="req"), 0))
+                ops.append((ot(Require, syntax.RequireGroup, memo="req"), 0))
 
         self.ops = ops
 
@@ -998,6 +1021,7 @@ class OperatorsPlugin(Plugin):
 
 #
 
+
 class PlusMinusPlugin(Plugin):
     """Adds the ability to use + and - in a flat OR query to specify required
     and prohibited terms.
@@ -1019,8 +1043,10 @@ class PlusMinusPlugin(Plugin):
         self.minusexpr = minusexpr
 
     def taggers(self, parser):
-        return [(FnTagger(self.plusexpr, self.Plus, "plus"), 0),
-                (FnTagger(self.minusexpr, self.Minus, "minus"), 0)]
+        return [
+            (FnTagger(self.plusexpr, self.Plus, "plus"), 0),
+            (FnTagger(self.minusexpr, self.Minus, "minus"), 0),
+        ]
 
     def filters(self, parser):
         return [(self.do_plusminus, 510)]
@@ -1095,8 +1121,7 @@ class GtLtPlugin(TaggingPlugin):
         return [(self.do_gtlt, 99)]
 
     def do_gtlt(self, parser, group):
-        """This filter translate FieldnameNode/GtLtNode pairs into RangeNodes.
-        """
+        """This filter translate FieldnameNode/GtLtNode pairs into RangeNodes."""
 
         fname = syntax.FieldnameNode
         newgroup = group.empty_copy()
@@ -1303,7 +1328,7 @@ class PseudoFieldPlugin(Plugin):
 
     Some things you can do in the transform function::
 
-        from whoosh-reloaded import qparser
+        from whoosh_reloaded import qparser
 
         def my_xform_fn(node):
             # Is this a text node?
@@ -1329,7 +1354,7 @@ class PseudoFieldPlugin(Plugin):
     transforms the text in the pseudo-field "regex" into a regular expression
     query in the "content" field::
 
-        from whoosh-reloaded import qparser
+        from whoosh_reloaded import qparser
 
         def regex_maker(node):
             if node.has_text:
@@ -1396,8 +1421,7 @@ class PseudoFieldPlugin(Plugin):
         for node in group:
             if isinstance(node, syntax.GroupNode):
                 node = self.do_pseudofield(parser, node)
-            elif (isinstance(node, syntax.FieldnameNode)
-                  and node.fieldname in xform_map):
+            elif isinstance(node, syntax.FieldnameNode) and node.fieldname in xform_map:
                 xform_next = xform_map[node.fieldname]
                 continue
 

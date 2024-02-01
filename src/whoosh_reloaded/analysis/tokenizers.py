@@ -25,9 +25,9 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.compat import u, text_type
-from whoosh-reloaded.analysis.acore import Composable, Token
-from whoosh-reloaded.util.text import rcompile
+from whoosh_reloaded.compat import u, text_type
+from whoosh_reloaded.analysis.acore import Composable, Token
+from whoosh_reloaded.util.text import rcompile
 
 
 default_pattern = rcompile(r"[\w\*]+(\.?[\w\*]+)*")
@@ -37,8 +37,7 @@ default_pattern = rcompile(r"[\w\*]+(\.?[\w\*]+)*")
 
 
 class Tokenizer(Composable):
-    """Base class for Tokenizers.
-    """
+    """Base class for Tokenizers."""
 
     def __eq__(self, other):
         return other and self.__class__ is other.__class__
@@ -53,12 +52,20 @@ class IDTokenizer(Tokenizer):
     ["/a/b 123 alpha"]
     """
 
-    def __call__(self, value, positions=False, chars=False,
-                 keeporiginal=False, removestops=True,
-                 start_pos=0, start_char=0, mode='', **kwargs):
+    def __call__(
+        self,
+        value,
+        positions=False,
+        chars=False,
+        keeporiginal=False,
+        removestops=True,
+        start_pos=0,
+        start_char=0,
+        mode="",
+        **kwargs
+    ):
         assert isinstance(value, text_type), "%r is not unicode" % value
-        t = Token(positions, chars, removestops=removestops, mode=mode,
-                  **kwargs)
+        t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         t.text = value
         t.boost = 1.0
         if keeporiginal:
@@ -99,9 +106,19 @@ class RegexTokenizer(Tokenizer):
                 return True
         return False
 
-    def __call__(self, value, positions=False, chars=False, keeporiginal=False,
-                 removestops=True, start_pos=0, start_char=0, tokenize=True,
-                 mode='', **kwargs):
+    def __call__(
+        self,
+        value,
+        positions=False,
+        chars=False,
+        keeporiginal=False,
+        removestops=True,
+        start_pos=0,
+        start_char=0,
+        tokenize=True,
+        mode="",
+        **kwargs
+    ):
         """
         :param value: The unicode string to tokenize.
         :param positions: Whether to record token positions in the token.
@@ -117,8 +134,7 @@ class RegexTokenizer(Tokenizer):
 
         assert isinstance(value, text_type), "%s is not unicode" % repr(value)
 
-        t = Token(positions, chars, removestops=removestops, mode=mode,
-                  **kwargs)
+        t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
             t.original = t.text = value
             t.boost = 1.0
@@ -196,8 +212,8 @@ class CharsetTokenizer(Tokenizer):
     One way to get a character mapping object is to convert a Sphinx charset
     table file using :func:`whoosh-reloaded.support.charset.charset_table_to_dict`.
 
-    >>> from whoosh-reloaded.support.charset import charset_table_to_dict
-    >>> from whoosh-reloaded.support.charset import default_charset
+    >>> from whoosh_reloaded.support.charset import charset_table_to_dict
+    >>> from whoosh_reloaded.support.charset import default_charset
     >>> charmap = charset_table_to_dict(default_charset)
     >>> chtokenizer = CharsetTokenizer(charmap)
     >>> [t.text for t in chtokenizer(u'Stra\\xdfe ABC')]
@@ -217,13 +233,25 @@ class CharsetTokenizer(Tokenizer):
         self.charmap = charmap
 
     def __eq__(self, other):
-        return (other
-                and self.__class__ is other.__class__
-                and self.charmap == other.charmap)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.charmap == other.charmap
+        )
 
-    def __call__(self, value, positions=False, chars=False, keeporiginal=False,
-                 removestops=True, start_pos=0, start_char=0, tokenize=True,
-                  mode='', **kwargs):
+    def __call__(
+        self,
+        value,
+        positions=False,
+        chars=False,
+        keeporiginal=False,
+        removestops=True,
+        start_pos=0,
+        start_char=0,
+        tokenize=True,
+        mode="",
+        **kwargs
+    ):
         """
         :param value: The unicode string to tokenize.
         :param positions: Whether to record token positions in the token.
@@ -239,8 +267,7 @@ class CharsetTokenizer(Tokenizer):
 
         assert isinstance(value, text_type), "%r is not unicode" % value
 
-        t = Token(positions, chars, removestops=removestops, mode=mode,
-                  **kwargs)
+        t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
             t.original = t.text = value
             t.boost = 1.0
@@ -312,7 +339,7 @@ def CommaSeparatedTokenizer():
     ["hi there", "what's", "up"]
     """
 
-    from whoosh-reloaded.analysis.filters import StripFilter
+    from whoosh_reloaded.analysis.filters import StripFilter
 
     return RegexTokenizer(r"[^,]+") | StripFilter()
 
@@ -326,13 +353,12 @@ class PathTokenizer(Tokenizer):
         self.expr = rcompile(expression)
 
     def __call__(self, value, positions=False, start_pos=0, **kwargs):
-         assert isinstance(value, text_type), "%r is not unicode" % value
-         token = Token(positions, **kwargs)
-         pos = start_pos
-         for match in self.expr.finditer(value):
-             token.text = value[:match.end()]
-             if positions:
-                 token.pos = pos
-                 pos += 1
-             yield token
-
+        assert isinstance(value, text_type), "%r is not unicode" % value
+        token = Token(positions, **kwargs)
+        pos = start_pos
+        for match in self.expr.finditer(value):
+            token.text = value[: match.end()]
+            if positions:
+                token.pos = pos
+                pos += 1
+            yield token

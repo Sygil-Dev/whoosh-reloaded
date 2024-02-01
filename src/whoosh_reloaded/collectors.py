@@ -82,13 +82,14 @@ from bisect import insort
 from collections import defaultdict
 from heapq import heapify, heappush, heapreplace
 
-from whoosh-reloaded import sorting
-from whoosh-reloaded.compat import abstractmethod, iteritems, itervalues, xrange
-from whoosh-reloaded.searching import Results, TimeLimit
-from whoosh-reloaded.util import now
+from whoosh_reloaded import sorting
+from whoosh_reloaded.compat import abstractmethod, iteritems, itervalues, xrange
+from whoosh_reloaded.searching import Results, TimeLimit
+from whoosh_reloaded.util import now
 
 
 # Functions
+
 
 def ilen(iterator):
     total = 0
@@ -99,9 +100,9 @@ def ilen(iterator):
 
 # Base class
 
+
 class Collector(object):
-    """Base class for collectors.
-    """
+    """Base class for collectors."""
 
     def prepare(self, top_searcher, q, context):
         """This method is called before a search.
@@ -315,9 +316,9 @@ class Collector(object):
 
 # Scored collectors
 
+
 class ScoredCollector(Collector):
-    """Base class for collectors that sort the results based on document score.
-    """
+    """Base class for collectors that sort the results based on document score."""
 
     def __init__(self, replace=10):
         """
@@ -421,8 +422,7 @@ class ScoredCollector(Collector):
 
 
 class TopCollector(ScoredCollector):
-    """A collector that only returns the top "N" scored results.
-    """
+    """A collector that only returns the top "N" scored results."""
 
     def __init__(self, limit=10, usequality=True, **kwargs):
         """
@@ -437,9 +437,11 @@ class TopCollector(ScoredCollector):
         self.total = 0
 
     def _use_block_quality(self):
-        return (self.usequality
-                and not self.top_searcher.weighting.use_final
-                and self.matcher.supports_block_quality())
+        return (
+            self.usequality
+            and not self.top_searcher.weighting.use_final
+            and self.matcher.supports_block_quality()
+        )
 
     def computes_count(self):
         return not self._use_block_quality()
@@ -508,8 +510,7 @@ class TopCollector(ScoredCollector):
 
 
 class UnlimitedCollector(ScoredCollector):
-    """A collector that returns **all** scored results.
-    """
+    """A collector that returns **all** scored results."""
 
     def __init__(self, reverse=False):
         ScoredCollector.__init__(self)
@@ -531,6 +532,7 @@ class UnlimitedCollector(ScoredCollector):
 
 
 # Sorting collector
+
 
 class SortingCollector(Collector):
     """A collector that returns results sorted by a given
@@ -578,7 +580,7 @@ class SortingCollector(Collector):
         items = self.items
         items.sort(reverse=self.reverse)
         if self.limit:
-            items = items[:self.limit]
+            items = items[: self.limit]
         return self._results(items, docset=self.docset)
 
 
@@ -599,9 +601,9 @@ class UnsortedCollector(Collector):
 
 # Wrapping collectors
 
+
 class WrappingCollector(Collector):
-    """Base class for collectors that wrap other collectors.
-    """
+    """Base class for collectors that wrap other collectors."""
 
     def __init__(self, child):
         self.child = child
@@ -653,6 +655,7 @@ class WrappingCollector(Collector):
 
 
 # Allow and disallow collector
+
 
 class FilterCollector(WrappingCollector):
     """A collector that lets you allow and/or restrict certain document numbers
@@ -713,11 +716,10 @@ class FilterCollector(WrappingCollector):
         _restrict = self._restrict
 
         for global_docnum in child.all_ids():
-            if (
-                (_allow and global_docnum not in _allow) or
-                (_restrict and global_docnum in _restrict)
+            if (_allow and global_docnum not in _allow) or (
+                _restrict and global_docnum in _restrict
             ):
-                    continue
+                continue
             yield global_docnum
 
     def count(self):
@@ -736,8 +738,9 @@ class FilterCollector(WrappingCollector):
             filtered_count = self.filtered_count
             for sub_docnum in child.matches():
                 global_docnum = self.offset + sub_docnum
-                if ((_allow is not None and global_docnum not in _allow)
-                    or (_restrict is not None and global_docnum in _restrict)):
+                if (_allow is not None and global_docnum not in _allow) or (
+                    _restrict is not None and global_docnum in _restrict
+                ):
                     filtered_count += 1
                     continue
                 child.collect(sub_docnum)
@@ -757,6 +760,7 @@ class FilterCollector(WrappingCollector):
 
 
 # Facet grouping collector
+
 
 class FacetCollector(WrappingCollector):
     """A collector that creates groups of documents based on
@@ -847,6 +851,7 @@ class FacetCollector(WrappingCollector):
 
 # Collapsing collector
 
+
 class CollapseCollector(WrappingCollector):
     """A collector that collapses results based on a facet. That is, it
     eliminates all but the top N results that share the same facet key.
@@ -909,11 +914,12 @@ class CollapseCollector(WrappingCollector):
 
         # If the keyer or orderer require a valid matcher, tell the child
         # collector we need it
-        needs_current = (context.needs_current
-                     or self.keyer.needs_current
-                     or (self.orderer and self.orderer.needs_current))
-        self.child.prepare(top_searcher, q,
-                           context.set(needs_current=needs_current))
+        needs_current = (
+            context.needs_current
+            or self.keyer.needs_current
+            or (self.orderer and self.orderer.needs_current)
+        )
+        self.child.prepare(top_searcher, q, context.set(needs_current=needs_current))
 
     def set_subsearcher(self, subsearcher, offset):
         WrappingCollector.set_subsearcher(self, subsearcher, offset)
@@ -1003,6 +1009,7 @@ class CollapseCollector(WrappingCollector):
 
 # Time limit collector
 
+
 class TimeLimitCollector(WrappingCollector):
     """A collector that raises a :class:`TimeLimit` exception if the search
     does not complete within a certain number of seconds::
@@ -1041,6 +1048,7 @@ class TimeLimitCollector(WrappingCollector):
 
         if use_alarm:
             import signal
+
             self.use_alarm = use_alarm and hasattr(signal, "SIGALRM")
         else:
             self.use_alarm = False
@@ -1054,6 +1062,7 @@ class TimeLimitCollector(WrappingCollector):
         self.timedout = False
         if self.use_alarm:
             import signal
+
             signal.signal(signal.SIGALRM, self._was_signaled)
 
         # Start a timer thread. If the timer fires, it will call this object's
@@ -1069,6 +1078,7 @@ class TimeLimitCollector(WrappingCollector):
 
         if self.use_alarm:
             import signal
+
             os.kill(os.getpid(), signal.SIGALRM)
 
     def _was_signaled(self, signum, frame):
@@ -1099,6 +1109,7 @@ class TimeLimitCollector(WrappingCollector):
 
 
 # Matched terms collector
+
 
 class TermsCollector(WrappingCollector):
     """A collector that remembers which terms appeared in which terms appeared

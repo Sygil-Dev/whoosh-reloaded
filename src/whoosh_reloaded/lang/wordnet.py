@@ -34,8 +34,8 @@ http://wordnetcode.princeton.edu/3.0/WNprolog-3.0.tar.gz
 
 from collections import defaultdict
 
-from whoosh-reloaded.compat import iterkeys, text_type
-from whoosh-reloaded.fields import Schema, ID, STORED
+from whoosh_reloaded.compat import iterkeys, text_type
+from whoosh_reloaded.fields import Schema, ID, STORED
 
 
 def parse_file(f):
@@ -51,9 +51,9 @@ def parse_file(f):
             continue
 
         line = line[2:]
-        num = int(line[:line.find(",")])
+        num = int(line[: line.find(",")])
         qt = line.find("'")
-        line = line[qt + 1:]
+        line = line[qt + 1 :]
         qt = line.find("'")
         word = line[:qt].lower()
 
@@ -113,7 +113,7 @@ class Thesaurus(object):
 
     To save the in-memory Thesaurus to a Whoosh index...
 
-    >>> from whoosh-reloaded.filedb.filestore import FileStorage
+    >>> from whoosh_reloaded.filedb.filestore import FileStorage
     >>> fs = FileStorage("index")
     >>> t.to_storage(fs)
 
@@ -192,7 +192,7 @@ class Thesaurus(object):
         """Creates a Thesaurus object from the given storage object,
         which should contain an index created by Thesaurus.to_storage().
 
-        >>> from whoosh-reloaded.filedb.filestore import FileStorage
+        >>> from whoosh_reloaded.filedb.filestore import FileStorage
         >>> fs = FileStorage("index")
         >>> t = Thesaurus.from_storage(fs)
         >>> t.synonyms("hail")
@@ -213,7 +213,7 @@ class Thesaurus(object):
         """Creates am index in the given storage object from the
         synonyms loaded from a WordNet file.
 
-        >>> from whoosh-reloaded.filedb.filestore import FileStorage
+        >>> from whoosh_reloaded.filedb.filestore import FileStorage
         >>> fs = FileStorage("index")
         >>> t = Thesaurus.from_filename("wn_s.pl")
         >>> t.to_storage(fs)

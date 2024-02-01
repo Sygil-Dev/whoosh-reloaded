@@ -25,10 +25,10 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded import matching
-from whoosh-reloaded.compat import xrange
-from whoosh-reloaded.query import qcore
-from whoosh-reloaded.query.wrappers import WrappingQuery
+from whoosh_reloaded import matching
+from whoosh_reloaded.compat import xrange
+from whoosh_reloaded.query import qcore
+from whoosh_reloaded.query.wrappers import WrappingQuery
 
 
 class NestedParent(WrappingQuery):
@@ -113,9 +113,9 @@ class NestedParent(WrappingQuery):
         if not m.is_active():
             return matching.NullMatcher
 
-        return self.NestedParentMatcher(bits, m, self.per_parent_limit,
-                                        searcher.doc_count_all(),
-                                        self.score_fn)
+        return self.NestedParentMatcher(
+            bits, m, self.per_parent_limit, searcher.doc_count_all(), self.score_fn
+        )
 
     def deletion_docs(self, searcher):
         bits = searcher._filter_to_comb(self.parents)
@@ -274,13 +274,18 @@ class NestedChildren(WrappingQuery):
         if not m.is_active():
             return matching.NullMatcher
 
-        return self.NestedChildMatcher(bits, m, searcher.doc_count_all(),
-                                       searcher.reader().is_deleted,
-                                       boost=self.boost)
+        return self.NestedChildMatcher(
+            bits,
+            m,
+            searcher.doc_count_all(),
+            searcher.reader().is_deleted,
+            boost=self.boost,
+        )
 
     class NestedChildMatcher(matching.WrappingMatcher):
-        def __init__(self, parent_comb, wanted_parent_matcher, limit,
-                     is_deleted, boost=1.0):
+        def __init__(
+            self, parent_comb, wanted_parent_matcher, limit, is_deleted, boost=1.0
+        ):
             self.parent_comb = parent_comb
             self.child = wanted_parent_matcher
             self.limit = limit
@@ -291,9 +296,11 @@ class NestedChildren(WrappingQuery):
             self._find_next_children()
 
         def __repr__(self):
-            return "%s(%r, %r)" % (self.__class__.__name__,
-                                   self.parent_comb,
-                                   self.child)
+            return "%s(%r, %r)" % (
+                self.__class__.__name__,
+                self.parent_comb,
+                self.child,
+            )
 
         def reset(self):
             self.child.reset()

@@ -25,10 +25,11 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.util.text import rcompile
+from whoosh_reloaded.util.text import rcompile
 
 
 # Tagger objects
+
 
 class Tagger(object):
     """Base class for taggers, objects which match syntax in the query string

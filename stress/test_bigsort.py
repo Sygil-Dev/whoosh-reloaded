@@ -1,9 +1,9 @@
 import os.path, random, shutil
 from datetime import datetime
 
-from whoosh-reloaded import fields, index, query
-from whoosh-reloaded.compat import text_type, xrange
-from whoosh-reloaded.util import now
+from whoosh_reloaded import fields, index, query
+from whoosh_reloaded.compat import text_type, xrange
+from whoosh_reloaded.util import now
 
 
 def test_bigsort():
@@ -40,8 +40,6 @@ def test_bigsort():
         p = list(s.postings("date", y).all_ids())
     print(now() - t)
 
-
-
     t = now()
     r = s.search(q, limit=25, sortedby="date", reverse=True)
     print("Search 1 took", now() - t)
@@ -56,6 +54,7 @@ def test_bigsort():
     print("Search 2 took", now() - t)
 
     from heapq import nlargest
+
     t = now()
     sf = s.stored_fields
     gen = ((sf(n)["date"], n) for n in q.docs(s))

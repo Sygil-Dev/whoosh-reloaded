@@ -1,19 +1,42 @@
 from __future__ import with_statement
 import random, threading, time
 
-from whoosh-reloaded import fields, query
-from whoosh-reloaded.compat import xrange, u, text_type
-from whoosh-reloaded.util.testing import TempStorage
+from whoosh_reloaded import fields, query
+from whoosh_reloaded.compat import xrange, u, text_type
+from whoosh_reloaded.util.testing import TempStorage
 
 
 def test_readwrite():
     schema = fields.Schema(id=fields.ID(stored=True), content=fields.TEXT)
     with TempStorage("threading") as st:
-        domain = ("alfa", "bravo", "charlie", "delta", "echo", "foxtrot",
-                  "golf", "hotel", "india", "juliet", "kilo", "lima", "mike",
-                  "november", "oscar", "papa", "quebec", "romeo", "sierra",
-                  "tango", "uniform", "victor", "whiskey", "xray", "yankee",
-                  "zulu")
+        domain = (
+            "alfa",
+            "bravo",
+            "charlie",
+            "delta",
+            "echo",
+            "foxtrot",
+            "golf",
+            "hotel",
+            "india",
+            "juliet",
+            "kilo",
+            "lima",
+            "mike",
+            "november",
+            "oscar",
+            "papa",
+            "quebec",
+            "romeo",
+            "sierra",
+            "tango",
+            "uniform",
+            "victor",
+            "whiskey",
+            "xray",
+            "yankee",
+            "zulu",
+        )
 
         class WriterThread(threading.Thread):
             def run(self):
@@ -24,7 +47,9 @@ def test_readwrite():
                     print(i)
                     w = ix.writer()
                     for _ in xrange(random.randint(1, 100)):
-                        content = u(" ").join(random.sample(domain, random.randint(5, 20)))
+                        content = u(" ").join(
+                            random.sample(domain, random.randint(5, 20))
+                        )
                         w.add_document(id=text_type(num), content=content)
                         num += 1
                     w.commit()

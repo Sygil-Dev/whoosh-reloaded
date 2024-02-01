@@ -8,7 +8,7 @@ Use at your own risk, but please report any problems to me so I can fix them.
 
 To create a new index::
 
-    from whoosh-reloaded.filedb.gae import DatastoreStorage
+    from whoosh_reloaded.filedb.gae import DatastoreStorage
 
     ix = DatastoreStorage().create_index(schema)
 
@@ -22,10 +22,10 @@ import time
 from google.appengine.api import memcache  # @UnresolvedImport
 from google.appengine.ext import db  # @UnresolvedImport
 
-from whoosh-reloaded.compat import BytesIO
-from whoosh-reloaded.index import TOC, FileIndex, _DEF_INDEX_NAME
-from whoosh-reloaded.filedb.filestore import ReadOnlyError, Storage
-from whoosh-reloaded.filedb.structfile import StructFile
+from whoosh_reloaded.compat import BytesIO
+from whoosh_reloaded.index import TOC, FileIndex, _DEF_INDEX_NAME
+from whoosh_reloaded.filedb.filestore import ReadOnlyError, Storage
+from whoosh_reloaded.filedb.structfile import StructFile
 
 
 class DatastoreFile(db.Model):
@@ -57,8 +57,7 @@ class DatastoreFile(db.Model):
         if oldvalue != self.value:
             self.mtime = int(time.time())
             self.put()
-            memcache.set(self.key().id_or_name(), self.value,
-                         namespace="DatastoreFile")
+            memcache.set(self.key().id_or_name(), self.value, namespace="DatastoreFile")
 
     def tell(self):
         return self.data.tell()
@@ -89,6 +88,7 @@ class MemcacheLock(object):
         if blocking and not val:
             # Simulate blocking by retrying the acquire over and over
             import time
+
             while not val:
                 time.sleep(0.1)
                 val = memcache.add(self.name, "", 360, namespace="whoosh-reloadedlocks")
@@ -149,8 +149,11 @@ class DatastoreStorage(Storage):
         file.delete()
 
     def create_file(self, name, **kwargs):
-        f = StructFile(DatastoreFile(key_name=name), name=name,
-                       onclose=lambda sfile: sfile.file.close())
+        f = StructFile(
+            DatastoreFile(key_name=name),
+            name=name,
+            onclose=lambda sfile: sfile.file.close(),
+        )
         return f
 
     def open_file(self, name, *args, **kwargs):

@@ -32,10 +32,11 @@ This module contains classes for scoring (and sorting) search results.
 from __future__ import division
 from math import log, pi
 
-from whoosh-reloaded.compat import iteritems
+from whoosh_reloaded.compat import iteritems
 
 
 # Base classes
+
 
 class WeightingModel(object):
     """Abstract base class for scoring models. A WeightingModel object provides
@@ -51,8 +52,7 @@ class WeightingModel(object):
     use_final = False
 
     def idf(self, searcher, fieldname, text):
-        """Returns the inverse document frequency of the given term.
-        """
+        """Returns the inverse document frequency of the given term."""
 
         parent = searcher.get_parent()
         n = parent.doc_frequency(fieldname, text)
@@ -98,14 +98,12 @@ class BaseScorer(object):
     """
 
     def supports_block_quality(self):
-        """Returns True if this class supports quality optimizations.
-        """
+        """Returns True if this class supports quality optimizations."""
 
         return False
 
     def score(self, matcher):
-        """Returns a score for the current document of the matcher.
-        """
+        """Returns a score for the current document of the matcher."""
 
         raise NotImplementedError(self.__class__.__name__)
 
@@ -135,6 +133,7 @@ class BaseScorer(object):
 
 # Scorer that just returns term weight
 
+
 class WeightScorer(BaseScorer):
     """A scorer that simply returns the weight as the score. This is useful
     for more complex weighting models to return when they are asked for a
@@ -163,6 +162,7 @@ class WeightScorer(BaseScorer):
 
 
 # Base scorer for models that only use weight and field length
+
 
 class WeightLengthScorer(BaseScorer):
     """Base class for scorers where the only per-document variables are term
@@ -213,8 +213,7 @@ class WeightLengthScorer(BaseScorer):
         return self._maxquality
 
     def block_quality(self, matcher):
-        return self._score(matcher.block_max_weight(),
-                           matcher.block_min_length())
+        return self._score(matcher.block_max_weight(), matcher.block_min_length())
 
     def _score(self, weight, length):
         # Override this method with the actual scoring function
@@ -224,6 +223,7 @@ class WeightLengthScorer(BaseScorer):
 # WeightingModel implementations
 
 # Debugging model
+
 
 class DebugModel(WeightingModel):
     def __init__(self):
@@ -263,6 +263,7 @@ class DebugScorer(BaseScorer):
 
 # BM25F Model
 
+
 def bm25(idf, tf, fl, avgfl, B, K1):
     # idf - inverse document frequency
     # tf - term frequency in the current document
@@ -274,13 +275,12 @@ def bm25(idf, tf, fl, avgfl, B, K1):
 
 
 class BM25F(WeightingModel):
-    """Implements the BM25F scoring algorithm.
-    """
+    """Implements the BM25F scoring algorithm."""
 
     def __init__(self, B=0.75, K1=1.2, **kwargs):
         """
 
-        >>> from whoosh-reloaded import scoring
+        >>> from whoosh_reloaded import scoring
         >>> # Set a custom B value for the "content" field
         >>> w = scoring.BM25F(B=0.75, content_B=1.0, K1=1.5)
 
@@ -334,6 +334,7 @@ class BM25FScorer(WeightLengthScorer):
 
 # DFree model
 
+
 def dfree(tf, cf, qf, dl, fl):
     # tf - term frequency in current document
     # cf - term frequency in collection
@@ -345,9 +346,15 @@ def dfree(tf, cf, qf, dl, fl):
     invpriorcol = fl / cf
     norm = tf * log(post / prior)
 
-    return qf * norm * (tf * (log(prior * invpriorcol))
-                        + (tf + 1.0) * (log(post * invpriorcol))
-                        + 0.5 * log(post / prior))
+    return (
+        qf
+        * norm
+        * (
+            tf * (log(prior * invpriorcol))
+            + (tf + 1.0) * (log(post * invpriorcol))
+            + 0.5 * log(post / prior)
+        )
+    )
 
 
 class DFree(WeightingModel):
@@ -398,10 +405,16 @@ def pl2(tf, cf, qf, dc, fl, avgfl, c):
     TF = tf * log(1.0 + (c * avgfl) / fl)
     norm = 1.0 / (TF + 1.0)
     f = cf / dc
-    return norm * qf * (TF * log(1.0 / f)
-                        + f * rec_log2_of_e
-                        + 0.5 * log(2 * pi * TF)
-                        + TF * (log(TF) - rec_log2_of_e))
+    return (
+        norm
+        * qf
+        * (
+            TF * log(1.0 / f)
+            + f * rec_log2_of_e
+            + 0.5 * log(2 * pi * TF)
+            + TF * (log(TF) - rec_log2_of_e)
+        )
+    )
 
 
 class PL2(WeightingModel):
@@ -434,11 +447,11 @@ class PL2Scorer(WeightLengthScorer):
         self.setup(searcher, fieldname, text)
 
     def _score(self, weight, length):
-        return pl2(weight, self.cf, self.qf, self.dc, length, self.avgfl,
-                   self.c)
+        return pl2(weight, self.cf, self.qf, self.dc, length, self.avgfl, self.c)
 
 
 # Simple models
+
 
 class Frequency(WeightingModel):
     def scorer(self, searcher, fieldname, text, qf=1):
@@ -476,6 +489,7 @@ class TF_IDFScorer(BaseScorer):
 
 # Utility models
 
+
 class Weighting(WeightingModel):
     """This class provides backwards-compatibility with the old weighting
     class architecture, so any existing custom scorers don't need to be
@@ -496,8 +510,9 @@ class Weighting(WeightingModel):
             self.scoremethod = scoremethod
 
         def score(self, matcher):
-            return self.scoremethod(self.searcher, self.fieldname, self.text,
-                                    matcher.id(), matcher.weight())
+            return self.scoremethod(
+                self.searcher, self.fieldname, self.text, matcher.id(), matcher.weight()
+            )
 
 
 class FunctionWeighting(WeightingModel):
@@ -545,8 +560,7 @@ class FunctionWeighting(WeightingModel):
 
 
 class MultiWeighting(WeightingModel):
-    """Chooses from multiple scoring algorithms based on the field.
-    """
+    """Chooses from multiple scoring algorithms based on the field."""
 
     def __init__(self, default, **weightings):
         """The only non-keyword argument specifies the default
@@ -600,7 +614,7 @@ class ReverseWeighting(WeightingModel):
             return 0 - self.subscorer.block_quality(matcher)
 
 
-#class PositionWeighting(WeightingModel):
+# class PositionWeighting(WeightingModel):
 #    def __init__(self, reversed=False):
 #        self.reversed = reversed
 #

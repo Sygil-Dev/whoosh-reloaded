@@ -63,7 +63,7 @@ per-document bit values, structs, pickled objects, and compressed byte values.
 To specify a custom column object for a field, pass it as the ``sortable``
 keyword argument instead of ``True``::
 
-    from whoosh-reloaded import columns, fields
+    from whoosh_reloaded import columns, fields
 
     category_col = columns.RefBytesColumn()
     schema = fields.Schema(title=fields.TEXT(sortable=True),
@@ -142,7 +142,7 @@ in Whoosh 3.0, or you didn't think you needed a field to be sortable but now
 you find that you need to sort it, you can add "sortability" to an existing
 index using the :func:`whoosh-reloaded.sorting.add_sortable` utility function::
 
-    from whoosh-reloaded import columns, fields, index, sorting
+    from whoosh_reloaded import columns, fields, index, sorting
 
     # Say we have an existing index with this schema
     schema = fields.Schema(title=fields.TEXT,
@@ -179,7 +179,7 @@ Normally search results are sorted by descending relevance score. You can tell
 Whoosh to use a different ordering by passing the ``sortedby`` keyword argument
 to the :meth:`~whoosh-reloaded.searching.Searcher.search` method::
 
-    from whoosh-reloaded import fields, index, qparser
+    from whoosh_reloaded import fields, index, qparser
 
     schema = fields.Schema(title=fields.TEXT(stored=True),
                            price=fields.NUMERIC(sortable=True))

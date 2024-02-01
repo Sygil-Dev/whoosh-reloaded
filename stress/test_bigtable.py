@@ -2,22 +2,21 @@ from __future__ import with_statement
 
 from random import randint, shuffle
 
-from nose.tools import assert_equal  #@UnresolvedImport
+from nose.tools import assert_equal  # @UnresolvedImport
 
-from whoosh-reloaded.compat import xrange, iteritems
-from whoosh-reloaded.filedb.filetables import HashWriter, HashReader
-from whoosh-reloaded.util.testing import TempStorage
+from whoosh_reloaded.compat import xrange, iteritems
+from whoosh_reloaded.filedb.filetables import HashWriter, HashReader
+from whoosh_reloaded.util.testing import TempStorage
 
 
 def test_bigtable():
     with TempStorage("bigtable") as st:
+
         def randstring(min, max):
-            return "".join(chr(randint(1, 255))
-                           for _ in xrange(randint(min, max)))
+            return "".join(chr(randint(1, 255)) for _ in xrange(randint(min, max)))
 
         count = 100000
-        samp = dict((randstring(1,50), randstring(1,50))
-                    for _ in xrange(count))
+        samp = dict((randstring(1, 50), randstring(1, 50)) for _ in xrange(count))
 
         fhw = HashWriter(st.create_file("big.hsh"))
         fhw.add_all(iteritems(samp))

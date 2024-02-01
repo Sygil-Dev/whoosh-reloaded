@@ -29,21 +29,23 @@ from __future__ import division
 import copy
 from array import array
 
-from whoosh-reloaded import matching
-from whoosh-reloaded.compat import u
-from whoosh-reloaded.reading import TermNotFound
-from whoosh-reloaded.compat import methodcaller
+from whoosh_reloaded import matching
+from whoosh_reloaded.compat import u
+from whoosh_reloaded.reading import TermNotFound
+from whoosh_reloaded.compat import methodcaller
 
 
 # Exceptions
 
+
 class QueryError(Exception):
-    """Error encountered while running a query.
-    """
+    """Error encountered while running a query."""
+
     pass
 
 
 # Functions
+
 
 def error_query(msg, q=None):
     """Returns the query in the second argument (or a :class:`NullQuery` if the
@@ -63,7 +65,8 @@ def token_lists(q, phrases=True):
     """
 
     if q.is_leaf():
-        from whoosh-reloaded.query import Phrase
+        from whoosh_reloaded.query import Phrase
+
         if phrases or not isinstance(q, Phrase):
             return list(q.tokens())
     else:
@@ -78,6 +81,7 @@ def token_lists(q, phrases=True):
 
 
 # Utility classes
+
 
 class Lowest(object):
     """A value that is always compares lower than any other object except
@@ -143,6 +147,7 @@ Highest = Highest()
 
 # Base classes
 
+
 class Query(object):
     """Abstract base class for all queries.
 
@@ -177,7 +182,8 @@ class Query(object):
         query.
         """
 
-        from whoosh-reloaded.query import Or
+        from whoosh_reloaded.query import Or
+
         return Or([self, query]).normalize()
 
     def __and__(self, query):
@@ -185,7 +191,8 @@ class Query(object):
         query.
         """
 
-        from whoosh-reloaded.query import And
+        from whoosh_reloaded.query import And
+
         return And([self, query]).normalize()
 
     def __sub__(self, query):
@@ -193,7 +200,8 @@ class Query(object):
         query as a "NOT" query.
         """
 
-        from whoosh-reloaded.query import And, Not
+        from whoosh_reloaded.query import And, Not
+
         return And([self, Not(query)]).normalize()
 
     def __hash__(self):
@@ -210,14 +218,12 @@ class Query(object):
         return True
 
     def children(self):
-        """Returns an iterator of the subqueries of this object.
-        """
+        """Returns an iterator of the subqueries of this object."""
 
         return iter([])
 
     def is_range(self):
-        """Returns True if this object searches for values within a range.
-        """
+        """Returns True if this object searches for values within a range."""
 
         return False
 
@@ -301,12 +307,10 @@ class Query(object):
         if self.is_leaf():
             return copy.copy(self)
         else:
-            return self.apply(methodcaller("replace", fieldname, oldtext,
-                                           newtext))
+            return self.apply(methodcaller("replace", fieldname, oldtext, newtext))
 
     def copy(self):
-        """Deprecated, just use ``copy.deepcopy``.
-        """
+        """Deprecated, just use ``copy.deepcopy``."""
 
         return copy.deepcopy(self)
 
@@ -379,8 +383,8 @@ class Query(object):
         Recursively get all individual terms and phrases that are part of this Query
         """
 
-        from whoosh-reloaded.query.positional import Phrase
-        from whoosh-reloaded.query.terms import Term
+        from whoosh_reloaded.query.positional import Phrase
+        from whoosh_reloaded.query.terms import Term
 
         terms = []
         phrases = []
@@ -591,6 +595,7 @@ class Query(object):
 
 # Null query
 
+
 class _NullQuery(Query):
     "Represents a query that won't match anything."
 
@@ -647,6 +652,7 @@ NullQuery = _NullQuery()
 
 # Every
 
+
 class Every(Query):
     """A query that matches every document containing any term in a given
     field. If you don't specify a field, the query matches every document.
@@ -699,13 +705,19 @@ class Every(Query):
         self.boost = boost
 
     def __repr__(self):
-        return "%s(%r, boost=%s)" % (self.__class__.__name__, self.fieldname,
-                                     self.boost)
+        return "%s(%r, boost=%s)" % (
+            self.__class__.__name__,
+            self.fieldname,
+            self.boost,
+        )
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.fieldname == other.fieldname
-                and self.boost == other.boost)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.fieldname == other.fieldname
+            and self.boost == other.boost
+        )
 
     def __unicode__(self):
         return u("%s:*") % self.fieldname

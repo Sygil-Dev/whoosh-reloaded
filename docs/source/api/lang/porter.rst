@@ -2,6 +2,6 @@
 ``lang.porter`` module
 ======================
 
-.. automodule:: whoosh-reloaded.lang.porter
+.. automodule:: whoosh_reloaded.lang.porter
 
 .. autofunction:: stem

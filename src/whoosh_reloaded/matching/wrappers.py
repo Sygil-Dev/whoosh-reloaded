@@ -27,20 +27,18 @@
 
 from __future__ import division
 
-from whoosh-reloaded.matching import mcore
+from whoosh_reloaded.matching import mcore
 
 
 class WrappingMatcher(mcore.Matcher):
-    """Base class for matchers that wrap sub-matchers.
-    """
+    """Base class for matchers that wrap sub-matchers."""
 
     def __init__(self, child, boost=1.0):
         self.child = child
         self.boost = boost
 
     def __repr__(self):
-        return "%s(%r, boost=%s)" % (self.__class__.__name__, self.child,
-                                     self.boost)
+        return "%s(%r, boost=%s)" % (self.__class__.__name__, self.child, self.boost)
 
     def copy(self):
         kwargs = {}
@@ -116,8 +114,7 @@ class WrappingMatcher(mcore.Matcher):
 
 
 class MultiMatcher(mcore.Matcher):
-    """Serializes the results of a list of sub-matchers.
-    """
+    """Serializes the results of a list of sub-matchers."""
 
     def __init__(self, matchers, idoffsets, scorer=None, current=0):
         """
@@ -133,9 +130,12 @@ class MultiMatcher(mcore.Matcher):
         self._next_matcher()
 
     def __repr__(self):
-        return "%s(%r, %r, current=%s)" % (self.__class__.__name__,
-                                           self.matchers, self.offsets,
-                                           self.current)
+        return "%s(%r, %r, current=%s)" % (
+            self.__class__.__name__,
+            self.matchers,
+            self.offsets,
+            self.current,
+        )
 
     def is_active(self):
         return self.current < len(self.matchers)
@@ -150,17 +150,17 @@ class MultiMatcher(mcore.Matcher):
 
     def _next_matcher(self):
         matchers = self.matchers
-        while (self.current < len(matchers)
-               and not matchers[self.current].is_active()):
+        while self.current < len(matchers) and not matchers[self.current].is_active():
             self.current += 1
 
     def copy(self):
-        return self.__class__([mr.copy() for mr in self.matchers],
-                              self.offsets, current=self.current)
+        return self.__class__(
+            [mr.copy() for mr in self.matchers], self.offsets, current=self.current
+        )
 
     def depth(self):
         if self.is_active():
-            return 1 + max(mr.depth() for mr in self.matchers[self.current:])
+            return 1 + max(mr.depth() for mr in self.matchers[self.current :])
         else:
             return 0
 
@@ -169,10 +169,10 @@ class MultiMatcher(mcore.Matcher):
         if minquality:
             # Skip sub-matchers that don't have a high enough max quality to
             # contribute
-            while (m.is_active()
-                   and m.matchers[m.current].max_quality() < minquality):
-                m = self.__class__(self.matchers, self.offsets, self.scorer,
-                                   m.current + 1)
+            while m.is_active() and m.matchers[m.current].max_quality() < minquality:
+                m = self.__class__(
+                    self.matchers, self.offsets, self.scorer, m.current + 1
+                )
                 m._next_matcher()
 
         if not m.is_active():
@@ -235,11 +235,10 @@ class MultiMatcher(mcore.Matcher):
         return r
 
     def supports_block_quality(self):
-        return all(mr.supports_block_quality() for mr
-                   in self.matchers[self.current:])
+        return all(mr.supports_block_quality() for mr in self.matchers[self.current :])
 
     def max_quality(self):
-        return max(m.max_quality() for m in self.matchers[self.current:])
+        return max(m.max_quality() for m in self.matchers[self.current :])
 
     def block_quality(self):
         return self.matchers[self.current].block_quality()
@@ -276,21 +275,27 @@ class FilterMatcher(WrappingMatcher):
         self._find_next()
 
     def __repr__(self):
-        return "%s(%r, %r, %r, boost=%s)" % (self.__class__.__name__,
-                                             self.child, self._ids,
-                                             self._exclude, self.boost)
+        return "%s(%r, %r, %r, boost=%s)" % (
+            self.__class__.__name__,
+            self.child,
+            self._ids,
+            self._exclude,
+            self.boost,
+        )
 
     def reset(self):
         self.child.reset()
         self._find_next()
 
     def copy(self):
-        return self.__class__(self.child.copy(), self._ids, self._exclude,
-                              boost=self.boost)
+        return self.__class__(
+            self.child.copy(), self._ids, self._exclude, boost=self.boost
+        )
 
     def _replacement(self, newchild):
-        return self.__class__(newchild, self._ids, exclude=self._exclude,
-                              boost=self.boost)
+        return self.__class__(
+            newchild, self._ids, exclude=self._exclude, boost=self.boost
+        )
 
     def _find_next(self):
         child = self.child
@@ -323,8 +328,7 @@ class FilterMatcher(WrappingMatcher):
     def all_items(self):
         ids = self._ids
         if self._exclude:
-            return (item for item in self.child.all_items()
-                    if item[0] not in ids)
+            return (item for item in self.child.all_items() if item[0] not in ids)
         else:
             return (item for item in self.child.all_items() if item[0] in ids)
 
@@ -343,13 +347,18 @@ class InverseMatcher(WrappingMatcher):
         self._find_next()
 
     def copy(self):
-        return self.__class__(self.child.copy(), self.limit,
-                              weight=self._weight, missing=self.missing,
-                              id=self._id)
+        return self.__class__(
+            self.child.copy(),
+            self.limit,
+            weight=self._weight,
+            missing=self.missing,
+            id=self._id,
+        )
 
     def _replacement(self, newchild):
-        return self.__class__(newchild, self.limit, missing=self.missing,
-                              weight=self._weight, id=self._id)
+        return self.__class__(
+            newchild, self.limit, missing=self.missing, weight=self._weight, id=self._id
+        )
 
     def is_active(self):
         return self._id < self.limit
@@ -426,7 +435,7 @@ class RequireMatcher(WrappingMatcher):
     """
 
     def __init__(self, a, b):
-        from whoosh-reloaded.matching.binary import IntersectionMatcher
+        from whoosh_reloaded.matching.binary import IntersectionMatcher
 
         self.a = a
         self.b = b
@@ -553,8 +562,9 @@ class CoordMatcher(WrappingMatcher):
         if termcount == 0 or termcount == scale:
             return 0
 
-        sqr = ((score + ((matching - 1) / (termcount - scale) ** 2)) *
-               ((termcount - 1) / termcount))
+        sqr = (score + ((matching - 1) / (termcount - scale) ** 2)) * (
+            (termcount - 1) / termcount
+        )
         return sqr
 
     def max_quality(self):

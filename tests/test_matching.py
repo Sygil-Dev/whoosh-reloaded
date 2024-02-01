@@ -1,17 +1,16 @@
 from __future__ import with_statement
 from random import randint, choice, sample
 
-from whoosh-reloaded import fields, matching, qparser, query
-from whoosh-reloaded.compat import b, u, xrange, permutations
-from whoosh-reloaded.filedb.filestore import RamStorage
-from whoosh-reloaded.query import And, Term
-from whoosh-reloaded.util import make_binary_tree
-from whoosh-reloaded.scoring import WeightScorer
+from whoosh_reloaded import fields, matching, qparser, query
+from whoosh_reloaded.compat import b, u, xrange, permutations
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.query import And, Term
+from whoosh_reloaded.util import make_binary_tree
+from whoosh_reloaded.scoring import WeightScorer
 
 
 def _keys(searcher, docnums):
-    return sorted([searcher.stored_fields(docnum)['key']
-                   for docnum in docnums])
+    return sorted([searcher.stored_fields(docnum)["key"] for docnum in docnums])
 
 
 def test_nullmatcher():
@@ -63,8 +62,7 @@ def test_listmatcher_skip_to_quality_identical_scores():
 
 
 def test_wrapper():
-    wm = matching.WrappingMatcher(matching.ListMatcher([1, 2, 5, 9, 10]),
-                                  boost=2.0)
+    wm = matching.WrappingMatcher(matching.ListMatcher([1, 2, 5, 9, 10]), boost=2.0)
     ls = []
     while wm.is_active():
         ls.append((wm.id(), wm.score()))
@@ -87,16 +85,19 @@ def test_filter():
 
 
 def test_exclude():
-    em = matching.FilterMatcher(matching.ListMatcher([1, 2, 5, 9, 10]),
-                                frozenset([2, 9]), exclude=True)
+    em = matching.FilterMatcher(
+        matching.ListMatcher([1, 2, 5, 9, 10]), frozenset([2, 9]), exclude=True
+    )
     assert list(em.all_ids()) == [1, 5, 10]
 
-    em = matching.FilterMatcher(matching.ListMatcher([1, 2, 5, 9, 10]),
-                                frozenset([2, 9]), exclude=True)
+    em = matching.FilterMatcher(
+        matching.ListMatcher([1, 2, 5, 9, 10]), frozenset([2, 9]), exclude=True
+    )
     assert list(em.all_ids()) == [1, 5, 10]
 
-    em = matching.FilterMatcher(matching.ListMatcher([1, 2, 5, 9, 10]),
-                                frozenset([2, 9]), exclude=True)
+    em = matching.FilterMatcher(
+        matching.ListMatcher([1, 2, 5, 9, 10]), frozenset([2, 9]), exclude=True
+    )
     em.next()
     em.next()
     em = em.copy()
@@ -253,8 +254,7 @@ def test_andmaybe():
 
 
 def test_intersection():
-    schema = fields.Schema(key=fields.ID(stored=True),
-                           value=fields.TEXT(stored=True))
+    schema = fields.Schema(key=fields.ID(stored=True), value=fields.TEXT(stored=True))
     st = RamStorage()
     ix = st.create_index(schema)
 
@@ -280,9 +280,21 @@ def test_intersection():
 
 
 def test_random_intersections():
-    domain = [u("alpha"), u("bravo"), u("charlie"), u("delta"), u("echo"),
-              u("foxtrot"), u("golf"), u("hotel"), u("india"), u("juliet"),
-              u("kilo"), u("lima"), u("mike")]
+    domain = [
+        u("alpha"),
+        u("bravo"),
+        u("charlie"),
+        u("delta"),
+        u("echo"),
+        u("foxtrot"),
+        u("golf"),
+        u("hotel"),
+        u("india"),
+        u("juliet"),
+        u("kilo"),
+        u("lima"),
+        u("mike"),
+    ]
     segments = 5
     docsperseg = 50
     fieldlimits = (3, 10)
@@ -300,8 +312,7 @@ def test_random_intersections():
         for j in xrange(docsperseg):
             docnum = i * docsperseg + j
             # Create a string of random words
-            doc = u(" ").join(choice(domain)
-                            for _ in xrange(randint(*fieldlimits)))
+            doc = u(" ").join(choice(domain) for _ in xrange(randint(*fieldlimits)))
             # Add the string to the index
             w.add_document(key=docnum, value=doc)
             # Add a (docnum, string) tuple to the documents list
@@ -454,26 +465,30 @@ def test_current_terms():
     w.commit()
 
     with ix.searcher() as s:
-        q = query.And([query.Term("text", "alfa"),
-                       query.Term("text", "charlie")])
+        q = query.And([query.Term("text", "alfa"), query.Term("text", "charlie")])
         m = q.matcher(s)
 
         while m.is_active():
-            assert sorted(m.matching_terms()) == [("text", b("alfa")), ("text", b("charlie"))]
+            assert sorted(m.matching_terms()) == [
+                ("text", b("alfa")),
+                ("text", b("charlie")),
+            ]
             m.next()
 
 
 def test_dismax():
-    schema = fields.Schema(id=fields.ID(stored=True), title=fields.TEXT, body=fields.TEXT)
+    schema = fields.Schema(
+        id=fields.ID(stored=True), title=fields.TEXT, body=fields.TEXT
+    )
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
-        w.add_document(id=u('1'), title='alfa', body='bravo')
-        w.add_document(id=u('1'), title='charlie', body='bravo')
-        w.add_document(id=u('1'), title='alfa', body='alfa')
+        w.add_document(id=u("1"), title="alfa", body="bravo")
+        w.add_document(id=u("1"), title="charlie", body="bravo")
+        w.add_document(id=u("1"), title="alfa", body="alfa")
 
     with ix.searcher() as s:
-        qp = qparser.MultifieldParser(['title', 'body'], schema)
+        qp = qparser.MultifieldParser(["title", "body"], schema)
         dp = qparser.DisMaxParser({"body": 1.0, "title": 2.5}, None)
 
         query_text = u("alfa OR bravo")
@@ -545,8 +560,7 @@ def test_every_matcher():
             # Pass the child matchers, the number of documents in the searcher,
             # and a reference to the searcher's is_deleted() method to the
             # matcher
-            return MyMatcher(children, searcher.doc_count_all(),
-                             searcher.is_deleted)
+            return MyMatcher(children, searcher.doc_count_all(), searcher.is_deleted)
 
     class MyMatcher(matching.UnionMatcher):
         def __init__(self, children, doccount, is_deleted):
@@ -575,4 +589,3 @@ def test_every_matcher():
                     # Something here
                     pass
             return 0
-

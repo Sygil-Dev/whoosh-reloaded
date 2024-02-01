@@ -7,8 +7,8 @@ from __future__ import print_function, with_statement
 import os.path, random, sys
 from datetime import datetime
 
-from whoosh-reloaded import fields, index
-from whoosh-reloaded.compat import u, xrange
+from whoosh_reloaded import fields, index
+from whoosh_reloaded.compat import u, xrange
 
 
 if len(sys.argv) < 2:
@@ -17,18 +17,21 @@ if len(sys.argv) < 2:
 indexdir = sys.argv[1]
 print("Creating checkpoint index in", indexdir)
 
-schema = fields.Schema(path=fields.ID(stored=True, unique=True),
-                       num=fields.NUMERIC(int, stored=True),
-                       frac=fields.NUMERIC(float, stored=True),
-                       dt=fields.DATETIME(stored=True),
-                       tag=fields.KEYWORD,
-                       title=fields.TEXT(stored=True),
-                       ngrams=fields.NGRAMWORDS,
-                       )
+schema = fields.Schema(
+    path=fields.ID(stored=True, unique=True),
+    num=fields.NUMERIC(int, stored=True),
+    frac=fields.NUMERIC(float, stored=True),
+    dt=fields.DATETIME(stored=True),
+    tag=fields.KEYWORD,
+    title=fields.TEXT(stored=True),
+    ngrams=fields.NGRAMWORDS,
+)
 
-words = u("alfa bravo charlie delta echo foxtrot golf hotel india"
-          "juliet kilo lima mike november oskar papa quebec romeo"
-          "sierra tango").split()
+words = u(
+    "alfa bravo charlie delta echo foxtrot golf hotel india"
+    "juliet kilo lima mike november oskar papa quebec romeo"
+    "sierra tango"
+).split()
 
 if not os.path.exists(indexdir):
     os.makedirs(indexdir)
@@ -44,9 +47,15 @@ for segnum in range(3):
             title = " ".join(random.choice(words) for _ in xrange(100))
             dt = datetime(year=2000 + counter, month=(counter % 12) + 1, day=15)
 
-            w.add_document(path=path, num=counter, frac=frac, dt=dt,
-                           tag=words[counter % len(words)],
-                           title=title, ngrams=title)
+            w.add_document(
+                path=path,
+                num=counter,
+                frac=frac,
+                dt=dt,
+                tag=words[counter % len(words)],
+                title=title,
+                ngrams=title,
+            )
             counter += 1
 
 with ix.writer() as w:

@@ -29,14 +29,15 @@ from __future__ import with_statement
 import errno, os, sys, tempfile
 from threading import Lock
 
-from whoosh-reloaded.compat import BytesIO, memoryview_
-from whoosh-reloaded.filedb.structfile import BufferFile, StructFile
-from whoosh-reloaded.index import _DEF_INDEX_NAME, EmptyIndexError
-from whoosh-reloaded.util import random_name
-from whoosh-reloaded.util.filelock import FileLock
+from whoosh_reloaded.compat import BytesIO, memoryview_
+from whoosh_reloaded.filedb.structfile import BufferFile, StructFile
+from whoosh_reloaded.index import _DEF_INDEX_NAME, EmptyIndexError
+from whoosh_reloaded.util import random_name
+from whoosh_reloaded.util.filelock import FileLock
 
 
 # Exceptions
+
 
 class StorageError(Exception):
     pass
@@ -48,12 +49,13 @@ class ReadOnlyError(StorageError):
 
 # Base class
 
+
 class Storage(object):
     """Abstract base class for storage objects.
 
     A storage object is a virtual flat filesystem, allowing the creation and
     retrieval of file-like objects
-    (:class:`~whoosh-reloaded.filedb.structfile.StructFile` objects). The default
+    (:class:`~whoosh_reloaded.filedb.structfile.StructFile` objects). The default
     implementation (:class:`FileStorage`) uses actual files in a directory.
 
     All access to files in Whoosh goes through this object. This allows more
@@ -92,7 +94,7 @@ class Storage(object):
         a filesystem-based implementation might create a directory, while a
         database implementation might create tables. For example::
 
-            from whoosh-reloaded.filedb.filestore import FileStorage
+            from whoosh_reloaded.filedb.filestore import FileStorage
             # Create a storage object
             st = FileStorage("indexdir")
             # Create any necessary resources
@@ -123,56 +125,58 @@ class Storage(object):
     def create_index(self, schema, indexname=_DEF_INDEX_NAME, indexclass=None):
         """Creates a new index in this storage.
 
-        >>> from whoosh-reloaded import fields
-        >>> from whoosh-reloaded.filedb.filestore import FileStorage
+        >>> from whoosh_reloaded import fields
+        >>> from whoosh_reloaded.filedb.filestore import FileStorage
         >>> schema = fields.Schema(content=fields.TEXT)
         >>> # Create the storage directory
         >>> st = FileStorage.create("indexdir")
         >>> # Create an index in the storage
         >>> ix = st.create_index(schema)
 
-        :param schema: the :class:`whoosh-reloaded.fields.Schema` object to use for the
+        :param schema: the :class:`whoosh_reloaded.fields.Schema` object to use for the
             new index.
         :param indexname: the name of the index within the storage object. You
             can use this option to store multiple indexes in the same storage.
         :param indexclass: an optional custom ``Index`` sub-class to use to
             create the index files. The default is
-            :class:`whoosh-reloaded.index.FileIndex`. This method will call the
+            :class:`whoosh_reloaded.index.FileIndex`. This method will call the
             ``create`` class method on the given class to create the index.
-        :return: a :class:`whoosh-reloaded.index.Index` instance.
+        :return: a :class:`whoosh_reloaded.index.Index` instance.
         """
 
         if self.readonly:
             raise ReadOnlyError
         if indexclass is None:
-            import whoosh-reloaded.index
-            indexclass = whoosh-reloaded.index.FileIndex
+            import whoosh_reloaded.index
+
+            indexclass = whoosh_reloaded.index.FileIndex
         return indexclass.create(self, schema, indexname)
 
     def open_index(self, indexname=_DEF_INDEX_NAME, schema=None, indexclass=None):
         """Opens an existing index (created using :meth:`create_index`) in this
         storage.
 
-        >>> from whoosh-reloaded.filedb.filestore import FileStorage
+        >>> from whoosh_reloaded.filedb.filestore import FileStorage
         >>> st = FileStorage("indexdir")
         >>> # Open an index in the storage
         >>> ix = st.open_index()
 
         :param indexname: the name of the index within the storage object. You
             can use this option to store multiple indexes in the same storage.
-        :param schema: if you pass in a :class:`whoosh-reloaded.fields.Schema` object
+        :param schema: if you pass in a :class:`whoosh_reloaded.fields.Schema` object
             using this argument, it will override the schema that was stored
             with the index.
         :param indexclass: an optional custom ``Index`` sub-class to use to
             open the index files. The default is
-            :class:`whoosh-reloaded.index.FileIndex`. This method will instantiate the
+            :class:`whoosh_reloaded.index.FileIndex`. This method will instantiate the
             class with this storage object.
-        :return: a :class:`whoosh-reloaded.index.Index` instance.
+        :return: a :class:`whoosh_reloaded.index.Index` instance.
         """
 
         if indexclass is None:
-            import whoosh-reloaded.index
-            indexclass = whoosh-reloaded.index.FileIndex
+            import whoosh_reloaded.index
+
+            indexclass = whoosh_reloaded.index.FileIndex
         return indexclass(self, schema=schema, indexname=indexname)
 
     def index_exists(self, indexname=None):
@@ -198,7 +202,7 @@ class Storage(object):
         """Creates a file with the given name in this storage.
 
         :param name: the name for the new file.
-        :return: a :class:`whoosh-reloaded.filedb.structfile.StructFile` instance.
+        :return: a :class:`whoosh_reloaded.filedb.structfile.StructFile` instance.
         """
 
         raise NotImplementedError
@@ -207,7 +211,7 @@ class Storage(object):
         """Opens a file with the given name in this storage.
 
         :param name: the name for the new file.
-        :return: a :class:`whoosh-reloaded.filedb.structfile.StructFile` instance.
+        :return: a :class:`whoosh_reloaded.filedb.structfile.StructFile` instance.
         """
 
         raise NotImplementedError
@@ -408,7 +412,7 @@ class FileStorage(Storage):
         """Creates this storage object's directory path using ``os.makedirs`` if
         it doesn't already exist.
 
-        >>> from whoosh-reloaded.filedb.filestore import FileStorage
+        >>> from whoosh_reloaded.filedb.filestore import FileStorage
         >>> st = FileStorage("indexdir")
         >>> st.create()
 
@@ -473,7 +477,7 @@ class FileStorage(Storage):
         :param excl: if True, try to open the file in "exclusive" mode.
         :param mode: the mode flags with which to open the file. The default is
             ``"wb"``.
-        :return: a :class:`whoosh-reloaded.filedb.structfile.StructFile` instance.
+        :return: a :class:`whoosh_reloaded.filedb.structfile.StructFile` instance.
         """
 
         if self.readonly:
@@ -497,8 +501,8 @@ class FileStorage(Storage):
 
         :param name: the name of the file to open.
         :param kwargs: additional keyword arguments are passed through to the
-            :class:`~whoosh-reloaded.filedb.structfile.StructFile` initializer.
-        :return: a :class:`whoosh-reloaded.filedb.structfile.StructFile` instance.
+            :class:`~whoosh_reloaded.filedb.structfile.StructFile` initializer.
+        :return: a :class:`whoosh_reloaded.filedb.structfile.StructFile` instance.
         """
 
         f = StructFile(open(self._fpath(name), "rb"), name=name, **kwargs)
@@ -565,15 +569,14 @@ class FileStorage(Storage):
 
 
 class RamStorage(Storage):
-    """Storage object that keeps the index in memory.
-    """
+    """Storage object that keeps the index in memory."""
 
     supports_mmap = False
 
     def __init__(self):
         self.files = {}
         self.locks = {}
-        self.folder = ''
+        self.folder = ""
 
     def destroy(self):
         del self.files
@@ -617,6 +620,7 @@ class RamStorage(Storage):
     def create_file(self, name, **kwargs):
         def onclose_fn(sfile):
             self.files[name] = sfile.file.getvalue()
+
         f = StructFile(BytesIO(), name=name, onclose=onclose_fn)
         return f
 

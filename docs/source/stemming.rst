@@ -29,7 +29,7 @@ and Lovins.
 
 ::
 
-    >>> from whoosh-reloaded.lang.porter import stem
+    >>> from whoosh_reloaded.lang.porter import stem
     >>> stem("rendering")
     'render'
 
@@ -53,8 +53,8 @@ analyzer chain.
 The :func:`whoosh-reloaded.analysis.StemmingAnalyzer` is a pre-packaged analyzer that
 combines a tokenizer, lower-case filter, optional stop filter, and stem filter::
 
-    from whoosh-reloaded import fields
-    from whoosh-reloaded.analysis import StemmingAnalyzer
+    from whoosh_reloaded import fields
+    from whoosh_reloaded.analysis import StemmingAnalyzer
 
     stem_ana = StemmingAnalyzer()
     schema = fields.Schema(title=TEXT(analyzer=stem_ana, stored=True),
@@ -86,7 +86,7 @@ variations of the word.
 
 ::
 
-    >>> from whoosh-reloaded.lang.morph_en import variations
+    >>> from whoosh_reloaded.lang.morph_en import variations
     >>> variations("rendered")
     set(['rendered', 'rendernesses', 'render', 'renderless', 'rendering',
     'renderness', 'renderes', 'renderer', 'renderements', 'rendereless',
@@ -114,7 +114,7 @@ To have the query parser use :class:`whoosh-reloaded.query.Variations` instead o
 :class:`whoosh-reloaded.query.Term` for individual terms, use the ``termclass``
 keyword argument to the parser initialization method::
 
-    from whoosh-reloaded import qparser, query
+    from whoosh_reloaded import qparser, query
 
     qp = qparser.QueryParser("content", termclass=query.Variations)
 
@@ -170,9 +170,9 @@ text. For example, it will filter the tokens ``u'café', u'resumé', ...`` to
 ``u'cafe', u'resume', ...``. This is usually the method you'll want to use
 unless you need to use a charset to tokenize terms::
 
-    from whoosh-reloaded.analysis import CharsetFilter, StemmingAnalyzer
-    from whoosh-reloaded import fields
-    from whoosh-reloaded.support.charset import accent_map
+    from whoosh_reloaded.analysis import CharsetFilter, StemmingAnalyzer
+    from whoosh_reloaded import fields
+    from whoosh_reloaded.support.charset import accent_map
 
     # For example, to add an accent-folding filter to a stemming analyzer:
     my_analyzer = StemmingAnalyzer() | CharsetFilter(accent_map)
@@ -194,8 +194,8 @@ required by ``CharsetTokenizer`` and ``CharsetFilter``::
 
     # To create a filter using an enourmous character map for most languages
     # generated from a Sphinx charset table
-    from whoosh-reloaded.analysis import CharsetFilter
-    from whoosh-reloaded.support.charset import default_charset, charset_table_to_dict
+    from whoosh_reloaded.analysis import CharsetFilter
+    from whoosh_reloaded.support.charset import default_charset, charset_table_to_dict
     charmap = charset_table_to_dict(default_charset)
     my_analyzer = StemmingAnalyzer() | CharsetFilter(charmap)
 

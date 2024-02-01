@@ -36,11 +36,11 @@ try:
 except ImportError:
     mmap = None
 
-from whoosh-reloaded.compat import BytesIO, memoryview_
-from whoosh-reloaded.filedb.structfile import BufferFile, StructFile
-from whoosh-reloaded.filedb.filestore import FileStorage, StorageError
-from whoosh-reloaded.system import emptybytes
-from whoosh-reloaded.util import random_name
+from whoosh_reloaded.compat import BytesIO, memoryview_
+from whoosh_reloaded.filedb.structfile import BufferFile, StructFile
+from whoosh_reloaded.filedb.filestore import FileStorage, StorageError
+from whoosh_reloaded.system import emptybytes
+from whoosh_reloaded.util import random_name
 
 
 class CompoundStorage(FileStorage):
@@ -162,8 +162,7 @@ class CompoundStorage(FileStorage):
             offset = dbfile.tell()
             length = store.file_length(name)
             modified = store.file_modified(name)
-            directory[name] = {"offset": offset, "length": length,
-                               "modified": modified}
+            directory[name] = {"offset": offset, "length": length, "modified": modified}
             f = store.open_file(name)
             copyfileobj(f, dbfile)
             f.close()
@@ -288,8 +287,7 @@ class CompoundWriter(object):
             filestart = dbfile.tell()
             for block in blocks():
                 dbfile.write(block)
-            directory[name] = {"offset": filestart,
-                               "length": dbfile.tell() - filestart}
+            directory[name] = {"offset": filestart, "length": dbfile.tell() - filestart}
 
         CompoundStorage.write_dir(dbfile, basepos, directory)
 

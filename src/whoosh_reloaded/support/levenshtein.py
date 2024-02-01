@@ -2,12 +2,11 @@
 Contains functions implementing edit distance algorithms.
 """
 
-from whoosh-reloaded.compat import xrange
+from whoosh_reloaded.compat import xrange
 
 
 def levenshtein(seq1, seq2, limit=None):
-    """Returns the Levenshtein edit distance between two strings.
-    """
+    """Returns the Levenshtein edit distance between two strings."""
 
     oneago = None
     thisrow = list(range(1, len(seq2) + 1)) + [0]
@@ -29,8 +28,7 @@ def levenshtein(seq1, seq2, limit=None):
 
 
 def damerau_levenshtein(seq1, seq2, limit=None):
-    """Returns the Damerau-Levenshtein edit distance between two strings.
-    """
+    """Returns the Damerau-Levenshtein edit distance between two strings."""
 
     oneago = None
     thisrow = list(range(1, len(seq2) + 1)) + [0]
@@ -45,8 +43,13 @@ def damerau_levenshtein(seq1, seq2, limit=None):
             subcost = oneago[y - 1] + (seq1[x] != seq2[y])
             thisrow[y] = min(delcost, addcost, subcost)
             # This block deals with transpositions
-            if (x > 0 and y > 0 and seq1[x] == seq2[y - 1]
-                and seq1[x - 1] == seq2[y] and seq1[x] != seq2[y]):
+            if (
+                x > 0
+                and y > 0
+                and seq1[x] == seq2[y - 1]
+                and seq1[x - 1] == seq2[y]
+                and seq1[x] != seq2[y]
+            ):
                 thisrow[y] = min(thisrow[y], twoago[y - 2] + 1)
 
         if limit and x > limit and min(thisrow) > limit:

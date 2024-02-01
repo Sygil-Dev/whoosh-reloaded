@@ -34,13 +34,14 @@ import os, struct, sys
 from binascii import crc32
 from hashlib import md5  # @UnresolvedImport
 
-from whoosh-reloaded.compat import b, bytes_type
-from whoosh-reloaded.compat import xrange
-from whoosh-reloaded.util.numlists import GrowableArray
-from whoosh-reloaded.system import _INT_SIZE, emptybytes
+from whoosh_reloaded.compat import b, bytes_type
+from whoosh_reloaded.compat import xrange
+from whoosh_reloaded.util.numlists import GrowableArray
+from whoosh_reloaded.system import _INT_SIZE, emptybytes
 
 
 # Exceptions
+
 
 class FileFormatError(Exception):
     pass
@@ -48,21 +49,22 @@ class FileFormatError(Exception):
 
 # Hash functions
 
+
 def cdb_hash(key):
     h = 5381
     for c in key:
-        h = (h + (h << 5)) & 0xffffffff ^ ord(c)
+        h = (h + (h << 5)) & 0xFFFFFFFF ^ ord(c)
     return h
 
 
 def md5_hash(key):
     if sys.version_info < (3, 9):
-        return int(md5(key).hexdigest(), 16) & 0xffffffff
-    return int(md5(key, usedforsecurity=False).hexdigest(), 16) & 0xffffffff
+        return int(md5(key).hexdigest(), 16) & 0xFFFFFFFF
+    return int(md5(key, usedforsecurity=False).hexdigest(), 16) & 0xFFFFFFFF
 
 
 def crc_hash(key):
-    return crc32(key) & 0xffffffff
+    return crc32(key) & 0xFFFFFFFF
 
 
 _hash_functions = (md5_hash, crc_hash, cdb_hash)
@@ -81,6 +83,7 @@ _directory_size = 256 * _dir_entry.size
 
 
 # Basic hash file
+
 
 class HashWriter(object):
     """Implements a fast on-disk key-value store. This hash uses a two-level
@@ -375,8 +378,7 @@ class HashReader(object):
         return default
 
     def all(self, key):
-        """Yields a sequence of values associated with the given key.
-        """
+        """Yields a sequence of values associated with the given key."""
 
         dbfile = self.dbfile
         for datapos, datalen in self.ranges_for_key(key):
@@ -439,6 +441,7 @@ class HashReader(object):
 
 # Ordered hash file
 
+
 class OrderedHashWriter(HashWriter):
     """Implements an on-disk hash, but requires that keys be added in order.
     An :class:`OrderedHashReader` can then look up "nearest keys" based on
@@ -454,8 +457,7 @@ class OrderedHashWriter(HashWriter):
 
     def add(self, key, value):
         if key <= self.lastkey:
-            raise ValueError("Keys must increase: %r..%r"
-                             % (self.lastkey, key))
+            raise ValueError("Keys must increase: %r..%r" % (self.lastkey, key))
         self.index.append(self.dbfile.tell())
         HashWriter.add(self, key, value)
         self.lastkey = key
@@ -571,6 +573,7 @@ class OrderedHashReader(HashReader):
 
 # Fielded Ordered hash file
 
+
 class FieldedOrderedHashWriter(HashWriter):
     """Implements an on-disk hash, but writes separate position indexes for
     each field.
@@ -593,8 +596,7 @@ class FieldedOrderedHashWriter(HashWriter):
 
     def add(self, key, value):
         if key <= self.lastkey:
-            raise ValueError("Keys must increase: %r..%r"
-                             % (self.lastkey, key))
+            raise ValueError("Keys must increase: %r..%r" % (self.lastkey, key))
         self.poses.append(self.dbfile.tell() - self.fieldstart)
         HashWriter.add(self, key, value)
         self.lastkey = key
@@ -603,8 +605,12 @@ class FieldedOrderedHashWriter(HashWriter):
         dbfile = self.dbfile
         fieldname = self.fieldname
         poses = self.poses
-        self.fieldmap[fieldname] = (self.fieldstart, dbfile.tell(), len(poses),
-                                    poses.typecode)
+        self.fieldmap[fieldname] = (
+            self.fieldstart,
+            dbfile.tell(),
+            len(poses),
+            poses.typecode,
+        )
         poses.to_file(dbfile)
 
 
@@ -731,6 +737,3 @@ class FieldedOrderedHashReader(HashReader):
         for item in self.term_ranges_from(fieldname, btext):
             keypos, keylen, datapos, datalen = item
             yield (dbfile.get(keypos, keylen), dbfile.get(datapos, datalen))
-
-
-

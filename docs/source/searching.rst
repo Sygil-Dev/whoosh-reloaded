@@ -43,7 +43,7 @@ However, the most important method on the ``Searcher`` object is
 :class:`whoosh-reloaded.query.Query` object and returns a
 :class:`~whoosh-reloaded.searching.Results` object::
 
-    from whoosh-reloaded.qparser import QueryParser
+    from whoosh_reloaded.qparser import QueryParser
 
     qp = QueryParser("content", schema=myindex.schema)
     q = qp.parse(u"hello world")
@@ -135,7 +135,7 @@ algorithms. The default is :class:`~whoosh-reloaded.scoring.BM25F`.
 You can set the scoring object to use when you create the searcher using the
 ``weighting`` keyword argument::
 
-    from whoosh-reloaded import scoring
+    from whoosh_reloaded import scoring
 
     with myindex.searcher(weighting=scoring.TF_IDF()) as s:
         ...
@@ -264,7 +264,7 @@ to control which documents to keep when collapsing.
 For example, in a product search you could display results sorted by decreasing
 price, and eliminate all but the highest rated item of each product type::
 
-    from whoosh-reloaded import sorting
+    from whoosh_reloaded import sorting
 
     with myindex.searcher() as s:
         price_facet = sorting.FieldFacet("price", reverse=True)
@@ -295,7 +295,7 @@ Time limited searches
 
 To limit the amount of time a search can take::
 
-    from whoosh-reloaded.collectors import TimeLimitCollector, TimeLimit
+    from whoosh_reloaded.collectors import TimeLimitCollector, TimeLimit
 
     with myindex.searcher() as s:
         # Get a collector object

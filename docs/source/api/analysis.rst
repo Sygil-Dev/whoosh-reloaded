@@ -2,7 +2,7 @@
 ``analysis`` module
 ===================
 
-.. automodule:: whoosh-reloaded.analysis
+.. automodule:: whoosh_reloaded.analysis
 
 Analyzers
 =========

@@ -29,25 +29,59 @@
 
 from itertools import chain
 
-from whoosh-reloaded.compat import next
-from whoosh-reloaded.analysis.acore import Composable
-from whoosh-reloaded.util.text import rcompile
+from whoosh_reloaded.compat import next
+from whoosh_reloaded.analysis.acore import Composable
+from whoosh_reloaded.util.text import rcompile
 
 
 # Default list of stop words (words so common it's usually wasteful to index
 # them). This list is used by the StopFilter class, which allows you to supply
 # an optional list to override this one.
 
-STOP_WORDS = frozenset(('a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'can',
-                        'for', 'from', 'have', 'if', 'in', 'is', 'it', 'may',
-                        'not', 'of', 'on', 'or', 'tbd', 'that', 'the', 'this',
-                        'to', 'us', 'we', 'when', 'will', 'with', 'yet',
-                        'you', 'your'))
+STOP_WORDS = frozenset(
+    (
+        "a",
+        "an",
+        "and",
+        "are",
+        "as",
+        "at",
+        "be",
+        "by",
+        "can",
+        "for",
+        "from",
+        "have",
+        "if",
+        "in",
+        "is",
+        "it",
+        "may",
+        "not",
+        "of",
+        "on",
+        "or",
+        "tbd",
+        "that",
+        "the",
+        "this",
+        "to",
+        "us",
+        "we",
+        "when",
+        "will",
+        "with",
+        "yet",
+        "you",
+        "your",
+    )
+)
 
 
 # Simple pattern for filtering URLs, may be useful
 
-url_pattern = rcompile("""
+url_pattern = rcompile(
+    """
 (
     [A-Za-z+]+://          # URL protocol
     \\S+?                  # URL body
@@ -55,10 +89,13 @@ url_pattern = rcompile("""
 ) | (                      # or...
     \\w+([:.]?\\w+)*         # word characters, with opt. internal colons/dots
 )
-""", verbose=True)
+""",
+    verbose=True,
+)
 
 
 # Filters
+
 
 class Filter(Composable):
     """Base class for Filter objects. A Filter subclass must implement a
@@ -70,9 +107,11 @@ class Filter(Composable):
     """
 
     def __eq__(self, other):
-        return (other
-                and self.__class__ is other.__class__
-                and self.__dict__ == other.__dict__)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.__dict__ == other.__dict__
+        )
 
     def __ne__(self, other):
         return not self == other
@@ -82,8 +121,7 @@ class Filter(Composable):
 
 
 class PassFilter(Filter):
-    """An identity filter: passes the tokens through untouched.
-    """
+    """An identity filter: passes the tokens through untouched."""
 
     def __call__(self, tokens):
         return tokens
@@ -102,6 +140,7 @@ class LoggingFilter(Filter):
 
         if logger is None:
             import logging
+
             logger = logging.getLogger("whoosh-reloaded.analysis")
         self.logger = logger
 
@@ -133,9 +172,11 @@ class MultiFilter(Filter):
         self.filters = kwargs
 
     def __eq__(self, other):
-        return (other
-                and self.__class__ is other.__class__
-                and self.filters == other.filters)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.filters == other.filters
+        )
 
     def __call__(self, tokens):
         # Only selects on the first token
@@ -175,8 +216,7 @@ class TeeFilter(Filter):
         self.filters = filters
 
     def __eq__(self, other):
-        return (self.__class__ is other.__class__
-                and self.filters == other.fitlers)
+        return self.__class__ is other.__class__ and self.filters == other.fitlers
 
     def __call__(self, tokens):
         from itertools import tee
@@ -184,8 +224,10 @@ class TeeFilter(Filter):
         count = len(self.filters)
         # Tee the token iterator and wrap each teed iterator with the
         # corresponding filter
-        gens = [filter(t.copy() for t in gen) for filter, gen
-                in zip(self.filters, tee(tokens, count))]
+        gens = [
+            filter(t.copy() for t in gen)
+            for filter, gen in zip(self.filters, tee(tokens, count))
+        ]
         # Keep a count of the number of running iterators
         running = count
         while running:
@@ -228,8 +270,7 @@ class LowercaseFilter(Filter):
 
 
 class StripFilter(Filter):
-    """Calls unicode.strip() on the token text.
-    """
+    """Calls unicode.strip() on the token text."""
 
     def __call__(self, tokens):
         for t in tokens:
@@ -255,8 +296,9 @@ class StopFilter(Filter):
     has a stop word list available.
     """
 
-    def __init__(self, stoplist=STOP_WORDS, minsize=2, maxsize=None,
-                 renumber=True, lang=None):
+    def __init__(
+        self, stoplist=STOP_WORDS, minsize=2, maxsize=None, renumber=True, lang=None
+    ):
         """
         :param stoplist: A collection of words to remove from the stream.
             This is converted to a frozenset. The default is a list of
@@ -275,7 +317,7 @@ class StopFilter(Filter):
         if stoplist:
             stops.update(stoplist)
         if lang:
-            from whoosh-reloaded.lang import stopwords_for_language
+            from whoosh_reloaded.lang import stopwords_for_language
 
             stops.update(stopwords_for_language(lang))
 
@@ -285,11 +327,13 @@ class StopFilter(Filter):
         self.renumber = renumber
 
     def __eq__(self, other):
-        return (other
-                and self.__class__ is other.__class__
-                and self.stops == other.stops
-                and self.min == other.min
-                and self.renumber == other.renumber)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.stops == other.stops
+            and self.min == other.min
+            and self.renumber == other.renumber
+        )
 
     def __call__(self, tokens):
         stoplist = self.stops
@@ -300,9 +344,11 @@ class StopFilter(Filter):
         pos = None
         for t in tokens:
             text = t.text
-            if (len(text) >= minsize
+            if (
+                len(text) >= minsize
                 and (maxsize is None or len(text) <= maxsize)
-                and text not in stoplist):
+                and text not in stoplist
+            ):
                 # This is not a stop word
                 if renumber and t.positions:
                     if pos is None:
@@ -327,7 +373,7 @@ class CharsetFilter(Filter):
 
     The ``whoosh-reloaded.support.charset`` module has a useful map for accent folding.
 
-    >>> from whoosh-reloaded.support.charset import accent_map
+    >>> from whoosh_reloaded.support.charset import accent_map
     >>> retokenizer = RegexTokenizer()
     >>> chfilter = CharsetFilter(accent_map)
     >>> [t.text for t in chfilter(retokenizer(u'café'))]
@@ -337,8 +383,8 @@ class CharsetFilter(Filter):
     charset table file using
     :func:`whoosh-reloaded.support.charset.charset_table_to_dict`.
 
-    >>> from whoosh-reloaded.support.charset import charset_table_to_dict
-    >>> from whoosh-reloaded.support.charset import default_charset
+    >>> from whoosh_reloaded.support.charset import charset_table_to_dict
+    >>> from whoosh_reloaded.support.charset import default_charset
     >>> retokenizer = RegexTokenizer()
     >>> charmap = charset_table_to_dict(default_charset)
     >>> chfilter = CharsetFilter(charmap)
@@ -360,9 +406,11 @@ class CharsetFilter(Filter):
         self.charmap = charmap
 
     def __eq__(self, other):
-        return (other
-                and self.__class__ is other.__class__
-                and self.charmap == other.charmap)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.charmap == other.charmap
+        )
 
     def __call__(self, tokens):
         assert hasattr(tokens, "__iter__")
@@ -391,8 +439,7 @@ class DelimitedAttributeFilter(Filter):
     data as part of the token!
     """
 
-    def __init__(self, delimiter="^", attribute="boost", default=1.0,
-                 type=float):
+    def __init__(self, delimiter="^", attribute="boost", default=1.0, type=float):
         """
         :param delimiter: a string that, when present in a token's text,
             separates the actual text from the "data" payload.
@@ -411,10 +458,13 @@ class DelimitedAttributeFilter(Filter):
         self.type = type
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.delim == other.delim
-                and self.attr == other.attr
-                and self.default == other.default)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.delim == other.delim
+            and self.attr == other.attr
+            and self.default == other.default
+        )
 
     def __call__(self, tokens):
         delim = self.delim
@@ -426,7 +476,7 @@ class DelimitedAttributeFilter(Filter):
             text = t.text
             pos = text.find(delim)
             if pos > -1:
-                setattr(t, attr, type_(text[pos + 1:]))
+                setattr(t, attr, type_(text[pos + 1 :]))
                 if t.chars:
                     t.endchar -= len(t.text) - pos
                 t.text = text[:pos]
@@ -466,9 +516,12 @@ class SubstitutionFilter(Filter):
         self.replacement = replacement
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.pattern == other.pattern
-                and self.replacement == other.replacement)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.pattern == other.pattern
+            and self.replacement == other.replacement
+        )
 
     def __call__(self, tokens):
         pattern = self.pattern

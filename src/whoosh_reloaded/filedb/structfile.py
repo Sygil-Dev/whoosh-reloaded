@@ -29,31 +29,31 @@ from array import array
 from copy import copy
 from struct import calcsize
 
-from whoosh-reloaded.compat import BytesIO, bytes_type
-from whoosh-reloaded.compat import dump as dump_pickle
-from whoosh-reloaded.compat import load as load_pickle
-from whoosh-reloaded.compat import array_frombytes, array_tobytes
-from whoosh-reloaded.system import _INT_SIZE, _SHORT_SIZE, _FLOAT_SIZE, _LONG_SIZE
-from whoosh-reloaded.system import IS_LITTLE
-from whoosh-reloaded.system import pack_byte, unpack_byte, pack_sbyte, unpack_sbyte
-from whoosh-reloaded.system import pack_ushort, unpack_ushort
-from whoosh-reloaded.system import pack_ushort_le, unpack_ushort_le
-from whoosh-reloaded.system import pack_int, unpack_int, pack_uint, unpack_uint
-from whoosh-reloaded.system import pack_uint_le, unpack_uint_le
-from whoosh-reloaded.system import pack_long, unpack_long, pack_ulong, unpack_ulong
-from whoosh-reloaded.system import pack_float, unpack_float
-from whoosh-reloaded.util.varints import varint, read_varint
-from whoosh-reloaded.util.varints import signed_varint, decode_signed_varint
+from whoosh_reloaded.compat import BytesIO, bytes_type
+from whoosh_reloaded.compat import dump as dump_pickle
+from whoosh_reloaded.compat import load as load_pickle
+from whoosh_reloaded.compat import array_frombytes, array_tobytes
+from whoosh_reloaded.system import _INT_SIZE, _SHORT_SIZE, _FLOAT_SIZE, _LONG_SIZE
+from whoosh_reloaded.system import IS_LITTLE
+from whoosh_reloaded.system import pack_byte, unpack_byte, pack_sbyte, unpack_sbyte
+from whoosh_reloaded.system import pack_ushort, unpack_ushort
+from whoosh_reloaded.system import pack_ushort_le, unpack_ushort_le
+from whoosh_reloaded.system import pack_int, unpack_int, pack_uint, unpack_uint
+from whoosh_reloaded.system import pack_uint_le, unpack_uint_le
+from whoosh_reloaded.system import pack_long, unpack_long, pack_ulong, unpack_ulong
+from whoosh_reloaded.system import pack_float, unpack_float
+from whoosh_reloaded.util.varints import varint, read_varint
+from whoosh_reloaded.util.varints import signed_varint, decode_signed_varint
 
 
 _SIZEMAP = dict((typecode, calcsize(typecode)) for typecode in "bBiIhHqQf")
 _ORDERMAP = {"little": "<", "big": ">"}
 
-_types = (("sbyte", "b"), ("ushort", "H"), ("int", "i"),
-          ("long", "q"), ("float", "f"))
+_types = (("sbyte", "b"), ("ushort", "H"), ("int", "i"), ("long", "q"), ("float", "f"))
 
 
 # Main function
+
 
 class StructFile(object):
     """Returns a "structured file" object that wraps the given file object and
@@ -116,8 +116,7 @@ class StructFile(object):
             self.file.flush()
 
     def close(self):
-        """Closes the wrapped file.
-        """
+        """Closes the wrapped file."""
 
         if self.is_closed:
             raise Exception("This file is already closed")
@@ -128,7 +127,7 @@ class StructFile(object):
         self.is_closed = True
 
     def subset(self, offset, length, name=None):
-        from whoosh-reloaded.filedb.compound import SubFile
+        from whoosh_reloaded.filedb.compound import SubFile
 
         name = name or self._name
         return StructFile(SubFile(self.file, offset, length), name=name)
@@ -148,8 +147,7 @@ class StructFile(object):
         self.write(pack_int(len(s)) + s)
 
     def read_string(self):
-        """Reads a string from the wrapped file.
-        """
+        """Reads a string from the wrapped file."""
         return self.read(self.read_varint())
 
     def read_string2(self):
@@ -175,13 +173,11 @@ class StructFile(object):
         self.seek(l, 1)
 
     def write_varint(self, i):
-        """Writes a variable-length unsigned integer to the wrapped file.
-        """
+        """Writes a variable-length unsigned integer to the wrapped file."""
         self.write(varint(i))
 
     def write_svarint(self, i):
-        """Writes a variable-length signed integer to the wrapped file.
-        """
+        """Writes a variable-length signed integer to the wrapped file."""
         self.write(signed_varint(i))
 
     def read_varint(self):
@@ -235,13 +231,11 @@ class StructFile(object):
         return ord(self.read(1))
 
     def write_pickle(self, obj, protocol=-1):
-        """Writes a pickled representation of obj to the wrapped file.
-        """
+        """Writes a pickled representation of obj to the wrapped file."""
         dump_pickle(obj, self.file, protocol)
 
     def read_pickle(self):
-        """Reads a pickled object from the wrapped file.
-        """
+        """Reads a pickled object from the wrapped file."""
         return load_pickle(self.file)
 
     def write_sbyte(self, n):
@@ -365,7 +359,7 @@ class BufferFile(StructFile):
         return BufferFile(self.get(position, length), name=name)
 
     def get(self, position, length):
-        return bytes_type(self._buf[position:position + length])
+        return bytes_type(self._buf[position : position + length])
 
     def get_array(self, position, typecode, length):
         a = array(typecode)
@@ -399,4 +393,4 @@ class ChecksumFile(StructFile):
         self.file.write(b)
 
     def checksum(self):
-        return self._check & 0xffffffff
+        return self._check & 0xFFFFFFFF

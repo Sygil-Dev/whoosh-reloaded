@@ -25,8 +25,8 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.matching import ConstantScoreMatcher, NullMatcher, ReadTooFar
-from whoosh-reloaded.query import Query
+from whoosh_reloaded.matching import ConstantScoreMatcher, NullMatcher, ReadTooFar
+from whoosh_reloaded.query import Query
 
 
 class ColumnQuery(Query):
@@ -59,6 +59,7 @@ class ColumnQuery(Query):
         if callable(condition):
             comp = condition
         else:
+
             def comp(v):
                 # Made this a function instead of a lambda so I could put
                 # debug prints here if necessary ;)

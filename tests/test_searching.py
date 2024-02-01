@@ -6,12 +6,12 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from whoosh-reloaded import analysis, fields, index, qparser, query, scoring
-from whoosh-reloaded.codec.whoosh-reloaded3 import W3Codec
-from whoosh-reloaded.compat import b, u, text_type
-from whoosh-reloaded.compat import xrange, permutations, izip_longest
-from whoosh-reloaded.filedb.filestore import RamStorage
-from whoosh-reloaded.util.testing import TempIndex
+from whoosh_reloaded import analysis, fields, index, qparser, query, scoring
+from whoosh_reloaded.codec.whoosh-reloaded3 import W3Codec
+from whoosh_reloaded.compat import b, u, text_type
+from whoosh_reloaded.compat import xrange, permutations, izip_longest
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.util.testing import TempIndex
 
 
 def make_index():
@@ -387,7 +387,7 @@ def test_open_date_ranges():
         assert r == target
 
         # With date parser
-        from whoosh-reloaded.qparser.dateparse import DateParserPlugin
+        from whoosh_reloaded.qparser.dateparse import DateParserPlugin
         qp.add_plugin(DateParserPlugin(basedate))
 
         q = qp.parse("[10 jan 2011 to]")
@@ -734,7 +734,7 @@ def test_short_prefix():
 
 
 def test_weighting():
-    from whoosh-reloaded.scoring import Weighting, BaseScorer
+    from whoosh_reloaded.scoring import Weighting, BaseScorer
 
     schema = fields.Schema(id=fields.ID(stored=True),
                            n_comments=fields.STORED)
@@ -843,7 +843,7 @@ def test_missing_wildcard():
 
 
 def test_finalweighting():
-    from whoosh-reloaded.scoring import Frequency
+    from whoosh_reloaded.scoring import Frequency
 
     schema = fields.Schema(id=fields.ID(stored=True),
                            summary=fields.TEXT,
@@ -1288,7 +1288,7 @@ def test_pos_scorer():
 
 
 def test_collapse():
-    from whoosh-reloaded import collectors
+    from whoosh_reloaded import collectors
 
     # id, text, size, tag
     domain = [("a", "blah blah blah", 5, "x"),
@@ -1336,7 +1336,7 @@ def test_collapse():
 
 
 def test_collapse_nocolumn():
-    from whoosh-reloaded import collectors
+    from whoosh_reloaded import collectors
 
     # id, text, size, tag
     domain = [("a", "blah blah blah", 5, "x"),
@@ -1456,7 +1456,7 @@ def test_collapse_length_nocolumn():
 
 
 def test_collapse_order():
-    from whoosh-reloaded import sorting
+    from whoosh_reloaded import sorting
 
     schema = fields.Schema(id=fields.STORED,
                            price=fields.NUMERIC(sortable=True),
@@ -1493,7 +1493,7 @@ def test_collapse_order():
 
 
 def test_collapse_order_nocolumn():
-    from whoosh-reloaded import sorting
+    from whoosh_reloaded import sorting
 
     schema = fields.Schema(id=fields.STORED,
                            price=fields.NUMERIC(),
@@ -1530,7 +1530,7 @@ def test_collapse_order_nocolumn():
 
 
 def test_coord():
-    from whoosh-reloaded.matching import CoordMatcher
+    from whoosh_reloaded.matching import CoordMatcher
 
     schema = fields.Schema(id=fields.STORED, hits=fields.STORED,
                            tags=fields.KEYWORD)
@@ -1591,7 +1591,7 @@ def test_groupedby_with_terms():
 
 
 def test_buffered_refresh():
-    from whoosh-reloaded import writing
+    from whoosh_reloaded import writing
 
     schema = fields.Schema(foo=fields.ID())
     ix = RamStorage().create_index(schema)

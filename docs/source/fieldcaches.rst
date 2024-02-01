@@ -29,7 +29,7 @@ By default, if caches are written to disk they are saved in the index directory.
 To tell a reader or searcher to save cache files to a different location, create
 a storage object and pass it to the ``storage`` keyword argument::
 
-    from whoosh-reloaded.filedb.filestore import FileStorage
+    from whoosh_reloaded.filedb.filestore import FileStorage
 
     mystorage = FileStorage("path/to/cachedir")
     reader.set_caching_policy(storage=mystorage)

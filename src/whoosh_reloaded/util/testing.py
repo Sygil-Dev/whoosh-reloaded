@@ -31,13 +31,19 @@ import sys
 import tempfile
 from contextlib import contextmanager
 
-from whoosh-reloaded.filedb.filestore import FileStorage
-from whoosh-reloaded.util import now, random_name
+from whoosh_reloaded.filedb.filestore import FileStorage
+from whoosh_reloaded.util import now, random_name
 
 
 class TempDir(object):
-    def __init__(self, basename="", parentdir=None, ext=".whoosh-reloaded",
-                 suppress=frozenset(), keepdir=False):
+    def __init__(
+        self,
+        basename="",
+        parentdir=None,
+        ext=".whoosh-reloaded",
+        suppress=frozenset(),
+        keepdir=False,
+    ):
         self.basename = basename or random_name(8)
         self.parentdir = parentdir
 
@@ -61,8 +67,8 @@ class TempDir(object):
                 shutil.rmtree(self.dir)
             except OSError:
                 e = sys.exc_info()[1]
-                #sys.stderr.write("Can't remove temp dir: " + str(e) + "\n")
-                #if exc_type is None:
+                # sys.stderr.write("Can't remove temp dir: " + str(e) + "\n")
+                # if exc_type is None:
                 #    raise
 
         if exc_type is not None:
@@ -87,9 +93,8 @@ class TempStorage(TempDir):
 
 
 class TempIndex(TempStorage):
-    def __init__(self, schema, ixname='', storage_debug=False, **kwargs):
-        TempStorage.__init__(self, basename=ixname, debug=storage_debug,
-                             **kwargs)
+    def __init__(self, schema, ixname="", storage_debug=False, **kwargs):
+        TempStorage.__init__(self, basename=ixname, debug=storage_debug, **kwargs)
         self.schema = schema
 
     def __enter__(self):
@@ -98,11 +103,11 @@ class TempIndex(TempStorage):
 
 
 def is_abstract_method(attr):
-    """Returns True if the given object has __isabstractmethod__ == True.
-    """
+    """Returns True if the given object has __isabstractmethod__ == True."""
 
-    return (hasattr(attr, "__isabstractmethod__")
-            and getattr(attr, "__isabstractmethod__"))
+    return hasattr(attr, "__isabstractmethod__") and getattr(
+        attr, "__isabstractmethod__"
+    )
 
 
 def check_abstract_methods(base, subclass):
@@ -117,8 +122,7 @@ def check_abstract_methods(base, subclass):
         if is_abstract_method(attr):
             oattr = getattr(subclass, attrname)
             if is_abstract_method(oattr):
-                raise Exception("%s.%s not overridden"
-                                % (subclass.__name__, attrname))
+                raise Exception("%s.%s not overridden" % (subclass.__name__, attrname))
 
 
 @contextmanager
@@ -126,4 +130,4 @@ def timing(name=None):
     t = now()
     yield
     t = now() - t
-    print("%s: %0.06f s" % (name or '', t))
+    print("%s: %0.06f s" % (name or "", t))

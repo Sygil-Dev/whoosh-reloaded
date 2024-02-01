@@ -27,7 +27,7 @@
 
 from array import array
 
-from whoosh-reloaded.compat import array_tobytes, xrange
+from whoosh_reloaded.compat import array_tobytes, xrange
 
 
 # Varint cache
@@ -35,6 +35,7 @@ from whoosh-reloaded.compat import array_tobytes, xrange
 # Build a cache of the varint byte sequences for the first N integers, so we
 # don't have to constantly recalculate them on the fly. This makes a small but
 # noticeable difference.
+
 
 def _varint(i):
     a = array("B")
@@ -53,8 +54,7 @@ _varint_cache = tuple(_varint_cache)
 
 
 def varint(i):
-    """Encodes the given integer into a string of the minimum number  of bytes.
-    """
+    """Encodes the given integer into a string of the minimum number  of bytes."""
     if i < len(_varint_cache):
         return _varint_cache[i]
     return _varint(i)
@@ -63,7 +63,7 @@ def varint(i):
 def varint_to_int(vi):
     b = ord(vi[0])
     p = 1
-    i = b & 0x7f
+    i = b & 0x7F
     shift = 7
     while b & 0x80 != 0:
         b = ord(vi[p])
@@ -74,8 +74,7 @@ def varint_to_int(vi):
 
 
 def signed_varint(i):
-    """Zig-zag encodes a signed integer into a varint.
-    """
+    """Zig-zag encodes a signed integer into a varint."""
 
     if i >= 0:
         return varint(i << 1)
@@ -83,8 +82,7 @@ def signed_varint(i):
 
 
 def decode_signed_varint(i):
-    """Zig-zag decodes an integer value.
-    """
+    """Zig-zag decodes an integer value."""
 
     if not i & 1:
         return i >> 1

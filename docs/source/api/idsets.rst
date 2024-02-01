@@ -2,7 +2,7 @@
 ``support.bitvector`` module
 ============================
 
-.. automodule:: whoosh-reloaded.idsets
+.. automodule:: whoosh_reloaded.idsets
 
 
 Base classes

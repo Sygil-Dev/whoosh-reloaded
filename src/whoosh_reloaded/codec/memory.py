@@ -29,11 +29,11 @@ from __future__ import with_statement
 from bisect import bisect_left
 from threading import Lock
 
-from whoosh-reloaded.compat import xrange
-from whoosh-reloaded.codec import base
-from whoosh-reloaded.matching import ListMatcher
-from whoosh-reloaded.reading import SegmentReader, TermInfo, TermNotFound
-from whoosh-reloaded.writing import SegmentWriter
+from whoosh_reloaded.compat import xrange
+from whoosh_reloaded.codec import base
+from whoosh_reloaded.matching import ListMatcher
+from whoosh_reloaded.reading import SegmentReader, TermInfo, TermNotFound
+from whoosh_reloaded.writing import SegmentWriter
 
 
 class MemWriter(SegmentWriter):
@@ -43,15 +43,14 @@ class MemWriter(SegmentWriter):
 
 class MemoryCodec(base.Codec):
     def __init__(self):
-        from whoosh-reloaded.filedb.filestore import RamStorage
+        from whoosh_reloaded.filedb.filestore import RamStorage
 
         self.storage = RamStorage()
         self.segment = MemSegment(self, "blah")
 
     def writer(self, schema):
         ix = self.storage.create_index(schema)
-        return MemWriter(ix, _lk=False, codec=self,
-                         docbase=self.segment._doccount)
+        return MemWriter(ix, _lk=False, codec=self, docbase=self.segment._doccount)
 
     def reader(self, schema):
         return SegmentReader(self.storage, schema, self.segment, codec=self)
@@ -159,20 +158,27 @@ class MemPerDocReader(base.PerDocumentReader):
         return self._segment._lengths[docnum].get(fieldname, default)
 
     def field_length(self, fieldname):
-        return sum(lens.get(fieldname, 0) for lens
-                   in self._segment._lengths.values())
+        return sum(lens.get(fieldname, 0) for lens in self._segment._lengths.values())
 
     def min_field_length(self, fieldname):
-        return min(lens[fieldname] for lens in self._segment._lengths.values()
-                   if fieldname in lens)
+        return min(
+            lens[fieldname]
+            for lens in self._segment._lengths.values()
+            if fieldname in lens
+        )
 
     def max_field_length(self, fieldname):
-        return max(lens[fieldname] for lens in self._segment._lengths.values()
-                   if fieldname in lens)
+        return max(
+            lens[fieldname]
+            for lens in self._segment._lengths.values()
+            if fieldname in lens
+        )
 
     def has_vector(self, docnum, fieldname):
-        return (docnum in self._segment._vectors
-                and fieldname in self._segment._vectors[docnum])
+        return (
+            docnum in self._segment._vectors
+            and fieldname in self._segment._vectors[docnum]
+        )
 
     def vector(self, docnum, fieldname, format_):
         items = self._segment._vectors[docnum][fieldname]

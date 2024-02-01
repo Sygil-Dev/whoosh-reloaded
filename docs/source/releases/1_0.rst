@@ -71,7 +71,7 @@ Whoosh 1.7.7
 ============
 
 Setting a TEXT field to store term vectors is now much easier. Instead of
-having to pass an instantiated whoosh-reloaded.formats.Format object to the vector=
+having to pass an instantiated whoosh_reloaded.formats.Format object to the vector=
 keyword argument, you can pass True to automatically use the same format and
 analyzer as the inverted index. Alternatively, you can pass a Format subclass
 and Whoosh will instantiate it for you.
@@ -79,14 +79,14 @@ and Whoosh will instantiate it for you.
 For example, to store term vectors using the same settings as the inverted
 index (Positions format and StandardAnalyzer)::
 
-    from whoosh-reloaded.fields import Schema, TEXT
+    from whoosh_reloaded.fields import Schema, TEXT
 
     schema = Schema(content=TEXT(vector=True))
 
 To store term vectors that use the same analyzer as the inverted index
 (StandardAnalyzer by default) but only store term frequency::
 
-    from whoosh-reloaded.formats import Frequency
+    from whoosh_reloaded.formats import Frequency
 
     schema = Schema(content=TEXT(vector=Frequency))
 
@@ -216,8 +216,8 @@ than/less as an alternative syntax for ranges::
 
 Added the ability to define schemas declaratively, similar to Django models::
 
-    from whoosh-reloaded import index
-    from whoosh-reloaded.fields import SchemaClass, ID, KEYWORD, STORED, TEXT
+    from whoosh_reloaded import index
+    from whoosh_reloaded.fields import SchemaClass, ID, KEYWORD, STORED, TEXT
 
     class MySchema(SchemaClass):
         uuid = ID(stored=True, unique=True)
@@ -439,7 +439,7 @@ instead.
 Custom Weighting implementations that use the ``final()`` method must now
 set the ``use_final`` attribute to ``True``::
 
-    from whoosh-reloaded.scoring import BM25F
+    from whoosh_reloaded.scoring import BM25F
 
     class MyWeighting(BM25F):
         use_final = True

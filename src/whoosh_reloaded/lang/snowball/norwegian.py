@@ -1,6 +1,6 @@
 from .bases import _ScandinavianStemmer
 
-from whoosh-reloaded.compat import u
+from whoosh_reloaded.compat import u
 
 
 class NorwegianStemmer(_ScandinavianStemmer):
@@ -26,16 +26,53 @@ class NorwegianStemmer(_ScandinavianStemmer):
 
     __vowels = u("aeiouy\xE6\xE5\xF8")
     __s_ending = "bcdfghjlmnoprtvyz"
-    __step1_suffixes = ("hetenes", "hetene", "hetens", "heter",
-                        "heten", "endes", "ande", "ende", "edes",
-                        "enes", "erte", "ede", "ane", "ene", "ens",
-                        "ers", "ets", "het", "ast", "ert", "en",
-                        "ar", "er", "as", "es", "et", "a", "e", "s")
+    __step1_suffixes = (
+        "hetenes",
+        "hetene",
+        "hetens",
+        "heter",
+        "heten",
+        "endes",
+        "ande",
+        "ende",
+        "edes",
+        "enes",
+        "erte",
+        "ede",
+        "ane",
+        "ene",
+        "ens",
+        "ers",
+        "ets",
+        "het",
+        "ast",
+        "ert",
+        "en",
+        "ar",
+        "er",
+        "as",
+        "es",
+        "et",
+        "a",
+        "e",
+        "s",
+    )
 
     __step2_suffixes = ("dt", "vt")
 
-    __step3_suffixes = ("hetslov", "eleg", "elig", "elov", "slov",
-                          "leg", "eig", "lig", "els", "lov", "ig")
+    __step3_suffixes = (
+        "hetslov",
+        "eleg",
+        "elig",
+        "elov",
+        "slov",
+        "leg",
+        "eig",
+        "lig",
+        "els",
+        "lov",
+        "ig",
+    )
 
     def stem(self, word):
         """
@@ -55,17 +92,18 @@ class NorwegianStemmer(_ScandinavianStemmer):
         for suffix in self.__step1_suffixes:
             if r1.endswith(suffix):
                 if suffix in ("erte", "ert"):
-                    word = "".join((word[:-len(suffix)], "er"))
-                    r1 = "".join((r1[:-len(suffix)], "er"))
+                    word = "".join((word[: -len(suffix)], "er"))
+                    r1 = "".join((r1[: -len(suffix)], "er"))
 
                 elif suffix == "s":
-                    if (word[-2] in self.__s_ending or
-                        (word[-2] == "k" and word[-3] not in self.__vowels)):
+                    if word[-2] in self.__s_ending or (
+                        word[-2] == "k" and word[-3] not in self.__vowels
+                    ):
                         word = word[:-1]
                         r1 = r1[:-1]
                 else:
-                    word = word[:-len(suffix)]
-                    r1 = r1[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    r1 = r1[: -len(suffix)]
                 break
 
         # STEP 2
@@ -78,7 +116,7 @@ class NorwegianStemmer(_ScandinavianStemmer):
         # STEP 3
         for suffix in self.__step3_suffixes:
             if r1.endswith(suffix):
-                word = word[:-len(suffix)]
+                word = word[: -len(suffix)]
                 break
 
         return word

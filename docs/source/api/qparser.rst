@@ -2,7 +2,7 @@
 ``qparser`` module
 ==================
 
-.. automodule:: whoosh-reloaded.qparser
+.. automodule:: whoosh_reloaded.qparser
 
 Parser object
 =============

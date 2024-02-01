@@ -33,14 +33,15 @@ occurance of a term.
 
 from collections import defaultdict
 
-from whoosh-reloaded.analysis import unstopped, entoken
-from whoosh-reloaded.compat import iteritems, dumps, loads, b
-from whoosh-reloaded.system import emptybytes
-from whoosh-reloaded.system import _INT_SIZE, _FLOAT_SIZE
-from whoosh-reloaded.system import pack_uint, unpack_uint, pack_float, unpack_float
+from whoosh_reloaded.analysis import unstopped, entoken
+from whoosh_reloaded.compat import iteritems, dumps, loads, b
+from whoosh_reloaded.system import emptybytes
+from whoosh_reloaded.system import _INT_SIZE, _FLOAT_SIZE
+from whoosh_reloaded.system import pack_uint, unpack_uint, pack_float, unpack_float
 
 
 # Format base class
+
 
 class Format(object):
     """Abstract base class representing a storage format for a field or vector.
@@ -63,9 +64,11 @@ class Format(object):
         self.options = options
 
     def __eq__(self, other):
-        return (other
-                and self.__class__ is other.__class__
-                and self.__dict__ == other.__dict__)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.__dict__ == other.__dict__
+        )
 
     def __repr__(self):
         return "%s(boost=%s)" % (self.__class__.__name__, self.field_boost)
@@ -118,6 +121,7 @@ class Format(object):
 # weight in the value string, so if you use field or term boosts
 # postreader.value_as("weight") will not match postreader.weight()
 
+
 def tokens(value, analyzer, kwargs):
     if isinstance(value, (tuple, list)):
         gen = entoken(value, **kwargs)
@@ -168,8 +172,7 @@ class Frequency(Format):
     posting_size = _INT_SIZE
     __inittypes__ = dict(field_boost=float, boost_as_freq=bool)
 
-    def __init__(self, field_boost=1.0, boost_as_freq=False,
-                 **options):
+    def __init__(self, field_boost=1.0, boost_as_freq=False, **options):
         """
         :param field_boost: A constant boost factor to scale to the score of
             all queries matching terms in this field.
@@ -191,8 +194,9 @@ class Frequency(Format):
             freqs[t.text] += 1
             weights[t.text] += t.boost
 
-        wvs = ((w, freq, weights[w] * fb, pack_uint(freq)) for w, freq
-               in iteritems(freqs))
+        wvs = (
+            (w, freq, weights[w] * fb, pack_uint(freq)) for w, freq in iteritems(freqs)
+        )
         return wvs
 
     def decode_frequency(self, valuestring):
@@ -292,8 +296,7 @@ class Characters(Positions):
         posbase = 0
         charbase = 0
         for pos, startchar, endchar in poslist:
-            deltas.append((pos - posbase, startchar - charbase,
-                           endchar - startchar))
+            deltas.append((pos - posbase, startchar - charbase, endchar - startchar))
             posbase = pos
             charbase = endchar
         return pack_uint(len(deltas)) + dumps(deltas, 2)
@@ -366,13 +369,12 @@ class PositionBoosts(Positions):
             summedboost += boost
             codes.append((pos - base, boost))
             base = pos
-        return (pack_uint(len(poses)) + pack_float(summedboost)
-                + dumps(codes, 2))
+        return pack_uint(len(poses)) + pack_float(summedboost) + dumps(codes, 2)
 
     def decode_position_boosts(self, valuestring):
         if not valuestring.endswith(b(".")):
             valuestring += b(".")
-        codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE:])
+        codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE :])
         position = 0
         posns_boosts = []
         for code in codes:
@@ -383,7 +385,7 @@ class PositionBoosts(Positions):
     def decode_positions(self, valuestring):
         if not valuestring.endswith(b(".")):
             valuestring += b(".")
-        codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE:])
+        codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE :])
         position = 0
         posns = []
         for code in codes:
@@ -392,7 +394,7 @@ class PositionBoosts(Positions):
         return posns
 
     def decode_weight(self, v):
-        summedboost = unpack_float(v[_INT_SIZE:_INT_SIZE + _FLOAT_SIZE])[0]
+        summedboost = unpack_float(v[_INT_SIZE : _INT_SIZE + _FLOAT_SIZE])[0]
         return summedboost * self.field_boost
 
     def combine(self, vs):
@@ -432,19 +434,22 @@ class CharacterBoosts(Characters):
         charbase = 0
         summedboost = 0
         for pos, startchar, endchar, boost in poses:
-            codes.append((pos - posbase, startchar - charbase,
-                          endchar - startchar, boost))
+            codes.append(
+                (pos - posbase, startchar - charbase, endchar - startchar, boost)
+            )
             posbase = pos
             charbase = endchar
             summedboost += boost
 
-        return ((pack_uint(len(poses)) + pack_float(summedboost * fb)
-                 + dumps(codes, 2)), summedboost)
+        return (
+            (pack_uint(len(poses)) + pack_float(summedboost * fb) + dumps(codes, 2)),
+            summedboost,
+        )
 
     def decode_character_boosts(self, valuestring):
         if not valuestring.endswith(b(".")):
             valuestring += b(".")
-        codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE:])
+        codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE :])
         position = 0
         endchar = 0
         posn_char_boosts = []
@@ -459,12 +464,16 @@ class CharacterBoosts(Characters):
         return [item[0] for item in self.decode_character_boosts(valuestring)]
 
     def decode_characters(self, valuestring):
-        return [(pos, startchar, endchar) for pos, startchar, endchar, _
-                in self.decode_character_boosts(valuestring)]
+        return [
+            (pos, startchar, endchar)
+            for pos, startchar, endchar, _ in self.decode_character_boosts(valuestring)
+        ]
 
     def decode_position_boosts(self, valuestring):
-        return [(pos, boost) for pos, _, _, boost
-                in self.decode_character_boosts(valuestring)]
+        return [
+            (pos, boost)
+            for pos, _, _, boost in self.decode_character_boosts(valuestring)
+        ]
 
     def combine(self, vs):
         s = {}
@@ -472,10 +481,8 @@ class CharacterBoosts(Characters):
             for pos, sc, ec, boost in self.decode_character_boosts(v):
                 if pos in s:
                     old_sc, old_ec, old_boost = pos[s]
-                    s[pos] = (min(sc, old_sc), max(ec, old_ec),
-                              old_boost + boost)
+                    s[pos] = (min(sc, old_sc), max(ec, old_ec), old_boost + boost)
                 else:
                     s[pos] = (sc, ec, boost)
-        poses = [(pos, sc, ec, boost) for pos, (sc, ec, boost)
-                 in sorted(s.items())]
+        poses = [(pos, sc, ec, boost) for pos, (sc, ec, boost) in sorted(s.items())]
         return self.encode(poses)[0]  # encode() returns value, summedboost

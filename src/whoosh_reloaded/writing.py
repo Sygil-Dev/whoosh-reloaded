@@ -30,23 +30,25 @@ import threading, time
 from bisect import bisect_right
 from contextlib import contextmanager
 
-from whoosh-reloaded import columns
-from whoosh-reloaded.compat import abstractmethod, bytes_type
-from whoosh-reloaded.externalsort import SortingPool
-from whoosh-reloaded.fields import UnknownFieldError
-from whoosh-reloaded.index import LockError
-from whoosh-reloaded.util import fib, random_name
-from whoosh-reloaded.util.filelock import try_for
-from whoosh-reloaded.util.text import utf8encode
+from whoosh_reloaded import columns
+from whoosh_reloaded.compat import abstractmethod, bytes_type
+from whoosh_reloaded.externalsort import SortingPool
+from whoosh_reloaded.fields import UnknownFieldError
+from whoosh_reloaded.index import LockError
+from whoosh_reloaded.util import fib, random_name
+from whoosh_reloaded.util.filelock import try_for
+from whoosh_reloaded.util.text import utf8encode
 
 
 # Exceptions
+
 
 class IndexingError(Exception):
     pass
 
 
 # Document grouping context manager
+
 
 @contextmanager
 def groupmanager(writer):
@@ -62,9 +64,9 @@ def groupmanager(writer):
 # written), and returns an updated segment list (not including the segment
 # being written).
 
+
 def NO_MERGE(writer, segments):
-    """This policy does not merge any existing segments.
-    """
+    """This policy does not merge any existing segments."""
     return segments
 
 
@@ -73,7 +75,7 @@ def MERGE_SMALL(writer, segments):
     heuristic based on the fibonacci sequence.
     """
 
-    from whoosh-reloaded.reading import SegmentReader
+    from whoosh_reloaded.reading import SegmentReader
 
     unchanged_segments = []
     segments_to_merge = []
@@ -90,7 +92,9 @@ def MERGE_SMALL(writer, segments):
         if merge_point_found:  # append the remaining to unchanged
             unchanged_segments.append(seg)
         else:  # look for a merge point
-            segments_to_merge.append((seg, i)) # merge every segment up to the merge point
+            segments_to_merge.append(
+                (seg, i)
+            )  # merge every segment up to the merge point
             if i > 3 and total_docs < fib(i + 5):
                 merge_point_found = True
 
@@ -105,10 +109,9 @@ def MERGE_SMALL(writer, segments):
 
 
 def OPTIMIZE(writer, segments):
-    """This policy merges all existing segments.
-    """
+    """This policy merges all existing segments."""
 
-    from whoosh-reloaded.reading import SegmentReader
+    from whoosh_reloaded.reading import SegmentReader
 
     for seg in segments:
         reader = SegmentReader(writer.storage, writer.schema, seg)
@@ -127,8 +130,9 @@ def CLEAR(writer, segments):
 
 # Customized sorting pool for postings
 
+
 class PostingPool(SortingPool):
-    # Subclass whoosh-reloaded.externalsort.SortingPool to use knowledge of
+    # Subclass whoosh_reloaded.externalsort.SortingPool to use knowledge of
     # postings to set run size in bytes instead of items
 
     namechars = "abcdefghijklmnopqrstuvwxyz0123456789"
@@ -158,12 +162,18 @@ class PostingPool(SortingPool):
         if item[4] is not None:
             assert isinstance(item[4], bytes_type), "vbytes=%r" % item[4]
         self.fieldnames.add(item[0])
-        size = (28 + 4 * 5  # tuple = 28 + 4 * length
-                + 21 + len(item[0])  # fieldname = str = 21 + length
-                + 26 + len(item[1]) * 2  # text = unicode = 26 + 2 * length
-                + 18  # docnum = long = 18
-                + 16  # weight = float = 16
-                + 21 + len(item[4] or ''))  # valuestring
+        size = (
+            28
+            + 4 * 5  # tuple = 28 + 4 * length
+            + 21
+            + len(item[0])  # fieldname = str = 21 + length
+            + 26
+            + len(item[1]) * 2  # text = unicode = 26 + 2 * length
+            + 18  # docnum = long = 18
+            + 16  # weight = float = 16
+            + 21
+            + len(item[4] or "")
+        )  # valuestring
         self.currentsize += size
         if self.currentsize > self.limit:
             self.save()
@@ -180,6 +190,7 @@ class PostingPool(SortingPool):
 
 
 # Writer base class
+
 
 class IndexWriter(object):
     """High-level object for writing to an index.
@@ -285,13 +296,12 @@ class IndexWriter(object):
 
     @abstractmethod
     def reader(self, **kwargs):
-        """Returns a reader for the existing index.
-        """
+        """Returns a reader for the existing index."""
 
         raise NotImplementedError
 
     def searcher(self, **kwargs):
-        from whoosh-reloaded.searching import Searcher
+        from whoosh_reloaded.searching import Searcher
 
         return Searcher(self.reader(), **kwargs)
 
@@ -303,7 +313,7 @@ class IndexWriter(object):
         :returns: the number of documents deleted.
         """
 
-        from whoosh-reloaded.query import Term
+        from whoosh_reloaded.query import Term
 
         q = Term(fieldname, text)
         return self.delete_by_query(q, searcher=searcher)
@@ -332,8 +342,7 @@ class IndexWriter(object):
 
     @abstractmethod
     def delete_document(self, docnum, delete=True):
-        """Deletes a document by number.
-        """
+        """Deletes a document by number."""
         raise NotImplementedError
 
     @abstractmethod
@@ -349,8 +358,8 @@ class IndexWriter(object):
         fields take ``datetime.datetime`` objects::
 
             from datetime import datetime, timedelta
-            from whoosh-reloaded import index
-            from whoosh-reloaded.fields import *
+            from whoosh_reloaded import index
+            from whoosh_reloaded.fields import *
 
             schema = Schema(date=DATETIME, size=NUMERIC(float), content=TEXT)
             myindex = index.create_in("indexdir", schema)
@@ -419,8 +428,11 @@ class IndexWriter(object):
 
     def _unique_fields(self, fields):
         # Check which of the supplied fields are unique
-        unique_fields = [name for name, field in self.schema.items()
-                         if name in fields and field.unique]
+        unique_fields = [
+            name
+            for name, field in self.schema.items()
+            if name in fields and field.unique
+        ]
         return unique_fields
 
     def update_document(self, **fields):
@@ -489,8 +501,7 @@ class IndexWriter(object):
         self.add_document(**fields)
 
     def commit(self):
-        """Finishes writing and unlocks the index.
-        """
+        """Finishes writing and unlocks the index."""
         pass
 
     def cancel(self):
@@ -502,19 +513,31 @@ class IndexWriter(object):
 
 # Codec-based writer
 
+
 class SegmentWriter(IndexWriter):
-    def __init__(self, ix, poolclass=None, timeout=0.0, delay=0.1, _lk=True,
-                 limitmb=128, docbase=0, codec=None, compound=True, **kwargs):
+    def __init__(
+        self,
+        ix,
+        poolclass=None,
+        timeout=0.0,
+        delay=0.1,
+        _lk=True,
+        limitmb=128,
+        docbase=0,
+        codec=None,
+        compound=True,
+        **kwargs
+    ):
         # Lock the index
         self.writelock = None
         if _lk:
             self.writelock = ix.lock("WRITELOCK")
-            if not try_for(self.writelock.acquire, timeout=timeout,
-                           delay=delay):
+            if not try_for(self.writelock.acquire, timeout=timeout, delay=delay):
                 raise LockError
 
         if codec is None:
-            from whoosh-reloaded.codec import default_codec
+            from whoosh_reloaded.codec import default_codec
+
             codec = default_codec()
         self.codec = codec
 
@@ -535,8 +558,7 @@ class SegmentWriter(IndexWriter):
         self.compound = compound and newsegment.should_assemble()
         self.is_closed = False
         self._added = False
-        self.pool = PostingPool(self._tempstorage, self.newsegment,
-                                limitmb=limitmb)
+        self.pool = PostingPool(self._tempstorage, self.newsegment, limitmb=limitmb)
 
         # Set up writers
         self.perdocwriter = codec.per_document_writer(self.storage, newsegment)
@@ -552,8 +574,7 @@ class SegmentWriter(IndexWriter):
         # Origin bitbucket issue: https://bitbucket.org/mchaput/whoosh-reloaded/issues/483
         # newsegment might not be set due to LockError
         # so use getattr to be safe
-        return "<%s %r>" % (self.__class__.__name__,
-                            getattr(self, 'newsegment', None))
+        return "<%s %r>" % (self.__class__.__name__, getattr(self, "newsegment", None))
 
     def _check_state(self):
         if self.is_closed:
@@ -567,16 +588,16 @@ class SegmentWriter(IndexWriter):
             base += s.doc_count_all()
 
     def _document_segment(self, docnum):
-        #Returns the index.Segment object containing the given document
-        #number.
+        # Returns the index.Segment object containing the given document
+        # number.
         offsets = self._doc_offsets
         if len(offsets) == 1:
             return 0
         return bisect_right(offsets, docnum) - 1
 
     def _segment_and_docnum(self, docnum):
-        #Returns an (index.Segment, segment_docnum) pair for the segment
-        #containing the given document number.
+        # Returns an (index.Segment, segment_docnum) pair for the segment
+        # containing the given document number.
 
         segmentnum = self._document_segment(docnum)
         offset = self._doc_offsets[segmentnum]
@@ -637,11 +658,12 @@ class SegmentWriter(IndexWriter):
         return segment.is_deleted(segdocnum)
 
     def reader(self, reuse=None):
-        from whoosh-reloaded.index import FileIndex
+        from whoosh_reloaded.index import FileIndex
 
         self._check_state()
-        return FileIndex._reader(self.storage, self.schema, self.segments,
-                                 self.generation, reuse=reuse)
+        return FileIndex._reader(
+            self.storage, self.schema, self.segments, self.generation, reuse=reuse
+        )
 
     def iter_postings(self):
         return self.pool.iter_postings()
@@ -689,8 +711,7 @@ class SegmentWriter(IndexWriter):
             for fieldname in fieldnames | set(s for s in stored if s in self.schema):
                 fieldobj = schema[fieldname]
                 length = reader.doc_field_length(docnum, fieldname)
-                pdw.add_field(fieldname, fieldobj,
-                              stored.get(fieldname), length)
+                pdw.add_field(fieldname, fieldobj, stored.get(fieldname), length)
 
                 if fieldobj.vector and reader.has_vector(docnum, fieldname):
                     v = reader.vector(docnum, fieldname, fieldobj.vector)
@@ -708,8 +729,9 @@ class SegmentWriter(IndexWriter):
     def add_reader(self, reader):
         self._check_state()
         basedoc = self.docnum
-        ndxnames = set(fname for fname in reader.indexed_field_names()
-                       if fname in self.schema)
+        ndxnames = set(
+            fname for fname in reader.indexed_field_names() if fname in self.schema
+        )
         fieldnames = set(self.schema.names()) | ndxnames
 
         docmap = self.write_per_doc(fieldnames, reader)
@@ -720,8 +742,7 @@ class SegmentWriter(IndexWriter):
         # Check if the caller gave us a bogus field
         for name in fieldnames:
             if name not in schema:
-                raise UnknownFieldError("No field named %r in %s"
-                                        % (name, schema))
+                raise UnknownFieldError("No field named %r in %s" % (name, schema))
 
     def add_document(self, **fields):
         self._check_state()
@@ -731,8 +752,9 @@ class SegmentWriter(IndexWriter):
         add_post = self.pool.add
 
         docboost = self._doc_boost(fields)
-        fieldnames = sorted([name for name in fields.keys()
-                             if not name.startswith("_")])
+        fieldnames = sorted(
+            [name for name in fields.keys() if not name.startswith("_")]
+        )
         self._check_fields(schema, fieldnames)
 
         perdocwriter.start_doc(docnum)
@@ -773,8 +795,9 @@ class SegmentWriter(IndexWriter):
                     # Call the format's word_values method to get posting values
                     vitems = vformat.word_values(value, analyzer, mode="index")
                     # Remove unused frequency field from the tuple
-                    vitems = sorted((text, weight, vbytes)
-                                    for text, _, weight, vbytes in vitems)
+                    vitems = sorted(
+                        (text, weight, vbytes) for text, _, weight, vbytes in vitems
+                    )
                     perdocwriter.add_vector_items(fieldname, field, vitems)
 
                 # Allow a custom value for stored field/column
@@ -820,7 +843,7 @@ class SegmentWriter(IndexWriter):
         if self._searcher is None:
             s = super(SegmentWriter, self).searcher()
             self._searcher = s
-            s._orig_close = s.close # called in _finish()
+            s._orig_close = s.close  # called in _finish()
             s.close = lambda: None
         return self._searcher
 
@@ -896,7 +919,7 @@ class SegmentWriter(IndexWriter):
         return self.get_segment()
 
     def _commit_toc(self, segments):
-        from whoosh-reloaded.index import TOC, clean_files
+        from whoosh_reloaded.index import TOC, clean_files
 
         # Write a new TOC with the new segment list (and delete old files)
         toc = TOC(self.schema, segments, self.generation)
@@ -913,7 +936,7 @@ class SegmentWriter(IndexWriter):
         if self.writelock:
             self.writelock.release()
         self.is_closed = True
-        #self.storage.close()
+        # self.storage.close()
 
     # Finalization methods
 
@@ -970,6 +993,7 @@ class SegmentWriter(IndexWriter):
 
 # Writer wrappers
 
+
 class AsyncWriter(threading.Thread, IndexWriter):
     """Convenience wrapper for a writer object that might fail due to locking
     (i.e. the ``filedb`` writer). This object will attempt once to obtain the
@@ -993,7 +1017,7 @@ class AsyncWriter(threading.Thread, IndexWriter):
 
     Do this:
 
-    >>> from whoosh-reloaded.writing import AsyncWriter
+    >>> from whoosh_reloaded.writing import AsyncWriter
     >>> writer = AsyncWriter(myindex)
     """
 
@@ -1021,7 +1045,8 @@ class AsyncWriter(threading.Thread, IndexWriter):
         return self.index.reader()
 
     def searcher(self, **kwargs):
-        from whoosh-reloaded.searching import Searcher
+        from whoosh_reloaded.searching import Searcher
+
         return Searcher(self.reader(), fromindex=self.index, **kwargs)
 
     def _record(self, method, args, kwargs):
@@ -1074,6 +1099,7 @@ class AsyncWriter(threading.Thread, IndexWriter):
 
 # Ex post factor functions
 
+
 def add_spelling(ix, fieldnames, commit=True):
     """Adds spelling files to an existing index that was created without
     them, and modifies the schema so the given fields have the ``spelling``
@@ -1088,8 +1114,8 @@ def add_spelling(ix, fieldnames, commit=True):
         useful for debugging.
     """
 
-    from whoosh-reloaded.automata import fst
-    from whoosh-reloaded.reading import SegmentReader
+    from whoosh_reloaded.automata import fst
+    from whoosh_reloaded.reading import SegmentReader
 
     writer = ix.writer()
     storage = writer.storage
@@ -1118,6 +1144,7 @@ def add_spelling(ix, fieldnames, commit=True):
 
 # Buffered writer class
 
+
 class BufferedWriter(IndexWriter):
     """Convenience class that acts like a writer but buffers added documents
     before dumping the buffered documents as a batch into the actual index.
@@ -1135,7 +1162,7 @@ class BufferedWriter(IndexWriter):
     To use this class, create it from your index and *keep it open*, sharing
     it between threads.
 
-    >>> from whoosh-reloaded.writing import BufferedWriter
+    >>> from whoosh_reloaded.writing import BufferedWriter
     >>> writer = BufferedWriter(myindex, period=120, limit=20)
     >>> # Then you can use the writer to add and update documents
     >>> writer.add_document(...)
@@ -1175,8 +1202,7 @@ class BufferedWriter(IndexWriter):
     ``commit()`` multiple times.
     """
 
-    def __init__(self, index, period=60, limit=10, writerargs=None,
-                 commitargs=None):
+    def __init__(self, index, period=60, limit=10, writerargs=None, commitargs=None):
         """
         :param index: the :class:`whoosh-reloaded.index.Index` to write to.
         :param period: the maximum amount of time (in seconds) between commits.
@@ -1209,7 +1235,7 @@ class BufferedWriter(IndexWriter):
         self.close()
 
     def _make_ram_index(self):
-        from whoosh-reloaded.codec.memory import MemoryCodec
+        from whoosh_reloaded.codec.memory import MemoryCodec
 
         self.codec = MemoryCodec()
 
@@ -1221,7 +1247,7 @@ class BufferedWriter(IndexWriter):
         return self.writer.schema
 
     def reader(self, **kwargs):
-        from whoosh-reloaded.reading import MultiReader
+        from whoosh_reloaded.reading import MultiReader
 
         reader = self.writer.reader()
         with self.lock:
@@ -1237,7 +1263,7 @@ class BufferedWriter(IndexWriter):
         return reader
 
     def searcher(self, **kwargs):
-        from whoosh-reloaded.searching import Searcher
+        from whoosh_reloaded.searching import Searcher
 
         return Searcher(self.reader(), fromindex=self.index, **kwargs)
 

@@ -45,7 +45,7 @@ To create a :class:`whoosh-reloaded.qparser.QueryParser` object, pass it the nam
 
 ::
 
-    from whoosh-reloaded.qparser import QueryParser
+    from whoosh_reloaded.qparser import QueryParser
 
     parser = QueryParser("content", schema=myindex.schema)
 
@@ -88,7 +88,7 @@ present for a document to match, i.e.::
 
 ...configure the QueryParser using the ``group`` keyword argument like this::
 
-    from whoosh-reloaded import qparser
+    from whoosh_reloaded import qparser
 
     parser = qparser.QueryParser(fieldname, schema=myindex.schema,
                                  group=qparser.OrGroup)
@@ -137,7 +137,7 @@ In that case, you can use a :class:`whoosh-reloaded.qparser.MultifieldParser`. T
 just like the normal QueryParser, but instead of a default field name string, it
 takes a *sequence* of field names::
 
-    from whoosh-reloaded.qparser import MultifieldParser
+    from whoosh_reloaded.qparser import MultifieldParser
 
     mparser = MultifieldParser(["title", "content"], schema=myschema)
 
@@ -348,7 +348,7 @@ QueryParser supports two extra keyword arguments:
 
 ::
 
-    >>> from whoosh-reloaded.qparser import QueryParser, OrGroup
+    >>> from whoosh_reloaded.qparser import QueryParser, OrGroup
     >>> orparser = QueryParser("content", schema=myschema, group=OrGroup)
 
 
@@ -389,7 +389,7 @@ Creating custom operators
 
 For example, if you were creating a ``BEFORE`` operator::
 
-    from whoosh-reloaded import qparser, query
+    from whoosh_reloaded import qparser, query
 
     optype = qparser.InfixOperator
     pattern = " BEFORE "

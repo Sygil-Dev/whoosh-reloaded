@@ -36,25 +36,25 @@ around almost any non-span query, you can create very complex constraints.
 For example, to find documents containing "whoosh-reloaded" at most 5 positions before
 "library" in the "text" field::
 
-    from whoosh-reloaded import query, spans
+    from whoosh_reloaded import query, spans
     t1 = query.Term("text", "whoosh-reloaded")
     t2 = query.Term("text", "library")
     q = spans.SpanNear(t1, t2, slop=5)
 
 """
 
-from whoosh-reloaded.matching import mcore, wrappers, binary
-from whoosh-reloaded.query import Query, And, AndMaybe, Or, Term
-from whoosh-reloaded.util import make_binary_tree
+from whoosh_reloaded.matching import mcore, wrappers, binary
+from whoosh_reloaded.query import Query, And, AndMaybe, Or, Term
+from whoosh_reloaded.util import make_binary_tree
 
 
 # Span class
 
+
 class Span(object):
     __slots__ = ("start", "end", "startchar", "endchar", "boost")
 
-    def __init__(self, start, end=None, startchar=None, endchar=None,
-                 boost=1.0):
+    def __init__(self, start, end=None, startchar=None, endchar=None, boost=1.0):
         if end is None:
             end = start
         assert start <= end
@@ -66,16 +66,22 @@ class Span(object):
 
     def __repr__(self):
         if self.startchar is not None or self.endchar is not None:
-            return "<%d-%d %d:%d>" % (self.start, self.end, self.startchar,
-                                      self.endchar)
+            return "<%d-%d %d:%d>" % (
+                self.start,
+                self.end,
+                self.startchar,
+                self.endchar,
+            )
         else:
             return "<%d-%d>" % (self.start, self.end)
 
     def __eq__(self, span):
-        return (self.start == span.start
-                and self.end == span.end
-                and self.startchar == span.startchar
-                and self.endchar == span.endchar)
+        return (
+            self.start == span.start
+            and self.end == span.end
+            and self.startchar == span.startchar
+            and self.endchar == span.endchar
+        )
 
     def __ne__(self, span):
         return self.start != span.start or self.end != span.end
@@ -137,10 +143,12 @@ class Span(object):
         return self.__class__(minpos, maxpos, minchar, maxchar)
 
     def overlaps(self, span):
-        return ((self.start >= span.start and self.start <= span.end)
-                or (self.end >= span.start and self.end <= span.end)
-                or (span.start >= self.start and span.start <= self.end)
-                or (span.end >= self.start and span.end <= self.end))
+        return (
+            (self.start >= span.start and self.start <= span.end)
+            or (self.end >= span.start and self.end <= span.end)
+            or (span.start >= self.start and span.start <= self.end)
+            or (span.end >= self.start and span.end <= self.end)
+        )
 
     def surrounds(self, span):
         return self.start < span.start and self.end > span.end
@@ -179,6 +187,7 @@ def bisect_spans(spans, start):
 
 
 # Base matchers
+
 
 class SpanWrappingMatcher(wrappers.WrappingMatcher):
     """An abstract matcher class that wraps a "regular" matcher. This matcher
@@ -254,6 +263,7 @@ class SpanBiMatcher(SpanWrappingMatcher):
 
 # Queries
 
+
 class SpanQuery(Query):
     """Abstract base class for span-based queries. Each span query type wraps
     a "regular" query that implements the basic document-matching functionality
@@ -272,8 +282,7 @@ class SpanQuery(Query):
         return "%s(%r)" % (self.__class__.__name__, self.q)
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.q == other.q)
+        return other and self.__class__ is other.__class__ and self.q == other.q
 
     def __hash__(self):
         return hash(self.__class__.__name__) ^ hash(self.q)
@@ -313,8 +322,12 @@ class SpanFirst(WrappingSpan):
         self.limit = limit
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.q == other.q and self.limit == other.limit)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.q == other.q
+            and self.limit == other.limit
+        )
 
     def __hash__(self):
         return hash(self.q) ^ hash(self.limit)
@@ -335,8 +348,7 @@ class SpanFirst(WrappingSpan):
             return self.__class__(newchild, limit=self.limit)
 
         def _get_spans(self):
-            return [span for span in self.child.spans()
-                    if span.end <= self.limit]
+            return [span for span in self.child.spans() if span.end <= self.limit]
 
 
 class SpanNear(SpanQuery):
@@ -352,7 +364,7 @@ class SpanNear(SpanQuery):
     For example, to find documents where "whoosh-reloaded" occurs next to "library"
     in the "text" field::
 
-        from whoosh-reloaded import query, spans
+        from whoosh_reloaded import query, spans
         t1 = query.Term("text", "whoosh-reloaded")
         t2 = query.Term("text", "library")
         q = spans.SpanNear(t1, t2)
@@ -394,33 +406,51 @@ class SpanNear(SpanQuery):
         self.mindist = mindist
 
     def __repr__(self):
-        return ("%s(%r, slop=%d, ordered=%s, mindist=%d)"
-                % (self.__class__.__name__, self.q, self.slop, self.ordered,
-                   self.mindist))
+        return "%s(%r, slop=%d, ordered=%s, mindist=%d)" % (
+            self.__class__.__name__,
+            self.q,
+            self.slop,
+            self.ordered,
+            self.mindist,
+        )
 
     def __eq__(self, other):
-        return (other and self.__class__ == other.__class__
-                and self.q == other.q and self.slop == other.slop
-                and self.ordered == other.ordered
-                and self.mindist == other.mindist)
+        return (
+            other
+            and self.__class__ == other.__class__
+            and self.q == other.q
+            and self.slop == other.slop
+            and self.ordered == other.ordered
+            and self.mindist == other.mindist
+        )
 
     def __hash__(self):
-        return (hash(self.a) ^ hash(self.b) ^ hash(self.slop)
-                ^ hash(self.ordered) ^ hash(self.mindist))
+        return (
+            hash(self.a)
+            ^ hash(self.b)
+            ^ hash(self.slop)
+            ^ hash(self.ordered)
+            ^ hash(self.mindist)
+        )
 
     def is_leaf(self):
         return False
 
     def apply(self, fn):
-        return self.__class__(fn(self.a), fn(self.b), slop=self.slop,
-                              ordered=self.ordered, mindist=self.mindist)
+        return self.__class__(
+            fn(self.a),
+            fn(self.b),
+            slop=self.slop,
+            ordered=self.ordered,
+            mindist=self.mindist,
+        )
 
     def matcher(self, searcher, context=None):
         ma = self.a.matcher(searcher, context)
         mb = self.b.matcher(searcher, context)
-        return SpanNear.SpanNearMatcher(ma, mb, slop=self.slop,
-                                        ordered=self.ordered,
-                                        mindist=self.mindist)
+        return SpanNear.SpanNearMatcher(
+            ma, mb, slop=self.slop, ordered=self.ordered, mindist=self.mindist
+        )
 
     @classmethod
     def phrase(cls, fieldname, words, slop=1, ordered=True):
@@ -453,8 +483,13 @@ class SpanNear(SpanQuery):
             super(SpanNear.SpanNearMatcher, self).__init__(isect)
 
         def copy(self):
-            return self.__class__(self.a.copy(), self.b.copy(), slop=self.slop,
-                                  ordered=self.ordered, mindist=self.mindist)
+            return self.__class__(
+                self.a.copy(),
+                self.b.copy(),
+                slop=self.slop,
+                ordered=self.ordered,
+                mindist=self.mindist,
+            )
 
         def replace(self, minquality=0):
             # TODO: fix this
@@ -471,8 +506,9 @@ class SpanNear(SpanQuery):
             bspans = self.b.spans()
             for aspan in self.a.spans():
                 for bspan in bspans:
-                    if (bspan.end < aspan.start - slop
-                        or (ordered and aspan.start > bspan.start)):
+                    if bspan.end < aspan.start - slop or (
+                        ordered and aspan.start > bspan.start
+                    ):
                         # B is too far in front of A, or B is in front of A
                         # *at all* when ordered is True
                         continue
@@ -505,7 +541,7 @@ class SpanNear2(SpanQuery):
     For example, to find documents where "whoosh-reloaded" occurs next to "library"
     in the "text" field::
 
-        from whoosh-reloaded import query, spans
+        from whoosh_reloaded import query, spans
         t1 = query.Term("text", "whoosh-reloaded")
         t2 = query.Term("text", "library")
         q = spans.SpanNear2([t1, t2])
@@ -537,15 +573,23 @@ class SpanNear2(SpanQuery):
         self.mindist = mindist
 
     def __repr__(self):
-        return ("%s(%r, slop=%d, ordered=%s, mindist=%d)"
-                % (self.__class__.__name__, self.qs, self.slop, self.ordered,
-                   self.mindist))
+        return "%s(%r, slop=%d, ordered=%s, mindist=%d)" % (
+            self.__class__.__name__,
+            self.qs,
+            self.slop,
+            self.ordered,
+            self.mindist,
+        )
 
     def __eq__(self, other):
-        return (other and self.__class__ == other.__class__
-                and self.qs == other.qs and self.slop == other.slop
-                and self.ordered == other.ordered
-                and self.mindist == other.mindist)
+        return (
+            other
+            and self.__class__ == other.__class__
+            and self.qs == other.qs
+            and self.slop == other.slop
+            and self.ordered == other.ordered
+            and self.mindist == other.mindist
+        )
 
     def __hash__(self):
         h = hash(self.slop) ^ hash(self.ordered) ^ hash(self.mindist)
@@ -569,13 +613,18 @@ class SpanNear2(SpanQuery):
         return self.qs
 
     def apply(self, fn):
-        return self.__class__([fn(q) for q in self.qs], slop=self.slop,
-                              ordered=self.ordered, mindist=self.mindist)
+        return self.__class__(
+            [fn(q) for q in self.qs],
+            slop=self.slop,
+            ordered=self.ordered,
+            mindist=self.mindist,
+        )
 
     def matcher(self, searcher, context=None):
         ms = [q.matcher(searcher, context) for q in self.qs]
-        return self.SpanNear2Matcher(ms, slop=self.slop, ordered=self.ordered,
-                                     mindist=self.mindist)
+        return self.SpanNear2Matcher(
+            ms, slop=self.slop, ordered=self.ordered, mindist=self.mindist
+        )
 
     class SpanNear2Matcher(SpanWrappingMatcher):
         def __init__(self, ms, slop=1, ordered=True, mindist=1):
@@ -587,8 +636,12 @@ class SpanNear2(SpanQuery):
             super(SpanNear2.SpanNear2Matcher, self).__init__(isect)
 
         def copy(self):
-            return self.__class__([m.copy() for m in self.ms], slop=self.slop,
-                                  ordered=self.ordered, mindist=self.mindist)
+            return self.__class__(
+                [m.copy() for m in self.ms],
+                slop=self.slop,
+                ordered=self.ordered,
+                mindist=self.mindist,
+            )
 
         def replace(self, minquality=0):
             # TODO: fix this
@@ -620,8 +673,9 @@ class SpanNear2(SpanQuery):
                         bspan = bspans[j]
                         j += 1
 
-                        if (bspan.end < aspan.start - slop
-                            or (ordered and aspan.start > bspan.start)):
+                        if bspan.end < aspan.start - slop or (
+                            ordered and aspan.start > bspan.start
+                        ):
                             # B is too far in front of A, or B is in front of A
                             # *at all* when ordered is True
                             continue
@@ -684,8 +738,7 @@ class SpanOr(SpanQuery):
                 if b_active:
                     b_id = self.b.id()
                     if a_id == b_id:
-                        spans = sorted(set(self.a.spans())
-                                       | set(self.b.spans()))
+                        spans = sorted(set(self.a.spans()) | set(self.b.spans()))
                     elif a_id < b_id:
                         spans = self.a.spans()
                     else:
@@ -722,7 +775,7 @@ class SpanNot(SpanBiQuery):
     For example, to match documents that contain "bear" at most 2 places after
     "apple" in the "text" field but don't have "cute" between them::
 
-        from whoosh-reloaded import query, spans
+        from whoosh_reloaded import query, spans
         t1 = query.Term("text", "apple")
         t2 = query.Term("text", "bear")
         near = spans.SpanNear(t1, t2, slop=2)
@@ -771,7 +824,7 @@ class SpanContains(SpanBiQuery):
     For example, to match documents where "apple" occurs at most 10 places
     before "bear" in the "text" field and "cute" is between them::
 
-        from whoosh-reloaded import query, spans
+        from whoosh_reloaded import query, spans
         t1 = query.Term("text", "apple")
         t2 = query.Term("text", "bear")
         near = spans.SpanNear(t1, t2, slop=10)
@@ -819,7 +872,7 @@ class SpanBefore(SpanBiQuery):
     For example, to match documents where "apple" occurs anywhere before
     "bear"::
 
-        from whoosh-reloaded import query, spans
+        from whoosh_reloaded import query, spans
         t1 = query.Term("text", "apple")
         t2 = query.Term("text", "bear")
         q = spans.SpanBefore(t1, t2)
@@ -874,8 +927,3 @@ class SpanCondition(SpanBiQuery):
 
         def _get_spans(self):
             return self.a.spans()
-
-
-
-
-

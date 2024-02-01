@@ -25,7 +25,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh-reloaded.matching.mcore import *
-from whoosh-reloaded.matching.binary import *
-from whoosh-reloaded.matching.wrappers import *
-from whoosh-reloaded.matching.combo import *
+from whoosh_reloaded.matching.mcore import *
+from whoosh_reloaded.matching.binary import *
+from whoosh_reloaded.matching.wrappers import *
+from whoosh_reloaded.matching.combo import *

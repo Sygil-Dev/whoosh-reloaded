@@ -1,6 +1,6 @@
 from .bases import _ScandinavianStemmer
 
-from whoosh-reloaded.compat import u
+from whoosh_reloaded.compat import u
 
 
 class SwedishStemmer(_ScandinavianStemmer):
@@ -25,13 +25,45 @@ class SwedishStemmer(_ScandinavianStemmer):
 
     __vowels = u("aeiouy\xE4\xE5\xF6")
     __s_ending = "bcdfghjklmnoprtvy"
-    __step1_suffixes = ("heterna", "hetens", "heter", "heten",
-                        "anden", "arnas", "ernas", "ornas", "andes",
-                        "andet", "arens", "arna", "erna", "orna",
-                        "ande", "arne", "aste", "aren", "ades",
-                        "erns", "ade", "are", "ern", "ens", "het",
-                        "ast", "ad", "en", "ar", "er", "or", "as",
-                        "es", "at", "a", "e", "s")
+    __step1_suffixes = (
+        "heterna",
+        "hetens",
+        "heter",
+        "heten",
+        "anden",
+        "arnas",
+        "ernas",
+        "ornas",
+        "andes",
+        "andet",
+        "arens",
+        "arna",
+        "erna",
+        "orna",
+        "ande",
+        "arne",
+        "aste",
+        "aren",
+        "ades",
+        "erns",
+        "ade",
+        "are",
+        "ern",
+        "ens",
+        "het",
+        "ast",
+        "ad",
+        "en",
+        "ar",
+        "er",
+        "or",
+        "as",
+        "es",
+        "at",
+        "a",
+        "e",
+        "s",
+    )
     __step2_suffixes = ("dd", "gd", "nn", "dt", "gt", "kt", "tt")
     __step3_suffixes = ("fullt", u("l\xF6st"), "els", "lig", "ig")
 
@@ -57,8 +89,8 @@ class SwedishStemmer(_ScandinavianStemmer):
                         word = word[:-1]
                         r1 = r1[:-1]
                 else:
-                    word = word[:-len(suffix)]
-                    r1 = r1[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    r1 = r1[: -len(suffix)]
                 break
 
         # STEP 2
@@ -72,7 +104,7 @@ class SwedishStemmer(_ScandinavianStemmer):
         for suffix in self.__step3_suffixes:
             if r1.endswith(suffix):
                 if suffix in ("els", "lig", "ig"):
-                    word = word[:-len(suffix)]
+                    word = word[: -len(suffix)]
                 elif suffix in ("fullt", u("l\xF6st")):
                     word = word[:-1]
                 break
