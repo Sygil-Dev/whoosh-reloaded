@@ -2,7 +2,7 @@
 ``sorting`` module
 ==================
 
-.. automodule:: whoosh.sorting
+.. automodule:: whoosh-reloaded.sorting
 
 
 Base types

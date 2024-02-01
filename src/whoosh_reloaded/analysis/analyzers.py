@@ -25,18 +25,18 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.analysis.acore import Composable, CompositionError
-from whoosh.analysis.tokenizers import Tokenizer
-from whoosh.analysis.filters import LowercaseFilter
-from whoosh.analysis.filters import StopFilter, STOP_WORDS
-from whoosh.analysis.morph import StemFilter
-from whoosh.analysis.intraword import IntraWordFilter
-from whoosh.analysis.tokenizers import default_pattern
-from whoosh.analysis.tokenizers import CommaSeparatedTokenizer
-from whoosh.analysis.tokenizers import IDTokenizer
-from whoosh.analysis.tokenizers import RegexTokenizer
-from whoosh.analysis.tokenizers import SpaceSeparatedTokenizer
-from whoosh.lang.porter import stem
+from whoosh-reloaded.analysis.acore import Composable, CompositionError
+from whoosh-reloaded.analysis.tokenizers import Tokenizer
+from whoosh-reloaded.analysis.filters import LowercaseFilter
+from whoosh-reloaded.analysis.filters import StopFilter, STOP_WORDS
+from whoosh-reloaded.analysis.morph import StemFilter
+from whoosh-reloaded.analysis.intraword import IntraWordFilter
+from whoosh-reloaded.analysis.tokenizers import default_pattern
+from whoosh-reloaded.analysis.tokenizers import CommaSeparatedTokenizer
+from whoosh-reloaded.analysis.tokenizers import IDTokenizer
+from whoosh-reloaded.analysis.tokenizers import RegexTokenizer
+from whoosh-reloaded.analysis.tokenizers import SpaceSeparatedTokenizer
+from whoosh-reloaded.lang.porter import stem
 
 
 # Analyzers
@@ -262,9 +262,9 @@ def LanguageAnalyzer(lang, expression=default_pattern, gaps=False,
     >>> [token.text for token in ana("Por el mar corren las liebres")]
     ['mar', 'corr', 'liebr']
 
-    The list of available languages is in `whoosh.lang.languages`.
-    You can use :func:`whoosh.lang.has_stemmer` and
-    :func:`whoosh.lang.has_stopwords` to check if a given language has a
+    The list of available languages is in `whoosh-reloaded.lang.languages`.
+    You can use :func:`whoosh-reloaded.lang.has_stemmer` and
+    :func:`whoosh-reloaded.lang.has_stopwords` to check if a given language has a
     stemming function and/or stop word list available.
 
     :param expression: The regular expression pattern to use to extract tokens.
@@ -275,7 +275,7 @@ def LanguageAnalyzer(lang, expression=default_pattern, gaps=False,
         use.
     """
 
-    from whoosh.lang import NoStemmer, NoStopWords
+    from whoosh-reloaded.lang import NoStemmer, NoStopWords
 
     # Make the start of the chain
     chain = (RegexTokenizer(expression=expression, gaps=gaps)

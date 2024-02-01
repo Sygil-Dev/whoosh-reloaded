@@ -1,4 +1,4 @@
-from whoosh.qparser.dateparse import *
+from whoosh-reloaded.qparser.dateparse import *
 
 
 basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)

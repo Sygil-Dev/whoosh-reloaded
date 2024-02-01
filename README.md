@@ -53,14 +53,14 @@ or ``pip`` to download and install Whoosh automatically::
     
     
     # Install the development version from Github.
-    $ pip install git+https://github.com/Sygil-Dev/whoosh.git
+    $ pip install git+https://github.com/Sygil-Dev/whoosh-reloaded.git
 
 Getting the source.
 ==================
 
 You can check out the latest version of the source code on GitHub using git:
 
-    $ git clone https://github.com/Sygil-Dev/whoosh.git
+    $ git clone https://github.com/Sygil-Dev/whoosh-reloaded.git
 
 Learning more
 =============
@@ -71,8 +71,8 @@ Learning more
   
   *   [Read the Docs](https://whoosh-reloaded.readthedocs.io/en/latest/) 
 
-* Read the old online documentation at https://docs.red-dove.com/whoosh/ (Search work properly).
+* Read the old online documentation at https://docs.red-dove.com/whoosh-reloaded/ (Search work properly).
 
-* Read the old online documentation at https://whoosh.readthedocs.org/en/latest/ (Search DOES NOT work).
+* Read the old online documentation at https://whoosh-reloaded.readthedocs.org/en/latest/ (Search DOES NOT work).
 
-* File bug reports and issues at https://github.com/Sygil-Dev/whoosh/issues
+* File bug reports and issues at https://github.com/Sygil-Dev/whoosh-reloaded/issues

@@ -2,11 +2,11 @@ from __future__ import with_statement
 
 import pytest
 
-from whoosh import analysis, fields, formats, highlight, qparser, query
-from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import u, xrange, text_type, permutations
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempStorage, TempIndex
+from whoosh-reloaded import analysis, fields, formats, highlight, qparser, query
+from whoosh-reloaded.codec.whoosh-reloaded3 import W3Codec
+from whoosh-reloaded.compat import u, xrange, text_type, permutations
+from whoosh-reloaded.filedb.filestore import RamStorage
+from whoosh-reloaded.util.testing import TempStorage, TempIndex
 
 
 def test_score_retrieval():
@@ -132,7 +132,7 @@ def test_results_filter():
 
 
 def test_sorted_extend():
-    from whoosh import sorting
+    from whoosh-reloaded import sorting
 
     schema = fields.Schema(title=fields.TEXT(stored=True),
                            keywords=fields.TEXT,
@@ -228,7 +228,7 @@ def test_extend_filtered():
 
 
 def test_pages():
-    from whoosh.scoring import Frequency
+    from whoosh-reloaded.scoring import Frequency
 
     schema = fields.Schema(id=fields.ID(stored=True), c=fields.TEXT)
     ix = RamStorage().create_index(schema)
@@ -256,7 +256,7 @@ def test_pages():
 
 
 def test_pages_with_filter():
-    from whoosh.scoring import Frequency
+    from whoosh-reloaded.scoring import Frequency
 
     schema = fields.Schema(id=fields.ID(stored=True),
                            type=fields.TEXT(),
@@ -295,7 +295,7 @@ def test_extra_slice():
 
 
 def test_page_counts():
-    from whoosh.scoring import Frequency
+    from whoosh-reloaded.scoring import Frequency
 
     schema = fields.Schema(id=fields.ID(stored=True))
     st = RamStorage()
@@ -559,7 +559,7 @@ def test_hit_column():
 
 
 def test_closed_searcher():
-    from whoosh.reading import ReaderClosed
+    from whoosh-reloaded.reading import ReaderClosed
 
     schema = fields.Schema(key=fields.KEYWORD(stored=True, sortable=True))
 

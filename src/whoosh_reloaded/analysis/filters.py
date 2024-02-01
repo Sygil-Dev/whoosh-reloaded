@@ -29,9 +29,9 @@
 
 from itertools import chain
 
-from whoosh.compat import next
-from whoosh.analysis.acore import Composable
-from whoosh.util.text import rcompile
+from whoosh-reloaded.compat import next
+from whoosh-reloaded.analysis.acore import Composable
+from whoosh-reloaded.util.text import rcompile
 
 
 # Default list of stop words (words so common it's usually wasteful to index
@@ -96,13 +96,13 @@ class LoggingFilter(Filter):
 
     def __init__(self, logger=None):
         """
-        :param target: the logger to use. If omitted, the "whoosh.analysis"
+        :param target: the logger to use. If omitted, the "whoosh-reloaded.analysis"
             logger is used.
         """
 
         if logger is None:
             import logging
-            logger = logging.getLogger("whoosh.analysis")
+            logger = logging.getLogger("whoosh-reloaded.analysis")
         self.logger = logger
 
     def __call__(self, tokens):
@@ -250,8 +250,8 @@ class StopFilter(Filter):
     >>> [token.text for token in es_stopper(u"el lapiz es en la mesa")]
     ["lapiz", "mesa"]
 
-    The list of available languages is in `whoosh.lang.languages`.
-    You can use :func:`whoosh.lang.has_stopwords` to check if a given language
+    The list of available languages is in `whoosh-reloaded.lang.languages`.
+    You can use :func:`whoosh-reloaded.lang.has_stopwords` to check if a given language
     has a stop word list available.
     """
 
@@ -275,7 +275,7 @@ class StopFilter(Filter):
         if stoplist:
             stops.update(stoplist)
         if lang:
-            from whoosh.lang import stopwords_for_language
+            from whoosh-reloaded.lang import stopwords_for_language
 
             stops.update(stopwords_for_language(lang))
 
@@ -325,9 +325,9 @@ class CharsetFilter(Filter):
     supplied character mapping object. This is useful for case and accent
     folding.
 
-    The ``whoosh.support.charset`` module has a useful map for accent folding.
+    The ``whoosh-reloaded.support.charset`` module has a useful map for accent folding.
 
-    >>> from whoosh.support.charset import accent_map
+    >>> from whoosh-reloaded.support.charset import accent_map
     >>> retokenizer = RegexTokenizer()
     >>> chfilter = CharsetFilter(accent_map)
     >>> [t.text for t in chfilter(retokenizer(u'café'))]
@@ -335,10 +335,10 @@ class CharsetFilter(Filter):
 
     Another way to get a character mapping object is to convert a Sphinx
     charset table file using
-    :func:`whoosh.support.charset.charset_table_to_dict`.
+    :func:`whoosh-reloaded.support.charset.charset_table_to_dict`.
 
-    >>> from whoosh.support.charset import charset_table_to_dict
-    >>> from whoosh.support.charset import default_charset
+    >>> from whoosh-reloaded.support.charset import charset_table_to_dict
+    >>> from whoosh-reloaded.support.charset import default_charset
     >>> retokenizer = RegexTokenizer()
     >>> charmap = charset_table_to_dict(default_charset)
     >>> chfilter = CharsetFilter(charmap)

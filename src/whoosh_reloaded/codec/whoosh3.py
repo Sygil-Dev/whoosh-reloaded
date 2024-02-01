@@ -33,19 +33,19 @@ import struct
 from array import array
 from collections import defaultdict
 
-from whoosh import columns, formats
-from whoosh.compat import b, bytes_type, string_type, integer_types
-from whoosh.compat import dumps, loads, iteritems, xrange
-from whoosh.codec import base
-from whoosh.filedb import compound, filetables
-from whoosh.matching import ListMatcher, ReadTooFar, LeafMatcher
-from whoosh.reading import TermInfo, TermNotFound
-from whoosh.system import emptybytes
-from whoosh.system import _SHORT_SIZE, _INT_SIZE, _LONG_SIZE, _FLOAT_SIZE
-from whoosh.system import pack_ushort, unpack_ushort
-from whoosh.system import pack_int, unpack_int, pack_long, unpack_long
-from whoosh.util.numlists import delta_encode, delta_decode
-from whoosh.util.numeric import length_to_byte, byte_to_length
+from whoosh-reloaded import columns, formats
+from whoosh-reloaded.compat import b, bytes_type, string_type, integer_types
+from whoosh-reloaded.compat import dumps, loads, iteritems, xrange
+from whoosh-reloaded.codec import base
+from whoosh-reloaded.filedb import compound, filetables
+from whoosh-reloaded.matching import ListMatcher, ReadTooFar, LeafMatcher
+from whoosh-reloaded.reading import TermInfo, TermNotFound
+from whoosh-reloaded.system import emptybytes
+from whoosh-reloaded.system import _SHORT_SIZE, _INT_SIZE, _LONG_SIZE, _FLOAT_SIZE
+from whoosh-reloaded.system import pack_ushort, unpack_ushort
+from whoosh-reloaded.system import pack_int, unpack_int, pack_long, unpack_long
+from whoosh-reloaded.util.numlists import delta_encode, delta_decode
+from whoosh-reloaded.util.numeric import length_to_byte, byte_to_length
 
 try:
     import zlib
@@ -871,7 +871,7 @@ class W3PostingsWriter(base.PostingsWriter):
 
 class W3LeafMatcher(LeafMatcher):
     """Reads on-disk postings from the postings file and presents the
-    :class:`whoosh.matching.Matcher` interface.
+    :class:`whoosh-reloaded.matching.Matcher` interface.
     """
 
     def __init__(self, postfile, startoffset, length, format_, term=None,

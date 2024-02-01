@@ -30,8 +30,8 @@ import os.path
 from optparse import OptionParser
 from shutil import rmtree
 
-from whoosh import index, qparser, query, scoring
-from whoosh.util import now, find_object
+from whoosh-reloaded import index, qparser, query, scoring
+from whoosh-reloaded.util import now, find_object
 
 try:
     import xappy
@@ -132,8 +132,8 @@ class Spec(object):
 
 class WhooshModule(Module):
     def indexer(self, create=True):
-        schema = self.bench.spec.whoosh_schema()
-        path = os.path.join(self.options.dir, "%s_whoosh"
+        schema = self.bench.spec.whoosh-reloaded_schema()
+        path = os.path.join(self.options.dir, "%s_whoosh-reloaded"
                             % self.options.indexname)
 
         if not os.path.exists(path):
@@ -154,8 +154,8 @@ class WhooshModule(Module):
                                 batchsize=int(self.options.batch),
                                 multisegment=self.options.xms)
         self._procdoc = None
-        if hasattr(self.bench.spec, "process_document_whoosh"):
-            self._procdoc = self.bench.spec.process_document_whoosh
+        if hasattr(self.bench.spec, "process_document_whoosh-reloaded"):
+            self._procdoc = self.bench.spec.process_document_whoosh-reloaded
 
     def index_document(self, d):
         _procdoc = self._procdoc
@@ -167,7 +167,7 @@ class WhooshModule(Module):
         self.writer.commit(merge=merge, optimize=optimize)
 
     def searcher(self):
-        path = os.path.join(self.options.dir, "%s_whoosh"
+        path = os.path.join(self.options.dir, "%s_whoosh-reloaded"
                             % self.options.indexname)
         ix = index.open_dir(path)
         self.srch = ix.searcher(weighting=scoring.PL2())
@@ -446,7 +446,7 @@ class NucularModule(Module):
 
 
 class Bench(object):
-    libs = {"whoosh": WhooshModule, "xappy": XappyModule,
+    libs = {"whoosh-reloaded": WhooshModule, "xappy": XappyModule,
             "xapian": XapianModule, "solr": SolrModule,
             "zcatalog": ZcatalogModule, "nucular": NucularModule}
 
@@ -523,7 +523,7 @@ class Bench(object):
         p = OptionParser()
         p.add_option("-x", "--lib", dest="lib",
                      help="Name of the library to use to index/search.",
-                     default="whoosh")
+                     default="whoosh-reloaded")
         p.add_option("-d", "--dir", dest="dir", metavar="DIRNAME",
                      help="Directory in which to store index.", default=".")
         p.add_option("-s", "--setup", dest="setup", action="store_true",

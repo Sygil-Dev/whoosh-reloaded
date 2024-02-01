@@ -1,6 +1,6 @@
 from .bases import _StandardStemmer
 
-from whoosh.compat import u
+from whoosh-reloaded.compat import u
 
 
 class FrenchStemmer(_StandardStemmer):

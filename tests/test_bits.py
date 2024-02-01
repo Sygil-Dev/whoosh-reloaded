@@ -1,5 +1,5 @@
-from whoosh.filedb.filestore import RamStorage
-from whoosh.idsets import BitSet, OnDiskBitSet, SortedIntSet
+from whoosh-reloaded.filedb.filestore import RamStorage
+from whoosh-reloaded.idsets import BitSet, OnDiskBitSet, SortedIntSet
 
 
 def test_bit_basics(c=BitSet):

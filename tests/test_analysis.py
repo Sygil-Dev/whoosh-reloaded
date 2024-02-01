@@ -4,10 +4,10 @@ from __future__ import with_statement
 
 import pytest
 
-from whoosh import analysis, fields, qparser
-from whoosh.compat import b, u, unichr
-from whoosh.compat import dumps
-from whoosh.filedb.filestore import RamStorage
+from whoosh-reloaded import analysis, fields, qparser
+from whoosh-reloaded.compat import b, u, unichr
+from whoosh-reloaded.compat import dumps
+from whoosh-reloaded.filedb.filestore import RamStorage
 
 
 def test_regextokenizer():
@@ -218,7 +218,7 @@ def test_shingles():
 
 
 def test_unicode_blocks():
-    from whoosh.support.unicode import blocks, blockname, blocknum
+    from whoosh-reloaded.support.unicode import blocks, blockname, blocknum
 
     assert blockname(u('a')) == 'Basic Latin'
     assert blockname(unichr(0x0b80)) == 'Tamil'
@@ -231,7 +231,7 @@ def test_unicode_blocks():
 
 
 def test_double_metaphone():
-    from whoosh.lang.dmetaphone import double_metaphone
+    from whoosh-reloaded.lang.dmetaphone import double_metaphone
 
     names = {'maurice': ('MRS', None),
              'aubrey': ('APR', None),
@@ -307,7 +307,7 @@ def test_delimited_attribute():
 
 
 def test_porter2():
-    from whoosh.lang.porter2 import stem
+    from whoosh-reloaded.lang.porter2 import stem
 
     plurals = ['caresses', 'flies', 'dies', 'mules', 'denied',
                'died', 'agreed', 'owned', 'humbled', 'sized',
@@ -348,14 +348,14 @@ def test_porter2():
 
 
 def test_url():
-    sample = u("Visit http://bitbucket.org/mchaput/whoosh or " +
+    sample = u("Visit http://bitbucket.org/mchaput/whoosh-reloaded or " +
                "urn:isbn:5930502 or http://www.apple.com/.")
 
     anas = [analysis.SimpleAnalyzer(analysis.url_pattern),
             analysis.StandardAnalyzer(analysis.url_pattern, stoplist=None)]
     for ana in anas:
         ts = [t.text for t in ana(sample)]
-        assert ts == [u('visit'), u('http://bitbucket.org/mchaput/whoosh'),
+        assert ts == [u('visit'), u('http://bitbucket.org/mchaput/whoosh-reloaded'),
                       u('or'), u('urn:isbn:5930502'), u('or'),
                       u('http://www.apple.com/')]
 
@@ -380,7 +380,7 @@ def test_name_field():
 
 
 def test_start_pos():
-    from whoosh import formats
+    from whoosh-reloaded import formats
     ana = analysis.RegexTokenizer(r"\S+") | analysis.LowercaseFilter()
     kw = {"positions": True}
     tks = formats.tokens(u("alfa bravo charlie delta"), ana, kw)
@@ -393,7 +393,7 @@ def test_start_pos():
 
 
 def test_frowny_face():
-    # See https://bitbucket.org/mchaput/whoosh/issue/166/
+    # See https://bitbucket.org/mchaput/whoosh-reloaded/issue/166/
     ana = analysis.RegexTokenizer(r"\S+") | analysis.IntraWordFilter()
     # text is all delimiters
     tokens = [t.text for t in ana(u(":-("))]
@@ -457,7 +457,7 @@ def test_la_pickleability():
 
 
 def test_charset_pickeability():
-    from whoosh.support import charset
+    from whoosh-reloaded.support import charset
     charmap = charset.charset_table_to_dict(charset.default_charset)
     ana = analysis.StandardAnalyzer() | analysis.CharsetFilter(charmap)
     _ = dumps(ana, -1)

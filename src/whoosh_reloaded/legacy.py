@@ -30,7 +30,7 @@ This module contains code for maintaining backwards compatibility with old
 index formats.
 """
 
-from whoosh.util.loading import RenamingUnpickler
+from whoosh-reloaded.util.loading import RenamingUnpickler
 
 
 def load_110_toc(stream, gen, schema, version):
@@ -46,9 +46,9 @@ def load_110_toc(stream, gen, schema, version):
     else:
         # Remap the old classes and functions to their moved versions as we
         # unpickle the schema
-        scuts = {"wf": "whoosh.fields",
-                 "wsn": "whoosh.support.numeric",
-                 "wcw2": "whoosh.codec.whoosh2"}
+        scuts = {"wf": "whoosh-reloaded.fields",
+                 "wsn": "whoosh-reloaded.support.numeric",
+                 "wcw2": "whoosh-reloaded.codec.whoosh-reloaded2"}
         objmap = {"%(wf)s.NUMERIC": "%(wcw2)s.OLD_NUMERIC",
                   "%(wf)s.DATETIME": "%(wcw2)s.OLD_DATETIME",
                   "%(wsn)s.int_to_text": "%(wcw2)s.int_to_text",

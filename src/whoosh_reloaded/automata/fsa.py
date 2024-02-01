@@ -5,7 +5,7 @@ import operator
 import sys
 from bisect import bisect_left
 
-from whoosh.compat import iteritems, next, text_type, unichr, xrange
+from whoosh-reloaded.compat import iteritems, next, text_type, unichr, xrange
 
 
 unull = unichr(0)

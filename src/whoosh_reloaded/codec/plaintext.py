@@ -27,11 +27,11 @@
 
 from ast import literal_eval
 
-from whoosh.compat import b, bytes_type, text_type, integer_types, PY3
-from whoosh.compat import iteritems, dumps, loads, xrange
-from whoosh.codec import base
-from whoosh.matching import ListMatcher
-from whoosh.reading import TermInfo, TermNotFound
+from whoosh-reloaded.compat import b, bytes_type, text_type, integer_types, PY3
+from whoosh-reloaded.compat import iteritems, dumps, loads, xrange
+from whoosh-reloaded.codec import base
+from whoosh-reloaded.matching import ListMatcher
+from whoosh-reloaded.reading import TermInfo, TermNotFound
 
 if not PY3:
     class memoryview:

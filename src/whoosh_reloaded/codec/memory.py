@@ -29,11 +29,11 @@ from __future__ import with_statement
 from bisect import bisect_left
 from threading import Lock
 
-from whoosh.compat import xrange
-from whoosh.codec import base
-from whoosh.matching import ListMatcher
-from whoosh.reading import SegmentReader, TermInfo, TermNotFound
-from whoosh.writing import SegmentWriter
+from whoosh-reloaded.compat import xrange
+from whoosh-reloaded.codec import base
+from whoosh-reloaded.matching import ListMatcher
+from whoosh-reloaded.reading import SegmentReader, TermInfo, TermNotFound
+from whoosh-reloaded.writing import SegmentWriter
 
 
 class MemWriter(SegmentWriter):
@@ -43,7 +43,7 @@ class MemWriter(SegmentWriter):
 
 class MemoryCodec(base.Codec):
     def __init__(self):
-        from whoosh.filedb.filestore import RamStorage
+        from whoosh-reloaded.filedb.filestore import RamStorage
 
         self.storage = RamStorage()
         self.segment = MemSegment(self, "blah")

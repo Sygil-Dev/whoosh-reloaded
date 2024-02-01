@@ -54,8 +54,8 @@ from collections import deque
 from heapq import nlargest
 from itertools import groupby
 
-from whoosh.analysis import Token
-from whoosh.compat import htmlescape
+from whoosh-reloaded.analysis import Token
+from whoosh-reloaded.compat import htmlescape
 
 # The default value for the maximum chars to examine when fragmenting
 DEFAULT_CHARLIMIT = 2 ** 15

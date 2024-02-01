@@ -2,10 +2,10 @@ from __future__ import with_statement
 
 import random
 
-from whoosh import fields
-from whoosh.compat import xrange, text_type, u
-from whoosh.util.testing import TempIndex
-from whoosh.util import now
+from whoosh-reloaded import fields
+from whoosh-reloaded.compat import xrange, text_type, u
+from whoosh-reloaded.util.testing import TempIndex
+from whoosh-reloaded.util import now
 
 
 def test_20000_single():
@@ -28,7 +28,7 @@ def test_20000_single():
 
 
 def test_20000_buffered():
-    from whoosh.writing import BufferedWriter
+    from whoosh-reloaded.writing import BufferedWriter
 
     sc = fields.Schema(id=fields.ID(stored=True), text=fields.TEXT)
     with TempIndex(sc, "20000buffered") as ix:

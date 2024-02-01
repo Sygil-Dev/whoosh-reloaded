@@ -29,23 +29,23 @@
 This module contains Query objects that deal with "spans".
 
 Span queries allow for positional constraints on matching documents. For
-example, the :class:`whoosh.spans.SpanNear` query matches documents where one
+example, the :class:`whoosh-reloaded.spans.SpanNear` query matches documents where one
 term occurs near another. Because you can nest span queries, and wrap them
 around almost any non-span query, you can create very complex constraints.
 
-For example, to find documents containing "whoosh" at most 5 positions before
+For example, to find documents containing "whoosh-reloaded" at most 5 positions before
 "library" in the "text" field::
 
-    from whoosh import query, spans
-    t1 = query.Term("text", "whoosh")
+    from whoosh-reloaded import query, spans
+    t1 = query.Term("text", "whoosh-reloaded")
     t2 = query.Term("text", "library")
     q = spans.SpanNear(t1, t2, slop=5)
 
 """
 
-from whoosh.matching import mcore, wrappers, binary
-from whoosh.query import Query, And, AndMaybe, Or, Term
-from whoosh.util import make_binary_tree
+from whoosh-reloaded.matching import mcore, wrappers, binary
+from whoosh-reloaded.query import Query, And, AndMaybe, Or, Term
+from whoosh-reloaded.util import make_binary_tree
 
 
 # Span class
@@ -349,20 +349,20 @@ class SpanNear(SpanQuery):
     queries that occur right next to each other (slop=1) and in order
     (ordered=True).
 
-    For example, to find documents where "whoosh" occurs next to "library"
+    For example, to find documents where "whoosh-reloaded" occurs next to "library"
     in the "text" field::
 
-        from whoosh import query, spans
-        t1 = query.Term("text", "whoosh")
+        from whoosh-reloaded import query, spans
+        t1 = query.Term("text", "whoosh-reloaded")
         t2 = query.Term("text", "library")
         q = spans.SpanNear(t1, t2)
 
-    To find documents where "whoosh" occurs at most 5 positions before
+    To find documents where "whoosh-reloaded" occurs at most 5 positions before
     "library"::
 
         q = spans.SpanNear(t1, t2, slop=5)
 
-    To find documents where "whoosh" occurs at most 5 positions before or after
+    To find documents where "whoosh-reloaded" occurs at most 5 positions before or after
     "library"::
 
         q = spans.SpanNear(t1, t2, slop=5, ordered=False)
@@ -370,7 +370,7 @@ class SpanNear(SpanQuery):
     You can use the ``phrase()`` class method to create a tree of SpanNear
     queries to match a list of terms::
 
-        q = spans.SpanNear.phrase("text", ["whoosh", "search", "library"],
+        q = spans.SpanNear.phrase("text", ["whoosh-reloaded", "search", "library"],
                                   slop=2)
     """
 
@@ -502,20 +502,20 @@ class SpanNear2(SpanQuery):
     requiring you to build a binary tree of query objects. This query should
     also be slightly faster due to less overhead.)
 
-    For example, to find documents where "whoosh" occurs next to "library"
+    For example, to find documents where "whoosh-reloaded" occurs next to "library"
     in the "text" field::
 
-        from whoosh import query, spans
-        t1 = query.Term("text", "whoosh")
+        from whoosh-reloaded import query, spans
+        t1 = query.Term("text", "whoosh-reloaded")
         t2 = query.Term("text", "library")
         q = spans.SpanNear2([t1, t2])
 
-    To find documents where "whoosh" occurs at most 5 positions before
+    To find documents where "whoosh-reloaded" occurs at most 5 positions before
     "library"::
 
         q = spans.SpanNear2([t1, t2], slop=5)
 
-    To find documents where "whoosh" occurs at most 5 positions before or after
+    To find documents where "whoosh-reloaded" occurs at most 5 positions before or after
     "library"::
 
         q = spans.SpanNear2(t1, t2, slop=5, ordered=False)
@@ -722,7 +722,7 @@ class SpanNot(SpanBiQuery):
     For example, to match documents that contain "bear" at most 2 places after
     "apple" in the "text" field but don't have "cute" between them::
 
-        from whoosh import query, spans
+        from whoosh-reloaded import query, spans
         t1 = query.Term("text", "apple")
         t2 = query.Term("text", "bear")
         near = spans.SpanNear(t1, t2, slop=2)
@@ -771,7 +771,7 @@ class SpanContains(SpanBiQuery):
     For example, to match documents where "apple" occurs at most 10 places
     before "bear" in the "text" field and "cute" is between them::
 
-        from whoosh import query, spans
+        from whoosh-reloaded import query, spans
         t1 = query.Term("text", "apple")
         t2 = query.Term("text", "bear")
         near = spans.SpanNear(t1, t2, slop=10)
@@ -819,7 +819,7 @@ class SpanBefore(SpanBiQuery):
     For example, to match documents where "apple" occurs anywhere before
     "bear"::
 
-        from whoosh import query, spans
+        from whoosh-reloaded import query, spans
         t1 = query.Term("text", "apple")
         t2 = query.Term("text", "bear")
         q = spans.SpanBefore(t1, t2)

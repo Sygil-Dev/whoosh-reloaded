@@ -36,6 +36,7 @@ if __name__ == "__main__":
         packages=find_packages("src"),
         author="Matt Chaput",
         author_email="matt@whoosh.ca",
+        maintainer="Sygil-Dev",
         description="Fast, pure-Python full text indexing, search, and spell checking library.",
         long_description=open("README.md").read(),
         license="Two-clause BSD license",

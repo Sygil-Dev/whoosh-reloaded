@@ -5,10 +5,10 @@ from __future__ import with_statement
 import pytest
 from jieba.analyse import ChineseAnalyzer
 
-from whoosh import analysis, highlight, fields, qparser, query
-from whoosh.compat import u
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempIndex
+from whoosh-reloaded import analysis, highlight, fields, qparser, query
+from whoosh-reloaded.compat import u
+from whoosh-reloaded.filedb.filestore import RamStorage
+from whoosh-reloaded.util.testing import TempIndex
 
 _doc = u("alfa bravo charlie delta echo foxtrot golf hotel india juliet " +
          "kilo lima")

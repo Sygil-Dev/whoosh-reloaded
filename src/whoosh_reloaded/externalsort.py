@@ -34,7 +34,7 @@ from __future__ import with_statement
 import os, tempfile
 from heapq import heapify, heappop, heapreplace
 
-from whoosh.compat import dump, load
+from whoosh-reloaded.compat import dump, load
 
 
 ## Python 3.2 had a bug that make marshal.load unusable
@@ -42,8 +42,8 @@ from whoosh.compat import dump, load
 #    and platform.python_implementation() == "CPython"
 #    and platform.python_version() == "3.2.0"):
 #    # Use pickle instead of marshal on Python 3.2
-#    from whoosh.compat import dump as dump_pickle
-#    from whoosh.compat import load
+#    from whoosh-reloaded.compat import dump as dump_pickle
+#    from whoosh-reloaded.compat import load
 #
 #    def dump(obj, f):
 #        dump_pickle(obj, f, -1)

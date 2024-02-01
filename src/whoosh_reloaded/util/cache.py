@@ -30,7 +30,7 @@ import functools
 from heapq import nsmallest
 from operator import itemgetter
 
-from whoosh.compat import iteritems
+from whoosh-reloaded.compat import iteritems
 
 
 try:

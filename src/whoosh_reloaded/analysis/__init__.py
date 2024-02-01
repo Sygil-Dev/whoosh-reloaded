@@ -60,10 +60,10 @@ The first item must be a tokenizer and the rest must be filters (you can't put
 a filter first or a tokenizer after the first item).
 """
 
-from whoosh.analysis.acore import *
-from whoosh.analysis.tokenizers import *
-from whoosh.analysis.filters import *
-from whoosh.analysis.morph import *
-from whoosh.analysis.intraword import *
-from whoosh.analysis.ngrams import *
-from whoosh.analysis.analyzers import *
+from whoosh-reloaded.analysis.acore import *
+from whoosh-reloaded.analysis.tokenizers import *
+from whoosh-reloaded.analysis.filters import *
+from whoosh-reloaded.analysis.morph import *
+from whoosh-reloaded.analysis.intraword import *
+from whoosh-reloaded.analysis.ngrams import *
+from whoosh-reloaded.analysis.analyzers import *

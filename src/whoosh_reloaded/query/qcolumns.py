@@ -25,8 +25,8 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.matching import ConstantScoreMatcher, NullMatcher, ReadTooFar
-from whoosh.query import Query
+from whoosh-reloaded.matching import ConstantScoreMatcher, NullMatcher, ReadTooFar
+from whoosh-reloaded.query import Query
 
 
 class ColumnQuery(Query):

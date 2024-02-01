@@ -31,12 +31,12 @@ This module contains base classes/interfaces for "codec" objects.
 
 from bisect import bisect_right
 
-from whoosh import columns
-from whoosh.automata import lev
-from whoosh.compat import abstractmethod, izip, unichr, xrange
-from whoosh.filedb.compound import CompoundStorage
-from whoosh.system import emptybytes
-from whoosh.util import random_name
+from whoosh-reloaded import columns
+from whoosh-reloaded.automata import lev
+from whoosh-reloaded.compat import abstractmethod, izip, unichr, xrange
+from whoosh-reloaded.filedb.compound import CompoundStorage
+from whoosh-reloaded.system import emptybytes
+from whoosh-reloaded.util import random_name
 
 
 # Exceptions

@@ -3,10 +3,10 @@ import random, time, threading
 
 import pytest
 
-from whoosh import analysis, fields, query, writing
-from whoosh.compat import b, u, xrange, text_type
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempIndex
+from whoosh-reloaded import analysis, fields, query, writing
+from whoosh-reloaded.compat import b, u, xrange, text_type
+from whoosh-reloaded.filedb.filestore import RamStorage
+from whoosh-reloaded.util.testing import TempIndex
 
 
 def test_no_stored():
@@ -252,7 +252,7 @@ def test_cancel_delete():
 
 
 def test_delete_nonexistant():
-    from whoosh.writing import IndexingError
+    from whoosh-reloaded.writing import IndexingError
 
     schema = fields.Schema(id=fields.ID(stored=True))
     # Single segment
@@ -457,7 +457,7 @@ def test_delete_by_term_has_del():
 
 def test_add_fail_with_absorbed_exception():
     """
-    Issue #375 https://github.com/whoosh-community/whoosh/issues/375
+    Issue #375 https://github.com/whoosh-reloaded-community/whoosh-reloaded/issues/375
     Test that a failed document add with absorbed exceptions does not leave
     an unfinished document state for the next document to be added.
 

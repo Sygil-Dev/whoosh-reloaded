@@ -2,7 +2,7 @@
 Query objects
 =============
 
-The classes in the :mod:`whoosh.query` module implement *queries* you can run against the index.
+The classes in the :mod:`whoosh-reloaded.query` module implement *queries* you can run against the index.
 
 TBD.
 

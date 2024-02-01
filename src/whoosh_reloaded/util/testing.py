@@ -31,12 +31,12 @@ import sys
 import tempfile
 from contextlib import contextmanager
 
-from whoosh.filedb.filestore import FileStorage
-from whoosh.util import now, random_name
+from whoosh-reloaded.filedb.filestore import FileStorage
+from whoosh-reloaded.util import now, random_name
 
 
 class TempDir(object):
-    def __init__(self, basename="", parentdir=None, ext=".whoosh",
+    def __init__(self, basename="", parentdir=None, ext=".whoosh-reloaded",
                  suppress=frozenset(), keepdir=False):
         self.basename = basename or random_name(8)
         self.parentdir = parentdir

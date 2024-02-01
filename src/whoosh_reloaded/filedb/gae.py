@@ -8,7 +8,7 @@ Use at your own risk, but please report any problems to me so I can fix them.
 
 To create a new index::
 
-    from whoosh.filedb.gae import DatastoreStorage
+    from whoosh-reloaded.filedb.gae import DatastoreStorage
 
     ix = DatastoreStorage().create_index(schema)
 
@@ -22,10 +22,10 @@ import time
 from google.appengine.api import memcache  # @UnresolvedImport
 from google.appengine.ext import db  # @UnresolvedImport
 
-from whoosh.compat import BytesIO
-from whoosh.index import TOC, FileIndex, _DEF_INDEX_NAME
-from whoosh.filedb.filestore import ReadOnlyError, Storage
-from whoosh.filedb.structfile import StructFile
+from whoosh-reloaded.compat import BytesIO
+from whoosh-reloaded.index import TOC, FileIndex, _DEF_INDEX_NAME
+from whoosh-reloaded.filedb.filestore import ReadOnlyError, Storage
+from whoosh-reloaded.filedb.structfile import StructFile
 
 
 class DatastoreFile(db.Model):
@@ -84,23 +84,23 @@ class MemcacheLock(object):
         self.name = name
 
     def acquire(self, blocking=False):
-        val = memcache.add(self.name, "L", 360, namespace="whooshlocks")
+        val = memcache.add(self.name, "L", 360, namespace="whoosh-reloadedlocks")
 
         if blocking and not val:
             # Simulate blocking by retrying the acquire over and over
             import time
             while not val:
                 time.sleep(0.1)
-                val = memcache.add(self.name, "", 360, namespace="whooshlocks")
+                val = memcache.add(self.name, "", 360, namespace="whoosh-reloadedlocks")
 
         return val
 
     def release(self):
-        memcache.delete(self.name, namespace="whooshlocks")
+        memcache.delete(self.name, namespace="whoosh-reloadedlocks")
 
 
 class DatastoreStorage(Storage):
-    """An implementation of :class:`whoosh.store.Storage` that stores files in
+    """An implementation of :class:`whoosh-reloaded.store.Storage` that stores files in
     the app engine datastore as blob properties.
     """
 

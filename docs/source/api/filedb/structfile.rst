@@ -2,7 +2,7 @@
 ``filedb.structfile`` module
 ============================
 
-.. automodule:: whoosh.filedb.structfile
+.. automodule:: whoosh-reloaded.filedb.structfile
 
 Classes
 =======

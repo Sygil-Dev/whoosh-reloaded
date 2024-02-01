@@ -36,11 +36,11 @@ import re
 import sys
 from time import time, sleep
 
-from whoosh import __version__
-from whoosh.compat import pickle, string_type
-from whoosh.fields import ensure_schema
-from whoosh.legacy import toc_loaders
-from whoosh.system import _INT_SIZE, _FLOAT_SIZE, _LONG_SIZE
+from whoosh-reloaded import __version__
+from whoosh-reloaded.compat import pickle, string_type
+from whoosh-reloaded.fields import ensure_schema
+from whoosh-reloaded.legacy import toc_loaders
+from whoosh-reloaded.system import _INT_SIZE, _FLOAT_SIZE, _LONG_SIZE
 
 _DEF_INDEX_NAME = "MAIN"
 _CURRENT_TOC_VERSION = -111
@@ -88,7 +88,7 @@ def create_in(dirname, schema, indexname=None):
 
     :param dirname: the path string of the directory in which to create the
         index.
-    :param schema: a :class:`whoosh.fields.Schema` object describing the
+    :param schema: a :class:`whoosh-reloaded.fields.Schema` object describing the
         index's fields.
     :param indexname: the name of the index to create; you only need to specify
         this if you are creating multiple indexes within the same storage
@@ -96,7 +96,7 @@ def create_in(dirname, schema, indexname=None):
     :returns: :class:`Index`
     """
 
-    from whoosh.filedb.filestore import FileStorage
+    from whoosh-reloaded.filedb.filestore import FileStorage
 
     if not indexname:
         indexname = _DEF_INDEX_NAME
@@ -117,7 +117,7 @@ def open_dir(dirname, indexname=None, readonly=False, schema=None):
         this if you have multiple indexes within the same storage object.
     """
 
-    from whoosh.filedb.filestore import FileStorage
+    from whoosh-reloaded.filedb.filestore import FileStorage
 
     if indexname is None:
         indexname = _DEF_INDEX_NAME
@@ -164,7 +164,7 @@ def version_in(dirname, indexname=None):
     version). This is simply a version number for the TOC file and probably
     should not have been exposed in a public interface. The best way to check
     if the current version of Whoosh can open an index is to actually try to
-    open it and see if it raises a ``whoosh.index.IndexVersionError`` exception.
+    open it and see if it raises a ``whoosh-reloaded.index.IndexVersionError`` exception.
 
     Note that the release and format version are available as attributes on the
     Index object in Index.release and Index.version.
@@ -175,7 +175,7 @@ def version_in(dirname, indexname=None):
     :returns: ((major_ver, minor_ver, build_ver), format_ver)
     """
 
-    from whoosh.filedb.filestore import FileStorage
+    from whoosh-reloaded.filedb.filestore import FileStorage
     storage = FileStorage(dirname)
     return version(storage, indexname=indexname)
 
@@ -190,7 +190,7 @@ def version(storage, indexname=None):
     version). This is simply a version number for the TOC file and probably
     should not have been exposed in a public interface. The best way to check
     if the current version of Whoosh can open an index is to actually try to
-    open it and see if it raises a ``whoosh.index.IndexVersionError`` exception.
+    open it and see if it raises a ``whoosh-reloaded.index.IndexVersionError`` exception.
 
     Note that the release and format version are available as attributes on the
     Index object in Index.release and Index.version.
@@ -229,7 +229,7 @@ class Index(object):
         """Adds a field to the index's schema.
 
         :param fieldname: the name of the field to add.
-        :param fieldspec: an instantiated :class:`whoosh.fields.FieldType`
+        :param fieldspec: an instantiated :class:`whoosh-reloaded.fields.FieldType`
             object.
         """
 
@@ -313,10 +313,10 @@ class Index(object):
         """Returns a Searcher object for this index. Keyword arguments are
         passed to the Searcher object's constructor.
 
-        :rtype: :class:`whoosh.searching.Searcher`
+        :rtype: :class:`whoosh-reloaded.searching.Searcher`
         """
 
-        from whoosh.searching import Searcher
+        from whoosh-reloaded.searching import Searcher
         return Searcher(self.reader(), fromindex=self, **kwargs)
 
     def field_length(self, fieldname):
@@ -346,7 +346,7 @@ class Index(object):
             resources from this existing reader to create the new reader. Note
             that any resources in the "recycled" reader that are not used by
             the new reader will be CLOSED, so you CANNOT use it afterward.
-        :rtype: :class:`whoosh.reading.IndexReader`
+        :rtype: :class:`whoosh-reloaded.reading.IndexReader`
         """
 
         raise NotImplementedError
@@ -354,7 +354,7 @@ class Index(object):
     def writer(self, **kwargs):
         """Returns an IndexWriter object for this index.
 
-        :rtype: :class:`whoosh.writing.IndexWriter`
+        :rtype: :class:`whoosh-reloaded.writing.IndexWriter`
         """
         raise NotImplementedError
 
@@ -405,7 +405,7 @@ def clean_files(storage, indexname, gen, segments):
 
 class FileIndex(Index):
     def __init__(self, storage, schema=None, indexname=_DEF_INDEX_NAME):
-        from whoosh.filedb.filestore import Storage
+        from whoosh-reloaded.filedb.filestore import Storage
 
         if not isinstance(storage, Storage):
             raise ValueError("%r is not a Storage object" % storage)
@@ -459,10 +459,10 @@ class FileIndex(Index):
 
     def writer(self, procs=1, **kwargs):
         if procs > 1:
-            from whoosh.multiproc import MpWriter
+            from whoosh-reloaded.multiproc import MpWriter
             return MpWriter(self, procs=procs, **kwargs)
         else:
-            from whoosh.writing import SegmentWriter
+            from whoosh-reloaded.writing import SegmentWriter
             return SegmentWriter(self, **kwargs)
 
     def lock(self, name):
@@ -497,7 +497,7 @@ class FileIndex(Index):
     def _reader(cls, storage, schema, segments, generation, reuse=None):
         # Returns a reader for the given segments, possibly reusing already
         # opened readers
-        from whoosh.reading import SegmentReader, MultiReader, EmptyReader
+        from whoosh-reloaded.reading import SegmentReader, MultiReader, EmptyReader
 
         if reuse:
             # Merge segments with reuse segments

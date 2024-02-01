@@ -56,15 +56,15 @@ try:
 except ImportError:
     zlib = None
 
-from whoosh.compat import b, bytes_type, BytesIO
-from whoosh.compat import array_tobytes, xrange
-from whoosh.compat import dumps, loads
-from whoosh.filedb.structfile import StructFile
-from whoosh.idsets import BitSet, OnDiskBitSet
-from whoosh.system import emptybytes
-from whoosh.util.numeric import typecode_max, typecode_min
-from whoosh.util.numlists import GrowableArray
-from whoosh.util.varints import varint, read_varint
+from whoosh-reloaded.compat import b, bytes_type, BytesIO
+from whoosh-reloaded.compat import array_tobytes, xrange
+from whoosh-reloaded.compat import dumps, loads
+from whoosh-reloaded.filedb.structfile import StructFile
+from whoosh-reloaded.idsets import BitSet, OnDiskBitSet
+from whoosh-reloaded.system import emptybytes
+from whoosh-reloaded.util.numeric import typecode_max, typecode_min
+from whoosh-reloaded.util.numlists import GrowableArray
+from whoosh-reloaded.util.varints import varint, read_varint
 
 
 # Base classes
@@ -83,7 +83,7 @@ class Column(object):
         """Returns a :class:`ColumnWriter` object you can use to use to create
         a column of this type on disk.
 
-        :param dbfile: the :class:`~whoosh.filedb.structfile.StructFile` to
+        :param dbfile: the :class:`~whoosh-reloaded.filedb.structfile.StructFile` to
             write to.
         """
 
@@ -93,7 +93,7 @@ class Column(object):
         """Returns a :class:`ColumnReader` object you can use to read a column
         of this type from disk.
 
-        :param dbfile: the :class:`~whoosh.filedb.structfile.StructFile` to
+        :param dbfile: the :class:`~whoosh-reloaded.filedb.structfile.StructFile` to
             read from.
         :param basepos: the offset within the file at which the column starts.
         :param length: the length in bytes of the column occupies in the file.

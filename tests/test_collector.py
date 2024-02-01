@@ -2,10 +2,10 @@ from __future__ import with_statement
 
 import pytest
 
-from whoosh import collectors, fields, query, searching
-from whoosh.compat import u, xrange
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempIndex
+from whoosh-reloaded import collectors, fields, query, searching
+from whoosh-reloaded.compat import u, xrange
+from whoosh-reloaded.filedb.filestore import RamStorage
+from whoosh-reloaded.util.testing import TempIndex
 
 
 def test_add():
@@ -49,7 +49,7 @@ def test_timelimit():
     w.commit()
 
     import time
-    from whoosh import collectors, matching
+    from whoosh-reloaded import collectors, matching
 
     class SlowMatcher(matching.WrappingMatcher):
         def next(self):
@@ -92,7 +92,7 @@ def test_timelimit():
 @pytest.mark.skipif("not hasattr(__import__('signal'), 'SIGALRM')")
 def test_timelimit_alarm():
     import time
-    from whoosh import matching
+    from whoosh-reloaded import matching
 
     class SlowMatcher(matching.Matcher):
         def __init__(self):
@@ -132,7 +132,7 @@ def test_timelimit_alarm():
 
 
 def test_reverse_collapse():
-    from whoosh import sorting
+    from whoosh-reloaded import sorting
 
     schema = fields.Schema(title=fields.TEXT(stored=True),
                            content=fields.TEXT,

@@ -29,7 +29,7 @@ import calendar
 import copy
 from datetime import date, datetime, timedelta
 
-from whoosh.compat import iteritems
+from whoosh-reloaded.compat import iteritems
 
 
 class TimeError(Exception):

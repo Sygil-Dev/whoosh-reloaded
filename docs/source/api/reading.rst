@@ -2,7 +2,7 @@
 ``reading`` module
 ==================
 
-.. automodule:: whoosh.reading
+.. automodule:: whoosh-reloaded.reading
 
 Classes
 =======

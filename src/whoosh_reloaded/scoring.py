@@ -32,7 +32,7 @@ This module contains classes for scoring (and sorting) search results.
 from __future__ import division
 from math import log, pi
 
-from whoosh.compat import iteritems
+from whoosh-reloaded.compat import iteritems
 
 
 # Base classes
@@ -40,7 +40,7 @@ from whoosh.compat import iteritems
 class WeightingModel(object):
     """Abstract base class for scoring models. A WeightingModel object provides
     a method, ``scorer``, which returns an instance of
-    :class:`whoosh.scoring.Scorer`.
+    :class:`whoosh-reloaded.scoring.Scorer`.
 
     Basically, WeightingModel objects store the configuration information for
     the model (for example, the values of B and K1 in the BM25F model), and
@@ -60,7 +60,7 @@ class WeightingModel(object):
         return log(dc / (n + 1)) + 1
 
     def scorer(self, searcher, fieldname, text, qf=1):
-        """Returns an instance of :class:`whoosh.scoring.Scorer` configured
+        """Returns an instance of :class:`whoosh-reloaded.scoring.Scorer` configured
         for the given searcher, fieldname, and term text.
         """
 
@@ -75,7 +75,7 @@ class WeightingModel(object):
         WeightingModel sub-classes that use ``final()`` should have the
         attribute ``use_final`` set to ``True``.
 
-        :param searcher: :class:`whoosh.searching.Searcher` for the index.
+        :param searcher: :class:`whoosh-reloaded.searching.Searcher` for the index.
         :param docnum: the doc number of the document being scored.
         :param score: the document's accumulated term score.
 
@@ -280,7 +280,7 @@ class BM25F(WeightingModel):
     def __init__(self, B=0.75, K1=1.2, **kwargs):
         """
 
-        >>> from whoosh import scoring
+        >>> from whoosh-reloaded import scoring
         >>> # Set a custom B value for the "content" field
         >>> w = scoring.BM25F(B=0.75, content_B=1.0, K1=1.5)
 

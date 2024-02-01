@@ -1,14 +1,14 @@
 from __future__ import with_statement
 import os, threading, time
 
-from whoosh.compat import u
-from whoosh.util.filelock import try_for
-from whoosh.util.numeric import length_to_byte, byte_to_length
-from whoosh.util.testing import TempStorage
+from whoosh-reloaded.compat import u
+from whoosh-reloaded.util.filelock import try_for
+from whoosh-reloaded.util.numeric import length_to_byte, byte_to_length
+from whoosh-reloaded.util.testing import TempStorage
 
 
 def test_now():
-    from whoosh.util import now
+    from whoosh-reloaded.util import now
 
     t1 = now()
     t2 = now()
@@ -17,8 +17,8 @@ def test_now():
 
 def test_storage_creation():
     import tempfile, uuid
-    from whoosh import fields
-    from whoosh.filedb.filestore import FileStorage
+    from whoosh-reloaded import fields
+    from whoosh-reloaded.filedb.filestore import FileStorage
 
     schema = fields.Schema(text=fields.TEXT)
     uid = uuid.uuid4()
@@ -39,7 +39,7 @@ def test_storage_creation():
 
 
 def test_ramstorage():
-    from whoosh.filedb.filestore import RamStorage
+    from whoosh-reloaded.filedb.filestore import RamStorage
 
     st = RamStorage()
     lock = st.lock("test")
@@ -99,7 +99,7 @@ def test_length_byte():
 
 
 def test_version_object():
-    from whoosh.util.versions import SimpleVersion as sv
+    from whoosh-reloaded.util.versions import SimpleVersion as sv
 
     assert sv.parse("1") == sv(1)
     assert sv.parse("1.2") == sv(1, 2)

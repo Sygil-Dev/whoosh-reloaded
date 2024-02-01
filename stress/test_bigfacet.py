@@ -1,8 +1,8 @@
 from __future__ import with_statement
 import os.path, random, string
 
-from whoosh import fields, formats, index, query, sorting
-from whoosh.util import now
+from whoosh-reloaded import fields, formats, index, query, sorting
+from whoosh-reloaded.util import now
 
 
 tagcount = 100

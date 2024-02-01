@@ -27,13 +27,13 @@
 
 import copy
 
-from whoosh import query
-from whoosh.compat import u
-from whoosh.compat import iteritems, xrange
-from whoosh.qparser import syntax
-from whoosh.qparser.common import attach
-from whoosh.qparser.taggers import RegexTagger, FnTagger
-from whoosh.util.text import rcompile
+from whoosh-reloaded import query
+from whoosh-reloaded.compat import u
+from whoosh-reloaded.compat import iteritems, xrange
+from whoosh-reloaded.qparser import syntax
+from whoosh-reloaded.qparser.common import attach
+from whoosh-reloaded.qparser.taggers import RegexTagger, FnTagger
+from whoosh-reloaded.util.text import rcompile
 
 
 class Plugin(object):
@@ -457,7 +457,7 @@ class FuzzyTermPlugin(TaggingPlugin):
     >>> qp.add_plugin(qparser.FuzzyTermPlugin())
     >>> q = qp.parse("Stephen~2 Colbert")
 
-    For example, the following query creates a :class:`whoosh.query.FuzzyTerm`
+    For example, the following query creates a :class:`whoosh-reloaded.query.FuzzyTerm`
     query with a maximum edit distance of 1::
 
         bob~
@@ -1297,13 +1297,13 @@ class PseudoFieldPlugin(Plugin):
 
     Unfortunately writing the transform function(s) requires knowledge of the
     parser's abstract syntax tree classes. A transform function takes a
-    :class:`whoosh.qparser.SyntaxNode` and returns a
-    :class:`~whoosh.qparser.SyntaxNode` (or None if the node should be removed
+    :class:`whoosh-reloaded.qparser.SyntaxNode` and returns a
+    :class:`~whoosh-reloaded.qparser.SyntaxNode` (or None if the node should be removed
     instead of transformed).
 
     Some things you can do in the transform function::
 
-        from whoosh import qparser
+        from whoosh-reloaded import qparser
 
         def my_xform_fn(node):
             # Is this a text node?
@@ -1329,7 +1329,7 @@ class PseudoFieldPlugin(Plugin):
     transforms the text in the pseudo-field "regex" into a regular expression
     query in the "content" field::
 
-        from whoosh import qparser
+        from whoosh-reloaded import qparser
 
         def regex_maker(node):
             if node.has_text:
@@ -1377,8 +1377,8 @@ class PseudoFieldPlugin(Plugin):
         """
         :param xform_map: a dictionary mapping psuedo-field names to transform
             functions. The function should take a
-            :class:`whoosh.qparser.SyntaxNode` as an argument, and return a
-            :class:`~whoosh.qparser.SyntaxNode`. If the function returns None,
+            :class:`whoosh-reloaded.qparser.SyntaxNode` as an argument, and return a
+            :class:`~whoosh-reloaded.qparser.SyntaxNode`. If the function returns None,
             the node will be removed from the query.
         """
 

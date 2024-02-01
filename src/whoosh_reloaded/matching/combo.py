@@ -28,8 +28,8 @@
 from __future__ import division
 from array import array
 
-from whoosh.compat import xrange
-from whoosh.matching import mcore
+from whoosh-reloaded.compat import xrange
+from whoosh-reloaded.matching import mcore
 
 
 class CombinationMatcher(mcore.Matcher):
@@ -60,7 +60,7 @@ class PreloadedUnionMatcher(CombinationMatcher):
     for speed.
 
     This is faster than the implementation using a binary tree of
-    :class:`~whoosh.matching.binary.UnionMatcher` objects (possibly just
+    :class:`~whoosh-reloaded.matching.binary.UnionMatcher` objects (possibly just
     because of less overhead), but it doesn't allow getting information about
     the "current" document other than the score, because there isn't really a
     current document, just an array of scores.
@@ -163,7 +163,7 @@ class ArrayUnionMatcher(CombinationMatcher):
     matcher, accumulating the scores in an array.
 
     This is faster than the implementation using a binary tree of
-    :class:`~whoosh.matching.binary.UnionMatcher` objects (possibly just
+    :class:`~whoosh-reloaded.matching.binary.UnionMatcher` objects (possibly just
     because of less overhead), but it doesn't allow getting information about
     the "current" document other than the score, because there isn't really a
     current document, just an array of scores.

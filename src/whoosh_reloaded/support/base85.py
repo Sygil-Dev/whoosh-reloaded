@@ -1,6 +1,6 @@
 """
 This module contains generic base85 encoding and decoding functions. The
-whoosh.util.numeric module contains faster variants for encoding and
+whoosh-reloaded.util.numeric module contains faster variants for encoding and
 decoding integers.
 
 Modified from:
@@ -9,7 +9,7 @@ http://paste.lisp.org/display/72815
 
 import struct
 
-from whoosh.compat import xrange
+from whoosh-reloaded.compat import xrange
 
 
 # Instead of using the character set from the ascii85 algorithm, I put the

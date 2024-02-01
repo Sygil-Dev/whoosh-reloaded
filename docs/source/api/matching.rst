@@ -2,7 +2,7 @@
 ``matching`` module
 ===================
 
-.. automodule:: whoosh.matching
+.. automodule:: whoosh-reloaded.matching
 
 Matchers
 ========

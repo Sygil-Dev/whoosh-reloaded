@@ -27,27 +27,27 @@
 
 """
 This module contains "collector" objects. Collectors provide a way to gather
-"raw" results from a :class:`whoosh.matching.Matcher` object, implement
+"raw" results from a :class:`whoosh-reloaded.matching.Matcher` object, implement
 sorting, filtering, collation, etc., and produce a
-:class:`whoosh.searching.Results` object.
+:class:`whoosh-reloaded.searching.Results` object.
 
 The basic collectors are:
 
 TopCollector
     Returns the top N matching results sorted by score, using block-quality
     optimizations to skip blocks of documents that can't contribute to the top
-    N. The :meth:`whoosh.searching.Searcher.search` method uses this type of
+    N. The :meth:`whoosh-reloaded.searching.Searcher.search` method uses this type of
     collector by default or when you specify a ``limit``.
 
 UnlimitedCollector
     Returns all matching results sorted by score. The
-    :meth:`whoosh.searching.Searcher.search` method uses this type of collector
+    :meth:`whoosh-reloaded.searching.Searcher.search` method uses this type of collector
     when you specify ``limit=None`` or you specify a limit equal to or greater
     than the number of documents in the searcher.
 
 SortingCollector
-    Returns all matching results sorted by a :class:`whoosh.sorting.Facet`
-    object. The :meth:`whoosh.searching.Searcher.search` method uses this type
+    Returns all matching results sorted by a :class:`whoosh-reloaded.sorting.Facet`
+    object. The :meth:`whoosh-reloaded.searching.Searcher.search` method uses this type
     of collector when you use the ``sortedby`` parameter.
 
 Here's an example of a simple collector that instead of remembering the matched
@@ -68,7 +68,7 @@ documents just counts up the number of matches::
     print(c.count)
 
 There are also several wrapping collectors that extend or modify the
-functionality of other collectors. The meth:`whoosh.searching.Searcher.search`
+functionality of other collectors. The meth:`whoosh-reloaded.searching.Searcher.search`
 method uses many of these when you specify various parameters.
 
 NOTE: collectors are not designed to be reentrant or thread-safe. It is
@@ -82,10 +82,10 @@ from bisect import insort
 from collections import defaultdict
 from heapq import heapify, heappush, heapreplace
 
-from whoosh import sorting
-from whoosh.compat import abstractmethod, iteritems, itervalues, xrange
-from whoosh.searching import Results, TimeLimit
-from whoosh.util import now
+from whoosh-reloaded import sorting
+from whoosh-reloaded.compat import abstractmethod, iteritems, itervalues, xrange
+from whoosh-reloaded.searching import Results, TimeLimit
+from whoosh-reloaded.util import now
 
 
 # Functions
@@ -121,10 +121,10 @@ class Collector(object):
             to use faster methods that don't necessarily keep the matcher
             updated, such as ``matcher.all_ids()``.
 
-        :param top_searcher: the top-level :class:`whoosh.searching.Searcher`
+        :param top_searcher: the top-level :class:`whoosh-reloaded.searching.Searcher`
             object.
-        :param q: the :class:`whoosh.query.Query` object being searched for.
-        :param context: a :class:`whoosh.searching.SearchContext` object
+        :param q: the :class:`whoosh-reloaded.query.Query` object being searched for.
+        :param context: a :class:`whoosh-reloaded.searching.SearchContext` object
             containing information about the search.
         """
 
@@ -162,7 +162,7 @@ class Collector(object):
             :meth:`Collector.collect` to get the top-level document number
             for use in results.
         self.matcher
-            A :class:`whoosh.matching.Matcher` object representing the matches
+            A :class:`whoosh-reloaded.matching.Matcher` object representing the matches
             for the query in the current sub-searcher.
         """
 
@@ -306,7 +306,7 @@ class Collector(object):
 
     @abstractmethod
     def results(self):
-        """Returns a :class:`~whoosh.searching.Results` object containing the
+        """Returns a :class:`~whoosh-reloaded.searching.Results` object containing the
         results of the search. Subclasses must implement this method
         """
 
@@ -534,7 +534,7 @@ class UnlimitedCollector(ScoredCollector):
 
 class SortingCollector(Collector):
     """A collector that returns results sorted by a given
-    :class:`whoosh.sorting.Facet` object. See :doc:`/facets` for more
+    :class:`whoosh-reloaded.sorting.Facet` object. See :doc:`/facets` for more
     information.
     """
 
@@ -760,12 +760,12 @@ class FilterCollector(WrappingCollector):
 
 class FacetCollector(WrappingCollector):
     """A collector that creates groups of documents based on
-    :class:`whoosh.sorting.Facet` objects. See :doc:`/facets` for more
+    :class:`whoosh-reloaded.sorting.Facet` objects. See :doc:`/facets` for more
     information.
 
     This collector is used if you specify a ``groupedby`` parameter in the
-    :meth:`whoosh.searching.Searcher.search` method. You can use the
-    :meth:`whoosh.searching.Results.groups` method to access the facet groups.
+    :meth:`whoosh-reloaded.searching.Searcher.search` method. You can use the
+    :meth:`whoosh-reloaded.searching.Results.groups` method to access the facet groups.
 
     If you have a reference to the collector can also use
     ``FacetedCollector.facetmaps`` to access the groups directly::
@@ -779,7 +779,7 @@ class FacetCollector(WrappingCollector):
     def __init__(self, child, groupedby, maptype=None):
         """
         :param groupedby: see :doc:`/facets`.
-        :param maptype: a :class:`whoosh.sorting.FacetMap` type to use for any
+        :param maptype: a :class:`whoosh-reloaded.sorting.FacetMap` type to use for any
             facets that don't specify their own.
         """
 
@@ -871,11 +871,11 @@ class CollapseCollector(WrappingCollector):
     def __init__(self, child, keyfacet, limit=1, order=None):
         """
         :param child: the collector to wrap.
-        :param keyfacet: a :class:`whoosh.sorting.Facet` to use for collapsing.
+        :param keyfacet: a :class:`whoosh-reloaded.sorting.Facet` to use for collapsing.
             All but the top N documents that share a key will be eliminated
             from the results.
         :param limit: the maximum number of documents to keep for each key.
-        :param order: an optional :class:`whoosh.sorting.Facet` to use
+        :param order: an optional :class:`whoosh-reloaded.sorting.Facet` to use
             to determine the "top" document(s) to keep when collapsing. The
             default (``orderfaceet=None``) uses the results order (e.g. the
             highest score in a scored search).
@@ -1105,7 +1105,7 @@ class TermsCollector(WrappingCollector):
     in each matched document.
 
     This collector is used if you specify ``terms=True`` in the
-    :meth:`whoosh.searching.Searcher.search` method.
+    :meth:`whoosh-reloaded.searching.Searcher.search` method.
 
     If you have a reference to the collector can also use
     ``TermsCollector.termslist`` to access the term lists directly::

@@ -29,21 +29,21 @@ from array import array
 from copy import copy
 from struct import calcsize
 
-from whoosh.compat import BytesIO, bytes_type
-from whoosh.compat import dump as dump_pickle
-from whoosh.compat import load as load_pickle
-from whoosh.compat import array_frombytes, array_tobytes
-from whoosh.system import _INT_SIZE, _SHORT_SIZE, _FLOAT_SIZE, _LONG_SIZE
-from whoosh.system import IS_LITTLE
-from whoosh.system import pack_byte, unpack_byte, pack_sbyte, unpack_sbyte
-from whoosh.system import pack_ushort, unpack_ushort
-from whoosh.system import pack_ushort_le, unpack_ushort_le
-from whoosh.system import pack_int, unpack_int, pack_uint, unpack_uint
-from whoosh.system import pack_uint_le, unpack_uint_le
-from whoosh.system import pack_long, unpack_long, pack_ulong, unpack_ulong
-from whoosh.system import pack_float, unpack_float
-from whoosh.util.varints import varint, read_varint
-from whoosh.util.varints import signed_varint, decode_signed_varint
+from whoosh-reloaded.compat import BytesIO, bytes_type
+from whoosh-reloaded.compat import dump as dump_pickle
+from whoosh-reloaded.compat import load as load_pickle
+from whoosh-reloaded.compat import array_frombytes, array_tobytes
+from whoosh-reloaded.system import _INT_SIZE, _SHORT_SIZE, _FLOAT_SIZE, _LONG_SIZE
+from whoosh-reloaded.system import IS_LITTLE
+from whoosh-reloaded.system import pack_byte, unpack_byte, pack_sbyte, unpack_sbyte
+from whoosh-reloaded.system import pack_ushort, unpack_ushort
+from whoosh-reloaded.system import pack_ushort_le, unpack_ushort_le
+from whoosh-reloaded.system import pack_int, unpack_int, pack_uint, unpack_uint
+from whoosh-reloaded.system import pack_uint_le, unpack_uint_le
+from whoosh-reloaded.system import pack_long, unpack_long, pack_ulong, unpack_ulong
+from whoosh-reloaded.system import pack_float, unpack_float
+from whoosh-reloaded.util.varints import varint, read_varint
+from whoosh-reloaded.util.varints import signed_varint, decode_signed_varint
 
 
 _SIZEMAP = dict((typecode, calcsize(typecode)) for typecode in "bBiIhHqQf")
@@ -128,7 +128,7 @@ class StructFile(object):
         self.is_closed = True
 
     def subset(self, offset, length, name=None):
-        from whoosh.filedb.compound import SubFile
+        from whoosh-reloaded.filedb.compound import SubFile
 
         name = name or self._name
         return StructFile(SubFile(self.file, offset, length), name=name)

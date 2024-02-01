@@ -2,15 +2,15 @@ from __future__ import with_statement
 import inspect
 from datetime import datetime
 
-from whoosh import analysis, fields, formats, qparser, query
-from whoosh.compat import u, text_type, xrange
-from whoosh.filedb.filestore import RamStorage
-from whoosh.qparser import dateparse, default, plugins, syntax
-from whoosh.util.times import adatetime
+from whoosh-reloaded import analysis, fields, formats, qparser, query
+from whoosh-reloaded.compat import u, text_type, xrange
+from whoosh-reloaded.filedb.filestore import RamStorage
+from whoosh-reloaded.qparser import dateparse, default, plugins, syntax
+from whoosh-reloaded.util.times import adatetime
 
 
 def _plugin_classes(ignore):
-    # Get all the subclasses of Plugin in whoosh.qparser.plugins
+    # Get all the subclasses of Plugin in whoosh-reloaded.qparser.plugins
     return [c for _, c in inspect.getmembers(plugins, inspect.isclass)
             if plugins.Plugin in c.__bases__ and c not in ignore]
 
@@ -461,7 +461,7 @@ def test_fuzzy_plugin():
 
 
 def test_fuzzy_prefix():
-    from whoosh import scoring
+    from whoosh-reloaded import scoring
 
     schema = fields.Schema(title=fields.TEXT(stored=True),
                            content=fields.TEXT(spelling=True))
@@ -484,7 +484,7 @@ def test_fuzzy_prefix():
         w.add_document(title=u("Fifth"),
                        content=u("The fire is beautiful"))
 
-    from whoosh.qparser import QueryParser, FuzzyTermPlugin
+    from whoosh-reloaded.qparser import QueryParser, FuzzyTermPlugin
     parser = QueryParser("content", ix.schema)
     parser.add_plugin(FuzzyTermPlugin())
     q = parser.parse("first~2/3 OR zeroth", debug=False)
@@ -564,7 +564,7 @@ def test_function_plugin():
 
 
 def test_function_first():
-    from whoosh.query.spans import SpanFirst
+    from whoosh-reloaded.query.spans import SpanFirst
 
     def make_first(qs):
         return SpanFirst(qs[0])

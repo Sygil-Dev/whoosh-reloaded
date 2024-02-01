@@ -4,9 +4,9 @@ from random import randint, shuffle
 
 from nose.tools import assert_equal  #@UnresolvedImport
 
-from whoosh.compat import xrange, iteritems
-from whoosh.filedb.filetables import HashWriter, HashReader
-from whoosh.util.testing import TempStorage
+from whoosh-reloaded.compat import xrange, iteritems
+from whoosh-reloaded.filedb.filetables import HashWriter, HashReader
+from whoosh-reloaded.util.testing import TempStorage
 
 
 def test_bigtable():

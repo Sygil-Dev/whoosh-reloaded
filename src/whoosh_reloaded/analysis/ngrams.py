@@ -25,11 +25,11 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.compat import text_type
-from whoosh.compat import xrange
-from whoosh.analysis.acore import Token
-from whoosh.analysis.filters import Filter, LowercaseFilter
-from whoosh.analysis.tokenizers import Tokenizer, RegexTokenizer
+from whoosh-reloaded.compat import text_type
+from whoosh-reloaded.compat import xrange
+from whoosh-reloaded.analysis.acore import Token
+from whoosh-reloaded.analysis.filters import Filter, LowercaseFilter
+from whoosh-reloaded.analysis.tokenizers import Tokenizer, RegexTokenizer
 
 
 # Tokenizer

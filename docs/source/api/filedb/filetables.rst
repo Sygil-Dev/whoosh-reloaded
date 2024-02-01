@@ -2,7 +2,7 @@
 ``filedb.filetables`` module
 ============================
 
-.. automodule:: whoosh.filedb.filetables
+.. automodule:: whoosh-reloaded.filedb.filetables
 
 
 Hash file

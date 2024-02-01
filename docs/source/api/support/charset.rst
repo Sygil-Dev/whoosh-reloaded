@@ -2,7 +2,7 @@
 ``support.charset`` module
 ==========================
 
-.. automodule:: whoosh.support.charset
+.. automodule:: whoosh-reloaded.support.charset
 
 .. data:: default_charset
 

@@ -28,9 +28,9 @@
 import re
 from collections import deque
 
-from whoosh.compat import u, text_type
-from whoosh.compat import xrange
-from whoosh.analysis.filters import Filter
+from whoosh-reloaded.compat import u, text_type
+from whoosh-reloaded.compat import xrange
+from whoosh-reloaded.analysis.filters import Filter
 
 
 class CompoundWordFilter(Filter):
@@ -297,7 +297,7 @@ class IntraWordFilter(Filter):
             additional token with the same position as the last subword.
         """
 
-        from whoosh.support.unicode import digits, lowercase, uppercase
+        from whoosh-reloaded.support.unicode import digits, lowercase, uppercase
 
         self.delims = re.escape(delims)
 

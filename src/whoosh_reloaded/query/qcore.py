@@ -29,10 +29,10 @@ from __future__ import division
 import copy
 from array import array
 
-from whoosh import matching
-from whoosh.compat import u
-from whoosh.reading import TermNotFound
-from whoosh.compat import methodcaller
+from whoosh-reloaded import matching
+from whoosh-reloaded.compat import u
+from whoosh-reloaded.reading import TermNotFound
+from whoosh-reloaded.compat import methodcaller
 
 
 # Exceptions
@@ -63,7 +63,7 @@ def token_lists(q, phrases=True):
     """
 
     if q.is_leaf():
-        from whoosh.query import Phrase
+        from whoosh-reloaded.query import Phrase
         if phrases or not isinstance(q, Phrase):
             return list(q.tokens())
     else:
@@ -177,7 +177,7 @@ class Query(object):
         query.
         """
 
-        from whoosh.query import Or
+        from whoosh-reloaded.query import Or
         return Or([self, query]).normalize()
 
     def __and__(self, query):
@@ -185,7 +185,7 @@ class Query(object):
         query.
         """
 
-        from whoosh.query import And
+        from whoosh-reloaded.query import And
         return And([self, query]).normalize()
 
     def __sub__(self, query):
@@ -193,7 +193,7 @@ class Query(object):
         query as a "NOT" query.
         """
 
-        from whoosh.query import And, Not
+        from whoosh-reloaded.query import And, Not
         return And([self, Not(query)]).normalize()
 
     def __hash__(self):
@@ -339,7 +339,7 @@ class Query(object):
         """Returns a set of all byteterms in this query tree that exist in
         the given ixreader.
 
-        :param ixreader: A :class:`whoosh.reading.IndexReader` object.
+        :param ixreader: A :class:`whoosh-reloaded.reading.IndexReader` object.
         :param phrases: Whether to add words found in Phrase queries.
         :param expand: If True, queries that match multiple terms
             will return all matching expansions.
@@ -379,8 +379,8 @@ class Query(object):
         Recursively get all individual terms and phrases that are part of this Query
         """
 
-        from whoosh.query.positional import Phrase
-        from whoosh.query.terms import Term
+        from whoosh-reloaded.query.positional import Phrase
+        from whoosh-reloaded.query.terms import Term
 
         terms = []
         phrases = []
@@ -528,10 +528,10 @@ class Query(object):
         return self.estimate_size(ixreader)
 
     def matcher(self, searcher, context=None):
-        """Returns a :class:`~whoosh.matching.Matcher` object you can use to
+        """Returns a :class:`~whoosh-reloaded.matching.Matcher` object you can use to
         retrieve documents and scores matching this query.
 
-        :rtype: :class:`whoosh.matching.Matcher`
+        :rtype: :class:`whoosh-reloaded.matching.Matcher`
         """
 
         raise NotImplementedError
@@ -543,7 +543,7 @@ class Query(object):
         ...     list(my_query.docs(searcher))
         [10, 34, 78, 103]
 
-        :param searcher: A :class:`whoosh.searching.Searcher` object.
+        :param searcher: A :class:`whoosh-reloaded.searching.Searcher` object.
         """
 
         try:
@@ -554,7 +554,7 @@ class Query(object):
 
     def deletion_docs(self, searcher):
         """Returns an iterator of docnums matching this query for the purpose
-        of deletion. The :meth:`~whoosh.writing.IndexWriter.delete_by_query`
+        of deletion. The :meth:`~whoosh-reloaded.writing.IndexWriter.delete_by_query`
         method will use this method when deciding what documents to delete,
         allowing special queries (e.g. nested queries) to override what
         documents are deleted. The default implementation just forwards to

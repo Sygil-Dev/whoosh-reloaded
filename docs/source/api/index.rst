@@ -2,7 +2,7 @@
 ``index`` module
 ================
 
-.. automodule:: whoosh.index
+.. automodule:: whoosh-reloaded.index
 
 
 Functions

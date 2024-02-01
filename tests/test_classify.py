@@ -1,9 +1,9 @@
 from __future__ import with_statement
 
-from whoosh import analysis, classify, fields, formats, query, reading
-from whoosh.compat import u, text_type
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempIndex
+from whoosh-reloaded import analysis, classify, fields, formats, query, reading
+from whoosh-reloaded.compat import u, text_type
+from whoosh-reloaded.filedb.filestore import RamStorage
+from whoosh-reloaded.util.testing import TempIndex
 
 
 domain = [u("A volume that is a signed distance field used for collision calculations.  The turbulence is damped near the collision object to prevent particles from passing through."),

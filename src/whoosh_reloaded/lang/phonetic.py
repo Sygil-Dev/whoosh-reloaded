@@ -6,7 +6,7 @@ This module contains quasi-phonetic encoders for words in different languages.
 
 import re
 
-from whoosh.compat import iteritems
+from whoosh-reloaded.compat import iteritems
 
 # This soundex implementation is adapted from the recipe here:
 # http://code.activestate.com/recipes/52213/

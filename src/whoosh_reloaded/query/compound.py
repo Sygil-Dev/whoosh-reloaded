@@ -27,10 +27,10 @@
 
 from __future__ import division
 
-from whoosh import matching
-from whoosh.compat import text_type, u
-from whoosh.query import qcore
-from whoosh.util import make_binary_tree, make_weighted_tree
+from whoosh-reloaded import matching
+from whoosh-reloaded.compat import text_type, u
+from whoosh-reloaded.query import qcore
+from whoosh-reloaded.util import make_binary_tree, make_weighted_tree
 
 
 class CompoundQuery(qcore.Query):
@@ -102,7 +102,7 @@ class CompoundQuery(qcore.Query):
         return min(est, ixreader.doc_count())
 
     def estimate_min_size(self, ixreader):
-        from whoosh.query import Not
+        from whoosh-reloaded.query import Not
 
         subs = self.subqueries
         qs = [(q, q.estimate_min_size(ixreader)) for q in subs
@@ -117,7 +117,7 @@ class CompoundQuery(qcore.Query):
         return 0
 
     def normalize(self):
-        from whoosh.query import Every, TermRange, NumericRange
+        from whoosh-reloaded.query import Every, TermRange, NumericRange
 
         # Normalize subqueries and merge nested instances of this class
         subqueries = []

@@ -30,14 +30,14 @@ import threading, time
 from bisect import bisect_right
 from contextlib import contextmanager
 
-from whoosh import columns
-from whoosh.compat import abstractmethod, bytes_type
-from whoosh.externalsort import SortingPool
-from whoosh.fields import UnknownFieldError
-from whoosh.index import LockError
-from whoosh.util import fib, random_name
-from whoosh.util.filelock import try_for
-from whoosh.util.text import utf8encode
+from whoosh-reloaded import columns
+from whoosh-reloaded.compat import abstractmethod, bytes_type
+from whoosh-reloaded.externalsort import SortingPool
+from whoosh-reloaded.fields import UnknownFieldError
+from whoosh-reloaded.index import LockError
+from whoosh-reloaded.util import fib, random_name
+from whoosh-reloaded.util.filelock import try_for
+from whoosh-reloaded.util.text import utf8encode
 
 
 # Exceptions
@@ -73,7 +73,7 @@ def MERGE_SMALL(writer, segments):
     heuristic based on the fibonacci sequence.
     """
 
-    from whoosh.reading import SegmentReader
+    from whoosh-reloaded.reading import SegmentReader
 
     unchanged_segments = []
     segments_to_merge = []
@@ -108,7 +108,7 @@ def OPTIMIZE(writer, segments):
     """This policy merges all existing segments.
     """
 
-    from whoosh.reading import SegmentReader
+    from whoosh-reloaded.reading import SegmentReader
 
     for seg in segments:
         reader = SegmentReader(writer.storage, writer.schema, seg)
@@ -128,7 +128,7 @@ def CLEAR(writer, segments):
 # Customized sorting pool for postings
 
 class PostingPool(SortingPool):
-    # Subclass whoosh.externalsort.SortingPool to use knowledge of
+    # Subclass whoosh-reloaded.externalsort.SortingPool to use knowledge of
     # postings to set run size in bytes instead of items
 
     namechars = "abcdefghijklmnopqrstuvwxyz0123456789"
@@ -185,7 +185,7 @@ class IndexWriter(object):
     """High-level object for writing to an index.
 
     To get a writer for a particular index, call
-    :meth:`~whoosh.index.Index.writer` on the Index object.
+    :meth:`~whoosh-reloaded.index.Index.writer` on the Index object.
 
     >>> writer = myindex.writer()
 
@@ -268,7 +268,7 @@ class IndexWriter(object):
         """Adds a field to the index's schema.
 
         :param fieldname: the name of the field to add.
-        :param fieldtype: an instantiated :class:`whoosh.fields.FieldType`
+        :param fieldtype: an instantiated :class:`whoosh-reloaded.fields.FieldType`
             object.
         """
 
@@ -291,7 +291,7 @@ class IndexWriter(object):
         raise NotImplementedError
 
     def searcher(self, **kwargs):
-        from whoosh.searching import Searcher
+        from whoosh-reloaded.searching import Searcher
 
         return Searcher(self.reader(), **kwargs)
 
@@ -303,7 +303,7 @@ class IndexWriter(object):
         :returns: the number of documents deleted.
         """
 
-        from whoosh.query import Term
+        from whoosh-reloaded.query import Term
 
         q = Term(fieldname, text)
         return self.delete_by_query(q, searcher=searcher)
@@ -349,8 +349,8 @@ class IndexWriter(object):
         fields take ``datetime.datetime`` objects::
 
             from datetime import datetime, timedelta
-            from whoosh import index
-            from whoosh.fields import *
+            from whoosh-reloaded import index
+            from whoosh-reloaded.fields import *
 
             schema = Schema(date=DATETIME, size=NUMERIC(float), content=TEXT)
             myindex = index.create_in("indexdir", schema)
@@ -514,7 +514,7 @@ class SegmentWriter(IndexWriter):
                 raise LockError
 
         if codec is None:
-            from whoosh.codec import default_codec
+            from whoosh-reloaded.codec import default_codec
             codec = default_codec()
         self.codec = codec
 
@@ -549,7 +549,7 @@ class SegmentWriter(IndexWriter):
 
     def __repr__(self):
         # Author: Ronald Evers
-        # Origin bitbucket issue: https://bitbucket.org/mchaput/whoosh/issues/483
+        # Origin bitbucket issue: https://bitbucket.org/mchaput/whoosh-reloaded/issues/483
         # newsegment might not be set due to LockError
         # so use getattr to be safe
         return "<%s %r>" % (self.__class__.__name__,
@@ -637,7 +637,7 @@ class SegmentWriter(IndexWriter):
         return segment.is_deleted(segdocnum)
 
     def reader(self, reuse=None):
-        from whoosh.index import FileIndex
+        from whoosh-reloaded.index import FileIndex
 
         self._check_state()
         return FileIndex._reader(self.storage, self.schema, self.segments,
@@ -896,7 +896,7 @@ class SegmentWriter(IndexWriter):
         return self.get_segment()
 
     def _commit_toc(self, segments):
-        from whoosh.index import TOC, clean_files
+        from whoosh-reloaded.index import TOC, clean_files
 
         # Write a new TOC with the new segment list (and delete old files)
         toc = TOC(self.schema, segments, self.generation)
@@ -993,13 +993,13 @@ class AsyncWriter(threading.Thread, IndexWriter):
 
     Do this:
 
-    >>> from whoosh.writing import AsyncWriter
+    >>> from whoosh-reloaded.writing import AsyncWriter
     >>> writer = AsyncWriter(myindex)
     """
 
     def __init__(self, index, delay=0.25, writerargs=None):
         """
-        :param index: the :class:`whoosh.index.Index` to write to.
+        :param index: the :class:`whoosh-reloaded.index.Index` to write to.
         :param delay: the delay (in seconds) between attempts to instantiate
             the actual writer.
         :param writerargs: an optional dictionary specifying keyword arguments
@@ -1021,7 +1021,7 @@ class AsyncWriter(threading.Thread, IndexWriter):
         return self.index.reader()
 
     def searcher(self, **kwargs):
-        from whoosh.searching import Searcher
+        from whoosh-reloaded.searching import Searcher
         return Searcher(self.reader(), fromindex=self.index, **kwargs)
 
     def _record(self, method, args, kwargs):
@@ -1082,14 +1082,14 @@ def add_spelling(ix, fieldnames, commit=True):
     >>> ix = index.open_dir("testindex")
     >>> add_spelling(ix, ["content", "tags"])
 
-    :param ix: a :class:`whoosh.filedb.fileindex.FileIndex` object.
+    :param ix: a :class:`whoosh-reloaded.filedb.fileindex.FileIndex` object.
     :param fieldnames: a list of field names to create word graphs for.
     :param force: if True, overwrites existing word graph files. This is only
         useful for debugging.
     """
 
-    from whoosh.automata import fst
-    from whoosh.reading import SegmentReader
+    from whoosh-reloaded.automata import fst
+    from whoosh-reloaded.reading import SegmentReader
 
     writer = ix.writer()
     storage = writer.storage
@@ -1135,7 +1135,7 @@ class BufferedWriter(IndexWriter):
     To use this class, create it from your index and *keep it open*, sharing
     it between threads.
 
-    >>> from whoosh.writing import BufferedWriter
+    >>> from whoosh-reloaded.writing import BufferedWriter
     >>> writer = BufferedWriter(myindex, period=120, limit=20)
     >>> # Then you can use the writer to add and update documents
     >>> writer.add_document(...)
@@ -1178,7 +1178,7 @@ class BufferedWriter(IndexWriter):
     def __init__(self, index, period=60, limit=10, writerargs=None,
                  commitargs=None):
         """
-        :param index: the :class:`whoosh.index.Index` to write to.
+        :param index: the :class:`whoosh-reloaded.index.Index` to write to.
         :param period: the maximum amount of time (in seconds) between commits.
             Set this to ``0`` or ``None`` to not use a timer. Do not set this
             any lower than a few seconds.
@@ -1209,7 +1209,7 @@ class BufferedWriter(IndexWriter):
         self.close()
 
     def _make_ram_index(self):
-        from whoosh.codec.memory import MemoryCodec
+        from whoosh-reloaded.codec.memory import MemoryCodec
 
         self.codec = MemoryCodec()
 
@@ -1221,7 +1221,7 @@ class BufferedWriter(IndexWriter):
         return self.writer.schema
 
     def reader(self, **kwargs):
-        from whoosh.reading import MultiReader
+        from whoosh-reloaded.reading import MultiReader
 
         reader = self.writer.reader()
         with self.lock:
@@ -1237,7 +1237,7 @@ class BufferedWriter(IndexWriter):
         return reader
 
     def searcher(self, **kwargs):
-        from whoosh.searching import Searcher
+        from whoosh-reloaded.searching import Searcher
 
         return Searcher(self.reader(), fromindex=self.index, **kwargs)
 

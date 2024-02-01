@@ -1,9 +1,9 @@
 from __future__ import with_statement
 import random, threading, time
 
-from whoosh import fields, query
-from whoosh.compat import xrange, u, text_type
-from whoosh.util.testing import TempStorage
+from whoosh-reloaded import fields, query
+from whoosh-reloaded.compat import xrange, u, text_type
+from whoosh-reloaded.util.testing import TempStorage
 
 
 def test_readwrite():

@@ -3,12 +3,12 @@ from __future__ import with_statement
 import random, threading, time
 
 import pytest
-from whoosh import fields, formats, reading
+from whoosh-reloaded import fields, formats, reading
 
-from whoosh.compat import b, u, xrange
-from whoosh.reading import SegmentReader
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempIndex
+from whoosh-reloaded.compat import b, u, xrange
+from whoosh-reloaded.reading import SegmentReader
+from whoosh-reloaded.filedb.filestore import RamStorage
+from whoosh-reloaded.util.testing import TempIndex
 
 
 def _create_index():
@@ -386,7 +386,7 @@ def test_doc_count():
 
 
 def test_reader_subclasses():
-    from whoosh.util.testing import check_abstract_methods
+    from whoosh-reloaded.util.testing import check_abstract_methods
 
     check_abstract_methods(reading.IndexReader, SegmentReader)
     check_abstract_methods(reading.IndexReader, reading.MultiReader)
