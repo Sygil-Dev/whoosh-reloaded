@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.spelling &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.spelling</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.spelling</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2007 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains helper functions for correcting typos in user queries.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">bisect_left</span>
+<span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">heappush</span><span class="p">,</span> <span class="n">heapreplace</span>
+
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">highlight</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">xrange</span>
+
+
+<span class="c1"># Corrector objects</span>
+
+<div class="viewcode-block" id="Corrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.Corrector">[docs]</a><span class="k">class</span> <span class="nc">Corrector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for spelling correction objects. Concrete sub-classes should</span>
+<span class="sd">    implement the ``_suggestions`` method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Corrector.suggest"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.Corrector.suggest">[docs]</a>    <span class="k">def</span> <span class="nf">suggest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param text: the text to check. This word will **not** be added to the</span>
+<span class="sd">            suggestions, even if it appears in the word graph.</span>
+<span class="sd">        :param limit: only return up to this many suggestions. If there are not</span>
+<span class="sd">            enough terms in the field within ``maxdist`` of the given word, the</span>
+<span class="sd">            returned list will be shorter than this number.</span>
+<span class="sd">        :param maxdist: the largest edit distance from the given word to look</span>
+<span class="sd">            at. Values higher than 2 are not very effective or efficient.</span>
+<span class="sd">        :param prefix: require suggestions to share a prefix of this length</span>
+<span class="sd">            with the given word. This is often justifiable since most</span>
+<span class="sd">            misspellings do not involve the first letter of the word. Using a</span>
+<span class="sd">            prefix dramatically decreases the time it takes to generate the</span>
+<span class="sd">            list of words.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_suggestions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suggestions</span>
+
+        <span class="n">heap</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">_suggestions</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+            <span class="c1"># Note that the *higher* scores (item[0]) are better!</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">heap</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="n">heappush</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">item</span> <span class="o">&gt;</span> <span class="n">heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">heapreplace</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+        <span class="n">sugs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">sug</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">sug</span> <span class="ow">in</span> <span class="n">sugs</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">_suggestions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Low-level method that yields a series of (score, &quot;suggestion&quot;)</span>
+<span class="sd">        tuples.</span>
+
+<span class="sd">        :param text: the text to check.</span>
+<span class="sd">        :param maxdist: the maximum edit distance.</span>
+<span class="sd">        :param prefix: require suggestions to share a prefix of this length</span>
+<span class="sd">            with the given word.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="ReaderCorrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.ReaderCorrector">[docs]</a><span class="k">class</span> <span class="nc">ReaderCorrector</span><span class="p">(</span><span class="n">Corrector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suggests corrections based on the content of a field in a reader.</span>
+
+<span class="sd">    Ranks suggestions by the edit distance, then by highest to lowest</span>
+<span class="sd">    frequency.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">fieldobj</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldobj</span> <span class="o">=</span> <span class="n">fieldobj</span>
+
+    <span class="k">def</span> <span class="nf">_suggestions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">frequency</span>
+
+        <span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+        <span class="n">fieldobj</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="n">sugfield</span> <span class="o">=</span> <span class="n">fieldobj</span><span class="o">.</span><span class="n">spelling_fieldname</span><span class="p">(</span><span class="n">fieldname</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">sug</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">terms_within</span><span class="p">(</span><span class="n">sugfield</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">):</span>
+            <span class="c1"># Higher scores are better, so negate the distance and frequency</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">freq</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">sug</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="p">(</span><span class="n">maxdist</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">f</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">sug</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">ListCorrector</span><span class="p">(</span><span class="n">Corrector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suggests corrections based on the content of a sorted list of strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wordlist</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wordlist</span> <span class="o">=</span> <span class="n">wordlist</span>
+
+    <span class="k">def</span> <span class="nf">_suggestions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh.automata.lev</span> <span class="kn">import</span> <span class="n">levenshtein_automaton</span>
+        <span class="kn">from</span> <span class="nn">whoosh.automata.fsa</span> <span class="kn">import</span> <span class="n">find_all_matches</span>
+
+        <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">mxd</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxdist</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">dfa</span> <span class="o">=</span> <span class="n">levenshtein_automaton</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mxd</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span><span class="o">.</span><span class="n">to_dfa</span><span class="p">()</span>
+            <span class="n">sk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Skipper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wordlist</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">sug</span> <span class="ow">in</span> <span class="n">find_all_matches</span><span class="p">(</span><span class="n">dfa</span><span class="p">,</span> <span class="n">sk</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sug</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                    <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sug</span><span class="p">)</span>
+                    <span class="k">yield</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="n">mxd</span><span class="p">),</span> <span class="n">sug</span>
+
+    <span class="k">class</span> <span class="nc">Skipper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">w</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">w</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="MultiCorrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.MultiCorrector">[docs]</a><span class="k">class</span> <span class="nc">MultiCorrector</span><span class="p">(</span><span class="n">Corrector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merges suggestions from a list of sub-correctors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">correctors</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correctors</span> <span class="o">=</span> <span class="n">correctors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">op</span>
+
+    <span class="k">def</span> <span class="nf">_suggestions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">corr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">correctors</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">sug</span> <span class="ow">in</span> <span class="n">corr</span><span class="o">.</span><span class="n">_suggestions</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sug</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                    <span class="n">seen</span><span class="p">[</span><span class="n">sug</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">seen</span><span class="p">[</span><span class="n">sug</span><span class="p">],</span> <span class="n">score</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">seen</span><span class="p">[</span><span class="n">sug</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="k">return</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span></div>
+
+
+<span class="c1"># Query correction</span>
+
+<div class="viewcode-block" id="Correction"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.Correction">[docs]</a><span class="k">class</span> <span class="nc">Correction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the corrected version of a user query string. Has the</span>
+<span class="sd">    following attributes:</span>
+
+<span class="sd">    ``query``</span>
+<span class="sd">        The corrected :class:`whoosh.query.Query` object.</span>
+<span class="sd">    ``string``</span>
+<span class="sd">        The corrected user query string.</span>
+<span class="sd">    ``original_query``</span>
+<span class="sd">        The original :class:`whoosh.query.Query` object that was corrected.</span>
+<span class="sd">    ``original_string``</span>
+<span class="sd">        The original user query string.</span>
+<span class="sd">    ``tokens``</span>
+<span class="sd">        A list of token objects representing the corrected words.</span>
+
+<span class="sd">    You can also use the :meth:`Correction.format_string` method to reformat the</span>
+<span class="sd">    corrected query string using a :class:`whoosh.highlight.Formatter` class.</span>
+<span class="sd">    For example, to display the corrected query string as HTML with the</span>
+<span class="sd">    changed words emphasized::</span>
+
+<span class="sd">        from whoosh import highlight</span>
+
+<span class="sd">        correction = mysearcher.correct_query(q, qstring)</span>
+
+<span class="sd">        hf = highlight.HtmlFormatter(classname=&quot;change&quot;)</span>
+<span class="sd">        html = correction.format_string(hf)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">qstring</span><span class="p">,</span> <span class="n">corr_q</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_query</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">corr_q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_string</span> <span class="o">=</span> <span class="n">qstring</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="n">tokens</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_string</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span><span class="p">(</span><span class="n">highlight</span><span class="o">.</span><span class="n">NullFormatter</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">format_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formatter</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Highlights the corrected words in the original query string using the</span>
+<span class="sd">        given :class:`~whoosh.highlight.Formatter`.</span>
+
+<span class="sd">        :param formatter: A :class:`whoosh.highlight.Formatter` instance.</span>
+<span class="sd">        :return: the output of the formatter (usually a string).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_string</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">formatter</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="n">formatter</span><span class="p">()</span>
+
+        <span class="n">fragment</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">Fragment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_string</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">formatter</span><span class="o">.</span><span class="n">format_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<span class="c1"># QueryCorrector objects</span>
+
+<div class="viewcode-block" id="QueryCorrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.QueryCorrector">[docs]</a><span class="k">class</span> <span class="nc">QueryCorrector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for objects that correct words in a user query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+
+<div class="viewcode-block" id="QueryCorrector.correct_query"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.QueryCorrector.correct_query">[docs]</a>    <span class="k">def</span> <span class="nf">correct_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">qstring</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a :class:`Correction` object representing the corrected</span>
+<span class="sd">        form of the given query.</span>
+
+<span class="sd">        :param q: the original :class:`whoosh.query.Query` tree to be</span>
+<span class="sd">            corrected.</span>
+<span class="sd">        :param qstring: the original user query. This may be None if the</span>
+<span class="sd">            original query string is not available, in which case the</span>
+<span class="sd">            ``Correction.string`` attribute will also be None.</span>
+<span class="sd">        :rtype: :class:`Correction`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+    <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span></div>
+
+
+<div class="viewcode-block" id="SimpleQueryCorrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.SimpleQueryCorrector">[docs]</a><span class="k">class</span> <span class="nc">SimpleQueryCorrector</span><span class="p">(</span><span class="n">QueryCorrector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A simple query corrector based on a mapping of field names to</span>
+<span class="sd">    :class:`Corrector` objects, and a list of ``(&quot;fieldname&quot;, &quot;text&quot;)`` tuples</span>
+<span class="sd">    to correct. And terms in the query that appear in list of term tuples are</span>
+<span class="sd">    corrected using the appropriate corrector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">correctors</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param correctors: a dictionary mapping field names to</span>
+<span class="sd">            :class:`Corrector` objects.</span>
+<span class="sd">        :param terms: a sequence of ``(&quot;fieldname&quot;, &quot;text&quot;)`` tuples</span>
+<span class="sd">            representing terms to be corrected.</span>
+<span class="sd">        :param aliases: a dictionary mapping field names in the query to</span>
+<span class="sd">            field names for spelling suggestions.</span>
+<span class="sd">        :param prefix: suggested replacement words must share this number of</span>
+<span class="sd">            initial characters with the original word. Increasing this even to</span>
+<span class="sd">            just ``1`` can dramatically speed up suggestions, and may be</span>
+<span class="sd">            justifiable since spellling mistakes rarely involve the first</span>
+<span class="sd">            letter of a word.</span>
+<span class="sd">        :param maxdist: the maximum number of &quot;edits&quot; (insertions, deletions,</span>
+<span class="sd">            subsitutions, or transpositions of letters) allowed between the</span>
+<span class="sd">            original word and any suggestion. Values higher than ``2`` may be</span>
+<span class="sd">            slow.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">correctors</span> <span class="o">=</span> <span class="n">correctors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aliases</span> <span class="o">=</span> <span class="n">aliases</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">termset</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span> <span class="o">=</span> <span class="n">maxdist</span>
+
+    <span class="k">def</span> <span class="nf">correct_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">qstring</span><span class="p">):</span>
+        <span class="n">correctors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">correctors</span>
+        <span class="n">aliases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aliases</span>
+        <span class="n">termset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">termset</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span>
+        <span class="n">maxdist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span>
+
+        <span class="c1"># A list of tokens that were changed by a corrector</span>
+        <span class="n">corrected_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># The corrected query tree. We don&#39;t need to deepcopy the original</span>
+        <span class="c1"># because we use Query.replace() to find-and-replace the corrected</span>
+        <span class="c1"># words and it returns a copy of the query tree.</span>
+        <span class="n">corrected_q</span> <span class="o">=</span> <span class="n">q</span>
+
+        <span class="c1"># For every word in the original query...</span>
+        <span class="c1"># Note we can&#39;t put these in a set, because we must preserve WHERE</span>
+        <span class="c1"># in the query each token occured so we can format them later</span>
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">q</span><span class="o">.</span><span class="n">all_tokens</span><span class="p">():</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">fieldname</span>
+            <span class="n">aname</span> <span class="o">=</span> <span class="n">aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+
+            <span class="c1"># If this is one of the words we&#39;re supposed to correct...</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="ow">in</span> <span class="n">termset</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">correctors</span><span class="p">[</span><span class="n">aname</span><span class="p">]</span>
+                <span class="n">sugs</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">suggest</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="n">maxdist</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sugs</span><span class="p">:</span>
+                    <span class="c1"># This is a &quot;simple&quot; corrector, so we just pick the first</span>
+                    <span class="c1"># suggestion :/</span>
+                    <span class="n">sug</span> <span class="o">=</span> <span class="n">sugs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                    <span class="c1"># Return a new copy of the original query with this word</span>
+                    <span class="c1"># replaced by the correction</span>
+                    <span class="n">corrected_q</span> <span class="o">=</span> <span class="n">corrected_q</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span>
+                                                      <span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">sug</span><span class="p">)</span>
+                    <span class="c1"># Add the token to the list of corrected tokens (for the</span>
+                    <span class="c1"># formatter to use later)</span>
+                    <span class="n">token</span><span class="o">.</span><span class="n">original</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">text</span>
+                    <span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">sug</span>
+                    <span class="n">corrected_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Correction</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">qstring</span><span class="p">,</span> <span class="n">corrected_q</span><span class="p">,</span> <span class="n">corrected_tokens</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.qparser.plugins &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.qparser.plugins</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.qparser.plugins</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2011 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">query</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">xrange</span>
+<span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">syntax</span>
+<span class="kn">from</span> <span class="nn">whoosh.qparser.common</span> <span class="kn">import</span> <span class="n">attach</span>
+<span class="kn">from</span> <span class="nn">whoosh.qparser.taggers</span> <span class="kn">import</span> <span class="n">RegexTagger</span><span class="p">,</span> <span class="n">FnTagger</span>
+<span class="kn">from</span> <span class="nn">whoosh.util.text</span> <span class="kn">import</span> <span class="n">rcompile</span>
+
+
+<div class="viewcode-block" id="Plugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.Plugin">[docs]</a><span class="k">class</span> <span class="nc">Plugin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for parser plugins.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Plugin.taggers"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.Plugin.taggers">[docs]</a>    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Should return a list of ``(Tagger, priority)`` tuples to add to the</span>
+<span class="sd">        syntax the parser understands. Lower priorities run first.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">()</span></div>
+
+<div class="viewcode-block" id="Plugin.filters"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.Plugin.filters">[docs]</a>    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Should return a list of ``(filter_function, priority)`` tuples to</span>
+<span class="sd">        add to parser. Lower priority numbers run first.</span>
+
+<span class="sd">        Filter functions will be called with ``(parser, groupnode)`` and should</span>
+<span class="sd">        return a group node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">()</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">TaggingPlugin</span><span class="p">(</span><span class="n">RegexTagger</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A plugin that also acts as a Tagger, to avoid having an extra Tagger</span>
+<span class="sd">    class for simple cases.</span>
+
+<span class="sd">    A TaggingPlugin object should have a ``priority`` attribute and either a</span>
+<span class="sd">    ``nodetype`` attribute or a ``create()`` method. If the subclass doesn&#39;t</span>
+<span class="sd">    override ``create()``, the base class will call ``self.nodetype`` with the</span>
+<span class="sd">    Match object&#39;s named groups as keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">priority</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="n">rcompile</span><span class="p">(</span><span class="n">expr</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+        <span class="c1"># Groupdict keys can be unicode sometimes apparently? Convert them to</span>
+        <span class="c1"># str for use as keyword arguments. This should be Py3-safe.</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodetype</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">WhitespacePlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tags whitespace and removes it at priority 500. Depending on whether</span>
+<span class="sd">    your plugin&#39;s filter wants to see where whitespace was in the original</span>
+<span class="sd">    query, it should run with priority lower than 500 (before removal of</span>
+<span class="sd">    whitespace) or higher than 500 (after removal of whitespace).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">nodetype</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">Whitespace</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="mi">100</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">):</span>
+        <span class="n">TaggingPlugin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_whitespace</span><span class="p">,</span> <span class="mi">500</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">remove_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_whitespace</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">is_ws</span><span class="p">():</span>
+                <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newgroup</span>
+
+
+<div class="viewcode-block" id="SingleQuotePlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.SingleQuotePlugin">[docs]</a><span class="k">class</span> <span class="nc">SingleQuotePlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to specify single &quot;terms&quot; containing spaces by</span>
+<span class="sd">    enclosing them in single quotes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">expr</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(^|(?&lt;=\W))&#39;(?P&lt;text&gt;.*?)&#39;(?=\s|\]|[)}]|$)&quot;</span>
+    <span class="n">nodetype</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">WordNode</span></div>
+
+
+<div class="viewcode-block" id="PrefixPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.PrefixPlugin">[docs]</a><span class="k">class</span> <span class="nc">PrefixPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to specify prefix queries by ending a term with an</span>
+<span class="sd">    asterisk.</span>
+
+<span class="sd">    This plugin is useful if you want the user to be able to create prefix but</span>
+<span class="sd">    not wildcard queries (for performance reasons). If you are including the</span>
+<span class="sd">    wildcard plugin, you should not include this plugin as well.</span>
+
+<span class="sd">    &gt;&gt;&gt; qp = qparser.QueryParser(&quot;content&quot;, myschema)</span>
+<span class="sd">    &gt;&gt;&gt; qp.remove_plugin_class(qparser.WildcardPlugin)</span>
+<span class="sd">    &gt;&gt;&gt; qp.add_plugin(qparser.PrefixPlugin())</span>
+<span class="sd">    &gt;&gt;&gt; q = qp.parse(&quot;pre*&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">PrefixNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">TextNode</span><span class="p">):</span>
+        <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Prefix</span>
+
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%r</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="n">expr</span> <span class="o">=</span> <span class="s2">&quot;(?P&lt;text&gt;[^ </span><span class="se">\t\r\n</span><span class="s2">*]+)[*](?= |$|</span><span class="se">\\</span><span class="s2">))&quot;</span>
+    <span class="n">nodetype</span> <span class="o">=</span> <span class="n">PrefixNode</span></div>
+
+
+<div class="viewcode-block" id="WildcardPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.WildcardPlugin">[docs]</a><span class="k">class</span> <span class="nc">WildcardPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+    <span class="c1"># \u055E = Armenian question mark</span>
+    <span class="c1"># \u061F = Arabic question mark</span>
+    <span class="c1"># \u1367 = Ethiopic question mark</span>
+    <span class="n">qmarks</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;?</span><span class="se">\u055E\u061F\u1367</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">expr</span> <span class="o">=</span> <span class="s2">&quot;(?P&lt;text&gt;[*</span><span class="si">%s</span><span class="s2">])&quot;</span> <span class="o">%</span> <span class="n">qmarks</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="c1"># Run early, but definitely before multifield plugin</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_wildcards</span><span class="p">,</span> <span class="mi">50</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_wildcards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">WildcardNode</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_text</span><span class="p">():</span>
+                    <span class="n">nextnode</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">+=</span> <span class="n">nextnode</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_text</span><span class="p">():</span>
+                    <span class="n">prevnode</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">prevnode</span><span class="o">.</span><span class="n">text</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">do_wildcards</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">WildcardNode</span><span class="p">):</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">qm</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">for</span> <span class="n">qm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">qmarks</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">newnode</span> <span class="o">=</span> <span class="n">PrefixPlugin</span><span class="o">.</span><span class="n">PrefixNode</span><span class="p">(</span><span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="n">newnode</span><span class="o">.</span><span class="n">startchar</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">startchar</span>
+                        <span class="n">newnode</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">endchar</span>
+                        <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">newnode</span>
+        <span class="k">return</span> <span class="n">group</span>
+
+    <span class="k">class</span> <span class="nc">WildcardNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">TextNode</span><span class="p">):</span>
+        <span class="c1"># Note that this node inherits tokenize = False from TextNode,</span>
+        <span class="c1"># so the text in this node will not be analyzed... just passed</span>
+        <span class="c1"># straight to the query</span>
+
+        <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Wildcard</span>
+
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;Wild </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="n">nodetype</span> <span class="o">=</span> <span class="n">WildcardNode</span></div>
+
+
+<div class="viewcode-block" id="RegexPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.RegexPlugin">[docs]</a><span class="k">class</span> <span class="nc">RegexPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to specify regular expression term queries.</span>
+
+<span class="sd">    The default syntax for a regular expression term is ``r&quot;termexpr&quot;``.</span>
+
+<span class="sd">    &gt;&gt;&gt; qp = qparser.QueryParser(&quot;content&quot;, myschema)</span>
+<span class="sd">    &gt;&gt;&gt; qp.add_plugin(qparser.RegexPlugin())</span>
+<span class="sd">    &gt;&gt;&gt; q = qp.parse(&#39;foo title:r&quot;bar+&quot;&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">RegexNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">TextNode</span><span class="p">):</span>
+        <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Regex</span>
+
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;Regex </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="n">expr</span> <span class="o">=</span> <span class="s1">&#39;r&quot;(?P&lt;text&gt;[^&quot;]*)&quot;&#39;</span>
+    <span class="n">nodetype</span> <span class="o">=</span> <span class="n">RegexNode</span></div>
+
+
+<div class="viewcode-block" id="BoostPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.BoostPlugin">[docs]</a><span class="k">class</span> <span class="nc">BoostPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to boost clauses of the query using the circumflex.</span>
+
+<span class="sd">    &gt;&gt;&gt; qp = qparser.QueryParser(&quot;content&quot;, myschema)</span>
+<span class="sd">    &gt;&gt;&gt; q = qp.parse(&quot;hello there^2&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">expr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">^(?P&lt;boost&gt;[0-9]*(</span><span class="se">\\</span><span class="s2">.[0-9]+)?)($|(?=[ </span><span class="se">\t\r\n</span><span class="s2">)]))&quot;</span>
+
+    <span class="k">class</span> <span class="nc">BoostNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">SyntaxNode</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original</span><span class="p">,</span> <span class="n">boost</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">original</span> <span class="o">=</span> <span class="n">original</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;^ </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+        <span class="c1"># Override create so we can grab group 0</span>
+        <span class="n">original</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">boost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;boost&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="c1"># The text after the ^ wasn&#39;t a valid number, so turn it into a</span>
+            <span class="c1"># word</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">WordNode</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BoostNode</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">boost</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">node</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">clean_boost</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_boost</span><span class="p">,</span> <span class="mi">510</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">clean_boost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This filter finds any BoostNodes in positions where they can&#39;t boost</span>
+<span class="sd">        the previous node (e.g. at the very beginning, after whitespace, or</span>
+<span class="sd">        after another BoostNode) and turns them into WordNodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">bnode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BoostNode</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">bnode</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">i</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">has_boost</span><span class="p">):</span>
+                    <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">to_word</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">group</span>
+
+    <span class="k">def</span> <span class="nf">do_boost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This filter finds BoostNodes and applies the boost to the previous</span>
+<span class="sd">        node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_boost</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">BoostNode</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">newgroup</span> <span class="ow">and</span> <span class="n">newgroup</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">has_boost</span><span class="p">):</span>
+                    <span class="c1"># Apply the BoostNode&#39;s boost to the previous node</span>
+                    <span class="n">newgroup</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_boost</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+                    <span class="c1"># Skip adding the BoostNode to the new group</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">node</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">to_word</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newgroup</span></div>
+
+
+<div class="viewcode-block" id="GroupPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.GroupPlugin">[docs]</a><span class="k">class</span> <span class="nc">GroupPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to group clauses using parentheses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Marker nodes for open and close bracket</span>
+
+    <span class="k">class</span> <span class="nc">OpenBracket</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">SyntaxNode</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;(&quot;</span>
+
+    <span class="k">class</span> <span class="nc">CloseBracket</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">SyntaxNode</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">openexpr</span><span class="o">=</span><span class="s2">&quot;[(]&quot;</span><span class="p">,</span> <span class="n">closeexpr</span><span class="o">=</span><span class="s2">&quot;[)]&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">openexpr</span> <span class="o">=</span> <span class="n">openexpr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closeexpr</span> <span class="o">=</span> <span class="n">closeexpr</span>
+
+    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">FnTagger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">openexpr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">OpenBracket</span><span class="p">,</span> <span class="s2">&quot;openB&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">FnTagger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closeexpr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">CloseBracket</span><span class="p">,</span> <span class="s2">&quot;closeB&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_groups</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This filter finds open and close bracket markers in a flat group</span>
+<span class="sd">        and uses them to organize the nodes into a hierarchy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ob</span><span class="p">,</span> <span class="n">cb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OpenBracket</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">CloseBracket</span>
+        <span class="c1"># Group hierarchy stack</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span><span class="n">parser</span><span class="o">.</span><span class="n">group</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ob</span><span class="p">):</span>
+                <span class="c1"># Open bracket: push a new level of hierarchy on the stack</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">cb</span><span class="p">):</span>
+                <span class="c1"># Close bracket: pop the current level of hierarchy and append</span>
+                <span class="c1"># it to the previous level</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">last</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                    <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Anything else: add it to the current level of hierarchy</span>
+                <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="n">top</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># If the parens were unbalanced (more opens than closes), just take</span>
+        <span class="c1"># whatever levels of hierarchy were left on the stack and tack them on</span>
+        <span class="c1"># the end of the top-level</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ls</span> <span class="ow">in</span> <span class="n">stack</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">top</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">top</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+            <span class="n">boost</span> <span class="o">=</span> <span class="n">top</span><span class="o">.</span><span class="n">boost</span>
+            <span class="n">top</span> <span class="o">=</span> <span class="n">top</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">top</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+
+        <span class="k">return</span> <span class="n">top</span></div>
+
+
+<div class="viewcode-block" id="EveryPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.EveryPlugin">[docs]</a><span class="k">class</span> <span class="nc">EveryPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+    <span class="n">expr</span> <span class="o">=</span> <span class="s2">&quot;[*]:[*]&quot;</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">EveryNode</span><span class="p">()</span>
+
+    <span class="k">class</span> <span class="nc">EveryNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">SyntaxNode</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;*:*&quot;</span>
+
+        <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">Every</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FieldsPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.FieldsPlugin">[docs]</a><span class="k">class</span> <span class="nc">FieldsPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to specify the field of a clause.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">FieldnameTagger</span><span class="p">(</span><span class="n">RegexTagger</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">syntax</span><span class="o">.</span><span class="n">FieldnameNode</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;text&gt;\w+|[*]):&quot;</span><span class="p">,</span> <span class="n">remove_unknown</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param expr: the regular expression to use for tagging fields.</span>
+<span class="sd">        :param remove_unknown: if True, converts field specifications for</span>
+<span class="sd">            fields that aren&#39;t in the schema into regular text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">removeunknown</span> <span class="o">=</span> <span class="n">remove_unknown</span>
+
+    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">FieldnameTagger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">),</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_fieldnames</span><span class="p">,</span> <span class="mi">100</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_fieldnames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This filter finds FieldnameNodes in the tree and applies their</span>
+<span class="sd">        fieldname to the next node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fnclass</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">FieldnameNode</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">removeunknown</span> <span class="ow">and</span> <span class="n">parser</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+            <span class="c1"># Look for field nodes that aren&#39;t in the schema and convert them</span>
+            <span class="c1"># to text</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">schema</span>
+            <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+            <span class="n">prev_field_node</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">fnclass</span><span class="p">)</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
+                    <span class="n">prev_field_node</span> <span class="o">=</span> <span class="n">node</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">prev_field_node</span><span class="p">:</span>
+                    <span class="c1"># If prev_field_node is not None, it contains a field node</span>
+                    <span class="c1"># that appeared before this node but isn&#39;t in the schema,</span>
+                    <span class="c1"># so we&#39;ll convert it to text here</span>
+                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">has_text</span><span class="p">:</span>
+                        <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">prev_field_node</span><span class="o">.</span><span class="n">original</span> <span class="o">+</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">to_word</span><span class="p">(</span><span class="n">prev_field_node</span><span class="p">))</span>
+                    <span class="n">prev_field_node</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">prev_field_node</span><span class="p">:</span>
+                <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">to_word</span><span class="p">(</span><span class="n">prev_field_node</span><span class="p">))</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">newgroup</span>
+
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="c1"># Iterate backwards through the stream, looking for field-able objects</span>
+        <span class="c1"># with field nodes in front of them</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">fnclass</span><span class="p">):</span>
+                <span class="c1"># If we see a fieldname node, it must not have been in front</span>
+                <span class="c1"># of something fieldable, since we would have already removed</span>
+                <span class="c1"># it (since we&#39;re iterating backwards), so convert it to text</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">to_word</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_fieldnames</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">is_ws</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                                                         <span class="n">fnclass</span><span class="p">):</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">set_fieldname</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+
+            <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="n">newgroup</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">newgroup</span></div>
+
+
+<span class="k">class</span> <span class="nc">FuzzyTermPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds syntax to the query parser to create &quot;fuzzy&quot; term queries, which</span>
+<span class="sd">    match any term within a certain &quot;edit distance&quot; (number of inserted,</span>
+<span class="sd">    deleted, or transposed characters) by appending a tilde (``~``) and an</span>
+<span class="sd">    optional maximum edit distance to a term. If you don&#39;t specify an explicit</span>
+<span class="sd">    maximum edit distance, the default is 1.</span>
+
+<span class="sd">    &gt;&gt;&gt; qp = qparser.QueryParser(&quot;content&quot;, myschema)</span>
+<span class="sd">    &gt;&gt;&gt; qp.add_plugin(qparser.FuzzyTermPlugin())</span>
+<span class="sd">    &gt;&gt;&gt; q = qp.parse(&quot;Stephen~2 Colbert&quot;)</span>
+
+<span class="sd">    For example, the following query creates a :class:`whoosh.query.FuzzyTerm`</span>
+<span class="sd">    query with a maximum edit distance of 1::</span>
+
+<span class="sd">        bob~</span>
+
+<span class="sd">    The following creates a fuzzy term query with a maximum edit distance of</span>
+<span class="sd">    2::</span>
+
+<span class="sd">        bob~2</span>
+
+<span class="sd">    The maximum edit distance can only be a single digit. Note that edit</span>
+<span class="sd">    distances greater than 2 can take an extremely long time and are generally</span>
+<span class="sd">    not useful.</span>
+
+<span class="sd">    You can specify a prefix length using ``~n/m``. For example, to allow a</span>
+<span class="sd">    maximum edit distance of 2 and require a prefix match of 3 characters::</span>
+
+<span class="sd">        johannson~2/3</span>
+
+<span class="sd">    To specify a prefix with the default edit distance::</span>
+
+<span class="sd">        johannson~/3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">expr</span> <span class="o">=</span> <span class="n">rcompile</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    (?&lt;=</span><span class="se">\\</span><span class="s2">S)                          # Only match right after non-space</span>
+<span class="s2">    ~                                 # Initial tilde</span>
+<span class="s2">    (?P&lt;maxdist&gt;[0-9])?               # Optional maxdist</span>
+<span class="s2">    (/                                # Optional prefix slash</span>
+<span class="s2">        (?P&lt;prefix&gt;[1-9][0-9]*)       # prefix</span>
+<span class="s2">    )?                                # (end prefix group)</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">FuzzinessNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">SyntaxNode</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefixlength</span><span class="p">,</span> <span class="n">original</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span> <span class="o">=</span> <span class="n">maxdist</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prefixlength</span> <span class="o">=</span> <span class="n">prefixlength</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">original</span> <span class="o">=</span> <span class="n">original</span>
+
+        <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;&lt;~</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefixlength</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">FuzzyTermNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">TextNode</span><span class="p">):</span>
+        <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">FuzzyTerm</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wordnode</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefixlength</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">wordnode</span><span class="o">.</span><span class="n">fieldname</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">wordnode</span><span class="o">.</span><span class="n">text</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">wordnode</span><span class="o">.</span><span class="n">boost</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">startchar</span> <span class="o">=</span> <span class="n">wordnode</span><span class="o">.</span><span class="n">startchar</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">wordnode</span><span class="o">.</span><span class="n">endchar</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span> <span class="o">=</span> <span class="n">maxdist</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prefixlength</span> <span class="o">=</span> <span class="n">prefixlength</span>
+
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> ~</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefixlength</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+            <span class="c1"># Use the superclass&#39;s query() method to create a FuzzyTerm query</span>
+            <span class="c1"># (it looks at self.qclass), just because it takes care of some</span>
+            <span class="c1"># extra checks and attributes</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">TextNode</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">)</span>
+            <span class="c1"># Set FuzzyTerm-specific attributes</span>
+            <span class="n">q</span><span class="o">.</span><span class="n">maxdist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span>
+            <span class="n">q</span><span class="o">.</span><span class="n">prefixlength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefixlength</span>
+            <span class="k">return</span> <span class="n">q</span>
+
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+        <span class="n">mdstr</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;maxdist&quot;</span><span class="p">)</span>
+        <span class="n">maxdist</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mdstr</span><span class="p">)</span> <span class="k">if</span> <span class="n">mdstr</span> <span class="k">else</span> <span class="mi">1</span>
+
+        <span class="n">pstr</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;prefix&quot;</span><span class="p">)</span>
+        <span class="n">prefixlength</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pstr</span><span class="p">)</span> <span class="k">if</span> <span class="n">pstr</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">FuzzinessNode</span><span class="p">(</span><span class="n">maxdist</span><span class="p">,</span> <span class="n">prefixlength</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_fuzzyterms</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_fuzzyterms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">WordNode</span><span class="p">):</span>
+                <span class="n">nextnode</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nextnode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">FuzzinessNode</span><span class="p">):</span>
+                    <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FuzzyTermNode</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">nextnode</span><span class="o">.</span><span class="n">maxdist</span><span class="p">,</span>
+                                              <span class="n">nextnode</span><span class="o">.</span><span class="n">prefixlength</span><span class="p">)</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">FuzzinessNode</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">to_word</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_fuzzyterms</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+            <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">newgroup</span>
+
+
+<span class="k">class</span> <span class="nc">FunctionPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds an abitrary &quot;function call&quot; syntax to the query parser to allow</span>
+<span class="sd">    advanced and extensible query functionality.</span>
+
+<span class="sd">    This is unfinished and experimental.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">expr</span> <span class="o">=</span> <span class="n">rcompile</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    [#](?P&lt;name&gt;[A-Za-z_][A-Za-z0-9._]*)  # function name</span>
+<span class="s2">    (                                     # optional args</span>
+<span class="s2">        </span><span class="se">\\</span><span class="s2">[                               # inside square brackets</span>
+<span class="s2">        (?P&lt;args&gt;.*?)</span>
+<span class="s2">        </span><span class="se">\\</span><span class="s2">]</span>
+<span class="s2">    )?</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">FunctionNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">SyntaxNode</span><span class="p">):</span>
+        <span class="n">has_fieldname</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">has_boost</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">merging</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;#</span><span class="si">%s</span><span class="s2">&lt;</span><span class="si">%r</span><span class="s2">&gt;(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+            <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span>
+            <span class="k">if</span> <span class="s2">&quot;boost&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;boost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+            <span class="c1"># TODO: If this call raises an exception, return an error query</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fns</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param fns: a dictionary mapping names to functions that return a</span>
+<span class="sd">            query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fns</span> <span class="o">=</span> <span class="n">fns</span>
+
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fns</span><span class="p">:</span>
+            <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">argstring</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;args&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">argstring</span><span class="p">:</span>
+                <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_args</span><span class="p">(</span><span class="n">argstring</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="p">()</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">FunctionNode</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parse_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">argstring</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">argstring</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">part</span><span class="p">:</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># Wrap with str() because Python 2.5 can&#39;t handle unicode kws</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">part</span>
+
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_functions</span><span class="p">,</span> <span class="mi">600</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">FunctionNode</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">)):</span>
+                <span class="n">nextnode</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_functions</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">nextnode</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="n">nextnode</span><span class="o">.</span><span class="n">boost</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">set_boost</span><span class="p">(</span><span class="n">nextnode</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_functions</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+            <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">newgroup</span>
+
+
+<div class="viewcode-block" id="PhrasePlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.PhrasePlugin">[docs]</a><span class="k">class</span> <span class="nc">PhrasePlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to specify phrase queries inside double quotes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Didn&#39;t use TaggingPlugin because I need to add slop parsing at some</span>
+    <span class="c1"># point</span>
+
+    <span class="c1"># Expression used to find words if a schema isn&#39;t available</span>
+    <span class="n">wordexpr</span> <span class="o">=</span> <span class="n">rcompile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\S+&#39;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">PhraseNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">TextNode</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">textstartchar</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">syntax</span><span class="o">.</span><span class="n">TextNode</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">textstartchar</span> <span class="o">=</span> <span class="n">textstartchar</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slop</span> <span class="o">=</span> <span class="n">slop</span>
+
+        <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">~</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slop</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="p">[</span><span class="n">fn</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">],</span>
+                                  <span class="n">slop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slop</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">or</span> <span class="n">parser</span><span class="o">.</span><span class="n">fieldname</span>
+
+            <span class="c1"># We want to process the text of the phrase into &quot;words&quot; (tokens),</span>
+            <span class="c1"># and also record the startchar and endchar of each word</span>
+
+            <span class="n">sc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textstartchar</span>
+            <span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">schema</span> <span class="ow">and</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+                <span class="n">field</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">analyzer</span><span class="p">:</span>
+                    <span class="c1"># We have a field with an analyzer, so use it to parse</span>
+                    <span class="c1"># the phrase into tokens</span>
+                    <span class="n">tokens</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">char_ranges</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+                        <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                        <span class="n">char_ranges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sc</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span><span class="p">,</span> <span class="n">sc</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># We have a field but it doesn&#39;t have a format object,</span>
+                    <span class="c1"># for some reason (it&#39;s self-parsing?), so use process_text</span>
+                    <span class="c1"># to get the texts (we won&#39;t know the start/end chars)</span>
+                    <span class="n">words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">process_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;query&quot;</span><span class="p">))</span>
+                    <span class="n">char_ranges</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># We&#39;re parsing without a schema, so just use the default</span>
+                <span class="c1"># regular expression to break the text into words</span>
+                <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">char_ranges</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">PhrasePlugin</span><span class="o">.</span><span class="n">wordexpr</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                    <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                    <span class="n">char_ranges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sc</span> <span class="o">+</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">(),</span> <span class="n">sc</span> <span class="o">+</span> <span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">()))</span>
+
+            <span class="n">qclass</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">phraseclass</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">qclass</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">words</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slop</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span>
+                       <span class="n">char_ranges</span><span class="o">=</span><span class="n">char_ranges</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">PhraseTagger</span><span class="p">(</span><span class="n">RegexTagger</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+            <span class="n">textstartchar</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+            <span class="n">slopstr</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;slop&quot;</span><span class="p">)</span>
+            <span class="n">slop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">slopstr</span><span class="p">)</span> <span class="k">if</span> <span class="n">slopstr</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">PhrasePlugin</span><span class="o">.</span><span class="n">PhraseNode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">textstartchar</span><span class="p">,</span> <span class="n">slop</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="s1">&#39;&quot;(?P&lt;text&gt;.*?)&quot;(~(?P&lt;slop&gt;[1-9][0-9]*))?&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span>
+
+    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">PhraseTagger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">),</span> <span class="mi">0</span><span class="p">)]</span></div>
+
+
+<span class="k">class</span> <span class="nc">SequencePlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to group arbitrary queries inside double quotes to</span>
+<span class="sd">    produce a query matching the individual sub-queries in sequence.</span>
+
+<span class="sd">    To enable this plugin, first remove the default PhrasePlugin, then add</span>
+<span class="sd">    this plugin::</span>
+
+<span class="sd">        qp = qparser.QueryParser(&quot;field&quot;, my_schema)</span>
+<span class="sd">        qp.remove_plugin_class(qparser.PhrasePlugin)</span>
+<span class="sd">        qp.add_plugin(qparser.SequencePlugin())</span>
+
+<span class="sd">    This enables parsing &quot;phrases&quot; such as::</span>
+
+<span class="sd">        &quot;(jon OR john OR jonathan~1) smith*&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="s1">&#39;[&quot;](~(?P&lt;slop&gt;[1-9][0-9]*))?&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param expr: a regular expression for the marker at the start and end</span>
+<span class="sd">            of a phrase. The default is the double-quotes character.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span>
+
+    <span class="k">class</span> <span class="nc">SequenceNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+        <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Sequence</span>
+
+    <span class="k">class</span> <span class="nc">QuoteNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">MarkerNode</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">slop</span><span class="p">)</span> <span class="k">if</span> <span class="n">slop</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">FnTagger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">QuoteNode</span><span class="p">,</span> <span class="s2">&quot;quote&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_quotes</span><span class="p">,</span> <span class="mi">550</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_quotes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="c1"># New group to copy nodes into</span>
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="c1"># Buffer for sequence nodes; when it&#39;s None, it means we&#39;re not in</span>
+        <span class="c1"># a sequence</span>
+        <span class="n">seq</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Start copying nodes from group to newgroup. When we find a quote</span>
+        <span class="c1"># node, start copying nodes into the buffer instead. When we find</span>
+        <span class="c1"># the next (end) quote, put the buffered nodes into a SequenceNode</span>
+        <span class="c1"># and add it to newgroup.</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="c1"># Recurse</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_quotes</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">QuoteNode</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">seq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># Start a new sequence</span>
+                    <span class="n">seq</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># End the current sequence</span>
+                    <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SequenceNode</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">slop</span><span class="p">)</span>
+                    <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sn</span><span class="p">)</span>
+                    <span class="n">seq</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">elif</span> <span class="n">seq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Not in a sequence, add directly</span>
+                <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># In a sequence, add it to the buffer</span>
+                <span class="n">seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="c1"># We can end up with buffered nodes if there was an unbalanced quote;</span>
+        <span class="c1"># just add the buffered nodes directly to newgroup</span>
+        <span class="k">if</span> <span class="n">seq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">newgroup</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">newgroup</span>
+
+
+<div class="viewcode-block" id="RangePlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.RangePlugin">[docs]</a><span class="k">class</span> <span class="nc">RangePlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to specify term ranges.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">expr</span> <span class="o">=</span> <span class="n">rcompile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    (?P&lt;open&gt;\{|\[)               # Open paren</span>
+<span class="s2">    (?P&lt;start&gt;</span>
+<span class="s2">        (&#39;[^&#39;]*?&#39;\s+)             # single-quoted</span>
+<span class="s2">        |                         # or</span>
+<span class="s2">        ([^\]}]+?(?=[Tt][Oo]))    # everything until &quot;to&quot;</span>
+<span class="s2">    )?</span>
+<span class="s2">    [Tt][Oo]                      # &quot;to&quot;</span>
+<span class="s2">    (?P&lt;end&gt;</span>
+<span class="s2">        (\s+&#39;[^&#39;]*?&#39;)             # single-quoted</span>
+<span class="s2">        |                         # or</span>
+<span class="s2">        ([^\]}]+?)                # everything until &quot;]&quot; or &quot;}&quot;</span>
+<span class="s2">    )?</span>
+<span class="s2">    (?P&lt;close&gt;}|])                # Close paren</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">RangeTagger</span><span class="p">(</span><span class="n">RegexTagger</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">,</span> <span class="n">excl_start</span><span class="p">,</span> <span class="n">excl_end</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">excl_start</span> <span class="o">=</span> <span class="n">excl_start</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">excl_end</span> <span class="o">=</span> <span class="n">excl_end</span>
+
+        <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">start</span><span class="p">:</span>
+                <span class="c1"># Strip the space before the &quot;to&quot;</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+                <span class="c1"># Strip single quotes</span>
+                <span class="k">if</span> <span class="n">start</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">start</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">):</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
+                <span class="c1"># Strip the space before the &quot;to&quot;</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">end</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+                <span class="c1"># Strip single quotes</span>
+                <span class="k">if</span> <span class="n">end</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">end</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">):</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># What kind of open and close brackets were used?</span>
+            <span class="n">startexcl</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;open&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">excl_start</span>
+            <span class="n">endexcl</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;close&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">excl_end</span>
+
+            <span class="n">rn</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">RangeNode</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">startexcl</span><span class="p">,</span> <span class="n">endexcl</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">rn</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">excl_start</span><span class="o">=</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="n">excl_end</span><span class="o">=</span><span class="s2">&quot;}&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">excl_start</span> <span class="o">=</span> <span class="n">excl_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">excl_end</span> <span class="o">=</span> <span class="n">excl_end</span>
+
+    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="n">tagger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RangeTagger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">excl_start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">excl_end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">tagger</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="OperatorsPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.OperatorsPlugin">[docs]</a><span class="k">class</span> <span class="nc">OperatorsPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;By default, adds the AND, OR, ANDNOT, ANDMAYBE, and NOT operators to</span>
+<span class="sd">    the parser syntax. This plugin scans the token stream for subclasses of</span>
+<span class="sd">    :class:`Operator` and calls their :meth:`Operator.make_group` methods</span>
+<span class="sd">    to allow them to manipulate the stream.</span>
+
+<span class="sd">    There are two levels of configuration available.</span>
+
+<span class="sd">    The first level is to change the regular expressions of the default</span>
+<span class="sd">    operators, using the ``And``, ``Or``, ``AndNot``, ``AndMaybe``, and/or</span>
+<span class="sd">    ``Not`` keyword arguments. The keyword value can be a pattern string or</span>
+<span class="sd">    a compiled expression, or None to remove the operator::</span>
+
+<span class="sd">        qp = qparser.QueryParser(&quot;content&quot;, schema)</span>
+<span class="sd">        cp = qparser.OperatorsPlugin(And=&quot;&amp;&quot;, Or=&quot;\\|&quot;, AndNot=&quot;&amp;!&quot;,</span>
+<span class="sd">                                     AndMaybe=&quot;&amp;~&quot;, Not=None)</span>
+<span class="sd">        qp.replace_plugin(cp)</span>
+
+<span class="sd">    You can also specify a list of ``(OpTagger, priority)`` pairs as the first</span>
+<span class="sd">    argument to the initializer to use custom operators. See :ref:`custom-op`</span>
+<span class="sd">    for more information on this.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">OpTagger</span><span class="p">(</span><span class="n">RegexTagger</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">,</span> <span class="n">grouptype</span><span class="p">,</span> <span class="n">optype</span><span class="o">=</span><span class="n">syntax</span><span class="o">.</span><span class="n">InfixOperator</span><span class="p">,</span>
+                     <span class="n">leftassoc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">memo</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">RegexTagger</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grouptype</span> <span class="o">=</span> <span class="n">grouptype</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optype</span> <span class="o">=</span> <span class="n">optype</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">leftassoc</span> <span class="o">=</span> <span class="n">leftassoc</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">memo</span> <span class="o">=</span> <span class="n">memo</span>
+
+        <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">memo</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optype</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouptype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leftassoc</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">And</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?&lt;=\s)AND(?=\s)&quot;</span><span class="p">,</span>
+                 <span class="n">Or</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?&lt;=\s)OR(?=\s)&quot;</span><span class="p">,</span>
+                 <span class="n">AndNot</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?&lt;=\s)ANDNOT(?=\s)&quot;</span><span class="p">,</span>
+                 <span class="n">AndMaybe</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(?&lt;=\s)ANDMAYBE(?=\s)&quot;</span><span class="p">,</span>
+                 <span class="n">Not</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(^|(?&lt;=(\s|[()])))NOT(?=\s)&quot;</span><span class="p">,</span>
+                 <span class="n">Require</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(^|(?&lt;=\s))REQUIRE(?=\s)&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ops</span><span class="p">:</span>
+            <span class="n">ops</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ops</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ops</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">clean</span><span class="p">:</span>
+            <span class="n">ot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OpTagger</span>
+            <span class="k">if</span> <span class="n">Not</span><span class="p">:</span>
+                <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ot</span><span class="p">(</span><span class="n">Not</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">NotGroup</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">PrefixOperator</span><span class="p">,</span>
+                               <span class="n">memo</span><span class="o">=</span><span class="s2">&quot;not&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">And</span><span class="p">:</span>
+                <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ot</span><span class="p">(</span><span class="n">And</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">AndGroup</span><span class="p">,</span> <span class="n">memo</span><span class="o">=</span><span class="s2">&quot;and&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">Or</span><span class="p">:</span>
+                <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ot</span><span class="p">(</span><span class="n">Or</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">OrGroup</span><span class="p">,</span> <span class="n">memo</span><span class="o">=</span><span class="s2">&quot;or&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">AndNot</span><span class="p">:</span>
+                <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ot</span><span class="p">(</span><span class="n">AndNot</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">AndNotGroup</span><span class="p">,</span>
+                               <span class="n">memo</span><span class="o">=</span><span class="s2">&quot;anot&quot;</span><span class="p">),</span> <span class="o">-</span><span class="mi">5</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">AndMaybe</span><span class="p">:</span>
+                <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ot</span><span class="p">(</span><span class="n">AndMaybe</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">AndMaybeGroup</span><span class="p">,</span>
+                               <span class="n">memo</span><span class="o">=</span><span class="s2">&quot;amaybe&quot;</span><span class="p">),</span> <span class="o">-</span><span class="mi">5</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">Require</span><span class="p">:</span>
+                <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ot</span><span class="p">(</span><span class="n">Require</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">RequireGroup</span><span class="p">,</span>
+                               <span class="n">memo</span><span class="o">=</span><span class="s2">&quot;req&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ops</span> <span class="o">=</span> <span class="n">ops</span>
+
+    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ops</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_operators</span><span class="p">,</span> <span class="mi">600</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This filter finds PrefixOperator, PostfixOperator, and InfixOperator</span>
+<span class="sd">        nodes in the tree and calls their logic to rearrange the nodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">tagger</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ops</span><span class="p">:</span>
+            <span class="c1"># Get the operators created by the configured taggers</span>
+            <span class="n">optype</span> <span class="o">=</span> <span class="n">tagger</span><span class="o">.</span><span class="n">optype</span>
+            <span class="n">gtype</span> <span class="o">=</span> <span class="n">tagger</span><span class="o">.</span><span class="n">grouptype</span>
+
+            <span class="c1"># Left-associative infix operators are replaced left-to-right, and</span>
+            <span class="c1"># right-associative infix operators are replaced right-to-left.</span>
+            <span class="c1"># Most of the work is done in the different implementations of</span>
+            <span class="c1"># Operator.replace_self().</span>
+            <span class="k">if</span> <span class="n">tagger</span><span class="o">.</span><span class="n">leftassoc</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">optype</span><span class="p">)</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">grouptype</span> <span class="ow">is</span> <span class="n">gtype</span><span class="p">:</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">replace_self</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">optype</span><span class="p">):</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">replace_self</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="c1"># Descend into the groups and recursively call do_operators</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_operators</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">group</span></div>
+
+
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="PlusMinusPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.PlusMinusPlugin">[docs]</a><span class="k">class</span> <span class="nc">PlusMinusPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to use + and - in a flat OR query to specify required</span>
+<span class="sd">    and prohibited terms.</span>
+
+<span class="sd">    This is the basis for the parser configuration returned by</span>
+<span class="sd">    ``SimpleParser()``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Marker nodes for + and -</span>
+
+    <span class="k">class</span> <span class="nc">Plus</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">MarkerNode</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">class</span> <span class="nc">Minus</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">MarkerNode</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plusexpr</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">+&quot;</span><span class="p">,</span> <span class="n">minusexpr</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plusexpr</span> <span class="o">=</span> <span class="n">plusexpr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minusexpr</span> <span class="o">=</span> <span class="n">minusexpr</span>
+
+    <span class="k">def</span> <span class="nf">taggers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">FnTagger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plusexpr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Plus</span><span class="p">,</span> <span class="s2">&quot;plus&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">FnTagger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minusexpr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Minus</span><span class="p">,</span> <span class="s2">&quot;minus&quot;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_plusminus</span><span class="p">,</span> <span class="mi">510</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_plusminus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This filter sorts nodes in a flat group into &quot;required&quot;, &quot;optional&quot;,</span>
+<span class="sd">        and &quot;banned&quot; subgroups based on the presence of plus and minus nodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">required</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">AndGroup</span><span class="p">()</span>
+        <span class="n">optional</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">OrGroup</span><span class="p">()</span>
+        <span class="n">banned</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">OrGroup</span><span class="p">()</span>
+
+        <span class="c1"># If the top-level group is an AndGroup we make everything &quot;required&quot; by default</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">AndGroup</span><span class="p">):</span>
+            <span class="n">optional</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">AndGroup</span><span class="p">()</span>
+
+        <span class="c1"># Which group to put the next node we see into</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="n">optional</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Plus</span><span class="p">):</span>
+                <span class="c1"># +: put the next node in the required group</span>
+                <span class="nb">next</span> <span class="o">=</span> <span class="n">required</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Minus</span><span class="p">):</span>
+                <span class="c1"># -: put the next node in the banned group</span>
+                <span class="nb">next</span> <span class="o">=</span> <span class="n">banned</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Anything else: put it in the appropriate group</span>
+                <span class="nb">next</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="c1"># Reset to putting things in the optional group by default</span>
+                <span class="nb">next</span> <span class="o">=</span> <span class="n">optional</span>
+
+        <span class="n">group</span> <span class="o">=</span> <span class="n">optional</span>
+        <span class="k">if</span> <span class="n">required</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">AndMaybeGroup</span><span class="p">([</span><span class="n">required</span><span class="p">,</span> <span class="n">group</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">banned</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">AndNotGroup</span><span class="p">([</span><span class="n">group</span><span class="p">,</span> <span class="n">banned</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">group</span></div>
+
+
+<div class="viewcode-block" id="GtLtPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.GtLtPlugin">[docs]</a><span class="k">class</span> <span class="nc">GtLtPlugin</span><span class="p">(</span><span class="n">TaggingPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allows the user to use greater than/less than symbols to create range</span>
+<span class="sd">    queries::</span>
+
+<span class="sd">        a:&gt;100 b:&lt;=z c:&gt;=-1.4 d:&lt;mz</span>
+
+<span class="sd">    This is the equivalent of::</span>
+
+<span class="sd">        a:{100 to] b:[to z] c:[-1.4 to] d:[to mz}</span>
+
+<span class="sd">    The plugin recognizes ``&gt;``, ``&lt;``, ``&gt;=``, ``&lt;=``, ``=&gt;``, and ``=&lt;``</span>
+<span class="sd">    after a field specifier. The field specifier is required. You cannot do the</span>
+<span class="sd">    following::</span>
+
+<span class="sd">        &gt;100</span>
+
+<span class="sd">    This plugin requires the FieldsPlugin and RangePlugin to work.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">GtLtNode</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">SyntaxNode</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rel</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rel</span> <span class="o">=</span> <span class="n">rel</span>
+
+        <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel</span>
+
+    <span class="n">expr</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;rel&gt;(&lt;=|&gt;=|&lt;|&gt;|=&lt;|=&gt;))&quot;</span>
+    <span class="n">nodetype</span> <span class="o">=</span> <span class="n">GtLtNode</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="c1"># Run before the fields filter removes FilenameNodes at priority 100.</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_gtlt</span><span class="p">,</span> <span class="mi">99</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_gtlt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This filter translate FieldnameNode/GtLtNode pairs into RangeNodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">FieldnameNode</span>
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">lasti</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="c1"># If this is a GtLtNode...</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">GtLtNode</span><span class="p">):</span>
+                <span class="c1"># If it&#39;s not the last node in the group...</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lasti</span><span class="p">:</span>
+                    <span class="n">prevnode</span> <span class="o">=</span> <span class="n">newgroup</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">nextnode</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="c1"># If previous was a fieldname and next node has text</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prevnode</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span> <span class="ow">and</span> <span class="n">nextnode</span><span class="o">.</span><span class="n">has_text</span><span class="p">:</span>
+                        <span class="c1"># Make the next node into a range based on the symbol</span>
+                        <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">make_range</span><span class="p">(</span><span class="n">nextnode</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">rel</span><span class="p">))</span>
+                        <span class="c1"># Skip the next node</span>
+                        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_gtlt</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If it&#39;s not a GtLtNode, add it to the filtered group</span>
+                <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">newgroup</span>
+
+    <span class="k">def</span> <span class="nf">make_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">rel</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">if</span> <span class="n">rel</span> <span class="o">==</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">RangeNode</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">rel</span> <span class="o">==</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">RangeNode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">rel</span> <span class="o">==</span> <span class="s2">&quot;&lt;=&quot;</span> <span class="ow">or</span> <span class="n">rel</span> <span class="o">==</span> <span class="s2">&quot;=&lt;&quot;</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">RangeNode</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">rel</span> <span class="o">==</span> <span class="s2">&quot;&gt;=&quot;</span> <span class="ow">or</span> <span class="n">rel</span> <span class="o">==</span> <span class="s2">&quot;=&gt;&quot;</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">syntax</span><span class="o">.</span><span class="n">RangeNode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">n</span><span class="o">.</span><span class="n">set_range</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">startchar</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">endchar</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MultifieldPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.MultifieldPlugin">[docs]</a><span class="k">class</span> <span class="nc">MultifieldPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts any unfielded terms into OR clauses that search for the</span>
+<span class="sd">    term in a specified list of fields.</span>
+
+<span class="sd">    &gt;&gt;&gt; qp = qparser.QueryParser(None, myschema)</span>
+<span class="sd">    &gt;&gt;&gt; qp.add_plugin(qparser.MultifieldPlugin([&quot;a&quot;, &quot;b&quot;])</span>
+<span class="sd">    &gt;&gt;&gt; qp.parse(&quot;alfa c:bravo&quot;)</span>
+<span class="sd">    And([Or([Term(&quot;a&quot;, &quot;alfa&quot;), Term(&quot;b&quot;, &quot;alfa&quot;)]), Term(&quot;c&quot;, &quot;bravo&quot;)])</span>
+
+<span class="sd">    This plugin is the basis for the ``MultifieldParser``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldnames</span><span class="p">,</span> <span class="n">fieldboosts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">syntax</span><span class="o">.</span><span class="n">OrGroup</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param fieldnames: a list of fields to search.</span>
+<span class="sd">        :param fieldboosts: an optional dictionary mapping field names to</span>
+<span class="sd">            a boost to use for that field.</span>
+<span class="sd">        :param group: the group to use to relate the fielded terms to each</span>
+<span class="sd">            other.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldnames</span> <span class="o">=</span> <span class="n">fieldnames</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boosts</span> <span class="o">=</span> <span class="n">fieldboosts</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="c1"># Run after the fields filter applies explicit fieldnames (at priority</span>
+        <span class="c1"># 100)</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_multifield</span><span class="p">,</span> <span class="mi">110</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_multifield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="c1"># Recurse inside groups</span>
+                <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_multifield</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">has_fieldname</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># For an unfielded node, create a new group containing fielded</span>
+                <span class="c1"># versions of the node for each configured &quot;multi&quot; field.</span>
+                <span class="n">newnodes</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">:</span>
+                    <span class="n">newnode</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                    <span class="n">newnode</span><span class="o">.</span><span class="n">set_fieldname</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+                    <span class="n">newnode</span><span class="o">.</span><span class="n">set_boost</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boosts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+                    <span class="n">newnodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newnode</span><span class="p">)</span>
+                <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">newnodes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">group</span></div>
+
+
+<div class="viewcode-block" id="FieldAliasPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.FieldAliasPlugin">[docs]</a><span class="k">class</span> <span class="nc">FieldAliasPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds the ability to use &quot;aliases&quot; of fields in the query string.</span>
+
+<span class="sd">    This plugin is useful for allowing users of languages that can&#39;t be</span>
+<span class="sd">    represented in ASCII to use field names in their own language, and</span>
+<span class="sd">    translate them into the &quot;real&quot; field names, which must be valid Python</span>
+<span class="sd">    identifiers.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Allow users to use &#39;body&#39; or &#39;text&#39; to refer to the &#39;content&#39; field</span>
+<span class="sd">    &gt;&gt;&gt; parser.add_plugin(FieldAliasPlugin({&quot;content&quot;: [&quot;body&quot;, &quot;text&quot;]}))</span>
+<span class="sd">    &gt;&gt;&gt; parser.parse(&quot;text:hello&quot;)</span>
+<span class="sd">    Term(&quot;content&quot;, &quot;hello&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldmap</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span> <span class="o">=</span> <span class="n">fieldmap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">fieldmap</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="c1"># Run before fields plugin at 100</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_aliases</span><span class="p">,</span> <span class="mi">90</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_aliases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">group</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_aliases</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">has_fieldname</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">fieldname</span>
+                <span class="k">if</span> <span class="n">fname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">:</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">set_fieldname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">[</span><span class="n">fname</span><span class="p">],</span> <span class="n">override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">group</span></div>
+
+
+<div class="viewcode-block" id="CopyFieldPlugin"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.CopyFieldPlugin">[docs]</a><span class="k">class</span> <span class="nc">CopyFieldPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Looks for basic syntax nodes (terms, prefixes, wildcards, phrases, etc.)</span>
+<span class="sd">    occurring in a certain field and replaces it with a group (by default OR)</span>
+<span class="sd">    containing the original token and the token copied to a new field.</span>
+
+<span class="sd">    For example, the query::</span>
+
+<span class="sd">        hello name:matt</span>
+
+<span class="sd">    could be automatically converted by ``CopyFieldPlugin({&quot;name&quot;, &quot;author&quot;})``</span>
+<span class="sd">    to::</span>
+
+<span class="sd">        hello (name:matt OR author:matt)</span>
+
+<span class="sd">    This is useful where one field was indexed with a differently-analyzed copy</span>
+<span class="sd">    of another, and you want the query to search both fields.</span>
+
+<span class="sd">    You can specify a different group type with the ``group`` keyword. You can</span>
+<span class="sd">    also specify ``group=None``, in which case the copied node is inserted</span>
+<span class="sd">    &quot;inline&quot; next to the original, instead of in a new group::</span>
+
+<span class="sd">        hello name:matt author:matt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">syntax</span><span class="o">.</span><span class="n">OrGroup</span><span class="p">,</span> <span class="n">mirror</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param map: a dictionary mapping names of fields to copy to the</span>
+<span class="sd">            names of the destination fields.</span>
+<span class="sd">        :param group: the type of group to create in place of the original</span>
+<span class="sd">            token. You can specify ``group=None`` to put the copied node</span>
+<span class="sd">            &quot;inline&quot; next to the original node instead of in a new group.</span>
+<span class="sd">        :param two_way: if True, the plugin copies both ways, so if the user</span>
+<span class="sd">            specifies a query in the &#39;toname&#39; field, it will be copied to</span>
+<span class="sd">            the &#39;fromname&#39; field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span> <span class="o">=</span> <span class="nb">map</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span>
+        <span class="k">if</span> <span class="n">mirror</span><span class="p">:</span>
+            <span class="c1"># Add in reversed mappings</span>
+            <span class="nb">map</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="nb">map</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="c1"># Run after the fieldname filter (100) but before multifield (110)</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_copyfield</span><span class="p">,</span> <span class="mi">109</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_copyfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="nb">map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span>
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="c1"># Recurse into groups</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_copyfield</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">has_fieldname</span><span class="p">:</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">or</span> <span class="n">parser</span><span class="o">.</span><span class="n">fieldname</span>
+                <span class="k">if</span> <span class="n">fname</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">:</span>
+                    <span class="n">newnode</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                    <span class="n">newnode</span><span class="o">.</span><span class="n">set_fieldname</span><span class="p">(</span><span class="nb">map</span><span class="p">[</span><span class="n">fname</span><span class="p">],</span> <span class="n">override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                        <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newnode</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">([</span><span class="n">node</span><span class="p">,</span> <span class="n">newnode</span><span class="p">]))</span>
+                    <span class="k">continue</span>
+            <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newgroup</span></div>
+
+
+<span class="k">class</span> <span class="nc">PseudoFieldPlugin</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is an advanced plugin that lets you define &quot;pseudo-fields&quot; the user</span>
+<span class="sd">    can use in their queries. When the parser encounters one of these fields,</span>
+<span class="sd">    it runs a given function on the following node in the abstract syntax tree.</span>
+
+<span class="sd">    Unfortunately writing the transform function(s) requires knowledge of the</span>
+<span class="sd">    parser&#39;s abstract syntax tree classes. A transform function takes a</span>
+<span class="sd">    :class:`whoosh.qparser.SyntaxNode` and returns a</span>
+<span class="sd">    :class:`~whoosh.qparser.SyntaxNode` (or None if the node should be removed</span>
+<span class="sd">    instead of transformed).</span>
+
+<span class="sd">    Some things you can do in the transform function::</span>
+
+<span class="sd">        from whoosh import qparser</span>
+
+<span class="sd">        def my_xform_fn(node):</span>
+<span class="sd">            # Is this a text node?</span>
+<span class="sd">            if node.has_text:</span>
+<span class="sd">                # Change the node&#39;s text</span>
+<span class="sd">                node.text = node.text + &quot;foo&quot;</span>
+
+<span class="sd">                # Change the node into a prefix query</span>
+<span class="sd">                node = qparser.PrefixPlugin.PrefixNode(node.text)</span>
+
+<span class="sd">                # Set the field the node should search in</span>
+<span class="sd">                node.set_fieldname(&quot;title&quot;)</span>
+
+<span class="sd">                return node</span>
+<span class="sd">            else:</span>
+<span class="sd">                # If the pseudo-field wasn&#39;t applied to a text node (e.g.</span>
+<span class="sd">                # it preceded a group, as in ``pfield:(a OR b)`` ), remove the</span>
+<span class="sd">                # node. Alternatively you could just ``return node`` here to</span>
+<span class="sd">                # leave the non-text node intact.</span>
+<span class="sd">                return None</span>
+
+<span class="sd">    In the following example, if the user types ``regex:foo.bar``, the function</span>
+<span class="sd">    transforms the text in the pseudo-field &quot;regex&quot; into a regular expression</span>
+<span class="sd">    query in the &quot;content&quot; field::</span>
+
+<span class="sd">        from whoosh import qparser</span>
+
+<span class="sd">        def regex_maker(node):</span>
+<span class="sd">            if node.has_text:</span>
+<span class="sd">                node = qparser.RegexPlugin.RegexNode(node.text)</span>
+<span class="sd">                node.set_fieldname(&quot;content&quot;)</span>
+<span class="sd">                return node</span>
+
+<span class="sd">        qp = qparser.QueryParser(&quot;content&quot;, myindex.schema)</span>
+<span class="sd">        qp.add_plugin(qparser.PseudoFieldPlugin({&quot;regex&quot;: regex_maker}))</span>
+<span class="sd">        q = qp.parse(&quot;alfa regex:br.vo&quot;)</span>
+
+<span class="sd">    The name of the &quot;pseudo&quot; field can be the same as an actual field. Imagine</span>
+<span class="sd">    the schema has a field named ``reverse``, and you want the user to be able</span>
+<span class="sd">    to type ``reverse:foo`` and transform it to ``reverse:(foo OR oof)``::</span>
+
+<span class="sd">        def rev_text(node):</span>
+<span class="sd">            if node.has_text:</span>
+<span class="sd">                # Create a word node for the reversed text</span>
+<span class="sd">                revtext = node.text[::-1]  # Reverse the text</span>
+<span class="sd">                rnode = qparser.WordNode(revtext)</span>
+
+<span class="sd">                # Put the original node and the reversed node in an OrGroup</span>
+<span class="sd">                group = qparser.OrGroup([node, rnode])</span>
+
+<span class="sd">                # Need to set the fieldname here because the PseudoFieldPlugin</span>
+<span class="sd">                # removes the field name syntax</span>
+<span class="sd">                group.set_fieldname(&quot;reverse&quot;)</span>
+
+<span class="sd">                return group</span>
+
+<span class="sd">        qp = qparser.QueryParser(&quot;content&quot;, myindex.schema)</span>
+<span class="sd">        qp.add_plugin(qparser.PseudoFieldPlugin({&quot;reverse&quot;: rev_text}))</span>
+<span class="sd">        q = qp.parse(&quot;alfa reverse:bravo&quot;)</span>
+
+<span class="sd">    Note that transforming the query like this can potentially really confuse</span>
+<span class="sd">    the spell checker!</span>
+
+<span class="sd">    This plugin works as a filter, so it can only operate on the query after it</span>
+<span class="sd">    has been parsed into an abstract syntax tree. For parsing control (i.e. to</span>
+<span class="sd">    give a pseudo-field its own special syntax), you would need to write your</span>
+<span class="sd">    own parsing plugin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xform_map</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param xform_map: a dictionary mapping psuedo-field names to transform</span>
+<span class="sd">            functions. The function should take a</span>
+<span class="sd">            :class:`whoosh.qparser.SyntaxNode` as an argument, and return a</span>
+<span class="sd">            :class:`~whoosh.qparser.SyntaxNode`. If the function returns None,</span>
+<span class="sd">            the node will be removed from the query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">xform_map</span> <span class="o">=</span> <span class="n">xform_map</span>
+
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="c1"># Run before the fieldname filter (100)</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_pseudofield</span><span class="p">,</span> <span class="mi">99</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">do_pseudofield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
+        <span class="n">xform_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xform_map</span>
+
+        <span class="n">newgroup</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">empty_copy</span><span class="p">()</span>
+        <span class="n">xform_next</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">GroupNode</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_pseudofield</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">syntax</span><span class="o">.</span><span class="n">FieldnameNode</span><span class="p">)</span>
+                  <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">in</span> <span class="n">xform_map</span><span class="p">):</span>
+                <span class="n">xform_next</span> <span class="o">=</span> <span class="n">xform_map</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">fieldname</span><span class="p">]</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">xform_next</span><span class="p">:</span>
+                <span class="n">newnode</span> <span class="o">=</span> <span class="n">xform_next</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="n">xform_next</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">newnode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">newnode</span><span class="o">.</span><span class="n">set_range</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">startchar</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">endchar</span><span class="p">)</span>
+                    <span class="n">node</span> <span class="o">=</span> <span class="n">newnode</span>
+
+            <span class="n">newgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">newgroup</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

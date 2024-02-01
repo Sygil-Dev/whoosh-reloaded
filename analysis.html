@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About analyzers &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stemming, variations, and accent folding" href="stemming.html" />
+    <link rel="prev" title="Query objects" href="query.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About analyzers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-analyzers">Using analyzers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-analysis">Advanced Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#token-objects">Token objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#token-setting-attributes">Token setting attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#token-information-attributes">Token information attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performing-different-analysis-for-indexing-and-query-parsing">Performing different analysis for indexing and query parsing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stop-words">Stop words</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#renumbering-term-positions">Renumbering term positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removing-or-leaving-stop-words">Removing or leaving stop words</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-notes">Implementation notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">About analyzers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="about-analyzers">
+<h1>About analyzers<a class="headerlink" href="#about-analyzers" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>An analyzer is a function or callable class (a class with a <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method)
+that takes a unicode string and returns a generator of tokens. Usually a “token”
+is a word, for example the string “Mary had a little lamb” might yield the
+tokens “Mary”, “had”, “a”, “little”, and “lamb”. However, tokens do not
+necessarily correspond to words. For example, you might tokenize Chinese text
+into individual characters or bi-grams. Tokens are the units of indexing, that
+is, they are what you are able to look up in the index.</p>
+<p>An analyzer is basically just a wrapper for a tokenizer and zero or more
+filters. The analyzer’s <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method will pass its parameters to a
+tokenizer, and the tokenizer will usually be wrapped in a few filters.</p>
+<p>A tokenizer is a callable that takes a unicode string and yields a series of
+<code class="docutils literal notranslate"><span class="pre">analysis.Token</span></code> objects.</p>
+<p>For example, the provided <a class="reference internal" href="api/analysis.html#whoosh.analysis.RegexTokenizer" title="whoosh.analysis.RegexTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.RegexTokenizer</span></code></a> class
+implements a customizable, regular-expression-based tokenizer that extracts
+words and ignores whitespace and punctuation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">RegexTokenizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">RegexTokenizer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;Hello there my friend!&quot;</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="nb">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="go">u&#39;Hello&#39;</span>
+<span class="go">u&#39;there&#39;</span>
+<span class="go">u&#39;my&#39;</span>
+<span class="go">u&#39;friend&#39;</span>
+</pre></div>
+</div>
+<p>A filter is a callable that takes a generator of Tokens (either a tokenizer or
+another filter) and in turn yields a series of Tokens.</p>
+<p>For example, the provided <a class="reference internal" href="api/analysis.html#whoosh.analysis.LowercaseFilter" title="whoosh.analysis.LowercaseFilter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.analysis.LowercaseFilter()</span></code></a> filters tokens
+by converting their text to lowercase. The implementation is very simple:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">LowercaseFilter</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Uses lower() to lowercase token text. For example, tokens</span>
+<span class="sd">    &quot;This&quot;,&quot;is&quot;,&quot;a&quot;,&quot;TEST&quot; become &quot;this&quot;,&quot;is&quot;,&quot;a&quot;,&quot;test&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">t</span>
+</pre></div>
+</div>
+<p>You can wrap the filter around a tokenizer to see it in operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">LowercaseFilter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">LowercaseFilter</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;These ARE the things I want!&quot;</span><span class="p">)):</span>
+<span class="gp">... </span>  <span class="nb">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="go">u&#39;these&#39;</span>
+<span class="go">u&#39;are&#39;</span>
+<span class="go">u&#39;the&#39;</span>
+<span class="go">u&#39;things&#39;</span>
+<span class="go">u&#39;i&#39;</span>
+<span class="go">u&#39;want&#39;</span>
+</pre></div>
+</div>
+<p>An analyzer is just a means of combining a tokenizer and some filters into a
+single package.</p>
+<p>You can implement an analyzer as a custom class or function, or compose
+tokenizers and filters together using the <code class="docutils literal notranslate"><span class="pre">|</span></code> character:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_analyzer</span> <span class="o">=</span> <span class="n">RegexTokenizer</span><span class="p">()</span> <span class="o">|</span> <span class="n">LowercaseFilter</span><span class="p">()</span> <span class="o">|</span> <span class="n">StopFilter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The first item must be a tokenizer and the rest must be filters (you can’t put a
+filter first or a tokenizer after the first item). Note that this only works if at
+least the tokenizer is a subclass of <code class="docutils literal notranslate"><span class="pre">whoosh.analysis.Composable</span></code>, as all the
+tokenizers and filters that ship with Whoosh are.</p>
+<p>See the <a class="reference internal" href="api/analysis.html#module-whoosh.analysis" title="whoosh.analysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.analysis</span></code></a> module for information on the available analyzers,
+tokenizers, and filters shipped with Whoosh.</p>
+</section>
+<section id="using-analyzers">
+<h2>Using analyzers<a class="headerlink" href="#using-analyzers" title="Permalink to this heading">¶</a></h2>
+<p>When you create a field in a schema, you can specify your analyzer as a keyword
+argument to the field object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="n">StemmingAnalyzer</span><span class="p">()))</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-analysis">
+<h2>Advanced Analysis<a class="headerlink" href="#advanced-analysis" title="Permalink to this heading">¶</a></h2>
+<section id="token-objects">
+<h3>Token objects<a class="headerlink" href="#token-objects" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Token</span></code> class has no methods. It is merely a place to record certain
+attributes. A <code class="docutils literal notranslate"><span class="pre">Token</span></code> object actually has two kinds of attributes: <em>settings</em>
+that record what kind of information the <code class="docutils literal notranslate"><span class="pre">Token</span></code> object does or should contain,
+and <em>information</em> about the current token.</p>
+</section>
+<section id="token-setting-attributes">
+<h3>Token setting attributes<a class="headerlink" href="#token-setting-attributes" title="Permalink to this heading">¶</a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">Token</span></code> object should always have the following attributes. A tokenizer or
+filter can check these attributes to see what kind of information is available
+and/or what kind of information they should be setting on the <code class="docutils literal notranslate"><span class="pre">Token</span></code> object.</p>
+<p>These attributes are set by the tokenizer when it creates the Token(s), based on
+the parameters passed to it from the Analyzer.</p>
+<p>Filters <strong>should not</strong> change the values of these attributes.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Attribute name</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>str</p></td>
+<td><p>mode</p></td>
+<td><p>The mode in which the analyzer is being called,
+e.g. ‘index’ during indexing or ‘query’ during
+query parsing</p></td>
+<td><p>‘’</p></td>
+</tr>
+<tr class="row-odd"><td><p>bool</p></td>
+<td><p>positions</p></td>
+<td><p>Whether term positions are recorded in the token</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>bool</p></td>
+<td><p>chars</p></td>
+<td><p>Whether term start and end character indices are
+recorded in the token</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>bool</p></td>
+<td><p>boosts</p></td>
+<td><p>Whether per-term boosts are recorded in the token</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>bool</p></td>
+<td><p>removestops</p></td>
+<td><p>Whether stop-words should be removed from the
+token stream</p></td>
+<td><p>True</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="token-information-attributes">
+<h3>Token information attributes<a class="headerlink" href="#token-information-attributes" title="Permalink to this heading">¶</a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">Token</span></code> object may have any of the following attributes. The <code class="docutils literal notranslate"><span class="pre">text</span></code> attribute
+should always be present. The original attribute may be set by a tokenizer. All
+other attributes should only be accessed or set based on the values of the
+“settings” attributes above.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>unicode</p></td>
+<td><p>text</p></td>
+<td><p>The text of the token (this should always be present)</p></td>
+</tr>
+<tr class="row-odd"><td><p>unicode</p></td>
+<td><p>original</p></td>
+<td><p>The original (pre-filtered) text of the token. The tokenizer may
+record this, and filters are expected not to modify it.</p></td>
+</tr>
+<tr class="row-even"><td><p>int</p></td>
+<td><p>pos</p></td>
+<td><p>The position of the token in the stream, starting at 0
+(only set if positions is True)</p></td>
+</tr>
+<tr class="row-odd"><td><p>int</p></td>
+<td><p>startchar</p></td>
+<td><p>The character index of the start of the token in the original
+string (only set if chars is True)</p></td>
+</tr>
+<tr class="row-even"><td><p>int</p></td>
+<td><p>endchar</p></td>
+<td><p>The character index of the end of the token in the original
+string (only set if chars is True)</p></td>
+</tr>
+<tr class="row-odd"><td><p>float</p></td>
+<td><p>boost</p></td>
+<td><p>The boost for this token (only set if boosts is True)</p></td>
+</tr>
+<tr class="row-even"><td><p>bool</p></td>
+<td><p>stopped</p></td>
+<td><p>Whether this token is a “stop” word
+(only set if removestops is False)</p></td>
+</tr>
+</tbody>
+</table>
+<p>So why are most of the information attributes optional? Different field formats
+require different levels of information about each token. For example, the
+<code class="docutils literal notranslate"><span class="pre">Frequency</span></code> format only needs the token text. The <code class="docutils literal notranslate"><span class="pre">Positions</span></code> format records term
+positions, so it needs them on the <code class="docutils literal notranslate"><span class="pre">Token</span></code>. The <code class="docutils literal notranslate"><span class="pre">Characters</span></code> format records term
+positions and the start and end character indices of each term, so it needs them
+on the token, and so on.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Format</span></code> object that represents the format of each field calls the analyzer
+for the field, and passes it parameters corresponding to the types of
+information it needs, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">analyzer</span><span class="p">(</span><span class="n">unicode_string</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The analyzer can then pass that information to a tokenizer so the tokenizer
+initializes the required attributes on the <code class="docutils literal notranslate"><span class="pre">Token</span></code> object(s) it produces.</p>
+</section>
+<section id="performing-different-analysis-for-indexing-and-query-parsing">
+<h3>Performing different analysis for indexing and query parsing<a class="headerlink" href="#performing-different-analysis-for-indexing-and-query-parsing" title="Permalink to this heading">¶</a></h3>
+<p>Whoosh sets the <code class="docutils literal notranslate"><span class="pre">mode</span></code> setting attribute to indicate whether the analyzer is
+being called by the indexer (<code class="docutils literal notranslate"><span class="pre">mode='index'</span></code>) or the query parser
+(<code class="docutils literal notranslate"><span class="pre">mode='query'</span></code>). This is useful if there’s a transformation that you only
+want to apply at indexing or query parsing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;query&#39;</span><span class="p">:</span>
+                <span class="o">...</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="o">...</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="api/analysis.html#whoosh.analysis.MultiFilter" title="whoosh.analysis.MultiFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.MultiFilter</span></code></a> filter class lets you specify different
+filters to use based on the mode setting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">intraword</span> <span class="o">=</span> <span class="n">MultiFilter</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">IntraWordFilter</span><span class="p">(</span><span class="n">mergewords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mergenums</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                        <span class="n">query</span><span class="o">=</span><span class="n">IntraWordFilter</span><span class="p">(</span><span class="n">mergewords</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mergenums</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="stop-words">
+<h3>Stop words<a class="headerlink" href="#stop-words" title="Permalink to this heading">¶</a></h3>
+<p>“Stop” words are words that are so common it’s often counter-productive to index
+them, such as “and”, “or”, “if”, etc. The provided <code class="docutils literal notranslate"><span class="pre">analysis.StopFilter</span></code> lets you
+filter out stop words, and includes a default list of common stop words.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">StopFilter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stopper</span> <span class="o">=</span> <span class="n">StopFilter</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">stopper</span><span class="p">(</span><span class="n">LowercaseFilter</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;These ARE the things I want!&quot;</span><span class="p">))):</span>
+<span class="gp">... </span>  <span class="nb">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="go">u&#39;these&#39;</span>
+<span class="go">u&#39;things&#39;</span>
+<span class="go">u&#39;want&#39;</span>
+</pre></div>
+</div>
+<p>However, this seemingly simple filter idea raises a couple of minor but slightly
+thorny issues: renumbering term positions and keeping or removing stopped words.</p>
+</section>
+<section id="renumbering-term-positions">
+<h3>Renumbering term positions<a class="headerlink" href="#renumbering-term-positions" title="Permalink to this heading">¶</a></h3>
+<p>Remember that analyzers are sometimes asked to record the position of each token
+in the token stream:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Token.text</p></td>
+<td><p>u’Mary’</p></td>
+<td><p>u’had’</p></td>
+<td><p>u’a’</p></td>
+<td><p>u’lamb’</p></td>
+</tr>
+<tr class="row-even"><td><p>Token.pos</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+</tbody>
+</table>
+<p>So what happens to the <code class="docutils literal notranslate"><span class="pre">pos</span></code> attribute of the tokens if <code class="docutils literal notranslate"><span class="pre">StopFilter</span></code> removes
+the words <code class="docutils literal notranslate"><span class="pre">had</span></code> and <code class="docutils literal notranslate"><span class="pre">a</span></code> from the stream? Should it renumber the positions to
+pretend the “stopped” words never existed? I.e.:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Token.text</p></td>
+<td><p>u’Mary’</p></td>
+<td><p>u’lamb’</p></td>
+</tr>
+<tr class="row-even"><td><p>Token.pos</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>or should it preserve the original positions of the words? I.e:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Token.text</p></td>
+<td><p>u’Mary’</p></td>
+<td><p>u’lamb’</p></td>
+</tr>
+<tr class="row-even"><td><p>Token.pos</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+</tbody>
+</table>
+<p>It turns out that different situations call for different solutions, so the
+provided <code class="docutils literal notranslate"><span class="pre">StopFilter</span></code> class supports both of the above behaviors. Renumbering
+is the default, since that is usually the most useful and is necessary to
+support phrase searching. However, you can set a parameter in StopFilter’s
+constructor to tell it not to renumber positions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stopper</span> <span class="o">=</span> <span class="n">StopFilter</span><span class="p">(</span><span class="n">renumber</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="removing-or-leaving-stop-words">
+<h3>Removing or leaving stop words<a class="headerlink" href="#removing-or-leaving-stop-words" title="Permalink to this heading">¶</a></h3>
+<p>The point of using <code class="docutils literal notranslate"><span class="pre">StopFilter</span></code> is to remove stop words, right? Well, there
+are actually some situations where you might want to mark tokens as “stopped”
+but not remove them from the token stream.</p>
+<p>For example, if you were writing your own query parser, you could run the user’s
+query through a field’s analyzer to break it into tokens. In that case, you
+might want to know which words were “stopped” so you can provide helpful
+feedback to the end user (e.g. “The following words are too common to search
+for:”).</p>
+<p>In other cases, you might want to leave stopped words in the stream for certain
+filtering steps (for example, you might have a step that looks at previous
+tokens, and want the stopped tokens to be part of the process), but then remove
+them later.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">analysis</span></code> module provides a couple of tools for keeping and removing
+stop-words in the stream.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">removestops</span></code> parameter passed to the analyzer’s <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method (and
+copied to the <code class="docutils literal notranslate"><span class="pre">Token</span></code> object as an attribute) specifies whether stop words should
+be removed from the stream or left in.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">StandardAnalyzer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">StandardAnalyzer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">stopped</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">analyzer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;This is a test&quot;</span><span class="p">)]</span>
+<span class="go">[(u&#39;test&#39;, False)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">stopped</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">analyzer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;This is a test&quot;</span><span class="p">,</span> <span class="n">removestops</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span>
+<span class="go">[(u&#39;this&#39;, True), (u&#39;is&#39;, True), (u&#39;a&#39;, True), (u&#39;test&#39;, False)]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">analysis.unstopped()</span></code> filter function takes a token generator and yields
+only the tokens whose <code class="docutils literal notranslate"><span class="pre">stopped</span></code> attribute is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even if you leave stopped words in the stream in an analyzer you use for
+indexing, the indexer will ignore any tokens where the <code class="docutils literal notranslate"><span class="pre">stopped</span></code>
+attribute is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+</section>
+<section id="implementation-notes">
+<h3>Implementation notes<a class="headerlink" href="#implementation-notes" title="Permalink to this heading">¶</a></h3>
+<p>Because object creation is slow in Python, the stock tokenizers do not create a
+new <code class="docutils literal notranslate"><span class="pre">analysis.Token</span></code> object for each token. Instead, they create one <code class="docutils literal notranslate"><span class="pre">Token</span></code> object
+and yield it over and over. This is a nice performance shortcut but can lead to
+strange behavior if your code tries to remember tokens between loops of the
+generator.</p>
+<p>Because the analyzer only has one <code class="docutils literal notranslate"><span class="pre">Token</span></code> object, of which it keeps changing the
+attributes, if you keep a copy of the Token you get from a loop of the
+generator, it will be changed from under you. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;Hello there my friend&quot;</span><span class="p">))</span>
+<span class="go">[Token(u&quot;friend&quot;), Token(u&quot;friend&quot;), Token(u&quot;friend&quot;), Token(u&quot;friend&quot;)]</span>
+</pre></div>
+</div>
+<p>Instead, do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;Hello there my friend&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>That is, save the attributes, not the token object itself.</p>
+<p>If you implement your own tokenizer, filter, or analyzer as a class, you should
+implement an <code class="docutils literal notranslate"><span class="pre">__eq__</span></code> method. This is important to allow comparison of <code class="docutils literal notranslate"><span class="pre">Schema</span></code>
+objects.</p>
+<p>The mixing of persistent “setting” and transient “information” attributes on the
+<code class="docutils literal notranslate"><span class="pre">Token</span></code> object is not especially elegant. If I ever have a better idea I might
+change it. ;) Nothing requires that an Analyzer be implemented by calling a
+tokenizer and filters. Tokenizers and filters are simply a convenient way to
+structure the code. You’re free to write an analyzer any way you want, as long
+as it implements <code class="docutils literal notranslate"><span class="pre">__call__</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="query.html" class="btn btn-neutral float-left" title="Query objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="stemming.html" class="btn btn-neutral float-right" title="Stemming, variations, and accent folding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>support.bitvector module &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="index module" href="index.html" />
+    <link rel="prev" title="highlight module" href="highlight.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Whoosh API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analysis.html"><code class="docutils literal notranslate"><span class="pre">analysis</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filestore.html"><code class="docutils literal notranslate"><span class="pre">filedb.filestore</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filetables.html"><code class="docutils literal notranslate"><span class="pre">filedb.filetables</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base-classes">Base classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.DocIdSet"><code class="docutils literal notranslate"><span class="pre">DocIdSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.BaseBitSet"><code class="docutils literal notranslate"><span class="pre">BaseBitSet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-classes">Implementation classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.BitSet"><code class="docutils literal notranslate"><span class="pre">BitSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.OnDiskBitSet"><code class="docutils literal notranslate"><span class="pre">OnDiskBitSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.SortedIntSet"><code class="docutils literal notranslate"><span class="pre">SortedIntSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.MultiIdSet"><code class="docutils literal notranslate"><span class="pre">MultiIdSet</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/morph_en.html"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qparser.html"><code class="docutils literal notranslate"><span class="pre">qparser</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reading.html"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scoring.html"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html"><code class="docutils literal notranslate"><span class="pre">searching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing.html"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">Whoosh API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/idsets.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-whoosh.idsets">
+<span id="support-bitvector-module"></span><h1><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module<a class="headerlink" href="#module-whoosh.idsets" title="Permalink to this heading">¶</a></h1>
+<p>An implementation of an object that acts like a collection of on/off bits.</p>
+<section id="base-classes">
+<h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">DocIdSet</span></span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for a set of positive integers, implementing a subset of the
+built-in <code class="docutils literal notranslate"><span class="pre">set</span></code> type’s interface with extra docid-related methods.</p>
+<p>This is a superclass for alternative set implementations to the built-in
+<code class="docutils literal notranslate"><span class="pre">set</span></code> which are more memory-efficient and specialized toward storing
+sorted lists of positive integers, though they will inevitably be slower
+than <code class="docutils literal notranslate"><span class="pre">set</span></code> for most operations since they’re pure Python.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.after" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the next integer in the set after <code class="docutils literal notranslate"><span class="pre">i</span></code>, or None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.before" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the previous integer in the set before <code class="docutils literal notranslate"><span class="pre">i</span></code>, or None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.first">
+<span class="sig-name descname"><span class="pre">first</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.first"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.first" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the first (lowest) integer in the set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.invert_update">
+<span class="sig-name descname"><span class="pre">invert_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.invert_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.invert_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the set in-place to contain numbers in the range
+<code class="docutils literal notranslate"><span class="pre">[0</span> <span class="pre">-</span> <span class="pre">size)</span></code> except numbers that are in this set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.last">
+<span class="sig-name descname"><span class="pre">last</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.last"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.last" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the last (highest) integer in the set.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.idsets.BaseBitSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">BaseBitSet</span></span><a class="reference internal" href="../_modules/whoosh/idsets.html#BaseBitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.BaseBitSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="implementation-classes">
+<h2>Implementation classes<a class="headerlink" href="#implementation-classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.idsets.BitSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">BitSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#BitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.BitSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A DocIdSet backed by an array of bits. This can also be useful as a bit
+array (e.g. for a Bloom filter). It is much more memory efficient than a
+large built-in set of integers, but wastes memory for sparse sets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxsize</strong> – the maximum size of the bit array.</p></li>
+<li><p><strong>source</strong> – an iterable of positive integers to add to this set.</p></li>
+<li><p><strong>bits</strong> – an array of unsigned bytes (“B”) to use as the underlying
+bit array. This is used by some of the object’s methods.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.idsets.OnDiskBitSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">OnDiskBitSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basepos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytecount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#OnDiskBitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.OnDiskBitSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A DocIdSet backed by an array of bits on disk.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">st</span> <span class="o">=</span> <span class="n">RamStorage</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="s2">&quot;test.bin&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bs</span> <span class="o">=</span> <span class="n">BitSet</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bytecount</span> <span class="o">=</span> <span class="n">bs</span><span class="o">.</span><span class="n">to_disk</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s2">&quot;test.bin&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">odbs</span> <span class="o">=</span> <span class="n">OnDiskBitSet</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">bytecount</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">odbs</span><span class="p">)</span>
+<span class="go">[1, 2, 7, 10, 15]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dbfile</strong> – a <a class="reference internal" href="filedb/structfile.html#whoosh.filedb.structfile.StructFile" title="whoosh.filedb.structfile.StructFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructFile</span></code></a> object
+to read from.</p></li>
+<li><p><strong>basepos</strong> – the base position of the bytes in the given file.</p></li>
+<li><p><strong>bytecount</strong> – the number of bytes to use for the bit array.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.idsets.SortedIntSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">SortedIntSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'I'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#SortedIntSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.SortedIntSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A DocIdSet backed by a sorted array of integers.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.idsets.MultiIdSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">MultiIdSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#MultiIdSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.MultiIdSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps multiple SERIAL sub-DocIdSet objects and presents them as an
+aggregated, read-only set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idsets</strong> – a list of DocIdSet objects.</p></li>
+<li><p><strong>offsets</strong> – a list of offsets corresponding to the DocIdSet objects
+in <code class="docutils literal notranslate"><span class="pre">idsets</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="highlight.html" class="btn btn-neutral float-left" title="highlight module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-right" title="index module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

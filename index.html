@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whoosh 2.7.4 documentation &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release notes" href="releases/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Whoosh 2.7.4 documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="whoosh-release-documentation">
+<h1>Whoosh 2.7.4 documentation<a class="headerlink" href="#whoosh-release-documentation" title="Permalink to this heading">¶</a></h1>
+<p>Whoosh was created by <a class="reference external" href="mailto:matt&#37;&#52;&#48;whoosh&#46;ca">Matt Chaput</a>.
+You can view outstanding issues on the
+<a class="reference external" href="http://bitbucket.org/mchaput/whoosh">Whoosh Bitbucket page</a>
+and get help on the <a class="reference external" href="http://groups.google.com/group/whoosh">Whoosh mailing list</a>.</p>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="releases/2_0.html">Whoosh 2.x release notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases/1_0.html">Whoosh 1.x release notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releases/0_3.html">Whoosh 0.3 release notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#a-quick-introduction">A quick introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#the-index-and-schema-objects">The <code class="docutils literal notranslate"><span class="pre">Index</span></code> and <code class="docutils literal notranslate"><span class="pre">Schema</span></code> objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#the-indexwriter-object">The <code class="docutils literal notranslate"><span class="pre">IndexWriter</span></code> object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#the-searcher-object">The <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#about-whoosh">About Whoosh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-is-whoosh">What is Whoosh?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-can-whoosh-do-for-you">What can Whoosh do for you?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#getting-help-with-whoosh">Getting help with Whoosh</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#about-schemas-and-fields">About schemas and fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#built-in-field-types">Built-in field types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#creating-a-schema">Creating a Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#modifying-the-schema-after-indexing">Modifying the schema after indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#dynamic-fields">Dynamic fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schema.html#advanced-schema-setup">Advanced schema setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="indexing.html#creating-an-index-object">Creating an Index object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="indexing.html#clearing-the-index">Clearing the index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="indexing.html#indexing-documents">Indexing documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="indexing.html#merging-segments">Merging segments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="indexing.html#deleting-documents">Deleting documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="indexing.html#updating-documents">Updating documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="indexing.html#incremental-indexing">Incremental indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="indexing.html#id1">Clearing the index</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#the-searcher-object">The <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#results-object">Results object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#scoring-and-sorting">Scoring and sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#highlighting-snippets-and-more-like-this">Highlighting snippets and More Like This</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#filtering-results">Filtering results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#which-terms-from-my-query-matched">Which terms from my query matched?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#collapsing-results">Collapsing results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#time-limited-searches">Time limited searches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#convenience-methods">Convenience methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html#combining-results-objects">Combining Results objects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="parsing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing.html#using-the-default-parser">Using the default parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing.html#common-customizations">Common customizations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing.html#advanced-customization">Advanced customization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="querylang.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querylang.html#individual-terms-and-phrases">Individual terms and phrases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querylang.html#boolean-operators">Boolean operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querylang.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querylang.html#inexact-terms">Inexact terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querylang.html#ranges">Ranges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querylang.html#boosting-query-elements">Boosting query elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querylang.html#making-a-term-from-literal-text">Making a term from literal text</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dates.html#indexing-dates">Indexing dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dates.html#parsing-date-queries">Parsing date queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dates.html#about-time-zones-and-basetime">About time zones and basetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dates.html#date-parser-notes">Date parser notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dates.html#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#using-analyzers">Using analyzers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#advanced-analysis">Advanced Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stemming.html#the-problem">The problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stemming.html#stemming">Stemming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stemming.html#variations">Variations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stemming.html#lemmatization">Lemmatization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stemming.html#character-folding">Character folding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ngrams.html#overview">Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#sorting">Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#grouping">Grouping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#facet-types">Facet types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#multifacet">MultiFacet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#missing-values">Missing values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#using-overlapping-groups">Using overlapping groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#using-a-custom-sort-order">Using a custom sort order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="facets.html#expert-writing-your-own-facet">Expert: writing your own facet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html#the-character-limit">The character limit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html#customizing-the-highlights">Customizing the highlights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html#highlighter-object">Highlighter object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html#speeding-up-highlighting">Speeding up highlighting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html#using-the-low-level-api">Using the low-level API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="keywords.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keywords.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keywords.html#expansion-models">Expansion models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html#pulling-suggestions-from-an-indexed-field">Pulling suggestions from an indexed field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html#pulling-suggestions-from-a-word-list">Pulling suggestions from a word list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html#merging-two-or-more-correctors">Merging two or more correctors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html#correcting-user-queries">Correcting user queries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fieldcaches.html#customizing-cache-behaviour">Customizing cache behaviour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fieldcaches.html#creating-a-custom-caching-policy">Creating a custom caching policy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="batch.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html#stemminganalyzer-cache">StemmingAnalyzer cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html#the-limitmb-parameter">The <code class="docutils literal notranslate"><span class="pre">limitmb</span></code> parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html#the-procs-parameter">The <code class="docutils literal notranslate"><span class="pre">procs</span></code> parameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html#the-multisegment-parameter">The <code class="docutils literal notranslate"><span class="pre">multisegment</span></code> parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="threads.html#concurrency">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threads.html#locking">Locking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threads.html#versioning">Versioning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nested.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nested.html#using-nested-document-indexing">Using nested document indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nested.html#using-query-time-joins">Using query-time joins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="recipes.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recipes.html#analysis">Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recipes.html#searching">Searching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recipes.html#shortcuts">Shortcuts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recipes.html#sorting-and-scoring">Sorting and scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recipes.html#results">Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recipes.html#global-information">Global information</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/analysis.html"><code class="docutils literal notranslate"><span class="pre">analysis</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/fields.html"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/filedb/filestore.html"><code class="docutils literal notranslate"><span class="pre">filedb.filestore</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/filedb/filetables.html"><code class="docutils literal notranslate"><span class="pre">filedb.filetables</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/highlight.html"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/lang/morph_en.html"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/lang/porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/matching.html"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/qparser.html"><code class="docutils literal notranslate"><span class="pre">qparser</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/query.html"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/reading.html"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/scoring.html"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/searching.html"><code class="docutils literal notranslate"><span class="pre">searching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/writing.html"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tech/backend.html">How to implement a new backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tech/filedb.html">filedb notes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="releases/index.html" class="btn btn-neutral float-right" title="Release notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

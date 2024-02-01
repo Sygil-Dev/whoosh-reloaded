@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to search &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Parsing user queries" href="parsing.html" />
+    <link rel="prev" title="How to index documents" href="indexing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to search</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-searcher-object">The <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#results-object">Results object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scoring-and-sorting">Scoring and sorting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scoring">Scoring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sorting">Sorting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#highlighting-snippets-and-more-like-this">Highlighting snippets and More Like This</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#filtering-results">Filtering results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#which-terms-from-my-query-matched">Which terms from my query matched?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#collapsing-results">Collapsing results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#time-limited-searches">Time limited searches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#convenience-methods">Convenience methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combining-results-objects">Combining Results objects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How to search</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/searching.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-search">
+<h1>How to search<a class="headerlink" href="#how-to-search" title="Permalink to this heading">¶</a></h1>
+<p>Once you’ve created an index and added documents to it, you can search for those
+documents.</p>
+<section id="the-searcher-object">
+<h2>The <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object<a class="headerlink" href="#the-searcher-object" title="Permalink to this heading">¶</a></h2>
+<p>To get a <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> object, call <code class="docutils literal notranslate"><span class="pre">searcher()</span></code> on your
+<code class="docutils literal notranslate"><span class="pre">Index</span></code> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">searcher</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You’ll usually want to open the searcher using a <code class="docutils literal notranslate"><span class="pre">with</span></code> statement so the
+searcher is automatically closed when you’re done with it (searcher objects
+represent a number of open files, so if you don’t explicitly close them and the
+system is slow to collect them, you can run out of file handles):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">ix</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">searcher</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>This is of course equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">searcher</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span>
+    <span class="o">...</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">searcher</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object is the main high-level interface for reading the index. It
+has lots of useful methods for getting information about the index, such as
+<code class="docutils literal notranslate"><span class="pre">lexicon(fieldname)</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">lexicon</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">))</span>
+<span class="go">[u&quot;document&quot;, u&quot;index&quot;, u&quot;whoosh&quot;]</span>
+</pre></div>
+</div>
+<p>However, the most important method on the <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object is
+<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code></a>, which takes a
+<a class="reference internal" href="api/query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object and returns a
+<a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+
+<span class="n">qp</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;hello world&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default the results contains at most the first 10 matching documents. To get
+more results, use the <code class="docutils literal notranslate"><span class="pre">limit</span></code> keyword:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you want all results, use <code class="docutils literal notranslate"><span class="pre">limit=None</span></code>. However, setting the limit whenever
+possible makes searches faster because Whoosh doesn’t need to examine and score
+every document.</p>
+<p>Since displaying a page of results at a time is a common pattern, the
+<code class="docutils literal notranslate"><span class="pre">search_page</span></code> method lets you conveniently retrieve only the results on a
+given page:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search_page</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The default page length is 10 hits. You can use the <code class="docutils literal notranslate"><span class="pre">pagelen</span></code> keyword argument
+to set a different page length:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search_page</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">pagelen</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="results-object">
+<h2>Results object<a class="headerlink" href="#results-object" title="Permalink to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> object acts like a list of the matched
+documents. You can use it to access the stored fields of each hit document, to
+display to the user.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Show the best hit&#39;s stored fields</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">{&quot;title&quot;: u&quot;Hello World in Python&quot;, &quot;path&quot;: u&quot;/a/b/c&quot;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">[{&quot;title&quot;: u&quot;Hello World in Python&quot;, &quot;path&quot;: u&quot;/a/b/c&quot;},</span>
+<span class="go">{&quot;title&quot;: u&quot;Foo&quot;, &quot;path&quot;: u&quot;/bar&quot;}]</span>
+</pre></div>
+</div>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">Searcher.search(myquery)</span></code> limits the number of hits to 20, So the
+number of scored hits in the <code class="docutils literal notranslate"><span class="pre">Results</span></code> object may be less than the number of
+matching documents in the index.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># How many documents in the entire index would have matched?</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">27</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># How many scored and sorted documents in this Results object?</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># This will often be less than len() if the number of hits was limited</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># (the default).</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">scored_length</span><span class="p">()</span>
+<span class="go">10</span>
+</pre></div>
+</div>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">len(Results)</span></code> runs a fast (unscored) version of the query again to
+figure out the total number of matching documents. This is usually very fast
+but for large indexes it can cause a noticeable delay. If you want to avoid
+this delay on very large indexes, you can use the
+<a class="reference internal" href="api/searching.html#whoosh.searching.Results.has_exact_length" title="whoosh.searching.Results.has_exact_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_exact_length()</span></code></a>,
+<a class="reference internal" href="api/searching.html#whoosh.searching.Results.estimated_length" title="whoosh.searching.Results.estimated_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">estimated_length()</span></code></a>, and
+<a class="reference internal" href="api/searching.html#whoosh.searching.Results.estimated_min_length" title="whoosh.searching.Results.estimated_min_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">estimated_min_length()</span></code></a> methods to estimate the
+number of matching documents without calling <code class="docutils literal notranslate"><span class="pre">len()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">found</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">scored_length</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">has_exact_length</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scored&quot;</span><span class="p">,</span> <span class="n">found</span><span class="p">,</span> <span class="s2">&quot;of exactly&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="s2">&quot;documents&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">estimated_min_length</span><span class="p">()</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">estimated_length</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scored&quot;</span><span class="p">,</span> <span class="n">found</span><span class="p">,</span> <span class="s2">&quot;of between&quot;</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="s2">&quot;and&quot;</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="s2">&quot;documents&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="scoring-and-sorting">
+<h2>Scoring and sorting<a class="headerlink" href="#scoring-and-sorting" title="Permalink to this heading">¶</a></h2>
+<section id="scoring">
+<h3>Scoring<a class="headerlink" href="#scoring" title="Permalink to this heading">¶</a></h3>
+<p>Normally the list of result documents is sorted by <em>score</em>. The
+<a class="reference internal" href="api/scoring.html#module-whoosh.scoring" title="whoosh.scoring"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.scoring</span></code></a> module contains implementations of various scoring
+algorithms. The default is <a class="reference internal" href="api/scoring.html#whoosh.scoring.BM25F" title="whoosh.scoring.BM25F"><code class="xref py py-class docutils literal notranslate"><span class="pre">BM25F</span></code></a>.</p>
+<p>You can set the scoring object to use when you create the searcher using the
+<code class="docutils literal notranslate"><span class="pre">weighting</span></code> keyword argument:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">scoring</span>
+
+<span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">(</span><span class="n">weighting</span><span class="o">=</span><span class="n">scoring</span><span class="o">.</span><span class="n">TF_IDF</span><span class="p">())</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>A weighting model is a <a class="reference internal" href="api/scoring.html#whoosh.scoring.WeightingModel" title="whoosh.scoring.WeightingModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightingModel</span></code></a> subclass with a
+<code class="docutils literal notranslate"><span class="pre">scorer()</span></code> method that produces a “scorer” instance. This instance has a
+method that takes the current matcher and returns a floating point score.</p>
+</section>
+<section id="sorting">
+<h3>Sorting<a class="headerlink" href="#sorting" title="Permalink to this heading">¶</a></h3>
+<p>See <a class="reference internal" href="facets.html"><span class="doc">Sorting and faceting</span></a>.</p>
+</section>
+</section>
+<section id="highlighting-snippets-and-more-like-this">
+<h2>Highlighting snippets and More Like This<a class="headerlink" href="#highlighting-snippets-and-more-like-this" title="Permalink to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="highlight.html"><span class="doc">How to create highlighted search result excerpts</span></a> and <a class="reference internal" href="keywords.html"><span class="doc">Query expansion and Key word extraction</span></a> for information on these topics.</p>
+</section>
+<section id="filtering-results">
+<h2>Filtering results<a class="headerlink" href="#filtering-results" title="Permalink to this heading">¶</a></h2>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">filter</span></code> keyword argument to <code class="docutils literal notranslate"><span class="pre">search()</span></code> to specify a set of
+documents to permit in the results. The argument can be a
+<a class="reference internal" href="api/query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object, a <a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object,
+or a set-like object containing document numbers. The searcher caches filters
+so if for example you use the same query filter with a searcher multiple times,
+the additional searches will be faster because the searcher will cache the
+results of running the filter query</p>
+<p>You can also specify a <code class="docutils literal notranslate"><span class="pre">mask</span></code> keyword argument to specify a set of documents
+that are not permitted in the results.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">qp</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">user_q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">query_string</span><span class="p">)</span>
+
+    <span class="c1"># Only show documents in the &quot;rendering&quot; chapter</span>
+    <span class="n">allow_q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;chapter&quot;</span><span class="p">,</span> <span class="s2">&quot;rendering&quot;</span><span class="p">)</span>
+    <span class="c1"># Don&#39;t show any documents where the &quot;tag&quot; field contains &quot;todo&quot;</span>
+    <span class="n">restrict_q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;tag&quot;</span><span class="p">,</span> <span class="s2">&quot;todo&quot;</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">user_q</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">allow_q</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">restrict_q</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(If you specify both a <code class="docutils literal notranslate"><span class="pre">filter</span></code> and a <code class="docutils literal notranslate"><span class="pre">mask</span></code>, and a matching document
+appears in both, the <code class="docutils literal notranslate"><span class="pre">mask</span></code> “wins” and the document is not permitted.)</p>
+<p>To find out how many results were filtered out of the results, use
+<code class="docutils literal notranslate"><span class="pre">results.filtered_count</span></code> (or <code class="docutils literal notranslate"><span class="pre">resultspage.results.filtered_count</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">qp</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">user_q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">query_string</span><span class="p">)</span>
+
+    <span class="c1"># Filter documents older than 7 days</span>
+    <span class="n">old_q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">DateRange</span><span class="p">(</span><span class="s2">&quot;created&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">))</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">user_q</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">old_q</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filtered out </span><span class="si">%d</span><span class="s2"> older documents&quot;</span> <span class="o">%</span> <span class="n">results</span><span class="o">.</span><span class="n">filtered_count</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="which-terms-from-my-query-matched">
+<h2>Which terms from my query matched?<a class="headerlink" href="#which-terms-from-my-query-matched" title="Permalink to this heading">¶</a></h2>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">terms=True</span></code> keyword argument to <code class="docutils literal notranslate"><span class="pre">search()</span></code> to have the
+search record which terms in the query matched which documents:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">seach</span><span class="p">(</span><span class="n">myquery</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then get information about which terms matched from the
+<a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> and <a class="reference internal" href="api/searching.html#whoosh.searching.Hit" title="whoosh.searching.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Hit</span></code></a> objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Was this results object created with terms=True?</span>
+<span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">has_matched_terms</span><span class="p">():</span>
+    <span class="c1"># What terms matched in the results?</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">matched_terms</span><span class="p">())</span>
+
+    <span class="c1"># What terms matched in each hit?</span>
+    <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">matched_terms</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="collapsing-results">
+<span id="collapsing"></span><h2>Collapsing results<a class="headerlink" href="#collapsing-results" title="Permalink to this heading">¶</a></h2>
+<p>Whoosh lets you eliminate all but the top N documents with the same facet key
+from the results. This can be useful in a few situations:</p>
+<ul class="simple">
+<li><p>Eliminating duplicates at search time.</p></li>
+<li><p>Restricting the number of matches per source. For example, in a web search
+application, you might want to show at most three matches from any website.</p></li>
+</ul>
+<p>Whether a document should be collapsed is determined by the value of a “collapse
+facet”. If a document has an empty collapse key, it will never be collapsed,
+but otherwise only the top N documents with the same collapse key will appear
+in the results.</p>
+<p>See <a class="reference internal" href="facets.html"><span class="doc">Sorting and faceting</span></a> for information on facets.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="c1"># Set the facet to collapse on and the maximum number of documents per</span>
+    <span class="c1"># facet value (default is 1)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">collector</span><span class="p">(</span><span class="n">collapse</span><span class="o">=</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span> <span class="n">collapse_limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># Dictionary mapping collapse keys to the number of documents that</span>
+    <span class="c1"># were filtered out by collapsing on that key</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">collapsed_counts</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Collapsing works with both scored and sorted results. You can use any of the
+facet types available in the <a class="reference internal" href="api/sorting.html#module-whoosh.sorting" title="whoosh.sorting"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.sorting</span></code></a> module.</p>
+<p>By default, Whoosh uses the results order (score or sort key) to determine the
+documents to collapse. For example, in scored results, the best scoring
+documents would be kept. You can optionally specify a <code class="docutils literal notranslate"><span class="pre">collapse_order</span></code> facet
+to control which documents to keep when collapsing.</p>
+<p>For example, in a product search you could display results sorted by decreasing
+price, and eliminate all but the highest rated item of each product type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">sorting</span>
+
+<span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">price_facet</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">FieldFacet</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">type_facet</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">FieldFacet</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+    <span class="n">rating_facet</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">FieldFacet</span><span class="p">(</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">collector</span><span class="p">(</span><span class="n">sortedby</span><span class="o">=</span><span class="n">price_facet</span><span class="p">,</span>  <span class="c1"># Sort by reverse price</span>
+                          <span class="n">collapse</span><span class="o">=</span><span class="n">type_facet</span><span class="p">,</span>  <span class="c1"># Collapse on product type</span>
+                          <span class="n">collapse_order</span><span class="o">=</span><span class="n">rating_facet</span>  <span class="c1"># Collapse to highest rated</span>
+                          <span class="p">)</span>
+</pre></div>
+</div>
+<p>The collapsing happens during the search, so it is usually more efficient than
+finding everything and post-processing the results. However, if the collapsing
+eliminates a large number of documents, collapsed search can take longer
+because the search has to consider more documents and remove many
+already-collected documents.</p>
+<p>Since this collector must sometimes go back and remove already-collected
+documents, if you use it in combination with
+<a class="reference internal" href="api/collectors.html#whoosh.collectors.TermsCollector" title="whoosh.collectors.TermsCollector"><code class="xref py py-class docutils literal notranslate"><span class="pre">TermsCollector</span></code></a> and/or
+<a class="reference internal" href="api/collectors.html#whoosh.collectors.FacetCollector" title="whoosh.collectors.FacetCollector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FacetCollector</span></code></a>, those collectors may contain
+information about documents that were filtered out of the final results by
+collapsing.</p>
+</section>
+<section id="time-limited-searches">
+<h2>Time limited searches<a class="headerlink" href="#time-limited-searches" title="Permalink to this heading">¶</a></h2>
+<p>To limit the amount of time a search can take:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.collectors</span> <span class="kn">import</span> <span class="n">TimeLimitCollector</span><span class="p">,</span> <span class="n">TimeLimit</span>
+
+<span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="c1"># Get a collector object</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">collector</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sortedby</span><span class="o">=</span><span class="s2">&quot;title_exact&quot;</span><span class="p">)</span>
+    <span class="c1"># Wrap it in a TimeLimitedCollector and set the time limit to 10 seconds</span>
+    <span class="n">tlc</span> <span class="o">=</span> <span class="n">TimeLimitedCollector</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">timelimit</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+
+    <span class="c1"># Try searching</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">search_with_collector</span><span class="p">(</span><span class="n">myquery</span><span class="p">,</span> <span class="n">tlc</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">TimeLimit</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Search took too long, aborting!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># You can still get partial results from the collector</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">tlc</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="convenience-methods">
+<h2>Convenience methods<a class="headerlink" href="#convenience-methods" title="Permalink to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.document" title="whoosh.searching.Searcher.document"><code class="xref py py-meth docutils literal notranslate"><span class="pre">document()</span></code></a> and
+<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.documents" title="whoosh.searching.Searcher.documents"><code class="xref py py-meth docutils literal notranslate"><span class="pre">documents()</span></code></a> methods on the <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object let
+you retrieve the stored fields of documents matching terms you pass in keyword
+arguments.</p>
+<p>This is especially useful for fields such as dates/times, identifiers, paths,
+and so on.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">documents</span><span class="p">(</span><span class="n">indexeddate</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;20051225&quot;</span><span class="p">))</span>
+<span class="go">[{&quot;title&quot;: u&quot;Christmas presents&quot;}, {&quot;title&quot;: u&quot;Turkey dinner report&quot;}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">searcher</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a/b/c&quot;</span><span class="p">)</span>
+<span class="go">{&quot;title&quot;: &quot;Document C&quot;}</span>
+</pre></div>
+</div>
+<p>These methods have some limitations:</p>
+<ul class="simple">
+<li><p>The results are not scored.</p></li>
+<li><p>Multiple keywords are always AND-ed together.</p></li>
+<li><p>The entire value of each keyword argument is considered a single term; you
+can’t search for multiple terms in the same field.</p></li>
+</ul>
+</section>
+<section id="combining-results-objects">
+<h2>Combining Results objects<a class="headerlink" href="#combining-results-objects" title="Permalink to this heading">¶</a></h2>
+<p>It is sometimes useful to use the results of another query to influence the
+order of a <a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object.</p>
+<p>For example, you might have a “best bet” field. This field contains hand-picked
+keywords for documents. When the user searches for those keywords, you want
+those documents to be placed at the top of the results list. You could try to
+do this by boosting the “bestbet” field tremendously, but that can have
+unpredictable effects on scoring. It’s much easier to simply run the query
+twice and combine the results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parse the user query</span>
+<span class="n">userquery</span> <span class="o">=</span> <span class="n">queryparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">querystring</span><span class="p">)</span>
+
+<span class="c1"># Get the terms searched for</span>
+<span class="n">termset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">userquery</span><span class="o">.</span><span class="n">existing_terms</span><span class="p">(</span><span class="n">termset</span><span class="p">)</span>
+
+<span class="c1"># Formulate a &quot;best bet&quot; query for the terms the user</span>
+<span class="c1"># searched for in the &quot;content&quot; field</span>
+<span class="n">bbq</span> <span class="o">=</span> <span class="n">Or</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;bestbet&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span>
+          <span class="ow">in</span> <span class="n">termset</span> <span class="k">if</span> <span class="n">fieldname</span> <span class="o">==</span> <span class="s2">&quot;content&quot;</span><span class="p">])</span>
+
+<span class="c1"># Find documents matching the searched for terms</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">bbq</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Find documents that match the original query</span>
+<span class="n">allresults</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">userquery</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Add the user query results on to the end of the &quot;best bet&quot;</span>
+<span class="c1"># results. If documents appear in both result sets, push them</span>
+<span class="c1"># to the top of the combined results.</span>
+<span class="n">results</span><span class="o">.</span><span class="n">upgrade_and_extend</span><span class="p">(</span><span class="n">allresults</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Results</span></code> object supports the following methods:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Results.extend(results)</span></code></dt><dd><p>Adds the documents in ‘results’ on to the end of the list of result
+documents.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Results.filter(results)</span></code></dt><dd><p>Removes the documents in ‘results’ from the list of result documents.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Results.upgrade(results)</span></code></dt><dd><p>Any result documents that also appear in ‘results’ are moved to the top
+of the list of result documents.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Results.upgrade_and_extend(results)</span></code></dt><dd><p>Any result documents that also appear in ‘results’ are moved to the top
+of the list of result documents. Then any other documents in ‘results’ are
+added on to the list of result documents.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="indexing.html" class="btn btn-neutral float-left" title="How to index documents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="parsing.html" class="btn btn-neutral float-right" title="Parsing user queries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

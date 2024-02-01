@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The default query language &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Indexing and parsing dates/times" href="dates.html" />
+    <link rel="prev" title="Parsing user queries" href="parsing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The default query language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#individual-terms-and-phrases">Individual terms and phrases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boolean-operators">Boolean operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inexact-terms">Inexact terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ranges">Ranges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#boosting-query-elements">Boosting query elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#making-a-term-from-literal-text">Making a term from literal text</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The default query language</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/querylang.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-default-query-language">
+<h1>The default query language<a class="headerlink" href="#the-default-query-language" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>A query consists of <em>terms</em> and <em>operators</em>. There are two types of terms: single
+terms and <em>phrases</em>. Multiple terms can be combined with operators such as
+<em>AND</em> and <em>OR</em>.</p>
+<p>Whoosh supports indexing text in different <em>fields</em>. You must specify the
+<em>default field</em> when you create the <a class="reference internal" href="api/qparser.html#whoosh.qparser.QueryParser" title="whoosh.qparser.QueryParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.QueryParser</span></code></a> object.
+This is the field in which any terms the user does not explicitly specify a field
+for will be searched.</p>
+<p>Whoosh’s query parser is capable of parsing different and/or additional syntax
+through the use of plug-ins. See <a class="reference internal" href="parsing.html"><span class="doc">Parsing user queries</span></a>.</p>
+</section>
+<section id="individual-terms-and-phrases">
+<h2>Individual terms and phrases<a class="headerlink" href="#individual-terms-and-phrases" title="Permalink to this heading">¶</a></h2>
+<p>Find documents containing the term <code class="docutils literal notranslate"><span class="pre">render</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>render
+</pre></div>
+</div>
+<p>Find documents containing the phrase <code class="docutils literal notranslate"><span class="pre">all</span> <span class="pre">was</span> <span class="pre">well</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot;all was well&quot;
+</pre></div>
+</div>
+<p>Note that a field must store Position information for phrase searching to work in
+that field.</p>
+<p>Normally when you specify a phrase, the maximum difference in position between
+each word in the phrase is 1 (that is, the words must be right next to each
+other in the document). For example, the following matches if a document has
+<code class="docutils literal notranslate"><span class="pre">library</span></code> within 5 words after <code class="docutils literal notranslate"><span class="pre">whoosh</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot;whoosh library&quot;~5
+</pre></div>
+</div>
+</section>
+<section id="boolean-operators">
+<h2>Boolean operators<a class="headerlink" href="#boolean-operators" title="Permalink to this heading">¶</a></h2>
+<p>Find documents containing <code class="docutils literal notranslate"><span class="pre">render</span></code> <em>and</em> <code class="docutils literal notranslate"><span class="pre">shading</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>render AND shading
+</pre></div>
+</div>
+<p>Note that AND is the default relation between terms, so this is the same as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>render shading
+</pre></div>
+</div>
+<p>Find documents containing <code class="docutils literal notranslate"><span class="pre">render</span></code>, <em>and</em> also either <code class="docutils literal notranslate"><span class="pre">shading</span></code> <em>or</em>
+<code class="docutils literal notranslate"><span class="pre">modeling</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>render AND shading OR modeling
+</pre></div>
+</div>
+<p>Find documents containing <code class="docutils literal notranslate"><span class="pre">render</span></code> but <em>not</em> modeling:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>render NOT modeling
+</pre></div>
+</div>
+<p>Find documents containing <code class="docutils literal notranslate"><span class="pre">alpha</span></code> but not either <code class="docutils literal notranslate"><span class="pre">beta</span></code> or <code class="docutils literal notranslate"><span class="pre">gamma</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>alpha NOT (beta OR gamma)
+</pre></div>
+</div>
+<p>Note that when no boolean operator is specified between terms, the parser will
+insert one, by default AND. So this query:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>render shading modeling
+</pre></div>
+</div>
+<p>is equivalent (by default) to:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>render AND shading AND modeling
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="parsing.html"><span class="doc">customizing the default parser</span></a> for information on how to
+change the default operator to OR.</p>
+<p>Group operators together with parentheses. For example to find documents that
+contain both <code class="docutils literal notranslate"><span class="pre">render</span></code> and <code class="docutils literal notranslate"><span class="pre">shading</span></code>, or contain <code class="docutils literal notranslate"><span class="pre">modeling</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(render AND shading) OR modeling
+</pre></div>
+</div>
+</section>
+<section id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this heading">¶</a></h2>
+<p>Find the term <code class="docutils literal notranslate"><span class="pre">ivan</span></code> in the <code class="docutils literal notranslate"><span class="pre">name</span></code> field:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>name:ivan
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">field:</span></code> prefix only sets the field for the term it directly precedes, so
+the query:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>title:open sesame
+</pre></div>
+</div>
+<p>Will search for <code class="docutils literal notranslate"><span class="pre">open</span></code> in the <code class="docutils literal notranslate"><span class="pre">title</span></code> field and <code class="docutils literal notranslate"><span class="pre">sesame</span></code> in the <em>default</em>
+field.</p>
+<p>To apply a field prefix to multiple terms, group them with parentheses:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>title:(open sesame)
+</pre></div>
+</div>
+<p>This is the same as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>title:open title:sesame
+</pre></div>
+</div>
+<p>Of course you can specify a field for phrases too:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>title:&quot;open sesame&quot;
+</pre></div>
+</div>
+</section>
+<section id="inexact-terms">
+<h2>Inexact terms<a class="headerlink" href="#inexact-terms" title="Permalink to this heading">¶</a></h2>
+<p>Use “globs” (wildcard expressions using <code class="docutils literal notranslate"><span class="pre">?</span></code> to represent a single character
+and <code class="docutils literal notranslate"><span class="pre">*</span></code> to represent any number of characters) to match terms:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>te?t test* *b?g*
+</pre></div>
+</div>
+<p>Note that a wildcard starting with <code class="docutils literal notranslate"><span class="pre">?</span></code> or <code class="docutils literal notranslate"><span class="pre">*</span></code> is very slow. Note also that
+these wildcards only match <em>individual terms</em>. For example, the query:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>my*life
+</pre></div>
+</div>
+<p>will <strong>not</strong> match an indexed phrase like:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>my so called life
+</pre></div>
+</div>
+<p>because those are four separate terms.</p>
+</section>
+<section id="ranges">
+<h2>Ranges<a class="headerlink" href="#ranges" title="Permalink to this heading">¶</a></h2>
+<p>You can match a range of terms. For example, the following query will match
+documents containing terms in the lexical range from <code class="docutils literal notranslate"><span class="pre">apple</span></code> to <code class="docutils literal notranslate"><span class="pre">bear</span></code>
+<em>inclusive</em>. For example, it will match documents containing <code class="docutils literal notranslate"><span class="pre">azores</span></code> and
+<code class="docutils literal notranslate"><span class="pre">be</span></code> but not <code class="docutils literal notranslate"><span class="pre">blur</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[apple TO bear]
+</pre></div>
+</div>
+<p>This is very useful when you’ve stored, for example, dates in a lexically sorted
+format (i.e. YYYYMMDD):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>date:[20050101 TO 20090715]
+</pre></div>
+</div>
+<p>The range is normally <em>inclusive</em> (that is, the range will match all terms
+between the start and end term, <em>as well as</em> the start and end terms
+themselves). You can specify that one or both ends of the range are <em>exclusive</em>
+by using the <code class="docutils literal notranslate"><span class="pre">{</span></code> and/or <code class="docutils literal notranslate"><span class="pre">}</span></code> characters:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[0000 TO 0025}
+{prefix TO suffix}
+</pre></div>
+</div>
+<p>You can also specify <em>open-ended</em> ranges by leaving out the start or end term:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[0025 TO]
+{TO suffix}
+</pre></div>
+</div>
+</section>
+<section id="boosting-query-elements">
+<h2>Boosting query elements<a class="headerlink" href="#boosting-query-elements" title="Permalink to this heading">¶</a></h2>
+<p>You can specify that certain parts of a query are more important for calculating
+the score of a matched document than others. For example, to specify that
+<code class="docutils literal notranslate"><span class="pre">ninja</span></code> is twice as important as other words, and <code class="docutils literal notranslate"><span class="pre">bear</span></code> is half as
+important:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ninja^2 cowboy bear^0.5
+</pre></div>
+</div>
+<p>You can apply a boost to several terms using grouping parentheses:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(open sesame)^2.5 roc
+</pre></div>
+</div>
+</section>
+<section id="making-a-term-from-literal-text">
+<h2>Making a term from literal text<a class="headerlink" href="#making-a-term-from-literal-text" title="Permalink to this heading">¶</a></h2>
+<p>If you need to include characters in a term that are normally treated specially
+by the parser, such as spaces, colons, or brackets, you can enclose the term
+in single quotes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>path:&#39;MacHD:My Documents&#39;
+&#39;term with spaces&#39;
+title:&#39;function()&#39;
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="parsing.html" class="btn btn-neutral float-left" title="Parsing user queries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dates.html" class="btn btn-neutral float-right" title="Indexing and parsing dates/times" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

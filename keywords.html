@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Query expansion and Key word extraction &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="“Did you mean… ?” Correcting errors in user queries" href="spelling.html" />
+    <link rel="prev" title="How to create highlighted search result excerpts" href="highlight.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Query expansion and Key word extraction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#expansion-models">Expansion models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Query expansion and Key word extraction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/keywords.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="query-expansion-and-key-word-extraction">
+<h1>Query expansion and Key word extraction<a class="headerlink" href="#query-expansion-and-key-word-extraction" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>Whoosh provides methods for computing the “key terms” of a set of documents. For
+these methods, “key terms” basically means terms that are frequent in the given
+documents, but relatively infrequent in the indexed collection as a whole.</p>
+<p>Because this is a purely statistical operation, not a natural language
+processing or AI function, the quality of the results will vary based on the
+content, the size of the document collection, and the number of documents for
+which you extract keywords.</p>
+<p>These methods can be useful for providing the following features to users:</p>
+<ul class="simple">
+<li><p>Search term expansion. You can extract key terms for the top N results from a
+query and suggest them to the user as additional/alternate query terms to try.</p></li>
+<li><p>Tag suggestion. Extracting the key terms for a single document may yield
+useful suggestions for tagging the document.</p></li>
+<li><p>“More like this”. You can extract key terms for the top ten or so results from
+a query (and removing the original query terms), and use those key words as
+the basis for another query that may find more documents using terms the user
+didn’t think of.</p></li>
+</ul>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Get more documents like a certain search hit. <em>This requires that the field
+you want to match on is vectored or stored, or that you have access to the
+original text (such as from a database)</em>.</p>
+<p>Use <a class="reference internal" href="api/searching.html#whoosh.searching.Hit.more_like_this" title="whoosh.searching.Hit.more_like_this"><code class="xref py py-meth docutils literal notranslate"><span class="pre">more_like_this()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">)</span>
+<span class="n">first_hit</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">more_results</span> <span class="o">=</span> <span class="n">first_hit</span><span class="o">.</span><span class="n">more_like_this</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Extract keywords for the top N documents in a
+<a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object. <em>This requires that the field is
+either vectored or stored</em>.</p>
+<p>Use the <a class="reference internal" href="api/searching.html#whoosh.searching.Results.key_terms" title="whoosh.searching.Results.key_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms()</span></code></a> method of the
+<a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object to extract keywords from the top N
+documents of the result set.</p>
+<p>For example, to extract <em>five</em> key terms from the <code class="docutils literal notranslate"><span class="pre">content</span></code> field of the top
+<em>ten</em> documents of a results object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="n">keyword</span> <span class="k">for</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">score</span>
+            <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">key_terms</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">numterms</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Extract keywords for an arbitrary set of documents. <em>This requires that the
+field is either vectored or stored</em>.</p>
+<p>Use the <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.document_number" title="whoosh.searching.Searcher.document_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">document_number()</span></code></a> or
+<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.document_numbers" title="whoosh.searching.Searcher.document_numbers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">document_numbers()</span></code></a> methods of the
+<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> object to get the document numbers for the
+document(s) you want to extract keywords from.</p>
+<p>Use the <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.key_terms" title="whoosh.searching.Searcher.key_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms()</span></code></a> method of a
+<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> to extract the keywords, given the list of
+document numbers.</p>
+<p>For example, let’s say you have an index of emails. To extract key terms from
+the <code class="docutils literal notranslate"><span class="pre">content</span></code> field of emails whose <code class="docutils literal notranslate"><span class="pre">emailto</span></code> field contains
+<code class="docutils literal notranslate"><span class="pre">matt&#64;whoosh.ca</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">email_index</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">docnums</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">document_numbers</span><span class="p">(</span><span class="n">emailto</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;matt@whoosh.ca&quot;</span><span class="p">)</span>
+    <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="n">keyword</span> <span class="k">for</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">score</span>
+                <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">key_terms</span><span class="p">(</span><span class="n">docnums</span><span class="p">,</span> <span class="s2">&quot;body&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Extract keywords from arbitrary text not in the index.</p>
+<p>Use the <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.key_terms_from_text" title="whoosh.searching.Searcher.key_terms_from_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms_from_text()</span></code></a> method of a
+<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> to extract the keywords, given the text:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">email_index</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="n">keyword</span> <span class="k">for</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">score</span>
+                <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">key_terms_from_text</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">,</span> <span class="n">mytext</span><span class="p">)]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="expansion-models">
+<h2>Expansion models<a class="headerlink" href="#expansion-models" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ExpansionModel</span></code> subclasses in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.classify</span></code> module implement
+different weighting functions for key words. These models are translated into
+Python from original Java implementations in Terrier.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="highlight.html" class="btn btn-neutral float-left" title="How to create highlighted search result excerpts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="spelling.html" class="btn btn-neutral float-right" title="“Did you mean… ?” Correcting errors in user queries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

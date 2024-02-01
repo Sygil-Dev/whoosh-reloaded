@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reading module &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="scoring module" href="scoring.html" />
+    <link rel="prev" title="query module" href="query.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Whoosh API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analysis.html"><code class="docutils literal notranslate"><span class="pre">analysis</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filestore.html"><code class="docutils literal notranslate"><span class="pre">filedb.filestore</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filetables.html"><code class="docutils literal notranslate"><span class="pre">filedb.filetables</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/morph_en.html"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qparser.html"><code class="docutils literal notranslate"><span class="pre">qparser</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.reading.IndexReader"><code class="docutils literal notranslate"><span class="pre">IndexReader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.reading.MultiReader"><code class="docutils literal notranslate"><span class="pre">MultiReader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.reading.TermInfo"><code class="docutils literal notranslate"><span class="pre">TermInfo</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.reading.TermNotFound"><code class="docutils literal notranslate"><span class="pre">TermNotFound</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scoring.html"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html"><code class="docutils literal notranslate"><span class="pre">searching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing.html"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">Whoosh API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/reading.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-whoosh.reading">
+<span id="reading-module"></span><h1><code class="docutils literal notranslate"><span class="pre">reading</span></code> module<a class="headerlink" href="#module-whoosh.reading" title="Permalink to this heading">¶</a></h1>
+<p>This module contains classes that allow reading from an index.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.reading.</span></span><span class="sig-name descname"><span class="pre">IndexReader</span></span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do not instantiate this object directly. Instead use Index.reader().</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.all_doc_ids">
+<span class="sig-name descname"><span class="pre">all_doc_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.all_doc_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.all_doc_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator of all (undeleted) document IDs in the reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.all_stored_fields">
+<span class="sig-name descname"><span class="pre">all_stored_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.all_stored_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.all_stored_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields the stored fields for all non-deleted documents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.all_terms">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_terms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.all_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.all_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields (fieldname, text) tuples for every term in the index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the open files associated with this reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.codec">
+<span class="sig-name descname"><span class="pre">codec</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.codec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.codec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="codec/base.html#whoosh.codec.base.Codec" title="whoosh.codec.base.Codec"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.codec.base.Codec</span></code></a> object used to read
+this reader’s segment. If this reader is not atomic
+(<code class="docutils literal notranslate"><span class="pre">reader.is_atomic()</span> <span class="pre">==</span> <span class="pre">True</span></code>), returns None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.column_reader">
+<span class="sig-name descname"><span class="pre">column_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.column_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.column_reader" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – the name of the field for which to get a reader.</p></li>
+<li><p><strong>column</strong> – if passed, use this Column object instead of the one
+associated with the field in the Schema.</p></li>
+<li><p><strong>reverse</strong> – if passed, reverses the order of keys returned by the
+reader’s <code class="docutils literal notranslate"><span class="pre">sort_key()</span></code> method. If the column type is not
+reversible, this will raise a <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code>.</p></li>
+<li><p><strong>translate</strong> – if True, wrap the reader to call the field’s
+<code class="docutils literal notranslate"><span class="pre">from_bytes()</span></code> method on the returned values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <a class="reference internal" href="columns.html#whoosh.columns.ColumnReader" title="whoosh.columns.ColumnReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.columns.ColumnReader</span></code></a> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.corrector">
+<span class="sig-name descname"><span class="pre">corrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.corrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.corrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="spelling.html#whoosh.spelling.Corrector" title="whoosh.spelling.Corrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.spelling.Corrector</span></code></a> object that suggests
+corrections based on the terms in the given field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.doc_count">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doc_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.doc_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.doc_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total number of UNDELETED documents in this reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.doc_count_all">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doc_count_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.doc_count_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.doc_count_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total number of documents, DELETED OR UNDELETED,
+in this reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.doc_field_length">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doc_field_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.doc_field_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.doc_field_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of terms in the given field in the given
+document. This is used by some scoring algorithms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.doc_frequency">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doc_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.doc_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.doc_frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns how many documents the given term appears in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.expand_prefix">
+<span class="sig-name descname"><span class="pre">expand_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.expand_prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.expand_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields terms in the given field that start with the given prefix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.field_length">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">field_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.field_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.field_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total number of terms in the given field. This is used
+by some scoring algorithms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.field_terms">
+<span class="sig-name descname"><span class="pre">field_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.field_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.field_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields all term values (converted from on-disk bytes) in the given
+field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.first_id">
+<span class="sig-name descname"><span class="pre">first_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.first_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.first_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the first ID in the posting list for the given term. This
+may be optimized in certain backends.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.frequency">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total number of instances of the given term in the
+collection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.generation">
+<span class="sig-name descname"><span class="pre">generation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.generation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.generation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the generation of the index being read, or -1 if the backend
+is not versioned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.has_deletions">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_deletions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.has_deletions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.has_deletions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the underlying index/segment has deleted
+documents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.has_vector">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.has_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.has_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the given document has a term vector for the given
+field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.indexed_field_names">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">indexed_field_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.indexed_field_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.indexed_field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterable of strings representing the names of the indexed
+fields. This may include additional names not explicitly listed in the
+Schema if you use “glob” fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.is_deleted">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_deleted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.is_deleted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.is_deleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the given document number is marked deleted.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.iter_docs">
+<span class="sig-name descname"><span class="pre">iter_docs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.iter_docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.iter_docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields a series of <code class="docutils literal notranslate"><span class="pre">(docnum,</span> <span class="pre">stored_fields_dict)</span></code>
+tuples for the undeleted documents in the reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.iter_field">
+<span class="sig-name descname"><span class="pre">iter_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.iter_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.iter_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields (text, terminfo) tuples for all terms in the given field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.iter_from">
+<span class="sig-name descname"><span class="pre">iter_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.iter_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.iter_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields ((fieldname, text), terminfo) tuples for all terms in the
+reader, starting at the given term.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.iter_postings">
+<span class="sig-name descname"><span class="pre">iter_postings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.iter_postings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.iter_postings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Low-level method, yields all postings in the reader as
+<code class="docutils literal notranslate"><span class="pre">(fieldname,</span> <span class="pre">text,</span> <span class="pre">docnum,</span> <span class="pre">weight,</span> <span class="pre">valuestring)</span></code> tuples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.iter_prefix">
+<span class="sig-name descname"><span class="pre">iter_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.iter_prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.iter_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields (text, terminfo) tuples for all terms in the given field with
+a certain prefix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.leaf_readers">
+<span class="sig-name descname"><span class="pre">leaf_readers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.leaf_readers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.leaf_readers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of (IndexReader, docbase) pairs for the child readers
+of this reader if it is a composite reader. If this is not a composite
+reader, it returns <cite>[(self, 0)]</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.lexicon">
+<span class="sig-name descname"><span class="pre">lexicon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.lexicon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.lexicon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields all bytestrings in the given field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.max_field_length">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_field_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.max_field_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.max_field_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the minimum length of the field across all documents. This
+is used by some scoring algorithms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.min_field_length">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_field_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.min_field_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.min_field_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the minimum length of the field across all documents. This
+is used by some scoring algorithms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.most_distinctive_terms">
+<span class="sig-name descname"><span class="pre">most_distinctive_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.most_distinctive_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.most_distinctive_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the top ‘number’ terms with the highest <cite>tf*idf</cite> scores as
+a list of (score, text) tuples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.most_frequent_terms">
+<span class="sig-name descname"><span class="pre">most_frequent_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.most_frequent_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.most_frequent_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the top ‘number’ most frequent terms in the given field as a
+list of (frequency, text) tuples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.postings">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">postings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.postings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.postings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matcher</span></code></a> for the postings of the
+given term.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pr</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">postings</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;render&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pr</span><span class="o">.</span><span class="n">skip_to</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pr</span><span class="o">.</span><span class="n">id</span>
+<span class="go">12</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – the field name or field number of the term.</p></li>
+<li><p><strong>text</strong> – the text of the term.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.matching.Matcher</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.segment">
+<span class="sig-name descname"><span class="pre">segment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.index.Segment</span></code> object used by this reader.
+If this reader is not atomic (<code class="docutils literal notranslate"><span class="pre">reader.is_atomic()</span> <span class="pre">==</span> <span class="pre">True</span></code>), returns
+None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.segments">
+<span class="sig-name descname"><span class="pre">segments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.segments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.index.Segment</span></code> objects used by this reader.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.storage">
+<span class="sig-name descname"><span class="pre">storage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.storage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="filedb/filestore.html#whoosh.filedb.filestore.Storage" title="whoosh.filedb.filestore.Storage"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.filedb.filestore.Storage</span></code></a> object used by
+this reader to read its files. If the reader is not atomic,
+(<code class="docutils literal notranslate"><span class="pre">reader.is_atomic()</span> <span class="pre">==</span> <span class="pre">True</span></code>), returns None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.stored_fields">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stored_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.stored_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.stored_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the stored fields for the given document number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>numerickeys</strong> – use field numbers as the dictionary keys instead of
+field names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.term_info">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">term_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.term_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.term_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#whoosh.reading.TermInfo" title="whoosh.reading.TermInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">TermInfo</span></code></a> object allowing access to various
+statistics about the given term.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.terms_from">
+<span class="sig-name descname"><span class="pre">terms_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.terms_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.terms_from" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields (fieldname, text) tuples for every term in the index starting
+at the given prefix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.terms_within">
+<span class="sig-name descname"><span class="pre">terms_within</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.terms_within"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.terms_within" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a generator of words in the given field within <code class="docutils literal notranslate"><span class="pre">maxdist</span></code>
+Damerau-Levenshtein edit distance of the given text.</p>
+<p>Important: the terms are returned in <strong>no particular order</strong>. The only
+criterion is that they are within <code class="docutils literal notranslate"><span class="pre">maxdist</span></code> edits of <code class="docutils literal notranslate"><span class="pre">text</span></code>. You
+may want to run this method multiple times with increasing <code class="docutils literal notranslate"><span class="pre">maxdist</span></code>
+values to ensure you get the closest matches first. You may also have
+additional information (such as term frequency or an acoustic matching
+algorithm) you can use to rank terms with the same edit distance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxdist</strong> – the maximum edit distance.</p></li>
+<li><p><strong>prefix</strong> – require suggestions to share a prefix of this length
+with the given word. This is often justifiable since most
+misspellings do not involve the first letter of the word.
+Using a prefix dramatically decreases the time it takes to generate
+the list of words.</p></li>
+<li><p><strong>seen</strong> – an optional set object. Words that appear in the set will
+not be yielded.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.vector">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matcher</span></code></a> object for the
+given term vector.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">docnum</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">document_number</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;/a/b/c&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="n">docnum</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span><span class="o">.</span><span class="n">all_as</span><span class="p">(</span><span class="s2">&quot;frequency&quot;</span><span class="p">)</span>
+<span class="go">[(u&quot;apple&quot;, 3), (u&quot;bear&quot;, 2), (u&quot;cab&quot;, 2)]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docnum</strong> – the document number of the document for which you want
+the term vector.</p></li>
+<li><p><strong>fieldname</strong> – the field name or field number of the field for which
+you want the term vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.matching.Matcher</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.IndexReader.vector_as">
+<span class="sig-name descname"><span class="pre">vector_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#IndexReader.vector_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.IndexReader.vector_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator of (termtext, value) pairs for the terms in the
+given term vector. This is a convenient shortcut to calling vector()
+and using the Matcher object when all you want are the terms and/or
+values.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">docnum</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">document_number</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;/a/b/c&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">searcher</span><span class="o">.</span><span class="n">vector_as</span><span class="p">(</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">docnum</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">)</span>
+<span class="go">[(u&quot;apple&quot;, 3), (u&quot;bear&quot;, 2), (u&quot;cab&quot;, 2)]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docnum</strong> – the document number of the document for which you want
+the term vector.</p></li>
+<li><p><strong>fieldname</strong> – the field name or field number of the field for which
+you want the term vector.</p></li>
+<li><p><strong>astype</strong> – a string containing the name of the format you want the
+term vector’s data in, for example “weights”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.reading.MultiReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.reading.</span></span><span class="sig-name descname"><span class="pre">MultiReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">readers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#MultiReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.MultiReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do not instantiate this object directly. Instead use Index.reader().</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.reading.TermInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.reading.</span></span><span class="sig-name descname"><span class="pre">TermInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minlength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxlength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxweight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#TermInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a set of statistics about a term. This object is returned by
+<a class="reference internal" href="#whoosh.reading.IndexReader.term_info" title="whoosh.reading.IndexReader.term_info"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IndexReader.term_info()</span></code></a>. These statistics may be useful for
+optimizations and scoring algorithms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.TermInfo.doc_frequency">
+<span class="sig-name descname"><span class="pre">doc_frequency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#TermInfo.doc_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermInfo.doc_frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of documents the term appears in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.TermInfo.max_id">
+<span class="sig-name descname"><span class="pre">max_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#TermInfo.max_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermInfo.max_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the highest document ID this term appears in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.TermInfo.max_length">
+<span class="sig-name descname"><span class="pre">max_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#TermInfo.max_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermInfo.max_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of the longest field value the term appears
+in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.TermInfo.max_weight">
+<span class="sig-name descname"><span class="pre">max_weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#TermInfo.max_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermInfo.max_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of times the term appears in the document in
+which it appears the most.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.TermInfo.min_id">
+<span class="sig-name descname"><span class="pre">min_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#TermInfo.min_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermInfo.min_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the lowest document ID this term appears in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.TermInfo.min_length">
+<span class="sig-name descname"><span class="pre">min_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#TermInfo.min_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermInfo.min_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of the shortest field value the term appears
+in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.reading.TermInfo.weight">
+<span class="sig-name descname"><span class="pre">weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/reading.html#TermInfo.weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermInfo.weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total frequency of the term across all documents.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="whoosh.reading.TermNotFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.reading.</span></span><span class="sig-name descname"><span class="pre">TermNotFound</span></span><a class="reference internal" href="../_modules/whoosh/reading.html#TermNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.reading.TermNotFound" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="query.html" class="btn btn-neutral float-left" title="query module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scoring.html" class="btn btn-neutral float-right" title="scoring module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

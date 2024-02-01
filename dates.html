@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indexing and parsing dates/times &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Query objects" href="query.html" />
+    <link rel="prev" title="The default query language" href="querylang.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Indexing and parsing dates/times</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#indexing-dates">Indexing dates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parsing-date-queries">Parsing date queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#about-time-zones-and-basetime">About time zones and basetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#date-parser-notes">Date parser notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-base-datetime">Setting the base datetime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#registering-an-error-callback">Registering an error callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-free-parsing">Using free parsing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parsable-formats">Parsable formats</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Indexing and parsing dates/times</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dates.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="indexing-and-parsing-dates-times">
+<h1>Indexing and parsing dates/times<a class="headerlink" href="#indexing-and-parsing-dates-times" title="Permalink to this heading">¶</a></h1>
+<section id="indexing-dates">
+<h2>Indexing dates<a class="headerlink" href="#indexing-dates" title="Permalink to this heading">¶</a></h2>
+<p>Whoosh lets you index and search dates/times using the
+<a class="reference internal" href="api/fields.html#whoosh.fields.DATETIME" title="whoosh.fields.DATETIME"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.DATETIME</span></code></a> field type. Instead of passing text for the
+field in <code class="docutils literal notranslate"><span class="pre">add_document()</span></code>, you use a Python <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">fields</span><span class="p">,</span> <span class="n">index</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span>
+                       <span class="n">date</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">DATETIME</span><span class="p">)</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Document 1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Rendering images from the command line&quot;</span><span class="p">,</span>
+               <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">())</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Document 2&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Creating shaders using a node network&quot;</span><span class="p">,</span>
+               <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="parsing-date-queries">
+<h2>Parsing date queries<a class="headerlink" href="#parsing-date-queries" title="Permalink to this heading">¶</a></h2>
+<p>Once you’ve have an indexed <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code> field, you can search it using a rich
+date parser contained in the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.dateparse.DateParserPlugin</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+<span class="kn">from</span> <span class="nn">whoosh.qparser.dateparse</span> <span class="kn">import</span> <span class="n">DateParserPlugin</span>
+
+<span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
+
+<span class="c1"># Instatiate a query parser</span>
+<span class="n">qp</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+
+<span class="c1"># Add the DateParserPlugin to the parser</span>
+<span class="n">qp</span><span class="o">.</span><span class="n">add_plugin</span><span class="p">(</span><span class="n">DateParserPlugin</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>With the <code class="docutils literal notranslate"><span class="pre">DateParserPlugin</span></code>, users can use date queries such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">20050912</span>
+<span class="mi">2005</span> <span class="n">sept</span> <span class="mi">12</span><span class="n">th</span>
+<span class="n">june</span> <span class="mi">23</span> <span class="mi">1978</span>
+<span class="mi">23</span> <span class="n">mar</span> <span class="mi">2005</span>
+<span class="n">july</span> <span class="mi">1985</span>
+<span class="n">sep</span> <span class="mi">12</span>
+<span class="n">today</span>
+<span class="n">yesterday</span>
+<span class="n">tomorrow</span>
+<span class="n">now</span>
+<span class="nb">next</span> <span class="n">friday</span>
+<span class="n">last</span> <span class="n">tuesday</span>
+<span class="mi">5</span><span class="n">am</span>
+<span class="mi">10</span><span class="p">:</span><span class="mi">25</span><span class="p">:</span><span class="mi">54</span>
+<span class="mi">23</span><span class="p">:</span><span class="mi">12</span>
+<span class="mi">8</span> <span class="n">PM</span>
+<span class="mi">4</span><span class="p">:</span><span class="mi">46</span> <span class="n">am</span> <span class="nb">oct</span> <span class="mi">31</span> <span class="mi">2010</span>
+<span class="n">last</span> <span class="n">tuesday</span> <span class="n">to</span> <span class="n">today</span>
+<span class="n">today</span> <span class="n">to</span> <span class="nb">next</span> <span class="n">friday</span>
+<span class="n">jan</span> <span class="mi">2005</span> <span class="n">to</span> <span class="n">feb</span> <span class="mi">2008</span>
+<span class="o">-</span><span class="mi">1</span> <span class="n">week</span> <span class="n">to</span> <span class="n">now</span>
+<span class="n">now</span> <span class="n">to</span> <span class="o">+</span><span class="mi">2</span><span class="n">h</span>
+<span class="o">-</span><span class="mi">1</span><span class="n">y6mo</span> <span class="n">to</span> <span class="o">+</span><span class="mi">2</span> <span class="n">yrs</span> <span class="mi">23</span><span class="n">d</span>
+</pre></div>
+</div>
+<p>Normally, as with other types of queries containing spaces, the users need
+to quote date queries containing spaces using single quotes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">render</span> <span class="n">date</span><span class="p">:</span><span class="s1">&#39;last tuesday&#39;</span> <span class="n">command</span>
+<span class="n">date</span><span class="p">:[</span><span class="s1">&#39;last tuesday&#39;</span> <span class="n">to</span> <span class="s1">&#39;next friday&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If you use the <code class="docutils literal notranslate"><span class="pre">free</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">DateParserPlugin</span></code>, the plugin will
+try to parse dates from unquoted text following a date field prefix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qp</span><span class="o">.</span><span class="n">add_plugin</span><span class="p">(</span><span class="n">DateParserPlugin</span><span class="p">(</span><span class="n">free</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This allows the user to type a date query with spaces and special characters
+following the name of date field and a colon. The date query can be mixed
+with other types of queries without quotes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date</span><span class="p">:</span><span class="n">last</span> <span class="n">tuesday</span>
+<span class="n">render</span> <span class="n">date</span><span class="p">:</span><span class="nb">oct</span> <span class="mi">15</span><span class="n">th</span> <span class="mi">2001</span> <span class="mi">5</span><span class="p">:</span><span class="mi">20</span><span class="n">am</span> <span class="n">command</span>
+</pre></div>
+</div>
+<p>If you don’t use the <code class="docutils literal notranslate"><span class="pre">DateParserPlugin</span></code>, users can still search DATETIME
+fields using a simple numeric form <code class="docutils literal notranslate"><span class="pre">YYYY[MM[DD[hh[mm[ss]]]]]</span></code> that is built
+into the <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code> field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+
+<span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
+<span class="n">qp</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">ix</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+
+<span class="c1"># Find all datetimes in 2005</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;date:2005&quot;</span><span class="p">)</span>
+
+<span class="c1"># Find all datetimes on June 24, 2005</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;date:20050624&quot;</span><span class="p">)</span>
+
+<span class="c1"># Find all datetimes from 1am-2am on June 24, 2005</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;date:2005062401&quot;</span><span class="p">)</span>
+
+<span class="c1"># Find all datetimes from Jan 1, 2005 to June 2, 2010</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;date:[20050101 to 20100602]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="about-time-zones-and-basetime">
+<h2>About time zones and basetime<a class="headerlink" href="#about-time-zones-and-basetime" title="Permalink to this heading">¶</a></h2>
+<p>The best way to deal with time zones is to always index <code class="docutils literal notranslate"><span class="pre">datetime</span></code>s in native
+UTC form. Any <code class="docutils literal notranslate"><span class="pre">tzinfo</span></code> attribute on the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> object is <em>ignored</em>
+by the indexer. If you are working with local datetimes, you should convert them
+to native UTC datetimes before indexing.</p>
+</section>
+<section id="date-parser-notes">
+<h2>Date parser notes<a class="headerlink" href="#date-parser-notes" title="Permalink to this heading">¶</a></h2>
+<p>Please note that the date parser is still somewhat experimental.</p>
+<section id="setting-the-base-datetime">
+<h3>Setting the base datetime<a class="headerlink" href="#setting-the-base-datetime" title="Permalink to this heading">¶</a></h3>
+<p>When you create the <code class="docutils literal notranslate"><span class="pre">DateParserPlugin</span></code> you can pass a <code class="docutils literal notranslate"><span class="pre">datetime</span></code> object to
+the <code class="docutils literal notranslate"><span class="pre">basedate</span></code> argument to set the datetime against which relative queries
+(such as <code class="docutils literal notranslate"><span class="pre">last</span> <span class="pre">tuesday</span></code> and <code class="docutils literal notranslate"><span class="pre">-2</span> <span class="pre">hours</span></code>) are measured. By default, the
+basedate is <code class="docutils literal notranslate"><span class="pre">datetime.utcnow()</span></code> at the moment the plugin is instantiated:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qp</span><span class="o">.</span><span class="n">add_plugin</span><span class="p">(</span><span class="n">DateParserPlugin</span><span class="p">(</span><span class="n">basedate</span><span class="o">=</span><span class="n">my_datetime</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="registering-an-error-callback">
+<h3>Registering an error callback<a class="headerlink" href="#registering-an-error-callback" title="Permalink to this heading">¶</a></h3>
+<p>To avoid user queries causing exceptions in your application, the date parser
+attempts to fail silently when it can’t parse a date query. However, you can
+register a callback function to be notified of parsing failures so you can
+display feedback to the user. The argument to the callback function is the
+date text that could not be parsed (this is an experimental feature and may
+change in future versions):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">def</span> <span class="nf">add_error</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="n">qp</span><span class="o">.</span><span class="n">add_plugin</span><span class="p">(</span><span class="n">DateParserPlug</span><span class="p">(</span><span class="n">callback</span><span class="o">=</span><span class="n">add_error</span><span class="p">))</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;date:blarg&quot;</span><span class="p">)</span>
+<span class="c1"># errors == [u&quot;blarg&quot;]</span>
+</pre></div>
+</div>
+</section>
+<section id="using-free-parsing">
+<h3>Using free parsing<a class="headerlink" href="#using-free-parsing" title="Permalink to this heading">¶</a></h3>
+<p>While the <code class="docutils literal notranslate"><span class="pre">free</span></code> option is easier for users, it may result in ambiguities.
+As one example, if you want to find documents containing reference to a march
+and the number 2 in documents from the year 2005, you might type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date</span><span class="p">:</span><span class="mi">2005</span> <span class="n">march</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>This query would be interpreted correctly as a date query and two term queries
+when <code class="docutils literal notranslate"><span class="pre">free=False</span></code>, but as a single date query when <code class="docutils literal notranslate"><span class="pre">free=True</span></code>. In this
+case the user could limit the scope of the date parser with single quotes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date</span><span class="p">:</span><span class="s1">&#39;2005&#39;</span> <span class="n">march</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</section>
+<section id="parsable-formats">
+<h3>Parsable formats<a class="headerlink" href="#parsable-formats" title="Permalink to this heading">¶</a></h3>
+<p>The date parser supports a wide array of date and time formats, however it is
+not my intention to try to support <em>all</em> types of human-readable dates (for
+example <code class="docutils literal notranslate"><span class="pre">ten</span> <span class="pre">to</span> <span class="pre">five</span> <span class="pre">the</span> <span class="pre">friday</span> <span class="pre">after</span> <span class="pre">next</span></code>). The best idea might be to pick
+a date format that works and try to train users on it, and if they use one of
+the other formats that also works consider it a happy accident.</p>
+</section>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Since it’s based on Python’s <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> object, the <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code>
+field shares all the limitations of that class, such as no support for
+dates before year 1 on the proleptic Gregorian calendar. The <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code>
+field supports practically unlimited dates, so if the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> object
+is every improved it could support it. An alternative possibility might
+be to add support for <code class="docutils literal notranslate"><span class="pre">mxDateTime</span></code> objects someday.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">DateParserPlugin</span></code> currently only has support for English dates.
+The architecture supports creation of parsers for other languages, and I
+hope to add examples for other languages soon.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DATETIME</span></code> fields do not currently support open-ended ranges. You can
+simulate an open ended range by using an endpoint far in the past or future.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="querylang.html" class="btn btn-neutral float-left" title="The default query language" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="query.html" class="btn btn-neutral float-right" title="Query objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

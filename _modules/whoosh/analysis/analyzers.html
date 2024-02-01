@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.analysis.analyzers &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.analysis.analyzers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.analysis.analyzers</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2007 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">from</span> <span class="nn">whoosh.analysis.acore</span> <span class="kn">import</span> <span class="n">Composable</span><span class="p">,</span> <span class="n">CompositionError</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.filters</span> <span class="kn">import</span> <span class="n">LowercaseFilter</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.filters</span> <span class="kn">import</span> <span class="n">StopFilter</span><span class="p">,</span> <span class="n">STOP_WORDS</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.morph</span> <span class="kn">import</span> <span class="n">StemFilter</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.intraword</span> <span class="kn">import</span> <span class="n">IntraWordFilter</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">default_pattern</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">CommaSeparatedTokenizer</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">IDTokenizer</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">RegexTokenizer</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">SpaceSeparatedTokenizer</span>
+<span class="kn">from</span> <span class="nn">whoosh.lang.porter</span> <span class="kn">import</span> <span class="n">stem</span>
+
+
+<span class="c1"># Analyzers</span>
+
+<span class="k">class</span> <span class="nc">Analyzer</span><span class="p">(</span><span class="n">Composable</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Abstract base class for analyzers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">other</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">CompositeAnalyzer</span><span class="p">(</span><span class="n">Analyzer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">composables</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">composables</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="n">CompositeAnalyzer</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>
+
+        <span class="c1"># Tokenizers must start a chain, and then only filters after that</span>
+        <span class="c1"># (because analyzers take a string and return a generator of tokens,</span>
+        <span class="c1"># and filters take and return generators of tokens)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Tokenizer</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">CompositionError</span><span class="p">(</span><span class="s2">&quot;Only one tokenizer allowed at the start&quot;</span>
+                                       <span class="s2">&quot; of the analyzer: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                           <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">no_morph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="c1"># Start with tokenizer</span>
+        <span class="n">gen</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Run filters</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">no_morph</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;is_morph&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">is_morph</span><span class="p">):</span>
+                <span class="n">gen</span> <span class="o">=</span> <span class="n">item</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gen</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">other</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;clean&quot;</span><span class="p">):</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">has_morph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">is_morph</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+
+
+<span class="c1"># Functions that return composed analyzers</span>
+
+<div class="viewcode-block" id="IDAnalyzer"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.IDAnalyzer">[docs]</a><span class="k">def</span> <span class="nf">IDAnalyzer</span><span class="p">(</span><span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deprecated, just use an IDTokenizer directly, with a LowercaseFilter if</span>
+<span class="sd">    desired.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">IDTokenizer</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">lowercase</span><span class="p">:</span>
+        <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span> <span class="o">|</span> <span class="n">LowercaseFilter</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">tokenizer</span></div>
+
+
+<div class="viewcode-block" id="KeywordAnalyzer"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.KeywordAnalyzer">[docs]</a><span class="k">def</span> <span class="nf">KeywordAnalyzer</span><span class="p">(</span><span class="n">lowercase</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">commas</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parses whitespace- or comma-separated tokens.</span>
+
+<span class="sd">    &gt;&gt;&gt; ana = KeywordAnalyzer()</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(&quot;Hello there, this is a TEST&quot;)]</span>
+<span class="sd">    [&quot;Hello&quot;, &quot;there,&quot;, &quot;this&quot;, &quot;is&quot;, &quot;a&quot;, &quot;TEST&quot;]</span>
+
+<span class="sd">    :param lowercase: whether to lowercase the tokens.</span>
+<span class="sd">    :param commas: if True, items are separated by commas rather than</span>
+<span class="sd">        whitespace.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">commas</span><span class="p">:</span>
+        <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">CommaSeparatedTokenizer</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">SpaceSeparatedTokenizer</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">lowercase</span><span class="p">:</span>
+        <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span> <span class="o">|</span> <span class="n">LowercaseFilter</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">tokenizer</span></div>
+
+
+<div class="viewcode-block" id="RegexAnalyzer"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.RegexAnalyzer">[docs]</a><span class="k">def</span> <span class="nf">RegexAnalyzer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\w+(\.?\w+)*&quot;</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deprecated, just use a RegexTokenizer directly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">RegexTokenizer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">expression</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="n">gaps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SimpleAnalyzer"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.SimpleAnalyzer">[docs]</a><span class="k">def</span> <span class="nf">SimpleAnalyzer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">default_pattern</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Composes a RegexTokenizer with a LowercaseFilter.</span>
+
+<span class="sd">    &gt;&gt;&gt; ana = SimpleAnalyzer()</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(&quot;Hello there, this is a TEST&quot;)]</span>
+<span class="sd">    [&quot;hello&quot;, &quot;there&quot;, &quot;this&quot;, &quot;is&quot;, &quot;a&quot;, &quot;test&quot;]</span>
+
+<span class="sd">    :param expression: The regular expression pattern to use to extract tokens.</span>
+<span class="sd">    :param gaps: If True, the tokenizer *splits* on the expression, rather</span>
+<span class="sd">        than matching on the expression.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">RegexTokenizer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">expression</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="n">gaps</span><span class="p">)</span> <span class="o">|</span> <span class="n">LowercaseFilter</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="StandardAnalyzer"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.StandardAnalyzer">[docs]</a><span class="k">def</span> <span class="nf">StandardAnalyzer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">default_pattern</span><span class="p">,</span> <span class="n">stoplist</span><span class="o">=</span><span class="n">STOP_WORDS</span><span class="p">,</span>
+                     <span class="n">minsize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Composes a RegexTokenizer with a LowercaseFilter and optional</span>
+<span class="sd">    StopFilter.</span>
+
+<span class="sd">    &gt;&gt;&gt; ana = StandardAnalyzer()</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(&quot;Testing is testing and testing&quot;)]</span>
+<span class="sd">    [&quot;testing&quot;, &quot;testing&quot;, &quot;testing&quot;]</span>
+
+<span class="sd">    :param expression: The regular expression pattern to use to extract tokens.</span>
+<span class="sd">    :param stoplist: A list of stop words. Set this to None to disable</span>
+<span class="sd">        the stop word filter.</span>
+<span class="sd">    :param minsize: Words smaller than this are removed from the stream.</span>
+<span class="sd">    :param maxsize: Words longer that this are removed from the stream.</span>
+<span class="sd">    :param gaps: If True, the tokenizer *splits* on the expression, rather</span>
+<span class="sd">        than matching on the expression.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">RegexTokenizer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">expression</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="n">gaps</span><span class="p">)</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">ret</span> <span class="o">|</span> <span class="n">LowercaseFilter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">stoplist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">chain</span> <span class="o">=</span> <span class="n">chain</span> <span class="o">|</span> <span class="n">StopFilter</span><span class="p">(</span><span class="n">stoplist</span><span class="o">=</span><span class="n">stoplist</span><span class="p">,</span> <span class="n">minsize</span><span class="o">=</span><span class="n">minsize</span><span class="p">,</span>
+                                   <span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">chain</span></div>
+
+
+<div class="viewcode-block" id="StemmingAnalyzer"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.StemmingAnalyzer">[docs]</a><span class="k">def</span> <span class="nf">StemmingAnalyzer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">default_pattern</span><span class="p">,</span> <span class="n">stoplist</span><span class="o">=</span><span class="n">STOP_WORDS</span><span class="p">,</span>
+                     <span class="n">minsize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stemfn</span><span class="o">=</span><span class="n">stem</span><span class="p">,</span>
+                     <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cachesize</span><span class="o">=</span><span class="mi">50000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Composes a RegexTokenizer with a lower case filter, an optional stop</span>
+<span class="sd">    filter, and a stemming filter.</span>
+
+<span class="sd">    &gt;&gt;&gt; ana = StemmingAnalyzer()</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(&quot;Testing is testing and testing&quot;)]</span>
+<span class="sd">    [&quot;test&quot;, &quot;test&quot;, &quot;test&quot;]</span>
+
+<span class="sd">    :param expression: The regular expression pattern to use to extract tokens.</span>
+<span class="sd">    :param stoplist: A list of stop words. Set this to None to disable</span>
+<span class="sd">        the stop word filter.</span>
+<span class="sd">    :param minsize: Words smaller than this are removed from the stream.</span>
+<span class="sd">    :param maxsize: Words longer that this are removed from the stream.</span>
+<span class="sd">    :param gaps: If True, the tokenizer *splits* on the expression, rather</span>
+<span class="sd">        than matching on the expression.</span>
+<span class="sd">    :param ignore: a set of words to not stem.</span>
+<span class="sd">    :param cachesize: the maximum number of stemmed words to cache. The larger</span>
+<span class="sd">        this number, the faster stemming will be but the more memory it will</span>
+<span class="sd">        use. Use None for no cache, or -1 for an unbounded cache.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">RegexTokenizer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">expression</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="n">gaps</span><span class="p">)</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">ret</span> <span class="o">|</span> <span class="n">LowercaseFilter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">stoplist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">chain</span> <span class="o">=</span> <span class="n">chain</span> <span class="o">|</span> <span class="n">StopFilter</span><span class="p">(</span><span class="n">stoplist</span><span class="o">=</span><span class="n">stoplist</span><span class="p">,</span> <span class="n">minsize</span><span class="o">=</span><span class="n">minsize</span><span class="p">,</span>
+                                   <span class="n">maxsize</span><span class="o">=</span><span class="n">maxsize</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">chain</span> <span class="o">|</span> <span class="n">StemFilter</span><span class="p">(</span><span class="n">stemfn</span><span class="o">=</span><span class="n">stemfn</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">,</span>
+                              <span class="n">cachesize</span><span class="o">=</span><span class="n">cachesize</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FancyAnalyzer"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.FancyAnalyzer">[docs]</a><span class="k">def</span> <span class="nf">FancyAnalyzer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">stoplist</span><span class="o">=</span><span class="n">STOP_WORDS</span><span class="p">,</span> <span class="n">minsize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                  <span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">splitwords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">splitnums</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                  <span class="n">mergewords</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mergenums</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Composes a RegexTokenizer with an IntraWordFilter, LowercaseFilter, and</span>
+<span class="sd">    StopFilter.</span>
+
+<span class="sd">    &gt;&gt;&gt; ana = FancyAnalyzer()</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(&quot;Should I call getInt or get_real?&quot;)]</span>
+<span class="sd">    [&quot;should&quot;, &quot;call&quot;, &quot;getInt&quot;, &quot;get&quot;, &quot;int&quot;, &quot;get_real&quot;, &quot;get&quot;, &quot;real&quot;]</span>
+
+<span class="sd">    :param expression: The regular expression pattern to use to extract tokens.</span>
+<span class="sd">    :param stoplist: A list of stop words. Set this to None to disable</span>
+<span class="sd">        the stop word filter.</span>
+<span class="sd">    :param minsize: Words smaller than this are removed from the stream.</span>
+<span class="sd">    :param maxsize: Words longer that this are removed from the stream.</span>
+<span class="sd">    :param gaps: If True, the tokenizer *splits* on the expression, rather</span>
+<span class="sd">        than matching on the expression.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">RegexTokenizer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">expression</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="n">gaps</span><span class="p">)</span>
+            <span class="o">|</span> <span class="n">IntraWordFilter</span><span class="p">(</span><span class="n">splitwords</span><span class="o">=</span><span class="n">splitwords</span><span class="p">,</span> <span class="n">splitnums</span><span class="o">=</span><span class="n">splitnums</span><span class="p">,</span>
+                              <span class="n">mergewords</span><span class="o">=</span><span class="n">mergewords</span><span class="p">,</span> <span class="n">mergenums</span><span class="o">=</span><span class="n">mergenums</span><span class="p">)</span>
+            <span class="o">|</span> <span class="n">LowercaseFilter</span><span class="p">()</span>
+            <span class="o">|</span> <span class="n">StopFilter</span><span class="p">(</span><span class="n">stoplist</span><span class="o">=</span><span class="n">stoplist</span><span class="p">,</span> <span class="n">minsize</span><span class="o">=</span><span class="n">minsize</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LanguageAnalyzer"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.LanguageAnalyzer">[docs]</a><span class="k">def</span> <span class="nf">LanguageAnalyzer</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">expression</span><span class="o">=</span><span class="n">default_pattern</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">cachesize</span><span class="o">=</span><span class="mi">50000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configures a simple analyzer for the given language, with a</span>
+<span class="sd">    LowercaseFilter, StopFilter, and StemFilter.</span>
+
+<span class="sd">    &gt;&gt;&gt; ana = LanguageAnalyzer(&quot;es&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(&quot;Por el mar corren las liebres&quot;)]</span>
+<span class="sd">    [&#39;mar&#39;, &#39;corr&#39;, &#39;liebr&#39;]</span>
+
+<span class="sd">    The list of available languages is in `whoosh.lang.languages`.</span>
+<span class="sd">    You can use :func:`whoosh.lang.has_stemmer` and</span>
+<span class="sd">    :func:`whoosh.lang.has_stopwords` to check if a given language has a</span>
+<span class="sd">    stemming function and/or stop word list available.</span>
+
+<span class="sd">    :param expression: The regular expression pattern to use to extract tokens.</span>
+<span class="sd">    :param gaps: If True, the tokenizer *splits* on the expression, rather</span>
+<span class="sd">        than matching on the expression.</span>
+<span class="sd">    :param cachesize: the maximum number of stemmed words to cache. The larger</span>
+<span class="sd">        this number, the faster stemming will be but the more memory it will</span>
+<span class="sd">        use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">whoosh.lang</span> <span class="kn">import</span> <span class="n">NoStemmer</span><span class="p">,</span> <span class="n">NoStopWords</span>
+
+    <span class="c1"># Make the start of the chain</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="p">(</span><span class="n">RegexTokenizer</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="n">expression</span><span class="p">,</span> <span class="n">gaps</span><span class="o">=</span><span class="n">gaps</span><span class="p">)</span>
+             <span class="o">|</span> <span class="n">LowercaseFilter</span><span class="p">())</span>
+
+    <span class="c1"># Add a stop word filter</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">chain</span> <span class="o">=</span> <span class="n">chain</span> <span class="o">|</span> <span class="n">StopFilter</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">NoStopWords</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># Add a stemming filter</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">chain</span> <span class="o">=</span> <span class="n">chain</span> <span class="o">|</span> <span class="n">StemFilter</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">,</span> <span class="n">cachesize</span><span class="o">=</span><span class="n">cachesize</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">NoStemmer</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">chain</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

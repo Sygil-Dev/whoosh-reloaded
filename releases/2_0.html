@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whoosh 2.x release notes &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Whoosh 1.x release notes" href="1_0.html" />
+    <link rel="prev" title="Release notes" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release notes</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Whoosh 2.x release notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-7">Whoosh 2.7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-5">Whoosh 2.5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-4">Whoosh 2.4</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-3-2">Whoosh 2.3.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-3-1">Whoosh 2.3.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-3">Whoosh 2.3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-2">Whoosh 2.2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-1">Whoosh 2.1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh-2-0">Whoosh 2.0</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#improvements">Improvements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compatibility">Compatibility</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="1_0.html">Whoosh 1.x release notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="0_3.html">Whoosh 0.3 release notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Release notes</a></li>
+      <li class="breadcrumb-item active">Whoosh 2.x release notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/releases/2_0.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="whoosh-2-x-release-notes">
+<h1>Whoosh 2.x release notes<a class="headerlink" href="#whoosh-2-x-release-notes" title="Permalink to this heading">¶</a></h1>
+<section id="whoosh-2-7">
+<h2>Whoosh 2.7<a class="headerlink" href="#whoosh-2-7" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Removed on-disk word graph implementation of spell checking in favor of much
+simpler and faster FSA implementation over the term file.</p></li>
+<li><p>Many bug fixes.</p></li>
+<li><p>Removed backwards compatibility with indexes created by versions prior to
+2.5. You may need to re-index if you are using an old index that hasn’t been
+updated.</p></li>
+<li><p>This is the last 2.x release before a major overhaul that will break backwards
+compatibility.</p></li>
+</ul>
+</section>
+<section id="whoosh-2-5">
+<h2>Whoosh 2.5<a class="headerlink" href="#whoosh-2-5" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Whoosh 2.5 will read existing indexes, but segments created by 2.5 will not
+be readable by older versions of Whoosh.</p></li>
+<li><p>As a replacement for field caches to speed up sorting, Whoosh now supports
+adding a <code class="docutils literal notranslate"><span class="pre">sortable=True</span></code> keyword argument to fields. This makes Whoosh store
+a sortable representation of the field’s values in a “column” format
+(which associates a “key” value with each document). This is more robust,
+efficient, and customizable than the old behavior.
+You should now specify <code class="docutils literal notranslate"><span class="pre">sortable=True</span></code> on fields that you plan on using to
+sort or group search results.</p>
+<p>(You can still sort/group on fields that don’t have <code class="docutils literal notranslate"><span class="pre">sortable=True</span></code>,
+however it will use more RAM and be slower as Whoosh caches the field values
+in memory.)</p>
+<p>Fields that use <code class="docutils literal notranslate"><span class="pre">sortable=True</span></code> can avoid specifying <code class="docutils literal notranslate"><span class="pre">stored=True</span></code>. The
+field’s value will still be available on <code class="docutils literal notranslate"><span class="pre">Hit</span></code> objects (the value will be
+retrieved from the column instead of from the stored fields). This may
+actually be faster for certain types of values.</p>
+</li>
+<li><p>Whoosh will now detect common types of OR queries and use optimized read-ahead
+matchers to speed them up by several times.</p></li>
+<li><p>Whoosh now includes pure-Python implementations of the Snowball stemmers and
+stop word lists for various languages adapted from NLTK. These are available
+through the <a class="reference internal" href="../api/analysis.html#whoosh.analysis.LanguageAnalyzer" title="whoosh.analysis.LanguageAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.LanguageAnalyzer</span></code></a> analyzer or through the
+<code class="docutils literal notranslate"><span class="pre">lang=</span></code> keyword argument to the
+<a class="reference internal" href="../api/fields.html#whoosh.fields.TEXT" title="whoosh.fields.TEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">TEXT</span></code></a> field.</p></li>
+<li><p>You can now use the
+<a class="reference internal" href="../api/filedb/filestore.html#whoosh.filedb.filestore.Storage.create" title="whoosh.filedb.filestore.Storage.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.filedb.filestore.Storage.create()</span></code></a> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.filedb.filestore.Storage.destory()</span></code>
+methods as a consistent API to set up and tear down different types of
+storage.</p></li>
+<li><p>Many bug fixes and speed improvements.</p></li>
+<li><p>Switched unit tests to use <code class="docutils literal notranslate"><span class="pre">py.test</span></code> instead of <code class="docutils literal notranslate"><span class="pre">nose</span></code>.</p></li>
+<li><p>Removed obsolete <code class="docutils literal notranslate"><span class="pre">SpellChecker</span></code> class.</p></li>
+</ul>
+</section>
+<section id="whoosh-2-4">
+<h2>Whoosh 2.4<a class="headerlink" href="#whoosh-2-4" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>By default, Whoosh now assembles the individual files of a segment into a
+single file when committing. This has a small performance penalty but solves
+a problem where Whoosh can keep too many files open. Whoosh is also now
+smarter about using mmap.</p></li>
+<li><p>Added functionality to index and search hierarchical documents. See
+<a class="reference internal" href="../nested.html"><span class="doc">Indexing and searching document hierarchies</span></a>.</p></li>
+<li><p>Rewrote the Directed Acyclic Word Graph implementation (used in spell
+checking) to be faster and more space-efficient. Word graph files created by
+previous versions will be ignored, meaning that spell checking may become
+slower unless/until you replace the old segments (for example, by
+optimizing).</p></li>
+<li><p>Rewrote multiprocessing indexing to be faster and simpler. You can now
+do <code class="docutils literal notranslate"><span class="pre">myindex.writer(procs=n)</span></code> to get a multiprocessing writer, or
+<code class="docutils literal notranslate"><span class="pre">myindex.writer(procs=n,</span> <span class="pre">multisegment=True)</span></code> to get a multiprocessing
+writer that leaves behind multiple segments, like the old MultiSegmentWriter.
+(<code class="docutils literal notranslate"><span class="pre">MultiSegmentWriter</span></code> is still available as a function that returns the
+new class.)</p></li>
+<li><p>When creating <code class="docutils literal notranslate"><span class="pre">Term</span></code> query objects for special fields (e.g. NUMERIC or
+BOOLEAN), you can now use the field’s literal type instead of a string as the
+second argument, for example <code class="docutils literal notranslate"><span class="pre">Term(&quot;num&quot;,</span> <span class="pre">20)</span></code> or <code class="docutils literal notranslate"><span class="pre">Term(&quot;bool&quot;,</span> <span class="pre">True)</span></code>.
+(This change may cause problems interacting with functions that expect
+query objects to be pure textual, such as spell checking.)</p></li>
+<li><p>All writing to and reading from on-disk indexes is now done through “codec”
+objects. This architecture should make it easier to add optional or
+experimental features, and maintain backwards compatibility.</p></li>
+<li><p>Fixes issues #75, #137, #206, #213, #215, #219, #223, #226, #230, #233, #238,
+#239, #240, #241, #243, #244, #245, #252, #253, and other bugs. Thanks to
+Thomas Waldmann and Alexei Gousev for the help!</p></li>
+</ul>
+</section>
+<section id="whoosh-2-3-2">
+<h2>Whoosh 2.3.2<a class="headerlink" href="#whoosh-2-3-2" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Fixes bug in BM25F scoring function, leading to increased precision in search
+results.</p></li>
+<li><p>Fixes issues #203, #205, #206, #208, #209, #212.</p></li>
+</ul>
+</section>
+<section id="whoosh-2-3-1">
+<h2>Whoosh 2.3.1<a class="headerlink" href="#whoosh-2-3-1" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Fixes issue #200.</p></li>
+</ul>
+</section>
+<section id="whoosh-2-3">
+<h2>Whoosh 2.3<a class="headerlink" href="#whoosh-2-3" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added a <a class="reference internal" href="../api/query.html#whoosh.query.Regex" title="whoosh.query.Regex"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Regex</span></code></a> term query type, similar to
+<a class="reference internal" href="../api/query.html#whoosh.query.Wildcard" title="whoosh.query.Wildcard"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Wildcard</span></code></a>. The parser does not allow regex term queries
+by default. You need to add the <a class="reference internal" href="../api/qparser.html#whoosh.qparser.RegexPlugin" title="whoosh.qparser.RegexPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.RegexPlugin</span></code></a> plugin.
+After you add the plugin, you can use <code class="docutils literal notranslate"><span class="pre">r&quot;expression&quot;</span></code> query syntax for
+regular expression term queries. For example, <code class="docutils literal notranslate"><span class="pre">r&quot;foo.*bar&quot;</span></code>.</p></li>
+<li><p>Added the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.PseudoFieldPlugin</span></code> parser plugin. This
+plugin lets you create “pseudo-fields” that run a transform function on
+whatever query syntax the user applies the field to. This is fairly advanced
+functionality right now; I’m trying to think of ways to make its power easier
+to access.</p></li>
+<li><p>The documents in the lists in the dictionary returned by <code class="docutils literal notranslate"><span class="pre">Results.groups()</span></code>
+by default are now in the same relative order as in the results. This makes
+it much easier to display the “top N” results in each category, for example.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">groupids</span></code> keyword argument to <code class="docutils literal notranslate"><span class="pre">Searcher.search</span></code> has been removed.
+Instead you can now pass a <a class="reference internal" href="../api/sorting.html#whoosh.sorting.FacetMap" title="whoosh.sorting.FacetMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.FacetMap</span></code></a> object to the
+<code class="docutils literal notranslate"><span class="pre">Searcher.search</span></code> method’s <code class="docutils literal notranslate"><span class="pre">maptype</span></code> argument to control how faceted
+documents are grouped, and/or set the <code class="docutils literal notranslate"><span class="pre">maptype</span></code> argument on individual
+<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.FacetType`</span></code> objects to set custom grouping per facet.
+See <a class="reference internal" href="../facets.html"><span class="doc">Sorting and faceting</span></a> for more information.</p></li>
+<li><p>Calling <code class="docutils literal notranslate"><span class="pre">Searcher.documents()</span></code> or <code class="docutils literal notranslate"><span class="pre">Searcher.document_numbers()</span></code> with no
+arguments now yields all documents/numbers.</p></li>
+<li><p>Calling <code class="docutils literal notranslate"><span class="pre">Writer.update_document()</span></code> with no unique fields is now equivalent
+to calling <code class="docutils literal notranslate"><span class="pre">Writer.add_document()</span></code> with the same arguments.</p></li>
+<li><p>Fixed a problem with keyword expansion where the code was building a cache
+that was fast on small indexes, but unacceptably slow on large indexes.</p></li>
+<li><p>Added the hyphen (<code class="docutils literal notranslate"><span class="pre">-</span></code>) to the list of characters that match a “wildcard”
+token, to make parsing slightly more predictable. A true fix will have to
+wait for another parser rewrite.</p></li>
+<li><p>Fixed an unused <code class="docutils literal notranslate"><span class="pre">__future__</span></code> import and use of <code class="docutils literal notranslate"><span class="pre">float(&quot;nan&quot;)</span></code> which were
+breaking under Python 2.5.</p></li>
+<li><p>Fixed a bug where vectored fields with only one term stored an empty term
+vector.</p></li>
+<li><p>Various other bug fixes.</p></li>
+</ul>
+</section>
+<section id="whoosh-2-2">
+<h2>Whoosh 2.2<a class="headerlink" href="#whoosh-2-2" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Fixes several bugs, including a bad bug in BM25F scoring.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">allow_overlap</span></code> option to <a class="reference internal" href="../api/sorting.html#whoosh.sorting.StoredFieldFacet" title="whoosh.sorting.StoredFieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.StoredFieldFacet</span></code></a>.</p></li>
+<li><p>In <a class="reference internal" href="../api/writing.html#whoosh.writing.IndexWriter.add_document" title="whoosh.writing.IndexWriter.add_document"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_document()</span></code></a>, You can now pass
+query-like strings for BOOLEAN and DATETIME fields (e.g <code class="docutils literal notranslate"><span class="pre">boolfield=&quot;true&quot;</span></code>
+and <code class="docutils literal notranslate"><span class="pre">dtfield=&quot;20101131-16:01&quot;</span></code>) as an alternative to actual <code class="docutils literal notranslate"><span class="pre">bool</span></code> or
+<code class="docutils literal notranslate"><span class="pre">datetime</span></code> objects. The implementation of this is incomplete: it only works
+in the default <code class="docutils literal notranslate"><span class="pre">filedb</span></code> backend, and if the field is stored, the stored
+value will be the string, not the parsed object.</p></li>
+<li><p>Added <a class="reference internal" href="../api/analysis.html#whoosh.analysis.CompoundWordFilter" title="whoosh.analysis.CompoundWordFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.CompoundWordFilter</span></code></a> and
+<a class="reference internal" href="../api/analysis.html#whoosh.analysis.TeeFilter" title="whoosh.analysis.TeeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.TeeFilter</span></code></a>.</p></li>
+</ul>
+</section>
+<section id="whoosh-2-1">
+<h2>Whoosh 2.1<a class="headerlink" href="#whoosh-2-1" title="Permalink to this heading">¶</a></h2>
+<p>This release fixes several bugs, and contains speed improvments to highlighting.
+See <a class="reference internal" href="../highlight.html"><span class="doc">How to create highlighted search result excerpts</span></a> for more information.</p>
+</section>
+<section id="whoosh-2-0">
+<h2>Whoosh 2.0<a class="headerlink" href="#whoosh-2-0" title="Permalink to this heading">¶</a></h2>
+<section id="improvements">
+<h3>Improvements<a class="headerlink" href="#improvements" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>Whoosh is now compatible with Python 3 (tested with Python 3.2). Special
+thanks to Vinay Sajip who did the work, and also Jordan Sherer who helped
+fix later issues.</p></li>
+<li><p>Sorting and grouping (faceting) now use a new system of “facet” objects which
+are much more flexible than the previous field-based system.</p>
+<p>For example, to sort by first name and then score:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">sorting</span>
+
+<span class="n">mf</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">MultiFacet</span><span class="p">([</span><span class="n">sorting</span><span class="o">.</span><span class="n">FieldFacet</span><span class="p">(</span><span class="s2">&quot;firstname&quot;</span><span class="p">),</span>
+                         <span class="n">sorting</span><span class="o">.</span><span class="n">ScoreFacet</span><span class="p">()])</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">,</span> <span class="n">sortedby</span><span class="o">=</span><span class="n">mf</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In addition to the previously supported sorting/grouping by field contents
+and/or query results, you can now use numeric ranges, date ranges, score, and
+more. The new faceting system also supports overlapping groups.</p>
+<p>(The old “Sorter” API still works but is deprecated and may be removed in a
+future version.)</p>
+<p>See <a class="reference internal" href="../facets.html"><span class="doc">Sorting and faceting</span></a> for more information.</p>
+</li>
+<li><p>Completely revamped spell-checking to make it much faster, easier, and more
+flexible. You can enable generation of the graph files use by spell checking
+using the <code class="docutils literal notranslate"><span class="pre">spelling=True</span></code> argument to a field type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">spelling</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>(Spelling suggestion methods will work on fields without <code class="docutils literal notranslate"><span class="pre">spelling=True</span></code>
+but will slower.) The spelling graph will be updated automatically as new
+documents are added – it is no longer necessary to maintain a separate
+“spelling index”.</p>
+<p>You can get suggestions for individual words using
+<a class="reference internal" href="../api/searching.html#whoosh.searching.Searcher.suggest" title="whoosh.searching.Searcher.suggest"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.suggest()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suglist</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">suggest</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;werd&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Whoosh now includes convenience methods to spell-check and correct user
+queries, with optional highlighting of corrections using the
+<code class="docutils literal notranslate"><span class="pre">whoosh.highlight</span></code> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">highlight</span><span class="p">,</span> <span class="n">qparser</span>
+
+<span class="c1"># User query string</span>
+<span class="n">qstring</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
+
+<span class="c1"># Parse into query object</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">qobject</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">qstring</span><span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">qobject</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="p">:</span>
+  <span class="n">correction</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">correct_query</span><span class="p">(</span><span class="n">gobject</span><span class="p">,</span> <span class="n">gstring</span><span class="p">)</span>
+  <span class="c1"># correction.query = corrected query object</span>
+  <span class="c1"># correction.string = corrected query string</span>
+
+  <span class="c1"># Format the corrected query string with HTML highlighting</span>
+  <span class="n">cstring</span> <span class="o">=</span> <span class="n">correction</span><span class="o">.</span><span class="n">format_string</span><span class="p">(</span><span class="n">highlight</span><span class="o">.</span><span class="n">HtmlFormatter</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Spelling suggestions can come from field contents and/or lists of words.
+For stemmed fields the spelling suggestions automatically use the unstemmed
+forms of the words.</p>
+<p>There are APIs for spelling suggestions and query correction, so highly
+motivated users could conceivably replace the defaults with more
+sophisticated behaviors (for example, to take context into account).</p>
+<p>See <a class="reference internal" href="../spelling.html"><span class="doc">“Did you mean… ?” Correcting errors in user queries</span></a> for more information.</p>
+</li>
+<li><p><a class="reference internal" href="../api/query.html#whoosh.query.FuzzyTerm" title="whoosh.query.FuzzyTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.FuzzyTerm</span></code></a> now uses the new word graph feature as well
+and so is much faster.</p></li>
+<li><p>You can now set a boost factor for individual documents as you index them,
+to increase the score of terms in those documents in searches. See the
+documentation for the <a class="reference internal" href="../api/writing.html#whoosh.writing.IndexWriter.add_document" title="whoosh.writing.IndexWriter.add_document"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_document()</span></code></a> for
+more information.</p></li>
+<li><p>Added built-in recording of which terms matched in which documents. Use the
+<code class="docutils literal notranslate"><span class="pre">terms=True</span></code> argument to <a class="reference internal" href="../api/searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.search()</span></code></a> and use
+<a class="reference internal" href="../api/searching.html#whoosh.searching.Hit.matched_terms" title="whoosh.searching.Hit.matched_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Hit.matched_terms()</span></code></a> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Hit.contains_term()</span></code> to check matched terms.</p></li>
+<li><p>Whoosh now supports whole-term quality optimizations, so for example if the
+system knows that a UnionMatcher cannot possibly contribute to the “top N”
+results unless both sub-matchers match, it will replace the UnionMatcher with
+an IntersectionMatcher which is faster to compute. The performance improvement
+is not as dramatic as from block quality optimizations, but it can be
+noticeable.</p></li>
+<li><p>Fixed a bug that prevented block quality optimizations in queries with words
+not in the index, which could severely degrade performance.</p></li>
+<li><p>Block quality optimizations now use the actual scoring algorithm to calculate
+block quality instead of an approximation, which fixes issues where ordering
+of results could be different for searches with and without the optimizations.</p></li>
+<li><p>the BOOLEAN field type now supports field boosts.</p></li>
+<li><p>Re-architected the query parser to make the code easier to understand. Custom
+parser plugins from previous versions will probably break in Whoosh 2.0.</p></li>
+<li><p>Various bug-fixes and performance improvements.</p></li>
+<li><p>Removed the “read lock”, which caused more problems than it solved. Now when
+opening a reader, if segments are deleted out from under the reader as it
+is opened, the code simply retries.</p></li>
+</ul>
+</section>
+<section id="compatibility">
+<h3>Compatibility<a class="headerlink" href="#compatibility" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>The term quality optimizations required changes to the on-disk formats.
+Whoosh 2.0 if backwards-compatible with the old format. As you rewrite an
+index using Whoosh 2.0, by default it will use the new formats for new
+segments, making the index incompatible with older versions.</p>
+<p>To upgrade an existing index to use the new formats immediately, use
+<code class="docutils literal notranslate"><span class="pre">Index.optimize()</span></code>.</p>
+</li>
+<li><p>Removed the experimental <code class="docutils literal notranslate"><span class="pre">TermTrackingCollector</span></code> since it is replaced by
+the new built-in term recording functionality.</p></li>
+<li><p>Removed the experimental <code class="docutils literal notranslate"><span class="pre">Searcher.define_facets</span></code> feature until a future
+release when it will be replaced by a more robust and useful feature.</p></li>
+<li><p>Reader iteration methods (<code class="docutils literal notranslate"><span class="pre">__iter__</span></code>, <code class="docutils literal notranslate"><span class="pre">iter_from</span></code>, <code class="docutils literal notranslate"><span class="pre">iter_field</span></code>, etc.)
+now yield <a class="reference internal" href="../api/reading.html#whoosh.reading.TermInfo" title="whoosh.reading.TermInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.reading.TermInfo</span></code></a> objects.</p></li>
+<li><p>The arguments to <a class="reference internal" href="../api/query.html#whoosh.query.FuzzyTerm" title="whoosh.query.FuzzyTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.FuzzyTerm</span></code></a> changed.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Release notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="1_0.html" class="btn btn-neutral float-right" title="Whoosh 1.x release notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

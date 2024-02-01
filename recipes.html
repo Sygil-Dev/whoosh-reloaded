@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whoosh recipes &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Whoosh API" href="api/api.html" />
+    <link rel="prev" title="Indexing and searching document hierarchies" href="nested.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Whoosh recipes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get-the-stored-fields-for-a-document-from-the-document-number">Get the stored fields for a document from the document number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#eliminate-words-shorter-longer-than-n">Eliminate words shorter/longer than N</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#allow-optional-case-sensitive-searches">Allow optional case-sensitive searches</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#searching">Searching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#find-every-document">Find every document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#itunes-style-search-as-you-type">iTunes-style search-as-you-type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#shortcuts">Shortcuts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#look-up-documents-by-a-field-value">Look up documents by a field value</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sorting-and-scoring">Sorting and scoring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#score-results-based-on-the-position-of-the-matched-term">Score results based on the position of the matched term</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#results">Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-many-hits-were-there">How many hits were there?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#which-terms-matched-in-each-hit">Which terms matched in each hit?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#global-information">Global information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-many-documents-are-in-the-index">How many documents are in the index?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-fields-are-in-the-index">What fields are in the index?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#is-term-x-in-the-index">Is term X in the index?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-many-times-does-term-x-occur-in-the-index">How many times does term X occur in the index?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#is-term-x-in-document-y">Is term X in document Y?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Whoosh recipes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/recipes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="whoosh-recipes">
+<h1>Whoosh recipes<a class="headerlink" href="#whoosh-recipes" title="Permalink to this heading">¶</a></h1>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this heading">¶</a></h2>
+<section id="get-the-stored-fields-for-a-document-from-the-document-number">
+<h3>Get the stored fields for a document from the document number<a class="headerlink" href="#get-the-stored-fields-for-a-document-from-the-document-number" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stored_fields</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">stored_fields</span><span class="p">(</span><span class="n">docnum</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading">¶</a></h2>
+<section id="eliminate-words-shorter-longer-than-n">
+<h3>Eliminate words shorter/longer than N<a class="headerlink" href="#eliminate-words-shorter-longer-than-n" title="Permalink to this heading">¶</a></h3>
+<p>Use a <a class="reference internal" href="api/analysis.html#whoosh.analysis.StopFilter" title="whoosh.analysis.StopFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">StopFilter</span></code></a> and the <code class="docutils literal notranslate"><span class="pre">minsize</span></code> and <code class="docutils literal notranslate"><span class="pre">maxsize</span></code>
+keyword arguments. If you just want to filter based on size and not common
+words, set the <code class="docutils literal notranslate"><span class="pre">stoplist</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">StopFilter</span><span class="p">(</span><span class="n">stoplist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minsize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="allow-optional-case-sensitive-searches">
+<h3>Allow optional case-sensitive searches<a class="headerlink" href="#allow-optional-case-sensitive-searches" title="Permalink to this heading">¶</a></h3>
+<p>A quick and easy way to do this is to index both the original and lowercased
+versions of each word. If the user searches for an all-lowercase word, it acts
+as a case-insensitive search, but if they search for a word with any uppercase
+characters, it acts as a case-sensitive search:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CaseSensitivizer</span><span class="p">(</span><span class="n">analysis</span><span class="o">.</span><span class="n">Filter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">t</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;index&quot;</span><span class="p">:</span>
+               <span class="n">low</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+               <span class="k">if</span> <span class="n">low</span> <span class="o">!=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                   <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">low</span>
+                   <span class="k">yield</span> <span class="n">t</span>
+
+<span class="n">ana</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">RegexTokenizer</span><span class="p">()</span> <span class="o">|</span> <span class="n">CaseSensitivizer</span><span class="p">()</span>
+<span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ana</span><span class="p">(</span><span class="s2">&quot;The new SuperTurbo 5000&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)]</span>
+<span class="c1"># [&quot;The&quot;, &quot;the&quot;, &quot;new&quot;, &quot;SuperTurbo&quot;, &quot;superturbo&quot;, &quot;5000&quot;]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="searching">
+<h2>Searching<a class="headerlink" href="#searching" title="Permalink to this heading">¶</a></h2>
+<section id="find-every-document">
+<h3>Find every document<a class="headerlink" href="#find-every-document" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myquery</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Every</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="itunes-style-search-as-you-type">
+<h3>iTunes-style search-as-you-type<a class="headerlink" href="#itunes-style-search-as-you-type" title="Permalink to this heading">¶</a></h3>
+<p>Use the <a class="reference internal" href="api/analysis.html#whoosh.analysis.NgramWordAnalyzer" title="whoosh.analysis.NgramWordAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.NgramWordAnalyzer</span></code></a> as the analyzer for the
+field you want to search as the user types. You can save space in the index by
+turning off positions in the field using <code class="docutils literal notranslate"><span class="pre">phrase=False</span></code>, since phrase
+searching on N-gram fields usually doesn’t make much sense:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># For example, to search the &quot;title&quot; field as the user types</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">NgramWordAnalyzer</span><span class="p">()</span>
+<span class="n">title_field</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="n">analyzer</span><span class="p">,</span> <span class="n">phrase</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title_field</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See the documentation for the <a class="reference internal" href="api/analysis.html#whoosh.analysis.NgramWordAnalyzer" title="whoosh.analysis.NgramWordAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">NgramWordAnalyzer</span></code></a> class
+for information on the available options.</p>
+</section>
+</section>
+<section id="shortcuts">
+<h2>Shortcuts<a class="headerlink" href="#shortcuts" title="Permalink to this heading">¶</a></h2>
+<section id="look-up-documents-by-a-field-value">
+<h3>Look up documents by a field value<a class="headerlink" href="#look-up-documents-by-a-field-value" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Single document (unique field value)</span>
+<span class="n">stored_fields</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;bacon&quot;</span><span class="p">)</span>
+
+<span class="c1"># Multiple documents</span>
+<span class="k">for</span> <span class="n">stored_fields</span> <span class="ow">in</span> <span class="n">searcher</span><span class="o">.</span><span class="n">documents</span><span class="p">(</span><span class="n">tag</span><span class="o">=</span><span class="s2">&quot;cake&quot;</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="sorting-and-scoring">
+<h2>Sorting and scoring<a class="headerlink" href="#sorting-and-scoring" title="Permalink to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="facets.html"><span class="doc">Sorting and faceting</span></a>.</p>
+<section id="score-results-based-on-the-position-of-the-matched-term">
+<h3>Score results based on the position of the matched term<a class="headerlink" href="#score-results-based-on-the-position-of-the-matched-term" title="Permalink to this heading">¶</a></h3>
+<p>The following scoring function uses the position of the first occurance of a
+term in each document to calculate the score, so documents with the given term
+earlier in the document will score higher:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">scoring</span>
+
+<span class="k">def</span> <span class="nf">pos_score_fn</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">matcher</span><span class="p">):</span>
+    <span class="n">poses</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;positions&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">poses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">pos_weighting</span> <span class="o">=</span> <span class="n">scoring</span><span class="o">.</span><span class="n">FunctionWeighting</span><span class="p">(</span><span class="n">pos_score_fn</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">(</span><span class="n">weighting</span><span class="o">=</span><span class="n">pos_weighting</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this heading">¶</a></h2>
+<section id="how-many-hits-were-there">
+<h3>How many hits were there?<a class="headerlink" href="#how-many-hits-were-there" title="Permalink to this heading">¶</a></h3>
+<p>The number of <em>scored</em> hits:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">found</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">scored_length</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Depending on the arguments to the search, the exact total number of hits may be
+known:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">has_exact_length</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scored&quot;</span><span class="p">,</span> <span class="n">found</span><span class="p">,</span> <span class="s2">&quot;of exactly&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="s2">&quot;documents&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Usually, however, the exact number of documents that match the query is not
+known, because the searcher can skip over blocks of documents it knows won’t
+show up in the “top N” list. If you call <code class="docutils literal notranslate"><span class="pre">len(results)</span></code> on a query where the
+exact length is unknown, Whoosh will run an unscored version of the original
+query to get the exact number. This is faster than the scored search, but may
+still be noticeably slow on very large indexes or complex queries.</p>
+<p>As an alternative, you might display the <em>estimated</em> total hits:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">found</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">scored_length</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">has_exact_length</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scored&quot;</span><span class="p">,</span> <span class="n">found</span><span class="p">,</span> <span class="s2">&quot;of exactly&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="s2">&quot;documents&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">estimated_min_length</span><span class="p">()</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">estimated_length</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scored&quot;</span><span class="p">,</span> <span class="n">found</span><span class="p">,</span> <span class="s2">&quot;of between&quot;</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="s2">&quot;and&quot;</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="s2">&quot;documents&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="which-terms-matched-in-each-hit">
+<h3>Which terms matched in each hit?<a class="headerlink" href="#which-terms-matched-in-each-hit" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use terms=True to record term matches for each hit</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="c1"># Which terms matched in this hit?</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matched:&quot;</span><span class="p">,</span> <span class="n">hit</span><span class="o">.</span><span class="n">matched_terms</span><span class="p">())</span>
+
+    <span class="c1"># Which terms from the query didn&#39;t match in this hit?</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Didn&#39;t match:&quot;</span><span class="p">,</span> <span class="n">myquery</span><span class="o">.</span><span class="n">all_terms</span><span class="p">()</span> <span class="o">-</span> <span class="n">hit</span><span class="o">.</span><span class="n">matched_terms</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="global-information">
+<h2>Global information<a class="headerlink" href="#global-information" title="Permalink to this heading">¶</a></h2>
+<section id="how-many-documents-are-in-the-index">
+<h3>How many documents are in the index?<a class="headerlink" href="#how-many-documents-are-in-the-index" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Including documents that are deleted but not yet optimized away</span>
+<span class="n">numdocs</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span>
+
+<span class="c1"># Not including deleted documents</span>
+<span class="n">numdocs</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">doc_count</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="what-fields-are-in-the-index">
+<h3>What fields are in the index?<a class="headerlink" href="#what-fields-are-in-the-index" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="is-term-x-in-the-index">
+<h3>Is term X in the index?<a class="headerlink" href="#is-term-x-in-the-index" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;wobble&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">searcher</span>
+</pre></div>
+</div>
+</section>
+<section id="how-many-times-does-term-x-occur-in-the-index">
+<h3>How many times does term X occur in the index?<a class="headerlink" href="#how-many-times-does-term-x-occur-in-the-index" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of times content:wobble appears in all documents</span>
+<span class="n">freq</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">frequency</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;wobble&quot;</span><span class="p">)</span>
+
+<span class="c1"># Number of documents containing content:wobble</span>
+<span class="n">docfreq</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">doc_frequency</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;wobble&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="is-term-x-in-document-y">
+<h3>Is term X in document Y?<a class="headerlink" href="#is-term-x-in-document-y" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the &quot;content&quot; field of document 500 contains the term &quot;wobble&quot;</span>
+
+<span class="c1"># Without term vectors, skipping through list...</span>
+<span class="n">postings</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">postings</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;wobble&quot;</span><span class="p">)</span>
+<span class="n">postings</span><span class="o">.</span><span class="n">skip_to</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">postings</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">==</span> <span class="mi">500</span>
+
+<span class="c1"># ...or the slower but easier way</span>
+<span class="n">docset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">postings</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;wobble&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all_ids</span><span class="p">())</span>
+<span class="k">return</span> <span class="mi">500</span> <span class="ow">in</span> <span class="n">docset</span>
+
+<span class="c1"># If field has term vectors, skipping through list...</span>
+<span class="n">vector</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">)</span>
+<span class="n">vector</span><span class="o">.</span><span class="n">skip_to</span><span class="p">(</span><span class="s2">&quot;wobble&quot;</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">vector</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;wobble&quot;</span>
+
+<span class="c1"># ...or the slower but easier way</span>
+<span class="n">wordset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all_ids</span><span class="p">())</span>
+<span class="k">return</span> <span class="s2">&quot;wobble&quot;</span> <span class="ow">in</span> <span class="n">wordset</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="nested.html" class="btn btn-neutral float-left" title="Indexing and searching document hierarchies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/api.html" class="btn btn-neutral float-right" title="Whoosh API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

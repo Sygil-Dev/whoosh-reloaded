@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>query module &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="reading module" href="reading.html" />
+    <link rel="prev" title="qparser module" href="qparser.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Whoosh API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analysis.html"><code class="docutils literal notranslate"><span class="pre">analysis</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filestore.html"><code class="docutils literal notranslate"><span class="pre">filedb.filestore</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filetables.html"><code class="docutils literal notranslate"><span class="pre">filedb.filetables</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/morph_en.html"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qparser.html"><code class="docutils literal notranslate"><span class="pre">qparser</span></code> module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base-classes">Base classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Query"><code class="docutils literal notranslate"><span class="pre">Query</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.CompoundQuery"><code class="docutils literal notranslate"><span class="pre">CompoundQuery</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.MultiTerm"><code class="docutils literal notranslate"><span class="pre">MultiTerm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.ExpandingTerm"><code class="docutils literal notranslate"><span class="pre">ExpandingTerm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.WrappingQuery"><code class="docutils literal notranslate"><span class="pre">WrappingQuery</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#query-classes">Query classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Term"><code class="docutils literal notranslate"><span class="pre">Term</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Variations"><code class="docutils literal notranslate"><span class="pre">Variations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.FuzzyTerm"><code class="docutils literal notranslate"><span class="pre">FuzzyTerm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Phrase"><code class="docutils literal notranslate"><span class="pre">Phrase</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.And"><code class="docutils literal notranslate"><span class="pre">And</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Or"><code class="docutils literal notranslate"><span class="pre">Or</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.DisjunctionMax"><code class="docutils literal notranslate"><span class="pre">DisjunctionMax</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Not"><code class="docutils literal notranslate"><span class="pre">Not</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Prefix"><code class="docutils literal notranslate"><span class="pre">Prefix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Wildcard"><code class="docutils literal notranslate"><span class="pre">Wildcard</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Regex"><code class="docutils literal notranslate"><span class="pre">Regex</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.TermRange"><code class="docutils literal notranslate"><span class="pre">TermRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.NumericRange"><code class="docutils literal notranslate"><span class="pre">NumericRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.DateRange"><code class="docutils literal notranslate"><span class="pre">DateRange</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Every"><code class="docutils literal notranslate"><span class="pre">Every</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.NullQuery"><code class="docutils literal notranslate"><span class="pre">NullQuery</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#binary-queries">Binary queries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Require"><code class="docutils literal notranslate"><span class="pre">Require</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.AndMaybe"><code class="docutils literal notranslate"><span class="pre">AndMaybe</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.AndNot"><code class="docutils literal notranslate"><span class="pre">AndNot</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Otherwise"><code class="docutils literal notranslate"><span class="pre">Otherwise</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#span-queries">Span queries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.Span"><code class="docutils literal notranslate"><span class="pre">Span</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanQuery"><code class="docutils literal notranslate"><span class="pre">SpanQuery</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanFirst"><code class="docutils literal notranslate"><span class="pre">SpanFirst</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanNear"><code class="docutils literal notranslate"><span class="pre">SpanNear</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanNear2"><code class="docutils literal notranslate"><span class="pre">SpanNear2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanNot"><code class="docutils literal notranslate"><span class="pre">SpanNot</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanOr"><code class="docutils literal notranslate"><span class="pre">SpanOr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanContains"><code class="docutils literal notranslate"><span class="pre">SpanContains</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanBefore"><code class="docutils literal notranslate"><span class="pre">SpanBefore</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.SpanCondition"><code class="docutils literal notranslate"><span class="pre">SpanCondition</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#special-queries">Special queries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.NestedParent"><code class="docutils literal notranslate"><span class="pre">NestedParent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.NestedChildren"><code class="docutils literal notranslate"><span class="pre">NestedChildren</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.ConstantScoreQuery"><code class="docutils literal notranslate"><span class="pre">ConstantScoreQuery</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.query.QueryError"><code class="docutils literal notranslate"><span class="pre">QueryError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reading.html"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scoring.html"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html"><code class="docutils literal notranslate"><span class="pre">searching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing.html"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">Whoosh API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/query.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-whoosh.query">
+<span id="query-module"></span><h1><code class="docutils literal notranslate"><span class="pre">query</span></code> module<a class="headerlink" href="#module-whoosh.query" title="Permalink to this heading">¶</a></h1>
+<p>See also <a class="reference internal" href="qparser.html#module-whoosh.qparser" title="whoosh.qparser"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.qparser</span></code></a> which contains code for parsing user queries
+into query objects.</p>
+<section id="base-classes">
+<h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this heading">¶</a></h2>
+<p>The following abstract base classes are subclassed to create the “real”
+query operations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Query">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Query</span></span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for all queries.</p>
+<p>Note that this base class implements __or__, __and__, and __sub__ to allow
+slightly more convenient composition of query objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="go">Or([Term(&quot;content&quot;, u&quot;a&quot;), Term(&quot;content&quot;, u&quot;b&quot;)])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="go">And([Term(&quot;content&quot;, u&quot;a&quot;), Term(&quot;content&quot;, u&quot;b&quot;)])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="go">And([Term(&quot;content&quot;, u&quot;a&quot;), Not(Term(&quot;content&quot;, u&quot;b&quot;))])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.accept">
+<span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.accept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.accept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the given function to this query’s subqueries (if any) and
+then to this query itself:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">boost_phrases</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">isintance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">Phrase</span><span class="p">):</span>
+        <span class="n">q</span><span class="o">.</span><span class="n">boost</span> <span class="o">*=</span> <span class="mf">2.0</span>
+    <span class="k">return</span> <span class="n">q</span>
+
+<span class="n">myquery</span> <span class="o">=</span> <span class="n">myquery</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">boost_phrases</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method automatically creates copies of the nodes in the original
+tree before passing them to your function, so your function can change
+attributes on nodes without altering the original tree.</p>
+<p>This method is less flexible than using <a class="reference internal" href="#whoosh.query.Query.apply" title="whoosh.query.Query.apply"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Query.apply()</span></code></a> (in fact
+it’s implemented using that method) but is often more straightforward.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.all_terms">
+<span class="sig-name descname"><span class="pre">all_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phrases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.all_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.all_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of all terms in this query tree.</p>
+<p>This method exists for backwards-compatibility. Use iter_all_terms()
+instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phrases</strong> – Whether to add words found in Phrase queries.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.12)">set</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.all_tokens">
+<span class="sig-name descname"><span class="pre">all_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.all_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.all_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator of <code class="xref py py-class docutils literal notranslate"><span class="pre">analysis.Token</span></code> objects corresponding
+to all terms in this query tree. The Token objects will have the
+<code class="docutils literal notranslate"><span class="pre">fieldname</span></code>, <code class="docutils literal notranslate"><span class="pre">text</span></code>, and <code class="docutils literal notranslate"><span class="pre">boost</span></code> attributes set. If the query
+was built by the query parser, they Token objects will also have
+<code class="docutils literal notranslate"><span class="pre">startchar</span></code> and <code class="docutils literal notranslate"><span class="pre">endchar</span></code> attributes indexing into the original
+user query.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>If this query has children, calls the given function on each child
+and returns a new copy of this node with the new children returned by
+the function. If this is a leaf node, simply returns this object.</p>
+<p>This is useful for writing functions that transform a query tree. For
+example, this function changes all Term objects in a query tree into
+Variations objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">term2var</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">Term</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Variations</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">q</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">term2var</span><span class="p">)</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">And</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;alfa&quot;</span><span class="p">),</span>
+         <span class="n">Or</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;bravo&quot;</span><span class="p">),</span>
+             <span class="n">Not</span><span class="p">(</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="s2">&quot;charlie&quot;</span><span class="p">))])])</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">term2var</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that this method does not automatically create copies of nodes.
+To avoid modifying the original tree, your function should call the
+<a class="reference internal" href="#whoosh.query.Query.copy" title="whoosh.query.Query.copy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Query.copy()</span></code></a> method on nodes before changing their attributes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.children">
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator of the subqueries of this object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated, just use <code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.deletion_docs">
+<span class="sig-name descname"><span class="pre">deletion_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.deletion_docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.deletion_docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator of docnums matching this query for the purpose
+of deletion. The <a class="reference internal" href="writing.html#whoosh.writing.IndexWriter.delete_by_query" title="whoosh.writing.IndexWriter.delete_by_query"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete_by_query()</span></code></a>
+method will use this method when deciding what documents to delete,
+allowing special queries (e.g. nested queries) to override what
+documents are deleted. The default implementation just forwards to
+<a class="reference internal" href="#whoosh.query.Query.docs" title="whoosh.query.Query.docs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Query.docs()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.docs">
+<span class="sig-name descname"><span class="pre">docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator of docnums matching this query.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">my_index</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">searcher</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">list</span><span class="p">(</span><span class="n">my_query</span><span class="o">.</span><span class="n">docs</span><span class="p">(</span><span class="n">searcher</span><span class="p">))</span>
+<span class="go">[10, 34, 78, 103]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>searcher</strong> – A <a class="reference internal" href="searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.estimate_min_size">
+<span class="sig-name descname"><span class="pre">estimate_min_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.estimate_min_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.estimate_min_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an estimate of the minimum number of documents this query
+could potentially match.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.estimate_size">
+<span class="sig-name descname"><span class="pre">estimate_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.estimate_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.estimate_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an estimate of how many documents this query could
+potentially match (for example, the estimated size of a simple term
+query is the document frequency of the term). It is permissible to
+overestimate, but not to underestimate.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.existing_terms">
+<span class="sig-name descname"><span class="pre">existing_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phrases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.existing_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.existing_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of all byteterms in this query tree that exist in
+the given ixreader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ixreader</strong> – A <a class="reference internal" href="reading.html#whoosh.reading.IndexReader" title="whoosh.reading.IndexReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader</span></code></a> object.</p></li>
+<li><p><strong>phrases</strong> – Whether to add words found in Phrase queries.</p></li>
+<li><p><strong>expand</strong> – If True, queries that match multiple terms
+will return all matching expansions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.12)">set</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.field">
+<span class="sig-name descname"><span class="pre">field</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the field this query matches in, or None if this query does
+not match in a single field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.has_terms">
+<span class="sig-name descname"><span class="pre">has_terms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.has_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.has_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this specific object represents a search for a
+specific term (as opposed to a pattern, as in Wildcard and Prefix) or
+terms (i.e., whether the <code class="docutils literal notranslate"><span class="pre">replace()</span></code> method does something
+meaningful on this instance).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.is_leaf">
+<span class="sig-name descname"><span class="pre">is_leaf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.is_leaf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.is_leaf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this is a leaf node in the query tree, or False if
+this query has sub-queries.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.is_range">
+<span class="sig-name descname"><span class="pre">is_range</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.is_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.is_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this object searches for values within a range.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.iter_all_terms">
+<span class="sig-name descname"><span class="pre">iter_all_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phrases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.iter_all_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.iter_all_terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator of (fieldname, text) pairs for all terms in
+this query tree.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qp</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">myparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;alfa bravo title:charlie&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># List the terms in a query</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">iter_all_terms</span><span class="p">())</span>
+<span class="go">[(&quot;text&quot;, &quot;alfa&quot;), (&quot;text&quot;, &quot;bravo&quot;), (&quot;title&quot;, &quot;charlie&quot;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get a set of all terms in the query that don&#39;t exist in the index</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">missing</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">q</span><span class="o">.</span><span class="n">iter_all_terms</span><span class="p">()</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r</span><span class="p">)</span>
+<span class="go">set([(&quot;text&quot;, &quot;alfa&quot;), (&quot;title&quot;, &quot;charlie&quot;)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># All terms in the query that occur in fewer than 5 documents in</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># the index</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">q</span><span class="o">.</span><span class="n">iter_all_terms</span><span class="p">()</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">doc_frequency</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">]</span>
+<span class="go">[(&quot;title&quot;, &quot;charlie&quot;)]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phrases</strong> – Whether to add words found in Phrase queries.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.leaves">
+<span class="sig-name descname"><span class="pre">leaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.leaves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.leaves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator of all the leaf queries in this query tree as a
+flat series.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.matcher">
+<span class="sig-name descname"><span class="pre">matcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.matcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.matcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matcher</span></code></a> object you can use to
+retrieve documents and scores matching this query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.matching.Matcher</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.normalize">
+<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a recursively “normalized” form of this query. The
+normalized form removes redundancy and empty queries. This is called
+automatically on query trees created by the query parser, but you may
+want to call it yourself if you’re writing your own parser or building
+your own queries.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">And</span><span class="p">([</span><span class="n">And</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;a&quot;</span><span class="p">),</span>
+<span class="gp">... </span>              <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;b&quot;</span><span class="p">)]),</span>
+<span class="gp">... </span>              <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;c&quot;</span><span class="p">),</span> <span class="n">Or</span><span class="p">([])])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="go">And([Term(&quot;f&quot;, u&quot;a&quot;), Term(&quot;f&quot;, u&quot;b&quot;), Term(&quot;f&quot;, u&quot;c&quot;)])</span>
+</pre></div>
+</div>
+<p>Note that this returns a <em>new, normalized</em> query. It <em>does not</em> modify
+the original query “in place”.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.phrases">
+<span class="sig-name descname"><span class="pre">phrases</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.phrases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.phrases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively get all individual terms and phrases that are part of this Query</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oldtext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newtext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of this query with oldtext replaced by newtext (if
+oldtext was anywhere in this query).</p>
+<p>Note that this returns a <em>new</em> query with the given text replaced. It
+<em>does not</em> modify the original query “in place”.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.requires">
+<span class="sig-name descname"><span class="pre">requires</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.requires"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.requires" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of queries that are <em>known</em> to be required to match
+for the entire query to match. Note that other queries might also turn
+out to be required but not be determinable by examining the static
+query.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">And</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+<span class="go">set([Term(&quot;f&quot;, u&quot;a&quot;), Term(&quot;f&quot;, u&quot;b&quot;)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Or</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+<span class="go">set([])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AndMaybe</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+<span class="go">set([Term(&quot;f&quot;, u&quot;a&quot;)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+<span class="go">set([Term(&quot;f&quot;, u&quot;a&quot;)])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.simplify">
+<span class="sig-name descname"><span class="pre">simplify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.simplify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.simplify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a recursively simplified form of this query, where
+“second-order” queries (such as Prefix and Variations) are re-written
+into lower-level queries (such as Term and Or).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.terms">
+<span class="sig-name descname"><span class="pre">terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phrases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.terms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields zero or more (fieldname, text) pairs queried by this object.
+You can check whether a query object targets specific terms before you
+call this method using <a class="reference internal" href="#whoosh.query.Query.has_terms" title="whoosh.query.Query.has_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Query.has_terms()</span></code></a>.</p>
+<p>To get all terms in a query tree, use <a class="reference internal" href="#whoosh.query.Query.iter_all_terms" title="whoosh.query.Query.iter_all_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Query.iter_all_terms()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.tokens">
+<span class="sig-name descname"><span class="pre">tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exreader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields zero or more <code class="xref py py-class docutils literal notranslate"><span class="pre">analysis.Token</span></code> objects corresponding to
+the terms searched for by this query object. You can check whether a
+query object targets specific terms before you call this method using
+<a class="reference internal" href="#whoosh.query.Query.has_terms" title="whoosh.query.Query.has_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Query.has_terms()</span></code></a>.</p>
+<p>The Token objects will have the <code class="docutils literal notranslate"><span class="pre">fieldname</span></code>, <code class="docutils literal notranslate"><span class="pre">text</span></code>, and <code class="docutils literal notranslate"><span class="pre">boost</span></code>
+attributes set. If the query was built by the query parser, they Token
+objects will also have <code class="docutils literal notranslate"><span class="pre">startchar</span></code> and <code class="docutils literal notranslate"><span class="pre">endchar</span></code> attributes
+indexing into the original user query.</p>
+<p>To get all tokens for a query tree, use <a class="reference internal" href="#whoosh.query.Query.all_tokens" title="whoosh.query.Query.all_tokens"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Query.all_tokens()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exreader</strong> – a reader to use to expand multiterm queries such as
+prefixes and wildcards. The default is None meaning do not expand.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Query.with_boost">
+<span class="sig-name descname"><span class="pre">with_boost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boost</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Query.with_boost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Query.with_boost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a COPY of this query with the boost set to the given value.</p>
+<p>If a query type does not accept a boost itself, it will try to pass the
+boost on to its children, if any.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.CompoundQuery">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">CompoundQuery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subqueries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/compound.html#CompoundQuery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.CompoundQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for queries that combine or manipulate the results
+of multiple sub-queries .</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.MultiTerm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">MultiTerm</span></span><a class="reference internal" href="../_modules/whoosh/query/terms.html#MultiTerm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.MultiTerm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for queries that operate on multiple terms in the
+same field.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.ExpandingTerm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">ExpandingTerm</span></span><a class="reference internal" href="../_modules/whoosh/query/terms.html#ExpandingTerm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.ExpandingTerm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intermediate base class for queries such as FuzzyTerm and Variations
+that expand into multiple queries, but come from a single term.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.WrappingQuery">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">WrappingQuery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/wrappers.html#WrappingQuery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.WrappingQuery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="query-classes">
+<h2>Query classes<a class="headerlink" href="#query-classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Term">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Term</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minquality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/terms.html#Term"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents containing the given term (fieldname+text pair).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;render&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Variations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Variations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/terms.html#Variations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Variations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query that automatically searches for morphological variations of the
+given word in the same field.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.FuzzyTerm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">FuzzyTerm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefixlength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constantscore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/terms.html#FuzzyTerm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.FuzzyTerm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents containing words similar to the given term.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – The name of the field to search.</p></li>
+<li><p><strong>text</strong> – The text to search for.</p></li>
+<li><p><strong>boost</strong> – A boost factor to apply to scores of documents matching
+this query.</p></li>
+<li><p><strong>maxdist</strong> – The maximum edit distance from the given text.</p></li>
+<li><p><strong>prefixlength</strong> – The matched terms must share this many initial
+characters with ‘text’. For example, if text is “light” and
+prefixlength is 2, then only terms starting with “li” are checked
+for similarity.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Phrase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Phrase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char_ranges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/positional.html#Phrase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Phrase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents containing a given phrase.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – the field to search.</p></li>
+<li><p><strong>words</strong> – a list of words (unicode strings) in the phrase.</p></li>
+<li><p><strong>slop</strong> – the number of words allowed between each “word” in the
+phrase; the default of 1 means the phrase must match exactly.</p></li>
+<li><p><strong>boost</strong> – a boost factor that to apply to the raw score of
+documents matched by this query.</p></li>
+<li><p><strong>char_ranges</strong> – if a Phrase object is created by the query parser,
+it will set this attribute to a list of (startchar, endchar) pairs
+corresponding to the words in the phrase</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.And">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">And</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subqueries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/compound.html#And"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.And" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents that match ALL of the subqueries.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">And</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;render&quot;</span><span class="p">),</span>
+<span class="gp">... </span>     <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;shade&quot;</span><span class="p">),</span>
+<span class="gp">... </span>     <span class="n">Not</span><span class="p">(</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;texture&quot;</span><span class="p">))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># You can also do this</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;render&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;shade&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Or">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Or</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subqueries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minmatch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/compound.html#Or"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Or" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents that match ANY of the subqueries.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Or</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;render&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">And</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;shade&quot;</span><span class="p">),</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;texture&quot;</span><span class="p">)]),</span>
+<span class="gp">... </span>    <span class="n">Not</span><span class="p">(</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;network&quot;</span><span class="p">))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># You can also do this</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;render&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;shade&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subqueries</strong> – a list of <a class="reference internal" href="#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a> objects to search for.</p></li>
+<li><p><strong>boost</strong> – a boost factor to apply to the scores of all matching
+documents.</p></li>
+<li><p><strong>minmatch</strong> – not yet implemented.</p></li>
+<li><p><strong>scale</strong> – a scaling factor for a “coordination bonus”. If this
+value is not None, it should be a floating point number greater
+than 0 and less than 1. The scores of the matching documents are
+boosted/penalized based on the number of query terms that matched
+in the document. This number scales the effect of the bonuses.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.DisjunctionMax">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">DisjunctionMax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subqueries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tiebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/compound.html#DisjunctionMax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.DisjunctionMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches all documents that match any of the subqueries, but scores each
+document using the maximum score from the subqueries.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Not">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Not</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/wrappers.html#Not"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Not" title="Permalink to this definition">¶</a></dt>
+<dd><p>Excludes any documents that match the subquery.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Match documents that contain &#39;render&#39; but not &#39;texture&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">And</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;render&quot;</span><span class="p">),</span>
+<span class="gp">... </span>     <span class="n">Not</span><span class="p">(</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;texture&quot;</span><span class="p">))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># You can also do this</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;render&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;texture&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – A <a class="reference internal" href="#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a> object. The results of this query
+are <em>excluded</em> from the parent query.</p></li>
+<li><p><strong>boost</strong> – Boost is meaningless for excluded documents but this
+keyword argument is accepted for the sake of a consistent
+interface.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Prefix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constantscore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/terms.html#Prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents that contain any terms that start with the given text.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Match documents containing words starting with &#39;comp&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Prefix</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;comp&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Wildcard">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Wildcard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constantscore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/terms.html#Wildcard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Wildcard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents that contain any terms that match a “glob” pattern.
+See the Python <code class="docutils literal notranslate"><span class="pre">fnmatch</span></code> module for information about globs.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Wildcard</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;in*f?x&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Regex">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Regex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constantscore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/terms.html#Regex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Regex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents that contain any terms that match a regular
+expression. See the Python <code class="docutils literal notranslate"><span class="pre">re</span></code> module for information about regular
+expressions.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.TermRange">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">TermRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startexcl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endexcl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constantscore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#TermRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.TermRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents containing any terms in a given range.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Match documents where the indexed &quot;id&quot; field is greater than or equal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># to &#39;apple&#39; and less than or equal to &#39;pear&#39;.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TermRange</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;pear&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – The name of the field to search.</p></li>
+<li><p><strong>start</strong> – Match terms equal to or greater than this.</p></li>
+<li><p><strong>end</strong> – Match terms equal to or less than this.</p></li>
+<li><p><strong>startexcl</strong> – If True, the range start is exclusive. If False, the
+range start is inclusive.</p></li>
+<li><p><strong>endexcl</strong> – If True, the range end is exclusive. If False, the
+range end is inclusive.</p></li>
+<li><p><strong>boost</strong> – Boost factor that should be applied to the raw score of
+results matched by this query.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.NumericRange">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">NumericRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startexcl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endexcl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constantscore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#NumericRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NumericRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>A range query for NUMERIC fields. Takes advantage of tiered indexing
+to speed up large ranges by matching at a high resolution at the edges of
+the range and a low resolution in the middle.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Match numbers from 10 to 5925 in the &quot;number&quot; field.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nr</span> <span class="o">=</span> <span class="n">NumericRange</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5925</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – The name of the field to search.</p></li>
+<li><p><strong>start</strong> – Match terms equal to or greater than this number. This
+should be a number type, not a string.</p></li>
+<li><p><strong>end</strong> – Match terms equal to or less than this number. This should
+be a number type, not a string.</p></li>
+<li><p><strong>startexcl</strong> – If True, the range start is exclusive. If False, the
+range start is inclusive.</p></li>
+<li><p><strong>endexcl</strong> – If True, the range end is exclusive. If False, the
+range end is inclusive.</p></li>
+<li><p><strong>boost</strong> – Boost factor that should be applied to the raw score of
+results matched by this query.</p></li>
+<li><p><strong>constantscore</strong> – If True, the compiled query returns a constant
+score (the value of the <code class="docutils literal notranslate"><span class="pre">boost</span></code> keyword argument) instead of
+actually scoring the matched terms. This gives a nice speed boost
+and won’t affect the results in most cases since numeric ranges
+will almost always be used as a filter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.DateRange">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">DateRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startexcl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endexcl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constantscore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#DateRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.DateRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a very thin subclass of <a class="reference internal" href="#whoosh.query.NumericRange" title="whoosh.query.NumericRange"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumericRange</span></code></a> that only
+overrides the initializer and <code class="docutils literal notranslate"><span class="pre">__repr__()</span></code> methods to work with datetime
+objects instead of numbers. Internally this object converts the datetime
+objects it’s created with to numbers and otherwise acts like a
+<code class="docutils literal notranslate"><span class="pre">NumericRange</span></code> query.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DateRange</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="gp">... </span>          <span class="n">datetime</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">59</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – The name of the field to search.</p></li>
+<li><p><strong>start</strong> – Match terms equal to or greater than this number. This
+should be a number type, not a string.</p></li>
+<li><p><strong>end</strong> – Match terms equal to or less than this number. This should
+be a number type, not a string.</p></li>
+<li><p><strong>startexcl</strong> – If True, the range start is exclusive. If False, the
+range start is inclusive.</p></li>
+<li><p><strong>endexcl</strong> – If True, the range end is exclusive. If False, the
+range end is inclusive.</p></li>
+<li><p><strong>boost</strong> – Boost factor that should be applied to the raw score of
+results matched by this query.</p></li>
+<li><p><strong>constantscore</strong> – If True, the compiled query returns a constant
+score (the value of the <code class="docutils literal notranslate"><span class="pre">boost</span></code> keyword argument) instead of
+actually scoring the matched terms. This gives a nice speed boost
+and won’t affect the results in most cases since numeric ranges
+will almost always be used as a filter.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Every">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Every</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#Every"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Every" title="Permalink to this definition">¶</a></dt>
+<dd><p>A query that matches every document containing any term in a given
+field. If you don’t specify a field, the query matches every document.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Match any documents with something in the &quot;path&quot; field</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Every</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Matcher every document</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">Every</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The unfielded form (matching every document) is efficient.</p>
+<p>The fielded is more efficient than a prefix query with an empty prefix or a
+‘*’ wildcard, but it can still be very slow on large indexes. It requires
+the searcher to read the full posting list of every term in the given
+field.</p>
+<p>Instead of using this query it is much more efficient when you create the
+index to include a single term that appears in all documents that have the
+field you want to match.</p>
+<p>For example, instead of this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Match all documents that have something in the &quot;path&quot; field</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">Every</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Do this when indexing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add an extra field that indicates whether a document has a path</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">has_path</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">ID</span><span class="p">)</span>
+
+<span class="c1"># When indexing, set the &quot;has_path&quot; field based on whether the document</span>
+<span class="c1"># has anything in the &quot;path&quot; field</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text_value1</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text_value2</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path_value2</span><span class="p">,</span> <span class="n">has_path</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then to find all documents with a path:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;has_path&quot;</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fieldname</strong> – the name of the field to match, or <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">*</span></code>
+to match all documents.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="whoosh.query.NullQuery">
+<span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">NullQuery</span></span><a class="headerlink" href="#whoosh.query.NullQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of &lt;_NullQuery&gt;</p>
+</dd></dl>
+
+</section>
+<section id="binary-queries">
+<h2>Binary queries<a class="headerlink" href="#binary-queries" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Require">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Require</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/compound.html#Require"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Require" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary query returns results from the first query that also appear in
+the second query, but only uses the scores from the first query. This lets
+you filter results without affecting scores.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.AndMaybe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">AndMaybe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/compound.html#AndMaybe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.AndMaybe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary query takes results from the first query. If and only if the
+same document also appears in the results from the second query, the score
+from the second query will be added to the score from the first query.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.AndNot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">AndNot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/compound.html#AndNot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.AndNot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary boolean query of the form ‘a ANDNOT b’, where documents that
+match b are removed from the matches for a.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Otherwise">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Otherwise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/compound.html#Otherwise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Otherwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>A binary query that only matches the second clause if the first clause
+doesn’t match any documents.</p>
+</dd></dl>
+
+</section>
+<section id="span-queries">
+<h2>Span queries<a class="headerlink" href="#span-queries" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.Span">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">Span</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startchar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endchar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#Span"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Span" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.Span.merge">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spans</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#Span.merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.Span.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges overlapping and touches spans in the given list of spans.</p>
+<p>Note that this modifies the original list.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spans</span> <span class="o">=</span> <span class="p">[</span><span class="n">Span</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">Span</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Span</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">spans</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spans</span>
+<span class="go">[&lt;1-3&gt;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanQuery">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanQuery</span></span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanQuery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for span-based queries. Each span query type wraps
+a “regular” query that implements the basic document-matching functionality
+(for example, SpanNear wraps an And query, because SpanNear requires that
+the two sub-queries occur in the same documents. The wrapped query is
+stored in the <code class="docutils literal notranslate"><span class="pre">q</span></code> attribute.</p>
+<p>Subclasses usually only need to implement the initializer to set the
+wrapped query, and <code class="docutils literal notranslate"><span class="pre">matcher()</span></code> to return a span-aware matcher object.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanFirst">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanFirst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanFirst"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanFirst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches spans that end within the first N positions. This lets you
+for example only match terms near the beginning of the document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> – the query to match.</p></li>
+<li><p><strong>limit</strong> – the query must match within this position at the start
+of a document. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>, which means the query must
+match at the first position.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanNear">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanNear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mindist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanNear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanNear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Note: for new code, use <a class="reference internal" href="#whoosh.query.SpanNear2" title="whoosh.query.SpanNear2"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpanNear2</span></code></a> instead of this class. SpanNear2
+takes a list of sub-queries instead of requiring you to create a binary
+tree of query objects.</p>
+<p>Matches queries that occur near each other. By default, only matches
+queries that occur right next to each other (slop=1) and in order
+(ordered=True).</p>
+<p>For example, to find documents where “whoosh” occurs next to “library”
+in the “text” field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">query</span><span class="p">,</span> <span class="n">spans</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;whoosh&quot;</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;library&quot;</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To find documents where “whoosh” occurs at most 5 positions before
+“library”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To find documents where “whoosh” occurs at most 5 positions before or after
+“library”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">phrase()</span></code> class method to create a tree of SpanNear
+queries to match a list of terms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear</span><span class="o">.</span><span class="n">phrase</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;whoosh&quot;</span><span class="p">,</span> <span class="s2">&quot;search&quot;</span><span class="p">,</span> <span class="s2">&quot;library&quot;</span><span class="p">],</span>
+                          <span class="n">slop</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – the first query to match.</p></li>
+<li><p><strong>b</strong> – the second query that must occur within “slop” positions of
+the first query.</p></li>
+<li><p><strong>slop</strong> – the number of positions within which the queries must
+occur. Default is 1, meaning the queries must occur right next
+to each other.</p></li>
+<li><p><strong>ordered</strong> – whether a must occur before b. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Pram mindist<span class="colon">:</span></dt>
+<dd class="field-even"><p>the minimum distance allowed between the queries.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanNear2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanNear2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mindist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanNear2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanNear2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches queries that occur near each other. By default, only matches
+queries that occur right next to each other (slop=1) and in order
+(ordered=True).</p>
+<p>New code should use this query type instead of <a class="reference internal" href="#whoosh.query.SpanNear" title="whoosh.query.SpanNear"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpanNear</span></code></a>.</p>
+<p>(Unlike <a class="reference internal" href="#whoosh.query.SpanNear" title="whoosh.query.SpanNear"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpanNear</span></code></a>, this query takes a list of subqueries instead of
+requiring you to build a binary tree of query objects. This query should
+also be slightly faster due to less overhead.)</p>
+<p>For example, to find documents where “whoosh” occurs next to “library”
+in the “text” field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">query</span><span class="p">,</span> <span class="n">spans</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;whoosh&quot;</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;library&quot;</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear2</span><span class="p">([</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To find documents where “whoosh” occurs at most 5 positions before
+“library”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear2</span><span class="p">([</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">],</span> <span class="n">slop</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To find documents where “whoosh” occurs at most 5 positions before or after
+“library”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear2</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qs</strong> – a sequence of sub-queries to match.</p></li>
+<li><p><strong>slop</strong> – the number of positions within which the queries must
+occur. Default is 1, meaning the queries must occur right next
+to each other.</p></li>
+<li><p><strong>ordered</strong> – whether a must occur before b. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Pram mindist<span class="colon">:</span></dt>
+<dd class="field-even"><p>the minimum distance allowed between the queries.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanNot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanNot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanNot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanNot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches spans from the first query only if they don’t overlap with
+spans from the second query. If there are no non-overlapping spans, the
+document does not match.</p>
+<p>For example, to match documents that contain “bear” at most 2 places after
+“apple” in the “text” field but don’t have “cute” between them:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">query</span><span class="p">,</span> <span class="n">spans</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;bear&quot;</span><span class="p">)</span>
+<span class="n">near</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNot</span><span class="p">(</span><span class="n">near</span><span class="p">,</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;cute&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – the query to match.</p></li>
+<li><p><strong>b</strong> – do not match any spans that overlap with spans from this
+query.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanOr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanOr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subqs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanOr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanOr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents that match any of a list of sub-queries. Unlike
+query.Or, this class merges together matching spans from the different
+sub-queries when they overlap.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subqs</strong> – a list of queries to match.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanContains">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanContains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanContains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanContains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents where the spans of the first query contain any spans
+of the second query.</p>
+<p>For example, to match documents where “apple” occurs at most 10 places
+before “bear” in the “text” field and “cute” is between them:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">query</span><span class="p">,</span> <span class="n">spans</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;bear&quot;</span><span class="p">)</span>
+<span class="n">near</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanNear</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">slop</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanContains</span><span class="p">(</span><span class="n">near</span><span class="p">,</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;cute&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – the query to match.</p></li>
+<li><p><strong>b</strong> – the query whose spans must occur within the matching spans
+of the first query.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanBefore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanBefore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanBefore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanBefore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents where the spans of the first query occur before any
+spans of the second query.</p>
+<p>For example, to match documents where “apple” occurs anywhere before
+“bear”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">query</span><span class="p">,</span> <span class="n">spans</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;bear&quot;</span><span class="p">)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">spans</span><span class="o">.</span><span class="n">SpanBefore</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – the query that must occur before the second.</p></li>
+<li><p><strong>b</strong> – the query that must occur after the first.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.SpanCondition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">SpanCondition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/spans.html#SpanCondition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.SpanCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches documents that satisfy both subqueries, but only uses the spans
+from the first subquery.</p>
+<p>This is useful when you want to place conditions on matches but not have
+those conditions affect the spans returned.</p>
+<p>For example, to get spans for the term <code class="docutils literal notranslate"><span class="pre">alfa</span></code> in documents that also
+must contain the term <code class="docutils literal notranslate"><span class="pre">bravo</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SpanCondition</span><span class="p">(</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;alfa&quot;</span><span class="p">),</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;bravo&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="special-queries">
+<h2>Special queries<a class="headerlink" href="#special-queries" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.NestedParent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">NestedParent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_parent_limit=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score_fn=&lt;built-in</span> <span class="pre">function</span> <span class="pre">sum&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/nested.html#NestedParent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NestedParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>A query that allows you to search for “nested” documents, where you can
+index (possibly multiple levels of) “parent” and “child” documents using
+the <a class="reference internal" href="writing.html#whoosh.writing.IndexWriter.group" title="whoosh.writing.IndexWriter.group"><code class="xref py py-meth docutils literal notranslate"><span class="pre">group()</span></code></a> and/or
+<a class="reference internal" href="writing.html#whoosh.writing.IndexWriter.start_group" title="whoosh.writing.IndexWriter.start_group"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_group()</span></code></a> methods of a
+<a class="reference internal" href="writing.html#whoosh.writing.IndexWriter" title="whoosh.writing.IndexWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.IndexWriter</span></code></a> to indicate that hierarchically related
+documents should be kept together:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+    <span class="c1"># Say we&#39;re indexing chapters (type=chap) and each chapter has a</span>
+    <span class="c1"># number of paragraphs (type=p)</span>
+    <span class="k">with</span> <span class="n">w</span><span class="o">.</span><span class="n">group</span><span class="p">():</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;chap&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Chapter 1&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Able baker&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Bright morning&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">w</span><span class="o">.</span><span class="n">group</span><span class="p">():</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;chap&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Chapter 2&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Car trip&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Dog eared&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Every day&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">w</span><span class="o">.</span><span class="n">group</span><span class="p">():</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;chap&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Chapter 3&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Fine day&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">NestedParent</span></code> query wraps two sub-queries: the “parent query”
+matches a class of “parent documents”. The “sub query” matches nested
+documents you want to find. For each “sub document” the “sub query” finds,
+this query acts as if it found the corresponding “parent document”.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">ix</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">))</span>
+<span class="gp">... </span>  <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="go">Chapter 2</span>
+<span class="go">Chapter 3</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parents</strong> – a query, DocIdSet object, or Results object
+representing the documents you want to use as the “parent”
+documents. Where the sub-query matches, the corresponding document
+in these results will be returned as the match.</p></li>
+<li><p><strong>subq</strong> – a query matching the information you want to find.</p></li>
+<li><p><strong>per_parent_limit</strong> – a maximum number of “sub documents” to search
+per parent. The default is None, meaning no limit.</p></li>
+<li><p><strong>score_fn</strong> – a function to use to combine the scores of matching
+sub-documents to calculate the score returned for the parent
+document. The default is <code class="docutils literal notranslate"><span class="pre">sum</span></code>, that is, add up the scores of the
+sub-documents.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.NestedChildren">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">NestedChildren</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parents</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/nested.html#NestedChildren"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NestedChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the reverse of a <a class="reference internal" href="#whoosh.query.NestedParent" title="whoosh.query.NestedParent"><code class="xref py py-class docutils literal notranslate"><span class="pre">NestedParent</span></code></a> query: instead of taking
+a query that matches children but returns the parent, this query matches
+parents but returns the children.</p>
+<p>This is useful, for example, to search for an album title and return the
+songs in the album:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">ID</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                       <span class="n">album_name</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                       <span class="n">track_num</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                       <span class="n">track_name</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                       <span class="n">lyrics</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">RamStorage</span><span class="p">()</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+<span class="c1"># Indexing</span>
+<span class="k">with</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+    <span class="c1"># For each album, index a &quot;group&quot; of a parent &quot;album&quot; document and</span>
+    <span class="c1"># multiple child &quot;track&quot; documents.</span>
+    <span class="k">with</span> <span class="n">w</span><span class="o">.</span><span class="n">group</span><span class="p">():</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;album&quot;</span><span class="p">,</span>
+                       <span class="n">artist</span><span class="o">=</span><span class="s2">&quot;The Cure&quot;</span><span class="p">,</span> <span class="n">album_name</span><span class="o">=</span><span class="s2">&quot;Disintegration&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;track&quot;</span><span class="p">,</span> <span class="n">track_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                       <span class="n">track_name</span><span class="o">=</span><span class="s2">&quot;Plainsong&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;track&quot;</span><span class="p">,</span> <span class="n">track_num</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                       <span class="n">track_name</span><span class="o">=</span><span class="s2">&quot;Pictures of You&quot;</span><span class="p">)</span>
+        <span class="c1"># ...</span>
+    <span class="c1"># ...</span>
+
+
+<span class="c1"># Find songs where the song name has &quot;heaven&quot; in the title and the</span>
+<span class="c1"># album the song is on has &quot;hell&quot; in the title</span>
+<span class="n">qp</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;lyrics&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">ix</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="c1"># A query that matches all parents</span>
+    <span class="n">all_albums</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;type:album&quot;</span><span class="p">)</span>
+
+    <span class="c1"># A query that matches the parents we want</span>
+    <span class="n">albums_with_hell</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;album_name:hell&quot;</span><span class="p">)</span>
+
+    <span class="c1"># A query that matches the desired albums but returns the tracks</span>
+    <span class="n">songs_on_hell_albums</span> <span class="o">=</span> <span class="n">NestedChildren</span><span class="p">(</span><span class="n">all_albums</span><span class="p">,</span> <span class="n">albums_with_hell</span><span class="p">)</span>
+
+    <span class="c1"># A query that matches tracks with heaven in the title</span>
+    <span class="n">songs_with_heaven</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;track_name:heaven&quot;</span><span class="p">)</span>
+
+    <span class="c1"># A query that finds tracks with heaven in the title on albums</span>
+    <span class="c1"># with hell in the title</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">And</span><span class="p">([</span><span class="n">songs_on_hell_albums</span><span class="p">,</span> <span class="n">songs_with_heaven</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.query.ConstantScoreQuery">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">ConstantScoreQuery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/wrappers.html#ConstantScoreQuery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.ConstantScoreQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps a query and uses a matcher that always gives a constant score
+to all matching documents. This is a useful optimization when you don’t
+care about scores from a certain branch of the query tree because it is
+simply acting as a filter. See also the <a class="reference internal" href="#whoosh.query.AndMaybe" title="whoosh.query.AndMaybe"><code class="xref py py-class docutils literal notranslate"><span class="pre">AndMaybe</span></code></a> query.</p>
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="whoosh.query.QueryError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.query.</span></span><span class="sig-name descname"><span class="pre">QueryError</span></span><a class="reference internal" href="../_modules/whoosh/query/qcore.html#QueryError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.QueryError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error encountered while running a query.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qparser.html" class="btn btn-neutral float-left" title="qparser module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="reading.html" class="btn btn-neutral float-right" title="reading module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

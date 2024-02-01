@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to Whoosh &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="Quick start" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Whoosh</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#about-whoosh">About Whoosh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-whoosh">What is Whoosh?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-can-whoosh-do-for-you">What can Whoosh do for you?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-help-with-whoosh">Getting help with Whoosh</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Introduction to Whoosh</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction-to-whoosh">
+<h1>Introduction to Whoosh<a class="headerlink" href="#introduction-to-whoosh" title="Permalink to this heading">¶</a></h1>
+<section id="about-whoosh">
+<h2>About Whoosh<a class="headerlink" href="#about-whoosh" title="Permalink to this heading">¶</a></h2>
+<p>Whoosh was created by <a class="reference external" href="mailto:matt&#37;&#52;&#48;whoosh&#46;ca">Matt Chaput</a>. It started as a quick and dirty
+search server for the online documentation of the <a class="reference external" href="http://www.sidefx.com/">Houdini</a>
+3D animation software package. Side Effects Software generously allowed Matt to open source
+the code in case it might be useful to anyone else who needs a very flexible or pure-Python
+search engine (or both!).</p>
+<ul class="simple">
+<li><p>Whoosh is fast, but uses only pure Python, so it will run anywhere Python runs,
+without requiring a compiler.</p></li>
+<li><p>By default, Whoosh uses the <a class="reference external" href="http://en.wikipedia.com/wiki/Okapi_BM25">Okapi BM25F</a> ranking
+function, but like most things the ranking function can be easily customized.</p></li>
+<li><p>Whoosh creates fairly small indexes compared to many other search libraries.</p></li>
+<li><p>All indexed text in Whoosh must be <em>unicode</em>.</p></li>
+<li><p>Whoosh lets you store arbitrary Python objects with indexed documents.</p></li>
+</ul>
+</section>
+<section id="what-is-whoosh">
+<h2>What is Whoosh?<a class="headerlink" href="#what-is-whoosh" title="Permalink to this heading">¶</a></h2>
+<p>Whoosh is a fast, pure Python search engine library.</p>
+<p>The primary design impetus of Whoosh is that it is pure Python. You should be able to
+use Whoosh anywhere you can use Python, no compiler or Java required.</p>
+<p>Like one of its ancestors, Lucene, Whoosh is not really a search engine, it’s a programmer
+library for creating a search engine <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>Practically no important behavior of Whoosh is hard-coded. Indexing
+of text, the level of information stored for each term in each field, parsing of search queries,
+the types of queries allowed, scoring algorithms, etc. are all customizable, replaceable, and
+extensible.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>It would of course be possible to build a turnkey search engine on top of Whoosh,
+like Nutch and Solr use Lucene.</p>
+</aside>
+</aside>
+</section>
+<section id="what-can-whoosh-do-for-you">
+<h2>What can Whoosh do for you?<a class="headerlink" href="#what-can-whoosh-do-for-you" title="Permalink to this heading">¶</a></h2>
+<p>Whoosh lets you index free-form or structured text and then quickly find matching
+documents based on simple or complex search criteria.</p>
+</section>
+<section id="getting-help-with-whoosh">
+<h2>Getting help with Whoosh<a class="headerlink" href="#getting-help-with-whoosh" title="Permalink to this heading">¶</a></h2>
+<p>You can view outstanding issues on the
+<a class="reference external" href="http://bitbucket.org/mchaput/whoosh">Whoosh Bitbucket page</a>
+and get help on the <a class="reference external" href="http://groups.google.com/group/whoosh">Whoosh mailing list</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scoring module &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="searching module" href="searching.html" />
+    <link rel="prev" title="reading module" href="reading.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Whoosh API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analysis.html"><code class="docutils literal notranslate"><span class="pre">analysis</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filestore.html"><code class="docutils literal notranslate"><span class="pre">filedb.filestore</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filetables.html"><code class="docutils literal notranslate"><span class="pre">filedb.filetables</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/morph_en.html"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qparser.html"><code class="docutils literal notranslate"><span class="pre">qparser</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reading.html"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base-classes">Base classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.WeightingModel"><code class="docutils literal notranslate"><span class="pre">WeightingModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.BaseScorer"><code class="docutils literal notranslate"><span class="pre">BaseScorer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.WeightScorer"><code class="docutils literal notranslate"><span class="pre">WeightScorer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.WeightLengthScorer"><code class="docutils literal notranslate"><span class="pre">WeightLengthScorer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-algorithm-classes">Scoring algorithm classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.BM25F"><code class="docutils literal notranslate"><span class="pre">BM25F</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.TF_IDF"><code class="docutils literal notranslate"><span class="pre">TF_IDF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.Frequency"><code class="docutils literal notranslate"><span class="pre">Frequency</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-utility-classes">Scoring utility classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.FunctionWeighting"><code class="docutils literal notranslate"><span class="pre">FunctionWeighting</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.MultiWeighting"><code class="docutils literal notranslate"><span class="pre">MultiWeighting</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.ReverseWeighting"><code class="docutils literal notranslate"><span class="pre">ReverseWeighting</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html"><code class="docutils literal notranslate"><span class="pre">searching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing.html"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">Whoosh API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/scoring.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-whoosh.scoring">
+<span id="scoring-module"></span><h1><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module<a class="headerlink" href="#module-whoosh.scoring" title="Permalink to this heading">¶</a></h1>
+<p>This module contains classes for scoring (and sorting) search results.</p>
+<section id="base-classes">
+<h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.WeightingModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightingModel</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightingModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightingModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for scoring models. A WeightingModel object provides
+a method, <code class="docutils literal notranslate"><span class="pre">scorer</span></code>, which returns an instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.scoring.Scorer</span></code>.</p>
+<p>Basically, WeightingModel objects store the configuration information for
+the model (for example, the values of B and K1 in the BM25F model), and
+then creates a scorer instance based on additional run-time information
+(the searcher, the fieldname, and term text) to do the actual scoring.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.scoring.WeightingModel.final">
+<span class="sig-name descname"><span class="pre">final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightingModel.final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightingModel.final" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a final score for each document. You can use this method
+in subclasses to apply document-level adjustments to the score, for
+example using the value of stored field to influence the score
+(although that would be slow).</p>
+<p>WeightingModel sub-classes that use <code class="docutils literal notranslate"><span class="pre">final()</span></code> should have the
+attribute <code class="docutils literal notranslate"><span class="pre">use_final</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>searcher</strong> – <a class="reference internal" href="searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> for the index.</p></li>
+<li><p><strong>docnum</strong> – the doc number of the document being scored.</p></li>
+<li><p><strong>score</strong> – the document’s accumulated term score.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.scoring.WeightingModel.idf">
+<span class="sig-name descname"><span class="pre">idf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightingModel.idf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightingModel.idf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the inverse document frequency of the given term.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.scoring.WeightingModel.scorer">
+<span class="sig-name descname"><span class="pre">scorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightingModel.scorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightingModel.scorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.scoring.Scorer</span></code> configured
+for the given searcher, fieldname, and term text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">BaseScorer</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for “scorer” implementations. A scorer provides a method for
+scoring a document, and sometimes methods for rating the “quality” of a
+document and a matcher’s current “block”, to implement quality-based
+optimizations.</p>
+<p>Scorer objects are created by WeightingModel objects. Basically,
+WeightingModel objects store the configuration information for the model
+(for example, the values of B and K1 in the BM25F model), and then creates
+a scorer instance.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer.block_quality">
+<span class="sig-name descname"><span class="pre">block_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer.block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer.block_quality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <em>maximum limit</em> on the possible score the matcher can
+give <strong>in its current “block”</strong> (whatever concept of “block” the
+backend might use). This can be an estimate and not necessarily the
+actual maximum score possible, but it must never be less than the
+actual maximum score.</p>
+<p>If this score is less than the minimum score
+required to make the “top N” results, then we can tell the matcher to
+skip ahead to another block with better “quality”.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer.max_quality">
+<span class="sig-name descname"><span class="pre">max_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer.max_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer.max_quality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <em>maximum limit</em> on the possible score the matcher can
+give. This can be an estimate and not necessarily the actual maximum
+score possible, but it must never be less than the actual maximum
+score.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a score for the current document of the matcher.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer.supports_block_quality">
+<span class="sig-name descname"><span class="pre">supports_block_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer.supports_block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer.supports_block_quality" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this class supports quality optimizations.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.WeightScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightScorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxweight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightScorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A scorer that simply returns the weight as the score. This is useful
+for more complex weighting models to return when they are asked for a
+scorer for fields that aren’t scorable (don’t store field lengths).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.WeightLengthScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightLengthScorer</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightLengthScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightLengthScorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for scorers where the only per-document variables are term
+weight and field length.</p>
+<p>Subclasses should override the <code class="docutils literal notranslate"><span class="pre">_score(weight,</span> <span class="pre">length)</span></code> method to return
+the score for a document with the given weight and length, and call the
+<code class="docutils literal notranslate"><span class="pre">setup()</span></code> method at the end of the initializer to set up common
+attributes.</p>
+</dd></dl>
+
+</section>
+<section id="scoring-algorithm-classes">
+<h2>Scoring algorithm classes<a class="headerlink" href="#scoring-algorithm-classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.BM25F">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">BM25F</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BM25F"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BM25F" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the BM25F scoring algorithm.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">scoring</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set a custom B value for the &quot;content&quot; field</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">w</span> <span class="o">=</span> <span class="n">scoring</span><span class="o">.</span><span class="n">BM25F</span><span class="p">(</span><span class="n">B</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">content_B</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">K1</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>B</strong> – free parameter, see the BM25 literature. Keyword arguments of
+the form <code class="docutils literal notranslate"><span class="pre">fieldname_B</span></code> (for example, <code class="docutils literal notranslate"><span class="pre">body_B</span></code>) set field-
+specific values for B.</p></li>
+<li><p><strong>K1</strong> – free parameter, see the BM25 literature.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.TF_IDF">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">TF_IDF</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#TF_IDF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.TF_IDF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.Frequency">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">Frequency</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#Frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.Frequency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="scoring-utility-classes">
+<h2>Scoring utility classes<a class="headerlink" href="#scoring-utility-classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.FunctionWeighting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">FunctionWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#FunctionWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.FunctionWeighting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses a supplied function to do the scoring. For simple scoring functions
+and experiments this may be simpler to use than writing a full weighting
+model class and scorer class.</p>
+<p>The function should accept the arguments
+<code class="docutils literal notranslate"><span class="pre">searcher,</span> <span class="pre">fieldname,</span> <span class="pre">text,</span> <span class="pre">matcher</span></code>.</p>
+<p>For example, the following function will score documents based on the
+earliest position of the query term in the document:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pos_score_fn</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">matcher</span><span class="p">):</span>
+    <span class="n">poses</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;positions&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">poses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">pos_weighting</span> <span class="o">=</span> <span class="n">scoring</span><span class="o">.</span><span class="n">FunctionWeighting</span><span class="p">(</span><span class="n">pos_score_fn</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">(</span><span class="n">weighting</span><span class="o">=</span><span class="n">pos_weighting</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the searcher passed to the function may be a per-segment searcher
+for performance reasons. If you want to get global statistics inside the
+function, you should use <code class="docutils literal notranslate"><span class="pre">searcher.get_parent()</span></code> to get the top-level
+searcher. (However, if you are using global statistics, you should probably
+write a real model/scorer combo so you can cache them on the object.)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.MultiWeighting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">MultiWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">weightings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#MultiWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.MultiWeighting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chooses from multiple scoring algorithms based on the field.</p>
+<p>The only non-keyword argument specifies the default
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Weighting</span></code> instance to use. Keyword arguments specify
+Weighting instances for specific fields.</p>
+<p>For example, to use <code class="docutils literal notranslate"><span class="pre">BM25</span></code> for most fields, but <code class="docutils literal notranslate"><span class="pre">Frequency</span></code> for
+the <code class="docutils literal notranslate"><span class="pre">id</span></code> field and <code class="docutils literal notranslate"><span class="pre">TF_IDF</span></code> for the <code class="docutils literal notranslate"><span class="pre">keys</span></code> field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mw</span> <span class="o">=</span> <span class="n">MultiWeighting</span><span class="p">(</span><span class="n">BM25</span><span class="p">(),</span> <span class="nb">id</span><span class="o">=</span><span class="n">Frequency</span><span class="p">(),</span> <span class="n">keys</span><span class="o">=</span><span class="n">TF_IDF</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>default</strong> – the Weighting instance to use for fields not
+specified in the keyword arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.scoring.ReverseWeighting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">ReverseWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighting</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#ReverseWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.ReverseWeighting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps a weighting object and subtracts the wrapped model’s scores from
+0, essentially reversing the weighting model.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="reading.html" class="btn btn-neutral float-left" title="reading module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="searching.html" class="btn btn-neutral float-right" title="searching module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

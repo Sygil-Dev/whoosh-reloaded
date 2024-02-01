@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.collectors &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.collectors</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.collectors</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2012 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains &quot;collector&quot; objects. Collectors provide a way to gather</span>
+<span class="sd">&quot;raw&quot; results from a :class:`whoosh.matching.Matcher` object, implement</span>
+<span class="sd">sorting, filtering, collation, etc., and produce a</span>
+<span class="sd">:class:`whoosh.searching.Results` object.</span>
+
+<span class="sd">The basic collectors are:</span>
+
+<span class="sd">TopCollector</span>
+<span class="sd">    Returns the top N matching results sorted by score, using block-quality</span>
+<span class="sd">    optimizations to skip blocks of documents that can&#39;t contribute to the top</span>
+<span class="sd">    N. The :meth:`whoosh.searching.Searcher.search` method uses this type of</span>
+<span class="sd">    collector by default or when you specify a ``limit``.</span>
+
+<span class="sd">UnlimitedCollector</span>
+<span class="sd">    Returns all matching results sorted by score. The</span>
+<span class="sd">    :meth:`whoosh.searching.Searcher.search` method uses this type of collector</span>
+<span class="sd">    when you specify ``limit=None`` or you specify a limit equal to or greater</span>
+<span class="sd">    than the number of documents in the searcher.</span>
+
+<span class="sd">SortingCollector</span>
+<span class="sd">    Returns all matching results sorted by a :class:`whoosh.sorting.Facet`</span>
+<span class="sd">    object. The :meth:`whoosh.searching.Searcher.search` method uses this type</span>
+<span class="sd">    of collector when you use the ``sortedby`` parameter.</span>
+
+<span class="sd">Here&#39;s an example of a simple collector that instead of remembering the matched</span>
+<span class="sd">documents just counts up the number of matches::</span>
+
+<span class="sd">    class CountingCollector(Collector):</span>
+<span class="sd">        def prepare(self, top_searcher, q, context):</span>
+<span class="sd">            # Always call super method in prepare</span>
+<span class="sd">            Collector.prepare(self, top_searcher, q, context)</span>
+
+<span class="sd">            self.count = 0</span>
+
+<span class="sd">        def collect(self, sub_docnum):</span>
+<span class="sd">            self.count += 1</span>
+
+<span class="sd">    c = CountingCollector()</span>
+<span class="sd">    mysearcher.search_with_collector(myquery, c)</span>
+<span class="sd">    print(c.count)</span>
+
+<span class="sd">There are also several wrapping collectors that extend or modify the</span>
+<span class="sd">functionality of other collectors. The meth:`whoosh.searching.Searcher.search`</span>
+<span class="sd">method uses many of these when you specify various parameters.</span>
+
+<span class="sd">NOTE: collectors are not designed to be reentrant or thread-safe. It is</span>
+<span class="sd">generally a good idea to create a new collector for each search.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">insort</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">heapify</span><span class="p">,</span> <span class="n">heappush</span><span class="p">,</span> <span class="n">heapreplace</span>
+
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">sorting</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">itervalues</span><span class="p">,</span> <span class="n">xrange</span>
+<span class="kn">from</span> <span class="nn">whoosh.searching</span> <span class="kn">import</span> <span class="n">Results</span><span class="p">,</span> <span class="n">TimeLimit</span>
+<span class="kn">from</span> <span class="nn">whoosh.util</span> <span class="kn">import</span> <span class="n">now</span>
+
+
+<span class="c1"># Functions</span>
+
+<span class="k">def</span> <span class="nf">ilen</span><span class="p">(</span><span class="n">iterator</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">total</span>
+
+
+<span class="c1"># Base class</span>
+
+<div class="viewcode-block" id="Collector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector">[docs]</a><span class="k">class</span> <span class="nc">Collector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for collectors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Collector.prepare"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is called before a search.</span>
+
+<span class="sd">        Subclasses can override this to perform set-up work, but</span>
+<span class="sd">        they should still call the superclass&#39;s method because it sets several</span>
+<span class="sd">        necessary attributes on the collector object:</span>
+
+<span class="sd">        self.top_searcher</span>
+<span class="sd">            The top-level searcher.</span>
+<span class="sd">        self.q</span>
+<span class="sd">            The query object</span>
+<span class="sd">        self.context</span>
+<span class="sd">            ``context.needs_current`` controls whether a wrapping collector</span>
+<span class="sd">            requires that this collector&#39;s matcher be in a valid state at every</span>
+<span class="sd">            call to ``collect()``. If this is ``False``, the collector is free</span>
+<span class="sd">            to use faster methods that don&#39;t necessarily keep the matcher</span>
+<span class="sd">            updated, such as ``matcher.all_ids()``.</span>
+
+<span class="sd">        :param top_searcher: the top-level :class:`whoosh.searching.Searcher`</span>
+<span class="sd">            object.</span>
+<span class="sd">        :param q: the :class:`whoosh.query.Query` object being searched for.</span>
+<span class="sd">        :param context: a :class:`whoosh.searching.SearchContext` object</span>
+<span class="sd">            containing information about the search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_searcher</span> <span class="o">=</span> <span class="n">top_searcher</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">starttime</span> <span class="o">=</span> <span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Collect matches for each sub-searcher</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_searcher</span><span class="o">.</span><span class="n">leaf_searchers</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_subsearcher</span><span class="p">(</span><span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">collect_matches</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Collector.set_subsearcher"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.set_subsearcher">[docs]</a>    <span class="k">def</span> <span class="nf">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is called each time the collector starts on a new</span>
+<span class="sd">        sub-searcher.</span>
+
+<span class="sd">        Subclasses can override this to perform set-up work, but</span>
+<span class="sd">        they should still call the superclass&#39;s method because it sets several</span>
+<span class="sd">        necessary attributes on the collector object:</span>
+
+<span class="sd">        self.subsearcher</span>
+<span class="sd">            The current sub-searcher. If the top-level searcher is atomic, this</span>
+<span class="sd">            is the same as the top-level searcher.</span>
+<span class="sd">        self.offset</span>
+<span class="sd">            The document number offset of the current searcher. You must add</span>
+<span class="sd">            this number to the document number passed to</span>
+<span class="sd">            :meth:`Collector.collect` to get the top-level document number</span>
+<span class="sd">            for use in results.</span>
+<span class="sd">        self.matcher</span>
+<span class="sd">            A :class:`whoosh.matching.Matcher` object representing the matches</span>
+<span class="sd">            for the query in the current sub-searcher.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">subsearcher</span> <span class="o">=</span> <span class="n">subsearcher</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">subsearcher</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Collector.computes_count"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.computes_count">[docs]</a>    <span class="k">def</span> <span class="nf">computes_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if the collector naturally computes the exact number of</span>
+<span class="sd">        matching documents. Collectors that use block optimizations will return</span>
+<span class="sd">        False since they might skip blocks containing matching documents.</span>
+
+<span class="sd">        Note that if this method returns False you can still call :meth:`count`,</span>
+<span class="sd">        but it means that method might have to do more work to calculate the</span>
+<span class="sd">        number of matching documents.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Collector.all_ids"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.all_ids">[docs]</a>    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a sequence of docnums matched in this collector. (Only valid</span>
+<span class="sd">        after the collector is run.)</span>
+
+<span class="sd">        The default implementation is based on the docset. If a collector does</span>
+<span class="sd">        not maintain the docset, it will need to override this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">docset</span></div>
+
+<div class="viewcode-block" id="Collector.count"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of documents matched in this collector.</span>
+<span class="sd">        (Only valid after the collector is run.)</span>
+
+<span class="sd">        The default implementation is based on the docset. If a collector does</span>
+<span class="sd">        not maintain the docset, it will need to override this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docset</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Collector.collect_matches"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.collect_matches">[docs]</a>    <span class="k">def</span> <span class="nf">collect_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method calls :meth:`Collector.matches` and then for each</span>
+<span class="sd">        matched document calls :meth:`Collector.collect`. Sub-classes that</span>
+<span class="sd">        want to intervene between finding matches and adding them to the</span>
+<span class="sd">        collection (for example, to filter out certain documents) can override</span>
+<span class="sd">        this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">collect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect</span>
+        <span class="k">for</span> <span class="n">sub_docnum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">matches</span><span class="p">():</span>
+            <span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Collector.collect"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.collect">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is called for every matched document. It should do the</span>
+<span class="sd">        work of adding a matched document to the results, and it should return</span>
+<span class="sd">        an object to use as a &quot;sorting key&quot; for the given document (such as the</span>
+<span class="sd">        document&#39;s score, a key generated by a facet, or just None). Subclasses</span>
+<span class="sd">        must implement this method.</span>
+
+<span class="sd">        If you want the score for the current document, use</span>
+<span class="sd">        ``self.matcher.score()``.</span>
+
+<span class="sd">        Overriding methods should add the current document offset</span>
+<span class="sd">        (``self.offset``) to the ``sub_docnum`` to get the top-level document</span>
+<span class="sd">        number for the matching document to add to results.</span>
+
+<span class="sd">        :param sub_docnum: the document number of the current match within the</span>
+<span class="sd">            current sub-searcher. You must add ``self.offset`` to this number</span>
+<span class="sd">            to get the document&#39;s top-level document number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Collector.sort_key"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.sort_key">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">sort_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a sorting key for the current match. This should return the</span>
+<span class="sd">        same value returned by :meth:`Collector.collect`, but without the side</span>
+<span class="sd">        effect of adding the current document to the results.</span>
+
+<span class="sd">        If the collector has been prepared with ``context.needs_current=True``,</span>
+<span class="sd">        this method can use ``self.matcher`` to get information, for example</span>
+<span class="sd">        the score. Otherwise, it should only use the provided ``sub_docnum``,</span>
+<span class="sd">        since the matcher may be in an inconsistent state.</span>
+
+<span class="sd">        Subclasses must implement this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Collector.remove"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes a document from the collector. Not that this method uses the</span>
+<span class="sd">        global document number as opposed to :meth:`Collector.collect` which</span>
+<span class="sd">        takes a segment-relative docnum.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">global_docnum</span><span class="p">:</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">return</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">global_docnum</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_step_through_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">matcher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span>
+        <span class="k">while</span> <span class="n">matcher</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">matcher</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+            <span class="n">matcher</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Collector.matches"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.matches">[docs]</a>    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields a series of relative document numbers for matches</span>
+<span class="sd">        in the current subsearcher.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># We jump through a lot of hoops to avoid stepping through the matcher</span>
+        <span class="c1"># &quot;manually&quot; if we can because all_ids() is MUCH faster</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">needs_current</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_through_matches</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">all_ids</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Collector.finish"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is called after a search.</span>
+
+<span class="sd">        Subclasses can override this to perform set-up work, but</span>
+<span class="sd">        they should still call the superclass&#39;s method because it sets several</span>
+<span class="sd">        necessary attributes on the collector object:</span>
+
+<span class="sd">        self.runtime</span>
+<span class="sd">            The time (in seconds) the search took.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span> <span class="o">=</span> <span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">starttime</span></div>
+
+    <span class="k">def</span> <span class="nf">_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Fills in a Results object with the invariant information and the</span>
+        <span class="c1"># given &quot;items&quot; (a list of (score, docnum) tuples)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">Results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top_searcher</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">runtime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">runtime</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">collector</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="n">r</span>
+
+<div class="viewcode-block" id="Collector.results"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.Collector.results">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a :class:`~whoosh.searching.Results` object containing the</span>
+<span class="sd">        results of the search. Subclasses must implement this method</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<span class="c1"># Scored collectors</span>
+
+<div class="viewcode-block" id="ScoredCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.ScoredCollector">[docs]</a><span class="k">class</span> <span class="nc">ScoredCollector</span><span class="p">(</span><span class="n">Collector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for collectors that sort the results based on document score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param replace: Number of matches between attempts to replace the</span>
+<span class="sd">            matcher with a more efficient version.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Collector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace</span> <span class="o">=</span> <span class="n">replace</span>
+
+<div class="viewcode-block" id="ScoredCollector.prepare"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.ScoredCollector.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="c1"># This collector requires a valid matcher at each step</span>
+        <span class="n">Collector</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">top_searcher</span><span class="o">.</span><span class="n">weighting</span><span class="o">.</span><span class="n">use_final</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">final_fn</span> <span class="o">=</span> <span class="n">top_searcher</span><span class="o">.</span><span class="n">weighting</span><span class="o">.</span><span class="n">final</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">final_fn</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Heap containing top N (score, 0-docnum) pairs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Minimum score a document must have to make it into the top N. This is</span>
+        <span class="c1"># used by the block-quality optimizations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minscore</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Number of times the matcher was replaced (for debugging)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replaced_times</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Number of blocks skipped by quality optimizations (for debugging)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skipped_times</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="ScoredCollector.sort_key"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.ScoredCollector.sort_key">[docs]</a>    <span class="k">def</span> <span class="nf">sort_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">score</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+        <span class="c1"># Concrete subclasses should override this method to collect matching</span>
+        <span class="c1"># documents</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">_use_block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Concrete subclasses should override this method to return True if the</span>
+        <span class="c1"># collector should use block quality optimizations</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="ScoredCollector.collect"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.ScoredCollector.collect">[docs]</a>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="c1"># Do common work to calculate score and top-level document number</span>
+        <span class="n">global_docnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">sub_docnum</span>
+
+        <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">score</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_fn</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top_searcher</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+
+        <span class="c1"># Call specialized method on subclass</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collect</span><span class="p">(</span><span class="n">global_docnum</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScoredCollector.matches"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.ScoredCollector.matches">[docs]</a>    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">minscore</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minscore</span>
+        <span class="n">matcher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span>
+        <span class="n">usequality</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_block_quality</span><span class="p">()</span>
+        <span class="n">replace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span>
+        <span class="n">replacecounter</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># A flag to indicate whether we should check block quality at the start</span>
+        <span class="c1"># of the next loop</span>
+        <span class="n">checkquality</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">while</span> <span class="n">matcher</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="c1"># If the replacement counter has reached 0, try replacing the</span>
+            <span class="c1"># matcher with a more efficient version</span>
+            <span class="k">if</span> <span class="n">replace</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">replacecounter</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">minscore</span> <span class="o">!=</span> <span class="n">minscore</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span> <span class="o">=</span> <span class="n">matcher</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">minscore</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">replaced_times</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">matcher</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+                        <span class="k">break</span>
+                    <span class="n">usequality</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_block_quality</span><span class="p">()</span>
+                    <span class="n">replacecounter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minscore</span> <span class="o">!=</span> <span class="n">minscore</span><span class="p">:</span>
+                        <span class="n">checkquality</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">minscore</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minscore</span>
+
+                <span class="n">replacecounter</span> <span class="o">-=</span> <span class="mi">1</span>
+
+            <span class="c1"># If we&#39;re using block quality optimizations, and the checkquality</span>
+            <span class="c1"># flag is true, try to skip ahead to the next block with the</span>
+            <span class="c1"># minimum required quality</span>
+            <span class="k">if</span> <span class="n">usequality</span> <span class="ow">and</span> <span class="n">checkquality</span> <span class="ow">and</span> <span class="n">minscore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">skipped_times</span> <span class="o">+=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">skip_to_quality</span><span class="p">(</span><span class="n">minscore</span><span class="p">)</span>
+                <span class="c1"># Skipping ahead might have moved the matcher to the end of the</span>
+                <span class="c1"># posting list</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">matcher</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+                    <span class="k">break</span>
+
+            <span class="k">yield</span> <span class="n">matcher</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+
+            <span class="c1"># Move to the next document. This method returns True if the</span>
+            <span class="c1"># matcher has entered a new block, so we should check block quality</span>
+            <span class="c1"># again.</span>
+            <span class="n">checkquality</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">next</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="TopCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.TopCollector">[docs]</a><span class="k">class</span> <span class="nc">TopCollector</span><span class="p">(</span><span class="n">ScoredCollector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collector that only returns the top &quot;N&quot; scored results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">usequality</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param limit: the maximum number of results to return.</span>
+<span class="sd">        :param usequality: whether to use block-quality optimizations. This may</span>
+<span class="sd">            be useful for debugging.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ScoredCollector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usequality</span> <span class="o">=</span> <span class="n">usequality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">_use_block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">usequality</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_searcher</span><span class="o">.</span><span class="n">weighting</span><span class="o">.</span><span class="n">use_final</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">supports_block_quality</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">computes_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_block_quality</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Since this collector can skip blocks, it doesn&#39;t track the total</span>
+        <span class="c1"># number of matching documents, so if the user asks for all matched</span>
+        <span class="c1"># docs we need to re-run the search using docs_for_query</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_searcher</span><span class="o">.</span><span class="n">docs_for_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">computes_count</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ilen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_ids</span><span class="p">())</span>
+
+    <span class="c1"># ScoredCollector.collect calls this</span>
+    <span class="k">def</span> <span class="nf">_collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Document numbers are negated before putting them in the heap so that</span>
+        <span class="c1"># higher document numbers have lower &quot;priority&quot; in the queue. Lower</span>
+        <span class="c1"># document numbers should always come before higher document numbers</span>
+        <span class="c1"># with the same score to keep the order stable.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">:</span>
+            <span class="c1"># The heap isn&#39;t full, so add this document</span>
+            <span class="n">heappush</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">global_docnum</span><span class="p">))</span>
+            <span class="c1"># Negate score to act as sort key so higher scores appear first</span>
+            <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">score</span>
+        <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="c1"># The heap is full, but if this document has a high enough</span>
+            <span class="c1"># score to make the top N, add it to the heap</span>
+            <span class="n">heapreplace</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">global_docnum</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minscore</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Negate score to act as sort key so higher scores appear first</span>
+            <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">score</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">):</span>
+        <span class="n">negated</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">global_docnum</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+
+        <span class="c1"># Remove the document if it&#39;s on the list (it may not be since</span>
+        <span class="c1"># TopCollector forgets documents that don&#39;t make the top N list)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">negated</span><span class="p">:</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="c1"># Restore the heap invariant</span>
+                <span class="n">heapify</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">minscore</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">items</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="k">return</span>
+
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># The items are stored (postive score, negative docnum) so the heap</span>
+        <span class="c1"># keeps the highest scores and lowest docnums, in order from lowest to</span>
+        <span class="c1"># highest. Since for the results we want the highest scores first,</span>
+        <span class="c1"># sort the heap in reverse order</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># De-negate the docnums for presentation to the user</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">score</span><span class="p">,</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">docnum</span><span class="p">)</span> <span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">docnum</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_results</span><span class="p">(</span><span class="n">items</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UnlimitedCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.UnlimitedCollector">[docs]</a><span class="k">class</span> <span class="nc">UnlimitedCollector</span><span class="p">(</span><span class="n">ScoredCollector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collector that returns **all** scored results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">ScoredCollector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">=</span> <span class="n">reverse</span>
+
+    <span class="c1"># ScoredCollector.collect calls this</span>
+    <span class="k">def</span> <span class="nf">_collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">score</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">global_docnum</span><span class="p">)</span>
+        <span class="c1"># Negate score to act as sort key so higher scores appear first</span>
+        <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">score</span>
+
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Sort by negated scores so that higher scores go first, then by</span>
+        <span class="c1"># document number to keep the order stable when documents have the</span>
+        <span class="c1"># same score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">,</span> <span class="n">docset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">docset</span><span class="p">)</span></div>
+
+
+<span class="c1"># Sorting collector</span>
+
+<div class="viewcode-block" id="SortingCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.SortingCollector">[docs]</a><span class="k">class</span> <span class="nc">SortingCollector</span><span class="p">(</span><span class="n">Collector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collector that returns results sorted by a given</span>
+<span class="sd">    :class:`whoosh.sorting.Facet` object. See :doc:`/facets` for more</span>
+<span class="sd">    information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sortedby</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param sortedby: see :doc:`/facets`.</span>
+<span class="sd">        :param reverse: If True, reverse the overall results. Note that you</span>
+<span class="sd">            can reverse individual facets in a multi-facet sort key as well.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Collector</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortfacet</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">MultiFacet</span><span class="o">.</span><span class="n">from_sortedby</span><span class="p">(</span><span class="n">sortedby</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">=</span> <span class="n">reverse</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortfacet</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">)</span>
+        <span class="c1"># If the categorizer requires a valid matcher, then tell the child</span>
+        <span class="c1"># collector that we need it</span>
+        <span class="n">rm</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">needs_current</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">needs_current</span>
+        <span class="n">Collector</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">needs_current</span><span class="o">=</span><span class="n">rm</span><span class="p">))</span>
+
+        <span class="c1"># List of (sortkey, docnum) pairs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="n">Collector</span><span class="o">.</span><span class="n">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">set_searcher</span><span class="p">(</span><span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">sort_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorizer</span><span class="o">.</span><span class="n">key_for</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="n">global_docnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">sub_docnum</span>
+        <span class="n">sortkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sort_key</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sortkey</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">global_docnum</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sortkey</span>
+
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">items</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_results</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">docset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">docset</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">UnsortedCollector</span><span class="p">(</span><span class="n">Collector</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">Collector</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">weighting</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="n">global_docnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">sub_docnum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">global_docnum</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_results</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">docset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">docset</span><span class="p">)</span>
+
+
+<span class="c1"># Wrapping collectors</span>
+
+<div class="viewcode-block" id="WrappingCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector">[docs]</a><span class="k">class</span> <span class="nc">WrappingCollector</span><span class="p">(</span><span class="n">Collector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for collectors that wrap other collectors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">child</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">top_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">top_searcher</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">context</span>
+
+<div class="viewcode-block" id="WrappingCollector.prepare"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.prepare">[docs]</a>    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.set_subsearcher"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.set_subsearcher">[docs]</a>    <span class="k">def</span> <span class="nf">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">set_subsearcher</span><span class="p">(</span><span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subsearcher</span> <span class="o">=</span> <span class="n">subsearcher</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">matcher</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">offset</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.all_ids"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.all_ids">[docs]</a>    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">all_ids</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.count"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">count</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.collect_matches"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.collect_matches">[docs]</a>    <span class="k">def</span> <span class="nf">collect_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">sub_docnum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">matches</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.sort_key"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.sort_key">[docs]</a>    <span class="k">def</span> <span class="nf">sort_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">sort_key</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.collect"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.collect">[docs]</a>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.remove"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">global_docnum</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.matches"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.matches">[docs]</a>    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">matches</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.finish"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="WrappingCollector.results"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.WrappingCollector.results">[docs]</a>    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">results</span><span class="p">()</span></div></div>
+
+
+<span class="c1"># Allow and disallow collector</span>
+
+<div class="viewcode-block" id="FilterCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.FilterCollector">[docs]</a><span class="k">class</span> <span class="nc">FilterCollector</span><span class="p">(</span><span class="n">WrappingCollector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collector that lets you allow and/or restrict certain document numbers</span>
+<span class="sd">    in the results::</span>
+
+<span class="sd">        uc = collectors.UnlimitedCollector()</span>
+
+<span class="sd">        ins = query.Term(&quot;chapter&quot;, &quot;rendering&quot;)</span>
+<span class="sd">        outs = query.Term(&quot;status&quot;, &quot;restricted&quot;)</span>
+<span class="sd">        fc = FilterCollector(uc, allow=ins, restrict=outs)</span>
+
+<span class="sd">        mysearcher.search_with_collector(myquery, fc)</span>
+<span class="sd">        print(fc.results())</span>
+
+<span class="sd">    This collector discards a document if:</span>
+
+<span class="sd">    * The allowed set is not None and a document number is not in the set, or</span>
+<span class="sd">    * The restrict set is not None and a document number is in the set.</span>
+
+<span class="sd">    (So, if the same document number is in both sets, that document will be</span>
+<span class="sd">    discarded.)</span>
+
+<span class="sd">    If you have a reference to the collector, you can use</span>
+<span class="sd">    ``FilterCollector.filtered_count`` to get the number of matching documents</span>
+<span class="sd">    filtered out of the results by the collector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">allow</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">restrict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param child: the collector to wrap.</span>
+<span class="sd">        :param allow: a query, Results object, or set-like object containing</span>
+<span class="sd">            docnument numbers that are allowed in the results, or None (meaning</span>
+<span class="sd">            everything is allowed).</span>
+<span class="sd">        :param restrict: a query, Results object, or set-like object containing</span>
+<span class="sd">            document numbers to disallow from the results, or None (meaning</span>
+<span class="sd">            nothing is disallowed).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">child</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow</span> <span class="o">=</span> <span class="n">allow</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restrict</span> <span class="o">=</span> <span class="n">restrict</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+        <span class="n">allow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow</span>
+        <span class="n">restrict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restrict</span>
+        <span class="n">ftc</span> <span class="o">=</span> <span class="n">top_searcher</span><span class="o">.</span><span class="n">_filter_to_comb</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allow</span> <span class="o">=</span> <span class="n">ftc</span><span class="p">(</span><span class="n">allow</span><span class="p">)</span> <span class="k">if</span> <span class="n">allow</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_restrict</span> <span class="o">=</span> <span class="n">ftc</span><span class="p">(</span><span class="n">restrict</span><span class="p">)</span> <span class="k">if</span> <span class="n">restrict</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filtered_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+
+        <span class="n">_allow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow</span>
+        <span class="n">_restrict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_restrict</span>
+
+        <span class="k">for</span> <span class="n">global_docnum</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">all_ids</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">_allow</span> <span class="ow">and</span> <span class="n">global_docnum</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_allow</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">_restrict</span> <span class="ow">and</span> <span class="n">global_docnum</span> <span class="ow">in</span> <span class="n">_restrict</span><span class="p">)</span>
+            <span class="p">):</span>
+                    <span class="k">continue</span>
+            <span class="k">yield</span> <span class="n">global_docnum</span>
+
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+        <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">computes_count</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">child</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ilen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_ids</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">collect_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+        <span class="n">_allow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allow</span>
+        <span class="n">_restrict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_restrict</span>
+
+        <span class="k">if</span> <span class="n">_allow</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">_restrict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filtered_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filtered_count</span>
+            <span class="k">for</span> <span class="n">sub_docnum</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">matches</span><span class="p">():</span>
+                <span class="n">global_docnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">sub_docnum</span>
+                <span class="k">if</span> <span class="p">((</span><span class="n">_allow</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">global_docnum</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_allow</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="p">(</span><span class="n">_restrict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">global_docnum</span> <span class="ow">in</span> <span class="n">_restrict</span><span class="p">)):</span>
+                    <span class="n">filtered_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">continue</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filtered_count</span> <span class="o">=</span> <span class="n">filtered_count</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If there was no allow or restrict set, don&#39;t do anything special,</span>
+            <span class="c1"># just forward the call to the child collector</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">collect_matches</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">collector</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">filtered_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filtered_count</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">allowed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">restricted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restrict</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+
+<span class="c1"># Facet grouping collector</span>
+
+<div class="viewcode-block" id="FacetCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.FacetCollector">[docs]</a><span class="k">class</span> <span class="nc">FacetCollector</span><span class="p">(</span><span class="n">WrappingCollector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collector that creates groups of documents based on</span>
+<span class="sd">    :class:`whoosh.sorting.Facet` objects. See :doc:`/facets` for more</span>
+<span class="sd">    information.</span>
+
+<span class="sd">    This collector is used if you specify a ``groupedby`` parameter in the</span>
+<span class="sd">    :meth:`whoosh.searching.Searcher.search` method. You can use the</span>
+<span class="sd">    :meth:`whoosh.searching.Results.groups` method to access the facet groups.</span>
+
+<span class="sd">    If you have a reference to the collector can also use</span>
+<span class="sd">    ``FacetedCollector.facetmaps`` to access the groups directly::</span>
+
+<span class="sd">        uc = collectors.UnlimitedCollector()</span>
+<span class="sd">        fc = FacetedCollector(uc, sorting.FieldFacet(&quot;category&quot;))</span>
+<span class="sd">        mysearcher.search_with_collector(myquery, fc)</span>
+<span class="sd">        print(fc.facetmaps)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">groupedby</span><span class="p">,</span> <span class="n">maptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param groupedby: see :doc:`/facets`.</span>
+<span class="sd">        :param maptype: a :class:`whoosh.sorting.FacetMap` type to use for any</span>
+<span class="sd">            facets that don&#39;t specify their own.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">child</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">Facets</span><span class="o">.</span><span class="n">from_groupedby</span><span class="p">(</span><span class="n">groupedby</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span> <span class="o">=</span> <span class="n">maptype</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">facets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facets</span>
+
+        <span class="c1"># For each facet we&#39;re grouping by:</span>
+        <span class="c1"># - Create a facetmap (to hold the groups)</span>
+        <span class="c1"># - Create a categorizer (to generate document keys)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facetmaps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorizers</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Set needs_current to True if any of the categorizers require the</span>
+        <span class="c1"># current document to work</span>
+        <span class="n">needs_current</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">needs_current</span>
+        <span class="k">for</span> <span class="n">facetname</span><span class="p">,</span> <span class="n">facet</span> <span class="ow">in</span> <span class="n">facets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">facetmaps</span><span class="p">[</span><span class="n">facetname</span><span class="p">]</span> <span class="o">=</span> <span class="n">facet</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maptype</span><span class="p">)</span>
+
+            <span class="n">ctr</span> <span class="o">=</span> <span class="n">facet</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">categorizers</span><span class="p">[</span><span class="n">facetname</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctr</span>
+            <span class="n">needs_current</span> <span class="o">=</span> <span class="n">needs_current</span> <span class="ow">or</span> <span class="n">ctr</span><span class="o">.</span><span class="n">needs_current</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">needs_current</span><span class="o">=</span><span class="n">needs_current</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="n">WrappingCollector</span><span class="o">.</span><span class="n">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+
+        <span class="c1"># Tell each categorizer about the new subsearcher and offset</span>
+        <span class="k">for</span> <span class="n">categorizer</span> <span class="ow">in</span> <span class="n">itervalues</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorizers</span><span class="p">):</span>
+            <span class="n">categorizer</span><span class="o">.</span><span class="n">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">subsearcher</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="n">matcher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">matcher</span>
+        <span class="n">global_docnum</span> <span class="o">=</span> <span class="n">sub_docnum</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">offset</span>
+
+        <span class="c1"># We want the sort key for the document so we can (by default) sort</span>
+        <span class="c1"># the facet groups</span>
+        <span class="n">sortkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span>
+
+        <span class="c1"># For each facet we&#39;re grouping by</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">categorizer</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">categorizers</span><span class="p">):</span>
+            <span class="n">add</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facetmaps</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">add</span>
+
+            <span class="c1"># We have to do more work if the facet allows overlapping groups</span>
+            <span class="k">if</span> <span class="n">categorizer</span><span class="o">.</span><span class="n">allow_overlap</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">categorizer</span><span class="o">.</span><span class="n">keys_for</span><span class="p">(</span><span class="n">matcher</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+                    <span class="n">add</span><span class="p">(</span><span class="n">categorizer</span><span class="o">.</span><span class="n">key_to_name</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">global_docnum</span><span class="p">,</span> <span class="n">sortkey</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">categorizer</span><span class="o">.</span><span class="n">key_for</span><span class="p">(</span><span class="n">matcher</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">)</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">categorizer</span><span class="o">.</span><span class="n">key_to_name</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">,</span> <span class="n">sortkey</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sortkey</span>
+
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">_facetmaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facetmaps</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+
+<span class="c1"># Collapsing collector</span>
+
+<div class="viewcode-block" id="CollapseCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.CollapseCollector">[docs]</a><span class="k">class</span> <span class="nc">CollapseCollector</span><span class="p">(</span><span class="n">WrappingCollector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collector that collapses results based on a facet. That is, it</span>
+<span class="sd">    eliminates all but the top N results that share the same facet key.</span>
+<span class="sd">    Documents with an empty key for the facet are never eliminated.</span>
+
+<span class="sd">    The &quot;top&quot; results within each group is determined by the result ordering</span>
+<span class="sd">    (e.g. highest score in a scored search) or an optional second &quot;ordering&quot;</span>
+<span class="sd">    facet.</span>
+
+<span class="sd">    If you have a reference to the collector you can use</span>
+<span class="sd">    ``CollapseCollector.collapsed_counts`` to access the number of documents</span>
+<span class="sd">    eliminated based on each key::</span>
+
+<span class="sd">        tc = TopCollector(limit=20)</span>
+<span class="sd">        cc = CollapseCollector(tc, &quot;group&quot;, limit=3)</span>
+<span class="sd">        mysearcher.search_with_collector(myquery, cc)</span>
+<span class="sd">        print(cc.collapsed_counts)</span>
+
+<span class="sd">    See :ref:`collapsing` for more information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">keyfacet</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param child: the collector to wrap.</span>
+<span class="sd">        :param keyfacet: a :class:`whoosh.sorting.Facet` to use for collapsing.</span>
+<span class="sd">            All but the top N documents that share a key will be eliminated</span>
+<span class="sd">            from the results.</span>
+<span class="sd">        :param limit: the maximum number of documents to keep for each key.</span>
+<span class="sd">        :param order: an optional :class:`whoosh.sorting.Facet` to use</span>
+<span class="sd">            to determine the &quot;top&quot; document(s) to keep when collapsing. The</span>
+<span class="sd">            default (``orderfaceet=None``) uses the results order (e.g. the</span>
+<span class="sd">            highest score in a scored search).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">child</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyfacet</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">MultiFacet</span><span class="o">.</span><span class="n">from_sortedby</span><span class="p">(</span><span class="n">keyfacet</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="k">if</span> <span class="n">order</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orderfacet</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">MultiFacet</span><span class="o">.</span><span class="n">from_sortedby</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orderfacet</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="c1"># Categorizer for getting the collapse key of a document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyfacet</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">)</span>
+        <span class="c1"># Categorizer for getting the collapse order of a document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orderer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orderfacet</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orderfacet</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">)</span>
+
+        <span class="c1"># Dictionary mapping keys to lists of (sortkey, global_docnum) pairs</span>
+        <span class="c1"># representing the best docs for that key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lists</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="c1"># Dictionary mapping keys to the number of documents that have been</span>
+        <span class="c1"># filtered out with that key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collapsed_counts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="c1"># Total number of documents filtered out by collapsing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collapsed_total</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># If the keyer or orderer require a valid matcher, tell the child</span>
+        <span class="c1"># collector we need it</span>
+        <span class="n">needs_current</span> <span class="o">=</span> <span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">needs_current</span>
+                     <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyer</span><span class="o">.</span><span class="n">needs_current</span>
+                     <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orderer</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">orderer</span><span class="o">.</span><span class="n">needs_current</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span>
+                           <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">needs_current</span><span class="o">=</span><span class="n">needs_current</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="n">WrappingCollector</span><span class="o">.</span><span class="n">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+
+        <span class="c1"># Tell the keyer and (optional) orderer about the new subsearcher</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyer</span><span class="o">.</span><span class="n">set_searcher</span><span class="p">(</span><span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orderer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orderer</span><span class="o">.</span><span class="n">set_searcher</span><span class="p">(</span><span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span>
+        <span class="n">counters</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">subsearchers</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_subsearcher</span><span class="p">(</span><span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+            <span class="n">matcher</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">matcher</span>
+            <span class="n">keyer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyer</span>
+            <span class="k">for</span> <span class="n">sub_docnum</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">matches</span><span class="p">():</span>
+                <span class="n">ckey</span> <span class="o">=</span> <span class="n">keyer</span><span class="o">.</span><span class="n">key_for</span><span class="p">(</span><span class="n">matcher</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ckey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">ckey</span> <span class="ow">in</span> <span class="n">counters</span> <span class="ow">and</span> <span class="n">counters</span><span class="p">[</span><span class="n">ckey</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">counters</span><span class="p">[</span><span class="n">ckey</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">yield</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">sub_docnum</span>
+
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">computes_count</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapsed_total</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ilen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_ids</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">collect_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">lists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lists</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span>
+        <span class="n">keyer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyer</span>
+        <span class="n">orderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orderer</span>
+        <span class="n">collapsed_counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapsed_counts</span>
+
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+        <span class="n">matcher</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">matcher</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">offset</span>
+        <span class="k">for</span> <span class="n">sub_docnum</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">matches</span><span class="p">():</span>
+            <span class="c1"># Collapsing category key</span>
+            <span class="n">ckey</span> <span class="o">=</span> <span class="n">keyer</span><span class="o">.</span><span class="n">key_to_name</span><span class="p">(</span><span class="n">keyer</span><span class="o">.</span><span class="n">key_for</span><span class="p">(</span><span class="n">matcher</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ckey</span><span class="p">:</span>
+                <span class="c1"># If the document isn&#39;t in a collapsing category, just add it</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">global_docnum</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">sub_docnum</span>
+
+                <span class="k">if</span> <span class="n">orderer</span><span class="p">:</span>
+                    <span class="c1"># If user specified a collapse order, use it</span>
+                    <span class="n">sortkey</span> <span class="o">=</span> <span class="n">orderer</span><span class="o">.</span><span class="n">key_for</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">matcher</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Otherwise, use the results order</span>
+                    <span class="n">sortkey</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">sort_key</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span>
+
+                <span class="c1"># Current list of best docs for this collapse key</span>
+                <span class="n">best</span> <span class="o">=</span> <span class="n">lists</span><span class="p">[</span><span class="n">ckey</span><span class="p">]</span>
+                <span class="n">add</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">best</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">limit</span><span class="p">:</span>
+                    <span class="c1"># If the heap is not full yet, just add this document</span>
+                    <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">sortkey</span> <span class="o">&lt;</span> <span class="n">best</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="c1"># If the heap is full but this document has a lower sort</span>
+                    <span class="c1"># key than the highest key currently on the heap, replace</span>
+                    <span class="c1"># the &quot;least-best&quot; document</span>
+                    <span class="c1"># Tell the child collector to remove the document</span>
+                    <span class="n">child</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">best</span><span class="o">.</span><span class="n">pop</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">add</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">add</span><span class="p">:</span>
+                    <span class="n">insort</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="p">(</span><span class="n">sortkey</span><span class="p">,</span> <span class="n">global_docnum</span><span class="p">))</span>
+                    <span class="n">child</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Remember that a document was filtered</span>
+                    <span class="n">collapsed_counts</span><span class="p">[</span><span class="n">ckey</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">collapsed_total</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">collapsed_counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapsed_counts</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+
+<span class="c1"># Time limit collector</span>
+
+<div class="viewcode-block" id="TimeLimitCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.TimeLimitCollector">[docs]</a><span class="k">class</span> <span class="nc">TimeLimitCollector</span><span class="p">(</span><span class="n">WrappingCollector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collector that raises a :class:`TimeLimit` exception if the search</span>
+<span class="sd">    does not complete within a certain number of seconds::</span>
+
+<span class="sd">        uc = collectors.UnlimitedCollector()</span>
+<span class="sd">        tlc = TimeLimitedCollector(uc, timelimit=5.8)</span>
+<span class="sd">        try:</span>
+<span class="sd">            mysearcher.search_with_collector(myquery, tlc)</span>
+<span class="sd">        except collectors.TimeLimit:</span>
+<span class="sd">            print(&quot;The search ran out of time!&quot;)</span>
+
+<span class="sd">        # We can still get partial results from the collector</span>
+<span class="sd">        print(tlc.results())</span>
+
+<span class="sd">    IMPORTANT: On Unix systems (systems where signal.SIGALRM is defined), the</span>
+<span class="sd">    code uses signals to stop searching immediately when the time limit is</span>
+<span class="sd">    reached. On Windows, the OS does not support this functionality, so the</span>
+<span class="sd">    search only checks the time between each found document, so if a matcher</span>
+<span class="sd">    is slow the search could exceed the time limit.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">timelimit</span><span class="p">,</span> <span class="n">greedy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_alarm</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param child: the collector to wrap.</span>
+<span class="sd">        :param timelimit: the maximum amount of time (in seconds) to</span>
+<span class="sd">            allow for searching. If the search takes longer than this, it will</span>
+<span class="sd">            raise a ``TimeLimit`` exception.</span>
+<span class="sd">        :param greedy: if ``True``, the collector will finish adding the most</span>
+<span class="sd">            recent hit before raising the ``TimeLimit`` exception.</span>
+<span class="sd">        :param use_alarm: if ``True`` (the default), the collector will try to</span>
+<span class="sd">            use signal.SIGALRM (on UNIX).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">child</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timelimit</span> <span class="o">=</span> <span class="n">timelimit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">greedy</span> <span class="o">=</span> <span class="n">greedy</span>
+
+        <span class="k">if</span> <span class="n">use_alarm</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">signal</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">use_alarm</span> <span class="o">=</span> <span class="n">use_alarm</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="s2">&quot;SIGALRM&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">use_alarm</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timedout</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timedout</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_alarm</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">signal</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_was_signaled</span><span class="p">)</span>
+
+        <span class="c1"># Start a timer thread. If the timer fires, it will call this object&#39;s</span>
+        <span class="c1"># _timestop() method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timelimit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timestop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_timestop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Called when the timer expires</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Set an attribute that will be noticed in the collect_matches() loop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timedout</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_alarm</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">signal</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">kill</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">(),</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_was_signaled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">TimeLimit</span>
+
+    <span class="k">def</span> <span class="nf">collect_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+        <span class="n">greedy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">greedy</span>
+
+        <span class="k">for</span> <span class="n">sub_docnum</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">matches</span><span class="p">():</span>
+            <span class="c1"># If the timer fired since the last loop and we&#39;re not greedy,</span>
+            <span class="c1"># raise the exception</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timedout</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">greedy</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TimeLimit</span>
+
+            <span class="n">child</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span>
+
+            <span class="c1"># If the timer fired since we entered the loop or it fired earlier</span>
+            <span class="c1"># but we were greedy, raise now</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timedout</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TimeLimit</span>
+
+    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span></div>
+
+
+<span class="c1"># Matched terms collector</span>
+
+<div class="viewcode-block" id="TermsCollector"><a class="viewcode-back" href="../../api/collectors.html#whoosh.collectors.TermsCollector">[docs]</a><span class="k">class</span> <span class="nc">TermsCollector</span><span class="p">(</span><span class="n">WrappingCollector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collector that remembers which terms appeared in which terms appeared</span>
+<span class="sd">    in each matched document.</span>
+
+<span class="sd">    This collector is used if you specify ``terms=True`` in the</span>
+<span class="sd">    :meth:`whoosh.searching.Searcher.search` method.</span>
+
+<span class="sd">    If you have a reference to the collector can also use</span>
+<span class="sd">    ``TermsCollector.termslist`` to access the term lists directly::</span>
+
+<span class="sd">        uc = collectors.UnlimitedCollector()</span>
+<span class="sd">        tc = TermsCollector(uc)</span>
+<span class="sd">        mysearcher.search_with_collector(myquery, tc)</span>
+<span class="sd">        # tc.termdocs is a dictionary mapping (fieldname, text) tuples to</span>
+<span class="sd">        # sets of document numbers</span>
+<span class="sd">        print(tc.termdocs)</span>
+<span class="sd">        # tc.docterms is a dictionary mapping docnums to lists of</span>
+<span class="sd">        # (fieldname, text) tuples</span>
+<span class="sd">        print(tc.docterms)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">settype</span><span class="o">=</span><span class="nb">set</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">child</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settype</span> <span class="o">=</span> <span class="n">settype</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="c1"># This collector requires a valid matcher at each step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">top_searcher</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">needs_current</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="c1"># A dictionary mapping (fieldname, text) pairs to arrays of docnums</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">termdocs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">array</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">))</span>
+        <span class="c1"># A dictionary mapping docnums to lists of (fieldname, text) pairs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docterms</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="n">WrappingCollector</span><span class="o">.</span><span class="n">set_subsearcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+
+        <span class="c1"># Store a list of all the term matchers in the matcher tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">termmatchers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">term_matchers</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_docnum</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+        <span class="n">termdocs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">termdocs</span>
+        <span class="n">docterms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">docterms</span>
+
+        <span class="n">child</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">sub_docnum</span><span class="p">)</span>
+
+        <span class="n">global_docnum</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="n">sub_docnum</span>
+
+        <span class="c1"># For each term matcher...</span>
+        <span class="k">for</span> <span class="n">tm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">termmatchers</span><span class="p">:</span>
+            <span class="c1"># If the term matcher is matching the current document...</span>
+            <span class="k">if</span> <span class="n">tm</span><span class="o">.</span><span class="n">is_active</span><span class="p">()</span> <span class="ow">and</span> <span class="n">tm</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">==</span> <span class="n">sub_docnum</span><span class="p">:</span>
+                <span class="c1"># Add it to the list of matching documents for the term</span>
+                <span class="n">term</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+                <span class="n">termdocs</span><span class="p">[</span><span class="n">term</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">global_docnum</span><span class="p">)</span>
+                <span class="n">docterms</span><span class="p">[</span><span class="n">global_docnum</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">termdocs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">termdocs</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">docterms</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">docterms</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

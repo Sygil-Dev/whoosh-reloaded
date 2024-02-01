@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whoosh 0.3 release notes &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quick start" href="../quickstart.html" />
+    <link rel="prev" title="Whoosh 1.x release notes" href="1_0.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2_0.html">Whoosh 2.x release notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_0.html">Whoosh 1.x release notes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Whoosh 0.3 release notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Release notes</a></li>
+      <li class="breadcrumb-item active">Whoosh 0.3 release notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/releases/0_3.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="whoosh-0-3-release-notes">
+<h1>Whoosh 0.3 release notes<a class="headerlink" href="#whoosh-0-3-release-notes" title="Permalink to this heading">¶</a></h1>
+<ul>
+<li><p>Major improvements to reading/writing of postings and query performance.</p></li>
+<li><p>Changed default post limit (run size) from 4 MB to 32 MB.</p></li>
+<li><p>Finished migrating backend-specific code into <code class="docutils literal notranslate"><span class="pre">whoosh.filedb</span></code> package.</p></li>
+<li><p>Moved formats from whoosh.fields module into new whoosh.formats module.</p></li>
+<li><p>DocReader and TermReader classes combined into new IndexReader interface.
+You can get an IndexReader implementation by calling Index.reader().
+Searcher is now a wrapper around an IndexReader.</p></li>
+<li><p>Range query object changed, with new signature and new syntax in the default
+query parser. Now you can use <code class="docutils literal notranslate"><span class="pre">[start</span> <span class="pre">TO</span> <span class="pre">end]</span></code> in the query parser for an
+inclusive range, and <code class="docutils literal notranslate"><span class="pre">{start</span> <span class="pre">TO</span> <span class="pre">end}</span></code> for an exclusive range. You can also
+mix the delimiters, for example <code class="docutils literal notranslate"><span class="pre">[start</span> <span class="pre">TO</span> <span class="pre">end}</span></code> for a range with an
+inclusive start but exclusive end term.</p></li>
+<li><p>Added experimental DATETIME field type lets you pass a
+<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> object as a field value to <code class="docutils literal notranslate"><span class="pre">add_document</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">DATETIME</span>
+<span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">RamStorage</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">ID</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">DATETIME</span><span class="p">)</span>
+<span class="n">storage</span> <span class="o">=</span> <span class="n">RamStorage</span><span class="p">()</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+<span class="n">w</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Internally, the DATETIME field indexes the datetime object as text using
+the format (4 digit year + 2 digit month + 2 digit day + ‘T’ + 2 digit hour +
+2 digit minute + 2 digit second + 6 digit microsecond), for example
+<code class="docutils literal notranslate"><span class="pre">20090817T160203109000</span></code>.</p>
+</li>
+<li><p>The default query parser now lets you use quoted strings in prefix and range
+queries, e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;2009-05&quot;</span> <span class="pre">TO</span> <span class="pre">&quot;2009-12&quot;]</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;alfa/bravo&quot;*</span></code>, making it
+easier to work with terms containing special characters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DocReader.vector_as(docnum,</span> <span class="pre">fieldid,</span> <span class="pre">astype)</span></code> is now
+<code class="docutils literal notranslate"><span class="pre">IndexReader.vector_as(astype,</span> <span class="pre">docnum,</span> <span class="pre">fieldid)</span></code> (i.e. the astype argument
+has moved from the last to the first argument), e.g.
+<code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">ixreader.vector_as(&quot;frequency&quot;,</span> <span class="pre">102,</span> <span class="pre">&quot;content&quot;)</span></code>.</p></li>
+<li><p>Added whoosh.support.charset for translating Sphinx charset table files.</p></li>
+<li><p>Added whoosh.analysis.CharsetTokenizer and CharsetFilter to enable case and
+accent folding.</p></li>
+<li><p>Added experimental <code class="docutils literal notranslate"><span class="pre">whoosh.ramdb</span></code> in-memory backend.</p></li>
+<li><p>Added experimental <code class="docutils literal notranslate"><span class="pre">whoosh.query.FuzzyTerm</span></code> query type.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">whoosh.lang.wordnet</span></code> module containing <code class="docutils literal notranslate"><span class="pre">Thesaurus</span></code> object for using
+WordNet synonym database.</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="1_0.html" class="btn btn-neutral float-left" title="Whoosh 1.x release notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../quickstart.html" class="btn btn-neutral float-right" title="Quick start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to index documents &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="How to search" href="searching.html" />
+    <link rel="prev" title="Designing a schema" href="schema.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to index documents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-an-index-object">Creating an Index object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#clearing-the-index">Clearing the index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#indexing-documents">Indexing documents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#indexing-and-storing-different-values-for-the-same-field">Indexing and storing different values for the same field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finishing-adding-documents">Finishing adding documents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#merging-segments">Merging segments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deleting-documents">Deleting documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-documents">Updating documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#incremental-indexing">Incremental indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Clearing the index</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How to index documents</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/indexing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-index-documents">
+<h1>How to index documents<a class="headerlink" href="#how-to-index-documents" title="Permalink to this heading">¶</a></h1>
+<section id="creating-an-index-object">
+<h2>Creating an Index object<a class="headerlink" href="#creating-an-index-object" title="Permalink to this heading">¶</a></h2>
+<p>To create an index in a directory, use <code class="docutils literal notranslate"><span class="pre">index.create_in</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
+
+<span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To open an existing index in a directory, use <code class="docutils literal notranslate"><span class="pre">index.open_dir</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">whoosh.index</span> <span class="k">as</span> <span class="nn">index</span>
+
+<span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These are convenience methods for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+<span class="n">storage</span> <span class="o">=</span> <span class="n">FileStorage</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create an index</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+<span class="c1"># Open an existing index</span>
+<span class="n">storage</span><span class="o">.</span><span class="n">open_index</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The schema you created the index with is pickled and stored with the index.</p>
+<p>You can keep multiple indexes in the same directory using the indexname keyword
+argument:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using the convenience functions</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="s2">&quot;usages&quot;</span><span class="p">)</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="s2">&quot;usages&quot;</span><span class="p">)</span>
+
+<span class="c1"># Using the Storage object</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="s2">&quot;usages&quot;</span><span class="p">)</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">open_index</span><span class="p">(</span><span class="n">indexname</span><span class="o">=</span><span class="s2">&quot;usages&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="clearing-the-index">
+<h2>Clearing the index<a class="headerlink" href="#clearing-the-index" title="Permalink to this heading">¶</a></h2>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">index.create_in</span></code> on a directory with an existing index will clear the
+current contents of the index.</p>
+<p>To test whether a directory currently contains a valid index, use
+<code class="docutils literal notranslate"><span class="pre">index.exists_in</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exists</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">exists_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
+<span class="n">usages_exists</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">exists_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="s2">&quot;usages&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(Alternatively you can simply delete the index’s files from the directory, e.g.
+if you only have one index in the directory, use <code class="docutils literal notranslate"><span class="pre">shutil.rmtree</span></code> to remove the
+directory and then recreate it.)</p>
+</section>
+<section id="indexing-documents">
+<h2>Indexing documents<a class="headerlink" href="#indexing-documents" title="Permalink to this heading">¶</a></h2>
+<p>Once you’ve created an <code class="docutils literal notranslate"><span class="pre">Index</span></code> object, you can add documents to the index with an
+<code class="docutils literal notranslate"><span class="pre">IndexWriter</span></code> object. The easiest way to get the <code class="docutils literal notranslate"><span class="pre">IndexWriter</span></code> is to call
+<code class="docutils literal notranslate"><span class="pre">Index.writer()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Creating a writer locks the index for writing, so only one thread/process at
+a time can have a writer open.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Because opening a writer locks the index for writing, in a multi-threaded
+or multi-process environment your code needs to be aware that opening a
+writer may raise an exception (<code class="docutils literal notranslate"><span class="pre">whoosh.store.LockError</span></code>) if a writer is
+already open. Whoosh includes a couple of example implementations
+(<a class="reference internal" href="api/writing.html#whoosh.writing.AsyncWriter" title="whoosh.writing.AsyncWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.AsyncWriter</span></code></a> and
+<a class="reference internal" href="api/writing.html#whoosh.writing.BufferedWriter" title="whoosh.writing.BufferedWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.BufferedWriter</span></code></a>) of ways to work around the write
+lock.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While the writer is open and during the commit, the index is still
+available for reading. Existing readers are unaffected and new readers can
+open the current index normally. Once the commit is finished, existing
+readers continue to see the previous version of the index (that is, they
+do not automatically see the newly committed changes). New readers will see
+the updated index.</p>
+</div>
+<p>The IndexWriter’s <code class="docutils literal notranslate"><span class="pre">add_document(**kwargs)</span></code> method accepts keyword arguments
+where the field name is mapped to a value:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;My document&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;This is my document!&quot;</span><span class="p">,</span>
+                    <span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;first short&quot;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/icons/star.png&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Second try&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;This is the second example.&quot;</span><span class="p">,</span>
+                    <span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/b&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;second short&quot;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/icons/sheep.png&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Third time&#39;s the charm&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Examples are many.&quot;</span><span class="p">,</span>
+                    <span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/c&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;short&quot;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/icons/book.png&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You don’t have to fill in a value for every field. Whoosh doesn’t care if you
+leave out a field from a document.</p>
+<p>Indexed fields must be passed a unicode value. Fields that are stored but not
+indexed (i.e. the <code class="docutils literal notranslate"><span class="pre">STORED</span></code> field type) can be passed any pickle-able object.</p>
+<p>Whoosh will happily allow you to add documents with identical values, which can
+be useful or annoying depending on what you’re using the library for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Hello there&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Deja vu!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This adds two documents to the index with identical path and title fields. See
+“updating documents” below for information on the <code class="docutils literal notranslate"><span class="pre">update_document</span></code> method, which
+uses “unique” fields to replace old documents instead of appending.</p>
+<section id="indexing-and-storing-different-values-for-the-same-field">
+<h3>Indexing and storing different values for the same field<a class="headerlink" href="#indexing-and-storing-different-values-for-the-same-field" title="Permalink to this heading">¶</a></h3>
+<p>If you have a field that is both indexed and stored, you can index a unicode
+value but store a different object if necessary (it’s usually not, but sometimes
+this is really useful) using a “special” keyword argument <code class="docutils literal notranslate"><span class="pre">_stored_&lt;fieldname&gt;</span></code>.
+The normal value will be analyzed and indexed, but the “stored” value will show
+up in the results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Title to be indexed&quot;</span><span class="p">,</span> <span class="n">_stored_title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Stored title&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="finishing-adding-documents">
+<h3>Finishing adding documents<a class="headerlink" href="#finishing-adding-documents" title="Permalink to this heading">¶</a></h3>
+<p>An <code class="docutils literal notranslate"><span class="pre">IndexWriter</span></code> object is kind of like a database transaction. You specify a
+bunch of changes to the index, and then “commit” them all at once.</p>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">commit()</span></code> on the <code class="docutils literal notranslate"><span class="pre">IndexWriter</span></code> saves the added documents to the
+index:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Once your documents are in the index, you can search for them.</p>
+<p>If you want to close the writer without committing the changes, call
+<code class="docutils literal notranslate"><span class="pre">cancel()</span></code> instead of <code class="docutils literal notranslate"><span class="pre">commit()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Keep in mind that while you have a writer open (including a writer you opened
+and is still in scope), no other thread or process can get a writer or modify
+the index. A writer also keeps several open files. So you should always remember
+to call either <code class="docutils literal notranslate"><span class="pre">commit()</span></code> or <code class="docutils literal notranslate"><span class="pre">cancel()</span></code> when you’re done with a writer object.</p>
+</section>
+</section>
+<section id="merging-segments">
+<h2>Merging segments<a class="headerlink" href="#merging-segments" title="Permalink to this heading">¶</a></h2>
+<p>A Whoosh <code class="docutils literal notranslate"><span class="pre">filedb</span></code> index is really a container for one or more “sub-indexes”
+called segments. When you add documents to an index, instead of integrating the
+new documents with the existing documents (which could potentially be very
+expensive, since it involves resorting all the indexed terms on disk), Whoosh
+creates a new segment next to the existing segment. Then when you search the
+index, Whoosh searches both segments individually and merges the results so the
+segments appear to be one unified index. (This smart design is copied from
+Lucene.)</p>
+<p>So, having a few segments is more efficient than rewriting the entire index
+every time you add some documents. But searching multiple segments does slow
+down searching somewhat, and the more segments you have, the slower it gets. So
+Whoosh has an algorithm that runs when you call <code class="docutils literal notranslate"><span class="pre">commit()</span></code> that looks for small
+segments it can merge together to make fewer, bigger segments.</p>
+<p>To prevent Whoosh from merging segments during a commit, use the <code class="docutils literal notranslate"><span class="pre">merge</span></code>
+keyword argument:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To merge all segments together, optimizing the index into a single segment,
+use the <code class="docutils literal notranslate"><span class="pre">optimize</span></code> keyword argument:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since optimizing rewrites all the information in the index, it can be slow on
+a large index. It’s generally better to rely on Whoosh’s merging algorithm than
+to optimize all the time.</p>
+<p>(The <code class="docutils literal notranslate"><span class="pre">Index</span></code> object also has an <code class="docutils literal notranslate"><span class="pre">optimize()</span></code> method that lets you optimize the
+index (merge all the segments together). It simply creates a writer and calls
+<code class="docutils literal notranslate"><span class="pre">commit(optimize=True)</span></code> on it.)</p>
+<p>For more control over segment merging, you can write your own merge policy
+function and use it as an argument to the <code class="docutils literal notranslate"><span class="pre">commit()</span></code> method. See the
+implementation of the <code class="docutils literal notranslate"><span class="pre">NO_MERGE</span></code>, <code class="docutils literal notranslate"><span class="pre">MERGE_SMALL</span></code>, and <code class="docutils literal notranslate"><span class="pre">OPTIMIZE</span></code> functions
+in the <code class="docutils literal notranslate"><span class="pre">whoosh.writing</span></code> module.</p>
+</section>
+<section id="deleting-documents">
+<h2>Deleting documents<a class="headerlink" href="#deleting-documents" title="Permalink to this heading">¶</a></h2>
+<p>You can delete documents using the following methods on an <code class="docutils literal notranslate"><span class="pre">IndexWriter</span></code>
+object. You then need to call <code class="docutils literal notranslate"><span class="pre">commit()</span></code> on the writer to save the deletions
+to disk.</p>
+<p><code class="docutils literal notranslate"><span class="pre">delete_document(docnum)</span></code></p>
+<blockquote>
+<div><p>Low-level method to delete a document by its internal document number.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">is_deleted(docnum)</span></code></p>
+<blockquote>
+<div><p>Low-level method, returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the document with the given internal
+number is deleted.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">delete_by_term(fieldname,</span> <span class="pre">termtext)</span></code></p>
+<blockquote>
+<div><p>Deletes any documents where the given (indexed) field contains the given
+term. This is mostly useful for <code class="docutils literal notranslate"><span class="pre">ID</span></code> or <code class="docutils literal notranslate"><span class="pre">KEYWORD</span></code> fields.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">delete_by_query(query)</span></code></p>
+<blockquote>
+<div><p>Deletes any documents that match the given query.</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Delete document by its path -- this field must be indexed</span>
+<span class="n">ix</span><span class="o">.</span><span class="n">delete_by_term</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;/a/b/c&#39;</span><span class="p">)</span>
+<span class="c1"># Save the deletion to disk</span>
+<span class="n">ix</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">filedb</span></code> backend, “deleting” a document simply adds the document number
+to a list of deleted documents stored with the index. When you search the index,
+it knows not to return deleted documents in the results. However, the document’s
+contents are still stored in the index, and certain statistics (such as term
+document frequencies) are not updated, until you merge the segments containing
+deleted documents (see merging above). (This is because removing the information
+immediately from the index would essentially involving rewriting the entire
+index on disk, which would be very inefficient.)</p>
+</section>
+<section id="updating-documents">
+<h2>Updating documents<a class="headerlink" href="#updating-documents" title="Permalink to this heading">¶</a></h2>
+<p>If you want to “replace” (re-index) a document, you can delete the old document
+using one of the <code class="docutils literal notranslate"><span class="pre">delete_*</span></code> methods on <code class="docutils literal notranslate"><span class="pre">Index</span></code> or <code class="docutils literal notranslate"><span class="pre">IndexWriter</span></code>, then use
+<code class="docutils literal notranslate"><span class="pre">IndexWriter.add_document</span></code> to add the new version. Or, you can use
+<code class="docutils literal notranslate"><span class="pre">IndexWriter.update_document</span></code> to do this in one step.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">update_document</span></code> to work, you must have marked at least one of the fields
+in the schema as “unique”. Whoosh will then use the contents of the “unique”
+field(s) to search for documents to delete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">TEXT</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">path</span> <span class="o">=</span> <span class="n">ID</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;The first document&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/b&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;The second document&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="c1"># Because &quot;path&quot; is marked as unique, calling update_document with path=&quot;/a&quot;</span>
+<span class="c1"># will delete any existing documents where the &quot;path&quot; field contains &quot;/a&quot;.</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Replacement for the first document&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The “unique” field(s) must be indexed.</p>
+<p>If no existing document matches the unique fields of the document you’re
+updating, <code class="docutils literal notranslate"><span class="pre">update_document</span></code> acts just like <code class="docutils literal notranslate"><span class="pre">add_document</span></code>.</p>
+<p>“Unique” fields and <code class="docutils literal notranslate"><span class="pre">update_document</span></code> are simply convenient shortcuts for deleting
+and adding. Whoosh has no inherent concept of a unique identifier, and in no way
+enforces uniqueness when you use <code class="docutils literal notranslate"><span class="pre">add_document</span></code>.</p>
+</section>
+<section id="incremental-indexing">
+<h2>Incremental indexing<a class="headerlink" href="#incremental-indexing" title="Permalink to this heading">¶</a></h2>
+<p>When you’re indexing a collection of documents, you’ll often want two code
+paths: one to index all the documents from scratch, and one to only update the
+documents that have changed (leaving aside web applications where you need to
+add/update documents according to user actions).</p>
+<p>Indexing everything from scratch is pretty easy. Here’s a simple example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">TEXT</span>
+
+<span class="k">def</span> <span class="nf">clean_index</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+  <span class="c1"># Always create the index from scratch</span>
+  <span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">get_schema</span><span class="p">())</span>
+  <span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+
+  <span class="c1"># Assume we have a function that gathers the filenames of the</span>
+  <span class="c1"># documents to be indexed</span>
+  <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">my_docs</span><span class="p">():</span>
+    <span class="n">add_doc</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+  <span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">get_schema</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">Schema</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">ID</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">add_doc</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+  <span class="n">fileobj</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="n">fileobj</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">fileobj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+  <span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, for a small collection of documents, indexing from scratch every time might
+actually be fast enough. But for large collections, you’ll want to have the
+script only re-index the documents that have changed.</p>
+<p>To start we’ll need to store each document’s last-modified time, so we can check
+if the file has changed. In this example, we’ll just use the mtime for
+simplicity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_schema</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">Schema</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">ID</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">time</span><span class="o">=</span><span class="n">STORED</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">add_doc</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+  <span class="n">fileobj</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="n">fileobj</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">fileobj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+  <span class="n">modtime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+  <span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">modtime</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we can modify the script to allow either “clean” (from scratch) or
+incremental indexing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">index_my_docs</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">clean</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">clean</span><span class="p">:</span>
+    <span class="n">clean_index</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">incremental_index</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">incremental_index</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+
+    <span class="c1"># The set of all paths in the index</span>
+    <span class="n">indexed_paths</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="c1"># The set of all paths we need to re-index</span>
+    <span class="n">to_index</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="n">ix</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">searcher</span><span class="p">:</span>
+      <span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+
+      <span class="c1"># Loop over the stored fields in the index</span>
+      <span class="k">for</span> <span class="n">fields</span> <span class="ow">in</span> <span class="n">searcher</span><span class="o">.</span><span class="n">all_stored_fields</span><span class="p">():</span>
+        <span class="n">indexed_path</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+        <span class="n">indexed_paths</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">indexed_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">indexed_path</span><span class="p">):</span>
+          <span class="c1"># This file was deleted since it was indexed</span>
+          <span class="n">writer</span><span class="o">.</span><span class="n">delete_by_term</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="n">indexed_path</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+          <span class="c1"># Check if this file was changed since it</span>
+          <span class="c1"># was indexed</span>
+          <span class="n">indexed_time</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
+          <span class="n">mtime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">indexed_path</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">mtime</span> <span class="o">&gt;</span> <span class="n">indexed_time</span><span class="p">:</span>
+            <span class="c1"># The file has changed, delete it and add it to the list of</span>
+            <span class="c1"># files to reindex</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">delete_by_term</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="n">indexed_path</span><span class="p">)</span>
+            <span class="n">to_index</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">indexed_path</span><span class="p">)</span>
+
+      <span class="c1"># Loop over the files in the filesystem</span>
+      <span class="c1"># Assume we have a function that gathers the filenames of the</span>
+      <span class="c1"># documents to be indexed</span>
+      <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">my_docs</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">to_index</span> <span class="ow">or</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">indexed_paths</span><span class="p">:</span>
+          <span class="c1"># This is either a file that&#39;s changed, or a new file</span>
+          <span class="c1"># that wasn&#39;t indexed before. So index it!</span>
+          <span class="n">add_doc</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+      <span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">incremental_index</span></code> function:</p>
+<ul class="simple">
+<li><p>Loops through all the paths that are currently indexed.</p>
+<ul>
+<li><p>If any of the files no longer exist, delete the corresponding document from
+the index.</p></li>
+<li><p>If the file still exists, but has been modified, add it to the list of paths
+to be re-indexed.</p></li>
+<li><p>If the file exists, whether it’s been modified or not, add it to the list of
+all indexed paths.</p></li>
+</ul>
+</li>
+<li><p>Loops through all the paths of the files on disk.</p>
+<ul>
+<li><p>If a path is not in the set of all indexed paths, the file is new and we
+need to index it.</p></li>
+<li><p>If a path is in the set of paths to re-index, we need to index it.</p></li>
+<li><p>Otherwise, we can skip indexing the file.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id1">
+<h2>Clearing the index<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>In some cases you may want to re-index from scratch. To clear the index without
+disrupting any existing readers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">writing</span>
+
+<span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">mywriter</span><span class="p">:</span>
+    <span class="c1"># You can optionally add documents to the writer here</span>
+    <span class="c1"># e.g. mywriter.add_document(...)</span>
+
+    <span class="c1"># Using mergetype=CLEAR clears all existing segments so the index will</span>
+    <span class="c1"># only have any documents you&#39;ve added to this writer</span>
+    <span class="n">mywriter</span><span class="o">.</span><span class="n">mergetype</span> <span class="o">=</span> <span class="n">writing</span><span class="o">.</span><span class="n">CLEAR</span>
+</pre></div>
+</div>
+<p>Or, if you don’t use the writer as a context manager and call <code class="docutils literal notranslate"><span class="pre">commit()</span></code>
+directly, do it like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mywriter</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="c1"># ...</span>
+<span class="n">mywriter</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">mergetype</span><span class="o">=</span><span class="n">writing</span><span class="o">.</span><span class="n">CLEAR</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you don’t need to worry about existing readers, a more efficient method
+is to simply delete the contents of the index directory and start over.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="schema.html" class="btn btn-neutral float-left" title="Designing a schema" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="searching.html" class="btn btn-neutral float-right" title="How to search" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

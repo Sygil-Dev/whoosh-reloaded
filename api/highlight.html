@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>highlight module &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="support.bitvector module" href="idsets.html" />
+    <link rel="prev" title="formats module" href="formats.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Whoosh API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analysis.html"><code class="docutils literal notranslate"><span class="pre">analysis</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filestore.html"><code class="docutils literal notranslate"><span class="pre">filedb.filestore</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filetables.html"><code class="docutils literal notranslate"><span class="pre">filedb.filetables</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#manual-highlighting">Manual highlighting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.Highlighter"><code class="docutils literal notranslate"><span class="pre">Highlighter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.highlight"><code class="docutils literal notranslate"><span class="pre">highlight()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fragmenters">Fragmenters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.Fragmenter"><code class="docutils literal notranslate"><span class="pre">Fragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.WholeFragmenter"><code class="docutils literal notranslate"><span class="pre">WholeFragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.SentenceFragmenter"><code class="docutils literal notranslate"><span class="pre">SentenceFragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.ContextFragmenter"><code class="docutils literal notranslate"><span class="pre">ContextFragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.PinpointFragmenter"><code class="docutils literal notranslate"><span class="pre">PinpointFragmenter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scorers">Scorers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.FragmentScorer"><code class="docutils literal notranslate"><span class="pre">FragmentScorer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.BasicFragmentScorer"><code class="docutils literal notranslate"><span class="pre">BasicFragmentScorer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#formatters">Formatters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.UppercaseFormatter"><code class="docutils literal notranslate"><span class="pre">UppercaseFormatter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.HtmlFormatter"><code class="docutils literal notranslate"><span class="pre">HtmlFormatter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.GenshiFormatter"><code class="docutils literal notranslate"><span class="pre">GenshiFormatter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#utility-classes">Utility classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/morph_en.html"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qparser.html"><code class="docutils literal notranslate"><span class="pre">qparser</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reading.html"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scoring.html"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html"><code class="docutils literal notranslate"><span class="pre">searching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing.html"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">Whoosh API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/highlight.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-whoosh.highlight">
+<span id="highlight-module"></span><h1><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module<a class="headerlink" href="#module-whoosh.highlight" title="Permalink to this heading">¶</a></h1>
+<p>The highlight module contains classes and functions for displaying short
+excerpts from hit documents in the search results you present to the user, with
+query terms highlighted.</p>
+<p>The highlighting system has four main elements.</p>
+<ul class="simple">
+<li><p><strong>Fragmenters</strong> chop up the original text into __fragments__, based on the
+locations of matched terms in the text.</p></li>
+<li><p><strong>Scorers</strong> assign a score to each fragment, allowing the system to rank the
+best fragments by whatever criterion.</p></li>
+<li><p><strong>Order functions</strong> control in what order the top-scoring fragments are
+presented to the user. For example, you can show the fragments in the order
+they appear in the document (FIRST) or show higher-scoring fragments first
+(SCORE)</p></li>
+<li><p><strong>Formatters</strong> turn the fragment objects into human-readable output, such as
+an HTML string.</p></li>
+</ul>
+<p>See <a class="reference internal" href="../highlight.html"><span class="doc">How to create highlighted search result excerpts</span></a> for more information.</p>
+<p>See <a class="reference internal" href="../highlight.html"><span class="doc">how to highlight terms in search results</span></a>.</p>
+<section id="manual-highlighting">
+<h2>Manual highlighting<a class="headerlink" href="#manual-highlighting" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.Highlighter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">Highlighter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragmenter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">always_retokenize=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;function</span> <span class="pre">FIRST&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Highlighter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Highlighter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="whoosh.highlight.highlight">
+<span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragmenter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top=3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minscore=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;function</span> <span class="pre">FIRST&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode='query'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.highlight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="fragmenters">
+<h2>Fragmenters<a class="headerlink" href="#fragmenters" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.Fragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">Fragmenter</span></span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragmenter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="whoosh.highlight.Fragmenter.fragment_matches">
+<span class="sig-name descname"><span class="pre">fragment_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragmenter.fragment_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragmenter.fragment_matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields <a class="reference internal" href="#whoosh.highlight.Fragment" title="whoosh.highlight.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fragment</span></code></a> objects based on the text and the matched
+terms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – the string being highlighted.</p></li>
+<li><p><strong>matched_tokens</strong> – a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">analysis.Token</span></code> objects
+representing the term matches in the string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.highlight.Fragmenter.fragment_tokens">
+<span class="sig-name descname"><span class="pre">fragment_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragmenter.fragment_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragmenter.fragment_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields <a class="reference internal" href="#whoosh.highlight.Fragment" title="whoosh.highlight.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fragment</span></code></a> objects based on the tokenized text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – the string being highlighted.</p></li>
+<li><p><strong>all_tokens</strong> – an iterator of <code class="xref py py-class docutils literal notranslate"><span class="pre">analysis.Token</span></code>
+objects from the string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.highlight.Fragmenter.must_retokenize">
+<span class="sig-name descname"><span class="pre">must_retokenize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragmenter.must_retokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragmenter.must_retokenize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this fragmenter requires retokenized text.</p>
+<p>If this method returns True, the fragmenter’s <code class="docutils literal notranslate"><span class="pre">fragment_tokens</span></code>
+method  will be called with an iterator of ALL tokens from the text,
+with the tokens for matched terms having the <code class="docutils literal notranslate"><span class="pre">matched</span></code> attribute set
+to True.</p>
+<p>If this method returns False, the fragmenter’s <code class="docutils literal notranslate"><span class="pre">fragment_matches</span></code>
+method will be called with a LIST of matching tokens.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.WholeFragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">WholeFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#WholeFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.WholeFragmenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Doesn’t fragment the token stream. This object just returns the entire
+entire stream as one “fragment”. This is useful if you want to highlight
+the entire text.</p>
+<p>Note that even if you use the <cite>WholeFragmenter</cite>, the highlight code will
+return no fragment if no terms matched in the given field. To return the
+whole fragment even in that case, call <cite>highlights()</cite> with <cite>minscore=0</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query where no terms match in the &quot;text&quot; field</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;tag&quot;</span><span class="p">,</span> <span class="s2">&quot;new&quot;</span><span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">fragmenter</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">WholeFragmenter</span><span class="p">()</span>
+<span class="n">r</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">UppercaseFormatter</span><span class="p">()</span>
+<span class="c1"># Since no terms in the &quot;text&quot; field matched, we get no fragments back</span>
+<span class="k">assert</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span>
+
+<span class="c1"># If we lower the minimum score to 0, we get a fragment even though it</span>
+<span class="c1"># has no matching terms</span>
+<span class="k">assert</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">minscore</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;This is the text field.&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.SentenceFragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">SentenceFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sentencechars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.!?'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#SentenceFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.SentenceFragmenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Breaks the text up on sentence end punctuation characters
+(“.”, “!”, or “?”). This object works by looking in the original text for a
+sentence end as the next character after each token’s ‘endchar’.</p>
+<p>When highlighting with this fragmenter, you should use an analyzer that
+does NOT remove stop words, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sa</span> <span class="o">=</span> <span class="n">StandardAnalyzer</span><span class="p">(</span><span class="n">stoplist</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>maxchars</strong> – The maximum number of characters allowed in a
+fragment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.ContextFragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">ContextFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surround</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#ContextFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.ContextFragmenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks for matched terms and aggregates them with their surrounding
+context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxchars</strong> – The maximum number of characters allowed in a
+fragment.</p></li>
+<li><p><strong>surround</strong> – The number of extra characters of context to add both
+before the first matched term and after the last matched term.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.PinpointFragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">PinpointFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surround</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autotrim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#PinpointFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.PinpointFragmenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a NON-RETOKENIZING fragmenter. It builds fragments from the
+positions of the matched terms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>maxchars</strong> – The maximum number of characters allowed in a
+fragment.</p></li>
+<li><p><strong>surround</strong> – The number of extra characters of context to add both
+before the first matched term and after the last matched term.</p></li>
+<li><p><strong>autotrim</strong> – automatically trims text before the first space and
+after the last space in the fragments, to try to avoid truncated
+words at the start and end. For short fragments or fragments with
+long runs between spaces this may give strange results.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="scorers">
+<h2>Scorers<a class="headerlink" href="#scorers" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.FragmentScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">FragmentScorer</span></span><a class="reference internal" href="../_modules/whoosh/highlight.html#FragmentScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.FragmentScorer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.BasicFragmentScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">BasicFragmentScorer</span></span><a class="reference internal" href="../_modules/whoosh/highlight.html#BasicFragmentScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.BasicFragmentScorer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="formatters">
+<h2>Formatters<a class="headerlink" href="#formatters" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.UppercaseFormatter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">UppercaseFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#UppercaseFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.UppercaseFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string in which the matched terms are in UPPERCASE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>between</strong> – the text to add between fragments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.HtmlFormatter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">HtmlFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strong'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'match'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">termclass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'term'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxclasses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrquote</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&quot;'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#HtmlFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.HtmlFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string containing HTML formatting around the matched terms.</p>
+<p>This formatter wraps matched terms in an HTML element with two class names.
+The first class name (set with the constructor argument <code class="docutils literal notranslate"><span class="pre">classname</span></code>) is
+the same for each match. The second class name (set with the constructor
+argument <code class="docutils literal notranslate"><span class="pre">termclass</span></code> is different depending on which term matched. This
+allows you to give different formatting (for example, different background
+colors) to the different terms in the excerpt.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hf</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">(</span><span class="n">tagname</span><span class="o">=</span><span class="s2">&quot;span&quot;</span><span class="p">,</span> <span class="n">classname</span><span class="o">=</span><span class="s2">&quot;match&quot;</span><span class="p">,</span> <span class="n">termclass</span><span class="o">=</span><span class="s2">&quot;term&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hf</span><span class="p">(</span><span class="n">mytext</span><span class="p">,</span> <span class="n">myfragments</span><span class="p">)</span>
+<span class="go">&quot;The &lt;span class=&quot;match term0&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;match term1&quot;&gt;geometry&lt;/span&gt; is...&quot;</span>
+</pre></div>
+</div>
+<p>This object maintains a dictionary mapping terms to HTML class names (e.g.
+<code class="docutils literal notranslate"><span class="pre">term0</span></code> and <code class="docutils literal notranslate"><span class="pre">term1</span></code> above), so that multiple excerpts will use the same
+class for the same term. If you want to re-use the same HtmlFormatter
+object with different searches, you should call HtmlFormatter.clear()
+between searches to clear the mapping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tagname</strong> – the tag to wrap around matching terms.</p></li>
+<li><p><strong>between</strong> – the text to add between fragments.</p></li>
+<li><p><strong>classname</strong> – the class name to add to the elements wrapped around
+matching terms.</p></li>
+<li><p><strong>termclass</strong> – the class name prefix for the second class which is
+different for each matched term.</p></li>
+<li><p><strong>maxclasses</strong> – the maximum number of term classes to produce. This
+limits the number of classes you have to define in CSS by recycling
+term class names. For example, if you set maxclasses to 3 and have
+5 terms, the 5 terms will use the CSS classes <code class="docutils literal notranslate"><span class="pre">term0</span></code>, <code class="docutils literal notranslate"><span class="pre">term1</span></code>,
+<code class="docutils literal notranslate"><span class="pre">term2</span></code>, <code class="docutils literal notranslate"><span class="pre">term0</span></code>, <code class="docutils literal notranslate"><span class="pre">term1</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.GenshiFormatter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">GenshiFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strong'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#GenshiFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.GenshiFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Genshi event stream containing HTML formatting around the
+matched terms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qname</strong> – the QName for the tag to wrap around matched terms.</p></li>
+<li><p><strong>between</strong> – the text to add between fragments.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="utility-classes">
+<h2>Utility classes<a class="headerlink" href="#utility-classes" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.highlight.Fragment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">Fragment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startchar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endchar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a fragment (extract) from a hit document. This object is
+mainly used to keep track of the start and end points of the fragment and
+the “matched” character ranges inside; it does not contain the text of the
+fragment or do much else.</p>
+<p>The useful attributes are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Fragment.text</span></code></dt><dd><p>The entire original text from which this fragment is taken.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Fragment.matches</span></code></dt><dd><p>An ordered list of objects representing the matched terms in the
+fragment. These objects have <code class="docutils literal notranslate"><span class="pre">startchar</span></code> and <code class="docutils literal notranslate"><span class="pre">endchar</span></code> attributes.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Fragment.startchar</span></code></dt><dd><p>The index of the first character in the fragment.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Fragment.endchar</span></code></dt><dd><p>The index of the last character in the fragment.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Fragment.matched_terms</span></code></dt><dd><p>A <code class="docutils literal notranslate"><span class="pre">set</span></code> of the <code class="docutils literal notranslate"><span class="pre">text</span></code> of the matched terms in the fragment (if
+available).</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – the source text of the fragment.</p></li>
+<li><p><strong>matches</strong> – a list of objects which have <code class="docutils literal notranslate"><span class="pre">startchar</span></code> and
+<code class="docutils literal notranslate"><span class="pre">endchar</span></code> attributes, and optionally a <code class="docutils literal notranslate"><span class="pre">text</span></code> attribute.</p></li>
+<li><p><strong>startchar</strong> – the index into <code class="docutils literal notranslate"><span class="pre">text</span></code> at which the fragment starts.
+The default is 0.</p></li>
+<li><p><strong>endchar</strong> – the index into <code class="docutils literal notranslate"><span class="pre">text</span></code> at which the fragment ends.
+The default is -1, which is interpreted as the length of <code class="docutils literal notranslate"><span class="pre">text</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="formats.html" class="btn btn-neutral float-left" title="formats module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="idsets.html" class="btn btn-neutral float-right" title="support.bitvector module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

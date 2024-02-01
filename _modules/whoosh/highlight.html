@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.highlight &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.highlight</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.highlight</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2008 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="sd">&quot;&quot;&quot;The highlight module contains classes and functions for displaying short</span>
+<span class="sd">excerpts from hit documents in the search results you present to the user, with</span>
+<span class="sd">query terms highlighted.</span>
+
+<span class="sd">The highlighting system has four main elements.</span>
+
+<span class="sd">* **Fragmenters** chop up the original text into __fragments__, based on the</span>
+<span class="sd">  locations of matched terms in the text.</span>
+
+<span class="sd">* **Scorers** assign a score to each fragment, allowing the system to rank the</span>
+<span class="sd">  best fragments by whatever criterion.</span>
+
+<span class="sd">* **Order functions** control in what order the top-scoring fragments are</span>
+<span class="sd">  presented to the user. For example, you can show the fragments in the order</span>
+<span class="sd">  they appear in the document (FIRST) or show higher-scoring fragments first</span>
+<span class="sd">  (SCORE)</span>
+
+<span class="sd">* **Formatters** turn the fragment objects into human-readable output, such as</span>
+<span class="sd">  an HTML string.</span>
+
+<span class="sd">See :doc:`/highlight` for more information.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">nlargest</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+
+<span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">Token</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">htmlescape</span>
+
+<span class="c1"># The default value for the maximum chars to examine when fragmenting</span>
+<span class="n">DEFAULT_CHARLIMIT</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">15</span>
+
+
+<span class="c1"># Fragment object</span>
+
+<span class="k">def</span> <span class="nf">mkfrag</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">startchar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+           <span class="n">charsbefore</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">charsafter</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a :class:`Fragment` object based on the :class:`analysis.Token`</span>
+<span class="sd">    objects in ``tokens`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">startchar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">startchar</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startchar</span> <span class="k">if</span> <span class="n">tokens</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">endchar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">endchar</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endchar</span> <span class="k">if</span> <span class="n">tokens</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">startchar</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">startchar</span> <span class="o">-</span> <span class="n">charsbefore</span><span class="p">)</span>
+    <span class="n">endchar</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">endchar</span> <span class="o">+</span> <span class="n">charsafter</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Fragment</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Fragment"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragment">[docs]</a><span class="k">class</span> <span class="nc">Fragment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a fragment (extract) from a hit document. This object is</span>
+<span class="sd">    mainly used to keep track of the start and end points of the fragment and</span>
+<span class="sd">    the &quot;matched&quot; character ranges inside; it does not contain the text of the</span>
+<span class="sd">    fragment or do much else.</span>
+
+<span class="sd">    The useful attributes are:</span>
+
+<span class="sd">    ``Fragment.text``</span>
+<span class="sd">        The entire original text from which this fragment is taken.</span>
+
+<span class="sd">    ``Fragment.matches``</span>
+<span class="sd">        An ordered list of objects representing the matched terms in the</span>
+<span class="sd">        fragment. These objects have ``startchar`` and ``endchar`` attributes.</span>
+
+<span class="sd">    ``Fragment.startchar``</span>
+<span class="sd">        The index of the first character in the fragment.</span>
+
+<span class="sd">    ``Fragment.endchar``</span>
+<span class="sd">        The index of the last character in the fragment.</span>
+
+<span class="sd">    ``Fragment.matched_terms``</span>
+<span class="sd">        A ``set`` of the ``text`` of the matched terms in the fragment (if</span>
+<span class="sd">        available).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">matches</span><span class="p">,</span> <span class="n">startchar</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param text: the source text of the fragment.</span>
+<span class="sd">        :param matches: a list of objects which have ``startchar`` and</span>
+<span class="sd">            ``endchar`` attributes, and optionally a ``text`` attribute.</span>
+<span class="sd">        :param startchar: the index into ``text`` at which the fragment starts.</span>
+<span class="sd">            The default is 0.</span>
+<span class="sd">        :param endchar: the index into ``text`` at which the fragment ends.</span>
+<span class="sd">            The default is -1, which is interpreted as the length of ``text``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matches</span> <span class="o">=</span> <span class="n">matches</span>
+
+        <span class="k">if</span> <span class="n">endchar</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">endchar</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startchar</span> <span class="o">=</span> <span class="n">startchar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">endchar</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">matched_terms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">matched_terms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;Fragment </span><span class="si">%d</span><span class="s2">:</span><span class="si">%d</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> matches&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startchar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endchar</span><span class="p">,</span>
+                                                    <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matches</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">endchar</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startchar</span>
+
+    <span class="k">def</span> <span class="nf">overlaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">):</span>
+        <span class="n">sc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startchar</span>
+        <span class="n">ec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endchar</span>
+        <span class="n">fsc</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">startchar</span>
+        <span class="n">fec</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">endchar</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">sc</span> <span class="o">&lt;</span> <span class="n">fsc</span> <span class="o">&lt;</span> <span class="n">ec</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">sc</span> <span class="o">&lt;</span> <span class="n">fec</span> <span class="o">&lt;</span> <span class="n">ec</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">overlapped_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">):</span>
+        <span class="n">sc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startchar</span>
+        <span class="n">ec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endchar</span>
+        <span class="n">fsc</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">startchar</span>
+        <span class="n">fec</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">endchar</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">ec</span><span class="p">,</span> <span class="n">fec</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">fsc</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">startchar</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">startchar</span></div>
+
+
+<span class="c1"># Tokenizing</span>
+
+<span class="k">def</span> <span class="nf">set_matched_filter</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">termset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mark tokens to be highlighted as matched.</span>
+<span class="sd">    Phrase agnostic: highlights all matching tokens individually,</span>
+<span class="sd">                     even if the terms are part of a phrase</span>
+
+<span class="sd">    :param tokens: Result tokens to scan for matched terms to highlight</span>
+<span class="sd">    :param termset: Query terms</span>
+<span class="sd">    :return: yield each token with t.matched = True / False, indicating if the</span>
+<span class="sd">             token should be highlighted</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">matched</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="ow">in</span> <span class="n">termset</span>
+        <span class="k">yield</span> <span class="n">t</span>
+
+
+<span class="k">def</span> <span class="nf">set_matched_filter_phrases</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">phrases</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mark tokens to be highlighted as matched. Used for Strict Phrase highlighting.</span>
+<span class="sd">    Phrase-aware: highlights only individual matches for individual query terms</span>
+<span class="sd">                  and phrase matches for phrase terms.</span>
+
+<span class="sd">    :param tokens:  Result tokens</span>
+<span class="sd">    :param text:    Result text to scan for matched terms to highlight</span>
+<span class="sd">    :param terms:   Individual query terms</span>
+<span class="sd">    :param phrases: Query Phrases</span>
+<span class="sd">    :return: yield each token with t.matched = True / False, indicating if the</span>
+<span class="sd">             token should be highlighted</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation note: Because the Token object follows a Singleton pattern,</span>
+<span class="sd">    we can only read each one once. Because phrase matching requires rescanning,</span>
+<span class="sd">    we require a rendered token list (the text parameter) instead. The function must </span>
+<span class="sd">    still yield Token objects at the end, so the text list is used as a way to build a list</span>
+<span class="sd">    of Token indices (the matches set). The yield loop at the end uses this</span>
+<span class="sd">    to properly set .matched on the yielded Token objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># Match phrases</span>
+    <span class="k">for</span> <span class="n">phrase</span> <span class="ow">in</span> <span class="n">phrases</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n_phrase_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">phrase</span><span class="o">.</span><span class="n">words</span><span class="p">)</span>
+        <span class="n">slop</span> <span class="o">=</span> <span class="n">phrase</span><span class="o">.</span><span class="n">slop</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">phrase</span><span class="o">.</span><span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>  <span class="c1"># If first word matched</span>
+                <span class="k">if</span> <span class="n">slop</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># Simple substring match</span>
+                    <span class="k">if</span> <span class="n">text</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n_phrase_words</span><span class="p">]</span> <span class="o">==</span> <span class="n">phrase</span><span class="o">.</span><span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>  <span class="c1"># If rest of phrase matches</span>
+                        <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">matches</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">n_phrase_words</span><span class="p">)))</span>  <span class="c1"># Collect matching indices</span>
+                        <span class="c1"># Advance past match area.</span>
+                        <span class="c1"># Choosing to ignore possible overlapping matches for efficiency due to low probability.</span>
+                        <span class="n">i</span> <span class="o">+=</span> <span class="n">n_phrase_words</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Slop match</span>
+                    <span class="n">current_word_index</span> <span class="o">=</span> <span class="n">first_slop_match</span> <span class="o">=</span> <span class="n">last_slop_match</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">slop_matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_slop_match</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">phrase</span><span class="o">.</span><span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                        <span class="k">try</span><span class="p">:</span>
+<span class="w">                            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                            Find the *last* occurrence of word in the slop substring by reversing it and mapping the index back.</span>
+<span class="sd">                            If multiple tokens match in the substring, picking the first one can overlook valid matches.</span>
+<span class="sd">                            For example, phrase is: &#39;one two three&#39;~2</span>
+<span class="sd">                            Target substring is:    &#39;one two two six three&#39;, which is a valid match.</span>
+<span class="sd">                                                     [0] [1] [2] [3] [4]</span>
+<span class="sd">                            </span>
+<span class="sd">                            Looking for the first match will find [0], then [1] then fail since [3] is more than ~2 words away</span>
+<span class="sd">                            Looking for the last match will find [0], then, given a choice between [1] or [2], will pick [2],</span>
+<span class="sd">                            making [4] visible from there</span>
+<span class="sd">                            &quot;&quot;&quot;</span>
+                            <span class="n">text_sub</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">current_word_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">current_word_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">slop</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Substring to scan (reversed)</span>
+                            <span class="n">len_sub</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text_sub</span><span class="p">)</span>
+                            <span class="n">next_word_index</span> <span class="o">=</span> <span class="n">len_sub</span> <span class="o">-</span> <span class="n">text_sub</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Map index back to unreversed list</span>
+                            <span class="n">last_slop_match</span> <span class="o">=</span> <span class="n">current_word_index</span> <span class="o">+</span> <span class="n">next_word_index</span> <span class="o">+</span> <span class="mi">1</span>
+                            <span class="n">slop_matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_slop_match</span><span class="p">)</span>
+                            <span class="n">current_word_index</span> <span class="o">=</span> <span class="n">last_slop_match</span>
+                        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                            <span class="c1"># word not found in substring</span>
+                            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                            <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="n">last_slop_match</span>
+                        <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">matches</span><span class="o">.</span><span class="n">add</span><span class="p">,</span> <span class="n">slop_matches</span><span class="p">))</span>  <span class="c1"># Collect matching indices</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># Match individual terms</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="n">word</span><span class="p">:</span>
+                <span class="n">matches</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">matched</span> <span class="o">=</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">matches</span>
+        <span class="k">yield</span> <span class="n">t</span>
+
+
+<span class="c1"># Fragmenters</span>
+
+<div class="viewcode-block" id="Fragmenter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragmenter">[docs]</a><span class="k">class</span> <span class="nc">Fragmenter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Fragmenter.must_retokenize"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragmenter.must_retokenize">[docs]</a>    <span class="k">def</span> <span class="nf">must_retokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this fragmenter requires retokenized text.</span>
+
+<span class="sd">        If this method returns True, the fragmenter&#39;s ``fragment_tokens``</span>
+<span class="sd">        method  will be called with an iterator of ALL tokens from the text,</span>
+<span class="sd">        with the tokens for matched terms having the ``matched`` attribute set</span>
+<span class="sd">        to True.</span>
+
+<span class="sd">        If this method returns False, the fragmenter&#39;s ``fragment_matches``</span>
+<span class="sd">        method will be called with a LIST of matching tokens.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Fragmenter.fragment_tokens"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragmenter.fragment_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">fragment_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">all_tokens</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields :class:`Fragment` objects based on the tokenized text.</span>
+
+<span class="sd">        :param text: the string being highlighted.</span>
+<span class="sd">        :param all_tokens: an iterator of :class:`analysis.Token`</span>
+<span class="sd">            objects from the string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Fragmenter.fragment_matches"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragmenter.fragment_matches">[docs]</a>    <span class="k">def</span> <span class="nf">fragment_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">matched_tokens</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields :class:`Fragment` objects based on the text and the matched</span>
+<span class="sd">        terms.</span>
+
+<span class="sd">        :param text: the string being highlighted.</span>
+<span class="sd">        :param matched_tokens: a list of :class:`analysis.Token` objects</span>
+<span class="sd">            representing the term matches in the string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="WholeFragmenter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.WholeFragmenter">[docs]</a><span class="k">class</span> <span class="nc">WholeFragmenter</span><span class="p">(</span><span class="n">Fragmenter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Doesn&#39;t fragment the token stream. This object just returns the entire</span>
+<span class="sd">    entire stream as one &quot;fragment&quot;. This is useful if you want to highlight</span>
+<span class="sd">    the entire text.</span>
+
+<span class="sd">    Note that even if you use the `WholeFragmenter`, the highlight code will</span>
+<span class="sd">    return no fragment if no terms matched in the given field. To return the</span>
+<span class="sd">    whole fragment even in that case, call `highlights()` with `minscore=0`::</span>
+
+<span class="sd">        # Query where no terms match in the &quot;text&quot; field</span>
+<span class="sd">        q = query.Term(&quot;tag&quot;, &quot;new&quot;)</span>
+
+<span class="sd">        r = mysearcher.search(q)</span>
+<span class="sd">        r.fragmenter = highlight.WholeFragmenter()</span>
+<span class="sd">        r.formatter = highlight.UppercaseFormatter()</span>
+<span class="sd">        # Since no terms in the &quot;text&quot; field matched, we get no fragments back</span>
+<span class="sd">        assert r[0].highlights(&quot;text&quot;) == &quot;&quot;</span>
+
+<span class="sd">        # If we lower the minimum score to 0, we get a fragment even though it</span>
+<span class="sd">        # has no matching terms</span>
+<span class="sd">        assert r[0].highlights(&quot;text&quot;, minscore=0) == &quot;This is the text field.&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">charlimit</span><span class="o">=</span><span class="n">DEFAULT_CHARLIMIT</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charlimit</span> <span class="o">=</span> <span class="n">charlimit</span>
+
+    <span class="k">def</span> <span class="nf">fragment_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">charlimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">charlimit</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">charlimit</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span> <span class="o">&gt;</span> <span class="n">charlimit</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">matched</span><span class="p">:</span>
+                <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Fragment</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">matches</span><span class="p">)]</span></div>
+
+
+<span class="c1"># Backwards compatiblity</span>
+<span class="n">NullFragmeter</span> <span class="o">=</span> <span class="n">WholeFragmenter</span>
+
+
+<div class="viewcode-block" id="SentenceFragmenter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.SentenceFragmenter">[docs]</a><span class="k">class</span> <span class="nc">SentenceFragmenter</span><span class="p">(</span><span class="n">Fragmenter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Breaks the text up on sentence end punctuation characters</span>
+<span class="sd">    (&quot;.&quot;, &quot;!&quot;, or &quot;?&quot;). This object works by looking in the original text for a</span>
+<span class="sd">    sentence end as the next character after each token&#39;s &#39;endchar&#39;.</span>
+
+<span class="sd">    When highlighting with this fragmenter, you should use an analyzer that</span>
+<span class="sd">    does NOT remove stop words, for example::</span>
+
+<span class="sd">        sa = StandardAnalyzer(stoplist=None)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxchars</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">sentencechars</span><span class="o">=</span><span class="s2">&quot;.!?&quot;</span><span class="p">,</span>
+                 <span class="n">charlimit</span><span class="o">=</span><span class="n">DEFAULT_CHARLIMIT</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param maxchars: The maximum number of characters allowed in a</span>
+<span class="sd">            fragment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxchars</span> <span class="o">=</span> <span class="n">maxchars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentencechars</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">sentencechars</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charlimit</span> <span class="o">=</span> <span class="n">charlimit</span>
+
+    <span class="k">def</span> <span class="nf">fragment_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">maxchars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxchars</span>
+        <span class="n">sentencechars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sentencechars</span>
+        <span class="n">charlimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">charlimit</span>
+
+        <span class="n">textlen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="c1"># startchar of first token in the current sentence</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Buffer for matched tokens in the current sentence</span>
+        <span class="n">tks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">endchar</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Number of chars in the current sentence</span>
+        <span class="n">currentlen</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">startchar</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span>
+            <span class="n">endchar</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span>
+            <span class="k">if</span> <span class="n">charlimit</span> <span class="ow">and</span> <span class="n">endchar</span> <span class="o">&gt;</span> <span class="n">charlimit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Remember the startchar of the first token in a sentence</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="n">startchar</span>
+                <span class="n">currentlen</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">tlength</span> <span class="o">=</span> <span class="n">endchar</span> <span class="o">-</span> <span class="n">startchar</span>
+            <span class="n">currentlen</span> <span class="o">+=</span> <span class="n">tlength</span>
+
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">matched</span><span class="p">:</span>
+                <span class="n">tks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+            <span class="c1"># If the character after the current token is end-of-sentence</span>
+            <span class="c1"># punctuation, finish the sentence and reset</span>
+            <span class="k">if</span> <span class="n">endchar</span> <span class="o">&lt;</span> <span class="n">textlen</span> <span class="ow">and</span> <span class="n">text</span><span class="p">[</span><span class="n">endchar</span><span class="p">]</span> <span class="ow">in</span> <span class="n">sentencechars</span><span class="p">:</span>
+                <span class="c1"># Don&#39;t break for two periods in a row (e.g. ignore &quot;...&quot;)</span>
+                <span class="k">if</span> <span class="n">endchar</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">textlen</span> <span class="ow">and</span> <span class="n">text</span><span class="p">[</span><span class="n">endchar</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">sentencechars</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># If the sentence had matches and it&#39;s not too long, yield it</span>
+                <span class="c1"># as a token</span>
+                <span class="k">if</span> <span class="n">tks</span> <span class="ow">and</span> <span class="n">currentlen</span> <span class="o">&lt;=</span> <span class="n">maxchars</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">mkfrag</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tks</span><span class="p">,</span> <span class="n">startchar</span><span class="o">=</span><span class="n">first</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=</span><span class="n">endchar</span><span class="p">)</span>
+                <span class="c1"># Reset the counts</span>
+                <span class="n">tks</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">currentlen</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># If we get to the end of the text and there&#39;s still a sentence</span>
+        <span class="c1"># in the buffer, yield it</span>
+        <span class="k">if</span> <span class="n">tks</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">mkfrag</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tks</span><span class="p">,</span> <span class="n">startchar</span><span class="o">=</span><span class="n">first</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=</span><span class="n">endchar</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ContextFragmenter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.ContextFragmenter">[docs]</a><span class="k">class</span> <span class="nc">ContextFragmenter</span><span class="p">(</span><span class="n">Fragmenter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Looks for matched terms and aggregates them with their surrounding</span>
+<span class="sd">    context.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxchars</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">surround</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">charlimit</span><span class="o">=</span><span class="n">DEFAULT_CHARLIMIT</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param maxchars: The maximum number of characters allowed in a</span>
+<span class="sd">            fragment.</span>
+<span class="sd">        :param surround: The number of extra characters of context to add both</span>
+<span class="sd">            before the first matched term and after the last matched term.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxchars</span> <span class="o">=</span> <span class="n">maxchars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surround</span> <span class="o">=</span> <span class="n">surround</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charlimit</span> <span class="o">=</span> <span class="n">charlimit</span>
+
+    <span class="k">def</span> <span class="nf">fragment_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">maxchars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxchars</span>
+        <span class="n">surround</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surround</span>
+        <span class="n">charlimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">charlimit</span>
+
+        <span class="c1"># startchar of the first token in the fragment</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Stack of startchars</span>
+        <span class="n">firsts</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+        <span class="c1"># Each time we see a matched token, we reset the countdown to finishing</span>
+        <span class="c1"># the fragment. This also indicates whether we&#39;re currently inside a</span>
+        <span class="c1"># fragment (&lt; 0 not in fragment, &gt;= 0 in fragment)</span>
+        <span class="n">countdown</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="c1"># Tokens in current fragment</span>
+        <span class="n">tks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">endchar</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Number of chars in the current fragment</span>
+        <span class="n">currentlen</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">startchar</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span>
+            <span class="n">endchar</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span>
+            <span class="n">tlength</span> <span class="o">=</span> <span class="n">endchar</span> <span class="o">-</span> <span class="n">startchar</span>
+            <span class="k">if</span> <span class="n">charlimit</span> <span class="ow">and</span> <span class="n">endchar</span> <span class="o">&gt;</span> <span class="n">charlimit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">countdown</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">t</span><span class="o">.</span><span class="n">matched</span><span class="p">:</span>
+                <span class="c1"># We&#39;re not in a fragment currently, so just maintain the</span>
+                <span class="c1"># &quot;charsbefore&quot; buffer</span>
+                <span class="n">firsts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">startchar</span><span class="p">)</span>
+                <span class="k">while</span> <span class="n">firsts</span> <span class="ow">and</span> <span class="n">endchar</span> <span class="o">-</span> <span class="n">firsts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">surround</span><span class="p">:</span>
+                    <span class="n">firsts</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">currentlen</span> <span class="o">+</span> <span class="n">tlength</span> <span class="o">&gt;</span> <span class="n">maxchars</span><span class="p">:</span>
+                <span class="c1"># We&#39;re in a fragment, but adding this token would put us past</span>
+                <span class="c1"># the maximum size. Zero the countdown so the code below will</span>
+                <span class="c1"># cause the fragment to be emitted</span>
+                <span class="n">countdown</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="n">t</span><span class="o">.</span><span class="n">matched</span><span class="p">:</span>
+                <span class="c1"># Start/restart the countdown</span>
+                <span class="n">countdown</span> <span class="o">=</span> <span class="n">surround</span>
+                <span class="c1"># Remember the first char of this fragment</span>
+                <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">firsts</span><span class="p">:</span>
+                        <span class="n">first</span> <span class="o">=</span> <span class="n">firsts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">first</span> <span class="o">=</span> <span class="n">startchar</span>
+                        <span class="c1"># Add on unused front context</span>
+                        <span class="n">countdown</span> <span class="o">+=</span> <span class="n">surround</span>
+                <span class="n">tks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+            <span class="c1"># If we&#39;re in a fragment...</span>
+            <span class="k">if</span> <span class="n">countdown</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Update the counts</span>
+                <span class="n">currentlen</span> <span class="o">+=</span> <span class="n">tlength</span>
+                <span class="n">countdown</span> <span class="o">-=</span> <span class="n">tlength</span>
+
+                <span class="c1"># If the countdown is expired</span>
+                <span class="k">if</span> <span class="n">countdown</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># Finish the fragment</span>
+                    <span class="k">yield</span> <span class="n">mkfrag</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tks</span><span class="p">,</span> <span class="n">startchar</span><span class="o">=</span><span class="n">first</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=</span><span class="n">endchar</span><span class="p">)</span>
+                    <span class="c1"># Reset the counts</span>
+                    <span class="n">tks</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">firsts</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+                    <span class="n">first</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">currentlen</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># If there&#39;s a fragment left over at the end, yield it</span>
+        <span class="k">if</span> <span class="n">tks</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">mkfrag</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tks</span><span class="p">,</span> <span class="n">startchar</span><span class="o">=</span><span class="n">first</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=</span><span class="n">endchar</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PinpointFragmenter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.PinpointFragmenter">[docs]</a><span class="k">class</span> <span class="nc">PinpointFragmenter</span><span class="p">(</span><span class="n">Fragmenter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a NON-RETOKENIZING fragmenter. It builds fragments from the</span>
+<span class="sd">    positions of the matched terms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxchars</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">surround</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">autotrim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">charlimit</span><span class="o">=</span><span class="n">DEFAULT_CHARLIMIT</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param maxchars: The maximum number of characters allowed in a</span>
+<span class="sd">            fragment.</span>
+<span class="sd">        :param surround: The number of extra characters of context to add both</span>
+<span class="sd">            before the first matched term and after the last matched term.</span>
+<span class="sd">        :param autotrim: automatically trims text before the first space and</span>
+<span class="sd">            after the last space in the fragments, to try to avoid truncated</span>
+<span class="sd">            words at the start and end. For short fragments or fragments with</span>
+<span class="sd">            long runs between spaces this may give strange results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxchars</span> <span class="o">=</span> <span class="n">maxchars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surround</span> <span class="o">=</span> <span class="n">surround</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autotrim</span> <span class="o">=</span> <span class="n">autotrim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charlimit</span> <span class="o">=</span> <span class="n">charlimit</span>
+
+    <span class="k">def</span> <span class="nf">must_retokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">fragment_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">matched</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">matched</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_matches</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">matched</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_autotrim</span><span class="p">(</span><span class="n">fragment</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">startchar</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">startchar</span>
+        <span class="n">endchar</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">endchar</span>
+
+        <span class="n">firstspace</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">firstspace</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">startchar</span> <span class="o">=</span> <span class="n">firstspace</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">lastspace</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lastspace</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">endchar</span> <span class="o">=</span> <span class="n">lastspace</span>
+
+        <span class="k">if</span> <span class="n">fragment</span><span class="o">.</span><span class="n">matches</span><span class="p">:</span>
+            <span class="n">startchar</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">startchar</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startchar</span><span class="p">)</span>
+            <span class="n">endchar</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">endchar</span><span class="p">,</span> <span class="n">fragment</span><span class="o">.</span><span class="n">matches</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endchar</span><span class="p">)</span>
+
+        <span class="n">fragment</span><span class="o">.</span><span class="n">startchar</span> <span class="o">=</span> <span class="n">startchar</span>
+        <span class="n">fragment</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">endchar</span>
+
+    <span class="k">def</span> <span class="nf">fragment_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">maxchars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxchars</span>
+        <span class="n">surround</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surround</span>
+        <span class="n">autotrim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autotrim</span>
+        <span class="n">charlimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">charlimit</span>
+
+        <span class="n">j</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="n">i</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span>
+            <span class="k">if</span> <span class="n">charlimit</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">&gt;</span> <span class="n">charlimit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">currentlen</span> <span class="o">=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span>
+            <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">currentlen</span> <span class="o">&lt;</span> <span class="n">maxchars</span><span class="p">:</span>
+                <span class="nb">next</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">ec</span> <span class="o">=</span> <span class="nb">next</span><span class="o">.</span><span class="n">endchar</span>
+                <span class="k">if</span> <span class="n">ec</span> <span class="o">-</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">surround</span> <span class="ow">and</span> <span class="n">ec</span> <span class="o">-</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="n">maxchars</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">right</span> <span class="o">=</span> <span class="n">ec</span>
+                    <span class="n">currentlen</span> <span class="o">+=</span> <span class="p">(</span><span class="n">ec</span> <span class="o">-</span> <span class="nb">next</span><span class="o">.</span><span class="n">startchar</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+            <span class="n">left</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">left</span> <span class="o">-</span> <span class="n">surround</span><span class="p">)</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">right</span> <span class="o">+</span> <span class="n">surround</span><span class="p">)</span>
+            <span class="n">fragment</span> <span class="o">=</span> <span class="n">Fragment</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">autotrim</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_autotrim</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">fragment</span></div>
+
+
+<span class="c1"># Fragment scorers</span>
+
+<div class="viewcode-block" id="FragmentScorer"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.FragmentScorer">[docs]</a><span class="k">class</span> <span class="nc">FragmentScorer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BasicFragmentScorer"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.BasicFragmentScorer">[docs]</a><span class="k">class</span> <span class="nc">BasicFragmentScorer</span><span class="p">(</span><span class="n">FragmentScorer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="c1"># Add up the boosts for the matched terms in this passage</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">boost</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">matches</span><span class="p">)</span>
+
+        <span class="c1"># Favor diversity: multiply score by the number of separate</span>
+        <span class="c1"># terms matched</span>
+        <span class="n">score</span> <span class="o">*=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">matched_terms</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">score</span></div>
+
+
+<span class="c1"># Fragment sorters</span>
+
+<span class="k">def</span> <span class="nf">SCORE</span><span class="p">(</span><span class="n">fragment</span><span class="p">):</span>
+    <span class="s2">&quot;Sorts higher scored passages first.&quot;</span>
+    <span class="k">return</span> <span class="mi">1</span>
+
+
+<span class="k">def</span> <span class="nf">FIRST</span><span class="p">(</span><span class="n">fragment</span><span class="p">):</span>
+    <span class="s2">&quot;Sorts passages from earlier in the document first.&quot;</span>
+    <span class="k">return</span> <span class="n">fragment</span><span class="o">.</span><span class="n">startchar</span>
+
+
+<span class="k">def</span> <span class="nf">LONGER</span><span class="p">(</span><span class="n">fragment</span><span class="p">):</span>
+    <span class="s2">&quot;Sorts longer passages first.&quot;</span>
+    <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">SHORTER</span><span class="p">(</span><span class="n">fragment</span><span class="p">):</span>
+    <span class="s2">&quot;Sort shorter passages first.&quot;</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+
+
+<span class="c1"># Formatters</span>
+
+<span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience function for getting the text to use for a match when</span>
+<span class="sd">    formatting.</span>
+
+<span class="sd">    If ``replace`` is False, returns the part of ``original`` between</span>
+<span class="sd">    ``token.startchar`` and ``token.endchar``. If ``replace`` is True, returns</span>
+<span class="sd">    ``token.text``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">replace</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">original</span><span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">startchar</span><span class="p">:</span><span class="n">token</span><span class="o">.</span><span class="n">endchar</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">Formatter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for formatters.</span>
+
+<span class="sd">    For highlighters that return strings, it is usually only necessary to</span>
+<span class="sd">    override :meth:`Formatter.format_token`.</span>
+
+<span class="sd">    Use the :func:`get_text` function as a convenience to get the token text::</span>
+
+<span class="sd">        class MyFormatter(Formatter):</span>
+<span class="sd">            def format_token(text, token, replace=False):</span>
+<span class="sd">                ttext = get_text(text, token, replace)</span>
+<span class="sd">                return &quot;[%s]&quot; % ttext</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">between</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">format_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a formatted version of the given &quot;token&quot; object, which</span>
+<span class="sd">        should have at least ``startchar`` and ``endchar`` attributes, and</span>
+<span class="sd">        a ``text`` attribute if ``replace`` is True.</span>
+
+<span class="sd">        :param text: the original fragment text being highlighted.</span>
+<span class="sd">        :param token: an object having ``startchar`` and ``endchar`` attributes</span>
+<span class="sd">            and optionally a ``text`` attribute (if ``replace`` is True).</span>
+<span class="sd">        :param replace: if True, the original text between the token&#39;s</span>
+<span class="sd">            ``startchar`` and ``endchar`` indices will be replaced with the</span>
+<span class="sd">            value of the token&#39;s ``text`` attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">format_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a formatted version of the given text, using the &quot;token&quot;</span>
+<span class="sd">        objects in the given :class:`Fragment`.</span>
+
+<span class="sd">        :param fragment: a :class:`Fragment` object representing a list of</span>
+<span class="sd">            matches in the text.</span>
+<span class="sd">        :param replace: if True, the original text corresponding to each</span>
+<span class="sd">            match will be replaced with the value of the token object&#39;s</span>
+<span class="sd">            ``text`` attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">startchar</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="c1"># For overlapping tokens (such as in Chinese), sort by position,</span>
+        <span class="c1"># then by inverse of length.</span>
+        <span class="c1"># Because the formatter is sequential, it will only pick the first</span>
+        <span class="c1"># token for a given position to highlight. This makes sure it picks</span>
+        <span class="c1"># the longest overlapping token.</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">fragment</span><span class="o">.</span><span class="n">matches</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">token</span><span class="p">:</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">startchar</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">endchar</span> <span class="o">-</span> <span class="n">token</span><span class="o">.</span><span class="n">startchar</span><span class="p">))):</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span> <span class="o">&lt;</span> <span class="n">index</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span> <span class="o">&gt;</span> <span class="n">index</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">t</span><span class="o">.</span><span class="n">startchar</span><span class="p">]))</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_token</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">replace</span><span class="p">))</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">fragment</span><span class="o">.</span><span class="n">endchar</span><span class="p">]))</span>
+
+        <span class="n">out_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out_string</span>
+
+    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a formatted version of the given text, using a list of</span>
+<span class="sd">        :class:`Fragment` objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">formatted</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">format_fragment</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">between</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">formatted</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fragments</span><span class="p">):</span>
+        <span class="c1"># For backwards compatibility</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">NullFormatter</span><span class="p">(</span><span class="n">Formatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Formatter that does not modify the string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">format_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="UppercaseFormatter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.UppercaseFormatter">[docs]</a><span class="k">class</span> <span class="nc">UppercaseFormatter</span><span class="p">(</span><span class="n">Formatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a string in which the matched terms are in UPPERCASE.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param between: the text to add between fragments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">between</span> <span class="o">=</span> <span class="n">between</span>
+
+    <span class="k">def</span> <span class="nf">format_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">ttxt</span> <span class="o">=</span> <span class="n">get_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ttxt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HtmlFormatter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.HtmlFormatter">[docs]</a><span class="k">class</span> <span class="nc">HtmlFormatter</span><span class="p">(</span><span class="n">Formatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a string containing HTML formatting around the matched terms.</span>
+
+<span class="sd">    This formatter wraps matched terms in an HTML element with two class names.</span>
+<span class="sd">    The first class name (set with the constructor argument ``classname``) is</span>
+<span class="sd">    the same for each match. The second class name (set with the constructor</span>
+<span class="sd">    argument ``termclass`` is different depending on which term matched. This</span>
+<span class="sd">    allows you to give different formatting (for example, different background</span>
+<span class="sd">    colors) to the different terms in the excerpt.</span>
+
+<span class="sd">    &gt;&gt;&gt; hf = HtmlFormatter(tagname=&quot;span&quot;, classname=&quot;match&quot;, termclass=&quot;term&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; hf(mytext, myfragments)</span>
+<span class="sd">    &quot;The &lt;span class=&quot;match term0&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;match term1&quot;&gt;geometry&lt;/span&gt; is...&quot;</span>
+
+<span class="sd">    This object maintains a dictionary mapping terms to HTML class names (e.g.</span>
+<span class="sd">    ``term0`` and ``term1`` above), so that multiple excerpts will use the same</span>
+<span class="sd">    class for the same term. If you want to re-use the same HtmlFormatter</span>
+<span class="sd">    object with different searches, you should call HtmlFormatter.clear()</span>
+<span class="sd">    between searches to clear the mapping.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;&lt;</span><span class="si">%(tag)s</span><span class="s1"> class=</span><span class="si">%(q)s%(cls)s%(tn)s%(q)s</span><span class="s1">&gt;</span><span class="si">%(t)s</span><span class="s1">&lt;/</span><span class="si">%(tag)s</span><span class="s1">&gt;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tagname</span><span class="o">=</span><span class="s2">&quot;strong&quot;</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+                 <span class="n">classname</span><span class="o">=</span><span class="s2">&quot;match&quot;</span><span class="p">,</span> <span class="n">termclass</span><span class="o">=</span><span class="s2">&quot;term&quot;</span><span class="p">,</span> <span class="n">maxclasses</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                 <span class="n">attrquote</span><span class="o">=</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param tagname: the tag to wrap around matching terms.</span>
+<span class="sd">        :param between: the text to add between fragments.</span>
+<span class="sd">        :param classname: the class name to add to the elements wrapped around</span>
+<span class="sd">            matching terms.</span>
+<span class="sd">        :param termclass: the class name prefix for the second class which is</span>
+<span class="sd">            different for each matched term.</span>
+<span class="sd">        :param maxclasses: the maximum number of term classes to produce. This</span>
+<span class="sd">            limits the number of classes you have to define in CSS by recycling</span>
+<span class="sd">            term class names. For example, if you set maxclasses to 3 and have</span>
+<span class="sd">            5 terms, the 5 terms will use the CSS classes ``term0``, ``term1``,</span>
+<span class="sd">            ``term2``, ``term0``, ``term1``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">between</span> <span class="o">=</span> <span class="n">between</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tagname</span> <span class="o">=</span> <span class="n">tagname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classname</span> <span class="o">=</span> <span class="n">classname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">termclass</span> <span class="o">=</span> <span class="n">termclass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrquote</span> <span class="o">=</span> <span class="n">attrquote</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxclasses</span> <span class="o">=</span> <span class="n">maxclasses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seen</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">htmlclass</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">classname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">termclass</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">htmlescape</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">format_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seen</span>
+        <span class="n">ttext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span><span class="p">(</span><span class="n">get_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">ttext</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">termnum</span> <span class="o">=</span> <span class="n">seen</span><span class="p">[</span><span class="n">ttext</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">termnum</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seen</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxclasses</span>
+            <span class="n">seen</span><span class="p">[</span><span class="n">ttext</span><span class="p">]</span> <span class="o">=</span> <span class="n">termnum</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">%</span> <span class="p">{</span><span class="s2">&quot;tag&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tagname</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attrquote</span><span class="p">,</span>
+                                <span class="s2">&quot;cls&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">htmlclass</span><span class="p">,</span> <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">ttext</span><span class="p">,</span>
+                                <span class="s2">&quot;tn&quot;</span><span class="p">:</span> <span class="n">termnum</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clears the dictionary mapping terms to HTML classnames.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seen</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="GenshiFormatter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.GenshiFormatter">[docs]</a><span class="k">class</span> <span class="nc">GenshiFormatter</span><span class="p">(</span><span class="n">Formatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a Genshi event stream containing HTML formatting around the</span>
+<span class="sd">    matched terms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qname</span><span class="o">=</span><span class="s2">&quot;strong&quot;</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param qname: the QName for the tag to wrap around matched terms.</span>
+<span class="sd">        :param between: the text to add between fragments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">qname</span> <span class="o">=</span> <span class="n">qname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">between</span> <span class="o">=</span> <span class="n">between</span>
+
+        <span class="kn">from</span> <span class="nn">genshi.core</span> <span class="kn">import</span> <span class="n">START</span><span class="p">,</span> <span class="n">END</span><span class="p">,</span> <span class="n">TEXT</span>  <span class="c1"># @UnresolvedImport</span>
+        <span class="kn">from</span> <span class="nn">genshi.core</span> <span class="kn">import</span> <span class="n">Attrs</span><span class="p">,</span> <span class="n">Stream</span>  <span class="c1"># @UnresolvedImport</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">START</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">TEXT</span> <span class="o">=</span> <span class="n">START</span><span class="p">,</span> <span class="n">END</span><span class="p">,</span> <span class="n">TEXT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Attrs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Stream</span> <span class="o">=</span> <span class="n">Attrs</span><span class="p">,</span> <span class="n">Stream</span>
+
+    <span class="k">def</span> <span class="nf">_add_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="ow">and</span> <span class="n">output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">TEXT</span><span class="p">:</span>
+            <span class="n">output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">text</span><span class="p">,</span> <span class="n">output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">format_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">qn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qname</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">get_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Stream</span><span class="p">([(</span><span class="bp">self</span><span class="o">.</span><span class="n">START</span><span class="p">,</span> <span class="p">(</span><span class="n">qn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Attrs</span><span class="p">()),</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">qn</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))])</span>
+
+    <span class="k">def</span> <span class="nf">format_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">startchar</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">fragment</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">matches</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span> <span class="o">&gt;</span> <span class="n">index</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_text</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">t</span><span class="o">.</span><span class="n">startchar</span><span class="p">],</span> <span class="n">output</span><span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">text</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">replace</span><span class="p">))</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_text</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">index</span><span class="p">:],</span> <span class="n">output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragments</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">fragment</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">first</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">between</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">)</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span><span class="n">output</span><span class="p">)</span></div>
+
+
+<span class="c1"># Highlighting</span>
+
+<span class="k">def</span> <span class="nf">top_fragments</span><span class="p">(</span><span class="n">fragments</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">minscore</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">scored_fragments</span> <span class="o">=</span> <span class="p">((</span><span class="n">scorer</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">)</span>
+    <span class="n">scored_fragments</span> <span class="o">=</span> <span class="n">nlargest</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">scored_fragments</span><span class="p">)</span>
+    <span class="n">best_fragments</span> <span class="o">=</span> <span class="p">[</span><span class="n">sf</span> <span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">sf</span> <span class="ow">in</span> <span class="n">scored_fragments</span> <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">minscore</span><span class="p">]</span>
+    <span class="n">best_fragments</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">best_fragments</span>
+
+
+<div class="viewcode-block" id="highlight"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.highlight">[docs]</a><span class="k">def</span> <span class="nf">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">fragmenter</span><span class="p">,</span> <span class="n">formatter</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+              <span class="n">scorer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minscore</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">FIRST</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;query&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">scorer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scorer</span> <span class="o">=</span> <span class="n">BasicFragmentScorer</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fragmenter</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">:</span>
+        <span class="n">fragmenter</span> <span class="o">=</span> <span class="n">fragmenter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">:</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">formatter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">scorer</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">:</span>
+        <span class="n">scorer</span> <span class="o">=</span> <span class="n">scorer</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">scorer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scorer</span> <span class="o">=</span> <span class="n">BasicFragmentScorer</span><span class="p">()</span>
+
+    <span class="n">termset</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">analyzer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">removestops</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">set_matched_filter</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">termset</span><span class="p">)</span>
+    <span class="n">fragments</span> <span class="o">=</span> <span class="n">fragmenter</span><span class="o">.</span><span class="n">fragment_tokens</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+    <span class="n">fragments</span> <span class="o">=</span> <span class="n">top_fragments</span><span class="p">(</span><span class="n">fragments</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">scorer</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">minscore</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">formatter</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fragments</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Highlighter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Highlighter">[docs]</a><span class="k">class</span> <span class="nc">Highlighter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragmenter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">always_retokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">FIRST</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fragmenter</span> <span class="o">=</span> <span class="n">fragmenter</span> <span class="ow">or</span> <span class="n">ContextFragmenter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span> <span class="o">=</span> <span class="n">scorer</span> <span class="ow">or</span> <span class="n">BasicFragmentScorer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">formatter</span> <span class="ow">or</span> <span class="n">HtmlFormatter</span><span class="p">(</span><span class="n">tagname</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">always_retokenize</span> <span class="o">=</span> <span class="n">always_retokenize</span>
+
+    <span class="k">def</span> <span class="nf">can_load_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="c1"># Is it possible to build a mapping between the matched terms/docs and</span>
+        <span class="c1"># their start and end chars for &quot;pinpoint&quot; highlighting (ie not require</span>
+        <span class="c1"># re-tokenizing text)?</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">always_retokenize</span><span class="p">:</span>
+            <span class="c1"># No, we&#39;ve been configured to always retokenize some text</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="o">.</span><span class="n">has_matched_terms</span><span class="p">():</span>
+            <span class="c1"># No, we don&#39;t know what the matched terms are yet</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragmenter</span><span class="o">.</span><span class="n">must_retokenize</span><span class="p">():</span>
+            <span class="c1"># No, the configured fragmenter doesn&#39;t support it</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Maybe, if the field was configured to store characters</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">searcher</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">field</span><span class="o">.</span><span class="n">supports</span><span class="p">(</span><span class="s2">&quot;characters&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_load_chars</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">texts</span><span class="p">,</span> <span class="n">to_bytes</span><span class="p">):</span>
+        <span class="c1"># For each docnum, create a mapping of text -&gt; [(startchar, endchar)]</span>
+        <span class="c1"># for the matched terms</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">_char_cache</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span> <span class="o">=</span> <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">sorted_ids</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">docnum</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">docnum</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">top_n</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">docnum</span> <span class="ow">in</span> <span class="n">sorted_ids</span><span class="p">:</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">docnum</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+            <span class="n">btext</span> <span class="o">=</span> <span class="n">to_bytes</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">searcher</span><span class="o">.</span><span class="n">postings</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+            <span class="n">docset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">termdocs</span><span class="p">[(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)])</span>
+            <span class="k">for</span> <span class="n">docnum</span> <span class="ow">in</span> <span class="n">sorted_ids</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">docnum</span> <span class="ow">in</span> <span class="n">docset</span><span class="p">:</span>
+                    <span class="n">m</span><span class="o">.</span><span class="n">skip_to</span><span class="p">(</span><span class="n">docnum</span><span class="p">)</span>
+                    <span class="k">assert</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">==</span> <span class="n">docnum</span>
+                    <span class="n">cache</span><span class="p">[</span><span class="n">docnum</span><span class="p">][</span><span class="n">text</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;characters&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_merge_matched_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="c1"># Merges consecutive matched tokens together, so they are highlighted</span>
+        <span class="c1"># as one</span>
+
+        <span class="n">token</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">t</span><span class="o">.</span><span class="n">matched</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">token</span>
+                    <span class="n">token</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">yield</span> <span class="n">t</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span> <span class="o">&lt;=</span> <span class="n">token</span><span class="o">.</span><span class="n">endchar</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span> <span class="o">&gt;</span> <span class="n">token</span><span class="o">.</span><span class="n">endchar</span><span class="p">:</span>
+                    <span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="o">+=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">endchar</span> <span class="o">-</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span><span class="p">:]</span>
+                    <span class="n">token</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">token</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="c1"># t was not merged, also has to be yielded</span>
+                <span class="k">yield</span> <span class="n">t</span>
+
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">token</span>
+
+    <span class="k">def</span> <span class="nf">highlight_hit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hitobj</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">minscore</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">strict_phrase</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">hitobj</span><span class="o">.</span><span class="n">results</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">searcher</span><span class="o">.</span><span class="n">schema</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="n">to_bytes</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">to_bytes</span>
+        <span class="n">from_bytes</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">from_bytes</span>
+
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hitobj</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Field </span><span class="si">%r</span><span class="s2"> is not stored.&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">hitobj</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+
+        <span class="c1"># Get the terms searched for/matched in this field</span>
+        <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">has_matched_terms</span><span class="p">():</span>
+            <span class="n">bterms</span> <span class="o">=</span> <span class="p">(</span><span class="n">term</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">matched_terms</span><span class="p">()</span>
+                      <span class="k">if</span> <span class="n">term</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">fieldname</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bterms</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">query_terms</span><span class="p">(</span><span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fieldname</span><span class="o">=</span><span class="n">fieldname</span><span class="p">)</span>
+        <span class="c1"># Convert bytes to unicode</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">term</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">bterms</span><span class="p">)</span>
+
+        <span class="c1"># If we can do &quot;pinpoint&quot; highlighting...</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_load_chars</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+            <span class="c1"># Build the docnum-&gt;[(startchar, endchar),] map</span>
+            <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">_char_cache</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_load_chars</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">words</span><span class="p">,</span> <span class="n">to_bytes</span><span class="p">)</span>
+
+            <span class="n">hitterms</span> <span class="o">=</span> <span class="p">(</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">term</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">hitobj</span><span class="o">.</span><span class="n">matched_terms</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">term</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">fieldname</span><span class="p">)</span>
+
+            <span class="c1"># Grab the word-&gt;[(startchar, endchar)] map for this docnum</span>
+            <span class="n">cmap</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">_char_cache</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][</span><span class="n">hitobj</span><span class="o">.</span><span class="n">docnum</span><span class="p">]</span>
+            <span class="c1"># A list of Token objects for matched words</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">charlimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragmenter</span><span class="o">.</span><span class="n">charlimit</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">hitterms</span><span class="p">:</span>
+                <span class="n">chars</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">charlimit</span> <span class="ow">and</span> <span class="n">endchar</span> <span class="o">&gt;</span> <span class="n">charlimit</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Token</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">word</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span>
+                                        <span class="n">startchar</span><span class="o">=</span><span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=</span><span class="n">endchar</span><span class="p">))</span>
+            <span class="n">tokens</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span><span class="p">)</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span> <span class="o">-</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span><span class="p">)]</span>
+            <span class="n">fragments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragmenter</span><span class="o">.</span><span class="n">fragment_matches</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Retokenize the text</span>
+            <span class="n">analyzer</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">searcher</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span><span class="o">.</span><span class="n">analyzer</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">analyzer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span>
+                              <span class="n">removestops</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="c1"># Set Token.matched attribute for tokens that match a query term</span>
+            <span class="k">if</span> <span class="n">strict_phrase</span><span class="p">:</span>
+                <span class="n">terms</span><span class="p">,</span> <span class="n">phrases</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">phrases</span><span class="p">()</span>
+                <span class="n">tokens</span> <span class="o">=</span> <span class="n">set_matched_filter_phrases</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">phrases</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tokens</span> <span class="o">=</span> <span class="n">set_matched_filter</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">words</span><span class="p">)</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_matched_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+            <span class="n">fragments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragmenter</span><span class="o">.</span><span class="n">fragment_tokens</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+
+        <span class="n">fragments</span> <span class="o">=</span> <span class="n">top_fragments</span><span class="p">(</span><span class="n">fragments</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">,</span>
+                                  <span class="n">minscore</span><span class="o">=</span><span class="n">minscore</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>writing module &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Technical notes" href="../tech/index.html" />
+    <link rel="prev" title="util module" href="util.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Whoosh API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analysis.html"><code class="docutils literal notranslate"><span class="pre">analysis</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filestore.html"><code class="docutils literal notranslate"><span class="pre">filedb.filestore</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filetables.html"><code class="docutils literal notranslate"><span class="pre">filedb.filetables</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/morph_en.html"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qparser.html"><code class="docutils literal notranslate"><span class="pre">qparser</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reading.html"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scoring.html"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html"><code class="docutils literal notranslate"><span class="pre">searching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#writer">Writer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.writing.IndexWriter"><code class="docutils literal notranslate"><span class="pre">IndexWriter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#utility-writers">Utility writers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.writing.BufferedWriter"><code class="docutils literal notranslate"><span class="pre">BufferedWriter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.writing.AsyncWriter"><code class="docutils literal notranslate"><span class="pre">AsyncWriter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.writing.IndexingError"><code class="docutils literal notranslate"><span class="pre">IndexingError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">Whoosh API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/writing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-whoosh.writing">
+<span id="writing-module"></span><h1><code class="docutils literal notranslate"><span class="pre">writing</span></code> module<a class="headerlink" href="#module-whoosh.writing" title="Permalink to this heading">¶</a></h1>
+<section id="writer">
+<h2>Writer<a class="headerlink" href="#writer" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.writing.</span></span><span class="sig-name descname"><span class="pre">IndexWriter</span></span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>High-level object for writing to an index.</p>
+<p>To get a writer for a particular index, call
+<a class="reference internal" href="index.html#whoosh.index.Index.writer" title="whoosh.index.Index.writer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">writer()</span></code></a> on the Index object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can use this object as a context manager. If an exception is thrown
+from within the context it calls <a class="reference internal" href="#whoosh.writing.IndexWriter.cancel" title="whoosh.writing.IndexWriter.cancel"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cancel()</span></code></a> to clean up
+temporary files, otherwise it calls <a class="reference internal" href="#whoosh.writing.IndexWriter.commit" title="whoosh.writing.IndexWriter.commit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">commit()</span></code></a> when the
+context exits.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;First document&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Hello there.&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Second document&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;This is easy!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.add_document">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.add_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.add_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>The keyword arguments map field names to the values to index/store:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;First doc&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Depending on the field type, some fields may take objects other than
+unicode strings. For example, NUMERIC fields take numbers, and DATETIME
+fields take <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">DATETIME</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">NUMERIC</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">myindex</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Instead of a single object (i.e., unicode string, number, or datetime),
+you can supply a list or tuple of objects. For unicode strings, this
+bypasses the field’s analyzer. For numbers and dates, this lets you add
+multiple values for the given field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">date2</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">date3</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">date1</span><span class="p">,</span> <span class="n">date2</span><span class="p">,</span> <span class="n">date3</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+               <span class="n">content</span><span class="o">=</span><span class="p">[</span><span class="sa">u</span><span class="s2">&quot;alfa&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;bravo&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;charlie&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>For fields that are both indexed and stored, you can specify an
+alternate value to store using a keyword argument in the form
+“_stored_&lt;fieldname&gt;”. For example, if you have a field named “title”
+and you want to index the text “a b c” but store the text “e f g”, use
+keyword arguments like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;a b c&quot;</span><span class="p">,</span> <span class="n">_stored_title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;e f g&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can boost the weight of all terms in a certain field by specifying
+a <code class="docutils literal notranslate"><span class="pre">_&lt;fieldname&gt;_boost</span></code> keyword argument. For example, if you have a
+field named “content”, you can double the weight of this document for
+searches in the “content” field like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;a b c&quot;</span><span class="p">,</span> <span class="n">_title_boost</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can boost every field at once using the <code class="docutils literal notranslate"><span class="pre">_boost</span></code> keyword. For
+example, to boost fields “a” and “b” by 2.0, and field “c” by 3.0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="s2">&quot;alfa&quot;</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="s2">&quot;bravo&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;charlie&quot;</span><span class="p">,</span>
+                    <span class="n">_boost</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">_c_boost</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that some scoring algroithms, including Whoosh’s default BM25F,
+do not work with term weights less than 1, so you should generally not
+use a boost factor less than 1.</p>
+<p>See also <code class="xref py py-meth docutils literal notranslate"><span class="pre">Writer.update_document()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.add_field">
+<span class="sig-name descname"><span class="pre">add_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldtype</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.add_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.add_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a field to the index’s schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – the name of the field to add.</p></li>
+<li><p><strong>fieldtype</strong> – an instantiated <a class="reference internal" href="fields.html#whoosh.fields.FieldType" title="whoosh.fields.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.FieldType</span></code></a>
+object.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels any documents/deletions added by this object
+and unlocks the index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.commit">
+<span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.commit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finishes writing and unlocks the index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.delete_by_query">
+<span class="sig-name descname"><span class="pre">delete_by_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">searcher</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.delete_by_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.delete_by_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes any documents matching a query object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the number of documents deleted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.delete_by_term">
+<span class="sig-name descname"><span class="pre">delete_by_term</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">searcher</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.delete_by_term"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.delete_by_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes any documents containing “term” in the “fieldname” field.
+This is useful when you have an indexed field containing a unique ID
+(such as “pathname”) for each document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the number of documents deleted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.delete_document">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.delete_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.delete_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a document by number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.end_group">
+<span class="sig-name descname"><span class="pre">end_group</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.end_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.end_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finish indexing a group of hierarchical documents. See
+<a class="reference internal" href="#whoosh.writing.IndexWriter.start_group" title="whoosh.writing.IndexWriter.start_group"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_group()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.group">
+<span class="sig-name descname"><span class="pre">group</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a context manager that calls
+<a class="reference internal" href="#whoosh.writing.IndexWriter.start_group" title="whoosh.writing.IndexWriter.start_group"><code class="xref py py-meth docutils literal notranslate"><span class="pre">start_group()</span></code></a> and <a class="reference internal" href="#whoosh.writing.IndexWriter.end_group" title="whoosh.writing.IndexWriter.end_group"><code class="xref py py-meth docutils literal notranslate"><span class="pre">end_group()</span></code></a> for
+you, allowing you to use a <code class="docutils literal notranslate"><span class="pre">with</span></code> statement to group hierarchical
+documents:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">w</span><span class="o">.</span><span class="n">group</span><span class="p">():</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Accumulator&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_result&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;close&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">w</span><span class="o">.</span><span class="n">group</span><span class="p">():</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Calculator&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;multiply&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_result&quot;</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;close&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.reader">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a reader for the existing index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.remove_field">
+<span class="sig-name descname"><span class="pre">remove_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.remove_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.remove_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the named field from the index’s schema. Depending on the
+backend implementation, this may or may not actually remove existing
+data for the field from the index. Optimizing the index should always
+clear out existing data for a removed field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.start_group">
+<span class="sig-name descname"><span class="pre">start_group</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.start_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.start_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start indexing a group of hierarchical documents. The backend should
+ensure that these documents are all added to the same segment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">start_group</span><span class="p">()</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Accumulator&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_result&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;close&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">end_group</span><span class="p">()</span>
+
+    <span class="n">w</span><span class="o">.</span><span class="n">start_group</span><span class="p">()</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Calculator&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;multiply&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_result&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;close&quot;</span><span class="p">)</span>
+    <span class="n">w</span><span class="o">.</span><span class="n">end_group</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>A more convenient way to group documents is to use the
+<a class="reference internal" href="#whoosh.writing.IndexWriter.group" title="whoosh.writing.IndexWriter.group"><code class="xref py py-meth docutils literal notranslate"><span class="pre">group()</span></code></a> method and the <code class="docutils literal notranslate"><span class="pre">with</span></code> statement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.IndexWriter.update_document">
+<span class="sig-name descname"><span class="pre">update_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexWriter.update_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexWriter.update_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>The keyword arguments map field names to the values to index/store.</p>
+<p>This method adds a new document to the index, and automatically deletes
+any documents with the same values in any fields marked “unique” in the
+schema:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">ID</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                       <span class="n">content</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">myindex</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Mary had a lamb&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Mary had a little lamb&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">myindex</span><span class="o">.</span><span class="n">doc_count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>It is safe to use <code class="docutils literal notranslate"><span class="pre">update_document</span></code> in place of <code class="docutils literal notranslate"><span class="pre">add_document</span></code>; if
+there is no existing document to replace, it simply does an add.</p>
+<p>You cannot currently pass a list or tuple of values to a “unique”
+field.</p>
+<p>Because this method has to search for documents with the same unique
+fields and delete them before adding the new document, it is slower
+than using <code class="docutils literal notranslate"><span class="pre">add_document</span></code>.</p>
+<ul class="simple">
+<li><p>Marking more fields “unique” in the schema will make each
+<code class="docutils literal notranslate"><span class="pre">update_document</span></code> call slightly slower.</p></li>
+<li><p>When you are updating multiple documents, it is faster to batch
+delete all changed documents and then use <code class="docutils literal notranslate"><span class="pre">add_document</span></code> to add
+the replacements instead of using <code class="docutils literal notranslate"><span class="pre">update_document</span></code>.</p></li>
+</ul>
+<p>Note that this method will only replace a <em>committed</em> document;
+currently it cannot replace documents you’ve added to the IndexWriter
+but haven’t yet committed. For example, if you do this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">unique_id</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Replace me&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">unique_id</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Replacement&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>…this will add two documents with the same value of <code class="docutils literal notranslate"><span class="pre">unique_id</span></code>,
+instead of the second document replacing the first.</p>
+<p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">Writer.add_document()</span></code> for information on
+<code class="docutils literal notranslate"><span class="pre">_stored_&lt;fieldname&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">_&lt;fieldname&gt;_boost</span></code>, and <code class="docutils literal notranslate"><span class="pre">_boost</span></code> keyword
+arguments.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="utility-writers">
+<h2>Utility writers<a class="headerlink" href="#utility-writers" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.writing.BufferedWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.writing.</span></span><span class="sig-name descname"><span class="pre">BufferedWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writerargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commitargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#BufferedWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.BufferedWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience class that acts like a writer but buffers added documents
+before dumping the buffered documents as a batch into the actual index.</p>
+<p>In scenarios where you are continuously adding single documents very
+rapidly (for example a web application where lots of users are adding
+content simultaneously), using a BufferedWriter is <em>much</em> faster than
+opening and committing a writer for each document you add. If you’re adding
+batches of documents at a time, you can just use a regular writer.</p>
+<p>(This class may also be useful for batches of <code class="docutils literal notranslate"><span class="pre">update_document</span></code> calls. In
+a normal writer, <code class="docutils literal notranslate"><span class="pre">update_document</span></code> calls cannot update documents you’ve
+added <em>in that writer</em>. With <code class="docutils literal notranslate"><span class="pre">BufferedWriter</span></code>, this will work.)</p>
+<p>To use this class, create it from your index and <em>keep it open</em>, sharing
+it between threads.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.writing</span> <span class="kn">import</span> <span class="n">BufferedWriter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">BufferedWriter</span><span class="p">(</span><span class="n">myindex</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Then you can use the writer to add and update documents</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Before the writer goes out of scope, call close() on it</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This object stores documents in memory and may keep an underlying
+writer open, so you must explicitly call the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code> method on this object before it goes out
+of scope to release the write lock and make sure any uncommitted
+changes are saved.</p>
+</div>
+<p>You can read/search the combination of the on-disk index and the
+buffered documents in memory by calling <code class="docutils literal notranslate"><span class="pre">BufferedWriter.reader()</span></code> or
+<code class="docutils literal notranslate"><span class="pre">BufferedWriter.searcher()</span></code>. This allows quasi-real-time search, where
+documents are available for searching as soon as they are buffered in
+memory, before they are committed to disk.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>By using a searcher from the shared writer, multiple <em>threads</em> can
+search the buffered documents. Of course, other <em>processes</em> will only
+see the documents that have been written to disk. If you want indexed
+documents to become available to other processes as soon as possible,
+you have to use a traditional writer instead of a <code class="docutils literal notranslate"><span class="pre">BufferedWriter</span></code>.</p>
+</div>
+<p>You can control how often the <code class="docutils literal notranslate"><span class="pre">BufferedWriter</span></code> flushes the in-memory
+index to disk using the <code class="docutils literal notranslate"><span class="pre">period</span></code> and <code class="docutils literal notranslate"><span class="pre">limit</span></code> arguments. <code class="docutils literal notranslate"><span class="pre">period</span></code> is
+the maximum number of seconds between commits. <code class="docutils literal notranslate"><span class="pre">limit</span></code> is the maximum
+number of additions to buffer between commits.</p>
+<p>You don’t need to call <code class="docutils literal notranslate"><span class="pre">commit()</span></code> on the <code class="docutils literal notranslate"><span class="pre">BufferedWriter</span></code> manually.
+Doing so will just flush the buffered documents to disk early. You can
+continue to make changes after calling <code class="docutils literal notranslate"><span class="pre">commit()</span></code>, and you can call
+<code class="docutils literal notranslate"><span class="pre">commit()</span></code> multiple times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – the <a class="reference internal" href="index.html#whoosh.index.Index" title="whoosh.index.Index"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.index.Index</span></code></a> to write to.</p></li>
+<li><p><strong>period</strong> – the maximum amount of time (in seconds) between commits.
+Set this to <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code> to not use a timer. Do not set this
+any lower than a few seconds.</p></li>
+<li><p><strong>limit</strong> – the maximum number of documents to buffer before
+committing.</p></li>
+<li><p><strong>writerargs</strong> – dictionary specifying keyword arguments to be passed
+to the index’s <code class="docutils literal notranslate"><span class="pre">writer()</span></code> method when creating a writer.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.BufferedWriter.add_document">
+<span class="sig-name descname"><span class="pre">add_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#BufferedWriter.add_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.BufferedWriter.add_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>The keyword arguments map field names to the values to index/store:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;First doc&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Depending on the field type, some fields may take objects other than
+unicode strings. For example, NUMERIC fields take numbers, and DATETIME
+fields take <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">DATETIME</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">NUMERIC</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">myindex</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Instead of a single object (i.e., unicode string, number, or datetime),
+you can supply a list or tuple of objects. For unicode strings, this
+bypasses the field’s analyzer. For numbers and dates, this lets you add
+multiple values for the given field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">date2</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">date3</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">date1</span><span class="p">,</span> <span class="n">date2</span><span class="p">,</span> <span class="n">date3</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+               <span class="n">content</span><span class="o">=</span><span class="p">[</span><span class="sa">u</span><span class="s2">&quot;alfa&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;bravo&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;charlie&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>For fields that are both indexed and stored, you can specify an
+alternate value to store using a keyword argument in the form
+“_stored_&lt;fieldname&gt;”. For example, if you have a field named “title”
+and you want to index the text “a b c” but store the text “e f g”, use
+keyword arguments like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;a b c&quot;</span><span class="p">,</span> <span class="n">_stored_title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;e f g&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can boost the weight of all terms in a certain field by specifying
+a <code class="docutils literal notranslate"><span class="pre">_&lt;fieldname&gt;_boost</span></code> keyword argument. For example, if you have a
+field named “content”, you can double the weight of this document for
+searches in the “content” field like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;a b c&quot;</span><span class="p">,</span> <span class="n">_title_boost</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can boost every field at once using the <code class="docutils literal notranslate"><span class="pre">_boost</span></code> keyword. For
+example, to boost fields “a” and “b” by 2.0, and field “c” by 3.0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="s2">&quot;alfa&quot;</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="s2">&quot;bravo&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;charlie&quot;</span><span class="p">,</span>
+                    <span class="n">_boost</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">_c_boost</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that some scoring algroithms, including Whoosh’s default BM25F,
+do not work with term weights less than 1, so you should generally not
+use a boost factor less than 1.</p>
+<p>See also <code class="xref py py-meth docutils literal notranslate"><span class="pre">Writer.update_document()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.BufferedWriter.commit">
+<span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">restart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#BufferedWriter.commit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.BufferedWriter.commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finishes writing and unlocks the index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.BufferedWriter.delete_document">
+<span class="sig-name descname"><span class="pre">delete_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#BufferedWriter.delete_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.BufferedWriter.delete_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a document by number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.BufferedWriter.reader">
+<span class="sig-name descname"><span class="pre">reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#BufferedWriter.reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.BufferedWriter.reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a reader for the existing index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.BufferedWriter.update_document">
+<span class="sig-name descname"><span class="pre">update_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#BufferedWriter.update_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.BufferedWriter.update_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>The keyword arguments map field names to the values to index/store.</p>
+<p>This method adds a new document to the index, and automatically deletes
+any documents with the same values in any fields marked “unique” in the
+schema:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">ID</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                       <span class="n">content</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">myindex</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Mary had a lamb&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Mary had a little lamb&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">myindex</span><span class="o">.</span><span class="n">doc_count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>It is safe to use <code class="docutils literal notranslate"><span class="pre">update_document</span></code> in place of <code class="docutils literal notranslate"><span class="pre">add_document</span></code>; if
+there is no existing document to replace, it simply does an add.</p>
+<p>You cannot currently pass a list or tuple of values to a “unique”
+field.</p>
+<p>Because this method has to search for documents with the same unique
+fields and delete them before adding the new document, it is slower
+than using <code class="docutils literal notranslate"><span class="pre">add_document</span></code>.</p>
+<ul class="simple">
+<li><p>Marking more fields “unique” in the schema will make each
+<code class="docutils literal notranslate"><span class="pre">update_document</span></code> call slightly slower.</p></li>
+<li><p>When you are updating multiple documents, it is faster to batch
+delete all changed documents and then use <code class="docutils literal notranslate"><span class="pre">add_document</span></code> to add
+the replacements instead of using <code class="docutils literal notranslate"><span class="pre">update_document</span></code>.</p></li>
+</ul>
+<p>Note that this method will only replace a <em>committed</em> document;
+currently it cannot replace documents you’ve added to the IndexWriter
+but haven’t yet committed. For example, if you do this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">unique_id</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Replace me&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">unique_id</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Replacement&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>…this will add two documents with the same value of <code class="docutils literal notranslate"><span class="pre">unique_id</span></code>,
+instead of the second document replacing the first.</p>
+<p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">Writer.add_document()</span></code> for information on
+<code class="docutils literal notranslate"><span class="pre">_stored_&lt;fieldname&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">_&lt;fieldname&gt;_boost</span></code>, and <code class="docutils literal notranslate"><span class="pre">_boost</span></code> keyword
+arguments.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.writing.</span></span><span class="sig-name descname"><span class="pre">AsyncWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writerargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience wrapper for a writer object that might fail due to locking
+(i.e. the <code class="docutils literal notranslate"><span class="pre">filedb</span></code> writer). This object will attempt once to obtain the
+underlying writer, and if it’s successful, will simply pass method calls on
+to it.</p>
+<p>If this object <em>can’t</em> obtain a writer immediately, it will <em>buffer</em>
+delete, add, and update method calls in memory until you call <code class="docutils literal notranslate"><span class="pre">commit()</span></code>.
+At that point, this object will start running in a separate thread, trying
+to obtain the writer over and over, and once it obtains it, “replay” all
+the buffered method calls on it.</p>
+<p>In a typical scenario where you’re adding a single or a few documents to
+the index as the result of a Web transaction, this lets you just create the
+writer, add, and commit, without having to worry about index locks,
+retries, etc.</p>
+<p>For example, to get an aynchronous writer, instead of this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Do this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.writing</span> <span class="kn">import</span> <span class="n">AsyncWriter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">AsyncWriter</span><span class="p">(</span><span class="n">myindex</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – the <a class="reference internal" href="index.html#whoosh.index.Index" title="whoosh.index.Index"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.index.Index</span></code></a> to write to.</p></li>
+<li><p><strong>delay</strong> – the delay (in seconds) between attempts to instantiate
+the actual writer.</p></li>
+<li><p><strong>writerargs</strong> – an optional dictionary specifying keyword arguments
+to to be passed to the index’s <code class="docutils literal notranslate"><span class="pre">writer()</span></code> method.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.add_document">
+<span class="sig-name descname"><span class="pre">add_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.add_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.add_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>The keyword arguments map field names to the values to index/store:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/a&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;First doc&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Depending on the field type, some fields may take objects other than
+unicode strings. For example, NUMERIC fields take numbers, and DATETIME
+fields take <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">DATETIME</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">NUMERIC</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">myindex</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Instead of a single object (i.e., unicode string, number, or datetime),
+you can supply a list or tuple of objects. For unicode strings, this
+bypasses the field’s analyzer. For numbers and dates, this lets you add
+multiple values for the given field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">date1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">date2</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">date3</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="n">date1</span><span class="p">,</span> <span class="n">date2</span><span class="p">,</span> <span class="n">date3</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+               <span class="n">content</span><span class="o">=</span><span class="p">[</span><span class="sa">u</span><span class="s2">&quot;alfa&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;bravo&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;charlie&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>For fields that are both indexed and stored, you can specify an
+alternate value to store using a keyword argument in the form
+“_stored_&lt;fieldname&gt;”. For example, if you have a field named “title”
+and you want to index the text “a b c” but store the text “e f g”, use
+keyword arguments like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;a b c&quot;</span><span class="p">,</span> <span class="n">_stored_title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;e f g&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can boost the weight of all terms in a certain field by specifying
+a <code class="docutils literal notranslate"><span class="pre">_&lt;fieldname&gt;_boost</span></code> keyword argument. For example, if you have a
+field named “content”, you can double the weight of this document for
+searches in the “content” field like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">&quot;a b c&quot;</span><span class="p">,</span> <span class="n">_title_boost</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can boost every field at once using the <code class="docutils literal notranslate"><span class="pre">_boost</span></code> keyword. For
+example, to boost fields “a” and “b” by 2.0, and field “c” by 3.0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="s2">&quot;alfa&quot;</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="s2">&quot;bravo&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;charlie&quot;</span><span class="p">,</span>
+                    <span class="n">_boost</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">_c_boost</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that some scoring algroithms, including Whoosh’s default BM25F,
+do not work with term weights less than 1, so you should generally not
+use a boost factor less than 1.</p>
+<p>See also <code class="xref py py-meth docutils literal notranslate"><span class="pre">Writer.update_document()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.add_field">
+<span class="sig-name descname"><span class="pre">add_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.add_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.add_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a field to the index’s schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fieldname</strong> – the name of the field to add.</p></li>
+<li><p><strong>fieldtype</strong> – an instantiated <a class="reference internal" href="fields.html#whoosh.fields.FieldType" title="whoosh.fields.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.FieldType</span></code></a>
+object.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.cancel">
+<span class="sig-name descname"><span class="pre">cancel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels any documents/deletions added by this object
+and unlocks the index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.commit">
+<span class="sig-name descname"><span class="pre">commit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.commit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.commit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finishes writing and unlocks the index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.delete_by_term">
+<span class="sig-name descname"><span class="pre">delete_by_term</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.delete_by_term"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.delete_by_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes any documents containing “term” in the “fieldname” field.
+This is useful when you have an indexed field containing a unique ID
+(such as “pathname”) for each document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the number of documents deleted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.delete_document">
+<span class="sig-name descname"><span class="pre">delete_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.delete_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.delete_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a document by number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.reader">
+<span class="sig-name descname"><span class="pre">reader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a reader for the existing index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.remove_field">
+<span class="sig-name descname"><span class="pre">remove_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.remove_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.remove_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the named field from the index’s schema. Depending on the
+backend implementation, this may or may not actually remove existing
+data for the field from the index. Optimizing the index should always
+clear out existing data for a removed field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method representing the thread’s activity.</p>
+<p>You may override this method in a subclass. The standard run() method
+invokes the callable object passed to the object’s constructor as the
+target argument, if any, with sequential and keyword arguments taken
+from the args and kwargs arguments, respectively.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.writing.AsyncWriter.update_document">
+<span class="sig-name descname"><span class="pre">update_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/writing.html#AsyncWriter.update_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.AsyncWriter.update_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>The keyword arguments map field names to the values to index/store.</p>
+<p>This method adds a new document to the index, and automatically deletes
+any documents with the same values in any fields marked “unique” in the
+schema:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">ID</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                       <span class="n">content</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">myindex</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Mary had a lamb&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+<span class="n">w</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Mary had a little lamb&quot;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="k">assert</span> <span class="n">myindex</span><span class="o">.</span><span class="n">doc_count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>It is safe to use <code class="docutils literal notranslate"><span class="pre">update_document</span></code> in place of <code class="docutils literal notranslate"><span class="pre">add_document</span></code>; if
+there is no existing document to replace, it simply does an add.</p>
+<p>You cannot currently pass a list or tuple of values to a “unique”
+field.</p>
+<p>Because this method has to search for documents with the same unique
+fields and delete them before adding the new document, it is slower
+than using <code class="docutils literal notranslate"><span class="pre">add_document</span></code>.</p>
+<ul class="simple">
+<li><p>Marking more fields “unique” in the schema will make each
+<code class="docutils literal notranslate"><span class="pre">update_document</span></code> call slightly slower.</p></li>
+<li><p>When you are updating multiple documents, it is faster to batch
+delete all changed documents and then use <code class="docutils literal notranslate"><span class="pre">add_document</span></code> to add
+the replacements instead of using <code class="docutils literal notranslate"><span class="pre">update_document</span></code>.</p></li>
+</ul>
+<p>Note that this method will only replace a <em>committed</em> document;
+currently it cannot replace documents you’ve added to the IndexWriter
+but haven’t yet committed. For example, if you do this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">unique_id</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Replace me&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">update_document</span><span class="p">(</span><span class="n">unique_id</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Replacement&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>…this will add two documents with the same value of <code class="docutils literal notranslate"><span class="pre">unique_id</span></code>,
+instead of the second document replacing the first.</p>
+<p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">Writer.add_document()</span></code> for information on
+<code class="docutils literal notranslate"><span class="pre">_stored_&lt;fieldname&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">_&lt;fieldname&gt;_boost</span></code>, and <code class="docutils literal notranslate"><span class="pre">_boost</span></code> keyword
+arguments.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="whoosh.writing.IndexingError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.writing.</span></span><span class="sig-name descname"><span class="pre">IndexingError</span></span><a class="reference internal" href="../_modules/whoosh/writing.html#IndexingError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.writing.IndexingError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="util.html" class="btn btn-neutral float-left" title="util module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../tech/index.html" class="btn btn-neutral float-right" title="Technical notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

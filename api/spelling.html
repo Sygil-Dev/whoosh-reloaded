@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>spelling module &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="support.charset module" href="support/charset.html" />
+    <link rel="prev" title="sorting module" href="sorting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">Whoosh API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analysis.html"><code class="docutils literal notranslate"><span class="pre">analysis</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filestore.html"><code class="docutils literal notranslate"><span class="pre">filedb.filestore</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/filetables.html"><code class="docutils literal notranslate"><span class="pre">filedb.filetables</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlight.html"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/morph_en.html"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qparser.html"><code class="docutils literal notranslate"><span class="pre">qparser</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html"><code class="docutils literal notranslate"><span class="pre">query</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reading.html"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scoring.html"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searching.html"><code class="docutils literal notranslate"><span class="pre">searching</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#corrector-objects">Corrector objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.Corrector"><code class="docutils literal notranslate"><span class="pre">Corrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.ReaderCorrector"><code class="docutils literal notranslate"><span class="pre">ReaderCorrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.MultiCorrector"><code class="docutils literal notranslate"><span class="pre">MultiCorrector</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#querycorrector-objects">QueryCorrector objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.QueryCorrector"><code class="docutils literal notranslate"><span class="pre">QueryCorrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.SimpleQueryCorrector"><code class="docutils literal notranslate"><span class="pre">SimpleQueryCorrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.Correction"><code class="docutils literal notranslate"><span class="pre">Correction</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing.html"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">Whoosh API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/spelling.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spelling-module">
+<h1><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module<a class="headerlink" href="#spelling-module" title="Permalink to this heading">¶</a></h1>
+<p>See <a class="reference internal" href="../spelling.html"><span class="doc">correcting errors in user queries</span></a>.</p>
+<span class="target" id="module-whoosh.spelling"></span><p>This module contains helper functions for correcting typos in user queries.</p>
+<section id="corrector-objects">
+<h2>Corrector objects<a class="headerlink" href="#corrector-objects" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.spelling.Corrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">Corrector</span></span><a class="reference internal" href="../_modules/whoosh/spelling.html#Corrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.Corrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for spelling correction objects. Concrete sub-classes should
+implement the <code class="docutils literal notranslate"><span class="pre">_suggestions</span></code> method.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.spelling.Corrector.suggest">
+<span class="sig-name descname"><span class="pre">suggest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#Corrector.suggest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.Corrector.suggest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – the text to check. This word will <strong>not</strong> be added to the
+suggestions, even if it appears in the word graph.</p></li>
+<li><p><strong>limit</strong> – only return up to this many suggestions. If there are not
+enough terms in the field within <code class="docutils literal notranslate"><span class="pre">maxdist</span></code> of the given word, the
+returned list will be shorter than this number.</p></li>
+<li><p><strong>maxdist</strong> – the largest edit distance from the given word to look
+at. Values higher than 2 are not very effective or efficient.</p></li>
+<li><p><strong>prefix</strong> – require suggestions to share a prefix of this length
+with the given word. This is often justifiable since most
+misspellings do not involve the first letter of the word. Using a
+prefix dramatically decreases the time it takes to generate the
+list of words.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.spelling.ReaderCorrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">ReaderCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#ReaderCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.ReaderCorrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Suggests corrections based on the content of a field in a reader.</p>
+<p>Ranks suggestions by the edit distance, then by highest to lowest
+frequency.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.spelling.MultiCorrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">MultiCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correctors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#MultiCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.MultiCorrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges suggestions from a list of sub-correctors.</p>
+</dd></dl>
+
+</section>
+<section id="querycorrector-objects">
+<h2>QueryCorrector objects<a class="headerlink" href="#querycorrector-objects" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.spelling.QueryCorrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">QueryCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#QueryCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.QueryCorrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for objects that correct words in a user query.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.spelling.QueryCorrector.correct_query">
+<span class="sig-name descname"><span class="pre">correct_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#QueryCorrector.correct_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.QueryCorrector.correct_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#whoosh.spelling.Correction" title="whoosh.spelling.Correction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Correction</span></code></a> object representing the corrected
+form of the given query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> – the original <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> tree to be
+corrected.</p></li>
+<li><p><strong>qstring</strong> – the original user query. This may be None if the
+original query string is not available, in which case the
+<code class="docutils literal notranslate"><span class="pre">Correction.string</span></code> attribute will also be None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#whoosh.spelling.Correction" title="whoosh.spelling.Correction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Correction</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.spelling.SimpleQueryCorrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">SimpleQueryCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correctors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#SimpleQueryCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.SimpleQueryCorrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple query corrector based on a mapping of field names to
+<a class="reference internal" href="#whoosh.spelling.Corrector" title="whoosh.spelling.Corrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corrector</span></code></a> objects, and a list of <code class="docutils literal notranslate"><span class="pre">(&quot;fieldname&quot;,</span> <span class="pre">&quot;text&quot;)</span></code> tuples
+to correct. And terms in the query that appear in list of term tuples are
+corrected using the appropriate corrector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>correctors</strong> – a dictionary mapping field names to
+<a class="reference internal" href="#whoosh.spelling.Corrector" title="whoosh.spelling.Corrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corrector</span></code></a> objects.</p></li>
+<li><p><strong>terms</strong> – a sequence of <code class="docutils literal notranslate"><span class="pre">(&quot;fieldname&quot;,</span> <span class="pre">&quot;text&quot;)</span></code> tuples
+representing terms to be corrected.</p></li>
+<li><p><strong>aliases</strong> – a dictionary mapping field names in the query to
+field names for spelling suggestions.</p></li>
+<li><p><strong>prefix</strong> – suggested replacement words must share this number of
+initial characters with the original word. Increasing this even to
+just <code class="docutils literal notranslate"><span class="pre">1</span></code> can dramatically speed up suggestions, and may be
+justifiable since spellling mistakes rarely involve the first
+letter of a word.</p></li>
+<li><p><strong>maxdist</strong> – the maximum number of “edits” (insertions, deletions,
+subsitutions, or transpositions of letters) allowed between the
+original word and any suggestion. Values higher than <code class="docutils literal notranslate"><span class="pre">2</span></code> may be
+slow.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="whoosh.spelling.Correction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">Correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corr_q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#Correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.Correction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents the corrected version of a user query string. Has the
+following attributes:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">query</span></code></dt><dd><p>The corrected <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">string</span></code></dt><dd><p>The corrected user query string.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">original_query</span></code></dt><dd><p>The original <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object that was corrected.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">original_string</span></code></dt><dd><p>The original user query string.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">tokens</span></code></dt><dd><p>A list of token objects representing the corrected words.</p>
+</dd>
+</dl>
+<p>You can also use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Correction.format_string()</span></code> method to reformat the
+corrected query string using a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Formatter</span></code> class.
+For example, to display the corrected query string as HTML with the
+changed words emphasized:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">highlight</span>
+
+<span class="n">correction</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">correct_query</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">qstring</span><span class="p">)</span>
+
+<span class="n">hf</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">HtmlFormatter</span><span class="p">(</span><span class="n">classname</span><span class="o">=</span><span class="s2">&quot;change&quot;</span><span class="p">)</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">correction</span><span class="o">.</span><span class="n">format_string</span><span class="p">(</span><span class="n">hf</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sorting.html" class="btn btn-neutral float-left" title="sorting module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="support/charset.html" class="btn btn-neutral float-right" title="support.charset module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

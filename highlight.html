@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to create highlighted search result excerpts &mdash; Whoosh 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Query expansion and Key word extraction" href="keywords.html" />
+    <link rel="prev" title="Sorting and faceting" href="facets.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Whoosh
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to create highlighted search result excerpts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to">How to</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-character-limit">The character limit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-the-highlights">Customizing the highlights</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#number-of-fragments">Number of fragments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fragment-size">Fragment size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fragmenter">Fragmenter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scorer">Scorer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#order">Order</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#formatter">Formatter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#highlighter-object">Highlighter object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#speeding-up-highlighting">Speeding up highlighting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pinpointfragmenter">PinpointFragmenter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pinpointfragmenter-limitations">PinpointFragmenter limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-low-level-api">Using the low-level API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Whoosh</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How to create highlighted search result excerpts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/highlight.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-create-highlighted-search-result-excerpts">
+<h1>How to create highlighted search result excerpts<a class="headerlink" href="#how-to-create-highlighted-search-result-excerpts" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>The highlighting system works as a pipeline, with four component types.</p>
+<ul class="simple">
+<li><p><strong>Fragmenters</strong> chop up the original text into __fragments__, based on the
+locations of matched terms in the text.</p></li>
+<li><p><strong>Scorers</strong> assign a score to each fragment, allowing the system to rank the
+best fragments by whatever criterion.</p></li>
+<li><p><strong>Order functions</strong> control in what order the top-scoring fragments are
+presented to the user. For example, you can show the fragments in the order
+they appear in the document (FIRST) or show higher-scoring fragments first
+(SCORE)</p></li>
+<li><p><strong>Formatters</strong> turn the fragment objects into human-readable output, such as
+an HTML string.</p></li>
+</ul>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h2>
+<p>Highlighting requires that you have the text of the indexed document available.
+You can keep the text in a stored field, or if the  original text is available
+in a file, database column, etc, just reload it on the fly. Note that you might
+need to process the text to remove e.g. HTML tags, wiki markup, etc.</p>
+</section>
+<section id="how-to">
+<h2>How to<a class="headerlink" href="#how-to" title="Permalink to this heading">¶</a></h2>
+<p>Get search results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>You can use the <a class="reference internal" href="api/searching.html#whoosh.searching.Hit.highlights" title="whoosh.searching.Hit.highlights"><code class="xref py py-meth docutils literal notranslate"><span class="pre">highlights()</span></code></a> method on the
+<a class="reference internal" href="api/searching.html#whoosh.searching.Hit" title="whoosh.searching.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Hit</span></code></a> object to get highlighted snippets from the
+document containing the search terms.</p>
+<p>The first argument is the name of the field to highlight. If the field is
+stored, this is the only argument you need to supply:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
+    <span class="c1"># Assume &quot;content&quot; field is stored</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If the field is not stored, you need to retrieve the text of the field some
+other way. For example, reading it from the original file or a database. Then
+you can supply the text to highlight with the <code class="docutils literal notranslate"><span class="pre">text</span></code> argument:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Assume the &quot;path&quot; stored field contains a path to the original file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">])</span> <span class="k">as</span> <span class="n">fileobj</span><span class="p">:</span>
+        <span class="n">filecontents</span> <span class="o">=</span> <span class="n">fileobj</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">filecontents</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="the-character-limit">
+<h2>The character limit<a class="headerlink" href="#the-character-limit" title="Permalink to this heading">¶</a></h2>
+<p>By default, Whoosh only pulls fragments from the first 32K characters of the
+text. This prevents very long texts from bogging down the highlighting process
+too much, and is usually justified since important/summary information is
+usually at the start of a document. However, if you find the highlights are
+missing information (for example, very long encyclopedia articles where the
+terms appear in a later section), you can increase the fragmenter’s character
+limit.</p>
+<p>You can change the character limit on the results object like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">)</span>
+<span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span><span class="o">.</span><span class="n">charlimit</span> <span class="o">=</span> <span class="mi">100000</span>
+</pre></div>
+</div>
+<p>To turn off the character limit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span><span class="o">.</span><span class="n">charlimit</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>If you instantiate a custom fragmenter, you can set the character limit on it
+directly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">SentenceFragmenter</span><span class="p">(</span><span class="n">charlimit</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+<span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span> <span class="o">=</span> <span class="n">sf</span>
+</pre></div>
+</div>
+<p>See below for information on customizing the highlights.</p>
+<p>If you increase or disable the character limit to highlight long documents, you
+may need to use the tips in the “speeding up highlighting” section below to
+make highlighting faster.</p>
+</section>
+<section id="customizing-the-highlights">
+<h2>Customizing the highlights<a class="headerlink" href="#customizing-the-highlights" title="Permalink to this heading">¶</a></h2>
+<section id="number-of-fragments">
+<h3>Number of fragments<a class="headerlink" href="#number-of-fragments" title="Permalink to this heading">¶</a></h3>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">top</span></code> keyword argument to control the number of fragments
+returned in each snippet:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show a maximum of 5 fragments from the document</span>
+<span class="nb">print</span> <span class="n">hit</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fragment-size">
+<h3>Fragment size<a class="headerlink" href="#fragment-size" title="Permalink to this heading">¶</a></h3>
+<p>The default fragmenter has a <code class="docutils literal notranslate"><span class="pre">maxchars</span></code> attribute (default 200) controlling
+the maximum length of a fragment, and a <code class="docutils literal notranslate"><span class="pre">surround</span></code> attribute (default 20)
+controlling the maximum number of characters of context to add at the beginning
+and end of a fragment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Allow larger fragments</span>
+<span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span><span class="o">.</span><span class="n">maxchars</span> <span class="o">=</span> <span class="mi">300</span>
+
+<span class="c1"># Show more context before and after</span>
+<span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span><span class="o">.</span><span class="n">surround</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></div>
+</div>
+</section>
+<section id="fragmenter">
+<h3>Fragmenter<a class="headerlink" href="#fragmenter" title="Permalink to this heading">¶</a></h3>
+<p>A fragmenter controls how to extract excerpts from the original text.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">highlight</span></code> module has the following pre-made fragmenters:</p>
+<dl class="simple">
+<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.ContextFragmenter" title="whoosh.highlight.ContextFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.ContextFragmenter</span></code></a> (the default)</dt><dd><p>This is a “smart” fragmenter that finds matched terms and then pulls
+in surround text to form fragments. This fragmenter only yields
+fragments that contain matched terms.</p>
+</dd>
+<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.SentenceFragmenter" title="whoosh.highlight.SentenceFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.SentenceFragmenter</span></code></a></dt><dd><p>Tries to break the text into fragments based on sentence punctuation
+(“.”, “!”, and “?”). This object works by looking in the original
+text for a sentence end as the next character after each token’s
+‘endchar’. Can be fooled by e.g. source code, decimals, etc.</p>
+</dd>
+<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.WholeFragmenter" title="whoosh.highlight.WholeFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.WholeFragmenter</span></code></a></dt><dd><p>Returns the entire text as one “fragment”. This can be useful if you
+are highlighting a short bit of text and don’t need to fragment it.</p>
+</dd>
+</dl>
+<p>The different fragmenters have different options. For example, the default
+<a class="reference internal" href="api/highlight.html#whoosh.highlight.ContextFragmenter" title="whoosh.highlight.ContextFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContextFragmenter</span></code></a> lets you set the maximum
+fragment size and the size of the context to add on either side:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_cf</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">ContextFragmenter</span><span class="p">(</span><span class="n">maxchars</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">surround</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See the <a class="reference internal" href="api/highlight.html#module-whoosh.highlight" title="whoosh.highlight"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.highlight</span></code></a> docs for more information.</p>
+<p>To use a different fragmenter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span> <span class="o">=</span> <span class="n">my_cf</span>
+</pre></div>
+</div>
+</section>
+<section id="scorer">
+<h3>Scorer<a class="headerlink" href="#scorer" title="Permalink to this heading">¶</a></h3>
+<p>A scorer is a callable that takes a <a class="reference internal" href="api/highlight.html#whoosh.highlight.Fragment" title="whoosh.highlight.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Fragment</span></code></a> object and
+returns a sortable value (where higher values represent better fragments).
+The default scorer adds up the number of matched terms in the fragment, and
+adds a “bonus” for the number of __different__ matched terms. The highlighting
+system uses this score to select the best fragments to show to the user.</p>
+<p>As an example of a custom scorer, to rank fragments by lowest standard
+deviation of the positions of matched terms in the fragment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">StandardDeviationScorer</span><span class="p">(</span><span class="n">fragment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gives higher scores to fragments where the matched terms are close</span>
+<span class="sd">    together.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Since lower values are better in this case, we need to negate the</span>
+    <span class="c1"># value</span>
+    <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">stddev</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">pos</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">fragment</span><span class="o">.</span><span class="n">matched</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To use a different scorer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">scorer</span> <span class="o">=</span> <span class="n">StandardDeviationScorer</span>
+</pre></div>
+</div>
+</section>
+<section id="order">
+<h3>Order<a class="headerlink" href="#order" title="Permalink to this heading">¶</a></h3>
+<p>The order is a function that takes a fragment and returns a sortable value used
+to sort the highest-scoring fragments before presenting them to the user (where
+fragments with lower values appear before fragments with higher values).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">highlight</span></code> module has the following order functions.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">FIRST</span></code> (the default)</dt><dd><p>Show fragments in the order they appear in the document.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SCORE</span></code></dt><dd><p>Show highest scoring fragments first.</p>
+</dd>
+</dl>
+<p>The <code class="docutils literal notranslate"><span class="pre">highlight</span></code> module also includes <code class="docutils literal notranslate"><span class="pre">LONGER</span></code> (longer fragments first) and
+<code class="docutils literal notranslate"><span class="pre">SHORTER</span></code> (shorter fragments first), but they probably aren’t as generally
+useful.</p>
+<p>To use a different order:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">SCORE</span>
+</pre></div>
+</div>
+</section>
+<section id="formatter">
+<h3>Formatter<a class="headerlink" href="#formatter" title="Permalink to this heading">¶</a></h3>
+<p>A formatter contols how the highest scoring fragments are turned into a
+formatted bit of text for display to the user. It can return anything
+(e.g. plain text, HTML, a Genshi event stream, a SAX event generator,
+or anything else useful to the calling system).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">highlight</span></code> module contains the following pre-made formatters.</p>
+<dl class="simple">
+<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.HtmlFormatter" title="whoosh.highlight.HtmlFormatter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.HtmlFormatter</span></code></a></dt><dd><p>Outputs a string containing HTML tags (with a class attribute)
+around the matched terms.</p>
+</dd>
+<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.UppercaseFormatter" title="whoosh.highlight.UppercaseFormatter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.UppercaseFormatter</span></code></a></dt><dd><p>Converts the matched terms to UPPERCASE.</p>
+</dd>
+<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.GenshiFormatter" title="whoosh.highlight.GenshiFormatter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.GenshiFormatter</span></code></a></dt><dd><p>Outputs a Genshi event stream, with the matched terms wrapped in a
+configurable element.</p>
+</dd>
+</dl>
+<p>The easiest way to create a custom formatter is to subclass
+<code class="docutils literal notranslate"><span class="pre">highlight.Formatter</span></code> and override the <code class="docutils literal notranslate"><span class="pre">format_token</span></code> method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BracketFormatter</span><span class="p">(</span><span class="n">highlight</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Puts square brackets around the matched terms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">format_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># Use the get_text function to get the text corresponding to the</span>
+        <span class="c1"># token</span>
+        <span class="n">tokentext</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">replace</span><span class="p">)</span>
+
+        <span class="c1"># Return the text as you want it to appear in the highlighted</span>
+        <span class="c1"># string</span>
+        <span class="k">return</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="n">tokentext</span>
+</pre></div>
+</div>
+<p>To use a different formatter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">brf</span> <span class="o">=</span> <span class="n">BracketFormatter</span><span class="p">()</span>
+<span class="n">results</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">brf</span>
+</pre></div>
+</div>
+<p>If you need more control over the formatting (or want to output something other
+than strings), you will need to override other methods. See the documentation
+for the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Formatter</span></code> class.</p>
+</section>
+</section>
+<section id="highlighter-object">
+<h2>Highlighter object<a class="headerlink" href="#highlighter-object" title="Permalink to this heading">¶</a></h2>
+<p>Rather than setting attributes on the results object, you can create a
+reusable <a class="reference internal" href="api/highlight.html#whoosh.highlight.Highlighter" title="whoosh.highlight.Highlighter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Highlighter</span></code></a> object. Keyword arguments let
+you change the <code class="docutils literal notranslate"><span class="pre">fragmenter</span></code>, <code class="docutils literal notranslate"><span class="pre">scorer</span></code>, <code class="docutils literal notranslate"><span class="pre">order</span></code>, and/or <code class="docutils literal notranslate"><span class="pre">formatter</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hi</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">Highlighter</span><span class="p">(</span><span class="n">fragmenter</span><span class="o">=</span><span class="n">my_cf</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="n">sds</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.highlight.Highlighter.highlight_hit()</span></code> method
+to get highlights for a <code class="docutils literal notranslate"><span class="pre">Hit</span></code> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hi</span><span class="o">.</span><span class="n">highlight_hit</span><span class="p">(</span><span class="n">hit</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>(When you assign to a <code class="docutils literal notranslate"><span class="pre">Results</span></code> object’s <code class="docutils literal notranslate"><span class="pre">fragmenter</span></code>, <code class="docutils literal notranslate"><span class="pre">scorer</span></code>, <code class="docutils literal notranslate"><span class="pre">order</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">formatter</span></code> attributes, you’re actually changing the values on the
+results object’s default <code class="docutils literal notranslate"><span class="pre">Highlighter</span></code> object.)</p>
+</section>
+<section id="speeding-up-highlighting">
+<h2>Speeding up highlighting<a class="headerlink" href="#speeding-up-highlighting" title="Permalink to this heading">¶</a></h2>
+<p>Recording which terms matched in which documents during the search may make
+highlighting faster, since it will skip documents it knows don’t contain any
+matching terms in the given field:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record per-document term matches</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="pinpointfragmenter">
+<h3>PinpointFragmenter<a class="headerlink" href="#pinpointfragmenter" title="Permalink to this heading">¶</a></h3>
+<p>Usually the highlighting system uses the field’s analyzer to re-tokenize the
+document’s text to find the matching terms in context. If you have long
+documents and have increased/disabled the character limit, and/or if the field
+has a very complex analyzer, re-tokenizing may be slow.</p>
+<p>Instead of retokenizing, Whoosh can look up the character positions of the
+matched terms in the index. Looking up the character positions is not
+instantaneous, but is usually faster than analyzing large amounts of text.</p>
+<p>To use <a class="reference internal" href="api/highlight.html#whoosh.highlight.PinpointFragmenter" title="whoosh.highlight.PinpointFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.PinpointFragmenter</span></code></a> and avoid re-tokenizing the
+document text, you must do all of the following:</p>
+<p>Index the field with character information (this will require re-indexing an
+existing index):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Index the start and end chars of each term</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chars</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Record per-document term matches in the results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record per-document term matches</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set a <a class="reference internal" href="api/highlight.html#whoosh.highlight.PinpointFragmenter" title="whoosh.highlight.PinpointFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.PinpointFragmenter</span></code></a> as the fragmenter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">PinpointFragmenter</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="pinpointfragmenter-limitations">
+<h3>PinpointFragmenter limitations<a class="headerlink" href="#pinpointfragmenter-limitations" title="Permalink to this heading">¶</a></h3>
+<p>When the highlighting system does not re-tokenize the text, it doesn’t know
+where any other words are in the text except the matched terms it looked up in
+the index. Therefore when the fragmenter adds surrounding context, it just adds
+or a certain number of characters blindly, and so doesn’t distinguish between
+content and whitespace, or break on word boundaries, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
+<span class="go">&#39;re when the &lt;b&gt;fragmenter&lt;/b&gt;\n       ad&#39;</span>
+</pre></div>
+</div>
+<p>(This can be embarassing when the word fragments form dirty words!)</p>
+<p>One way to avoid this is to not show any surrounding context, but then
+fragments containing one matched term will contain ONLY that matched term:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
+<span class="go">&#39;&lt;b&gt;fragmenter&lt;/b&gt;&#39;</span>
+</pre></div>
+</div>
+<p>Alternatively, you can normalize whitespace in the text before passing it to
+the highlighting system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">stored_</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[</span><span class="se">\t\r\n</span><span class="s2"> ]+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>…and use the <code class="docutils literal notranslate"><span class="pre">autotrim</span></code> option of <code class="docutils literal notranslate"><span class="pre">PinpointFragmenter</span></code> to automatically
+strip text before the first space and after the last space in the fragments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">PinpointFragmenter</span><span class="p">(</span><span class="n">autotrim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span><span class="o">.</span><span class="n">highlights</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
+<span class="go">&#39;when the &lt;b&gt;fragmenter&lt;/b&gt;&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="using-the-low-level-api">
+<h2>Using the low-level API<a class="headerlink" href="#using-the-low-level-api" title="Permalink to this heading">¶</a></h2>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h3>
+<p>The following function lets you retokenize and highlight a piece of text using
+an analyzer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.highlight</span> <span class="kn">import</span> <span class="n">highlight</span>
+
+<span class="n">excerpts</span> <span class="o">=</span> <span class="n">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">fragmenter</span><span class="p">,</span> <span class="n">formatter</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                     <span class="n">scorer</span><span class="o">=</span><span class="n">BasicFragmentScorer</span><span class="p">,</span> <span class="n">minscore</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">FIRST</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">text</span></code></dt><dd><p>The original text of the document.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">terms</span></code></dt><dd><p>A sequence or set containing the query words to match, e.g. (“render”,
+“shader”).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">analyzer</span></code></dt><dd><p>The analyzer to use to break the document text into tokens for matching
+against the query terms. This is usually the analyzer for the field the
+query terms are in.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">fragmenter</span></code></dt><dd><p>A <a class="reference internal" href="api/highlight.html#whoosh.highlight.Fragmenter" title="whoosh.highlight.Fragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Fragmenter</span></code></a> object, see below.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">formatter</span></code></dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Formatter</span></code> object, see below.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">top</span></code></dt><dd><p>The number of fragments to include in the output.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">scorer</span></code></dt><dd><p>A <a class="reference internal" href="api/highlight.html#whoosh.highlight.FragmentScorer" title="whoosh.highlight.FragmentScorer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.FragmentScorer</span></code></a> object. The only scorer currently
+included with Whoosh is <a class="reference internal" href="api/highlight.html#whoosh.highlight.BasicFragmentScorer" title="whoosh.highlight.BasicFragmentScorer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicFragmentScorer</span></code></a>, the
+default.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">minscore</span></code></dt><dd><p>The minimum score a fragment must have to be considered for inclusion.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">order</span></code></dt><dd><p>An ordering function that determines the order of the “top” fragments in the
+output text.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="facets.html" class="btn btn-neutral float-left" title="Sorting and faceting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="keywords.html" class="btn btn-neutral float-right" title="Query expansion and Key word extraction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
