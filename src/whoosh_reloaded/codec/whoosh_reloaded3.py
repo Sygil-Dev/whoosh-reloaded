@@ -896,7 +896,7 @@ class W3PostingsWriter(base.PostingsWriter):
 
 class W3LeafMatcher(LeafMatcher):
     """Reads on-disk postings from the postings file and presents the
-    :class:`whoosh-reloaded.matching.Matcher` interface.
+    :class:`whoosh_reloaded.matching.Matcher` interface.
     """
 
     def __init__(

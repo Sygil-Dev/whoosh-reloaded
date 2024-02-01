@@ -183,18 +183,18 @@ class Correction(object):
     following attributes:
 
     ``query``
-        The corrected :class:`whoosh-reloaded.query.Query` object.
+        The corrected :class:`whoosh_reloaded.query.Query` object.
     ``string``
         The corrected user query string.
     ``original_query``
-        The original :class:`whoosh-reloaded.query.Query` object that was corrected.
+        The original :class:`whoosh_reloaded.query.Query` object that was corrected.
     ``original_string``
         The original user query string.
     ``tokens``
         A list of token objects representing the corrected words.
 
     You can also use the :meth:`Correction.format_string` method to reformat the
-    corrected query string using a :class:`whoosh-reloaded.highlight.Formatter` class.
+    corrected query string using a :class:`whoosh_reloaded.highlight.Formatter` class.
     For example, to display the corrected query string as HTML with the
     changed words emphasized::
 
@@ -223,9 +223,9 @@ class Correction(object):
     def format_string(self, formatter):
         """
         Highlights the corrected words in the original query string using the
-        given :class:`~whoosh-reloaded.highlight.Formatter`.
+        given :class:`~whoosh_reloaded.highlight.Formatter`.
 
-        :param formatter: A :class:`whoosh-reloaded.highlight.Formatter` instance.
+        :param formatter: A :class:`whoosh_reloaded.highlight.Formatter` instance.
         :return: the output of the formatter (usually a string).
         """
 
@@ -255,7 +255,7 @@ class QueryCorrector(object):
         Returns a :class:`Correction` object representing the corrected
         form of the given query.
 
-        :param q: the original :class:`whoosh-reloaded.query.Query` tree to be
+        :param q: the original :class:`whoosh_reloaded.query.Query` tree to be
             corrected.
         :param qstring: the original user query. This may be None if the
             original query string is not available, in which case the

@@ -38,12 +38,12 @@ def test_termkey():
     tw.start_term(b("bravo"))
     tw.add(0, 1.0, b(""), 3)
     tw.finish_term()
-    tw.start_term(b('\xc3\xa6\xc3\xaf\xc5\xc3\xba'))
+    tw.start_term(b("\xc3\xa6\xc3\xaf\xc5\xc3\xba"))
     tw.add(0, 4.0, b(""), 3)
     tw.finish_term()
     tw.finish_field()
     tw.start_field("text", fieldobj)
-    tw.start_term(b('\xe6\xa5\xe6\xac\xe8\xaa'))
+    tw.start_term(b("\xe6\xa5\xe6\xac\xe8\xaa"))
     tw.add(0, 7.0, b(""), 9)
     tw.finish_term()
     tw.finish_field()
@@ -51,8 +51,8 @@ def test_termkey():
 
     tr = codec.terms_reader(st, seg)
     assert ("alfa", b("bravo")) in tr
-    assert ("alfa", b('\xc3\xa6\xc3\xaf\xc5\xc3\xba')) in tr
-    assert ("text", b('\xe6\xa5\xe6\xac\xe8\xaa')) in tr
+    assert ("alfa", b("\xc3\xa6\xc3\xaf\xc5\xc3\xba")) in tr
+    assert ("text", b("\xe6\xa5\xe6\xac\xe8\xaa")) in tr
     tr.close()
 
 
@@ -61,11 +61,14 @@ def test_random_termkeys():
         return "".join(chr(random.randint(65, 90)) for _ in xrange(1, 20))
 
     def random_btext():
-        a = array("H", (random.randint(0, 0xd7ff) for _ in xrange(1, 20)))
+        a = array("H", (random.randint(0, 0xD7FF) for _ in xrange(1, 20)))
         return array_tobytes(a).decode("utf-16")
 
-    domain = sorted(set([(random_fieldname(), random_btext().encode("utf-8"))
-                         for _ in xrange(1000)]))
+    domain = sorted(
+        set(
+            [(random_fieldname(), random_btext().encode("utf-8")) for _ in xrange(1000)]
+        )
+    )
 
     st, codec, seg = _make_codec()
     fieldobj = fields.TEXT()
@@ -130,23 +133,33 @@ def test_stored_fields():
 
         sfs = list(pdr.all_stored_fields())
         assert len(sfs) == 4
-        assert sfs == [{"a": "hello", "b": "there"},
-                       {"a": "one", "b": "two", "c": "three"},
-                       {},
-                       {"a": "alfa", "b": "bravo"},
-                       ]
+        assert sfs == [
+            {"a": "hello", "b": "there"},
+            {"a": "one", "b": "two", "c": "three"},
+            {},
+            {"a": "alfa", "b": "bravo"},
+        ]
         pdr.close()
 
 
 def test_termindex():
-    terms = [("a", "alfa"), ("a", "bravo"), ("a", "charlie"), ("a", "delta"),
-             ("b", "able"), ("b", "baker"), ("b", "dog"), ("b", "easy")]
+    terms = [
+        ("a", "alfa"),
+        ("a", "bravo"),
+        ("a", "charlie"),
+        ("a", "delta"),
+        ("b", "able"),
+        ("b", "baker"),
+        ("b", "dog"),
+        ("b", "easy"),
+    ]
     st, codec, seg = _make_codec()
     schema = fields.Schema(a=fields.TEXT, b=fields.TEXT)
 
     tw = codec.field_writer(st, seg)
-    postings = ((fname, b(text), 0, i, b("")) for (i, (fname, text))
-                in enumerate(terms))
+    postings = (
+        (fname, b(text), 0, i, b("")) for (i, (fname, text)) in enumerate(terms)
+    )
     tw.add_postings(schema, FakeLengths(), postings)
     tw.close()
 
@@ -194,10 +207,11 @@ def test_docwriter_two():
     assert pdr.doc_field_length(1, "title") == 3
     assert pdr.doc_field_length(1, "text") == 1
 
-    assert (pdr.stored_fields(0)
-            == {"title": ("a", "b"), "text": "Testing one two three"})
-    assert (pdr.stored_fields(1)
-            == {"title": "The second document", "text": 500})
+    assert pdr.stored_fields(0) == {
+        "title": ("a", "b"),
+        "text": "Testing one two three",
+    }
+    assert pdr.stored_fields(1) == {"title": "The second document", "text": 500}
 
 
 def test_vector():
@@ -206,8 +220,9 @@ def test_vector():
     dw = codec.per_document_writer(st, seg)
     dw.start_doc(0)
     dw.add_field("title", field, None, 1)
-    dw.add_vector_items("title", field, [(u("alfa"), 1.0, b("t1")),
-                                         (u("bravo"), 2.0, b("t2"))])
+    dw.add_vector_items(
+        "title", field, [(u("alfa"), 1.0, b("t1")), (u("bravo"), 2.0, b("t2"))]
+    )
     dw.finish_doc()
     dw.close()
     seg.set_doc_count(1)
@@ -231,16 +246,17 @@ def test_vector_values():
 
     dw = codec.per_document_writer(st, seg)
     dw.start_doc(0)
-    vals = ((t, w, v) for t, _, w, v
-            in sorted(field.vector.word_values(content, field.analyzer)))
+    vals = (
+        (t, w, v)
+        for t, _, w, v in sorted(field.vector.word_values(content, field.analyzer))
+    )
     dw.add_vector_items("f1", field, vals)
     dw.finish_doc()
     dw.close()
 
     vr = codec.per_document_reader(st, seg)
     m = vr.vector(0, "f1", field.vector)
-    assert (list(m.items_as("frequency"))
-            == [("alfa", 2), ("bravo", 1), ("charlie", 1)])
+    assert list(m.items_as("frequency")) == [("alfa", 2), ("bravo", 1), ("charlie", 1)]
 
 
 def test_no_lengths():
@@ -375,9 +391,13 @@ def test_fieldwriter_multiblock():
     while m.is_active():
         ps.append((m.id(), m.weight(), m.value()))
         m.next()
-    assert ps == [(0, 2.0, b("test1")), (1, 5.0, b("test2")),
-                  (2, 3.0, b("test3")), (3, 4.0, b("test4")),
-                  (4, 1.0, b("test5"))]
+    assert ps == [
+        (0, 2.0, b("test1")),
+        (1, 5.0, b("test2")),
+        (2, 3.0, b("test3")),
+        (3, 4.0, b("test4")),
+        (4, 1.0, b("test5")),
+    ]
 
 
 def test_term_values():
@@ -396,20 +416,42 @@ def test_term_values():
 
     tr = codec.terms_reader(st, seg)
     ps = [(term, ti.weight(), ti.doc_frequency()) for term, ti in tr.items()]
-    assert ps == [(("f1", b("alfa")), 2.0, 1), (("f1", b("bravo")), 1.0, 1),
-                  (("f1", b("charlie")), 1.0, 1)]
+    assert ps == [
+        (("f1", b("alfa")), 2.0, 1),
+        (("f1", b("bravo")), 1.0, 1),
+        (("f1", b("charlie")), 1.0, 1),
+    ]
 
 
 def test_skip():
-    _docnums = [1, 3, 12, 34, 43, 67, 68, 102, 145, 212, 283, 291, 412, 900,
-                905, 1024, 1800, 2048, 15000]
+    _docnums = [
+        1,
+        3,
+        12,
+        34,
+        43,
+        67,
+        68,
+        102,
+        145,
+        212,
+        283,
+        291,
+        412,
+        900,
+        905,
+        1024,
+        1800,
+        2048,
+        15000,
+    ]
     st, codec, seg = _make_codec()
     fieldobj = fields.TEXT()
     fw = codec.field_writer(st, seg)
     fw.start_field("f1", fieldobj)
     fw.start_term(b("test"))
     for n in _docnums:
-        fw.add(n, 1.0, b(''), None)
+        fw.add(n, 1.0, b(""), None)
     fw.finish_term()
     fw.finish_field()
     fw.close()
@@ -479,27 +521,34 @@ def test_skip():
 def test_plaintext_codec():
     pytest.importorskip("ast")
     from whoosh_reloaded.codec.plaintext import PlainTextCodec
-    from whoosh_reloaded.codec.whoosh-reloaded3 import W3Codec
+    from whoosh_reloaded.codec.whoosh_reloaded3 import W3Codec
 
     ana = analysis.StemmingAnalyzer()
-    schema = fields.Schema(a=fields.TEXT(vector=True, sortable=True),
-                           b=fields.STORED,
-                           c=fields.NUMERIC(stored=True, sortable=True),
-                           d=fields.TEXT(analyzer=ana, spelling=True))
+    schema = fields.Schema(
+        a=fields.TEXT(vector=True, sortable=True),
+        b=fields.STORED,
+        c=fields.NUMERIC(stored=True, sortable=True),
+        d=fields.TEXT(analyzer=ana, spelling=True),
+    )
 
     st = RamStorage()
     ix = st.create_index(schema)
     with ix.writer(codec=W3Codec()) as w:
-        w.add_document(a=u("alfa bravo charlie"), b="hello", c=100,
-                       d=u("quelling whining echoing"))
-        w.add_document(a=u("bravo charlie delta"), b=1000, c=200,
-                       d=u("rolling timing yelling"))
-        w.add_document(a=u("charlie delta echo"), b=5.5, c=300,
-                       d=u("using opening pulling"))
-        w.add_document(a=u("delta echo foxtrot"), b=True, c=-100,
-                       d=u("aching selling dipping"))
-        w.add_document(a=u("echo foxtrot india"), b=None, c=-200,
-                       d=u("filling going hopping"))
+        w.add_document(
+            a=u("alfa bravo charlie"), b="hello", c=100, d=u("quelling whining echoing")
+        )
+        w.add_document(
+            a=u("bravo charlie delta"), b=1000, c=200, d=u("rolling timing yelling")
+        )
+        w.add_document(
+            a=u("charlie delta echo"), b=5.5, c=300, d=u("using opening pulling")
+        )
+        w.add_document(
+            a=u("delta echo foxtrot"), b=True, c=-100, d=u("aching selling dipping")
+        )
+        w.add_document(
+            a=u("echo foxtrot india"), b=None, c=-200, d=u("filling going hopping")
+        )
 
     with ix.reader() as r:
         assert r.has_column("a")
@@ -517,8 +566,10 @@ def test_plaintext_codec():
         assert len(r) == 3
         assert [hit["b"] for hit in r] == [1000, 5.5, True]
 
-        assert (" ".join(s.field_terms("a"))
-                == "alfa bravo charlie delta echo foxtrot india")
+        assert (
+            " ".join(s.field_terms("a"))
+            == "alfa bravo charlie delta echo foxtrot india"
+        )
 
         storage = ix.storage
         for fname in storage.list():
@@ -533,8 +584,7 @@ def test_plaintext_codec():
         assert type(cfield), fields.NUMERIC
         sortables = list(cfield.sortable_terms(reader, "c"))
         assert sortables
-        assert ([cfield.from_bytes(t) for t in sortables]
-                == [-200, -100, 100, 200, 300])
+        assert [cfield.from_bytes(t) for t in sortables] == [-200, -100, 100, 200, 300]
 
         assert reader.has_column("a")
         c = reader.column_reader("a")
@@ -554,23 +604,30 @@ def test_memory_codec():
     from whoosh_reloaded.searching import Searcher
 
     ana = analysis.StemmingAnalyzer()
-    schema = fields.Schema(a=fields.TEXT(vector=True),
-                           b=fields.STORED,
-                           c=fields.NUMERIC(stored=True, sortable=True),
-                           d=fields.TEXT(analyzer=ana, spelling=True))
+    schema = fields.Schema(
+        a=fields.TEXT(vector=True),
+        b=fields.STORED,
+        c=fields.NUMERIC(stored=True, sortable=True),
+        d=fields.TEXT(analyzer=ana, spelling=True),
+    )
 
     codec = memory.MemoryCodec()
     with codec.writer(schema) as w:
-        w.add_document(a=u("alfa bravo charlie"), b="hello", c=100,
-                       d=u("quelling whining echoing"))
-        w.add_document(a=u("bravo charlie delta"), b=1000, c=200,
-                       d=u("rolling timing yelling"))
-        w.add_document(a=u("charlie delta echo"), b=5.5, c=300,
-                       d=u("using opening pulling"))
-        w.add_document(a=u("delta echo foxtrot"), b=True, c=-100,
-                       d=u("aching selling dipping"))
-        w.add_document(a=u("echo foxtrot india"), b=None, c=-200,
-                       d=u("filling going hopping"))
+        w.add_document(
+            a=u("alfa bravo charlie"), b="hello", c=100, d=u("quelling whining echoing")
+        )
+        w.add_document(
+            a=u("bravo charlie delta"), b=1000, c=200, d=u("rolling timing yelling")
+        )
+        w.add_document(
+            a=u("charlie delta echo"), b=5.5, c=300, d=u("using opening pulling")
+        )
+        w.add_document(
+            a=u("delta echo foxtrot"), b=True, c=-100, d=u("aching selling dipping")
+        )
+        w.add_document(
+            a=u("echo foxtrot india"), b=None, c=-200, d=u("filling going hopping")
+        )
 
     reader = codec.reader(schema)
     s = Searcher(reader)
@@ -581,8 +638,7 @@ def test_memory_codec():
     assert len(r) == 3
     assert [hit["b"] for hit in r] == [1000, 5.5, True]
 
-    assert (" ".join(s.field_terms("a"))
-            == "alfa bravo charlie delta echo foxtrot india")
+    assert " ".join(s.field_terms("a")) == "alfa bravo charlie delta echo foxtrot india"
 
     cfield = schema["c"]
     c_sortables = cfield.sortable_terms(reader, "c")
@@ -601,11 +657,13 @@ def test_memory_codec():
 def test_memory_multiwrite():
     from whoosh_reloaded.codec import memory
 
-    domain = ["alfa bravo charlie delta",
-              "bravo charlie delta echo",
-              "charlie delta echo foxtrot",
-              "delta echo foxtrot india",
-              "echo foxtrot india juliet"]
+    domain = [
+        "alfa bravo charlie delta",
+        "bravo charlie delta echo",
+        "charlie delta echo foxtrot",
+        "delta echo foxtrot india",
+        "echo foxtrot india juliet",
+    ]
 
     schema = fields.Schema(line=fields.TEXT(stored=True))
     codec = memory.MemoryCodec()
@@ -616,5 +674,7 @@ def test_memory_multiwrite():
 
     reader = codec.reader(schema)
     assert [sf["line"] for sf in reader.all_stored_fields()] == domain
-    assert (" ".join(reader.field_terms("line"))
-            == "alfa bravo charlie delta echo foxtrot india juliet")
+    assert (
+        " ".join(reader.field_terms("line"))
+        == "alfa bravo charlie delta echo foxtrot india juliet"
+    )

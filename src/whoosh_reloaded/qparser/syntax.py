@@ -34,7 +34,7 @@ from whoosh_reloaded.qparser.common import get_single_text, QueryParserError, at
 class SyntaxNode(object):
     """Base class for nodes that make up the abstract syntax tree (AST) of a
     parsed user query string. The AST is an intermediate step, generated
-    from the query string, then converted into a :class:`whoosh-reloaded.query.Query`
+    from the query string, then converted into a :class:`whoosh_reloaded.query.Query`
     tree by calling the ``query()`` method on the nodes.
 
     Instances have the following required attributes:
@@ -84,7 +84,7 @@ class SyntaxNode(object):
         return fn_wrapper(self)
 
     def query(self, parser):
-        """Returns a :class:`whoosh-reloaded.query.Query` instance corresponding to this
+        """Returns a :class:`whoosh_reloaded.query.Query` instance corresponding to this
         syntax tree node.
         """
 

@@ -210,7 +210,7 @@ class CharsetTokenizer(Tokenizer):
     slower than :class:`RegexTokenizer`.
 
     One way to get a character mapping object is to convert a Sphinx charset
-    table file using :func:`whoosh-reloaded.support.charset.charset_table_to_dict`.
+    table file using :func:`whoosh_reloaded.support.charset.charset_table_to_dict`.
 
     >>> from whoosh_reloaded.support.charset import charset_table_to_dict
     >>> from whoosh_reloaded.support.charset import default_charset

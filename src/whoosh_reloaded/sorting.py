@@ -71,7 +71,7 @@ class Categorizer(object):
 
     Categorizers are created by FacetType objects through the
     :meth:`FacetType.categorizer` method. The
-    :class:`whoosh-reloaded.searching.Searcher` object passed to the ``categorizer``
+    :class:`whoosh_reloaded.searching.Searcher` object passed to the ``categorizer``
     method may be a composite searcher (that is, wrapping a multi-reader), but
     categorizers are always run **per-segment**, with segment-relative document
     numbers.
@@ -110,7 +110,7 @@ class Categorizer(object):
     def key_for(self, matcher, segment_docnum):
         """Returns a key for the current match.
 
-        :param matcher: a :class:`whoosh-reloaded.matching.Matcher` object. If
+        :param matcher: a :class:`whoosh_reloaded.matching.Matcher` object. If
             ``self.needs_current`` is ``False``, DO NOT use this object,
             since it may be inconsistent. Use the given ``segment_docnum``
             instead.
@@ -132,7 +132,7 @@ class Categorizer(object):
         This method will be called instead of ``key_for`` if
         ``self.allow_overlap`` is ``True``.
 
-        :param matcher: a :class:`whoosh-reloaded.matching.Matcher` object. If
+        :param matcher: a :class:`whoosh_reloaded.matching.Matcher` object. If
             ``self.needs_current`` is ``False``, DO NOT use this object,
             since it may be inconsistent. Use the given ``segment_docnum``
             instead.
@@ -409,7 +409,7 @@ class QueryFacet(FacetType):
     def __init__(self, querydict, other=None, allow_overlap=False, maptype=None):
         """
         :param querydict: a dictionary mapping keys to
-            :class:`whoosh-reloaded.query.Query` objects.
+            :class:`whoosh_reloaded.query.Query` objects.
         :param other: the key to use for documents that don't match any of the
             queries.
         """
@@ -537,8 +537,8 @@ class DateRangeFacet(RangeFacet):
     """Sorts/facets based on date ranges. This is the same as RangeFacet
     except you are expected to use ``daterange`` objects as the start and end
     of the range, and ``timedelta`` or ``relativedelta`` objects as the gap(s),
-    and it generates :class:`~whoosh-reloaded.query.DateRange` queries instead of
-    :class:`~whoosh-reloaded.query.TermRange` queries.
+    and it generates :class:`~whoosh_reloaded.query.DateRange` queries instead of
+    :class:`~whoosh_reloaded.query.TermRange` queries.
 
     For example, to facet a "birthday" range into 5 year buckets::
 
@@ -691,7 +691,7 @@ class TranslateFacet(FacetType):
 
 class StoredFieldFacet(FacetType):
     """Lets you sort/group using the value in an unindexed, stored field (e.g.
-    :class:`whoosh-reloaded.fields.STORED`). This is usually slower than using an indexed
+    :class:`whoosh_reloaded.fields.STORED`). This is usually slower than using an indexed
     field.
 
     For fields where the stored value is a space-separated list of keywords,
@@ -921,7 +921,7 @@ class Facets(object):
 
         :param name: a name for the facet.
         :param querydict: a dictionary mapping keys to
-            :class:`whoosh-reloaded.query.Query` objects.
+            :class:`whoosh_reloaded.query.Query` objects.
         """
 
         self.facets[name] = QueryFacet(querydict, **kwargs)
@@ -1092,10 +1092,10 @@ def add_sortable(writer, fieldname, facet, column=None):
     ...   sorting.add_sortable(w, "price", facet)
     ...
 
-    :param writer: a :class:`whoosh-reloaded.writing.IndexWriter` object.
+    :param writer: a :class:`whoosh_reloaded.writing.IndexWriter` object.
     :param fieldname: the name of the field to add the per-document sortable
         values to. If this field doesn't exist in the writer's schema, the
-        function will add a :class:`whoosh-reloaded.fields.COLUMN` field to the schema,
+        function will add a :class:`whoosh_reloaded.fields.COLUMN` field to the schema,
         and you must specify the column object to using the ``column`` keyword
         argument.
     :param facet: a :class:`FacetType` object to use to generate the

@@ -41,7 +41,7 @@ from whoosh_reloaded.compat import iteritems
 class WeightingModel(object):
     """Abstract base class for scoring models. A WeightingModel object provides
     a method, ``scorer``, which returns an instance of
-    :class:`whoosh-reloaded.scoring.Scorer`.
+    :class:`whoosh_reloaded.scoring.Scorer`.
 
     Basically, WeightingModel objects store the configuration information for
     the model (for example, the values of B and K1 in the BM25F model), and
@@ -60,7 +60,7 @@ class WeightingModel(object):
         return log(dc / (n + 1)) + 1
 
     def scorer(self, searcher, fieldname, text, qf=1):
-        """Returns an instance of :class:`whoosh-reloaded.scoring.Scorer` configured
+        """Returns an instance of :class:`whoosh_reloaded.scoring.Scorer` configured
         for the given searcher, fieldname, and term text.
         """
 
@@ -75,7 +75,7 @@ class WeightingModel(object):
         WeightingModel sub-classes that use ``final()`` should have the
         attribute ``use_final`` set to ``True``.
 
-        :param searcher: :class:`whoosh-reloaded.searching.Searcher` for the index.
+        :param searcher: :class:`whoosh_reloaded.searching.Searcher` for the index.
         :param docnum: the doc number of the document being scored.
         :param score: the document's accumulated term score.
 

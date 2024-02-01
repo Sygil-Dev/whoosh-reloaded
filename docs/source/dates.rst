@@ -6,7 +6,7 @@ Indexing dates
 ==============
 
 Whoosh lets you index and search dates/times using the
-:class:`whoosh-reloaded.fields.DATETIME` field type. Instead of passing text for the
+:class:`whoosh_reloaded.fields.DATETIME` field type. Instead of passing text for the
 field in ``add_document()``, you use a Python ``datetime.datetime`` object::
 
     from datetime import datetime, timedelta
@@ -28,7 +28,7 @@ Parsing date queries
 ====================
 
 Once you've have an indexed ``DATETIME`` field, you can search it using a rich
-date parser contained in the :class:`whoosh-reloaded.qparser.dateparse.DateParserPlugin`::
+date parser contained in the :class:`whoosh_reloaded.qparser.dateparse.DateParserPlugin`::
 
     from whoosh_reloaded import index
     from whoosh_reloaded.qparser import QueryParser

@@ -133,9 +133,9 @@ class Spec(object):
 
 class WhooshModule(Module):
     def indexer(self, create=True):
-        schema = self.bench.spec.whoosh - reloaded_schema()
+        schema = self.bench.spec.whoosh_schema()
         path = os.path.join(
-            self.options.dir, "%s_whoosh-reloaded" % self.options.indexname
+            self.options.dir, "%s_whoosh_reloaded" % self.options.indexname
         )
 
         if not os.path.exists(path):
@@ -158,7 +158,7 @@ class WhooshModule(Module):
             multisegment=self.options.xms,
         )
         self._procdoc = None
-        if hasattr(self.bench.spec, "process_document_whoosh-reloaded"):
+        if hasattr(self.bench.spec, "process_document_whoosh_reloaded"):
             self._procdoc = self.bench.spec.process_document_whoosh - reloaded
 
     def index_document(self, d):
@@ -172,7 +172,7 @@ class WhooshModule(Module):
 
     def searcher(self):
         path = os.path.join(
-            self.options.dir, "%s_whoosh-reloaded" % self.options.indexname
+            self.options.dir, "%s_whoosh_reloaded" % self.options.indexname
         )
         ix = index.open_dir(path)
         self.srch = ix.searcher(weighting=scoring.PL2())
@@ -448,7 +448,7 @@ class NucularModule(Module):
 
 class Bench(object):
     libs = {
-        "whoosh-reloaded": WhooshModule,
+        "whoosh_reloaded": WhooshModule,
         "xappy": XappyModule,
         "xapian": XapianModule,
         "solr": SolrModule,
@@ -538,7 +538,7 @@ class Bench(object):
             "--lib",
             dest="lib",
             help="Name of the library to use to index/search.",
-            default="whoosh-reloaded",
+            default="whoosh_reloaded",
         )
         p.add_option(
             "-d",

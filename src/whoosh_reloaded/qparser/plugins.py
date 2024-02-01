@@ -455,7 +455,7 @@ class FuzzyTermPlugin(TaggingPlugin):
     >>> qp.add_plugin(qparser.FuzzyTermPlugin())
     >>> q = qp.parse("Stephen~2 Colbert")
 
-    For example, the following query creates a :class:`whoosh-reloaded.query.FuzzyTerm`
+    For example, the following query creates a :class:`whoosh_reloaded.query.FuzzyTerm`
     query with a maximum edit distance of 1::
 
         bob~
@@ -1322,8 +1322,8 @@ class PseudoFieldPlugin(Plugin):
 
     Unfortunately writing the transform function(s) requires knowledge of the
     parser's abstract syntax tree classes. A transform function takes a
-    :class:`whoosh-reloaded.qparser.SyntaxNode` and returns a
-    :class:`~whoosh-reloaded.qparser.SyntaxNode` (or None if the node should be removed
+    :class:`whoosh_reloaded.qparser.SyntaxNode` and returns a
+    :class:`~whoosh_reloaded.qparser.SyntaxNode` (or None if the node should be removed
     instead of transformed).
 
     Some things you can do in the transform function::
@@ -1402,8 +1402,8 @@ class PseudoFieldPlugin(Plugin):
         """
         :param xform_map: a dictionary mapping psuedo-field names to transform
             functions. The function should take a
-            :class:`whoosh-reloaded.qparser.SyntaxNode` as an argument, and return a
-            :class:`~whoosh-reloaded.qparser.SyntaxNode`. If the function returns None,
+            :class:`whoosh_reloaded.qparser.SyntaxNode` as an argument, and return a
+            :class:`~whoosh_reloaded.qparser.SyntaxNode`. If the function returns None,
             the node will be removed from the query.
         """
 

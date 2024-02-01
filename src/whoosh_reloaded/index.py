@@ -89,7 +89,7 @@ def create_in(dirname, schema, indexname=None):
 
     :param dirname: the path string of the directory in which to create the
         index.
-    :param schema: a :class:`whoosh-reloaded.fields.Schema` object describing the
+    :param schema: a :class:`whoosh_reloaded.fields.Schema` object describing the
         index's fields.
     :param indexname: the name of the index to create; you only need to specify
         this if you are creating multiple indexes within the same storage
@@ -165,7 +165,7 @@ def version_in(dirname, indexname=None):
     version). This is simply a version number for the TOC file and probably
     should not have been exposed in a public interface. The best way to check
     if the current version of Whoosh can open an index is to actually try to
-    open it and see if it raises a ``whoosh-reloaded.index.IndexVersionError`` exception.
+    open it and see if it raises a ``whoosh_reloaded.index.IndexVersionError`` exception.
 
     Note that the release and format version are available as attributes on the
     Index object in Index.release and Index.version.
@@ -192,7 +192,7 @@ def version(storage, indexname=None):
     version). This is simply a version number for the TOC file and probably
     should not have been exposed in a public interface. The best way to check
     if the current version of Whoosh can open an index is to actually try to
-    open it and see if it raises a ``whoosh-reloaded.index.IndexVersionError`` exception.
+    open it and see if it raises a ``whoosh_reloaded.index.IndexVersionError`` exception.
 
     Note that the release and format version are available as attributes on the
     Index object in Index.release and Index.version.
@@ -231,7 +231,7 @@ class Index(object):
         """Adds a field to the index's schema.
 
         :param fieldname: the name of the field to add.
-        :param fieldspec: an instantiated :class:`whoosh-reloaded.fields.FieldType`
+        :param fieldspec: an instantiated :class:`whoosh_reloaded.fields.FieldType`
             object.
         """
 
@@ -313,7 +313,7 @@ class Index(object):
         """Returns a Searcher object for this index. Keyword arguments are
         passed to the Searcher object's constructor.
 
-        :rtype: :class:`whoosh-reloaded.searching.Searcher`
+        :rtype: :class:`whoosh_reloaded.searching.Searcher`
         """
 
         from whoosh_reloaded.searching import Searcher
@@ -345,7 +345,7 @@ class Index(object):
             resources from this existing reader to create the new reader. Note
             that any resources in the "recycled" reader that are not used by
             the new reader will be CLOSED, so you CANNOT use it afterward.
-        :rtype: :class:`whoosh-reloaded.reading.IndexReader`
+        :rtype: :class:`whoosh_reloaded.reading.IndexReader`
         """
 
         raise NotImplementedError
@@ -353,7 +353,7 @@ class Index(object):
     def writer(self, **kwargs):
         """Returns an IndexWriter object for this index.
 
-        :rtype: :class:`whoosh-reloaded.writing.IndexWriter`
+        :rtype: :class:`whoosh_reloaded.writing.IndexWriter`
         """
         raise NotImplementedError
 

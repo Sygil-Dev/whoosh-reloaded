@@ -99,7 +99,7 @@ class HashWriter(object):
 
     def __init__(self, dbfile, magic=b("HSH3"), hashtype=0):
         """
-        :param dbfile: a :class:`~whoosh-reloaded.filedb.structfile.StructFile` object
+        :param dbfile: a :class:`~whoosh_reloaded.filedb.structfile.StructFile` object
             to write to.
         :param magic: the format tag bytes to write at the start of the file.
         :param hashtype: an integer indicating which hashing algorithm to use.
@@ -226,7 +226,7 @@ class HashReader(object):
 
     def __init__(self, dbfile, length=None, magic=b("HSH3"), startoffset=0):
         """
-        :param dbfile: a :class:`~whoosh-reloaded.filedb.structfile.StructFile` object
+        :param dbfile: a :class:`~whoosh_reloaded.filedb.structfile.StructFile` object
             to read from.
         :param length: the length of the file data. This is necessary since the
             hashing information is written at the end of the file.
@@ -280,7 +280,7 @@ class HashReader(object):
     @classmethod
     def open(cls, storage, name):
         """Convenience method to open a hash file given a
-        :class:`whoosh-reloaded.filedb.filestore.Storage` object and a name. This takes
+        :class:`whoosh_reloaded.filedb.filestore.Storage` object and a name. This takes
         care of opening the file and passing its length to the initializer.
         """
 

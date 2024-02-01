@@ -34,9 +34,9 @@ from whoosh_reloaded.query.wrappers import WrappingQuery
 class NestedParent(WrappingQuery):
     """A query that allows you to search for "nested" documents, where you can
     index (possibly multiple levels of) "parent" and "child" documents using
-    the :meth:`~whoosh-reloaded.writing.IndexWriter.group` and/or
-    :meth:`~whoosh-reloaded.writing.IndexWriter.start_group` methods of a
-    :class:`whoosh-reloaded.writing.IndexWriter` to indicate that hierarchically related
+    the :meth:`~whoosh_reloaded.writing.IndexWriter.group` and/or
+    :meth:`~whoosh_reloaded.writing.IndexWriter.start_group` methods of a
+    :class:`whoosh_reloaded.writing.IndexWriter` to indicate that hierarchically related
     documents should be kept together::
 
         schema = fields.Schema(type=fields.ID, text=fields.TEXT(stored=True))

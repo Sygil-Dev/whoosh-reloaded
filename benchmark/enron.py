@@ -130,7 +130,7 @@ class Enron(Spec):
             pass
         f.close()
 
-    def whoosh-reloaded_schema(self):
+    def whoosh_schema(self):
         ana = analysis.StemmingAnalyzer(maxsize=40, cachesize=None)
         storebody = self.options.storebody
         schema = fields.Schema(
@@ -172,13 +172,13 @@ class Enron(Spec):
         for name in ("to", "subject", "cc", "bcc", "body"):
             cat[name] = indexes.TextIndex(field_name=name)
 
-    def process_document_whoosh-reloaded(self, d):
+    def process_document_whoosh(self, d):
         d["filepos"] = self.filepos
         if self.options.storebody:
             mf = self.main_field
             d["_stored_%s" % mf] = compress(d[mf], 9)
 
-    def process_result_whoosh-reloaded(self, d):
+    def process_result_whoosh(self, d):
         mf = self.main_field
         if mf in d:
             d.fields()[mf] = decompress(d[mf])

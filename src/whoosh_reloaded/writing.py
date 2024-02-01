@@ -196,7 +196,7 @@ class IndexWriter(object):
     """High-level object for writing to an index.
 
     To get a writer for a particular index, call
-    :meth:`~whoosh-reloaded.index.Index.writer` on the Index object.
+    :meth:`~whoosh_reloaded.index.Index.writer` on the Index object.
 
     >>> writer = myindex.writer()
 
@@ -279,7 +279,7 @@ class IndexWriter(object):
         """Adds a field to the index's schema.
 
         :param fieldname: the name of the field to add.
-        :param fieldtype: an instantiated :class:`whoosh-reloaded.fields.FieldType`
+        :param fieldtype: an instantiated :class:`whoosh_reloaded.fields.FieldType`
             object.
         """
 
@@ -571,7 +571,7 @@ class SegmentWriter(IndexWriter):
 
     def __repr__(self):
         # Author: Ronald Evers
-        # Origin bitbucket issue: https://bitbucket.org/mchaput/whoosh-reloaded/issues/483
+        # Origin bitbucket issue: https://bitbucket.org/mchaput/whoosh_reloaded/issues/483
         # newsegment might not be set due to LockError
         # so use getattr to be safe
         return "<%s %r>" % (self.__class__.__name__, getattr(self, "newsegment", None))
@@ -1023,7 +1023,7 @@ class AsyncWriter(threading.Thread, IndexWriter):
 
     def __init__(self, index, delay=0.25, writerargs=None):
         """
-        :param index: the :class:`whoosh-reloaded.index.Index` to write to.
+        :param index: the :class:`whoosh_reloaded.index.Index` to write to.
         :param delay: the delay (in seconds) between attempts to instantiate
             the actual writer.
         :param writerargs: an optional dictionary specifying keyword arguments
@@ -1108,7 +1108,7 @@ def add_spelling(ix, fieldnames, commit=True):
     >>> ix = index.open_dir("testindex")
     >>> add_spelling(ix, ["content", "tags"])
 
-    :param ix: a :class:`whoosh-reloaded.filedb.fileindex.FileIndex` object.
+    :param ix: a :class:`whoosh_reloaded.filedb.fileindex.FileIndex` object.
     :param fieldnames: a list of field names to create word graphs for.
     :param force: if True, overwrites existing word graph files. This is only
         useful for debugging.
@@ -1204,7 +1204,7 @@ class BufferedWriter(IndexWriter):
 
     def __init__(self, index, period=60, limit=10, writerargs=None, commitargs=None):
         """
-        :param index: the :class:`whoosh-reloaded.index.Index` to write to.
+        :param index: the :class:`whoosh_reloaded.index.Index` to write to.
         :param period: the maximum amount of time (in seconds) between commits.
             Set this to ``0`` or ``None`` to not use a timer. Do not set this
             any lower than a few seconds.

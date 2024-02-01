@@ -40,7 +40,7 @@ class TempDir(object):
         self,
         basename="",
         parentdir=None,
-        ext=".whoosh-reloaded",
+        ext=".whoosh_reloaded",
         suppress=frozenset(),
         keepdir=False,
     ):

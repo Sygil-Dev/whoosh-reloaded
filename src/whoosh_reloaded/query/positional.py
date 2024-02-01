@@ -47,7 +47,7 @@ class Sequence(compound.CompoundQuery):
 
     def __init__(self, subqueries, slop=1, ordered=True, boost=1.0):
         """
-        :param subqueries: a list of :class:`whoosh-reloaded.query.Query` objects to
+        :param subqueries: a list of :class:`whoosh_reloaded.query.Query` objects to
             match in sequence.
         :param slop: the maximum difference in position allowed between the
             subqueries.

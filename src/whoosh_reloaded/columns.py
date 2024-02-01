@@ -84,7 +84,7 @@ class Column(object):
         """Returns a :class:`ColumnWriter` object you can use to use to create
         a column of this type on disk.
 
-        :param dbfile: the :class:`~whoosh-reloaded.filedb.structfile.StructFile` to
+        :param dbfile: the :class:`~ whoosh_reloaded.filedb.structfile.StructFile` to
             write to.
         """
 
@@ -94,7 +94,7 @@ class Column(object):
         """Returns a :class:`ColumnReader` object you can use to read a column
         of this type from disk.
 
-        :param dbfile: the :class:`~whoosh-reloaded.filedb.structfile.StructFile` to
+        :param dbfile: the :class:`~ whoosh_reloaded.filedb.structfile.StructFile` to
             read from.
         :param basepos: the offset within the file at which the column starts.
         :param length: the length in bytes of the column occupies in the file.

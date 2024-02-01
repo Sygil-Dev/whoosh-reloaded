@@ -343,7 +343,7 @@ class Query(object):
         """Returns a set of all byteterms in this query tree that exist in
         the given ixreader.
 
-        :param ixreader: A :class:`whoosh-reloaded.reading.IndexReader` object.
+        :param ixreader: A :class:`whoosh_reloaded.reading.IndexReader` object.
         :param phrases: Whether to add words found in Phrase queries.
         :param expand: If True, queries that match multiple terms
             will return all matching expansions.
@@ -532,10 +532,10 @@ class Query(object):
         return self.estimate_size(ixreader)
 
     def matcher(self, searcher, context=None):
-        """Returns a :class:`~whoosh-reloaded.matching.Matcher` object you can use to
+        """Returns a :class:`~whoosh_reloaded.matching.Matcher` object you can use to
         retrieve documents and scores matching this query.
 
-        :rtype: :class:`whoosh-reloaded.matching.Matcher`
+        :rtype: :class:`whoosh_reloaded.matching.Matcher`
         """
 
         raise NotImplementedError
@@ -547,7 +547,7 @@ class Query(object):
         ...     list(my_query.docs(searcher))
         [10, 34, 78, 103]
 
-        :param searcher: A :class:`whoosh-reloaded.searching.Searcher` object.
+        :param searcher: A :class:`whoosh_reloaded.searching.Searcher` object.
         """
 
         try:
@@ -558,7 +558,7 @@ class Query(object):
 
     def deletion_docs(self, searcher):
         """Returns an iterator of docnums matching this query for the purpose
-        of deletion. The :meth:`~whoosh-reloaded.writing.IndexWriter.delete_by_query`
+        of deletion. The :meth:`~whoosh_reloaded.writing.IndexWriter.delete_by_query`
         method will use this method when deciding what documents to delete,
         allowing special queries (e.g. nested queries) to override what
         documents are deleted. The default implementation just forwards to

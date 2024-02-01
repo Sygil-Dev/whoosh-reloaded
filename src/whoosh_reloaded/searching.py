@@ -99,7 +99,7 @@ class SearchContext(object):
 
 
 class Searcher(object):
-    """Wraps an :class:`~whoosh-reloaded.reading.IndexReader` object and provides
+    """Wraps an :class:`~whoosh_reloaded.reading.IndexReader` object and provides
     methods for searching the index.
     """
 
@@ -112,9 +112,9 @@ class Searcher(object):
         parent=None,
     ):
         """
-        :param reader: An :class:`~whoosh-reloaded.reading.IndexReader` object for
+        :param reader: An :class:`~whoosh_reloaded.reading.IndexReader` object for
             the index to search.
-        :param weighting: A :class:`whoosh-reloaded.scoring.Weighting` object to use to
+        :param weighting: A :class:`whoosh_reloaded.scoring.Weighting` object to use to
             score found documents.
         :param closereader: Whether the underlying reader will be closed when
             the searcher is closed.
@@ -280,7 +280,7 @@ class Searcher(object):
         return self.field_length(fieldname) / (self._doccount or 1)
 
     def reader(self):
-        """Returns the underlying :class:`~whoosh-reloaded.reading.IndexReader`."""
+        """Returns the underlying :class:`~whoosh_reloaded.reading.IndexReader`."""
         return self.ixreader
 
     def context(self, **kwargs):
@@ -299,8 +299,8 @@ class Searcher(object):
         return self.context(needs_current=False, weighting=None)
 
     def postings(self, fieldname, text, weighting=None, qf=1):
-        """Returns a :class:`whoosh-reloaded.matching.Matcher` for the postings of the
-        given term. Unlike the :func:`whoosh-reloaded.reading.IndexReader.postings`
+        """Returns a :class:`whoosh_reloaded.matching.Matcher` for the postings of the
+        given term. Unlike the :func:`whoosh_reloaded.reading.IndexReader.postings`
         method, this method automatically sets the scoring functions on the
         matcher from the searcher's weighting object.
         """
@@ -383,7 +383,7 @@ class Searcher(object):
         arguments (``Searcher.documents()``), this method will yield **all**
         documents.
 
-        >>> for stored_fields in searcher.documents(emailto=u"matt@whoosh-reloaded.ca"):
+        >>> for stored_fields in searcher.documents(emailto=u"matt@whoosh.ca"):
         ...   print("Email subject:", stored_fields['subject'])
         """
 
@@ -444,7 +444,7 @@ class Searcher(object):
         specify any arguments (``Searcher.document_numbers()``), this method
         will yield **all** document numbers.
 
-        >>> docnums = list(searcher.document_numbers(emailto="matt@whoosh-reloaded.ca"))
+        >>> docnums = list(searcher.document_numbers(emailto="matt@whoosh.ca"))
         """
 
         self._kw_to_text(kw)
@@ -487,7 +487,7 @@ class Searcher(object):
 
         This is a convenience method. If you are planning to get suggestions
         for multiple words in the same field, it is more efficient to get a
-        :class:`~whoosh-reloaded.spelling.Corrector` object and use it directly::
+        :class:`~whoosh_reloaded.spelling.Corrector` object and use it directly::
 
             corrector = searcher.corrector("fieldname")
             for word in words:
@@ -592,7 +592,7 @@ class Searcher(object):
         :param numterms: the number of "key terms" to extract from the hit and
             search for. Using more terms is slower but gives potentially more
             and more accurate results.
-        :param model: (expert) a :class:`whoosh-reloaded.classify.ExpansionModel` to use
+        :param model: (expert) a :class:`whoosh_reloaded.classify.ExpansionModel` to use
             to compute "key terms".
         :param normalize: whether to normalize term weights.
         :param filter: a query, Results object, or set of docnums. The results
@@ -655,7 +655,7 @@ class Searcher(object):
         This method will raise a ``ValueError`` if you ask for a page number
         higher than the number of pages in the resulting query.
 
-        :param query: the :class:`whoosh-reloaded.query.Query` object to match.
+        :param query: the :class:`whoosh_reloaded.query.Query` object to match.
         :param pagenum: the page number to retrieve, starting at ``1`` for the
             first page.
         :param pagelen: the number of results per page.
@@ -677,7 +677,7 @@ class Searcher(object):
 
     def docs_for_query(self, q, for_deletion=False):
         """Returns an iterator of document numbers for documents matching the
-        given :class:`whoosh-reloaded.query.Query` object.
+        given :class:`whoosh_reloaded.query.Query` object.
         """
 
         # If we're getting the document numbers so we can delete them, use the
@@ -713,7 +713,7 @@ class Searcher(object):
         scored=True,
     ):
         """Low-level method: returns a configured
-        :class:`whoosh-reloaded.collectors.Collector` object based on the given
+        :class:`whoosh_reloaded.collectors.Collector` object based on the given
         arguments. You can use this object with
         :meth:`Searcher.search_with_collector` to search.
 
@@ -721,7 +721,7 @@ class Searcher(object):
         description of the parameters.
 
         This method may be useful to get a basic collector object and then wrap
-        it with another collector from ``whoosh-reloaded.collectors`` or with a custom
+        it with another collector from ``whoosh_reloaded.collectors`` or with a custom
         collector of your own::
 
             # Equivalent of
@@ -772,7 +772,7 @@ class Searcher(object):
         return c
 
     def search(self, q, **kwargs):
-        """Runs a :class:`whoosh-reloaded.query.Query` object on this searcher and
+        """Runs a :class:`whoosh_reloaded.query.Query` object on this searcher and
         returns a :class:`Results` object. See :doc:`/searching` for more
         information.
 
@@ -782,7 +782,7 @@ class Searcher(object):
         ``groupedby``. See :ref:`collapsing` for more information on using
         ``collapse``, ``collapse_limit``, and ``collapse_order``.
 
-        :param query: a :class:`whoosh-reloaded.query.Query` object to use to match
+        :param query: a :class:`whoosh_reloaded.query.Query` object to use to match
             documents.
         :param limit: the maximum number of documents to score. If you're only
             interested in the top N documents, you can set limit=N to limit the
@@ -806,7 +806,7 @@ class Searcher(object):
         :param maptype: by default, the results of faceting with ``groupedby``
             is a dictionary mapping group names to ordered lists of document
             numbers in the group. You can pass a
-            :class:`whoosh-reloaded.sorting.FacetMap` subclass to this keyword argument
+            :class:`whoosh_reloaded.sorting.FacetMap` subclass to this keyword argument
             to specify a different (usually faster) method for grouping. For
             example, ``maptype=sorting.Count`` would store only the count of
             documents in each group, instead of the full list of document IDs.
@@ -830,8 +830,8 @@ class Searcher(object):
         return c.results()
 
     def search_with_collector(self, q, collector, context=None):
-        """Low-level method: runs a :class:`whoosh-reloaded.query.Query` object on this
-        searcher using the given :class:`whoosh-reloaded.collectors.Collector` object
+        """Low-level method: runs a :class:`whoosh_reloaded.query.Query` object on this
+        searcher using the given :class:`whoosh_reloaded.collectors.Collector` object
         to collect the results::
 
             myquery = query.Term("content", "cabbage")
@@ -847,9 +847,9 @@ class Searcher(object):
         need to access the collector to get a results object or other
         information the collector might hold after the search.
 
-        :param q: a :class:`whoosh-reloaded.query.Query` object to use to match
+        :param q: a :class:`whoosh_reloaded.query.Query` object to use to match
             documents.
-        :param collector: a :class:`whoosh-reloaded.collectors.Collector` object to feed
+        :param collector: a :class:`whoosh_reloaded.collectors.Collector` object to feed
             the results into.
         """
 
@@ -865,7 +865,7 @@ class Searcher(object):
     ):
         """
         Returns a corrected version of the given user query using a default
-        :class:`whoosh-reloaded.spelling.ReaderCorrector`.
+        :class:`whoosh_reloaded.spelling.ReaderCorrector`.
 
         The default:
 
@@ -873,15 +873,15 @@ class Searcher(object):
 
         * Takes suggestions from the words in the index. To make certain fields
           use custom correctors, use the ``correctors`` argument to pass a
-          dictionary mapping field names to :class:`whoosh-reloaded.spelling.Corrector`
+          dictionary mapping field names to :class:`whoosh_reloaded.spelling.Corrector`
           objects.
 
         Expert users who want more sophisticated correction behavior can create
-        a custom :class:`whoosh-reloaded.spelling.QueryCorrector` and use that instead
+        a custom :class:`whoosh_reloaded.spelling.QueryCorrector` and use that instead
         of this method.
 
-        Returns a :class:`whoosh-reloaded.spelling.Correction` object with a ``query``
-        attribute containing the corrected :class:`whoosh-reloaded.query.Query` object
+        Returns a :class:`whoosh_reloaded.spelling.Correction` object with a ``query``
+        attribute containing the corrected :class:`whoosh_reloaded.query.Query` object
         and a ``string`` attributes containing the corrected query string.
 
         >>> from whoosh_reloaded import qparser, highlight
@@ -897,23 +897,23 @@ class Searcher(object):
 
         You can use the ``Correction`` object's ``format_string`` method to
         format the corrected query string using a
-        :class:`whoosh-reloaded.highlight.Formatter` object. For example, you can format
+        :class:`whoosh_reloaded.highlight.Formatter` object. For example, you can format
         the corrected string as HTML, emphasizing the changed words.
 
         >>> hf = highlight.HtmlFormatter(classname="change")
         >>> correction.format_string(hf)
         'mary "<strong class="change term0">little</strong> lamb"'
 
-        :param q: the :class:`whoosh-reloaded.query.Query` object to correct.
+        :param q: the :class:`whoosh_reloaded.query.Query` object to correct.
         :param qstring: the original user query from which the query object was
             created. You can pass None instead of a string, in which the
             second item in the returned tuple will also be None.
         :param correctors: an optional dictionary mapping fieldnames to
-            :class:`whoosh-reloaded.spelling.Corrector` objects. By default, this method
+            :class:`whoosh_reloaded.spelling.Corrector` objects. By default, this method
             uses the contents of the index to spell check the terms in the
             query. You can use this argument to "override" some fields with a
             different correct, for example a
-            :class:`whoosh-reloaded.spelling.GraphCorrector`.
+            :class:`whoosh_reloaded.spelling.GraphCorrector`.
         :param terms: a sequence of ``("fieldname", "text")`` tuples to correct
             in the query. By default, this method corrects terms that don't
             appear in the index. You can use this argument to override that
@@ -930,7 +930,7 @@ class Searcher(object):
         :param aliases: an optional dictionary mapping field names in the query
             to different field names to use as the source of spelling
             suggestions. The mappings in ``correctors`` are applied after this.
-        :rtype: :class:`whoosh-reloaded.spelling.Correction`
+        :rtype: :class:`whoosh_reloaded.spelling.Correction`
         """
 
         reader = self.reader()
@@ -1132,7 +1132,7 @@ class Results(object):
 
         If you specified a different ``maptype`` for the facet when you
         searched, the values in the dictionary depend on the
-        :class:`whoosh-reloaded.sorting.FacetMap`.
+        :class:`whoosh_reloaded.sorting.FacetMap`.
 
         >>> myfacet = sorting.FieldFacet("tag", maptype=sorting.Count)
         >>> results = mysearcher.search(myquery, groupedby=myfacet)
@@ -1487,7 +1487,7 @@ class Hit(object):
             results = searcher.search(myquery, terms=True)
             results.fragmenter = highlight.SentenceFragmenter()
 
-        ...or use a custom :class:`whoosh-reloaded.highlight.Highlighter` object::
+        ...or use a custom :class:`whoosh_reloaded.highlight.Highlighter` object::
 
             hl = highlight.Highlighter(fragmenter=sf)
             results.highlighter = hl
@@ -1544,7 +1544,7 @@ class Hit(object):
         :param numterms: the number of "key terms" to extract from the hit and
             search for. Using more terms is slower but gives potentially more
             and more accurate results.
-        :param model: (expert) a :class:`whoosh-reloaded.classify.ExpansionModel` to use
+        :param model: (expert) a :class:`whoosh_reloaded.classify.ExpansionModel` to use
             to compute "key terms".
         :param normalize: whether to normalize term weights.
         """
@@ -1627,8 +1627,8 @@ class Hit(object):
 
 class ResultsPage(object):
     """Represents a single page out of a longer list of results, as returned
-    by :func:`whoosh-reloaded.searching.Searcher.search_page`. Supports a subset of the
-    interface of the :class:`~whoosh-reloaded.searching.Results` object, namely getting
+    by :func:`whoosh_reloaded.searching.Searcher.search_page`. Supports a subset of the
+    interface of the :class:`~whoosh_reloaded.searching.Results` object, namely getting
     stored fields with __getitem__ (square brackets), iterating, and the
     ``score()`` and ``docnum()`` methods.
 
@@ -1672,7 +1672,7 @@ class ResultsPage(object):
 
     def __init__(self, results, pagenum, pagelen=10):
         """
-        :param results: a :class:`~whoosh-reloaded.searching.Results` object.
+        :param results: a :class:`~whoosh_reloaded.searching.Results` object.
         :param pagenum: which page of the results to use, numbered from ``1``.
         :param pagelen: the number of hits per page.
         """

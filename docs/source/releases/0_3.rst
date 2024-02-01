@@ -6,7 +6,7 @@ Whoosh 0.3 release notes
 
 * Changed default post limit (run size) from 4 MB to 32 MB.
 
-* Finished migrating backend-specific code into ``whoosh-reloaded.filedb`` package.
+* Finished migrating backend-specific code into `` whoosh_reloaded.filedb`` package.
 
 * Moved formats from whoosh_reloaded.fields module into new whoosh_reloaded.formats module.
 
@@ -53,9 +53,9 @@ Whoosh 0.3 release notes
 * Added whoosh_reloaded.analysis.CharsetTokenizer and CharsetFilter to enable case and
   accent folding.
 
-* Added experimental ``whoosh-reloaded.ramdb`` in-memory backend.
+* Added experimental `` whoosh_reloaded.ramdb`` in-memory backend.
 
-* Added experimental ``whoosh-reloaded.query.FuzzyTerm`` query type.
+* Added experimental `` whoosh_reloaded.query.FuzzyTerm`` query type.
 
-* Added ``whoosh-reloaded.lang.wordnet`` module containing ``Thesaurus`` object for using
+* Added `` whoosh_reloaded.lang.wordnet`` module containing ``Thesaurus`` object for using
   WordNet synonym database.

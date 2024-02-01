@@ -39,7 +39,7 @@ Creating a custom caching policy
 ================================
 
 Expert users who want to implement a custom caching policy (for example, to add
-cache expiration) should subclass :class:`whoosh-reloaded.filedb.fieldcache.FieldCachingPolicy`.
+cache expiration) should subclass :class:`whoosh_reloaded.filedb.fieldcache.FieldCachingPolicy`.
 Then you can pass an instance of your policy object to the ``set_caching_policy``
 method::
 

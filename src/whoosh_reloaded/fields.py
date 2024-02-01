@@ -1129,14 +1129,14 @@ class TEXT(FieldType):
             ``spelling_prefix`` keyword argument) to allow spelling suggestions
             to use the unchanged word forms as spelling suggestions.
         :param sortable: If True, make this field sortable using the default
-            column type. If you pass a :class:`whoosh-reloaded.columns.Column` instance
+            column type. If you pass a :class:`whoosh_reloaded.columns.Column` instance
             instead of True, the field will use the given column type.
         :param lang: automaticaly configure a
-            :class:`whoosh-reloaded.analysis.LanguageAnalyzer` for the given language.
+            :class:`whoosh_reloaded.analysis.LanguageAnalyzer` for the given language.
             This is ignored if you also specify an ``analyzer``.
         :param vector: if this value evaluates to true, store a list of the
             terms in this field in each document. If the value is an instance
-            of :class:`whoosh-reloaded.formats.Format`, the index will use the object to
+            of :class:`whoosh_reloaded.formats.Format`, the index will use the object to
             store the term vector. Any other true value (e.g. ``vector=True``)
             will use the field's index format to store the term vector as well.
         """
@@ -1317,7 +1317,7 @@ class NGRAMWORDS(NGRAM):
             document. Since this field type generally contains a lot of text,
             you should avoid storing it with the document unless you need to,
             for example to allow fast excerpts in the search results.
-        :param tokenizer: an instance of :class:`whoosh-reloaded.analysis.Tokenizer`
+        :param tokenizer: an instance of :class:`whoosh_reloaded.analysis.Tokenizer`
             used to break the text into words.
         :param at: if 'start', only takes N-grams from the start of the word.
             If 'end', only takes N-grams from the end. Otherwise the default
@@ -1638,7 +1638,7 @@ class SchemaClass(with_metaclass(MetaSchema, Schema)):
     ...
     >>> s = MySchema()
     >>> type(s)
-    <class 'whoosh-reloaded.fields.Schema'>
+    <class 'whoosh_reloaded.fields.Schema'>
 
     """
 

@@ -83,7 +83,7 @@ class MemcacheLock(object):
         self.name = name
 
     def acquire(self, blocking=False):
-        val = memcache.add(self.name, "L", 360, namespace="whoosh-reloadedlocks")
+        val = memcache.add(self.name, "L", 360, namespace="whoosh_reloadedlocks")
 
         if blocking and not val:
             # Simulate blocking by retrying the acquire over and over
@@ -91,16 +91,16 @@ class MemcacheLock(object):
 
             while not val:
                 time.sleep(0.1)
-                val = memcache.add(self.name, "", 360, namespace="whoosh-reloadedlocks")
+                val = memcache.add(self.name, "", 360, namespace="whoosh_reloadedlocks")
 
         return val
 
     def release(self):
-        memcache.delete(self.name, namespace="whoosh-reloadedlocks")
+        memcache.delete(self.name, namespace="whoosh_reloadedlocks")
 
 
 class DatastoreStorage(Storage):
-    """An implementation of :class:`whoosh-reloaded.store.Storage` that stores files in
+    """An implementation of :class:`whoosh_reloaded.store.Storage` that stores files in
     the app engine datastore as blob properties.
     """
 

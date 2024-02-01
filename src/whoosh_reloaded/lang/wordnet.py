@@ -198,7 +198,7 @@ class Thesaurus(object):
         >>> t.synonyms("hail")
         ['acclaim', 'come', 'herald']
 
-        :param storage: A :class:`whoosh-reloaded.store.Storage` object from
+        :param storage: A :class:`whoosh_reloaded.store.Storage` object from
             which to load the index.
         :param indexname: A name for the index. This allows you to
             store multiple indexes in the same storage object.
@@ -218,7 +218,7 @@ class Thesaurus(object):
         >>> t = Thesaurus.from_filename("wn_s.pl")
         >>> t.to_storage(fs)
 
-        :param storage: A :class:`whoosh-reloaded.store.Storage` object in
+        :param storage: A :class:`whoosh_reloaded.store.Storage` object in
             which to save the index.
         :param indexname: A name for the index. This allows you to
             store multiple indexes in the same storage object.

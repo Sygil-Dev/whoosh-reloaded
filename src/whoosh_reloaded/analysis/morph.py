@@ -52,8 +52,8 @@ class StemFilter(Filter):
 
     >>> stemfilter = StemFilter(lang="ru")
 
-    The list of available languages is in `whoosh-reloaded.lang.languages`.
-    You can use :func:`whoosh-reloaded.lang.has_stemmer` to check if a given language has
+    The list of available languages is in `whoosh_reloaded.lang.languages`.
+    You can use :func:`whoosh_reloaded.lang.has_stemmer` to check if a given language has
     a stemming function available.
 
     By default, this class wraps an LRU cache around the stemming function. The
@@ -74,7 +74,7 @@ class StemFilter(Filter):
         """
         :param stemfn: the function to use for stemming.
         :param lang: if not None, overrides the stemfn with a language stemmer
-            from the ``whoosh-reloaded.lang.snowball`` package.
+            from the ``whoosh_reloaded.lang.snowball`` package.
         :param ignore: a set/list of words that should not be stemmed. This is
             converted into a frozenset. If you omit this argument, all tokens
             are stemmed.

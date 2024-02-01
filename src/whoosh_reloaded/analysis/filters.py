@@ -134,14 +134,14 @@ class LoggingFilter(Filter):
 
     def __init__(self, logger=None):
         """
-        :param target: the logger to use. If omitted, the "whoosh-reloaded.analysis"
+        :param target: the logger to use. If omitted, the "whoosh_reloaded.analysis"
             logger is used.
         """
 
         if logger is None:
             import logging
 
-            logger = logging.getLogger("whoosh-reloaded.analysis")
+            logger = logging.getLogger("whoosh_reloaded.analysis")
         self.logger = logger
 
     def __call__(self, tokens):
@@ -291,8 +291,8 @@ class StopFilter(Filter):
     >>> [token.text for token in es_stopper(u"el lapiz es en la mesa")]
     ["lapiz", "mesa"]
 
-    The list of available languages is in `whoosh-reloaded.lang.languages`.
-    You can use :func:`whoosh-reloaded.lang.has_stopwords` to check if a given language
+    The list of available languages is in `whoosh_reloaded.lang.languages`.
+    You can use :func:`whoosh_reloaded.lang.has_stopwords` to check if a given language
     has a stop word list available.
     """
 
@@ -371,7 +371,7 @@ class CharsetFilter(Filter):
     supplied character mapping object. This is useful for case and accent
     folding.
 
-    The ``whoosh-reloaded.support.charset`` module has a useful map for accent folding.
+    The ``whoosh_reloaded.support.charset`` module has a useful map for accent folding.
 
     >>> from whoosh_reloaded.support.charset import accent_map
     >>> retokenizer = RegexTokenizer()
@@ -381,7 +381,7 @@ class CharsetFilter(Filter):
 
     Another way to get a character mapping object is to convert a Sphinx
     charset table file using
-    :func:`whoosh-reloaded.support.charset.charset_table_to_dict`.
+    :func:`whoosh_reloaded.support.charset.charset_table_to_dict`.
 
     >>> from whoosh_reloaded.support.charset import charset_table_to_dict
     >>> from whoosh_reloaded.support.charset import default_charset

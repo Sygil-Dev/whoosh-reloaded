@@ -803,9 +803,9 @@ class DateParserPlugin(plugins.Plugin):
             against which to measure relative dates. If you do not supply this
             argument, the plugin uses ``datetime.utcnow()``.
         :param dateparser: an instance of
-            :class:`whoosh-reloaded.qparser.dateparse.DateParser`. If you do not supply
+            :class:`whoosh_reloaded.qparser.dateparse.DateParser`. If you do not supply
             this argument, the plugin automatically uses
-            :class:`whoosh-reloaded.qparser.dateparse.English`.
+            :class:`whoosh_reloaded.qparser.dateparse.English`.
         :param callback: a callback function for parsing errors. This allows
             you to provide feedback to the user about problems parsing dates.
         :param remove: if True, unparseable dates are removed from the token

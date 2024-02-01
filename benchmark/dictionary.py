@@ -26,7 +26,7 @@ class VulgarTongue(Spec):
         if head:
             yield {"head": head, "body": head + body}
 
-    def whoosh-reloaded_schema(self):
+    def whoosh_schema(self):
         ana = analysis.StemmingAnalyzer()
         # ana = analysis.StandardAnalyzer()
         schema = fields.Schema(

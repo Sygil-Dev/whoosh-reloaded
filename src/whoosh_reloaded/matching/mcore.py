@@ -29,18 +29,18 @@
 This module contains "matcher" classes. Matchers deal with posting lists. The
 most basic matcher, which reads the list of postings for a term, will be
 provided by the backend implementation (for example,
-:class:`whoosh-reloaded.filedb.filepostings.FilePostingReader`). The classes in this
+:class:`whoosh_reloaded.filedb.filepostings.FilePostingReader`). The classes in this
 module provide additional functionality, such as combining the results of two
 matchers, or modifying the results of a matcher.
 
 You do not need to deal with the classes in this module unless you need to
 write your own Matcher implementation to provide some new functionality. These
 classes are not instantiated by the user. They are usually created by a
-:class:`~whoosh-reloaded.query.Query` object's :meth:`~whoosh-reloaded.query.Query.matcher()`
+:class:`~whoosh_reloaded.query.Query` object's :meth:`~whoosh_reloaded.query.Query.matcher()`
 method, which returns the appropriate matcher to implement the query (for
-example, the :class:`~whoosh-reloaded.query.Or` query's
-:meth:`~whoosh-reloaded.query.Or.matcher()` method returns a
-:py:class:`~whoosh-reloaded.matching.UnionMatcher` object).
+example, the :class:`~whoosh_reloaded.query.Or` query's
+:meth:`~whoosh_reloaded.query.Or.matcher()` method returns a
+:py:class:`~whoosh_reloaded.matching.UnionMatcher` object).
 
 Certain backends support "quality" optimizations. These backends have the
 ability to skip ahead if it knows the current block of postings can't
@@ -59,8 +59,8 @@ from whoosh_reloaded.compat import abstractmethod
 
 
 class ReadTooFar(Exception):
-    """Raised when :meth:`~whoosh-reloaded.matching.Matcher.next()` or
-    :meth:`~whoosh-reloaded.matching.Matcher.skip_to()` are called on an inactive
+    """Raised when :meth:`~whoosh_reloaded.matching.Matcher.next()` or
+    :meth:`~whoosh_reloaded.matching.Matcher.skip_to()` are called on an inactive
     matcher.
     """
 
@@ -268,7 +268,7 @@ class Matcher(object):
         raise NotImplementedError("value_as not implemented in %s" % self.__class__)
 
     def spans(self):
-        """Returns a list of :class:`~whoosh-reloaded.query.spans.Span` objects for the
+        """Returns a list of :class:`~whoosh_reloaded.query.spans.Span` objects for the
         matches in this document. Raises an exception if the field being
         searched does not store positions.
         """
@@ -422,9 +422,9 @@ class ListMatcher(Matcher):
             If this argument is not supplied, a list of 1.0 values is used.
         :param values: a list of encoded values corresponding to the list of
             IDs.
-        :param format: a :class:`whoosh-reloaded.formats.Format` object representing the
+        :param format: a :class:`whoosh_reloaded.formats.Format` object representing the
             format of the field.
-        :param scorer: a :class:`whoosh-reloaded.scoring.BaseScorer` object for scoring
+        :param scorer: a :class:`whoosh_reloaded.scoring.BaseScorer` object for scoring
             the postings.
         :param term: a ``("fieldname", "text")`` tuple, or None if this is not
             a term matcher.

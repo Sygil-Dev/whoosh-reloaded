@@ -80,10 +80,10 @@ a time can have a writer open.
 
     Because opening a writer locks the index for writing, in a multi-threaded
     or multi-process environment your code needs to be aware that opening a
-    writer may raise an exception (``whoosh-reloaded.store.LockError``) if a writer is
+    writer may raise an exception (``whoosh_reloaded.store.LockError``) if a writer is
     already open. Whoosh includes a couple of example implementations
-    (:class:`whoosh-reloaded.writing.AsyncWriter` and
-    :class:`whoosh-reloaded.writing.BufferedWriter`) of ways to work around the write
+    (:class:`whoosh_reloaded.writing.AsyncWriter` and
+    :class:`whoosh_reloaded.writing.BufferedWriter`) of ways to work around the write
     lock.
 
 .. note::
@@ -199,7 +199,7 @@ index (merge all the segments together). It simply creates a writer and calls
 For more control over segment merging, you can write your own merge policy
 function and use it as an argument to the ``commit()`` method. See the
 implementation of the ``NO_MERGE``, ``MERGE_SMALL``, and ``OPTIMIZE`` functions
-in the ``whoosh-reloaded.writing`` module.
+in the ``whoosh_reloaded.writing`` module.
 
 
 Deleting documents

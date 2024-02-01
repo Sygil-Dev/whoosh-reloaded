@@ -65,7 +65,7 @@ class QueryParser(object):
         """
         :param fieldname: the default field -- the parser uses this as the
             field for any terms without an explicit field.
-        :param schema: a :class:`whoosh-reloaded.fields.Schema` object to use when
+        :param schema: a :class:`whoosh_reloaded.fields.Schema` object to use when
             parsing. The appropriate fields in the schema will be used to
             tokenize terms/phrases before they are turned into query objects.
             You can specify None for the schema to create a parser that does
@@ -75,9 +75,9 @@ class QueryParser(object):
             the default list of plugins. Classes in the list will be
             automatically instantiated.
         :param termclass: the query class to use for individual search terms.
-            The default is :class:`whoosh-reloaded.query.Term`.
+            The default is :class:`whoosh_reloaded.query.Term`.
         :param phraseclass: the query class to use for phrases. The default
-            is :class:`whoosh-reloaded.query.Phrase`.
+            is :class:`whoosh_reloaded.query.Phrase`.
         :param group: the default grouping. ``AndGroup`` makes terms required
             by default. ``OrGroup`` makes terms optional by default.
         """
@@ -356,14 +356,14 @@ class QueryParser(object):
         return nodes
 
     def parse(self, text, normalize=True, debug=False):
-        """Parses the input string and returns a :class:`whoosh-reloaded.query.Query`
+        """Parses the input string and returns a :class:`whoosh_reloaded.query.Query`
         object/tree.
 
         :param text: the unicode string to parse.
         :param normalize: whether to call normalize() on the query object/tree
             before returning it. This should be left on unless you're trying to
             debug the parser output.
-        :rtype: :class:`whoosh-reloaded.query.Query`
+        :rtype: :class:`whoosh_reloaded.query.Query`
         """
 
         if not isinstance(text, text_type):

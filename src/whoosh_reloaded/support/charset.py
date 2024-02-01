@@ -2,7 +2,7 @@
 
 """This module contains tools for working with Sphinx charset table files. These files
 are useful for doing case and accent folding.
-See :class:`whoosh-reloaded.analysis.CharsetTokenizer` and :class:`whoosh-reloaded.analysis.CharsetFilter`.
+See :class:`whoosh_reloaded.analysis.CharsetTokenizer` and :class:`whoosh_reloaded.analysis.CharsetFilter`.
 """
 
 from collections import defaultdict

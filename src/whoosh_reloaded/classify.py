@@ -106,7 +106,7 @@ class Expander(object):
 
     def __init__(self, ixreader, fieldname, model=Bo1Model):
         """
-        :param reader: A :class:whoosh-reloaded.reading.IndexReader object.
+        :param reader: A :class: whoosh_reloaded.reading.IndexReader object.
         :param fieldname: The name of the field in which to search.
         :param model: (classify.ExpansionModel) The model to use for expanding
             the query terms. If you omit this parameter, the expander uses

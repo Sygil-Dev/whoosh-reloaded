@@ -47,9 +47,9 @@ def load_110_toc(stream, gen, schema, version):
         # Remap the old classes and functions to their moved versions as we
         # unpickle the schema
         scuts = {
-            "wf": "whoosh-reloaded.fields",
-            "wsn": "whoosh-reloaded.support.numeric",
-            "wcw2": "whoosh-reloaded.codec.whoosh-reloaded2",
+            "wf": "whoosh_reloaded.fields",
+            "wsn": "whoosh_reloaded.support.numeric",
+            "wcw2": "whoosh_reloaded.codec.whoosh_reloaded2",
         }
         objmap = {
             "%(wf)s.NUMERIC": "%(wcw2)s.OLD_NUMERIC",

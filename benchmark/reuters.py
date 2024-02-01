@@ -11,7 +11,7 @@ class Reuters(Spec):
     main_field = "text"
     headline_text = "headline"
 
-    def whoosh-reloaded_schema(self):
+    def whoosh_schema(self):
         # ana = analysis.StemmingAnalyzer()
         ana = analysis.StandardAnalyzer()
         schema = fields.Schema(

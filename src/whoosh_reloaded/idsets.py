@@ -504,7 +504,7 @@ class OnDiskBitSet(BaseBitSet):
 
     def __init__(self, dbfile, basepos, bytecount):
         """
-        :param dbfile: a :class:`~whoosh-reloaded.filedb.structfile.StructFile` object
+        :param dbfile: a :class:`~whoosh_reloaded.filedb.structfile.StructFile` object
             to read from.
         :param basepos: the base position of the bytes in the given file.
         :param bytecount: the number of bytes to use for the bit array.

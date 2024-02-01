@@ -185,7 +185,7 @@ class ConstantScoreQuery(WrappingQuery):
 
 
 class WeightingQuery(WrappingQuery):
-    """Wraps a query and uses a specific :class:`whoosh-reloaded.sorting.WeightingModel`
+    """Wraps a query and uses a specific :class:`whoosh_reloaded.sorting.WeightingModel`
     to score documents that match the wrapped query.
     """
 
