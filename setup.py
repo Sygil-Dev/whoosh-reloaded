@@ -45,11 +45,9 @@ if __name__ == "__main__":
         zip_safe=True,
         install_requires=[
             "cached-property",
-            "jieba @ git+https://github.com/Sygil-Dev/jieba.git",
         ],
         tests_require=[
             "pytest",
-            "jieba @ git+https://github.com/Sygil-Dev/jieba.git",
             "nose",
         ],
         cmdclass={"test": PyTest},
