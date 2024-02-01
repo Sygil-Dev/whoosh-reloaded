@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh_reloaded.matching.mcore &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh_reloaded.matching.mcore</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh_reloaded.matching.mcore</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2010 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains &quot;matcher&quot; classes. Matchers deal with posting lists. The</span>
+<span class="sd">most basic matcher, which reads the list of postings for a term, will be</span>
+<span class="sd">provided by the backend implementation (for example,</span>
+<span class="sd">:class:`whoosh_reloaded.filedb.filepostings.FilePostingReader`). The classes in this</span>
+<span class="sd">module provide additional functionality, such as combining the results of two</span>
+<span class="sd">matchers, or modifying the results of a matcher.</span>
+
+<span class="sd">You do not need to deal with the classes in this module unless you need to</span>
+<span class="sd">write your own Matcher implementation to provide some new functionality. These</span>
+<span class="sd">classes are not instantiated by the user. They are usually created by a</span>
+<span class="sd">:class:`~whoosh_reloaded.query.Query` object&#39;s :meth:`~whoosh_reloaded.query.Query.matcher()`</span>
+<span class="sd">method, which returns the appropriate matcher to implement the query (for</span>
+<span class="sd">example, the :class:`~whoosh_reloaded.query.Or` query&#39;s</span>
+<span class="sd">:meth:`~whoosh_reloaded.query.Or.matcher()` method returns a</span>
+<span class="sd">:py:class:`~whoosh_reloaded.matching.UnionMatcher` object).</span>
+
+<span class="sd">Certain backends support &quot;quality&quot; optimizations. These backends have the</span>
+<span class="sd">ability to skip ahead if it knows the current block of postings can&#39;t</span>
+<span class="sd">contribute to the top N documents. If the matcher tree and backend support</span>
+<span class="sd">these optimizations, the matcher&#39;s :meth:`Matcher.supports_block_quality()`</span>
+<span class="sd">method will return ``True``.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>
+
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">izip</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+
+
+<span class="c1"># Exceptions</span>
+
+
+<div class="viewcode-block" id="ReadTooFar"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.ReadTooFar">[docs]</a><span class="k">class</span> <span class="nc">ReadTooFar</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when :meth:`~whoosh_reloaded.matching.Matcher.next()` or</span>
+<span class="sd">    :meth:`~whoosh_reloaded.matching.Matcher.skip_to()` are called on an inactive</span>
+<span class="sd">    matcher.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="NoQualityAvailable"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.NoQualityAvailable">[docs]</a><span class="k">class</span> <span class="nc">NoQualityAvailable</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when quality methods are called on a matcher that does not</span>
+<span class="sd">    support block quality optimizations.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Classes</span>
+
+
+<div class="viewcode-block" id="Matcher"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher">[docs]</a><span class="k">class</span> <span class="nc">Matcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all matchers.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Matcher.is_active"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.is_active">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">is_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this matcher is still &quot;active&quot;, that is, it has not</span>
+<span class="sd">        yet reached the end of the posting list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Matcher.reset"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.reset">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns to the start of the posting list.</span>
+
+<span class="sd">        Note that reset() may not do what you expect after you call</span>
+<span class="sd">        :meth:`Matcher.replace()`, since this can mean calling reset() not on</span>
+<span class="sd">        the original matcher, but on an optimized replacement.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Matcher.term"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.term">[docs]</a>    <span class="k">def</span> <span class="nf">term</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a ``(&quot;fieldname&quot;, &quot;termtext&quot;)`` tuple for the term this</span>
+<span class="sd">        matcher matches, or None if this matcher is not a term matcher.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Matcher.term_matchers"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.term_matchers">[docs]</a>    <span class="k">def</span> <span class="nf">term_matchers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an iterator of term matchers in this tree.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">cm</span><span class="o">.</span><span class="n">term_matchers</span><span class="p">():</span>
+                    <span class="k">yield</span> <span class="n">m</span></div>
+
+<div class="viewcode-block" id="Matcher.matching_terms"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.matching_terms">[docs]</a>    <span class="k">def</span> <span class="nf">matching_terms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an iterator of ``(&quot;fieldname&quot;, &quot;termtext&quot;)`` tuples for the</span>
+<span class="sd">        **currently matching** term matchers in this tree.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">matching_terms</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">t</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+    <span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Matcher.children"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.children">[docs]</a>    <span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an (possibly empty) list of the submatchers of this</span>
+<span class="sd">        matcher.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="Matcher.replace"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minquality</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a possibly-simplified version of this matcher. For example,</span>
+<span class="sd">        if one of the children of a UnionMatcher is no longer active, calling</span>
+<span class="sd">        this method on the UnionMatcher will return the other child.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Matcher.copy"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.copy">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of this matcher.&quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Matcher.depth"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.depth">[docs]</a>    <span class="k">def</span> <span class="nf">depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the depth of the tree under this matcher, or 0 if this</span>
+<span class="sd">        matcher does not have any children.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Matcher.supports_block_quality"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.supports_block_quality">[docs]</a>    <span class="k">def</span> <span class="nf">supports_block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this matcher supports the use of ``quality`` and</span>
+<span class="sd">        ``block_quality``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Matcher.max_quality"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.max_quality">[docs]</a>    <span class="k">def</span> <span class="nf">max_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the maximum possible quality measurement for this matcher,</span>
+<span class="sd">        according to the current weighting algorithm. Raises</span>
+<span class="sd">        ``NoQualityAvailable`` if the matcher or weighting do not support</span>
+<span class="sd">        quality measurements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="n">NoQualityAvailable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Matcher.block_quality"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.block_quality">[docs]</a>    <span class="k">def</span> <span class="nf">block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a quality measurement of the current block of postings,</span>
+<span class="sd">        according to the current weighting algorithm. Raises</span>
+<span class="sd">        ``NoQualityAvailable`` if the matcher or weighting do not support</span>
+<span class="sd">        quality measurements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="n">NoQualityAvailable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Matcher.id"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.id">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the ID of the current posting.&quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Matcher.all_ids"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.all_ids">[docs]</a>    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a generator of all IDs in the matcher.</span>
+
+<span class="sd">        What this method returns for a matcher that has already read some</span>
+<span class="sd">        postings (whether it only yields the remaining postings or all postings</span>
+<span class="sd">        from the beginning) is undefined, so it&#39;s best to only use this method</span>
+<span class="sd">        on fresh matchers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">while</span> <span class="n">m</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">replace</span><span class="p">()</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Matcher.all_items"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.all_items">[docs]</a>    <span class="k">def</span> <span class="nf">all_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a generator of all (ID, encoded value) pairs in the matcher.</span>
+
+<span class="sd">        What this method returns for a matcher that has already read some</span>
+<span class="sd">        postings (whether it only yields the remaining postings or all postings</span>
+<span class="sd">        from the beginning) is undefined, so it&#39;s best to only use this method</span>
+<span class="sd">        on fresh matchers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span> <span class="n">m</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">replace</span><span class="p">()</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Matcher.items_as"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.items_as">[docs]</a>    <span class="k">def</span> <span class="nf">items_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a generator of all (ID, decoded value) pairs in the matcher.</span>
+
+<span class="sd">        What this method returns for a matcher that has already read some</span>
+<span class="sd">        postings (whether it only yields the remaining postings or all postings</span>
+<span class="sd">        from the beginning) is undefined, so it&#39;s best to only use this method</span>
+<span class="sd">        on fresh matchers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="n">astype</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Matcher.value"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.value">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the encoded value of the current posting.&quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Matcher.supports"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.supports">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">supports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if the field&#39;s format supports the named data type,</span>
+<span class="sd">        for example &#39;frequency&#39; or &#39;characters&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;supports not implemented in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Matcher.value_as"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.value_as">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">value_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the value(s) of the current posting as the given type.&quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;value_as not implemented in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Matcher.spans"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.spans">[docs]</a>    <span class="k">def</span> <span class="nf">spans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of :class:`~whoosh_reloaded.query.spans.Span` objects for the</span>
+<span class="sd">        matches in this document. Raises an exception if the field being</span>
+<span class="sd">        searched does not store positions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded.query.spans</span> <span class="kn">import</span> <span class="n">Span</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports</span><span class="p">(</span><span class="s2">&quot;characters&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="n">Span</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="o">=</span><span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=</span><span class="n">endchar</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;characters&quot;</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports</span><span class="p">(</span><span class="s2">&quot;positions&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">Span</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;positions&quot;</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Field does not support spans&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Matcher.skip_to"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.skip_to">[docs]</a>    <span class="k">def</span> <span class="nf">skip_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves this matcher to the first posting with an ID equal to or</span>
+<span class="sd">        greater than the given ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nb">id</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Matcher.skip_to_quality"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.skip_to_quality">[docs]</a>    <span class="k">def</span> <span class="nf">skip_to_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minquality</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves this matcher to the next block with greater than the given</span>
+<span class="sd">        minimum quality value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Matcher.next"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.next">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves this matcher to the next posting.&quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Matcher.weight"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.weight">[docs]</a>    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the weight of the current posting.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Matcher.score"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.Matcher.score">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the score of the current posting.&quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span>
+
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__lt__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__lt__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__gt__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
+
+
+<span class="c1"># Simple intermediate classes</span>
+
+
+<div class="viewcode-block" id="ConstantScoreMatcher"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.ConstantScoreMatcher">[docs]</a><span class="k">class</span> <span class="nc">ConstantScoreMatcher</span><span class="p">(</span><span class="n">Matcher</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
+
+    <span class="k">def</span> <span class="nf">supports_block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">max_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span>
+
+    <span class="k">def</span> <span class="nf">block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span>
+
+    <span class="k">def</span> <span class="nf">skip_to_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minquality</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">minquality</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">go_inactive</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span></div>
+
+
+<span class="c1"># Null matcher</span>
+
+
+<span class="k">class</span> <span class="nc">NullMatcherClass</span><span class="p">(</span><span class="n">Matcher</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Matcher with no postings which is never active.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;NullMatcher&gt;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">supports_block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">max_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">skip_to_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minquality</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">is_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+
+<span class="c1"># Singleton instance</span>
+<span class="n">NullMatcher</span> <span class="o">=</span> <span class="n">NullMatcherClass</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="ListMatcher"><a class="viewcode-back" href="../../../api/matching.html#whoosh_reloaded.matching.ListMatcher">[docs]</a><span class="k">class</span> <span class="nc">ListMatcher</span><span class="p">(</span><span class="n">Matcher</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Synthetic matcher backed by a list of IDs.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">,</span>
+        <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">scorer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">all_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">term</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">terminfo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param ids: a list of doc IDs.</span>
+<span class="sd">        :param weights: a list of weights corresponding to the list of IDs.</span>
+<span class="sd">            If this argument is not supplied, a list of 1.0 values is used.</span>
+<span class="sd">        :param values: a list of encoded values corresponding to the list of</span>
+<span class="sd">            IDs.</span>
+<span class="sd">        :param format: a :class:`whoosh_reloaded.formats.Format` object representing the</span>
+<span class="sd">            format of the field.</span>
+<span class="sd">        :param scorer: a :class:`whoosh_reloaded.scoring.BaseScorer` object for scoring</span>
+<span class="sd">            the postings.</span>
+<span class="sd">        :param term: a ``(&quot;fieldname&quot;, &quot;text&quot;)`` tuple, or None if this is not</span>
+<span class="sd">            a term matcher.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span> <span class="o">=</span> <span class="n">ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span> <span class="o">=</span> <span class="n">weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_weights</span> <span class="o">=</span> <span class="n">all_weights</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="n">position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_format</span> <span class="o">=</span> <span class="nb">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span> <span class="o">=</span> <span class="n">scorer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_term</span> <span class="o">=</span> <span class="n">term</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_terminfo</span> <span class="o">=</span> <span class="n">terminfo</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span> <span class="nf">is_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">skip_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">ReadTooFar</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">id</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">term</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_term</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_format</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_all_weights</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minquality</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">NullMatcher</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">minquality</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_quality</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">minquality</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">NullMatcher</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">supports_block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span><span class="o">.</span><span class="n">supports_block_quality</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">max_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This matcher treats all postings in the list as one &quot;block&quot;, so the</span>
+        <span class="c1"># block quality is the same as the quality of the entire list</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span><span class="o">.</span><span class="n">block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_max_weight</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span><span class="o">.</span><span class="n">block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">skip_to_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minquality</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_quality</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">minquality</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">all_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span>
+        <span class="k">if</span> <span class="n">values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">repeat</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">izip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="c1"># This object supports &quot;values&quot; that are actually lists of</span>
+                <span class="c1"># value strings. This is to support combining the results of</span>
+                <span class="c1"># several different matchers into a single ListMatcher (see the</span>
+                <span class="c1"># TOO_MANY_CLAUSES functionality of MultiTerm). We combine the</span>
+                <span class="c1"># values here instead of combining them first and then making</span>
+                <span class="c1"># the ListMatcher to avoid wasting time combining values if the</span>
+                <span class="c1"># consumer never asks for them.</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="c1"># Replace the list with the computed value string</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+            <span class="k">return</span> <span class="n">v</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">value_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">):</span>
+        <span class="n">decoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">astype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">supports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format</span><span class="o">.</span><span class="n">supports</span><span class="p">(</span><span class="n">astype</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_weights</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_weights</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_i</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+
+    <span class="k">def</span> <span class="nf">block_min_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terminfo</span><span class="o">.</span><span class="n">min_length</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">block_max_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terminfo</span><span class="o">.</span><span class="n">max_length</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">block_max_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_weights</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_weights</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terminfo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terminfo</span><span class="o">.</span><span class="n">max_weight</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scorer</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">()</span></div>
+
+
+<span class="c1"># Term/vector leaf posting matcher middleware</span>
+
+
+<span class="k">class</span> <span class="nc">LeafMatcher</span><span class="p">(</span><span class="n">Matcher</span><span class="p">):</span>
+    <span class="c1"># Subclasses need to set</span>
+    <span class="c1">#   self.scorer -- a Scorer object or None</span>
+    <span class="c1">#   self.format -- Format object for the posting values</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">term</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_term</span>
+
+    <span class="k">def</span> <span class="nf">items_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">):</span>
+        <span class="n">decoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">astype</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_items</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">decoder</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">supports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">supports</span><span class="p">(</span><span class="n">astype</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">value_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">):</span>
+        <span class="n">decoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">astype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">decoder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">spans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded.query.spans</span> <span class="kn">import</span> <span class="n">Span</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports</span><span class="p">(</span><span class="s2">&quot;characters&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="n">Span</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="o">=</span><span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="o">=</span><span class="n">endchar</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;characters&quot;</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">supports</span><span class="p">(</span><span class="s2">&quot;positions&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">Span</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;positions&quot;</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Field does not support positions (</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">term</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">supports_block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">supports_block_quality</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">max_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">max_quality</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

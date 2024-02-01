@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Indexing and searching N-grams &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Indexing and searching N-grams &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -85,7 +85,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -114,7 +114,7 @@ of languages such as Chinese and Japanese without word breaks.</p>
 characters, trigrams are groups of three characters, and so on.</p>
 <p>Whoosh includes two methods for analyzing N-gram fields: an N-gram tokenizer,
 and a filter that breaks tokens into N-grams.</p>
-<p><a class="reference internal" href="api/analysis.html#whoosh.analysis.NgramTokenizer" title="whoosh.analysis.NgramTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.NgramTokenizer</span></code></a> tokenizes the entire field into N-grams.
+<p>:class:` whoosh_reloaded.analysis.NgramTokenizer` tokenizes the entire field into N-grams.
 This is more useful for Chinese/Japanese/Korean languages, where it’s useful
 to index bigrams of characters rather than individual characters. Using this
 tokenizer with roman languages leads to spaces in the tokens.</p>
@@ -124,7 +124,7 @@ tokenizer with roman languages leads to spaces in the tokens.</p>
 <span class="go">u&#39;the&#39;, u&#39;ther&#39;, u&#39;he&#39;, u&#39;her&#39;, u&#39;here&#39;, u&#39;er&#39;, u&#39;ere&#39;, u&#39;re&#39;]</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="api/analysis.html#whoosh.analysis.NgramFilter" title="whoosh.analysis.NgramFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.NgramFilter</span></code></a> breaks individual tokens into N-grams as
+<p>:class:` whoosh_reloaded.analysis.NgramFilter` breaks individual tokens into N-grams as
 part of an analysis pipeline. This is more useful for languages with word
 separation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_analyzer</span> <span class="o">=</span> <span class="n">StandardAnalyzer</span><span class="p">()</span> <span class="o">|</span> <span class="n">NgramFilter</span><span class="p">(</span><span class="n">minsize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -135,7 +135,7 @@ separation.</p>
 </pre></div>
 </div>
 <p>Whoosh includes two pre-configured field types for N-grams:
-<a class="reference internal" href="api/fields.html#whoosh.fields.NGRAM" title="whoosh.fields.NGRAM"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.NGRAM</span></code></a> and <a class="reference internal" href="api/fields.html#whoosh.fields.NGRAMWORDS" title="whoosh.fields.NGRAMWORDS"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.NGRAMWORDS</span></code></a>. The only
+:class:` whoosh_reloaded.fields.NGRAM` and <a class="reference internal" href="api/fields.html#whoosh_reloaded.fields.NGRAMWORDS" title="whoosh_reloaded.fields.NGRAMWORDS"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.fields.NGRAMWORDS</span></code></a>. The only
 difference is that <code class="docutils literal notranslate"><span class="pre">NGRAM</span></code> runs all text through the N-gram filter, including
 whitespace and punctuation, while <code class="docutils literal notranslate"><span class="pre">NGRAMWORDS</span></code> extracts words from the text
 using a tokenizer, then runs each word through the N-gram filter.</p>

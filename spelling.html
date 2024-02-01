@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>“Did you mean… ?” Correcting errors in user queries &mdash; Whoosh 2.7.4 documentation</title>
+  <title>“Did you mean… ?” Correcting errors in user queries &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -89,7 +89,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -120,7 +120,7 @@ mis-typed word:</p>
         <span class="nb">print</span> <span class="n">corrector</span><span class="o">.</span><span class="n">suggest</span><span class="p">(</span><span class="n">mistyped_word</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>See the <a class="reference internal" href="api/spelling.html#whoosh.spelling.Corrector.suggest" title="whoosh.spelling.Corrector.suggest"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.spelling.Corrector.suggest()</span></code></a> method documentation
+<p>See the :meth:` whoosh_reloaded.spelling.Corrector.suggest` method documentation
 for information on the arguments.</p>
 <p>Currently the suggestion engine is more like a “typo corrector” than a
 real “spell checker” since it doesn’t do the kind of sophisticated
@@ -142,7 +142,7 @@ unmodified versions of the terms for spelling suggestions:</p>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">TEXT</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="n">ana</span><span class="p">,</span> <span class="n">spelling</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>You can then use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.corrector()</span></code> method
+<p>You can then use the :meth:` whoosh_reloaded.searching.Searcher.corrector` method
 to get a corrector for a field:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">corrector</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">corrector</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
 </pre></div>
@@ -159,8 +159,8 @@ also be erroneous.</p>
 populate the spelling dictionary.</p>
 <p>(In the following examples, <code class="docutils literal notranslate"><span class="pre">word_list</span></code> can be a list of unicode
 strings, or a file object with one word on each line.)</p>
-<p>To create a <a class="reference internal" href="api/spelling.html#whoosh.spelling.Corrector" title="whoosh.spelling.Corrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.spelling.Corrector</span></code></a> object from a sorted word list:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.spelling</span> <span class="kn">import</span> <span class="n">ListCorrector</span>
+<p>To create a :class:` whoosh_reloaded.spelling.Corrector` object from a sorted word list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.spelling</span> <span class="kn">import</span> <span class="n">ListCorrector</span>
 
 <span class="c1"># word_list must be a sorted list of unicocde strings</span>
 <span class="n">corrector</span> <span class="o">=</span> <span class="n">ListCorrector</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span>
@@ -171,7 +171,7 @@ strings, or a file object with one word on each line.)</p>
 <h2>Merging two or more correctors<a class="headerlink" href="#merging-two-or-more-correctors" title="Permalink to this heading">¶</a></h2>
 <p>You can combine suggestions from two sources (for example, the contents
 of an index field and a word list) using a
-<a class="reference internal" href="api/spelling.html#whoosh.spelling.MultiCorrector" title="whoosh.spelling.MultiCorrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.spelling.MultiCorrector</span></code></a>:</p>
+:class:` whoosh_reloaded.spelling.MultiCorrector`:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">corrector</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
 <span class="n">c2</span> <span class="o">=</span> <span class="n">spelling</span><span class="o">.</span><span class="n">ListCorrector</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span>
 <span class="n">corrector</span> <span class="o">=</span> <span class="n">MultiCorrector</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">])</span>
@@ -181,8 +181,8 @@ of an index field and a word list) using a
 <section id="correcting-user-queries">
 <h2>Correcting user queries<a class="headerlink" href="#correcting-user-queries" title="Permalink to this heading">¶</a></h2>
 <p>You can spell-check a user query using the
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.correct_query" title="whoosh.searching.Searcher.correct_query"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.correct_query()</span></code></a> method:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">qparser</span>
+:meth:` whoosh_reloaded.searching.Searcher.correct_query` method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">qparser</span>
 
 <span class="c1"># Parse the user query string</span>
 <span class="n">qp</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
@@ -198,7 +198,7 @@ of an index field and a word list) using a
 <p>The <code class="docutils literal notranslate"><span class="pre">correct_query</span></code> method returns an object with the following
 attributes:</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">query</span></code></dt><dd><p>A corrected <a class="reference internal" href="api/query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> tree. You can test
+<dt><code class="docutils literal notranslate"><span class="pre">query</span></code></dt><dd><p>A corrected :class:` whoosh_reloaded.query.Query` tree. You can test
 whether this is equal (<code class="docutils literal notranslate"><span class="pre">==</span></code>) to the original parsed query to
 check if the corrector actually changed anything.</p>
 </dd>
@@ -208,18 +208,18 @@ check if the corrector actually changed anything.</p>
 terms. You can use this to reformat the user query (see below).</p>
 </dd>
 </dl>
-<p>You can use a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Formatter</span></code> object to format the
+<p>You can use a :class:` whoosh_reloaded.highlight.Formatter` object to format the
 corrected query string. For example, use the
-<a class="reference internal" href="api/highlight.html#whoosh.highlight.HtmlFormatter" title="whoosh.highlight.HtmlFormatter"><code class="xref py py-class docutils literal notranslate"><span class="pre">HtmlFormatter</span></code></a> to format the corrected string
+<code class="xref py py-class docutils literal notranslate"><span class="pre">HtmlFormatter</span></code> to format the corrected string
 as HTML:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">highlight</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">highlight</span>
 
 <span class="n">hf</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">HtmlFormatter</span><span class="p">()</span>
 <span class="n">corrected</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">correct_query</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">qstring</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="n">hf</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See the documentation for
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.correct_query" title="whoosh.searching.Searcher.correct_query"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.correct_query()</span></code></a> for information on the
+:meth:` whoosh_reloaded.searching.Searcher.correct_query` for information on the
 defaults and arguments.</p>
 </section>
 </section>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>collectors module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>collectors module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -77,23 +77,23 @@
 <li class="toctree-l2"><a class="reference internal" href="codec/base.html"><code class="docutils literal notranslate"><span class="pre">codec.base</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#base-classes">Base classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.Collector"><code class="docutils literal notranslate"><span class="pre">Collector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.ScoredCollector"><code class="docutils literal notranslate"><span class="pre">ScoredCollector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.WrappingCollector"><code class="docutils literal notranslate"><span class="pre">WrappingCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.Collector"><code class="docutils literal notranslate"><span class="pre">Collector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.ScoredCollector"><code class="docutils literal notranslate"><span class="pre">ScoredCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.WrappingCollector"><code class="docutils literal notranslate"><span class="pre">WrappingCollector</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#basic-collectors">Basic collectors</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.TopCollector"><code class="docutils literal notranslate"><span class="pre">TopCollector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.UnlimitedCollector"><code class="docutils literal notranslate"><span class="pre">UnlimitedCollector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.SortingCollector"><code class="docutils literal notranslate"><span class="pre">SortingCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.TopCollector"><code class="docutils literal notranslate"><span class="pre">TopCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.UnlimitedCollector"><code class="docutils literal notranslate"><span class="pre">UnlimitedCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.SortingCollector"><code class="docutils literal notranslate"><span class="pre">SortingCollector</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#wrappers">Wrappers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.FilterCollector"><code class="docutils literal notranslate"><span class="pre">FilterCollector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.FacetCollector"><code class="docutils literal notranslate"><span class="pre">FacetCollector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.CollapseCollector"><code class="docutils literal notranslate"><span class="pre">CollapseCollector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.TimeLimitCollector"><code class="docutils literal notranslate"><span class="pre">TimeLimitCollector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.collectors.TermsCollector"><code class="docutils literal notranslate"><span class="pre">TermsCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.FilterCollector"><code class="docutils literal notranslate"><span class="pre">FilterCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.FacetCollector"><code class="docutils literal notranslate"><span class="pre">FacetCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.CollapseCollector"><code class="docutils literal notranslate"><span class="pre">CollapseCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.TimeLimitCollector"><code class="docutils literal notranslate"><span class="pre">TimeLimitCollector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.collectors.TermsCollector"><code class="docutils literal notranslate"><span class="pre">TermsCollector</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -133,7 +133,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -152,26 +152,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.collectors">
-<span id="collectors-module"></span><h1><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module<a class="headerlink" href="#module-whoosh.collectors" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.collectors">
+<span id="collectors-module"></span><h1><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.collectors" title="Permalink to this heading">¶</a></h1>
 <p>This module contains “collector” objects. Collectors provide a way to gather
-“raw” results from a <a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.matching.Matcher</span></code></a> object, implement
+“raw” results from a :class:` whoosh_reloaded.matching.Matcher` object, implement
 sorting, filtering, collation, etc., and produce a
-<a class="reference internal" href="searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object.</p>
+:class:` whoosh_reloaded.searching.Results` object.</p>
 <p>The basic collectors are:</p>
 <dl class="simple">
 <dt>TopCollector</dt><dd><p>Returns the top N matching results sorted by score, using block-quality
 optimizations to skip blocks of documents that can’t contribute to the top
-N. The <a class="reference internal" href="searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.search()</span></code></a> method uses this type of
+N. The :meth:` whoosh_reloaded.searching.Searcher.search` method uses this type of
 collector by default or when you specify a <code class="docutils literal notranslate"><span class="pre">limit</span></code>.</p>
 </dd>
 <dt>UnlimitedCollector</dt><dd><p>Returns all matching results sorted by score. The
-<a class="reference internal" href="searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.search()</span></code></a> method uses this type of collector
+:meth:` whoosh_reloaded.searching.Searcher.search` method uses this type of collector
 when you specify <code class="docutils literal notranslate"><span class="pre">limit=None</span></code> or you specify a limit equal to or greater
 than the number of documents in the searcher.</p>
 </dd>
-<dt>SortingCollector</dt><dd><p>Returns all matching results sorted by a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.Facet</span></code>
-object. The <a class="reference internal" href="searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.search()</span></code></a> method uses this type
+<dt>SortingCollector</dt><dd><p>Returns all matching results sorted by a :class:` whoosh_reloaded.sorting.Facet`
+object. The :meth:` whoosh_reloaded.searching.Searcher.search` method uses this type
 of collector when you use the <code class="docutils literal notranslate"><span class="pre">sortedby</span></code> parameter.</p>
 </dd>
 </dl>
@@ -193,19 +193,19 @@ documents just counts up the number of matches:</p>
 </pre></div>
 </div>
 <p>There are also several wrapping collectors that extend or modify the
-functionality of other collectors. The meth:<cite>whoosh.searching.Searcher.search</cite>
+functionality of other collectors. The meth:` whoosh_reloaded.searching.Searcher.search`
 method uses many of these when you specify various parameters.</p>
 <p>NOTE: collectors are not designed to be reentrant or thread-safe. It is
 generally a good idea to create a new collector for each search.</p>
 <section id="base-classes">
 <h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">Collector</span></span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">Collector</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for collectors.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.all_ids">
-<span class="sig-name descname"><span class="pre">all_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.all_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.all_ids" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.all_ids">
+<span class="sig-name descname"><span class="pre">all_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.all_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.all_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a sequence of docnums matched in this collector. (Only valid
 after the collector is run.)</p>
 <p>The default implementation is based on the docset. If a collector does
@@ -213,8 +213,8 @@ not maintain the docset, it will need to override this method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.collect">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.collect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.collect">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.collect" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called for every matched document. It should do the
 work of adding a matched document to the results, and it should return
 an object to use as a “sorting key” for the given document (such as the
@@ -235,29 +235,29 @@ to get the document’s top-level document number.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.collect_matches">
-<span class="sig-name descname"><span class="pre">collect_matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.collect_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.collect_matches" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method calls <a class="reference internal" href="#whoosh.collectors.Collector.matches" title="whoosh.collectors.Collector.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.matches()</span></code></a> and then for each
-matched document calls <a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>. Sub-classes that
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.collect_matches">
+<span class="sig-name descname"><span class="pre">collect_matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.collect_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.collect_matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method calls <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.matches" title="whoosh_reloaded.collectors.Collector.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.matches()</span></code></a> and then for each
+matched document calls <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>. Sub-classes that
 want to intervene between finding matches and adding them to the
 collection (for example, to filter out certain documents) can override
 this method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.computes_count">
-<span class="sig-name descname"><span class="pre">computes_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.computes_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.computes_count" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.computes_count">
+<span class="sig-name descname"><span class="pre">computes_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.computes_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.computes_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if the collector naturally computes the exact number of
 matching documents. Collectors that use block optimizations will return
 False since they might skip blocks containing matching documents.</p>
-<p>Note that if this method returns False you can still call <a class="reference internal" href="#whoosh.collectors.Collector.count" title="whoosh.collectors.Collector.count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count()</span></code></a>,
+<p>Note that if this method returns False you can still call <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.count" title="whoosh_reloaded.collectors.Collector.count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">count()</span></code></a>,
 but it means that method might have to do more work to calculate the
 number of matching documents.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.count" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the total number of documents matched in this collector.
 (Only valid after the collector is run.)</p>
 <p>The default implementation is based on the docset. If a collector does
@@ -265,8 +265,8 @@ not maintain the docset, it will need to override this method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.finish">
-<span class="sig-name descname"><span class="pre">finish</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.finish"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.finish" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.finish">
+<span class="sig-name descname"><span class="pre">finish</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.finish"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.finish" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called after a search.</p>
 <p>Subclasses can override this to perform set-up work, but
 they should still call the superclass’s method because it sets several
@@ -278,15 +278,15 @@ necessary attributes on the collector object:</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.matches">
-<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.matches" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.matches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yields a series of relative document numbers for matches
 in the current subsearcher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.prepare">
-<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.prepare" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called before a search.</p>
 <p>Subclasses can override this to perform set-up work, but
 they should still call the superclass’s method because it sets several
@@ -306,10 +306,10 @@ updated, such as <code class="docutils literal notranslate"><span class="pre">ma
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>top_searcher</strong> – the top-level <a class="reference internal" href="searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a>
+<li><p><strong>top_searcher</strong> – the top-level :class:` whoosh_reloaded.searching.Searcher`
 object.</p></li>
-<li><p><strong>q</strong> – the <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object being searched for.</p></li>
-<li><p><strong>context</strong> – a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.SearchContext</span></code> object
+<li><p><strong>q</strong> – the :class:` whoosh_reloaded.query.Query` object being searched for.</p></li>
+<li><p><strong>context</strong> – a :class:` whoosh_reloaded.searching.SearchContext` object
 containing information about the search.</p></li>
 </ul>
 </dd>
@@ -317,23 +317,23 @@ containing information about the search.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.remove">
-<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.remove" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.remove" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes a document from the collector. Not that this method uses the
-global document number as opposed to <a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a> which
+global document number as opposed to <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a> which
 takes a segment-relative docnum.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.results">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a <a class="reference internal" href="searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> object containing the
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.results">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code> object containing the
 results of the search. Subclasses must implement this method</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.set_subsearcher">
-<span class="sig-name descname"><span class="pre">set_subsearcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subsearcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.set_subsearcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.set_subsearcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.set_subsearcher">
+<span class="sig-name descname"><span class="pre">set_subsearcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subsearcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.set_subsearcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.set_subsearcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called each time the collector starts on a new
 sub-searcher.</p>
 <p>Subclasses can override this to perform set-up work, but
@@ -345,20 +345,20 @@ is the same as the top-level searcher.</p>
 </dd>
 <dt>self.offset</dt><dd><p>The document number offset of the current searcher. You must add
 this number to the document number passed to
-<a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a> to get the top-level document number
+<a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a> to get the top-level document number
 for use in results.</p>
 </dd>
-<dt>self.matcher</dt><dd><p>A <a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.matching.Matcher</span></code></a> object representing the matches
+<dt>self.matcher</dt><dd><p>A :class:` whoosh_reloaded.matching.Matcher` object representing the matches
 for the query in the current sub-searcher.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.Collector.sort_key">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sort_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#Collector.sort_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.Collector.sort_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.Collector.sort_key">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sort_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#Collector.sort_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.Collector.sort_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a sorting key for the current match. This should return the
-same value returned by <a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>, but without the side
+same value returned by <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>, but without the side
 effect of adding the current document to the results.</p>
 <p>If the collector has been prepared with <code class="docutils literal notranslate"><span class="pre">context.needs_current=True</span></code>,
 this method can use <code class="docutils literal notranslate"><span class="pre">self.matcher</span></code> to get information, for example
@@ -370,8 +370,8 @@ since the matcher may be in an inconsistent state.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.ScoredCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">ScoredCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#ScoredCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.ScoredCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.ScoredCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">ScoredCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#ScoredCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.ScoredCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for collectors that sort the results based on document score.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -380,8 +380,8 @@ matcher with a more efficient version.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.ScoredCollector.collect">
-<span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#ScoredCollector.collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.ScoredCollector.collect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.ScoredCollector.collect">
+<span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#ScoredCollector.collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.ScoredCollector.collect" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called for every matched document. It should do the
 work of adding a matched document to the results, and it should return
 an object to use as a “sorting key” for the given document (such as the
@@ -402,15 +402,15 @@ to get the document’s top-level document number.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.ScoredCollector.matches">
-<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#ScoredCollector.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.ScoredCollector.matches" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.ScoredCollector.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#ScoredCollector.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.ScoredCollector.matches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yields a series of relative document numbers for matches
 in the current subsearcher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.ScoredCollector.prepare">
-<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#ScoredCollector.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.ScoredCollector.prepare" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.ScoredCollector.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#ScoredCollector.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.ScoredCollector.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called before a search.</p>
 <p>Subclasses can override this to perform set-up work, but
 they should still call the superclass’s method because it sets several
@@ -430,10 +430,10 @@ updated, such as <code class="docutils literal notranslate"><span class="pre">ma
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>top_searcher</strong> – the top-level <a class="reference internal" href="searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a>
+<li><p><strong>top_searcher</strong> – the top-level :class:` whoosh_reloaded.searching.Searcher`
 object.</p></li>
-<li><p><strong>q</strong> – the <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object being searched for.</p></li>
-<li><p><strong>context</strong> – a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.SearchContext</span></code> object
+<li><p><strong>q</strong> – the :class:` whoosh_reloaded.query.Query` object being searched for.</p></li>
+<li><p><strong>context</strong> – a :class:` whoosh_reloaded.searching.SearchContext` object
 containing information about the search.</p></li>
 </ul>
 </dd>
@@ -441,10 +441,10 @@ containing information about the search.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.ScoredCollector.sort_key">
-<span class="sig-name descname"><span class="pre">sort_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#ScoredCollector.sort_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.ScoredCollector.sort_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.ScoredCollector.sort_key">
+<span class="sig-name descname"><span class="pre">sort_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#ScoredCollector.sort_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.ScoredCollector.sort_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a sorting key for the current match. This should return the
-same value returned by <a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>, but without the side
+same value returned by <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>, but without the side
 effect of adding the current document to the results.</p>
 <p>If the collector has been prepared with <code class="docutils literal notranslate"><span class="pre">context.needs_current=True</span></code>,
 this method can use <code class="docutils literal notranslate"><span class="pre">self.matcher</span></code> to get information, for example
@@ -456,12 +456,12 @@ since the matcher may be in an inconsistent state.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">WrappingCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">WrappingCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for collectors that wrap other collectors.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.all_ids">
-<span class="sig-name descname"><span class="pre">all_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.all_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.all_ids" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.all_ids">
+<span class="sig-name descname"><span class="pre">all_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.all_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.all_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a sequence of docnums matched in this collector. (Only valid
 after the collector is run.)</p>
 <p>The default implementation is based on the docset. If a collector does
@@ -469,8 +469,8 @@ not maintain the docset, it will need to override this method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.collect">
-<span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.collect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.collect">
+<span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.collect" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called for every matched document. It should do the
 work of adding a matched document to the results, and it should return
 an object to use as a “sorting key” for the given document (such as the
@@ -491,18 +491,18 @@ to get the document’s top-level document number.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.collect_matches">
-<span class="sig-name descname"><span class="pre">collect_matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.collect_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.collect_matches" title="Permalink to this definition">¶</a></dt>
-<dd><p>This method calls <a class="reference internal" href="#whoosh.collectors.Collector.matches" title="whoosh.collectors.Collector.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.matches()</span></code></a> and then for each
-matched document calls <a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>. Sub-classes that
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.collect_matches">
+<span class="sig-name descname"><span class="pre">collect_matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.collect_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.collect_matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method calls <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.matches" title="whoosh_reloaded.collectors.Collector.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.matches()</span></code></a> and then for each
+matched document calls <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>. Sub-classes that
 want to intervene between finding matches and adding them to the
 collection (for example, to filter out certain documents) can override
 this method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.count" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the total number of documents matched in this collector.
 (Only valid after the collector is run.)</p>
 <p>The default implementation is based on the docset. If a collector does
@@ -510,8 +510,8 @@ not maintain the docset, it will need to override this method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.finish">
-<span class="sig-name descname"><span class="pre">finish</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.finish"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.finish" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.finish">
+<span class="sig-name descname"><span class="pre">finish</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.finish"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.finish" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called after a search.</p>
 <p>Subclasses can override this to perform set-up work, but
 they should still call the superclass’s method because it sets several
@@ -523,15 +523,15 @@ necessary attributes on the collector object:</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.matches">
-<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.matches" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.matches" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yields a series of relative document numbers for matches
 in the current subsearcher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.prepare">
-<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.prepare" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.prepare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called before a search.</p>
 <p>Subclasses can override this to perform set-up work, but
 they should still call the superclass’s method because it sets several
@@ -551,10 +551,10 @@ updated, such as <code class="docutils literal notranslate"><span class="pre">ma
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>top_searcher</strong> – the top-level <a class="reference internal" href="searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a>
+<li><p><strong>top_searcher</strong> – the top-level :class:` whoosh_reloaded.searching.Searcher`
 object.</p></li>
-<li><p><strong>q</strong> – the <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object being searched for.</p></li>
-<li><p><strong>context</strong> – a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.SearchContext</span></code> object
+<li><p><strong>q</strong> – the :class:` whoosh_reloaded.query.Query` object being searched for.</p></li>
+<li><p><strong>context</strong> – a :class:` whoosh_reloaded.searching.SearchContext` object
 containing information about the search.</p></li>
 </ul>
 </dd>
@@ -562,23 +562,23 @@ containing information about the search.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.remove">
-<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.remove" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">global_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.remove" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes a document from the collector. Not that this method uses the
-global document number as opposed to <a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a> which
+global document number as opposed to <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a> which
 takes a segment-relative docnum.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.results">
-<span class="sig-name descname"><span class="pre">results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a <a class="reference internal" href="searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> object containing the
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.results">
+<span class="sig-name descname"><span class="pre">results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code> object containing the
 results of the search. Subclasses must implement this method</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.set_subsearcher">
-<span class="sig-name descname"><span class="pre">set_subsearcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subsearcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.set_subsearcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.set_subsearcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.set_subsearcher">
+<span class="sig-name descname"><span class="pre">set_subsearcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subsearcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.set_subsearcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.set_subsearcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is called each time the collector starts on a new
 sub-searcher.</p>
 <p>Subclasses can override this to perform set-up work, but
@@ -590,20 +590,20 @@ is the same as the top-level searcher.</p>
 </dd>
 <dt>self.offset</dt><dd><p>The document number offset of the current searcher. You must add
 this number to the document number passed to
-<a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a> to get the top-level document number
+<a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a> to get the top-level document number
 for use in results.</p>
 </dd>
-<dt>self.matcher</dt><dd><p>A <a class="reference internal" href="matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.matching.Matcher</span></code></a> object representing the matches
+<dt>self.matcher</dt><dd><p>A :class:` whoosh_reloaded.matching.Matcher` object representing the matches
 for the query in the current sub-searcher.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.collectors.WrappingCollector.sort_key">
-<span class="sig-name descname"><span class="pre">sort_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#WrappingCollector.sort_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.WrappingCollector.sort_key" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.WrappingCollector.sort_key">
+<span class="sig-name descname"><span class="pre">sort_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_docnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#WrappingCollector.sort_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.WrappingCollector.sort_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a sorting key for the current match. This should return the
-same value returned by <a class="reference internal" href="#whoosh.collectors.Collector.collect" title="whoosh.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>, but without the side
+same value returned by <a class="reference internal" href="#whoosh_reloaded.collectors.Collector.collect" title="whoosh_reloaded.collectors.Collector.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Collector.collect()</span></code></a>, but without the side
 effect of adding the current document to the results.</p>
 <p>If the collector has been prepared with <code class="docutils literal notranslate"><span class="pre">context.needs_current=True</span></code>,
 this method can use <code class="docutils literal notranslate"><span class="pre">self.matcher</span></code> to get information, for example
@@ -618,8 +618,8 @@ since the matcher may be in an inconsistent state.</p>
 <section id="basic-collectors">
 <h2>Basic collectors<a class="headerlink" href="#basic-collectors" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.TopCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">TopCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usequality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#TopCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.TopCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.TopCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">TopCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usequality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#TopCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.TopCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collector that only returns the top “N” scored results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -633,8 +633,8 @@ be useful for debugging.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.UnlimitedCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">UnlimitedCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#UnlimitedCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.UnlimitedCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.UnlimitedCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">UnlimitedCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#UnlimitedCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.UnlimitedCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collector that returns <strong>all</strong> scored results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -645,10 +645,10 @@ matcher with a more efficient version.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.SortingCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">SortingCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sortedby</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#SortingCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.SortingCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.SortingCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">SortingCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sortedby</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#SortingCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.SortingCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collector that returns results sorted by a given
-<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.Facet</span></code> object. See <a class="reference internal" href="../facets.html"><span class="doc">Sorting and faceting</span></a> for more
+:class:` whoosh_reloaded.sorting.Facet` object. See <a class="reference internal" href="../facets.html"><span class="doc">Sorting and faceting</span></a> for more
 information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -665,8 +665,8 @@ can reverse individual facets in a multi-facet sort key as well.</p></li>
 <section id="wrappers">
 <h2>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.FilterCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">FilterCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restrict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#FilterCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.FilterCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.FilterCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">FilterCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restrict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#FilterCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.FilterCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collector that lets you allow and/or restrict certain document numbers
 in the results:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uc</span> <span class="o">=</span> <span class="n">collectors</span><span class="o">.</span><span class="n">UnlimitedCollector</span><span class="p">()</span>
@@ -705,14 +705,14 @@ nothing is disallowed).</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.FacetCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">FacetCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupedby</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#FacetCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.FacetCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.FacetCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">FacetCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupedby</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#FacetCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.FacetCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collector that creates groups of documents based on
-<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.Facet</span></code> objects. See <a class="reference internal" href="../facets.html"><span class="doc">Sorting and faceting</span></a> for more
+:class:` whoosh_reloaded.sorting.Facet` objects. See <a class="reference internal" href="../facets.html"><span class="doc">Sorting and faceting</span></a> for more
 information.</p>
 <p>This collector is used if you specify a <code class="docutils literal notranslate"><span class="pre">groupedby</span></code> parameter in the
-<a class="reference internal" href="searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.search()</span></code></a> method. You can use the
-<a class="reference internal" href="searching.html#whoosh.searching.Results.groups" title="whoosh.searching.Results.groups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Results.groups()</span></code></a> method to access the facet groups.</p>
+:meth:` whoosh_reloaded.searching.Searcher.search` method. You can use the
+:meth:` whoosh_reloaded.searching.Results.groups` method to access the facet groups.</p>
 <p>If you have a reference to the collector can also use
 <code class="docutils literal notranslate"><span class="pre">FacetedCollector.facetmaps</span></code> to access the groups directly:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uc</span> <span class="o">=</span> <span class="n">collectors</span><span class="o">.</span><span class="n">UnlimitedCollector</span><span class="p">()</span>
@@ -725,7 +725,7 @@ information.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>groupedby</strong> – see <a class="reference internal" href="../facets.html"><span class="doc">Sorting and faceting</span></a>.</p></li>
-<li><p><strong>maptype</strong> – a <a class="reference internal" href="sorting.html#whoosh.sorting.FacetMap" title="whoosh.sorting.FacetMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.FacetMap</span></code></a> type to use for any
+<li><p><strong>maptype</strong> – a :class:` whoosh_reloaded.sorting.FacetMap` type to use for any
 facets that don’t specify their own.</p></li>
 </ul>
 </dd>
@@ -733,8 +733,8 @@ facets that don’t specify their own.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.CollapseCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">CollapseCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfacet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#CollapseCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.CollapseCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.CollapseCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">CollapseCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyfacet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#CollapseCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.CollapseCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collector that collapses results based on a facet. That is, it
 eliminates all but the top N results that share the same facet key.
 Documents with an empty key for the facet are never eliminated.</p>
@@ -755,11 +755,11 @@ eliminated based on each key:</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>child</strong> – the collector to wrap.</p></li>
-<li><p><strong>keyfacet</strong> – a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.Facet</span></code> to use for collapsing.
+<li><p><strong>keyfacet</strong> – a :class:` whoosh_reloaded.sorting.Facet` to use for collapsing.
 All but the top N documents that share a key will be eliminated
 from the results.</p></li>
 <li><p><strong>limit</strong> – the maximum number of documents to keep for each key.</p></li>
-<li><p><strong>order</strong> – an optional <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.Facet</span></code> to use
+<li><p><strong>order</strong> – an optional :class:` whoosh_reloaded.sorting.Facet` to use
 to determine the “top” document(s) to keep when collapsing. The
 default (<code class="docutils literal notranslate"><span class="pre">orderfaceet=None</span></code>) uses the results order (e.g. the
 highest score in a scored search).</p></li>
@@ -769,8 +769,8 @@ highest score in a scored search).</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.TimeLimitCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">TimeLimitCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timelimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">greedy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_alarm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#TimeLimitCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.TimeLimitCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.TimeLimitCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">TimeLimitCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timelimit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">greedy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_alarm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#TimeLimitCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.TimeLimitCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collector that raises a <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeLimit</span></code> exception if the search
 does not complete within a certain number of seconds:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uc</span> <span class="o">=</span> <span class="n">collectors</span><span class="o">.</span><span class="n">UnlimitedCollector</span><span class="p">()</span>
@@ -806,12 +806,12 @@ use signal.SIGALRM (on UNIX).</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.collectors.TermsCollector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.collectors.</span></span><span class="sig-name descname"><span class="pre">TermsCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settype=&lt;class</span> <span class="pre">'set'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/collectors.html#TermsCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.collectors.TermsCollector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.collectors.TermsCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.collectors.</span></span><span class="sig-name descname"><span class="pre">TermsCollector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settype=&lt;class</span> <span class="pre">'set'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/collectors.html#TermsCollector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.collectors.TermsCollector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collector that remembers which terms appeared in which terms appeared
 in each matched document.</p>
 <p>This collector is used if you specify <code class="docutils literal notranslate"><span class="pre">terms=True</span></code> in the
-<a class="reference internal" href="searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.search()</span></code></a> method.</p>
+:meth:` whoosh_reloaded.searching.Searcher.search` method.</p>
 <p>If you have a reference to the collector can also use
 <code class="docutils literal notranslate"><span class="pre">TermsCollector.termslist</span></code> to access the term lists directly:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uc</span> <span class="o">=</span> <span class="n">collectors</span><span class="o">.</span><span class="n">UnlimitedCollector</span><span class="p">()</span>

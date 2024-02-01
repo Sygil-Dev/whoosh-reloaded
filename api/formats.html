@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>formats module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>formats module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -83,16 +83,16 @@
 <li class="toctree-l2"><a class="reference internal" href="filedb/structfile.html"><code class="docutils literal notranslate"><span class="pre">filedb.structfile</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#base-class">Base class</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.formats.Format"><code class="docutils literal notranslate"><span class="pre">Format</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.formats.Format"><code class="docutils literal notranslate"><span class="pre">Format</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#formats">Formats</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.formats.Existence"><code class="docutils literal notranslate"><span class="pre">Existence</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.formats.Frequency"><code class="docutils literal notranslate"><span class="pre">Frequency</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.formats.Positions"><code class="docutils literal notranslate"><span class="pre">Positions</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.formats.Characters"><code class="docutils literal notranslate"><span class="pre">Characters</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.formats.PositionBoosts"><code class="docutils literal notranslate"><span class="pre">PositionBoosts</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.formats.CharacterBoosts"><code class="docutils literal notranslate"><span class="pre">CharacterBoosts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.formats.Existence"><code class="docutils literal notranslate"><span class="pre">Existence</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.formats.Frequency"><code class="docutils literal notranslate"><span class="pre">Frequency</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.formats.Positions"><code class="docutils literal notranslate"><span class="pre">Positions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.formats.Characters"><code class="docutils literal notranslate"><span class="pre">Characters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.formats.PositionBoosts"><code class="docutils literal notranslate"><span class="pre">PositionBoosts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.formats.CharacterBoosts"><code class="docutils literal notranslate"><span class="pre">CharacterBoosts</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -126,7 +126,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -145,16 +145,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.formats">
-<span id="formats-module"></span><h1><code class="docutils literal notranslate"><span class="pre">formats</span></code> module<a class="headerlink" href="#module-whoosh.formats" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.formats">
+<span id="formats-module"></span><h1><code class="docutils literal notranslate"><span class="pre">formats</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.formats" title="Permalink to this heading">¶</a></h1>
 <p>The classes in this module encode and decode posting information for a field.
 The field format essentially determines what information is stored about each
 occurance of a term.</p>
 <section id="base-class">
 <h2>Base class<a class="headerlink" href="#base-class" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.formats.Format">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.formats.</span></span><span class="sig-name descname"><span class="pre">Format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Format" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Format">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.formats.</span></span><span class="sig-name descname"><span class="pre">Format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class representing a storage format for a field or vector.
 Format objects are responsible for writing and reading the low-level
 representation of a field. It controls what kind/level of information to
@@ -166,31 +166,31 @@ of all queries matching terms in this field.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.formats.Format.decode_as">
-<span class="sig-name descname"><span class="pre">decode_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valuestring</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Format.decode_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Format.decode_as" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Format.decode_as">
+<span class="sig-name descname"><span class="pre">decode_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valuestring</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Format.decode_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Format.decode_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interprets the encoded value string as ‘astype’, where ‘astype’ is
 for example “frequency” or “positions”. This object must have a
 corresponding decode_&lt;astype&gt;() method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.formats.Format.decoder">
-<span class="sig-name descname"><span class="pre">decoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Format.decoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Format.decoder" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Format.decoder">
+<span class="sig-name descname"><span class="pre">decoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Format.decoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Format.decoder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the bound method for interpreting value as ‘name’,
 where ‘name’ is for example “frequency” or “positions”. This
 object must have a corresponding Format.decode_&lt;name&gt;() method.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.formats.Format.supports">
-<span class="sig-name descname"><span class="pre">supports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Format.supports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Format.supports" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Format.supports">
+<span class="sig-name descname"><span class="pre">supports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Format.supports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Format.supports" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if this format supports interpreting its posting
 value as ‘name’ (e.g. “frequency” or “positions”).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.formats.Format.word_values">
-<span class="sig-name descname"><span class="pre">word_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Format.word_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Format.word_values" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Format.word_values">
+<span class="sig-name descname"><span class="pre">word_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Format.word_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Format.word_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes the text value to be indexed and yields a series of
 (“tokentext”, frequency, weight, valuestring) tuples, where frequency
 is the number of times “tokentext” appeared in the value, weight is the
@@ -215,8 +215,8 @@ encode a list of token positions at which “tokentext” occured.</p>
 <section id="formats">
 <h2>Formats<a class="headerlink" href="#formats" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.formats.Existence">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.formats.</span></span><span class="sig-name descname"><span class="pre">Existence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Existence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Existence" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Existence">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.formats.</span></span><span class="sig-name descname"><span class="pre">Existence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Existence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Existence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Only indexes whether a given term occurred in a given document; it does
 not store frequencies or positions. This is useful for fields that should
 be searchable but not scorable, such as file path.</p>
@@ -230,8 +230,8 @@ of all queries matching terms in this field.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.formats.Frequency">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.formats.</span></span><span class="sig-name descname"><span class="pre">Frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost_as_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Frequency" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Frequency">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.formats.</span></span><span class="sig-name descname"><span class="pre">Frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost_as_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores frequency information for each posting.</p>
 <p>Supports: frequency, weight.</p>
 <dl class="field-list simple">
@@ -243,8 +243,8 @@ all queries matching terms in this field.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.formats.Positions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.formats.</span></span><span class="sig-name descname"><span class="pre">Positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Positions" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Positions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.formats.</span></span><span class="sig-name descname"><span class="pre">Positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Positions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores position information in each posting, to allow phrase searching
 and “near” queries.</p>
 <p>Supports: frequency, weight, positions, position_boosts (always reports
@@ -258,8 +258,8 @@ of all queries matching terms in this field.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.formats.Characters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.formats.</span></span><span class="sig-name descname"><span class="pre">Characters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#Characters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.Characters" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.Characters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.formats.</span></span><span class="sig-name descname"><span class="pre">Characters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#Characters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.Characters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores token position and character start and end information for each
 posting.</p>
 <p>Supports: frequency, weight, positions, position_boosts (always reports
@@ -273,8 +273,8 @@ of all queries matching terms in this field.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.formats.PositionBoosts">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.formats.</span></span><span class="sig-name descname"><span class="pre">PositionBoosts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#PositionBoosts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.PositionBoosts" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.PositionBoosts">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.formats.</span></span><span class="sig-name descname"><span class="pre">PositionBoosts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#PositionBoosts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.PositionBoosts" title="Permalink to this definition">¶</a></dt>
 <dd><p>A format that stores positions and per-position boost information
 in each posting.</p>
 <p>Supports: frequency, weight, positions, position_boosts.</p>
@@ -287,8 +287,8 @@ of all queries matching terms in this field.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.formats.CharacterBoosts">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.formats.</span></span><span class="sig-name descname"><span class="pre">CharacterBoosts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/formats.html#CharacterBoosts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.formats.CharacterBoosts" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.formats.CharacterBoosts">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.formats.</span></span><span class="sig-name descname"><span class="pre">CharacterBoosts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/formats.html#CharacterBoosts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.formats.CharacterBoosts" title="Permalink to this definition">¶</a></dt>
 <dd><p>A format that stores positions, character start and end, and
 per-position boost information in each posting.</p>
 <p>Supports: frequency, weight, positions, position_boosts, characters,

@@ -15,7 +15,7 @@ characters, trigrams are groups of three characters, and so on.
 Whoosh includes two methods for analyzing N-gram fields: an N-gram tokenizer,
 and a filter that breaks tokens into N-grams.
 
-:class:`whoosh.analysis.NgramTokenizer` tokenizes the entire field into N-grams.
+:class:` whoosh_reloaded.analysis.NgramTokenizer` tokenizes the entire field into N-grams.
 This is more useful for Chinese/Japanese/Korean languages, where it's useful
 to index bigrams of characters rather than individual characters. Using this
 tokenizer with roman languages leads to spaces in the tokens.
@@ -27,7 +27,7 @@ tokenizer with roman languages leads to spaces in the tokens.
     [u'hi', u'hi ', u'hi t',u'i ', u'i t', u'i th', u' t', u' th', u' the', u'th',
     u'the', u'ther', u'he', u'her', u'here', u'er', u'ere', u're']
 
-:class:`whoosh.analysis.NgramFilter` breaks individual tokens into N-grams as
+:class:` whoosh_reloaded.analysis.NgramFilter` breaks individual tokens into N-grams as
 part of an analysis pipeline. This is more useful for languages with word
 separation.
 
@@ -40,7 +40,7 @@ separation.
     u'ader', u'der', u'ders', u'ers']
 
 Whoosh includes two pre-configured field types for N-grams:
-:class:`whoosh.fields.NGRAM` and :class:`whoosh.fields.NGRAMWORDS`. The only
+:class:` whoosh_reloaded.fields.NGRAM` and :class:`whoosh_reloaded.fields.NGRAMWORDS`. The only
 difference is that ``NGRAM`` runs all text through the N-gram filter, including
 whitespace and punctuation, while ``NGRAMWORDS`` extracts words from the text
 using a tokenizer, then runs each word through the N-gram filter.

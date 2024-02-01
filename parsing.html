@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parsing user queries &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Parsing user queries &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -102,7 +102,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -125,7 +125,7 @@
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>The job of a query parser is to convert a <em>query string</em> submitted by a user
-into <em>query objects</em> (objects from the <a class="reference internal" href="api/query.html#module-whoosh.query" title="whoosh.query"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.query</span></code></a> module).</p>
+into <em>query objects</em> (objects from the :mod:` whoosh_reloaded.query` module).</p>
 <p>For example, the user query:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rendering shading
 </pre></div>
@@ -135,10 +135,10 @@ into <em>query objects</em> (objects from the <a class="reference internal" href
 </pre></div>
 </div>
 <p>Whoosh includes a powerful, modular parser for user queries in the
-<a class="reference internal" href="api/qparser.html#module-whoosh.qparser" title="whoosh.qparser"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.qparser</span></code></a> module. The default parser implements a query language
+:mod:` whoosh_reloaded.qparser` module. The default parser implements a query language
 similar to the one that ships with Lucene. However, by changing plugins or using
-functions such as <a class="reference internal" href="api/qparser.html#whoosh.qparser.MultifieldParser" title="whoosh.qparser.MultifieldParser"><code class="xref py py-func docutils literal notranslate"><span class="pre">whoosh.qparser.MultifieldParser()</span></code></a>,
-<a class="reference internal" href="api/qparser.html#whoosh.qparser.SimpleParser" title="whoosh.qparser.SimpleParser"><code class="xref py py-func docutils literal notranslate"><span class="pre">whoosh.qparser.SimpleParser()</span></code></a> or <a class="reference internal" href="api/qparser.html#whoosh.qparser.DisMaxParser" title="whoosh.qparser.DisMaxParser"><code class="xref py py-func docutils literal notranslate"><span class="pre">whoosh.qparser.DisMaxParser()</span></code></a>, you
+functions such as :func:` whoosh_reloaded.qparser.MultifieldParser`,
+:func:` whoosh_reloaded.qparser.SimpleParser` or :func:` whoosh_reloaded.qparser.DisMaxParser`, you
 can change how the parser works, get a simpler parser or change the query
 language syntax.</p>
 <p>(In previous versions of Whoosh, the query parser was based on <code class="docutils literal notranslate"><span class="pre">pyparsing</span></code>.
@@ -146,16 +146,16 @@ The new hand-written parser is less brittle and more flexible.)</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Remember that you can directly create query objects programmatically using
-the objects in the <a class="reference internal" href="api/query.html#module-whoosh.query" title="whoosh.query"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.query</span></code></a> module. If you are not processing
+the objects in the :mod:` whoosh_reloaded.query` module. If you are not processing
 actual user queries, this is preferable to building a query string just to
 parse it.</p>
 </div>
 </section>
 <section id="using-the-default-parser">
 <h2>Using the default parser<a class="headerlink" href="#using-the-default-parser" title="Permalink to this heading">¶</a></h2>
-<p>To create a <a class="reference internal" href="api/qparser.html#whoosh.qparser.QueryParser" title="whoosh.qparser.QueryParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.QueryParser</span></code></a> object, pass it the name of the
+<p>To create a :class:` whoosh_reloaded.qparser.QueryParser` object, pass it the name of the
 <em>default field</em> to search and the schema of the index you’ll be searching.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
 
 <span class="n">parser</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
 </pre></div>
@@ -195,7 +195,7 @@ present for a document to match, i.e.:</p>
 </pre></div>
 </div>
 <p>…configure the QueryParser using the <code class="docutils literal notranslate"><span class="pre">group</span></code> keyword argument like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">qparser</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">qparser</span>
 
 <span class="n">parser</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">QueryParser</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span>
                              <span class="n">group</span><span class="o">=</span><span class="n">qparser</span><span class="o">.</span><span class="n">OrGroup</span><span class="p">)</span>
@@ -234,10 +234,10 @@ for example if you created the object with:</p>
 <p>However, you might want to let the user search <em>multiple</em> fields by default. For
 example, you might want “unfielded” terms to search both the <code class="docutils literal notranslate"><span class="pre">title</span></code> and
 <code class="docutils literal notranslate"><span class="pre">content</span></code> fields.</p>
-<p>In that case, you can use a <a class="reference internal" href="api/qparser.html#whoosh.qparser.MultifieldParser" title="whoosh.qparser.MultifieldParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.MultifieldParser</span></code></a>. This is
+<p>In that case, you can use a :class:` whoosh_reloaded.qparser.MultifieldParser`. This is
 just like the normal QueryParser, but instead of a default field name string, it
 takes a <em>sequence</em> of field names:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">MultifieldParser</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser</span> <span class="kn">import</span> <span class="n">MultifieldParser</span>
 
 <span class="n">mparser</span> <span class="o">=</span> <span class="n">MultifieldParser</span><span class="p">([</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">],</span> <span class="n">schema</span><span class="o">=</span><span class="n">myschema</span><span class="p">)</span>
 </pre></div>
@@ -255,7 +255,7 @@ as:</p>
 </pre></div>
 </div>
 <p>you can remove features from it using the
-<a class="reference internal" href="api/qparser.html#whoosh.qparser.QueryParser.remove_plugin_class" title="whoosh.qparser.QueryParser.remove_plugin_class"><code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_plugin_class()</span></code></a> method.</p>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_plugin_class()</span></code> method.</p>
 <p>For example, to remove the ability of the user to specify fields to search:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">remove_plugin_class</span><span class="p">(</span><span class="n">qparser</span><span class="o">.</span><span class="n">FieldsPlugin</span><span class="p">)</span>
 </pre></div>
@@ -277,7 +277,7 @@ and NOT functions:</p>
 </div>
 <p>You can replace the default <code class="docutils literal notranslate"><span class="pre">OperatorsPlugin</span></code> object to
 replace the default English tokens with your own regular expressions.</p>
-<p>The <a class="reference internal" href="api/qparser.html#whoosh.qparser.OperatorsPlugin" title="whoosh.qparser.OperatorsPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.OperatorsPlugin</span></code></a> implements the ability to use AND,
+<p>The :class:` whoosh_reloaded.qparser.OperatorsPlugin` implements the ability to use AND,
 OR, NOT, ANDNOT, and ANDMAYBE clauses in queries. You can instantiate a new
 <code class="docutils literal notranslate"><span class="pre">OperatorsPlugin</span></code> and use the <code class="docutils literal notranslate"><span class="pre">And</span></code>, <code class="docutils literal notranslate"><span class="pre">Or</span></code>, <code class="docutils literal notranslate"><span class="pre">Not</span></code>, <code class="docutils literal notranslate"><span class="pre">AndNot</span></code>, and
 <code class="docutils literal notranslate"><span class="pre">AndMaybe</span></code> keyword arguments to change the token patterns:</p>
@@ -308,7 +308,7 @@ an open ended range:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">field</span><span class="p">:{</span><span class="n">apple</span> <span class="n">to</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="api/qparser.html#whoosh.qparser.GtLtPlugin" title="whoosh.qparser.GtLtPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.GtLtPlugin</span></code></a> lets you specify the same search like
+<p>The :class:` whoosh_reloaded.qparser.GtLtPlugin` lets you specify the same search like
 this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">field</span><span class="p">:</span><span class="o">&gt;</span><span class="n">apple</span>
 </pre></div>
@@ -324,7 +324,7 @@ a field specifier, and translates the expression into the equivalent range:</p>
 <section id="adding-fuzzy-term-queries">
 <h3>Adding fuzzy term queries<a class="headerlink" href="#adding-fuzzy-term-queries" title="Permalink to this heading">¶</a></h3>
 <p>Fuzzy queries are good for catching misspellings and similar words.
-The <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.FuzzyTermPlugin</span></code> lets you search for “fuzzy” terms,
+The :class:` whoosh_reloaded.qparser.FuzzyTermPlugin` lets you search for “fuzzy” terms,
 that is, terms that don’t have to match exactly. The fuzzy term will match any
 similar term within a certain number of “edits” (character insertions,
 deletions, and/or transpositions – this is called the “Damerau-Levenshtein
@@ -367,13 +367,13 @@ a maximum edit distance of <code class="docutils literal notranslate"><span clas
 <section id="allowing-complex-phrase-queries">
 <h3>Allowing complex phrase queries<a class="headerlink" href="#allowing-complex-phrase-queries" title="Permalink to this heading">¶</a></h3>
 <p>The default parser setup allows phrase (proximity) queries such as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;whoosh search library&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot; whoosh_reloaded search library&quot;</span>
 </pre></div>
 </div>
 <p>The default phrase query tokenizes the text between the quotes and creates a
 search for those terms in proximity.</p>
 <p>If you want to do more complex proximity searches, you can replace the phrase
-plugin with the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.SequencePlugin</span></code>, which allows any query
+plugin with the :class:` whoosh_reloaded.qparser.SequencePlugin`, which allows any query
 between the quotes. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;(john OR jon OR jonathan~) peters*&quot;</span>
 </pre></div>
@@ -412,20 +412,20 @@ same time:</p>
 <dt><code class="docutils literal notranslate"><span class="pre">group</span></code></dt><dd><p>The query class to use to join sub-queries when the user doesn’t explicitly
 specify a boolean operator, such as <code class="docutils literal notranslate"><span class="pre">AND</span></code> or <code class="docutils literal notranslate"><span class="pre">OR</span></code>. This lets you change
 the default operator from <code class="docutils literal notranslate"><span class="pre">AND</span></code> to <code class="docutils literal notranslate"><span class="pre">OR</span></code>.</p>
-<p>This will be the <a class="reference internal" href="api/qparser.html#whoosh.qparser.AndGroup" title="whoosh.qparser.AndGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.AndGroup</span></code></a> or
-<a class="reference internal" href="api/qparser.html#whoosh.qparser.OrGroup" title="whoosh.qparser.OrGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.OrGroup</span></code></a> class (<em>not</em> an instantiated object) unless
+<p>This will be the :class:` whoosh_reloaded.qparser.AndGroup` or
+:class:` whoosh_reloaded.qparser.OrGroup` class (<em>not</em> an instantiated object) unless
 you’ve written your own custom grouping syntax you want to use.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">termclass</span></code></dt><dd><p>The query class to use to wrap single terms.</p>
-<p>This must be a <a class="reference internal" href="api/query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> subclass (<em>not</em> an instantiated
+<p>This must be a :class:` whoosh_reloaded.query.Query` subclass (<em>not</em> an instantiated
 object) that accepts a fieldname string and term text unicode string in its
-<code class="docutils literal notranslate"><span class="pre">__init__</span></code> method. The default is <a class="reference internal" href="api/query.html#whoosh.query.Term" title="whoosh.query.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Term</span></code></a>.</p>
+<code class="docutils literal notranslate"><span class="pre">__init__</span></code> method. The default is :class:` whoosh_reloaded.query.Term`.</p>
 <p>This is useful if you want to change the default term class to
-<a class="reference internal" href="api/query.html#whoosh.query.Variations" title="whoosh.query.Variations"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Variations</span></code></a>, or if you’ve written a custom term class
+:class:` whoosh_reloaded.query.Variations`, or if you’ve written a custom term class
 you want the parser to use instead of the ones shipped with Whoosh.</p>
 </dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span><span class="p">,</span> <span class="n">OrGroup</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span><span class="p">,</span> <span class="n">OrGroup</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">orparser</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">myschema</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">OrGroup</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -435,9 +435,9 @@ you want the parser to use instead of the ones shipped with Whoosh.</p>
 <p>The query parser’s functionality is provided by a set of plugins. You can
 remove plugins to remove functionality, add plugins to add functionality, or
 replace default plugins with re-configured or rewritten versions.</p>
-<p>The <a class="reference internal" href="api/qparser.html#whoosh.qparser.QueryParser.add_plugin" title="whoosh.qparser.QueryParser.add_plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.qparser.QueryParser.add_plugin()</span></code></a>,
-<a class="reference internal" href="api/qparser.html#whoosh.qparser.QueryParser.remove_plugin_class" title="whoosh.qparser.QueryParser.remove_plugin_class"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.qparser.QueryParser.remove_plugin_class()</span></code></a>, and
-<a class="reference internal" href="api/qparser.html#whoosh.qparser.QueryParser.replace_plugin" title="whoosh.qparser.QueryParser.replace_plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.qparser.QueryParser.replace_plugin()</span></code></a> methods let you manipulate
+<p>The :meth:` whoosh_reloaded.qparser.QueryParser.add_plugin`,
+:meth:` whoosh_reloaded.qparser.QueryParser.remove_plugin_class`, and
+:meth:` whoosh_reloaded.qparser.QueryParser.replace_plugin` methods let you manipulate
 the plugins in a <code class="docutils literal notranslate"><span class="pre">QueryParser</span></code> object.</p>
 <p>See <a class="reference internal" href="api/qparser.html"><span class="doc">qparser module</span></a> for information about the available plugins.</p>
 </section>
@@ -445,9 +445,9 @@ the plugins in a <code class="docutils literal notranslate"><span class="pre">Qu
 <span id="custom-op"></span><h3>Creating custom operators<a class="headerlink" href="#creating-custom-operators" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Decide whether you want a <code class="docutils literal notranslate"><span class="pre">PrefixOperator</span></code>, <code class="docutils literal notranslate"><span class="pre">PostfixOperator</span></code>, or <code class="docutils literal notranslate"><span class="pre">InfixOperator</span></code>.</p></li>
-<li><p>Create a new <a class="reference internal" href="api/qparser.html#whoosh.qparser.GroupNode" title="whoosh.qparser.syntax.GroupNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.syntax.GroupNode</span></code></a> subclass to hold
+<li><p>Create a new :class:` whoosh_reloaded.qparser.syntax.GroupNode` subclass to hold
 nodes affected by your operator. This object is responsible for generating
-a <a class="reference internal" href="api/query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object corresponding to the syntax.</p></li>
+a :class:` whoosh_reloaded.query.Query` object corresponding to the syntax.</p></li>
 <li><p>Create a regular expression pattern for the operator’s query syntax.</p></li>
 <li><p>Create an <code class="docutils literal notranslate"><span class="pre">OperatorsPlugin.OpTagger</span></code> object from the above information.</p></li>
 <li><p>Create a new <code class="docutils literal notranslate"><span class="pre">OperatorsPlugin</span></code> instance configured with your custom
@@ -455,7 +455,7 @@ operator(s).</p></li>
 <li><p>Replace the default <code class="docutils literal notranslate"><span class="pre">OperatorsPlugin</span></code> in your parser with your new instance.</p></li>
 </ul>
 <p>For example, if you were creating a <code class="docutils literal notranslate"><span class="pre">BEFORE</span></code> operator:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">qparser</span><span class="p">,</span> <span class="n">query</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">qparser</span><span class="p">,</span> <span class="n">query</span>
 
 <span class="n">optype</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">InfixOperator</span>
 <span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot; BEFORE &quot;</span>
@@ -477,7 +477,7 @@ infix operator, do this:</p>
                                           <span class="n">leftassoc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Create an <a class="reference internal" href="api/qparser.html#whoosh.qparser.OperatorsPlugin" title="whoosh.qparser.plugins.OperatorsPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperatorsPlugin</span></code></a> instance with your
+<p>Create an <code class="xref py py-class docutils literal notranslate"><span class="pre">OperatorsPlugin</span></code> instance with your
 new operator, and replace the default operators plugin in your query parser:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qp</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">myschema</span><span class="p">)</span>
 <span class="n">my_op_plugin</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">OperatorsPlugin</span><span class="p">([(</span><span class="n">btagger</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>

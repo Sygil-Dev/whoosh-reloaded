@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How to implement a new backend &mdash; Whoosh 2.7.4 documentation</title>
+  <title>How to implement a new backend &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -92,7 +92,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -116,39 +116,39 @@
 <section id="index">
 <h2>Index<a class="headerlink" href="#index" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Subclass <a class="reference internal" href="../api/index.html#whoosh.index.Index" title="whoosh.index.Index"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.index.Index</span></code></a>.</p></li>
+<li><p>Subclass :class:` whoosh_reloaded.index.Index`.</p></li>
 <li><p>Indexes must implement the following methods.</p>
 <ul>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.is_empty" title="whoosh.index.Index.is_empty"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.is_empty()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.doc_count" title="whoosh.index.Index.doc_count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.doc_count()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.reader" title="whoosh.index.Index.reader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.reader()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.writer" title="whoosh.index.Index.writer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.writer()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.is_empty`</p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.doc_count`</p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.reader`</p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.writer`</p></li>
 </ul>
 </li>
 <li><p>Indexes that require/support locking must implement the following methods.</p>
 <ul>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.lock()</span></code></p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.unlock()</span></code></p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.lock`</p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.unlock`</p></li>
 </ul>
 </li>
 <li><p>Indexes that support deletion must implement the following methods.</p>
 <ul>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.delete_document()</span></code></p></li>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.doc_count_all" title="whoosh.index.Index.doc_count_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.doc_count_all()</span></code></a> – if the backend has delayed
+<li><p>:meth:` whoosh_reloaded.index.Index.delete_document`</p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.doc_count_all` – if the backend has delayed
 deletion.</p></li>
 </ul>
 </li>
 <li><p>Indexes that require/support versioning/transactions <em>may</em> implement the following methods.</p>
 <ul>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.latest_generation" title="whoosh.index.Index.latest_generation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.latest_generation()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.up_to_date" title="whoosh.index.Index.up_to_date"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.up_to_date()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.last_modified" title="whoosh.index.Index.last_modified"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.last_modified()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.latest_generation`</p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.up_to_date`</p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.last_modified`</p></li>
 </ul>
 </li>
 <li><p>Index <em>may</em> implement the following methods (the base class’s versions are no-ops).</p>
 <ul>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.optimize" title="whoosh.index.Index.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.optimize()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/index.html#whoosh.index.Index.close" title="whoosh.index.Index.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.close()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.optimize`</p></li>
+<li><p>:meth:` whoosh_reloaded.index.Index.close`</p></li>
 </ul>
 </li>
 </ul>
@@ -156,23 +156,23 @@ deletion.</p></li>
 <section id="indexwriter">
 <h2>IndexWriter<a class="headerlink" href="#indexwriter" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Subclass <a class="reference internal" href="../api/writing.html#whoosh.writing.IndexWriter" title="whoosh.writing.IndexWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.IndexWriter</span></code></a>.</p></li>
+<li><p>Subclass :class:` whoosh_reloaded.writing.IndexWriter`.</p></li>
 <li><p>IndexWriters must implement the following methods.</p>
 <ul>
-<li><p><a class="reference internal" href="../api/writing.html#whoosh.writing.IndexWriter.add_document" title="whoosh.writing.IndexWriter.add_document"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.writing.IndexWriter.add_document()</span></code></a></p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.writing.IndexWriter.add_reader()</span></code></p></li>
+<li><p>:meth:` whoosh_reloaded.writing.IndexWriter.add_document`</p></li>
+<li><p>:meth:` whoosh_reloaded.writing.IndexWriter.add_reader`</p></li>
 </ul>
 </li>
 <li><p>Backends that support deletion must implement the following methods.</p>
 <ul>
-<li><p><a class="reference internal" href="../api/writing.html#whoosh.writing.IndexWriter.delete_document" title="whoosh.writing.IndexWriter.delete_document"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.writing.IndexWriter.delete_document()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.writing.IndexWriter.delete_document`</p></li>
 </ul>
 </li>
 <li><p>IndexWriters that work as transactions must implement the following methods.</p>
 <ul>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexWriter.commit()</span></code> – Save the additions/deletions done with
+<li><p>:meth:` whoosh_reloaded.reading.IndexWriter.commit` – Save the additions/deletions done with
 this IndexWriter to the main index, and release any resources used by the IndexWriter.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexWriter.cancel()</span></code> – Throw away any additions/deletions done
+<li><p>:meth:` whoosh_reloaded.reading.IndexWriter.cancel` – Throw away any additions/deletions done
 with this IndexWriter, and release any resources used by the IndexWriter.</p></li>
 </ul>
 </li>
@@ -181,49 +181,49 @@ with this IndexWriter, and release any resources used by the IndexWriter.</p></l
 <section id="indexreader">
 <h2>IndexReader<a class="headerlink" href="#indexreader" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Subclass <a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader" title="whoosh.reading.IndexReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader</span></code></a>.</p></li>
+<li><p>Subclass :class:` whoosh_reloaded.reading.IndexReader`.</p></li>
 <li><p>IndexReaders must implement the following methods.</p>
 <ul>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.__contains__()</span></code></p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.__iter__()</span></code></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.iter_from" title="whoosh.reading.IndexReader.iter_from"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.iter_from()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.stored_fields" title="whoosh.reading.IndexReader.stored_fields"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.stored_fields()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.doc_count_all" title="whoosh.reading.IndexReader.doc_count_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.doc_count_all()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.doc_count" title="whoosh.reading.IndexReader.doc_count"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.doc_count()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.doc_field_length" title="whoosh.reading.IndexReader.doc_field_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.doc_field_length()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.field_length" title="whoosh.reading.IndexReader.field_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.field_length()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.max_field_length" title="whoosh.reading.IndexReader.max_field_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.max_field_length()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.postings" title="whoosh.reading.IndexReader.postings"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.postings()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.has_vector" title="whoosh.reading.IndexReader.has_vector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.has_vector()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.vector" title="whoosh.reading.IndexReader.vector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.vector()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.doc_frequency" title="whoosh.reading.IndexReader.doc_frequency"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.doc_frequency()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.frequency" title="whoosh.reading.IndexReader.frequency"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.frequency()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.__contains__`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.__iter__`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.iter_from`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.stored_fields`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.doc_count_all`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.doc_count`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.doc_field_length`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.field_length`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.max_field_length`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.postings`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.has_vector`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.vector`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.doc_frequency`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.frequency`</p></li>
 </ul>
 </li>
 <li><p>Backends that support deleting documents should implement the following
 methods.</p>
 <ul>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.has_deletions" title="whoosh.reading.IndexReader.has_deletions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.has_deletions()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.is_deleted" title="whoosh.reading.IndexReader.is_deleted"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.is_deleted()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.has_deletions`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.is_deleted`</p></li>
 </ul>
 </li>
 <li><p>Backends that support versioning should implement the following methods.</p>
 <ul>
-<li><p><a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.generation" title="whoosh.reading.IndexReader.generation"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.generation()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.generation`</p></li>
 </ul>
 </li>
 <li><p>If the IndexReader object does not keep the schema in the <code class="docutils literal notranslate"><span class="pre">self.schema</span></code>
 attribute, it needs to override the following methods.</p>
 <ul>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.field()</span></code></p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.field_names()</span></code></p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.scorable_names()</span></code></p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.vector_names()</span></code></p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.field`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.field_names`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.scorable_names`</p></li>
+<li><p>:meth:` whoosh_reloaded.reading.IndexReader.vector_names`</p></li>
 </ul>
 </li>
 <li><p>IndexReaders <em>may</em> implement the following methods.</p>
 <ul>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.DocReader.close()</span></code> – closes any open resources associated with the
+<li><p>:meth:` whoosh_reloaded.reading.DocReader.close` – closes any open resources associated with the
 reader.</p></li>
 </ul>
 </li>
@@ -231,36 +231,36 @@ reader.</p></li>
 </section>
 <section id="matcher">
 <h2>Matcher<a class="headerlink" href="#matcher" title="Permalink to this heading">¶</a></h2>
-<p>The <a class="reference internal" href="../api/reading.html#whoosh.reading.IndexReader.postings" title="whoosh.reading.IndexReader.postings"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader.postings()</span></code></a> method returns a
-<a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.matching.Matcher</span></code></a> object. You will probably need to implement
+<p>The :meth:` whoosh_reloaded.reading.IndexReader.postings` method returns a
+:class:` whoosh_reloaded.matching.Matcher` object. You will probably need to implement
 a custom Matcher class for reading from your posting lists.</p>
 <ul class="simple">
-<li><p>Subclass <a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher" title="whoosh.matching.Matcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.matching.Matcher</span></code></a>.</p></li>
+<li><p>Subclass :class:` whoosh_reloaded.matching.Matcher`.</p></li>
 <li><p>Implement the following methods at minimum.</p>
 <ul>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.is_active" title="whoosh.matching.Matcher.is_active"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.is_active()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.copy" title="whoosh.matching.Matcher.copy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.copy()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.id" title="whoosh.matching.Matcher.id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.id()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.next" title="whoosh.matching.Matcher.next"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.next()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.value" title="whoosh.matching.Matcher.value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.value()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.value_as" title="whoosh.matching.Matcher.value_as"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.value_as()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.score" title="whoosh.matching.Matcher.score"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.score()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.is_active`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.copy`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.id`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.next`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.value`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.value_as`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.score`</p></li>
 </ul>
 </li>
 <li><p>Depending on the implementation, you <em>may</em> implement the following methods
 more efficiently.</p>
 <ul>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.skip_to" title="whoosh.matching.Matcher.skip_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.skip_to()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.weight" title="whoosh.matching.Matcher.weight"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.weight()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.skip_to`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.weight`</p></li>
 </ul>
 </li>
 <li><p>If the implementation supports quality, you should implement the following
 methods.</p>
 <ul>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.supports_quality()</span></code></p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.quality()</span></code></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.block_quality" title="whoosh.matching.Matcher.block_quality"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.block_quality()</span></code></a></p></li>
-<li><p><a class="reference internal" href="../api/matching.html#whoosh.matching.Matcher.skip_to_quality" title="whoosh.matching.Matcher.skip_to_quality"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.matching.Matcher.skip_to_quality()</span></code></a></p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.supports_quality`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.quality`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.block_quality`</p></li>
+<li><p>:meth:` whoosh_reloaded.matching.Matcher.skip_to_quality`</p></li>
 </ul>
 </li>
 </ul>

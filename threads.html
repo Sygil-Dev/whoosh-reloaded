@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Concurrency, locking, and versioning &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Concurrency, locking, and versioning &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -90,7 +90,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -127,11 +127,11 @@ win.</p>
 <h2>Locking<a class="headerlink" href="#locking" title="Permalink to this heading">¶</a></h2>
 <p>Only one thread/process can write to an index at a time. When you open a writer,
 it locks the index. If you try to open a writer on the same index in another
-thread/process, it will raise <code class="docutils literal notranslate"><span class="pre">whoosh.store.LockError</span></code>.</p>
+thread/process, it will raise `` whoosh_reloaded.store.LockError``.</p>
 <p>In a multi-threaded or multi-process environment your code needs to be aware
 that opening a writer may raise this exception if a writer is already open.
 Whoosh includes a couple of example implementations
-(<a class="reference internal" href="api/writing.html#whoosh.writing.AsyncWriter" title="whoosh.writing.AsyncWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.AsyncWriter</span></code></a> and <a class="reference internal" href="api/writing.html#whoosh.writing.BufferedWriter" title="whoosh.writing.BufferedWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.BufferedWriter</span></code></a>)
+(:class:` whoosh_reloaded.writing.AsyncWriter` and :class:` whoosh_reloaded.writing.BufferedWriter`)
 of ways to work around the write lock.</p>
 <p>While the writer is open and during the commit, <strong>the index is still available
 for reading</strong>. Existing readers are unaffected and new readers can open the
@@ -152,9 +152,9 @@ that are already open <strong>will not</strong> pick up the changes automaticall
 always sees the index as it existed when the reader was opened.</p>
 <p>If you are re-using a Searcher across multiple search requests, you can check
 whether the Searcher is a view of the latest version of the index using
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.up_to_date" title="whoosh.searching.Searcher.up_to_date"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.up_to_date()</span></code></a>. If the searcher is not up to date,
+:meth:` whoosh_reloaded.searching.Searcher.up_to_date`. If the searcher is not up to date,
 you can get an up-to-date copy of the searcher using
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.refresh" title="whoosh.searching.Searcher.refresh"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.refresh()</span></code></a>:</p>
+:meth:` whoosh_reloaded.searching.Searcher.refresh`:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># If &#39;searcher&#39; is not up-to-date, replace it</span>
 <span class="n">searcher</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
 </pre></div>

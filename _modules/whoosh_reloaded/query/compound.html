@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh_reloaded.query.compound &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh_reloaded.query.compound</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh_reloaded.query.compound</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2007 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">matching</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">text_type</span><span class="p">,</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.query</span> <span class="kn">import</span> <span class="n">qcore</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.util</span> <span class="kn">import</span> <span class="n">make_binary_tree</span><span class="p">,</span> <span class="n">make_weighted_tree</span>
+
+
+<div class="viewcode-block" id="CompoundQuery"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.CompoundQuery">[docs]</a><span class="k">class</span> <span class="nc">CompoundQuery</span><span class="p">(</span><span class="n">qcore</span><span class="o">.</span><span class="n">Query</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for queries that combine or manipulate the results</span>
+<span class="sd">    of multiple sub-queries .</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subqueries</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">subq</span> <span class="ow">in</span> <span class="n">subqueries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subq</span><span class="p">,</span> <span class="n">qcore</span><span class="o">.</span><span class="n">Query</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">qcore</span><span class="o">.</span><span class="n">QueryError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> is not a query&quot;</span> <span class="o">%</span> <span class="n">subq</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span> <span class="o">=</span> <span class="n">subqueries</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;boost&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;, boost=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;)&quot;</span>
+        <span class="k">return</span> <span class="n">r</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">JOINT</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">text_type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">])</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span>
+
+    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">subqueries</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">boost</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span> <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">:</span>
+            <span class="n">h</span> <span class="o">^=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">h</span>
+
+    <span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">children</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">([</span><span class="n">fn</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">],</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">field</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">field</span><span class="p">()</span> <span class="o">==</span> <span class="n">f</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                <span class="k">return</span> <span class="n">f</span>
+
+    <span class="k">def</span> <span class="nf">estimate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="n">est</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">ixreader</span><span class="o">.</span><span class="n">doc_count</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">estimate_min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded.query</span> <span class="kn">import</span> <span class="n">Not</span>
+
+        <span class="n">subs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">estimate_min_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">))</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">subs</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">Not</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">minsize</span> <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">minsize</span> <span class="ow">in</span> <span class="n">qs</span> <span class="k">if</span> <span class="n">minsize</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="n">neg</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">subs</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">Not</span><span class="p">)]</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">neg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">size</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded.query</span> <span class="kn">import</span> <span class="n">Every</span><span class="p">,</span> <span class="n">TermRange</span><span class="p">,</span> <span class="n">NumericRange</span>
+
+        <span class="c1"># Normalize subqueries and merge nested instances of this class</span>
+        <span class="n">subqueries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+                <span class="n">subqueries</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ss</span><span class="o">.</span><span class="n">with_boost</span><span class="p">(</span><span class="n">ss</span><span class="o">.</span><span class="n">boost</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span> <span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subqueries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="c1"># If every subquery is Null, this query is Null</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">q</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">subqueries</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+
+        <span class="c1"># If there&#39;s an unfielded Every inside, then this query is Every</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">Every</span><span class="p">)</span> <span class="ow">and</span> <span class="n">q</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">subqueries</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Every</span><span class="p">()</span>
+
+        <span class="c1"># Merge ranges and Everys</span>
+        <span class="n">everyfields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">subqueries</span><span class="p">):</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">subqueries</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">field</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">everyfields</span><span class="p">:</span>
+                <span class="n">subqueries</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="p">(</span><span class="n">TermRange</span><span class="p">,</span> <span class="n">NumericRange</span><span class="p">)):</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">subqueries</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">q</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span><span class="n">subqueries</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
+                        <span class="n">qq</span> <span class="o">=</span> <span class="n">subqueries</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">qq</span><span class="p">,</span> <span class="n">intersect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">intersect_merge</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">q</span> <span class="o">=</span> <span class="n">subqueries</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">Every</span><span class="p">):</span>
+                <span class="n">everyfields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">fieldname</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Eliminate duplicate queries</span>
+        <span class="n">subqs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">seenqs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subqueries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Every</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">field</span><span class="p">()</span> <span class="ow">in</span> <span class="n">everyfields</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">seenqs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">seenqs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="n">subqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="c1"># Remove NullQuerys</span>
+        <span class="n">subqs</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">subqs</span> <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subqs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subqs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sub</span> <span class="o">=</span> <span class="n">subqs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">sub_boost</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="s2">&quot;boost&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">==</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="n">sub_boost</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">):</span>
+                <span class="n">sub</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">with_boost</span><span class="p">(</span><span class="n">sub_boost</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sub</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">subqs</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span>
+        <span class="k">if</span> <span class="n">subs</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">subq</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span> <span class="k">for</span> <span class="n">subq</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">],</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+        <span class="k">return</span> <span class="n">q</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># This method does a little sanity checking and then passes the info</span>
+        <span class="c1"># down to the _matcher() method which subclasses must implement</span>
+
+        <span class="n">subs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matching</span><span class="o">.</span><span class="n">NullMatcher</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matcher</span><span class="p">(</span><span class="n">subs</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span>
+
+    <span class="k">def</span> <span class="nf">_matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="c1"># Subclasses must implement this method</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">_tree_matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">mcls</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">q_weight_fn</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># q_weight_fn is a function which is called on each query and returns a</span>
+        <span class="c1"># &quot;weight&quot; value which is used to build a huffman-like matcher tree. If</span>
+        <span class="c1"># q_weight_fn is None, an order-preserving binary tree is used instead.</span>
+
+        <span class="c1"># Create a matcher from the list of subqueries</span>
+        <span class="n">subms</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">subms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">q_weight_fn</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">make_binary_tree</span><span class="p">(</span><span class="n">mcls</span><span class="p">,</span> <span class="n">subms</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">w_subms</span> <span class="o">=</span> <span class="p">[(</span><span class="n">q_weight_fn</span><span class="p">(</span><span class="n">q</span><span class="p">),</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">subs</span><span class="p">,</span> <span class="n">subms</span><span class="p">)]</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">make_weighted_tree</span><span class="p">(</span><span class="n">mcls</span><span class="p">,</span> <span class="n">w_subms</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># If this query had a boost, add a wrapping matcher to apply the boost</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">matching</span><span class="o">.</span><span class="n">WrappingMatcher</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">m</span></div>
+
+
+<div class="viewcode-block" id="And"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.And">[docs]</a><span class="k">class</span> <span class="nc">And</span><span class="p">(</span><span class="n">CompoundQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Matches documents that match ALL of the subqueries.</span>
+
+<span class="sd">    &gt;&gt;&gt; And([Term(&quot;content&quot;, u&quot;render&quot;),</span>
+<span class="sd">    ...      Term(&quot;content&quot;, u&quot;shade&quot;),</span>
+<span class="sd">    ...      Not(Term(&quot;content&quot;, u&quot;texture&quot;))])</span>
+<span class="sd">    &gt;&gt;&gt; # You can also do this</span>
+<span class="sd">    &gt;&gt;&gt; Term(&quot;content&quot;, u&quot;render&quot;) &amp; Term(&quot;content&quot;, u&quot;shade&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># This is used by the superclass&#39;s __unicode__ method.</span>
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; AND &quot;</span>
+    <span class="n">intersect_merge</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">requires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">|=</span> <span class="n">q</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="k">def</span> <span class="nf">estimate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="n">q_weight_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">q</span><span class="p">:</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">q</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree_matcher</span><span class="p">(</span>
+            <span class="n">subs</span><span class="p">,</span> <span class="n">matching</span><span class="o">.</span><span class="n">IntersectionMatcher</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">q_weight_fn</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Or"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.Or">[docs]</a><span class="k">class</span> <span class="nc">Or</span><span class="p">(</span><span class="n">CompoundQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Matches documents that match ANY of the subqueries.</span>
+
+<span class="sd">    &gt;&gt;&gt; Or([Term(&quot;content&quot;, u&quot;render&quot;),</span>
+<span class="sd">    ...     And([Term(&quot;content&quot;, u&quot;shade&quot;), Term(&quot;content&quot;, u&quot;texture&quot;)]),</span>
+<span class="sd">    ...     Not(Term(&quot;content&quot;, u&quot;network&quot;))])</span>
+<span class="sd">    &gt;&gt;&gt; # You can also do this</span>
+<span class="sd">    &gt;&gt;&gt; Term(&quot;content&quot;, u&quot;render&quot;) | Term(&quot;content&quot;, u&quot;shade&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># This is used by the superclass&#39;s __unicode__ method.</span>
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span>
+    <span class="n">intersect_merge</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">TOO_MANY_CLAUSES</span> <span class="o">=</span> <span class="mi">1024</span>
+
+    <span class="c1"># For debugging: set the array_type property to control matcher selection</span>
+    <span class="n">AUTO_MATCHER</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Use automatic heuristics to choose matcher</span>
+    <span class="n">DEFAULT_MATCHER</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Use a binary tree of UnionMatchers</span>
+    <span class="n">SPLIT_MATCHER</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Use a different strategy for short and long queries</span>
+    <span class="n">ARRAY_MATCHER</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Use a matcher that pre-loads docnums and scores</span>
+    <span class="n">matcher_type</span> <span class="o">=</span> <span class="n">AUTO_MATCHER</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subqueries</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">minmatch</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param subqueries: a list of :class:`Query` objects to search for.</span>
+<span class="sd">        :param boost: a boost factor to apply to the scores of all matching</span>
+<span class="sd">            documents.</span>
+<span class="sd">        :param minmatch: not yet implemented.</span>
+<span class="sd">        :param scale: a scaling factor for a &quot;coordination bonus&quot;. If this</span>
+<span class="sd">            value is not None, it should be a floating point number greater</span>
+<span class="sd">            than 0 and less than 1. The scores of the matching documents are</span>
+<span class="sd">            boosted/penalized based on the number of query terms that matched</span>
+<span class="sd">            in the document. This number scales the effect of the bonuses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">CompoundQuery</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subqueries</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="n">boost</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span> <span class="o">=</span> <span class="n">minmatch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">JOINT</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">text_type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">])</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;&gt;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span>
+        <span class="k">return</span> <span class="n">r</span>
+
+    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">CompoundQuery</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">norm</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">:</span>
+            <span class="n">norm</span><span class="o">.</span><span class="n">minmatch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span>
+            <span class="n">norm</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
+        <span class="k">return</span> <span class="n">norm</span>
+
+    <span class="k">def</span> <span class="nf">requires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">needs_current</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">needs_current</span> <span class="k">if</span> <span class="n">context</span> <span class="k">else</span> <span class="kc">True</span>
+        <span class="n">weighting</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">weighting</span> <span class="k">if</span> <span class="n">context</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">matcher_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher_type</span>
+
+        <span class="k">if</span> <span class="n">matcher_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">AUTO_MATCHER</span><span class="p">:</span>
+            <span class="n">dc</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOO_MANY_CLAUSES</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">needs_current</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">dc</span> <span class="o">&gt;</span> <span class="mi">5000</span>
+            <span class="p">):</span>
+                <span class="c1"># If the parent matcher needs the current match, or there&#39;s just</span>
+                <span class="c1"># two sub-matchers, use the standard binary tree of Unions</span>
+                <span class="n">matcher_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_MATCHER</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># For small indexes, or too many clauses, just preload all</span>
+                <span class="c1"># matches</span>
+                <span class="n">matcher_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARRAY_MATCHER</span>
+
+        <span class="k">if</span> <span class="n">matcher_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_MATCHER</span><span class="p">:</span>
+            <span class="c1"># Implementation of Or that creates a binary tree of Union matchers</span>
+            <span class="bp">cls</span> <span class="o">=</span> <span class="n">DefaultOr</span>
+        <span class="k">elif</span> <span class="n">matcher_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">SPLIT_MATCHER</span><span class="p">:</span>
+            <span class="c1"># Hybrid of pre-loading small queries and a binary tree of union</span>
+            <span class="c1"># matchers for big queries</span>
+            <span class="bp">cls</span> <span class="o">=</span> <span class="n">SplitOr</span>
+        <span class="k">elif</span> <span class="n">matcher_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARRAY_MATCHER</span><span class="p">:</span>
+            <span class="c1"># Implementation that pre-loads docnums and scores into an array</span>
+            <span class="bp">cls</span> <span class="o">=</span> <span class="n">PreloadedOr</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown matcher_type </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher_type</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">subs</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span> <span class="n">minmatch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">DefaultOr</span><span class="p">(</span><span class="n">Or</span><span class="p">):</span>
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; dOR &quot;</span>
+
+    <span class="k">def</span> <span class="nf">_matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="n">q_weight_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">q</span><span class="p">:</span> <span class="n">q</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree_matcher</span><span class="p">(</span>
+            <span class="n">subs</span><span class="p">,</span> <span class="n">matching</span><span class="o">.</span><span class="n">UnionMatcher</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">q_weight_fn</span>
+        <span class="p">)</span>
+
+        <span class="c1"># If a scaling factor was given, wrap the matcher in a CoordMatcher to</span>
+        <span class="c1"># alter scores based on term coordination</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">term_matchers</span><span class="p">()):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">matching</span><span class="o">.</span><span class="n">CoordMatcher</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">m</span>
+
+
+<span class="k">class</span> <span class="nc">SplitOr</span><span class="p">(</span><span class="n">Or</span><span class="p">):</span>
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; sOr &quot;</span>
+    <span class="n">SPLIT_DOC_LIMIT</span> <span class="o">=</span> <span class="mi">8000</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Get the subqueries</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matching</span><span class="o">.</span><span class="n">NullMatcher</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">subs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+        <span class="c1"># Sort the subqueries into &quot;small&quot; and &quot;big&quot; queries based on their</span>
+        <span class="c1"># estimated size. This works best for term queries.</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="n">smallqs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">bigqs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SPLIT_DOC_LIMIT</span><span class="p">:</span>
+                <span class="n">smallqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bigqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+        <span class="c1"># Build a pre-scored matcher for the small queries</span>
+        <span class="n">minscore</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">smallmatcher</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">smallqs</span><span class="p">:</span>
+            <span class="n">smallmatcher</span> <span class="o">=</span> <span class="n">DefaultOr</span><span class="p">(</span><span class="n">smallqs</span><span class="p">)</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+            <span class="n">smallmatcher</span> <span class="o">=</span> <span class="n">matching</span><span class="o">.</span><span class="n">ArrayMatcher</span><span class="p">(</span><span class="n">smallmatcher</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">limit</span><span class="p">)</span>
+            <span class="n">minscore</span> <span class="o">=</span> <span class="n">smallmatcher</span><span class="o">.</span><span class="n">limit_quality</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">bigqs</span><span class="p">:</span>
+            <span class="c1"># Get a matcher for the big queries</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">DefaultOr</span><span class="p">(</span><span class="n">bigqs</span><span class="p">)</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+            <span class="c1"># Add the prescored matcher for the small queries</span>
+            <span class="k">if</span> <span class="n">smallmatcher</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">matching</span><span class="o">.</span><span class="n">UnionMatcher</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">smallmatcher</span><span class="p">)</span>
+                <span class="c1"># Set the minimum score based on the prescored matcher</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">set_min_quality</span><span class="p">(</span><span class="n">minscore</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">smallmatcher</span><span class="p">:</span>
+            <span class="c1"># If there are no big queries, just return the prescored matcher</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">smallmatcher</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">matching</span><span class="o">.</span><span class="n">NullMatcher</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">m</span>
+
+
+<span class="k">class</span> <span class="nc">PreloadedOr</span><span class="p">(</span><span class="n">Or</span><span class="p">):</span>
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; pOR &quot;</span>
+
+    <span class="k">def</span> <span class="nf">_matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">context</span><span class="p">:</span>
+            <span class="n">scored</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">weighting</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scored</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">ms</span> <span class="o">=</span> <span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">]</span>
+        <span class="n">doccount</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span>
+        <span class="n">am</span> <span class="o">=</span> <span class="n">matching</span><span class="o">.</span><span class="n">ArrayUnionMatcher</span><span class="p">(</span><span class="n">ms</span><span class="p">,</span> <span class="n">doccount</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span> <span class="n">scored</span><span class="o">=</span><span class="n">scored</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">am</span>
+
+
+<div class="viewcode-block" id="DisjunctionMax"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.DisjunctionMax">[docs]</a><span class="k">class</span> <span class="nc">DisjunctionMax</span><span class="p">(</span><span class="n">CompoundQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Matches all documents that match any of the subqueries, but scores each</span>
+<span class="sd">    document using the maximum score from the subqueries.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subqueries</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tiebreak</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="n">CompoundQuery</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subqueries</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="n">boost</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span> <span class="o">=</span> <span class="n">tiebreak</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;DisMax(&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">text_type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">))</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">text_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span>
+
+    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">CompoundQuery</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">norm</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">:</span>
+            <span class="n">norm</span><span class="o">.</span><span class="n">tiebreak</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span>
+        <span class="k">return</span> <span class="n">norm</span>
+
+    <span class="k">def</span> <span class="nf">requires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subs</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="n">q_weight_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">q</span><span class="p">:</span> <span class="n">q</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree_matcher</span><span class="p">(</span>
+            <span class="n">subs</span><span class="p">,</span>
+            <span class="n">matching</span><span class="o">.</span><span class="n">DisjunctionMaxMatcher</span><span class="p">,</span>
+            <span class="n">searcher</span><span class="p">,</span>
+            <span class="n">context</span><span class="p">,</span>
+            <span class="n">q_weight_fn</span><span class="p">,</span>
+            <span class="n">tiebreak</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<span class="c1"># Boolean queries</span>
+
+
+<span class="k">class</span> <span class="nc">BinaryQuery</span><span class="p">(</span><span class="n">CompoundQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for binary queries (queries which are composed of two</span>
+<span class="sd">    sub-queries). Subclasses should set the ``matcherclass`` attribute or</span>
+<span class="sd">    override ``matcher()``, and may also need to override ``normalize()``,</span>
+<span class="sd">    ``estimate_size()``, and/or ``estimate_min_size()``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">boost</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">a</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">b</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span> <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span> <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">needs_spans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">needs_spans</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">needs_spans</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">),</span> <span class="n">fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">field</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">field</span><span class="p">()</span> <span class="o">==</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">f</span>
+
+    <span class="k">def</span> <span class="nf">with_boost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boost</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">with_boost</span><span class="p">(</span><span class="n">boost</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">with_boost</span><span class="p">(</span><span class="n">boost</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+        <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">b</span>
+        <span class="k">elif</span> <span class="n">b</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">a</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcherclass</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="AndNot"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.AndNot">[docs]</a><span class="k">class</span> <span class="nc">AndNot</span><span class="p">(</span><span class="n">BinaryQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Binary boolean query of the form &#39;a ANDNOT b&#39;, where documents that</span>
+<span class="sd">    match b are removed from the matches for a.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; ANDNOT &quot;</span>
+
+    <span class="k">def</span> <span class="nf">with_boost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boost</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">with_boost</span><span class="p">(</span><span class="n">boost</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+        <span class="k">elif</span> <span class="n">b</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">a</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">requires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">scoredm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="n">notm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">searcher</span><span class="o">.</span><span class="n">boolean_context</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">matching</span><span class="o">.</span><span class="n">AndNotMatcher</span><span class="p">(</span><span class="n">scoredm</span><span class="p">,</span> <span class="n">notm</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Otherwise"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.Otherwise">[docs]</a><span class="k">class</span> <span class="nc">Otherwise</span><span class="p">(</span><span class="n">BinaryQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A binary query that only matches the second clause if the first clause</span>
+<span class="sd">    doesn&#39;t match any documents.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; OTHERWISE &quot;</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">m</span></div>
+
+
+<div class="viewcode-block" id="Require"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.Require">[docs]</a><span class="k">class</span> <span class="nc">Require</span><span class="p">(</span><span class="n">BinaryQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Binary query returns results from the first query that also appear in</span>
+<span class="sd">    the second query, but only uses the scores from the first query. This lets</span>
+<span class="sd">    you filter results without affecting scores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; REQUIRE &quot;</span>
+    <span class="n">matcherclass</span> <span class="o">=</span> <span class="n">matching</span><span class="o">.</span><span class="n">RequireMatcher</span>
+
+    <span class="k">def</span> <span class="nf">requires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">estimate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">estimate_min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">estimate_min_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">with_boost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boost</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">with_boost</span><span class="p">(</span><span class="n">boost</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span> <span class="ow">or</span> <span class="n">b</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">And</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">)</span><span class="o">.</span><span class="n">docs</span><span class="p">(</span><span class="n">searcher</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">scoredm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="n">requiredm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">searcher</span><span class="o">.</span><span class="n">boolean_context</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">matching</span><span class="o">.</span><span class="n">RequireMatcher</span><span class="p">(</span><span class="n">scoredm</span><span class="p">,</span> <span class="n">requiredm</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AndMaybe"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.AndMaybe">[docs]</a><span class="k">class</span> <span class="nc">AndMaybe</span><span class="p">(</span><span class="n">BinaryQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Binary query takes results from the first query. If and only if the</span>
+<span class="sd">    same document also appears in the results from the second query, the score</span>
+<span class="sd">    from the second query will be added to the score from the first query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; ANDMAYBE &quot;</span>
+    <span class="n">matcherclass</span> <span class="o">=</span> <span class="n">matching</span><span class="o">.</span><span class="n">AndMaybeMatcher</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+        <span class="k">if</span> <span class="n">b</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">a</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">requires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">estimate_min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">estimate_min_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">docs</span><span class="p">(</span><span class="n">searcher</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">BooleanQuery</span><span class="p">(</span><span class="n">required</span><span class="p">,</span> <span class="n">should</span><span class="p">,</span> <span class="n">prohibited</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">AndNot</span><span class="p">(</span><span class="n">AndMaybe</span><span class="p">(</span><span class="n">And</span><span class="p">(</span><span class="n">required</span><span class="p">),</span> <span class="n">Or</span><span class="p">(</span><span class="n">should</span><span class="p">)),</span> <span class="n">Or</span><span class="p">(</span><span class="n">prohibited</span><span class="p">))</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

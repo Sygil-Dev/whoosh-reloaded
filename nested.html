@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Indexing and searching document hierarchies &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Indexing and searching document hierarchies &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -93,7 +93,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -122,7 +122,7 @@ hierarchy, such as “Chapter - Section - Paragraph” or
 “Module - Class - Method”.</p>
 <p>You can specify parent-child relationships <em>at indexing time</em>, by grouping
 documents in the same hierarchy, and then use the
-<a class="reference internal" href="api/query.html#whoosh.query.NestedParent" title="whoosh.query.NestedParent"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.NestedParent</span></code></a> and/or <a class="reference internal" href="api/query.html#whoosh.query.NestedChildren" title="whoosh.query.NestedChildren"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.NestedChildren</span></code></a>
+:class:` whoosh_reloaded.query.NestedParent` and/or <a class="reference internal" href="api/query.html#whoosh_reloaded.query.NestedChildren" title="whoosh_reloaded.query.NestedChildren"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.query.NestedChildren</span></code></a>
 to find parents based on their children or vice-versa.</p>
 <p>Alternatively, you can use <em>query time joins</em>, essentially like external key
 joins in a database, where you perform one search to find a relevant document,
@@ -180,7 +180,7 @@ find parents based on children or vice-versa.</p>
 </section>
 <section id="nestedparent-query">
 <h3>NestedParent query<a class="headerlink" href="#nestedparent-query" title="Permalink to this heading">¶</a></h3>
-<p>The <a class="reference internal" href="api/query.html#whoosh.query.NestedParent" title="whoosh.query.NestedParent"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.NestedParent</span></code></a> query type lets you specify a query for
+<p>The :class:` whoosh_reloaded.query.NestedParent` query type lets you specify a query for
 child documents, but have the query return an “ancestor” document from higher
 in the hierarchy:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, we need a query that matches all the documents in the &quot;parent&quot;</span>
@@ -222,7 +222,7 @@ no matter how many children match). This parent lookup is very efficient:</p>
 </section>
 <section id="nestedchildren-query">
 <h3>NestedChildren query<a class="headerlink" href="#nestedchildren-query" title="Permalink to this heading">¶</a></h3>
-<p>The opposite of <code class="docutils literal notranslate"><span class="pre">NestedParent</span></code> is <a class="reference internal" href="api/query.html#whoosh.query.NestedChildren" title="whoosh.query.NestedChildren"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.NestedChildren</span></code></a>. This
+<p>The opposite of <code class="docutils literal notranslate"><span class="pre">NestedParent</span></code> is :class:` whoosh_reloaded.query.NestedChildren`. This
 query lets you match parents but return their children. This is useful, for
 example, to search for an album title and return the songs in the album:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query that matches all documents in the &quot;parent&quot; level we want to match</span>

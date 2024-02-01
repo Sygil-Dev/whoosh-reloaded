@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>highlight module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>highlight module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -84,31 +84,31 @@
 <li class="toctree-l2"><a class="reference internal" href="formats.html"><code class="docutils literal notranslate"><span class="pre">formats</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#manual-highlighting">Manual highlighting</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.Highlighter"><code class="docutils literal notranslate"><span class="pre">Highlighter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.highlight"><code class="docutils literal notranslate"><span class="pre">highlight()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.Highlighter"><code class="docutils literal notranslate"><span class="pre">Highlighter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.highlight"><code class="docutils literal notranslate"><span class="pre">highlight()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#fragmenters">Fragmenters</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.Fragmenter"><code class="docutils literal notranslate"><span class="pre">Fragmenter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.WholeFragmenter"><code class="docutils literal notranslate"><span class="pre">WholeFragmenter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.SentenceFragmenter"><code class="docutils literal notranslate"><span class="pre">SentenceFragmenter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.ContextFragmenter"><code class="docutils literal notranslate"><span class="pre">ContextFragmenter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.PinpointFragmenter"><code class="docutils literal notranslate"><span class="pre">PinpointFragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.Fragmenter"><code class="docutils literal notranslate"><span class="pre">Fragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.WholeFragmenter"><code class="docutils literal notranslate"><span class="pre">WholeFragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.SentenceFragmenter"><code class="docutils literal notranslate"><span class="pre">SentenceFragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.ContextFragmenter"><code class="docutils literal notranslate"><span class="pre">ContextFragmenter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.PinpointFragmenter"><code class="docutils literal notranslate"><span class="pre">PinpointFragmenter</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#scorers">Scorers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.FragmentScorer"><code class="docutils literal notranslate"><span class="pre">FragmentScorer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.BasicFragmentScorer"><code class="docutils literal notranslate"><span class="pre">BasicFragmentScorer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.FragmentScorer"><code class="docutils literal notranslate"><span class="pre">FragmentScorer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.BasicFragmentScorer"><code class="docutils literal notranslate"><span class="pre">BasicFragmentScorer</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#formatters">Formatters</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.UppercaseFormatter"><code class="docutils literal notranslate"><span class="pre">UppercaseFormatter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.HtmlFormatter"><code class="docutils literal notranslate"><span class="pre">HtmlFormatter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.GenshiFormatter"><code class="docutils literal notranslate"><span class="pre">GenshiFormatter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.UppercaseFormatter"><code class="docutils literal notranslate"><span class="pre">UppercaseFormatter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.HtmlFormatter"><code class="docutils literal notranslate"><span class="pre">HtmlFormatter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.GenshiFormatter"><code class="docutils literal notranslate"><span class="pre">GenshiFormatter</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#utility-classes">Utility classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.highlight.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.highlight.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -141,7 +141,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -160,8 +160,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.highlight">
-<span id="highlight-module"></span><h1><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module<a class="headerlink" href="#module-whoosh.highlight" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.highlight">
+<span id="highlight-module"></span><h1><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.highlight" title="Permalink to this heading">¶</a></h1>
 <p>The highlight module contains classes and functions for displaying short
 excerpts from hit documents in the search results you present to the user, with
 query terms highlighted.</p>
@@ -183,25 +183,25 @@ an HTML string.</p></li>
 <section id="manual-highlighting">
 <h2>Manual highlighting<a class="headerlink" href="#manual-highlighting" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.Highlighter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">Highlighter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragmenter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">always_retokenize=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;function</span> <span class="pre">FIRST&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Highlighter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Highlighter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.Highlighter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">Highlighter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fragmenter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">always_retokenize=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;function</span> <span class="pre">FIRST&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#Highlighter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.Highlighter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.highlight.highlight">
-<span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragmenter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top=3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minscore=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;function</span> <span class="pre">FIRST&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode='query'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.highlight" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.highlight">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragmenter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top=3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minscore=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;function</span> <span class="pre">FIRST&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode='query'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.highlight" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="fragmenters">
 <h2>Fragmenters<a class="headerlink" href="#fragmenters" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.Fragmenter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">Fragmenter</span></span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragmenter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.Fragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">Fragmenter</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#Fragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.Fragmenter" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="whoosh.highlight.Fragmenter.fragment_matches">
-<span class="sig-name descname"><span class="pre">fragment_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragmenter.fragment_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragmenter.fragment_matches" title="Permalink to this definition">¶</a></dt>
-<dd><p>Yields <a class="reference internal" href="#whoosh.highlight.Fragment" title="whoosh.highlight.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fragment</span></code></a> objects based on the text and the matched
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.Fragmenter.fragment_matches">
+<span class="sig-name descname"><span class="pre">fragment_matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matched_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#Fragmenter.fragment_matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.Fragmenter.fragment_matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields <a class="reference internal" href="#whoosh_reloaded.highlight.Fragment" title="whoosh_reloaded.highlight.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fragment</span></code></a> objects based on the text and the matched
 terms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -215,9 +215,9 @@ representing the term matches in the string.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.highlight.Fragmenter.fragment_tokens">
-<span class="sig-name descname"><span class="pre">fragment_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragmenter.fragment_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragmenter.fragment_tokens" title="Permalink to this definition">¶</a></dt>
-<dd><p>Yields <a class="reference internal" href="#whoosh.highlight.Fragment" title="whoosh.highlight.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fragment</span></code></a> objects based on the tokenized text.</p>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.Fragmenter.fragment_tokens">
+<span class="sig-name descname"><span class="pre">fragment_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#Fragmenter.fragment_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.Fragmenter.fragment_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields <a class="reference internal" href="#whoosh_reloaded.highlight.Fragment" title="whoosh_reloaded.highlight.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Fragment</span></code></a> objects based on the tokenized text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -230,8 +230,8 @@ objects from the string.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.highlight.Fragmenter.must_retokenize">
-<span class="sig-name descname"><span class="pre">must_retokenize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragmenter.must_retokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragmenter.must_retokenize" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.Fragmenter.must_retokenize">
+<span class="sig-name descname"><span class="pre">must_retokenize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#Fragmenter.must_retokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.Fragmenter.must_retokenize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if this fragmenter requires retokenized text.</p>
 <p>If this method returns True, the fragmenter’s <code class="docutils literal notranslate"><span class="pre">fragment_tokens</span></code>
 method  will be called with an iterator of ALL tokens from the text,
@@ -244,8 +244,8 @@ method will be called with a LIST of matching tokens.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.WholeFragmenter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">WholeFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#WholeFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.WholeFragmenter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.WholeFragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">WholeFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#WholeFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.WholeFragmenter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Doesn’t fragment the token stream. This object just returns the entire
 entire stream as one “fragment”. This is useful if you want to highlight
 the entire text.</p>
@@ -269,8 +269,8 @@ whole fragment even in that case, call <cite>highlights()</cite> with <cite>mins
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.SentenceFragmenter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">SentenceFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sentencechars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.!?'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#SentenceFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.SentenceFragmenter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.SentenceFragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">SentenceFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sentencechars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.!?'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#SentenceFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.SentenceFragmenter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Breaks the text up on sentence end punctuation characters
 (“.”, “!”, or “?”). This object works by looking in the original text for a
 sentence end as the next character after each token’s ‘endchar’.</p>
@@ -288,8 +288,8 @@ fragment.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.ContextFragmenter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">ContextFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surround</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#ContextFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.ContextFragmenter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.ContextFragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">ContextFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surround</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#ContextFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.ContextFragmenter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Looks for matched terms and aggregates them with their surrounding
 context.</p>
 <dl class="field-list simple">
@@ -305,8 +305,8 @@ before the first matched term and after the last matched term.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.PinpointFragmenter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">PinpointFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surround</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autotrim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#PinpointFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.PinpointFragmenter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.PinpointFragmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">PinpointFragmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxchars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surround</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autotrim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charlimit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#PinpointFragmenter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.PinpointFragmenter" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is a NON-RETOKENIZING fragmenter. It builds fragments from the
 positions of the matched terms.</p>
 <dl class="field-list simple">
@@ -329,21 +329,21 @@ long runs between spaces this may give strange results.</p></li>
 <section id="scorers">
 <h2>Scorers<a class="headerlink" href="#scorers" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.FragmentScorer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">FragmentScorer</span></span><a class="reference internal" href="../_modules/whoosh/highlight.html#FragmentScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.FragmentScorer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.FragmentScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">FragmentScorer</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#FragmentScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.FragmentScorer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.BasicFragmentScorer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">BasicFragmentScorer</span></span><a class="reference internal" href="../_modules/whoosh/highlight.html#BasicFragmentScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.BasicFragmentScorer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.BasicFragmentScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">BasicFragmentScorer</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#BasicFragmentScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.BasicFragmentScorer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="formatters">
 <h2>Formatters<a class="headerlink" href="#formatters" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.UppercaseFormatter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">UppercaseFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#UppercaseFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.UppercaseFormatter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.UppercaseFormatter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">UppercaseFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#UppercaseFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.UppercaseFormatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a string in which the matched terms are in UPPERCASE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -353,8 +353,8 @@ long runs between spaces this may give strange results.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.HtmlFormatter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">HtmlFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strong'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'match'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">termclass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'term'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxclasses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrquote</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&quot;'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#HtmlFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.HtmlFormatter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.HtmlFormatter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">HtmlFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tagname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strong'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'match'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">termclass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'term'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxclasses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrquote</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&quot;'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#HtmlFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.HtmlFormatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a string containing HTML formatting around the matched terms.</p>
 <p>This formatter wraps matched terms in an HTML element with two class names.
 The first class name (set with the constructor argument <code class="docutils literal notranslate"><span class="pre">classname</span></code>) is
@@ -392,8 +392,8 @@ term class names. For example, if you set maxclasses to 3 and have
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.GenshiFormatter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">GenshiFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strong'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#GenshiFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.GenshiFormatter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.GenshiFormatter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">GenshiFormatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strong'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">between</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'...'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#GenshiFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.GenshiFormatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a Genshi event stream containing HTML formatting around the
 matched terms.</p>
 <dl class="field-list simple">
@@ -410,8 +410,8 @@ matched terms.</p>
 <section id="utility-classes">
 <h2>Utility classes<a class="headerlink" href="#utility-classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.highlight.Fragment">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.highlight.</span></span><span class="sig-name descname"><span class="pre">Fragment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startchar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endchar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/highlight.html#Fragment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.highlight.Fragment" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.highlight.Fragment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.highlight.</span></span><span class="sig-name descname"><span class="pre">Fragment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startchar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endchar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/highlight.html#Fragment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.highlight.Fragment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a fragment (extract) from a hit document. This object is
 mainly used to keep track of the start and end points of the fragment and
 the “matched” character ranges inside; it does not contain the text of the

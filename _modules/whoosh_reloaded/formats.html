@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh_reloaded.formats &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh_reloaded.formats</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh_reloaded.formats</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2009 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The classes in this module encode and decode posting information for a field.</span>
+<span class="sd">The field format essentially determines what information is stored about each</span>
+<span class="sd">occurance of a term.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">unstopped</span><span class="p">,</span> <span class="n">entoken</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">b</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.system</span> <span class="kn">import</span> <span class="n">emptybytes</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.system</span> <span class="kn">import</span> <span class="n">_INT_SIZE</span><span class="p">,</span> <span class="n">_FLOAT_SIZE</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.system</span> <span class="kn">import</span> <span class="n">pack_uint</span><span class="p">,</span> <span class="n">unpack_uint</span><span class="p">,</span> <span class="n">pack_float</span><span class="p">,</span> <span class="n">unpack_float</span>
+
+
+<span class="c1"># Format base class</span>
+
+
+<div class="viewcode-block" id="Format"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Format">[docs]</a><span class="k">class</span> <span class="nc">Format</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class representing a storage format for a field or vector.</span>
+<span class="sd">    Format objects are responsible for writing and reading the low-level</span>
+<span class="sd">    representation of a field. It controls what kind/level of information to</span>
+<span class="sd">    store about the indexed fields.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">posting_size</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">textual</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">field_boost</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param field_boost: A constant boost factor to scale to the score</span>
+<span class="sd">            of all queries matching terms in this field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span> <span class="o">=</span> <span class="n">field_boost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(boost=</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">fixed_value_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">posting_size</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">posting_size</span>
+
+<div class="viewcode-block" id="Format.word_values"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Format.word_values">[docs]</a>    <span class="k">def</span> <span class="nf">word_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Takes the text value to be indexed and yields a series of</span>
+<span class="sd">        (&quot;tokentext&quot;, frequency, weight, valuestring) tuples, where frequency</span>
+<span class="sd">        is the number of times &quot;tokentext&quot; appeared in the value, weight is the</span>
+<span class="sd">        weight (a float usually equal to frequency in the absence of per-term</span>
+<span class="sd">        boosts) and valuestring is encoded field-specific posting value for the</span>
+<span class="sd">        token. For example, in a Frequency format, the value string would be</span>
+<span class="sd">        the same as frequency; in a Positions format, the value string would</span>
+<span class="sd">        encode a list of token positions at which &quot;tokentext&quot; occured.</span>
+
+<span class="sd">        :param value: The unicode text to index.</span>
+<span class="sd">        :param analyzer: The analyzer to use to process the text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Format.supports"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Format.supports">[docs]</a>    <span class="k">def</span> <span class="nf">supports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this format supports interpreting its posting</span>
+<span class="sd">        value as &#39;name&#39; (e.g. &quot;frequency&quot; or &quot;positions&quot;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;decode_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Format.decoder"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Format.decoder">[docs]</a>    <span class="k">def</span> <span class="nf">decoder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the bound method for interpreting value as &#39;name&#39;,</span>
+<span class="sd">        where &#39;name&#39; is for example &quot;frequency&quot; or &quot;positions&quot;. This</span>
+<span class="sd">        object must have a corresponding Format.decode_&lt;name&gt;() method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;decode_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Format.decode_as"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Format.decode_as">[docs]</a>    <span class="k">def</span> <span class="nf">decode_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">astype</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Interprets the encoded value string as &#39;astype&#39;, where &#39;astype&#39; is</span>
+<span class="sd">        for example &quot;frequency&quot; or &quot;positions&quot;. This object must have a</span>
+<span class="sd">        corresponding decode_&lt;astype&gt;() method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">astype</span><span class="p">)(</span><span class="n">valuestring</span><span class="p">)</span></div></div>
+
+
+<span class="c1"># Concrete field classes</span>
+
+<span class="c1"># TODO: as a legacy thing most of these formats store the frequency but not the</span>
+<span class="c1"># weight in the value string, so if you use field or term boosts</span>
+<span class="c1"># postreader.value_as(&quot;weight&quot;) will not match postreader.weight()</span>
+
+
+<span class="k">def</span> <span class="nf">tokens</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="n">gen</span> <span class="o">=</span> <span class="n">entoken</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gen</span> <span class="o">=</span> <span class="n">analyzer</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">unstopped</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Existence"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Existence">[docs]</a><span class="k">class</span> <span class="nc">Existence</span><span class="p">(</span><span class="n">Format</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Only indexes whether a given term occurred in a given document; it does</span>
+<span class="sd">    not store frequencies or positions. This is useful for fields that should</span>
+<span class="sd">    be searchable but not scorable, such as file path.</span>
+
+<span class="sd">    Supports: frequency, weight (always reports frequency = 1).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">posting_size</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">field_boost</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span> <span class="o">=</span> <span class="n">field_boost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+    <span class="k">def</span> <span class="nf">word_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">fb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+        <span class="n">wordset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fb</span><span class="p">,</span> <span class="n">emptybytes</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wordset</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">emptybytes</span>
+
+    <span class="k">def</span> <span class="nf">decode_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">decode_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+
+    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">emptybytes</span></div>
+
+
+<div class="viewcode-block" id="Frequency"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Frequency">[docs]</a><span class="k">class</span> <span class="nc">Frequency</span><span class="p">(</span><span class="n">Format</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stores frequency information for each posting.</span>
+
+<span class="sd">    Supports: frequency, weight.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">posting_size</span> <span class="o">=</span> <span class="n">_INT_SIZE</span>
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">field_boost</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">boost_as_freq</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">boost_as_freq</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param field_boost: A constant boost factor to scale to the score of</span>
+<span class="sd">            all queries matching terms in this field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_boost</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span> <span class="o">=</span> <span class="n">field_boost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+    <span class="k">def</span> <span class="nf">word_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">fb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">freqs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;boosts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">length</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">freqs</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">weights</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span><span class="o">.</span><span class="n">boost</span>
+
+        <span class="n">wvs</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">*</span> <span class="n">fb</span><span class="p">,</span> <span class="n">pack_uint</span><span class="p">(</span><span class="n">freq</span><span class="p">))</span> <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">wvs</span>
+
+    <span class="k">def</span> <span class="nf">decode_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_uint</span><span class="p">(</span><span class="n">valuestring</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">decode_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">unpack_uint</span><span class="p">(</span><span class="n">valuestring</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">freq</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+
+    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pack_uint</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decode_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Positions"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Positions">[docs]</a><span class="k">class</span> <span class="nc">Positions</span><span class="p">(</span><span class="n">Format</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stores position information in each posting, to allow phrase searching</span>
+<span class="sd">    and &quot;near&quot; queries.</span>
+
+<span class="sd">    Supports: frequency, weight, positions, position_boosts (always reports</span>
+<span class="sd">    position boost = 1.0).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">word_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">fb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+        <span class="n">poses</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;boosts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">poses</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
+            <span class="n">weights</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span><span class="o">.</span><span class="n">boost</span>
+
+        <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">poslist</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">poses</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">poslist</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">poslist</span><span class="p">),</span> <span class="n">weights</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">*</span> <span class="n">fb</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poslist</span><span class="p">):</span>
+        <span class="n">deltas</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">poslist</span><span class="p">:</span>
+            <span class="n">deltas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span> <span class="o">-</span> <span class="n">base</span><span class="p">)</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">pos</span>
+        <span class="k">return</span> <span class="n">pack_uint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">deltas</span><span class="p">))</span> <span class="o">+</span> <span class="n">dumps</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decode_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valuestring</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)):</span>
+            <span class="n">valuestring</span> <span class="o">+=</span> <span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">valuestring</span><span class="p">[</span><span class="n">_INT_SIZE</span><span class="p">:])</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">+=</span> <span class="n">code</span>
+            <span class="n">positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">positions</span>
+
+    <span class="k">def</span> <span class="nf">decode_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_uint</span><span class="p">(</span><span class="n">valuestring</span><span class="p">[:</span><span class="n">_INT_SIZE</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">decode_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_frequency</span><span class="p">(</span><span class="n">valuestring</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+
+    <span class="k">def</span> <span class="nf">decode_position_boosts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_positions</span><span class="p">(</span><span class="n">valuestring</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decode_positions</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">s</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Characters"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.Characters">[docs]</a><span class="k">class</span> <span class="nc">Characters</span><span class="p">(</span><span class="n">Positions</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stores token position and character start and end information for each</span>
+<span class="sd">    posting.</span>
+
+<span class="sd">    Supports: frequency, weight, positions, position_boosts (always reports</span>
+<span class="sd">    position boost = 1.0), characters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">word_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">fb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;chars&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;boosts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">seen</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span><span class="p">))</span>
+            <span class="n">weights</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="o">+=</span> <span class="n">t</span><span class="o">.</span><span class="n">boost</span>
+
+        <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">poslist</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">seen</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">poslist</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">poslist</span><span class="p">),</span> <span class="n">weights</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">*</span> <span class="n">fb</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poslist</span><span class="p">):</span>
+        <span class="n">deltas</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">posbase</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">charbase</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span> <span class="ow">in</span> <span class="n">poslist</span><span class="p">:</span>
+            <span class="n">deltas</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pos</span> <span class="o">-</span> <span class="n">posbase</span><span class="p">,</span> <span class="n">startchar</span> <span class="o">-</span> <span class="n">charbase</span><span class="p">,</span> <span class="n">endchar</span> <span class="o">-</span> <span class="n">startchar</span><span class="p">))</span>
+            <span class="n">posbase</span> <span class="o">=</span> <span class="n">pos</span>
+            <span class="n">charbase</span> <span class="o">=</span> <span class="n">endchar</span>
+        <span class="k">return</span> <span class="n">pack_uint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">deltas</span><span class="p">))</span> <span class="o">+</span> <span class="n">dumps</span><span class="p">(</span><span class="n">deltas</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decode_characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valuestring</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)):</span>
+            <span class="n">valuestring</span> <span class="o">+=</span> <span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">valuestring</span><span class="p">[</span><span class="n">_INT_SIZE</span><span class="p">:])</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">endchar</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">posns_chars</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">position</span>
+            <span class="n">startchar</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">endchar</span>
+            <span class="n">endchar</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">startchar</span>
+            <span class="n">posns_chars</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">position</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">posns_chars</span>
+
+    <span class="k">def</span> <span class="nf">decode_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valuestring</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)):</span>
+            <span class="n">valuestring</span> <span class="o">+=</span> <span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">valuestring</span><span class="p">[</span><span class="n">_INT_SIZE</span><span class="p">:])</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">posns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">position</span>
+            <span class="n">posns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">posns</span>
+
+    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">ec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_characters</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+                    <span class="n">old_sc</span><span class="p">,</span> <span class="n">old_ec</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+                    <span class="n">s</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">old_sc</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ec</span><span class="p">,</span> <span class="n">old_ec</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">s</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ec</span><span class="p">)</span>
+        <span class="n">poses</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pos</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">keys</span><span class="p">())]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">poses</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PositionBoosts"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.PositionBoosts">[docs]</a><span class="k">class</span> <span class="nc">PositionBoosts</span><span class="p">(</span><span class="n">Positions</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A format that stores positions and per-position boost information</span>
+<span class="sd">    in each posting.</span>
+
+<span class="sd">    Supports: frequency, weight, positions, position_boosts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">word_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">fb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;boosts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">pos</span>
+            <span class="n">boost</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">boost</span>
+            <span class="n">seen</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pos</span><span class="p">,</span> <span class="n">boost</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">poses</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">seen</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">poses</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">poses</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">poses</span><span class="p">)</span> <span class="o">*</span> <span class="n">fb</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poses</span><span class="p">):</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">summedboost</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">boost</span> <span class="ow">in</span> <span class="n">poses</span><span class="p">:</span>
+            <span class="n">summedboost</span> <span class="o">+=</span> <span class="n">boost</span>
+            <span class="n">codes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pos</span> <span class="o">-</span> <span class="n">base</span><span class="p">,</span> <span class="n">boost</span><span class="p">))</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">pos</span>
+        <span class="k">return</span> <span class="n">pack_uint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">poses</span><span class="p">))</span> <span class="o">+</span> <span class="n">pack_float</span><span class="p">(</span><span class="n">summedboost</span><span class="p">)</span> <span class="o">+</span> <span class="n">dumps</span><span class="p">(</span><span class="n">codes</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decode_position_boosts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valuestring</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)):</span>
+            <span class="n">valuestring</span> <span class="o">+=</span> <span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">valuestring</span><span class="p">[</span><span class="n">_INT_SIZE</span> <span class="o">+</span> <span class="n">_FLOAT_SIZE</span> <span class="p">:])</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">posns_boosts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">position</span>
+            <span class="n">posns_boosts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">position</span><span class="p">,</span> <span class="n">code</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">posns_boosts</span>
+
+    <span class="k">def</span> <span class="nf">decode_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valuestring</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)):</span>
+            <span class="n">valuestring</span> <span class="o">+=</span> <span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">valuestring</span><span class="p">[</span><span class="n">_INT_SIZE</span> <span class="o">+</span> <span class="n">_FLOAT_SIZE</span> <span class="p">:])</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">posns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">position</span>
+            <span class="n">posns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">posns</span>
+
+    <span class="k">def</span> <span class="nf">decode_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">summedboost</span> <span class="o">=</span> <span class="n">unpack_float</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">_INT_SIZE</span> <span class="p">:</span> <span class="n">_INT_SIZE</span> <span class="o">+</span> <span class="n">_FLOAT_SIZE</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">summedboost</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+
+    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">boost</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_position_boosts</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="n">s</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">+=</span> <span class="n">boost</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span></div>
+
+
+<div class="viewcode-block" id="CharacterBoosts"><a class="viewcode-back" href="../../api/formats.html#whoosh_reloaded.formats.CharacterBoosts">[docs]</a><span class="k">class</span> <span class="nc">CharacterBoosts</span><span class="p">(</span><span class="n">Characters</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A format that stores positions, character start and end, and</span>
+<span class="sd">    per-position boost information in each posting.</span>
+
+<span class="sd">    Supports: frequency, weight, positions, position_boosts, characters,</span>
+<span class="sd">    character_boosts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">word_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;chars&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;boosts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">seen</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">endchar</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">boost</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">poses</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">seen</span><span class="p">):</span>
+            <span class="n">value</span><span class="p">,</span> <span class="n">summedboost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">poses</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">poses</span><span class="p">),</span> <span class="n">summedboost</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poses</span><span class="p">):</span>
+        <span class="n">fb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_boost</span>
+        <span class="c1"># posns_chars_boosts = [(pos, startchar, endchar, boost), ...]</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">posbase</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">charbase</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">summedboost</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">,</span> <span class="n">boost</span> <span class="ow">in</span> <span class="n">poses</span><span class="p">:</span>
+            <span class="n">codes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">pos</span> <span class="o">-</span> <span class="n">posbase</span><span class="p">,</span> <span class="n">startchar</span> <span class="o">-</span> <span class="n">charbase</span><span class="p">,</span> <span class="n">endchar</span> <span class="o">-</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">boost</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">posbase</span> <span class="o">=</span> <span class="n">pos</span>
+            <span class="n">charbase</span> <span class="o">=</span> <span class="n">endchar</span>
+            <span class="n">summedboost</span> <span class="o">+=</span> <span class="n">boost</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">pack_uint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">poses</span><span class="p">))</span> <span class="o">+</span> <span class="n">pack_float</span><span class="p">(</span><span class="n">summedboost</span> <span class="o">*</span> <span class="n">fb</span><span class="p">)</span> <span class="o">+</span> <span class="n">dumps</span><span class="p">(</span><span class="n">codes</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+            <span class="n">summedboost</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">decode_character_boosts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">valuestring</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)):</span>
+            <span class="n">valuestring</span> <span class="o">+=</span> <span class="n">b</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">valuestring</span><span class="p">[</span><span class="n">_INT_SIZE</span> <span class="o">+</span> <span class="n">_FLOAT_SIZE</span> <span class="p">:])</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">endchar</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">posn_char_boosts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">position</span> <span class="o">+</span> <span class="n">code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">startchar</span> <span class="o">=</span> <span class="n">endchar</span> <span class="o">+</span> <span class="n">code</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">endchar</span> <span class="o">=</span> <span class="n">startchar</span> <span class="o">+</span> <span class="n">code</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">posn_char_boosts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">position</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">,</span> <span class="n">code</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">posn_char_boosts</span>
+
+    <span class="k">def</span> <span class="nf">decode_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_character_boosts</span><span class="p">(</span><span class="n">valuestring</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">decode_characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_character_boosts</span><span class="p">(</span><span class="n">valuestring</span><span class="p">)</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">decode_position_boosts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valuestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">boost</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">boost</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_character_boosts</span><span class="p">(</span><span class="n">valuestring</span><span class="p">)</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">boost</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_character_boosts</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+                    <span class="n">old_sc</span><span class="p">,</span> <span class="n">old_ec</span><span class="p">,</span> <span class="n">old_boost</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+                    <span class="n">s</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">old_sc</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ec</span><span class="p">,</span> <span class="n">old_ec</span><span class="p">),</span> <span class="n">old_boost</span> <span class="o">+</span> <span class="n">boost</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">s</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">boost</span><span class="p">)</span>
+        <span class="n">poses</span> <span class="o">=</span> <span class="p">[(</span><span class="n">pos</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">boost</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">boost</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">items</span><span class="p">())]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">poses</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># encode() returns value, summedboost</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

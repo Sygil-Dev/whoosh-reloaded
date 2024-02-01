@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About analyzers &mdash; Whoosh 2.7.4 documentation</title>
+  <title>About analyzers &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -97,7 +97,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -131,10 +131,10 @@ filters. The analyzer’s <code class="docutils literal notranslate"><span class
 tokenizer, and the tokenizer will usually be wrapped in a few filters.</p>
 <p>A tokenizer is a callable that takes a unicode string and yields a series of
 <code class="docutils literal notranslate"><span class="pre">analysis.Token</span></code> objects.</p>
-<p>For example, the provided <a class="reference internal" href="api/analysis.html#whoosh.analysis.RegexTokenizer" title="whoosh.analysis.RegexTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.RegexTokenizer</span></code></a> class
+<p>For example, the provided <a class="reference internal" href="api/analysis.html#whoosh_reloaded.analysis.RegexTokenizer" title="whoosh_reloaded.analysis.RegexTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis.RegexTokenizer</span></code></a> class
 implements a customizable, regular-expression-based tokenizer that extracts
 words and ignores whitespace and punctuation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">RegexTokenizer</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">RegexTokenizer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">RegexTokenizer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;Hello there my friend!&quot;</span><span class="p">):</span>
 <span class="gp">... </span>  <span class="nb">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -146,7 +146,7 @@ words and ignores whitespace and punctuation.</p>
 </div>
 <p>A filter is a callable that takes a generator of Tokens (either a tokenizer or
 another filter) and in turn yields a series of Tokens.</p>
-<p>For example, the provided <a class="reference internal" href="api/analysis.html#whoosh.analysis.LowercaseFilter" title="whoosh.analysis.LowercaseFilter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.analysis.LowercaseFilter()</span></code></a> filters tokens
+<p>For example, the provided <a class="reference internal" href="api/analysis.html#whoosh_reloaded.analysis.LowercaseFilter" title="whoosh_reloaded.analysis.LowercaseFilter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis.LowercaseFilter()</span></code></a> filters tokens
 by converting their text to lowercase. The implementation is very simple:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">LowercaseFilter</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Uses lower() to lowercase token text. For example, tokens</span>
@@ -159,7 +159,7 @@ by converting their text to lowercase. The implementation is very simple:</p>
 </pre></div>
 </div>
 <p>You can wrap the filter around a tokenizer to see it in operation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">LowercaseFilter</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">LowercaseFilter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">LowercaseFilter</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;These ARE the things I want!&quot;</span><span class="p">)):</span>
 <span class="gp">... </span>  <span class="nb">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 <span class="go">u&#39;these&#39;</span>
@@ -179,9 +179,9 @@ tokenizers and filters together using the <code class="docutils literal notransl
 </div>
 <p>The first item must be a tokenizer and the rest must be filters (you can’t put a
 filter first or a tokenizer after the first item). Note that this only works if at
-least the tokenizer is a subclass of <code class="docutils literal notranslate"><span class="pre">whoosh.analysis.Composable</span></code>, as all the
+least the tokenizer is a subclass of <code class="docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis.Composable</span></code>, as all the
 tokenizers and filters that ship with Whoosh are.</p>
-<p>See the <a class="reference internal" href="api/analysis.html#module-whoosh.analysis" title="whoosh.analysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.analysis</span></code></a> module for information on the available analyzers,
+<p>See the <a class="reference internal" href="api/analysis.html#module-whoosh_reloaded.analysis" title="whoosh_reloaded.analysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis</span></code></a> module for information on the available analyzers,
 tokenizers, and filters shipped with Whoosh.</p>
 </section>
 <section id="using-analyzers">
@@ -329,7 +329,7 @@ want to apply at indexing or query parsing:</p>
                 <span class="o">...</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="api/analysis.html#whoosh.analysis.MultiFilter" title="whoosh.analysis.MultiFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.MultiFilter</span></code></a> filter class lets you specify different
+<p>The <a class="reference internal" href="api/analysis.html#whoosh_reloaded.analysis.MultiFilter" title="whoosh_reloaded.analysis.MultiFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis.MultiFilter</span></code></a> filter class lets you specify different
 filters to use based on the mode setting:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">intraword</span> <span class="o">=</span> <span class="n">MultiFilter</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">IntraWordFilter</span><span class="p">(</span><span class="n">mergewords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mergenums</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                         <span class="n">query</span><span class="o">=</span><span class="n">IntraWordFilter</span><span class="p">(</span><span class="n">mergewords</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mergenums</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
@@ -341,7 +341,7 @@ filters to use based on the mode setting:</p>
 <p>“Stop” words are words that are so common it’s often counter-productive to index
 them, such as “and”, “or”, “if”, etc. The provided <code class="docutils literal notranslate"><span class="pre">analysis.StopFilter</span></code> lets you
 filter out stop words, and includes a default list of common stop words.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">StopFilter</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">StopFilter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stopper</span> <span class="o">=</span> <span class="n">StopFilter</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">stopper</span><span class="p">(</span><span class="n">LowercaseFilter</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;These ARE the things I want!&quot;</span><span class="p">))):</span>
 <span class="gp">... </span>  <span class="nb">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -429,7 +429,7 @@ stop-words in the stream.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">removestops</span></code> parameter passed to the analyzer’s <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method (and
 copied to the <code class="docutils literal notranslate"><span class="pre">Token</span></code> object as an attribute) specifies whether stop words should
 be removed from the stream or left in.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">StandardAnalyzer</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">StandardAnalyzer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">StandardAnalyzer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">stopped</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">analyzer</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;This is a test&quot;</span><span class="p">)]</span>
 <span class="go">[(u&#39;test&#39;, False)]</span>

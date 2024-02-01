@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stemming, variations, and accent folding &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Stemming, variations, and accent folding &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -89,7 +89,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -119,7 +119,7 @@ but also <code class="docutils literal notranslate"><span class="pre">renders</s
 the original text but not in the user’s query, or vice versa. For example, we
 want the user to be able to search for <code class="docutils literal notranslate"><span class="pre">cafe</span></code> and find documents containing
 <code class="docutils literal notranslate"><span class="pre">café</span></code>.</p>
-<p>The default analyzer for the <a class="reference internal" href="api/fields.html#whoosh.fields.TEXT" title="whoosh.fields.TEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.TEXT</span></code></a> field does not do
+<p>The default analyzer for the :class:` whoosh_reloaded.fields.TEXT` field does not do
 stemming or accent folding.</p>
 </section>
 <section id="stemming">
@@ -128,7 +128,7 @@ stemming or accent folding.</p>
 from words to arrive (hopefully, most of the time) at the base word. Whoosh
 includes several stemming algorithms such as Porter and Porter2, Paice Husk,
 and Lovins.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.lang.porter</span> <span class="kn">import</span> <span class="n">stem</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.lang.porter</span> <span class="kn">import</span> <span class="n">stem</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stem</span><span class="p">(</span><span class="s2">&quot;rendering&quot;</span><span class="p">)</span>
 <span class="go">&#39;render&#39;</span>
 </pre></div>
@@ -138,7 +138,7 @@ to words in user queries. So in theory all variations of a root word (“render�
 “rendered”, “renders”, “rendering”, etc.) are reduced to a single term in the
 index, saving space. And all possible variations users might use in a query
 are reduced to the root, so stemming enhances “recall”.</p>
-<p>The <a class="reference internal" href="api/analysis.html#whoosh.analysis.StemFilter" title="whoosh.analysis.StemFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.StemFilter</span></code></a> lets you add a stemming filter to an
+<p>The :class:` whoosh_reloaded.analysis.StemFilter` lets you add a stemming filter to an
 analyzer chain.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rext</span> <span class="o">=</span> <span class="n">RegexTokenizer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">rext</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;fundamentally willows&quot;</span><span class="p">)</span>
@@ -147,10 +147,10 @@ analyzer chain.</p>
 <span class="go">[u&quot;fundament&quot;, u&quot;willow&quot;]</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="api/analysis.html#whoosh.analysis.StemmingAnalyzer" title="whoosh.analysis.StemmingAnalyzer"><code class="xref py py-func docutils literal notranslate"><span class="pre">whoosh.analysis.StemmingAnalyzer()</span></code></a> is a pre-packaged analyzer that
+<p>The :func:` whoosh_reloaded.analysis.StemmingAnalyzer` is a pre-packaged analyzer that
 combines a tokenizer, lower-case filter, optional stop filter, and stem filter:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">fields</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">StemmingAnalyzer</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">fields</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">StemmingAnalyzer</span>
 
 <span class="n">stem_ana</span> <span class="o">=</span> <span class="n">StemmingAnalyzer</span><span class="p">()</span>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">TEXT</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="n">stem_ana</span><span class="p">,</span> <span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
@@ -175,7 +175,7 @@ are not useful for things like creating a spelling dictionary.</p></li>
 variations you instead index words “as is” and <em>at query time</em> expand words
 in the user query using a heuristic algorithm to generate morphological
 variations of the word.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.lang.morph_en</span> <span class="kn">import</span> <span class="n">variations</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.lang.morph_en</span> <span class="kn">import</span> <span class="n">variations</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">variations</span><span class="p">(</span><span class="s2">&quot;rendered&quot;</span><span class="p">)</span>
 <span class="go">set([&#39;rendered&#39;, &#39;rendernesses&#39;, &#39;render&#39;, &#39;renderless&#39;, &#39;rendering&#39;,</span>
 <span class="go">&#39;renderness&#39;, &#39;renderes&#39;, &#39;renderer&#39;, &#39;renderements&#39;, &#39;rendereless&#39;,</span>
@@ -187,8 +187,8 @@ variations of the word.</p>
 <p>Many of the generated variations for a given word will not be valid words, but
 it’s fairly fast for Whoosh to check which variations are actually in the
 index and only search for those.</p>
-<p>The <a class="reference internal" href="api/query.html#whoosh.query.Variations" title="whoosh.query.Variations"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Variations</span></code></a> query object lets you search for variations
-of a word. Whereas the normal <a class="reference internal" href="api/query.html#whoosh.query.Term" title="whoosh.query.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Term</span></code></a> object only searches
+<p>The :class:` whoosh_reloaded.query.Variations` query object lets you search for variations
+of a word. Whereas the normal :class:` whoosh_reloaded.query.Term` object only searches
 for the given term, the <code class="docutils literal notranslate"><span class="pre">Variations</span></code> query acts like an <code class="docutils literal notranslate"><span class="pre">Or</span></code> query for the
 variations of the given word in the index. For example, the query:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">query</span><span class="o">.</span><span class="n">Variations</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;rendered&quot;</span><span class="p">)</span>
@@ -199,10 +199,10 @@ variations of the given word in the index. For example, the query:</p>
           <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;renders&quot;</span><span class="p">),</span> <span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;rendering&quot;</span><span class="p">)])</span>
 </pre></div>
 </div>
-<p>To have the query parser use <a class="reference internal" href="api/query.html#whoosh.query.Variations" title="whoosh.query.Variations"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Variations</span></code></a> instead of
-<a class="reference internal" href="api/query.html#whoosh.query.Term" title="whoosh.query.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Term</span></code></a> for individual terms, use the <code class="docutils literal notranslate"><span class="pre">termclass</span></code>
+<p>To have the query parser use :class:` whoosh_reloaded.query.Variations` instead of
+:class:` whoosh_reloaded.query.Term` for individual terms, use the <code class="docutils literal notranslate"><span class="pre">termclass</span></code>
 keyword argument to the parser initialization method:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">qparser</span><span class="p">,</span> <span class="n">query</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">qparser</span><span class="p">,</span> <span class="n">query</span>
 
 <span class="n">qp</span> <span class="o">=</span> <span class="n">qparser</span><span class="o">.</span><span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">termclass</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">Variations</span><span class="p">)</span>
 </pre></div>
@@ -226,7 +226,7 @@ more sophisticated methods of finding the base form (“lemma”) of a word usin
 language models, often involving analysis of the surrounding context and
 part-of-speech tagging.</p>
 <p>Whoosh does not include any lemmatization functions, but if you have separate
-lemmatizing code you could write a custom <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.Filter</span></code>
+lemmatizing code you could write a custom :class:` whoosh_reloaded.analysis.Filter`
 to integrate it into a Whoosh analyzer.</p>
 </section>
 <section id="character-folding">
@@ -242,13 +242,13 @@ equivalent, such as “half-width” characters.</p>
 accent folding can break down.</p>
 <p><a class="reference external" href="http://www.alistapart.com/articles/accent-folding-for-auto-complete/">http://www.alistapart.com/articles/accent-folding-for-auto-complete/</a></p>
 <p>Whoosh includes several mechanisms for adding character folding to an analyzer.</p>
-<p>The <a class="reference internal" href="api/analysis.html#whoosh.analysis.CharsetFilter" title="whoosh.analysis.CharsetFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.CharsetFilter</span></code></a> applies a character map to token
+<p>The :class:` whoosh_reloaded.analysis.CharsetFilter` applies a character map to token
 text. For example, it will filter the tokens <code class="docutils literal notranslate"><span class="pre">u'café',</span> <span class="pre">u'resumé',</span> <span class="pre">...</span></code> to
 <code class="docutils literal notranslate"><span class="pre">u'cafe',</span> <span class="pre">u'resume',</span> <span class="pre">...</span></code>. This is usually the method you’ll want to use
 unless you need to use a charset to tokenize terms:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">CharsetFilter</span><span class="p">,</span> <span class="n">StemmingAnalyzer</span>
-<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">fields</span>
-<span class="kn">from</span> <span class="nn">whoosh.support.charset</span> <span class="kn">import</span> <span class="n">accent_map</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">CharsetFilter</span><span class="p">,</span> <span class="n">StemmingAnalyzer</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">fields</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.support.charset</span> <span class="kn">import</span> <span class="n">accent_map</span>
 
 <span class="c1"># For example, to add an accent-folding filter to a stemming analyzer:</span>
 <span class="n">my_analyzer</span> <span class="o">=</span> <span class="n">StemmingAnalyzer</span><span class="p">()</span> <span class="o">|</span> <span class="n">CharsetFilter</span><span class="p">(</span><span class="n">accent_map</span><span class="p">)</span>
@@ -257,20 +257,20 @@ unless you need to use a charset to tokenize terms:</p>
 <span class="n">my_schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="n">my_analyzer</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="api/analysis.html#whoosh.analysis.CharsetTokenizer" title="whoosh.analysis.CharsetTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.CharsetTokenizer</span></code></a> uses a Sphinx charset table to
+<p>The :class:` whoosh_reloaded.analysis.CharsetTokenizer` uses a Sphinx charset table to
 both separate terms and perform character folding. This tokenizer is slower
-than the <a class="reference internal" href="api/analysis.html#whoosh.analysis.RegexTokenizer" title="whoosh.analysis.RegexTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.RegexTokenizer</span></code></a> because it loops over each
+than the :class:` whoosh_reloaded.analysis.RegexTokenizer` because it loops over each
 character in Python. If the language(s) you’re indexing can be tokenized using
 regular expressions, it will be much faster to use <code class="docutils literal notranslate"><span class="pre">RegexTokenizer</span></code> and
 <code class="docutils literal notranslate"><span class="pre">CharsetFilter</span></code> in combination instead of using <code class="docutils literal notranslate"><span class="pre">CharsetTokenizer</span></code>.</p>
-<p>The <a class="reference internal" href="api/support/charset.html#module-whoosh.support.charset" title="whoosh.support.charset"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.support.charset</span></code></a> module contains an accent folding map useful
+<p>The :mod:` whoosh_reloaded.support.charset` module contains an accent folding map useful
 for most Western languages, as well as a much more extensive Sphinx charset
 table and a function to convert Sphinx charset tables into the character maps
 required by <code class="docutils literal notranslate"><span class="pre">CharsetTokenizer</span></code> and <code class="docutils literal notranslate"><span class="pre">CharsetFilter</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># To create a filter using an enourmous character map for most languages</span>
 <span class="c1"># generated from a Sphinx charset table</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">CharsetFilter</span>
-<span class="kn">from</span> <span class="nn">whoosh.support.charset</span> <span class="kn">import</span> <span class="n">default_charset</span><span class="p">,</span> <span class="n">charset_table_to_dict</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">CharsetFilter</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.support.charset</span> <span class="kn">import</span> <span class="n">default_charset</span><span class="p">,</span> <span class="n">charset_table_to_dict</span>
 <span class="n">charmap</span> <span class="o">=</span> <span class="n">charset_table_to_dict</span><span class="p">(</span><span class="n">default_charset</span><span class="p">)</span>
 <span class="n">my_analyzer</span> <span class="o">=</span> <span class="n">StemmingAnalyzer</span><span class="p">()</span> <span class="o">|</span> <span class="n">CharsetFilter</span><span class="p">(</span><span class="n">charmap</span><span class="p">)</span>
 </pre></div>

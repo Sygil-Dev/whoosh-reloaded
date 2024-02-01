@@ -20,13 +20,13 @@ tokenizer, and the tokenizer will usually be wrapped in a few filters.
 A tokenizer is a callable that takes a unicode string and yields a series of
 ``analysis.Token`` objects.
 
-For example, the provided :class:`whoosh.analysis.RegexTokenizer` class
+For example, the provided :class:`whoosh_reloaded.analysis.RegexTokenizer` class
 implements a customizable, regular-expression-based tokenizer that extracts
 words and ignores whitespace and punctuation.
 
 ::
 
-    >>> from whoosh.analysis import RegexTokenizer
+    >>> from whoosh_reloaded.analysis import RegexTokenizer
     >>> tokenizer = RegexTokenizer()
     >>> for token in tokenizer(u"Hello there my friend!"):
     ...   print repr(token.text)
@@ -38,7 +38,7 @@ words and ignores whitespace and punctuation.
 A filter is a callable that takes a generator of Tokens (either a tokenizer or
 another filter) and in turn yields a series of Tokens.
 
-For example, the provided :meth:`whoosh.analysis.LowercaseFilter` filters tokens
+For example, the provided :meth:`whoosh_reloaded.analysis.LowercaseFilter` filters tokens
 by converting their text to lowercase. The implementation is very simple::
 
     def LowercaseFilter(tokens):
@@ -52,7 +52,7 @@ by converting their text to lowercase. The implementation is very simple::
 
 You can wrap the filter around a tokenizer to see it in operation::
 
-    >>> from whoosh.analysis import LowercaseFilter
+    >>> from whoosh_reloaded.analysis import LowercaseFilter
     >>> for token in LowercaseFilter(tokenizer(u"These ARE the things I want!")):
     ...   print repr(token.text)
     u'these'
@@ -72,10 +72,10 @@ tokenizers and filters together using the ``|`` character::
 
 The first item must be a tokenizer and the rest must be filters (you can't put a
 filter first or a tokenizer after the first item). Note that this only works if at
-least the tokenizer is a subclass of ``whoosh.analysis.Composable``, as all the
+least the tokenizer is a subclass of ``whoosh_reloaded.analysis.Composable``, as all the
 tokenizers and filters that ship with Whoosh are.
 
-See the :mod:`whoosh.analysis` module for information on the available analyzers,
+See the :mod:`whoosh_reloaded.analysis` module for information on the available analyzers,
 tokenizers, and filters shipped with Whoosh.
 
 
@@ -185,7 +185,7 @@ want to apply at indexing or query parsing::
                 else:
                     ...
 
-The :class:`whoosh.analysis.MultiFilter` filter class lets you specify different
+The :class:`whoosh_reloaded.analysis.MultiFilter` filter class lets you specify different
 filters to use based on the mode setting::
 
     intraword = MultiFilter(index=IntraWordFilter(mergewords=True, mergenums=True),
@@ -201,7 +201,7 @@ filter out stop words, and includes a default list of common stop words.
 
 ::
 
-    >>> from whoosh.analysis import StopFilter
+    >>> from whoosh_reloaded.analysis import StopFilter
     >>> stopper = StopFilter()
     >>> for token in stopper(LowercaseFilter(tokenizer(u"These ARE the things I want!"))):
     ...   print repr(token.text)
@@ -276,7 +276,7 @@ be removed from the stream or left in.
 
 ::
 
-    >>> from whoosh.analysis import StandardAnalyzer
+    >>> from whoosh_reloaded.analysis import StandardAnalyzer
     >>> analyzer = StandardAnalyzer()
     >>> [(t.text, t.stopped) for t in analyzer(u"This is a test")]
     [(u'test', False)]

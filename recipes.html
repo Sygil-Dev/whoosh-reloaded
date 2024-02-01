@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Whoosh recipes &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Whoosh recipes &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -119,7 +119,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -152,7 +152,7 @@
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading">¶</a></h2>
 <section id="eliminate-words-shorter-longer-than-n">
 <h3>Eliminate words shorter/longer than N<a class="headerlink" href="#eliminate-words-shorter-longer-than-n" title="Permalink to this heading">¶</a></h3>
-<p>Use a <a class="reference internal" href="api/analysis.html#whoosh.analysis.StopFilter" title="whoosh.analysis.StopFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">StopFilter</span></code></a> and the <code class="docutils literal notranslate"><span class="pre">minsize</span></code> and <code class="docutils literal notranslate"><span class="pre">maxsize</span></code>
+<p>Use a <code class="xref py py-class docutils literal notranslate"><span class="pre">StopFilter</span></code> and the <code class="docutils literal notranslate"><span class="pre">minsize</span></code> and <code class="docutils literal notranslate"><span class="pre">maxsize</span></code>
 keyword arguments. If you just want to filter based on size and not common
 words, set the <code class="docutils literal notranslate"><span class="pre">stoplist</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">StopFilter</span><span class="p">(</span><span class="n">stoplist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minsize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
@@ -192,7 +192,7 @@ characters, it acts as a case-sensitive search:</p>
 </section>
 <section id="itunes-style-search-as-you-type">
 <h3>iTunes-style search-as-you-type<a class="headerlink" href="#itunes-style-search-as-you-type" title="Permalink to this heading">¶</a></h3>
-<p>Use the <a class="reference internal" href="api/analysis.html#whoosh.analysis.NgramWordAnalyzer" title="whoosh.analysis.NgramWordAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.NgramWordAnalyzer</span></code></a> as the analyzer for the
+<p>Use the :class:` whoosh_reloaded.analysis.NgramWordAnalyzer` as the analyzer for the
 field you want to search as the user types. You can save space in the index by
 turning off positions in the field using <code class="docutils literal notranslate"><span class="pre">phrase=False</span></code>, since phrase
 searching on N-gram fields usually doesn’t make much sense:</p>
@@ -202,7 +202,7 @@ searching on N-gram fields usually doesn’t make much sense:</p>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title_field</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>See the documentation for the <a class="reference internal" href="api/analysis.html#whoosh.analysis.NgramWordAnalyzer" title="whoosh.analysis.NgramWordAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">NgramWordAnalyzer</span></code></a> class
+<p>See the documentation for the <code class="xref py py-class docutils literal notranslate"><span class="pre">NgramWordAnalyzer</span></code> class
 for information on the available options.</p>
 </section>
 </section>
@@ -228,7 +228,7 @@ for information on the available options.</p>
 <p>The following scoring function uses the position of the first occurance of a
 term in each document to calculate the score, so documents with the given term
 earlier in the document will score higher:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">scoring</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">scoring</span>
 
 <span class="k">def</span> <span class="nf">pos_score_fn</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">matcher</span><span class="p">):</span>
     <span class="n">poses</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;positions&quot;</span><span class="p">)</span>

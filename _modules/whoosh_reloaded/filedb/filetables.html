@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh_reloaded.filedb.filetables &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh_reloaded.filedb.filetables</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh_reloaded.filedb.filetables</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2009 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="sd">&quot;&quot;&quot;This module defines writer and reader classes for a fast, immutable</span>
+<span class="sd">on-disk key-value database format. The current format is based heavily on</span>
+<span class="sd">D. J. Bernstein&#39;s CDB format (http://cr.yp.to/cdb.html).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">struct</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">binascii</span> <span class="kn">import</span> <span class="n">crc32</span>
+<span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">md5</span>  <span class="c1"># @UnresolvedImport</span>
+
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">b</span><span class="p">,</span> <span class="n">bytes_type</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">xrange</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.util.numlists</span> <span class="kn">import</span> <span class="n">GrowableArray</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.system</span> <span class="kn">import</span> <span class="n">_INT_SIZE</span><span class="p">,</span> <span class="n">emptybytes</span>
+
+
+<span class="c1"># Exceptions</span>
+
+
+<span class="k">class</span> <span class="nc">FileFormatError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># Hash functions</span>
+
+
+<span class="k">def</span> <span class="nf">cdb_hash</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="mi">5381</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">+</span> <span class="p">(</span><span class="n">h</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span> <span class="o">^</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">h</span>
+
+
+<span class="k">def</span> <span class="nf">md5_hash</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">md5</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">md5</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">usedforsecurity</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
+
+
+<span class="k">def</span> <span class="nf">crc_hash</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">crc32</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
+
+
+<span class="n">_hash_functions</span> <span class="o">=</span> <span class="p">(</span><span class="n">md5_hash</span><span class="p">,</span> <span class="n">crc_hash</span><span class="p">,</span> <span class="n">cdb_hash</span><span class="p">)</span>
+
+
+<span class="c1"># Structs</span>
+
+<span class="c1"># Two uints before the key/value pair giving the length of the key and value</span>
+<span class="n">_lengths</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="s2">&quot;!ii&quot;</span><span class="p">)</span>
+<span class="c1"># A pointer in a hash table, giving the hash value and the key position</span>
+<span class="n">_pointer</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="s2">&quot;!Iq&quot;</span><span class="p">)</span>
+<span class="c1"># A pointer in the hash table directory, giving the position and number of slots</span>
+<span class="n">_dir_entry</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="s2">&quot;!qi&quot;</span><span class="p">)</span>
+
+<span class="n">_directory_size</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">*</span> <span class="n">_dir_entry</span><span class="o">.</span><span class="n">size</span>
+
+
+<span class="c1"># Basic hash file</span>
+
+
+<div class="viewcode-block" id="HashWriter"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.HashWriter">[docs]</a><span class="k">class</span> <span class="nc">HashWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a fast on-disk key-value store. This hash uses a two-level</span>
+<span class="sd">    hashing scheme, where a key is hashed, the low eight bits of the hash value</span>
+<span class="sd">    are used to index into one of 256 hash tables. This is basically the CDB</span>
+<span class="sd">    algorithm, but unlike CDB this object writes all data serially (it doesn&#39;t</span>
+<span class="sd">    seek backwards to overwrite information at the end).</span>
+
+<span class="sd">    Also unlike CDB, this format uses 64-bit file pointers, so the file length</span>
+<span class="sd">    is essentially unlimited. However, each key and value must be less than</span>
+<span class="sd">    2 GB in length.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">magic</span><span class="o">=</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;HSH3&quot;</span><span class="p">),</span> <span class="n">hashtype</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param dbfile: a :class:`~whoosh_reloaded.filedb.structfile.StructFile` object</span>
+<span class="sd">            to write to.</span>
+<span class="sd">        :param magic: the format tag bytes to write at the start of the file.</span>
+<span class="sd">        :param hashtype: an integer indicating which hashing algorithm to use.</span>
+<span class="sd">            Possible values are 0 (MD5), 1 (CRC32), or 2 (CDB hash).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span> <span class="o">=</span> <span class="n">dbfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hashtype</span> <span class="o">=</span> <span class="n">hashtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hashfn</span> <span class="o">=</span> <span class="n">_hash_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">hashtype</span><span class="p">]</span>
+        <span class="c1"># A place for subclasses to put extra metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extras</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">startoffset</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="c1"># Write format tag</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">magic</span><span class="p">)</span>
+        <span class="c1"># Write hash type</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hashtype</span><span class="p">)</span>
+        <span class="c1"># Unused future expansion bits</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">write_int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">write_int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># 256 lists of hashed keys and positions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buckets</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">256</span><span class="p">)]</span>
+        <span class="c1"># List to remember the positions of the hash tables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">tell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HashWriter.add"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.HashWriter.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a key/value pair to the file. Note that keys DO NOT need to be</span>
+<span class="sd">        unique. You can store multiple values under the same key and retrieve</span>
+<span class="sd">        them using :meth:`HashReader.all`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">)</span>
+
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">_lengths</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Get hash value for the key</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashfn</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="c1"># Add hash and on-disk position to appropriate bucket</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buckets</span><span class="p">[</span><span class="n">h</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">pos</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="HashWriter.add_all"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.HashWriter.add_all">[docs]</a>    <span class="k">def</span> <span class="nf">add_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convenience method to add a sequence of ``(key, value)`` pairs. This</span>
+<span class="sd">        is the same as calling :meth:`HashWriter.add` on each pair in the</span>
+<span class="sd">        sequence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">add</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_write_hashes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Writes 256 hash tables containing pointers to the key/value pairs</span>
+
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="c1"># Represent and empty slot in the hash table using 0,0 (no key can</span>
+        <span class="c1"># start at position 0 because of the header)</span>
+        <span class="n">null</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">entries</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">buckets</span><span class="p">:</span>
+            <span class="c1"># Start position of this bucket&#39;s hash table</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+            <span class="c1"># Remember the start position and the number of slots</span>
+            <span class="n">numslots</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">pos</span><span class="p">,</span> <span class="n">numslots</span><span class="p">))</span>
+
+            <span class="c1"># Create the empty hash table</span>
+            <span class="n">hashtable</span> <span class="o">=</span> <span class="p">[</span><span class="n">null</span><span class="p">]</span> <span class="o">*</span> <span class="n">numslots</span>
+            <span class="c1"># For each (hash value, key position) tuple in the bucket</span>
+            <span class="k">for</span> <span class="n">hashval</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+                <span class="c1"># Bitshift and wrap to get the slot for this entry</span>
+                <span class="n">slot</span> <span class="o">=</span> <span class="p">(</span><span class="n">hashval</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">%</span> <span class="n">numslots</span>
+                <span class="c1"># If the slot is taken, keep going until we find an empty slot</span>
+                <span class="k">while</span> <span class="n">hashtable</span><span class="p">[</span><span class="n">slot</span><span class="p">]</span> <span class="o">!=</span> <span class="n">null</span><span class="p">:</span>
+                    <span class="n">slot</span> <span class="o">=</span> <span class="p">(</span><span class="n">slot</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">numslots</span>
+                <span class="c1"># Insert the entry into the hashtable</span>
+                <span class="n">hashtable</span><span class="p">[</span><span class="n">slot</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">hashval</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+
+            <span class="c1"># Write the hash table for this bucket to disk</span>
+            <span class="k">for</span> <span class="n">hashval</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">hashtable</span><span class="p">:</span>
+                <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">_pointer</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">hashval</span><span class="p">,</span> <span class="n">position</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_write_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Writes a directory of pointers to the 256 hash tables</span>
+
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">position</span><span class="p">,</span> <span class="n">numslots</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">_dir_entry</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">numslots</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_write_extras</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">write_pickle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+
+        <span class="c1"># Write hash tables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_hashes</span><span class="p">()</span>
+        <span class="c1"># Write directory of pointers to hash tables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_directory</span><span class="p">()</span>
+
+        <span class="n">expos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="c1"># Write extra information</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_extras</span><span class="p">()</span>
+        <span class="c1"># Write length of pickle</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">write_int</span><span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">-</span> <span class="n">expos</span><span class="p">)</span>
+
+        <span class="n">endpos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">endpos</span></div>
+
+
+<div class="viewcode-block" id="HashReader"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.HashReader">[docs]</a><span class="k">class</span> <span class="nc">HashReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reader for the fast on-disk key-value files created by</span>
+<span class="sd">    :class:`HashWriter`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">magic</span><span class="o">=</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;HSH3&quot;</span><span class="p">),</span> <span class="n">startoffset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param dbfile: a :class:`~whoosh_reloaded.filedb.structfile.StructFile` object</span>
+<span class="sd">            to read from.</span>
+<span class="sd">        :param length: the length of the file data. This is necessary since the</span>
+<span class="sd">            hashing information is written at the end of the file.</span>
+<span class="sd">        :param magic: the format tag bytes to look for at the start of the</span>
+<span class="sd">            file. If the file&#39;s format tag does not match these bytes, the</span>
+<span class="sd">            object raises a :class:`FileFormatError` exception.</span>
+<span class="sd">        :param startoffset: the starting point of the file data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span> <span class="o">=</span> <span class="n">dbfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startoffset</span> <span class="o">=</span> <span class="n">startoffset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dbfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_END</span><span class="p">)</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">-</span> <span class="n">startoffset</span>
+
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">startoffset</span><span class="p">)</span>
+        <span class="c1"># Check format tag</span>
+        <span class="n">filemagic</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">filemagic</span> <span class="o">!=</span> <span class="n">magic</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FileFormatError</span><span class="p">(</span><span class="s2">&quot;Unknown file header </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filemagic</span><span class="p">)</span>
+        <span class="c1"># Read hash type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hashtype</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">read_byte</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hashfn</span> <span class="o">=</span> <span class="n">_hash_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">hashtype</span><span class="p">]</span>
+        <span class="c1"># Skip unused future expansion bits</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startofdata</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+
+        <span class="n">exptr</span> <span class="o">=</span> <span class="n">startoffset</span> <span class="o">+</span> <span class="n">length</span> <span class="o">-</span> <span class="n">_INT_SIZE</span>
+        <span class="c1"># Get the length of extras from the end of the file</span>
+        <span class="n">exlen</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_int</span><span class="p">(</span><span class="n">exptr</span><span class="p">)</span>
+        <span class="c1"># Read the extras</span>
+        <span class="n">expos</span> <span class="o">=</span> <span class="n">exptr</span> <span class="o">-</span> <span class="n">exlen</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">expos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_extras</span><span class="p">()</span>
+
+        <span class="c1"># Calculate the directory base from the beginning of the extras</span>
+        <span class="n">dbfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">expos</span> <span class="o">-</span> <span class="n">_directory_size</span><span class="p">)</span>
+        <span class="c1"># Read directory of hash tables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tables</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">entrysize</span> <span class="o">=</span> <span class="n">_dir_entry</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">unpackentry</span> <span class="o">=</span> <span class="n">_dir_entry</span><span class="o">.</span><span class="n">unpack</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+            <span class="c1"># position, numslots</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unpackentry</span><span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">entrysize</span><span class="p">)))</span>
+        <span class="c1"># The position of the first hash table is the end of the key/value pairs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endofdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="HashReader.open"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.HashReader.open">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convenience method to open a hash file given a</span>
+<span class="sd">        :class:`whoosh_reloaded.filedb.filestore.Storage` object and a name. This takes</span>
+<span class="sd">        care of opening the file and passing its length to the initializer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">length</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">file_length</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">dbfile</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+
+    <span class="k">def</span> <span class="nf">_read_extras</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extras</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extras</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Tried to close </span><span class="si">%r</span><span class="s2"> twice&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">key_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="c1"># Returns the key bytes at the given position</span>
+
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="n">keylen</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_uint</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">_lengths</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">keylen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">key_and_range_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="c1"># Returns a (keybytes, datapos, datalen) tuple for the key at the given</span>
+        <span class="c1"># position</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="n">lenssize</span> <span class="o">=</span> <span class="n">_lengths</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="k">if</span> <span class="n">pos</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endofdata</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">keylen</span><span class="p">,</span> <span class="n">datalen</span> <span class="o">=</span> <span class="n">_lengths</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">lenssize</span><span class="p">))</span>
+        <span class="n">keybytes</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pos</span> <span class="o">+</span> <span class="n">lenssize</span><span class="p">,</span> <span class="n">keylen</span><span class="p">)</span>
+        <span class="n">datapos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">lenssize</span> <span class="o">+</span> <span class="n">keylen</span>
+        <span class="k">return</span> <span class="n">keybytes</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span>
+
+    <span class="k">def</span> <span class="nf">_ranges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eod</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Yields a series of (keypos, keylength, datapos, datalength) tuples</span>
+        <span class="c1"># for the key/value pairs in the file</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">startofdata</span>
+        <span class="n">eod</span> <span class="o">=</span> <span class="n">eod</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">endofdata</span>
+        <span class="n">lenssize</span> <span class="o">=</span> <span class="n">_lengths</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">unpacklens</span> <span class="o">=</span> <span class="n">_lengths</span><span class="o">.</span><span class="n">unpack</span>
+
+        <span class="k">while</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="n">eod</span><span class="p">:</span>
+            <span class="n">keylen</span><span class="p">,</span> <span class="n">datalen</span> <span class="o">=</span> <span class="n">unpacklens</span><span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">lenssize</span><span class="p">))</span>
+            <span class="n">keypos</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">lenssize</span>
+            <span class="n">datapos</span> <span class="o">=</span> <span class="n">keypos</span> <span class="o">+</span> <span class="n">keylen</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">)</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">datapos</span> <span class="o">+</span> <span class="n">datalen</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">():</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges_for_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">),</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">default</span>
+
+<div class="viewcode-block" id="HashReader.all"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.HashReader.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields a sequence of values associated with the given key.&quot;&quot;&quot;</span>
+
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges_for_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HashReader.ranges_for_key"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.HashReader.ranges_for_key">[docs]</a>    <span class="k">def</span> <span class="nf">ranges_for_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields a sequence of ``(datapos, datalength)`` tuples associated</span>
+<span class="sd">        with the given key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Key </span><span class="si">%r</span><span class="s2"> should be bytes&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+
+        <span class="c1"># Hash the key</span>
+        <span class="n">keyhash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hashfn</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="c1"># Get the position and number of slots for the hash table in which the</span>
+        <span class="c1"># key may be found</span>
+        <span class="n">tablestart</span><span class="p">,</span> <span class="n">numslots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="n">keyhash</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">]</span>
+        <span class="c1"># If the hash table is empty, we know the key doesn&#39;t exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numslots</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">ptrsize</span> <span class="o">=</span> <span class="n">_pointer</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">unpackptr</span> <span class="o">=</span> <span class="n">_pointer</span><span class="o">.</span><span class="n">unpack</span>
+        <span class="n">lenssize</span> <span class="o">=</span> <span class="n">_lengths</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">unpacklens</span> <span class="o">=</span> <span class="n">_lengths</span><span class="o">.</span><span class="n">unpack</span>
+
+        <span class="c1"># Calculate where the key&#39;s slot should be</span>
+        <span class="n">slotpos</span> <span class="o">=</span> <span class="n">tablestart</span> <span class="o">+</span> <span class="p">(((</span><span class="n">keyhash</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">%</span> <span class="n">numslots</span><span class="p">)</span> <span class="o">*</span> <span class="n">ptrsize</span><span class="p">)</span>
+        <span class="c1"># Read slots looking for our key&#39;s hash value</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">numslots</span><span class="p">):</span>
+            <span class="n">slothash</span><span class="p">,</span> <span class="n">itempos</span> <span class="o">=</span> <span class="n">unpackptr</span><span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">slotpos</span><span class="p">,</span> <span class="n">ptrsize</span><span class="p">))</span>
+            <span class="c1"># If this slot is empty, we&#39;re done</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">itempos</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="c1"># If the key hash in this slot matches our key&#39;s hash, we might have</span>
+            <span class="c1"># a match, so read the actual key and see if it&#39;s our key</span>
+            <span class="k">if</span> <span class="n">slothash</span> <span class="o">==</span> <span class="n">keyhash</span><span class="p">:</span>
+                <span class="c1"># Read the key and value lengths</span>
+                <span class="n">keylen</span><span class="p">,</span> <span class="n">datalen</span> <span class="o">=</span> <span class="n">unpacklens</span><span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">itempos</span><span class="p">,</span> <span class="n">lenssize</span><span class="p">))</span>
+                <span class="c1"># Only bother reading the actual key if the lengths match</span>
+                <span class="k">if</span> <span class="n">keylen</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                    <span class="n">keystart</span> <span class="o">=</span> <span class="n">itempos</span> <span class="o">+</span> <span class="n">lenssize</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keystart</span><span class="p">,</span> <span class="n">keylen</span><span class="p">):</span>
+                        <span class="c1"># The keys match, so yield (datapos, datalen)</span>
+                        <span class="k">yield</span> <span class="p">(</span><span class="n">keystart</span> <span class="o">+</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datalen</span><span class="p">)</span>
+
+            <span class="n">slotpos</span> <span class="o">+=</span> <span class="n">ptrsize</span>
+            <span class="c1"># If we reach the end of the hashtable, wrap around</span>
+            <span class="k">if</span> <span class="n">slotpos</span> <span class="o">==</span> <span class="n">tablestart</span> <span class="o">+</span> <span class="p">(</span><span class="n">numslots</span> <span class="o">*</span> <span class="n">ptrsize</span><span class="p">):</span>
+                <span class="n">slotpos</span> <span class="o">=</span> <span class="n">tablestart</span></div>
+
+    <span class="k">def</span> <span class="nf">range_for_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges_for_key</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">item</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+
+<span class="c1"># Ordered hash file</span>
+
+
+<div class="viewcode-block" id="OrderedHashWriter"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.OrderedHashWriter">[docs]</a><span class="k">class</span> <span class="nc">OrderedHashWriter</span><span class="p">(</span><span class="n">HashWriter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements an on-disk hash, but requires that keys be added in order.</span>
+<span class="sd">    An :class:`OrderedHashReader` can then look up &quot;nearest keys&quot; based on</span>
+<span class="sd">    the ordering.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">):</span>
+        <span class="n">HashWriter</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">)</span>
+        <span class="c1"># Keep an array of the positions of all keys</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">GrowableArray</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">)</span>
+        <span class="c1"># Keep track of the last key added</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span> <span class="o">=</span> <span class="n">emptybytes</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Keys must increase: </span><span class="si">%r</span><span class="s2">..</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
+        <span class="n">HashWriter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span> <span class="o">=</span> <span class="n">key</span>
+
+    <span class="k">def</span> <span class="nf">_write_extras</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+
+        <span class="c1"># Store metadata about the index array</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="s2">&quot;indextype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">typecode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="s2">&quot;indexlen&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="c1"># Write the extras</span>
+        <span class="n">HashWriter</span><span class="o">.</span><span class="n">_write_extras</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># Write the index array</span>
+        <span class="n">index</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">dbfile</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedHashReader"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh_reloaded.filedb.filetables.OrderedHashReader">[docs]</a><span class="k">class</span> <span class="nc">OrderedHashReader</span><span class="p">(</span><span class="n">HashReader</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">closest_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the closest key equal to or greater than the given key. If</span>
+<span class="sd">        there is no key in the file equal to or greater than the given key,</span>
+<span class="sd">        returns None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closest_key_pos</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_at</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">ranges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields a series of ``(keypos, keylen, datapos, datalen)`` tuples</span>
+<span class="sd">        for the ordered series of keys equal or greater than the given key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closest_key_pos</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">item</span>
+
+    <span class="k">def</span> <span class="nf">keys_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields an ordered series of keys equal to or greater than the given</span>
+<span class="sd">        key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges_from</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">items_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields an ordered series of ``(key, value)`` tuples for keys equal</span>
+<span class="sd">        to or greater than the given key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges_from</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">),</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_read_extras</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+
+        <span class="c1"># Read the extras</span>
+        <span class="n">HashReader</span><span class="o">.</span><span class="n">_read_extras</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Set up for reading the index array</span>
+        <span class="n">indextype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="s2">&quot;indextype&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexbase</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexlen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="s2">&quot;indexlen&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexsize</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="n">indextype</span><span class="p">)</span>
+        <span class="c1"># Set up the function to read values from the index array</span>
+        <span class="k">if</span> <span class="n">indextype</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_byte</span>
+        <span class="k">elif</span> <span class="n">indextype</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_ushort</span>
+        <span class="k">elif</span> <span class="n">indextype</span> <span class="o">==</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_int</span>
+        <span class="k">elif</span> <span class="n">indextype</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_uint</span>
+        <span class="k">elif</span> <span class="n">indextype</span> <span class="o">==</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_long</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown index type </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">indextype</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">closest_key_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="c1"># Given a key, return the position of that key OR the next highest key</span>
+        <span class="c1"># if the given key does not exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Key </span><span class="si">%r</span><span class="s2"> should be bytes&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+
+        <span class="n">indexbase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexbase</span>
+        <span class="n">indexsize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexsize</span>
+        <span class="n">key_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_at</span>
+        <span class="n">_get_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pos</span>
+
+        <span class="c1"># Do a binary search of the positions in the index array</span>
+        <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">hi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexlen</span>
+        <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">midkey</span> <span class="o">=</span> <span class="n">key_at</span><span class="p">(</span><span class="n">_get_pos</span><span class="p">(</span><span class="n">indexbase</span> <span class="o">+</span> <span class="n">mid</span> <span class="o">*</span> <span class="n">indexsize</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">midkey</span> <span class="o">&lt;</span> <span class="n">key</span><span class="p">:</span>
+                <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+
+        <span class="c1"># If we went off the end, return None</span>
+        <span class="k">if</span> <span class="n">lo</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexlen</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="c1"># Return the closest key</span>
+        <span class="k">return</span> <span class="n">_get_pos</span><span class="p">(</span><span class="n">indexbase</span> <span class="o">+</span> <span class="n">lo</span> <span class="o">*</span> <span class="n">indexsize</span><span class="p">)</span></div>
+
+
+<span class="c1"># Fielded Ordered hash file</span>
+
+
+<span class="k">class</span> <span class="nc">FieldedOrderedHashWriter</span><span class="p">(</span><span class="n">HashWriter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements an on-disk hash, but writes separate position indexes for</span>
+<span class="sd">    each field.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">):</span>
+        <span class="n">HashWriter</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">)</span>
+        <span class="c1"># Map field names to (startpos, indexpos, length, typecode)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="s2">&quot;fieldmap&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Keep track of the last key added</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span> <span class="o">=</span> <span class="n">emptybytes</span>
+
+    <span class="k">def</span> <span class="nf">start_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldstart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="c1"># Keep an array of the positions of all keys</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poses</span> <span class="o">=</span> <span class="n">GrowableArray</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span> <span class="o">=</span> <span class="n">emptybytes</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Keys must increase: </span><span class="si">%r</span><span class="s2">..</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldstart</span><span class="p">)</span>
+        <span class="n">HashWriter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span> <span class="o">=</span> <span class="n">key</span>
+
+    <span class="k">def</span> <span class="nf">end_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+        <span class="n">poses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">poses</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldstart</span><span class="p">,</span>
+            <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">(),</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">poses</span><span class="p">),</span>
+            <span class="n">poses</span><span class="o">.</span><span class="n">typecode</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poses</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">dbfile</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">FieldedOrderedHashReader</span><span class="p">(</span><span class="n">HashReader</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">HashReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extras</span><span class="p">[</span><span class="s2">&quot;fieldmap&quot;</span><span class="p">]</span>
+        <span class="c1"># Make a sorted list of the field names with their start and end ranges</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">startpos</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">,</span> <span class="n">ixsize</span><span class="p">,</span> <span class="n">ixtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">startpos</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">field_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">fielded_ranges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eod</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">flist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldlist</span>
+        <span class="n">fpos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fieldname</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">flist</span><span class="p">[</span><span class="n">fpos</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">eod</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">keypos</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
+                <span class="n">fpos</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">fieldname</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">flist</span><span class="p">[</span><span class="n">fpos</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span>
+
+    <span class="k">def</span> <span class="nf">iter_terms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">get</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span>
+        <span class="k">for</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fielded_ranges</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">iter_term_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">get</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fielded_ranges</span><span class="p">():</span>
+            <span class="n">fieldname</span><span class="p">,</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="k">yield</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">),</span> <span class="n">get</span><span class="p">(</span><span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">contains_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_for_term</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">range_for_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">,</span> <span class="n">ixsize</span><span class="p">,</span> <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ranges_for_key</span><span class="p">(</span><span class="n">btext</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">datapos</span> <span class="o">&lt;</span> <span class="n">ixpos</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">((</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">term_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+        <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_for_term</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">term_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_data</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+
+    <span class="k">def</span> <span class="nf">closest_term_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="c1"># Given a key, return the position of that key OR the next highest key</span>
+        <span class="c1"># if the given key does not exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Key </span><span class="si">%r</span><span class="s2"> should be bytes&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="n">key_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_at</span>
+        <span class="n">startpos</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">,</span> <span class="n">ixsize</span><span class="p">,</span> <span class="n">ixtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">ixtype</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span>
+            <span class="n">get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_byte</span>
+        <span class="k">elif</span> <span class="n">ixtype</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
+            <span class="n">get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_ushort</span>
+        <span class="k">elif</span> <span class="n">ixtype</span> <span class="o">==</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span>
+            <span class="n">get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_int</span>
+        <span class="k">elif</span> <span class="n">ixtype</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span><span class="p">:</span>
+            <span class="n">get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_uint</span>
+        <span class="k">elif</span> <span class="n">ixtype</span> <span class="o">==</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span>
+            <span class="n">get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_long</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown index type </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ixtype</span><span class="p">)</span>
+
+        <span class="c1"># Do a binary search of the positions in the index array</span>
+        <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">hi</span> <span class="o">=</span> <span class="n">ixsize</span>
+        <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">midkey</span> <span class="o">=</span> <span class="n">key_at</span><span class="p">(</span><span class="n">startpos</span> <span class="o">+</span> <span class="n">get_pos</span><span class="p">(</span><span class="n">ixpos</span> <span class="o">+</span> <span class="n">mid</span> <span class="o">*</span> <span class="n">ixsize</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">midkey</span> <span class="o">&lt;</span> <span class="n">key</span><span class="p">:</span>
+                <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+
+        <span class="c1"># If we went off the end, return None</span>
+        <span class="k">if</span> <span class="n">lo</span> <span class="o">==</span> <span class="n">ixsize</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="c1"># Return the closest key</span>
+        <span class="k">return</span> <span class="n">startpos</span> <span class="o">+</span> <span class="n">get_pos</span><span class="p">(</span><span class="n">ixpos</span> <span class="o">+</span> <span class="n">lo</span> <span class="o">*</span> <span class="n">ixsize</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">closest_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closest_term_pos</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_at</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">term_ranges_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closest_term_pos</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">startpos</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">,</span> <span class="n">ixsize</span><span class="p">,</span> <span class="n">ixtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">item</span>
+
+    <span class="k">def</span> <span class="nf">terms_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_ranges_from</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">term_items_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+        <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_ranges_from</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
+            <span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">,</span> <span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">keypos</span><span class="p">,</span> <span class="n">keylen</span><span class="p">),</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">datapos</span><span class="p">,</span> <span class="n">datalen</span><span class="p">))</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

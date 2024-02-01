@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lang.morph_en module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>lang.morph_en module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -86,7 +86,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh.lang.morph_en.variations"><code class="docutils literal notranslate"><span class="pre">variations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.lang.morph_en.variations"><code class="docutils literal notranslate"><span class="pre">variations()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
@@ -114,7 +114,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Whoosh</a>
+          <a href="../../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -133,15 +133,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.lang.morph_en">
-<span id="lang-morph-en-module"></span><h1><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module<a class="headerlink" href="#module-whoosh.lang.morph_en" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.lang.morph_en">
+<span id="lang-morph-en-module"></span><h1><code class="docutils literal notranslate"><span class="pre">lang.morph_en</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.lang.morph_en" title="Permalink to this heading">¶</a></h1>
 <p>Contains the variations() function for expanding an English word into multiple
 variations by programatically adding and removing suffixes.</p>
 <p>Translated to Python from the <code class="docutils literal notranslate"><span class="pre">com.sun.labs.minion.lexmorph.LiteMorph_en</span></code>
 class of Sun’s <a class="reference external" href="https://minion.dev.java.net/">Minion search engine</a>.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.lang.morph_en.variations">
-<span class="sig-prename descclassname"><span class="pre">whoosh.lang.morph_en.</span></span><span class="sig-name descname"><span class="pre">variations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/morph_en.html#variations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.morph_en.variations" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.morph_en.variations">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.lang.morph_en.</span></span><span class="sig-name descname"><span class="pre">variations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/morph_en.html#variations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.morph_en.variations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given an English word, returns a collection of morphological variations
 on the word by algorithmically adding and removing suffixes. The variation
 list may contain non-words (e.g. render -&gt; renderment).</p>

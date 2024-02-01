@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>support.levenshtein module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>support.levenshtein module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -98,8 +98,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh.support.levenshtein.relative"><code class="docutils literal notranslate"><span class="pre">relative()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh.support.levenshtein.distance"><code class="docutils literal notranslate"><span class="pre">distance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.support.levenshtein.relative"><code class="docutils literal notranslate"><span class="pre">relative()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.support.levenshtein.distance"><code class="docutils literal notranslate"><span class="pre">distance()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../util.html"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a></li>
@@ -115,7 +115,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Whoosh</a>
+          <a href="../../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -134,19 +134,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.support.levenshtein">
-<span id="support-levenshtein-module"></span><h1><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module<a class="headerlink" href="#module-whoosh.support.levenshtein" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.support.levenshtein">
+<span id="support-levenshtein-module"></span><h1><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.support.levenshtein" title="Permalink to this heading">¶</a></h1>
 <p>Contains functions implementing edit distance algorithms.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.support.levenshtein.relative">
-<span class="sig-prename descclassname"><span class="pre">whoosh.support.levenshtein.</span></span><span class="sig-name descname"><span class="pre">relative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/support/levenshtein.html#relative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.support.levenshtein.relative" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.support.levenshtein.relative">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.support.levenshtein.</span></span><span class="sig-name descname"><span class="pre">relative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/support/levenshtein.html#relative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.support.levenshtein.relative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the relative distance between two strings, in the range
 [0-1] where 1 means total equality.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.support.levenshtein.distance">
-<span class="sig-prename descclassname"><span class="pre">whoosh.support.levenshtein.</span></span><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#whoosh.support.levenshtein.distance" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.support.levenshtein.distance">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.support.levenshtein.</span></span><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#whoosh_reloaded.support.levenshtein.distance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Damerau-Levenshtein edit distance between two strings.</p>
 </dd></dl>
 

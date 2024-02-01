@@ -2,7 +2,7 @@
 ``codec.base`` module
 =====================
 
-.. automodule:: whoosh.codec.base
+.. automodule:: whoosh_reloaded.codec.base
 
 
 Classes

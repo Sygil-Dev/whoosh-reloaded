@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>matching module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>matching module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -90,27 +90,27 @@
 <li class="toctree-l2"><a class="reference internal" href="lang/wordnet.html"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">matching</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#matchers">Matchers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.Matcher"><code class="docutils literal notranslate"><span class="pre">Matcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.NullMatcher"><code class="docutils literal notranslate"><span class="pre">NullMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.ListMatcher"><code class="docutils literal notranslate"><span class="pre">ListMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.WrappingMatcher"><code class="docutils literal notranslate"><span class="pre">WrappingMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.MultiMatcher"><code class="docutils literal notranslate"><span class="pre">MultiMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.FilterMatcher"><code class="docutils literal notranslate"><span class="pre">FilterMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.BiMatcher"><code class="docutils literal notranslate"><span class="pre">BiMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.AdditiveBiMatcher"><code class="docutils literal notranslate"><span class="pre">AdditiveBiMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.UnionMatcher"><code class="docutils literal notranslate"><span class="pre">UnionMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.DisjunctionMaxMatcher"><code class="docutils literal notranslate"><span class="pre">DisjunctionMaxMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.IntersectionMatcher"><code class="docutils literal notranslate"><span class="pre">IntersectionMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.AndNotMatcher"><code class="docutils literal notranslate"><span class="pre">AndNotMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.InverseMatcher"><code class="docutils literal notranslate"><span class="pre">InverseMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.RequireMatcher"><code class="docutils literal notranslate"><span class="pre">RequireMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.AndMaybeMatcher"><code class="docutils literal notranslate"><span class="pre">AndMaybeMatcher</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.ConstantScoreMatcher"><code class="docutils literal notranslate"><span class="pre">ConstantScoreMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.Matcher"><code class="docutils literal notranslate"><span class="pre">Matcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.NullMatcher"><code class="docutils literal notranslate"><span class="pre">NullMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.ListMatcher"><code class="docutils literal notranslate"><span class="pre">ListMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.WrappingMatcher"><code class="docutils literal notranslate"><span class="pre">WrappingMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.MultiMatcher"><code class="docutils literal notranslate"><span class="pre">MultiMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.FilterMatcher"><code class="docutils literal notranslate"><span class="pre">FilterMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.BiMatcher"><code class="docutils literal notranslate"><span class="pre">BiMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.AdditiveBiMatcher"><code class="docutils literal notranslate"><span class="pre">AdditiveBiMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.UnionMatcher"><code class="docutils literal notranslate"><span class="pre">UnionMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.DisjunctionMaxMatcher"><code class="docutils literal notranslate"><span class="pre">DisjunctionMaxMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.IntersectionMatcher"><code class="docutils literal notranslate"><span class="pre">IntersectionMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.AndNotMatcher"><code class="docutils literal notranslate"><span class="pre">AndNotMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.InverseMatcher"><code class="docutils literal notranslate"><span class="pre">InverseMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.RequireMatcher"><code class="docutils literal notranslate"><span class="pre">RequireMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.AndMaybeMatcher"><code class="docutils literal notranslate"><span class="pre">AndMaybeMatcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.ConstantScoreMatcher"><code class="docutils literal notranslate"><span class="pre">ConstantScoreMatcher</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.ReadTooFar"><code class="docutils literal notranslate"><span class="pre">ReadTooFar</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.matching.NoQualityAvailable"><code class="docutils literal notranslate"><span class="pre">NoQualityAvailable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.ReadTooFar"><code class="docutils literal notranslate"><span class="pre">ReadTooFar</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.matching.NoQualityAvailable"><code class="docutils literal notranslate"><span class="pre">NoQualityAvailable</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -137,7 +137,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -156,17 +156,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.matching">
-<span id="matching-module"></span><h1><code class="docutils literal notranslate"><span class="pre">matching</span></code> module<a class="headerlink" href="#module-whoosh.matching" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.matching">
+<span id="matching-module"></span><h1><code class="docutils literal notranslate"><span class="pre">matching</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.matching" title="Permalink to this heading">¶</a></h1>
 <section id="matchers">
 <h2>Matchers<a class="headerlink" href="#matchers" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">Matcher</span></span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">Matcher</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for all matchers.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.all_ids">
-<span class="sig-name descname"><span class="pre">all_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.all_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.all_ids" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.all_ids">
+<span class="sig-name descname"><span class="pre">all_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.all_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.all_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a generator of all IDs in the matcher.</p>
 <p>What this method returns for a matcher that has already read some
 postings (whether it only yields the remaining postings or all postings
@@ -175,8 +175,8 @@ on fresh matchers.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.all_items">
-<span class="sig-name descname"><span class="pre">all_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.all_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.all_items" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.all_items">
+<span class="sig-name descname"><span class="pre">all_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.all_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.all_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a generator of all (ID, encoded value) pairs in the matcher.</p>
 <p>What this method returns for a matcher that has already read some
 postings (whether it only yields the remaining postings or all postings
@@ -185,8 +185,8 @@ on fresh matchers.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.block_quality">
-<span class="sig-name descname"><span class="pre">block_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.block_quality" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.block_quality">
+<span class="sig-name descname"><span class="pre">block_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.block_quality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a quality measurement of the current block of postings,
 according to the current weighting algorithm. Raises
 <code class="docutils literal notranslate"><span class="pre">NoQualityAvailable</span></code> if the matcher or weighting do not support
@@ -194,41 +194,41 @@ quality measurements.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.children">
-<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.children" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.children">
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.children" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an (possibly empty) list of the submatchers of this
 matcher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.copy">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.copy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.copy">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of this matcher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.depth">
-<span class="sig-name descname"><span class="pre">depth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.depth" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.depth">
+<span class="sig-name descname"><span class="pre">depth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.depth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the depth of the tree under this matcher, or 0 if this
 matcher does not have any children.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.id">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.id" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.id">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the ID of the current posting.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.is_active">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.is_active"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.is_active" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.is_active">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_active</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.is_active"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.is_active" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if this matcher is still “active”, that is, it has not
 yet reached the end of the posting list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.items_as">
-<span class="sig-name descname"><span class="pre">items_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.items_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.items_as" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.items_as">
+<span class="sig-name descname"><span class="pre">items_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.items_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.items_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a generator of all (ID, decoded value) pairs in the matcher.</p>
 <p>What this method returns for a matcher that has already read some
 postings (whether it only yields the remaining postings or all postings
@@ -237,15 +237,15 @@ on fresh matchers.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.matching_terms">
-<span class="sig-name descname"><span class="pre">matching_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.matching_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.matching_terms" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.matching_terms">
+<span class="sig-name descname"><span class="pre">matching_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.matching_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.matching_terms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator of <code class="docutils literal notranslate"><span class="pre">(&quot;fieldname&quot;,</span> <span class="pre">&quot;termtext&quot;)</span></code> tuples for the
 <strong>currently matching</strong> term matchers in this tree.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.max_quality">
-<span class="sig-name descname"><span class="pre">max_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.max_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.max_quality" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.max_quality">
+<span class="sig-name descname"><span class="pre">max_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.max_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.max_quality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the maximum possible quality measurement for this matcher,
 according to the current weighting algorithm. Raises
 <code class="docutils literal notranslate"><span class="pre">NoQualityAvailable</span></code> if the matcher or weighting do not support
@@ -253,112 +253,112 @@ quality measurements.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.next">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.next" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.next">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.next" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves this matcher to the next posting.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.replace">
-<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minquality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.replace" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minquality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.replace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a possibly-simplified version of this matcher. For example,
 if one of the children of a UnionMatcher is no longer active, calling
 this method on the UnionMatcher will return the other child.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.reset">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.reset" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.reset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns to the start of the posting list.</p>
 <p>Note that reset() may not do what you expect after you call
-<a class="reference internal" href="#whoosh.matching.Matcher.replace" title="whoosh.matching.Matcher.replace"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Matcher.replace()</span></code></a>, since this can mean calling reset() not on
+<a class="reference internal" href="#whoosh_reloaded.matching.Matcher.replace" title="whoosh_reloaded.matching.Matcher.replace"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Matcher.replace()</span></code></a>, since this can mean calling reset() not on
 the original matcher, but on an optimized replacement.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.score">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.score" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.score">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the score of the current posting.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.skip_to">
-<span class="sig-name descname"><span class="pre">skip_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.skip_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.skip_to" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.skip_to">
+<span class="sig-name descname"><span class="pre">skip_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.skip_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.skip_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves this matcher to the first posting with an ID equal to or
 greater than the given ID.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.skip_to_quality">
-<span class="sig-name descname"><span class="pre">skip_to_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minquality</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.skip_to_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.skip_to_quality" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.skip_to_quality">
+<span class="sig-name descname"><span class="pre">skip_to_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minquality</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.skip_to_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.skip_to_quality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves this matcher to the next block with greater than the given
 minimum quality value.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.spans">
-<span class="sig-name descname"><span class="pre">spans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.spans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.spans" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of <a class="reference internal" href="query.html#whoosh.query.Span" title="whoosh.query.spans.Span"><code class="xref py py-class docutils literal notranslate"><span class="pre">Span</span></code></a> objects for the
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.spans">
+<span class="sig-name descname"><span class="pre">spans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.spans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.spans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of <a class="reference internal" href="query.html#whoosh_reloaded.query.Span" title="whoosh_reloaded.query.spans.Span"><code class="xref py py-class docutils literal notranslate"><span class="pre">Span</span></code></a> objects for the
 matches in this document. Raises an exception if the field being
 searched does not store positions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.supports">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">supports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.supports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.supports" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.supports">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">supports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.supports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.supports" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if the field’s format supports the named data type,
 for example ‘frequency’ or ‘characters’.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.supports_block_quality">
-<span class="sig-name descname"><span class="pre">supports_block_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.supports_block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.supports_block_quality" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.supports_block_quality">
+<span class="sig-name descname"><span class="pre">supports_block_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.supports_block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.supports_block_quality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if this matcher supports the use of <code class="docutils literal notranslate"><span class="pre">quality</span></code> and
 <code class="docutils literal notranslate"><span class="pre">block_quality</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.term">
-<span class="sig-name descname"><span class="pre">term</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.term"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.term" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.term">
+<span class="sig-name descname"><span class="pre">term</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.term"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.term" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a <code class="docutils literal notranslate"><span class="pre">(&quot;fieldname&quot;,</span> <span class="pre">&quot;termtext&quot;)</span></code> tuple for the term this
 matcher matches, or None if this matcher is not a term matcher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.term_matchers">
-<span class="sig-name descname"><span class="pre">term_matchers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.term_matchers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.term_matchers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.term_matchers">
+<span class="sig-name descname"><span class="pre">term_matchers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.term_matchers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.term_matchers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator of term matchers in this tree.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.value">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.value" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.value">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the encoded value of the current posting.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.value_as">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.value_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.value_as" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.value_as">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">astype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.value_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.value_as" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the value(s) of the current posting as the given type.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.matching.Matcher.weight">
-<span class="sig-name descname"><span class="pre">weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#Matcher.weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.Matcher.weight" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.Matcher.weight">
+<span class="sig-name descname"><span class="pre">weight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#Matcher.weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.Matcher.weight" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the weight of the current posting.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="whoosh.matching.NullMatcher">
-<span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">NullMatcher</span></span><a class="headerlink" href="#whoosh.matching.NullMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.NullMatcher">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">NullMatcher</span></span><a class="headerlink" href="#whoosh_reloaded.matching.NullMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of &lt;NullMatcher&gt;</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.ListMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">ListMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminfo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#ListMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.ListMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.ListMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">ListMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminfo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#ListMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.ListMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Synthetic matcher backed by a list of IDs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -368,9 +368,9 @@ matcher matches, or None if this matcher is not a term matcher.</p>
 If this argument is not supplied, a list of 1.0 values is used.</p></li>
 <li><p><strong>values</strong> – a list of encoded values corresponding to the list of
 IDs.</p></li>
-<li><p><strong>format</strong> – a <a class="reference internal" href="formats.html#whoosh.formats.Format" title="whoosh.formats.Format"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.formats.Format</span></code></a> object representing the
+<li><p><strong>format</strong> – a <a class="reference internal" href="formats.html#whoosh_reloaded.formats.Format" title="whoosh_reloaded.formats.Format"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.formats.Format</span></code></a> object representing the
 format of the field.</p></li>
-<li><p><strong>scorer</strong> – a <a class="reference internal" href="scoring.html#whoosh.scoring.BaseScorer" title="whoosh.scoring.BaseScorer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.scoring.BaseScorer</span></code></a> object for scoring
+<li><p><strong>scorer</strong> – a <a class="reference internal" href="scoring.html#whoosh_reloaded.scoring.BaseScorer" title="whoosh_reloaded.scoring.BaseScorer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.scoring.BaseScorer</span></code></a> object for scoring
 the postings.</p></li>
 <li><p><strong>term</strong> – a <code class="docutils literal notranslate"><span class="pre">(&quot;fieldname&quot;,</span> <span class="pre">&quot;text&quot;)</span></code> tuple, or None if this is not
 a term matcher.</p></li>
@@ -380,14 +380,14 @@ a term matcher.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.WrappingMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">WrappingMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/wrappers.html#WrappingMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.WrappingMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.WrappingMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">WrappingMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/wrappers.html#WrappingMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.WrappingMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for matchers that wrap sub-matchers.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.MultiMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">MultiMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matchers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idoffsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/wrappers.html#MultiMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.MultiMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.MultiMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">MultiMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matchers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idoffsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/wrappers.html#MultiMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.MultiMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Serializes the results of a list of sub-matchers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -401,8 +401,8 @@ a term matcher.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.FilterMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">FilterMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/wrappers.html#FilterMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.FilterMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.FilterMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">FilterMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/wrappers.html#FilterMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.FilterMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filters the postings from the wrapped based on whether the IDs are
 present in or absent from a set.</p>
 <dl class="field-list simple">
@@ -419,86 +419,86 @@ the wrapped matcher that are <strong>not in</strong> the set are used.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.BiMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">BiMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/binary.html#BiMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.BiMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.BiMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">BiMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/binary.html#BiMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.BiMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for matchers that combine the results of two sub-matchers in
 some way.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.AdditiveBiMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">AdditiveBiMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/binary.html#AdditiveBiMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.AdditiveBiMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.AdditiveBiMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">AdditiveBiMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/binary.html#AdditiveBiMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.AdditiveBiMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for binary matchers where the scores of the sub-matchers are
 added together.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.UnionMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">UnionMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/binary.html#UnionMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.UnionMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.UnionMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">UnionMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/binary.html#UnionMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.UnionMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matches the union (OR) of the postings in the two sub-matchers.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.DisjunctionMaxMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">DisjunctionMaxMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tiebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/binary.html#DisjunctionMaxMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.DisjunctionMaxMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.DisjunctionMaxMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">DisjunctionMaxMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tiebreak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/binary.html#DisjunctionMaxMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.DisjunctionMaxMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matches the union (OR) of two sub-matchers. Where both sub-matchers
 match the same posting, returns the weight/score of the higher-scoring
 posting.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.IntersectionMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">IntersectionMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/binary.html#IntersectionMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.IntersectionMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.IntersectionMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">IntersectionMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/binary.html#IntersectionMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.IntersectionMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matches the intersection (AND) of the postings in the two sub-matchers.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.AndNotMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">AndNotMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/binary.html#AndNotMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.AndNotMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.AndNotMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">AndNotMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/binary.html#AndNotMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.AndNotMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matches the postings in the first sub-matcher that are NOT present in
 the second sub-matcher.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.InverseMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">InverseMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/wrappers.html#InverseMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.InverseMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.InverseMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">InverseMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/wrappers.html#InverseMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.InverseMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Synthetic matcher, generates postings that are NOT present in the
 wrapped matcher.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.RequireMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">RequireMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/wrappers.html#RequireMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.RequireMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.RequireMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">RequireMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/wrappers.html#RequireMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.RequireMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matches postings that are in both sub-matchers, but only uses scores
 from the first.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.AndMaybeMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">AndMaybeMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/binary.html#AndMaybeMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.AndMaybeMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.AndMaybeMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">AndMaybeMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/binary.html#AndMaybeMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.AndMaybeMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matches postings in the first sub-matcher, and if the same posting is
 in the second sub-matcher, adds their scores.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.matching.ConstantScoreMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">ConstantScoreMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#ConstantScoreMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.ConstantScoreMatcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.ConstantScoreMatcher">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">ConstantScoreMatcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#ConstantScoreMatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.ConstantScoreMatcher" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="exceptions">
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading">¶</a></h2>
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.matching.ReadTooFar">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">ReadTooFar</span></span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#ReadTooFar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.ReadTooFar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised when <a class="reference internal" href="#whoosh.matching.Matcher.next" title="whoosh.matching.Matcher.next"><code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code></a> or
-<a class="reference internal" href="#whoosh.matching.Matcher.skip_to" title="whoosh.matching.Matcher.skip_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">skip_to()</span></code></a> are called on an inactive
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.ReadTooFar">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">ReadTooFar</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#ReadTooFar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.ReadTooFar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when <a class="reference internal" href="#whoosh_reloaded.matching.Matcher.next" title="whoosh_reloaded.matching.Matcher.next"><code class="xref py py-meth docutils literal notranslate"><span class="pre">next()</span></code></a> or
+<a class="reference internal" href="#whoosh_reloaded.matching.Matcher.skip_to" title="whoosh_reloaded.matching.Matcher.skip_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">skip_to()</span></code></a> are called on an inactive
 matcher.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.matching.NoQualityAvailable">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.matching.</span></span><span class="sig-name descname"><span class="pre">NoQualityAvailable</span></span><a class="reference internal" href="../_modules/whoosh/matching/mcore.html#NoQualityAvailable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.matching.NoQualityAvailable" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.matching.NoQualityAvailable">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.matching.</span></span><span class="sig-name descname"><span class="pre">NoQualityAvailable</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/matching/mcore.html#NoQualityAvailable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.matching.NoQualityAvailable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when quality methods are called on a matcher that does not
 support block quality optimizations.</p>
 </dd></dl>

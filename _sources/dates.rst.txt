@@ -6,11 +6,11 @@ Indexing dates
 ==============
 
 Whoosh lets you index and search dates/times using the
-:class:`whoosh.fields.DATETIME` field type. Instead of passing text for the
+:class:`whoosh_reloaded.fields.DATETIME` field type. Instead of passing text for the
 field in ``add_document()``, you use a Python ``datetime.datetime`` object::
 
     from datetime import datetime, timedelta
-    from whoosh import fields, index
+    from whoosh_reloaded import fields, index
 
     schema = fields.Schema(title=fields.TEXT, content=fields.TEXT,
                            date=fields.DATETIME)
@@ -28,11 +28,11 @@ Parsing date queries
 ====================
 
 Once you've have an indexed ``DATETIME`` field, you can search it using a rich
-date parser contained in the :class:`whoosh.qparser.dateparse.DateParserPlugin`::
+date parser contained in the :class:`whoosh_reloaded.qparser.dateparse.DateParserPlugin`::
 
-    from whoosh import index
-    from whoosh.qparser import QueryParser
-    from whoosh.qparser.dateparse import DateParserPlugin
+    from whoosh_reloaded import index
+    from whoosh_reloaded.qparser import QueryParser
+    from whoosh_reloaded.qparser.dateparse import DateParserPlugin
 
     ix = index.open_dir("indexdir")
 
@@ -90,8 +90,8 @@ If you don't use the ``DateParserPlugin``, users can still search DATETIME
 fields using a simple numeric form ``YYYY[MM[DD[hh[mm[ss]]]]]`` that is built
 into the ``DATETIME`` field::
 
-    from whoosh import index
-    from whoosh.qparser import QueryParser
+    from whoosh_reloaded import index
+    from whoosh_reloaded.qparser import QueryParser
 
     ix = index.open_dir("indexdir")
     qp = QueryParser("content", schema=ix.schema)

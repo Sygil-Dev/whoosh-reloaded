@@ -40,8 +40,8 @@ Get search results::
     for hit in results:
         print(hit["title"])
 
-You can use the :meth:`~whoosh.searching.Hit.highlights` method on the
-:class:`whoosh.searching.Hit` object to get highlighted snippets from the
+You can use the :meth:`~ whoosh_reloaded.searching.Hit.highlights` method on the
+:class:` whoosh_reloaded.searching.Hit` object to get highlighted snippets from the
 document containing the search terms.
 
 The first argument is the name of the field to highlight. If the field is
@@ -136,28 +136,28 @@ A fragmenter controls how to extract excerpts from the original text.
 
 The ``highlight`` module has the following pre-made fragmenters:
 
-:class:`whoosh.highlight.ContextFragmenter` (the default)
+:class:` whoosh_reloaded.highlight.ContextFragmenter` (the default)
     This is a "smart" fragmenter that finds matched terms and then pulls
     in surround text to form fragments. This fragmenter only yields
     fragments that contain matched terms.
 
-:class:`whoosh.highlight.SentenceFragmenter`
+:class:` whoosh_reloaded.highlight.SentenceFragmenter`
     Tries to break the text into fragments based on sentence punctuation
     (".", "!", and "?"). This object works by looking in the original
     text for a sentence end as the next character after each token's
     'endchar'. Can be fooled by e.g. source code, decimals, etc.
 
-:class:`whoosh.highlight.WholeFragmenter`
+:class:` whoosh_reloaded.highlight.WholeFragmenter`
     Returns the entire text as one "fragment". This can be useful if you
     are highlighting a short bit of text and don't need to fragment it.
 
 The different fragmenters have different options. For example, the default
-:class:`~whoosh.highlight.ContextFragmenter` lets you set the maximum
+:class:`~ whoosh_reloaded.highlight.ContextFragmenter` lets you set the maximum
 fragment size and the size of the context to add on either side::
 
     my_cf = highlight.ContextFragmenter(maxchars=100, surround=30)
 
-See the :mod:`whoosh.highlight` docs for more information.
+See the :mod:` whoosh_reloaded.highlight` docs for more information.
 
 To use a different fragmenter::
 
@@ -167,7 +167,7 @@ To use a different fragmenter::
 Scorer
 ------
 
-A scorer is a callable that takes a :class:`whoosh.highlight.Fragment` object and
+A scorer is a callable that takes a :class:` whoosh_reloaded.highlight.Fragment` object and
 returns a sortable value (where higher values represent better fragments).
 The default scorer adds up the number of matched terms in the fragment, and
 adds a "bonus" for the number of __different__ matched terms. The highlighting
@@ -224,14 +224,14 @@ or anything else useful to the calling system).
 
 The ``highlight`` module contains the following pre-made formatters.
 
-:class:`whoosh.highlight.HtmlFormatter`
+:class:` whoosh_reloaded.highlight.HtmlFormatter`
     Outputs a string containing HTML tags (with a class attribute)
     around the matched terms.
 
-:class:`whoosh.highlight.UppercaseFormatter`
+:class:` whoosh_reloaded.highlight.UppercaseFormatter`
     Converts the matched terms to UPPERCASE.
 
-:class:`whoosh.highlight.GenshiFormatter`
+:class:` whoosh_reloaded.highlight.GenshiFormatter`
     Outputs a Genshi event stream, with the matched terms wrapped in a
     configurable element.
 
@@ -258,19 +258,19 @@ To use a different formatter::
 
 If you need more control over the formatting (or want to output something other
 than strings), you will need to override other methods. See the documentation
-for the :class:`whoosh.highlight.Formatter` class.
+for the :class:` whoosh_reloaded.highlight.Formatter` class.
 
 
 Highlighter object
 ==================
 
 Rather than setting attributes on the results object, you can create a
-reusable :class:`whoosh.highlight.Highlighter` object. Keyword arguments let
+reusable :class:` whoosh_reloaded.highlight.Highlighter` object. Keyword arguments let
 you change the ``fragmenter``, ``scorer``, ``order``, and/or ``formatter``::
 
     hi = highlight.Highlighter(fragmenter=my_cf, scorer=sds)
 
-You can then use the :meth:`whoosh.highlight.Highlighter.highlight_hit` method
+You can then use the :meth:` whoosh_reloaded.highlight.Highlighter.highlight_hit` method
 to get highlights for a ``Hit`` object::
 
     for hit in results:
@@ -305,7 +305,7 @@ Instead of retokenizing, Whoosh can look up the character positions of the
 matched terms in the index. Looking up the character positions is not
 instantaneous, but is usually faster than analyzing large amounts of text.
 
-To use :class:`whoosh.highlight.PinpointFragmenter` and avoid re-tokenizing the
+To use :class:` whoosh_reloaded.highlight.PinpointFragmenter` and avoid re-tokenizing the
 document text, you must do all of the following:
 
 Index the field with character information (this will require re-indexing an
@@ -319,7 +319,7 @@ Record per-document term matches in the results::
     # Record per-document term matches
     results = searcher.search(myquery, terms=True)
 
-Set a :class:`whoosh.highlight.PinpointFragmenter` as the fragmenter::
+Set a :class:` whoosh_reloaded.highlight.PinpointFragmenter` as the fragmenter::
 
     results.fragmenter = highlight.PinpointFragmenter()
 
@@ -368,7 +368,7 @@ Usage
 The following function lets you retokenize and highlight a piece of text using
 an analyzer::
 
-    from whoosh.highlight import highlight
+    from whoosh_reloaded.highlight import highlight
 
     excerpts = highlight(text, terms, analyzer, fragmenter, formatter, top=3,
                          scorer=BasicFragmentScorer, minscore=1, order=FIRST)
@@ -386,17 +386,17 @@ an analyzer::
     query terms are in.
 
 ``fragmenter``
-    A :class:`whoosh.highlight.Fragmenter` object, see below.
+    A :class:` whoosh_reloaded.highlight.Fragmenter` object, see below.
 
 ``formatter``
-    A :class:`whoosh.highlight.Formatter` object, see below.
+    A :class:` whoosh_reloaded.highlight.Formatter` object, see below.
 
 ``top``
     The number of fragments to include in the output.
 
 ``scorer``
-    A :class:`whoosh.highlight.FragmentScorer` object. The only scorer currently
-    included with Whoosh is :class:`~whoosh.highlight.BasicFragmentScorer`, the
+    A :class:` whoosh_reloaded.highlight.FragmentScorer` object. The only scorer currently
+    included with Whoosh is :class:`~ whoosh_reloaded.highlight.BasicFragmentScorer`, the
     default.
 
 ``minscore``

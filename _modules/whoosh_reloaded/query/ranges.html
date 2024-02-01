@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh_reloaded.query.ranges &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh_reloaded.query.ranges</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh_reloaded.query.ranges</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2007 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">b</span><span class="p">,</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.query</span> <span class="kn">import</span> <span class="n">qcore</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">compound</span><span class="p">,</span> <span class="n">wrappers</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.util.times</span> <span class="kn">import</span> <span class="n">datetime_to_long</span>
+
+
+<span class="k">class</span> <span class="nc">RangeMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="c1"># Contains methods shared by TermRange and NumericRange</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, boost=</span><span class="si">%s</span><span class="s2">, constantscore=</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">startchar</span> <span class="o">=</span> <span class="s2">&quot;{&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="k">else</span> <span class="s2">&quot;[&quot;</span>
+        <span class="n">endchar</span> <span class="o">=</span> <span class="s2">&quot;}&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span> <span class="k">else</span> <span class="s2">&quot;]&quot;</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span>
+        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s%s</span><span class="s2"> TO </span><span class="si">%s%s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">endchar</span><span class="p">)</span>
+
+    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">fieldname</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">start</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">end</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">startexcl</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">endexcl</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">boost</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">constantscore</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">)</span>
+            <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+            <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span><span class="p">)</span>
+            <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+            <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span><span class="p">)</span>
+            <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_range</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_comparable_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">qcore</span><span class="o">.</span><span class="n">Lowest</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">second</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_comparable_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">qcore</span><span class="o">.</span><span class="n">Highest</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">second</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">overlaps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TermRange</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">fieldname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">start1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comparable_start</span><span class="p">()</span>
+        <span class="n">start2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_comparable_start</span><span class="p">()</span>
+        <span class="n">end1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comparable_end</span><span class="p">()</span>
+        <span class="n">end2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_comparable_end</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">start1</span> <span class="o">&gt;=</span> <span class="n">start2</span> <span class="ow">and</span> <span class="n">start1</span> <span class="o">&lt;=</span> <span class="n">end2</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">end1</span> <span class="o">&gt;=</span> <span class="n">start2</span> <span class="ow">and</span> <span class="n">end1</span> <span class="o">&lt;=</span> <span class="n">end2</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">start2</span> <span class="o">&gt;=</span> <span class="n">start1</span> <span class="ow">and</span> <span class="n">start2</span> <span class="o">&lt;=</span> <span class="n">end1</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">end2</span> <span class="o">&gt;=</span> <span class="n">start1</span> <span class="ow">and</span> <span class="n">end2</span> <span class="o">&lt;=</span> <span class="n">end1</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">intersect</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">fieldname</span>
+
+        <span class="n">start1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comparable_start</span><span class="p">()</span>
+        <span class="n">start2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_comparable_start</span><span class="p">()</span>
+        <span class="n">end1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_comparable_end</span><span class="p">()</span>
+        <span class="n">end2</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_comparable_end</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">start1</span> <span class="o">&gt;=</span> <span class="n">start2</span> <span class="ow">and</span> <span class="n">end1</span> <span class="o">&lt;=</span> <span class="n">end2</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">start2</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">end2</span>
+        <span class="k">elif</span> <span class="n">start2</span> <span class="o">&gt;=</span> <span class="n">start1</span> <span class="ow">and</span> <span class="n">end2</span> <span class="o">&lt;=</span> <span class="n">end1</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">start1</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">end1</span>
+        <span class="k">elif</span> <span class="n">intersect</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start1</span><span class="p">,</span> <span class="n">start2</span><span class="p">)</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end1</span><span class="p">,</span> <span class="n">end2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start1</span><span class="p">,</span> <span class="n">start2</span><span class="p">)</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">end1</span><span class="p">,</span> <span class="n">end2</span><span class="p">)</span>
+
+        <span class="n">startval</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">Lowest</span> <span class="k">else</span> <span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">startexcl</span> <span class="o">=</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">endval</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">Highest</span> <span class="k">else</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">endexcl</span> <span class="o">=</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="n">boost</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+        <span class="n">constantscore</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span> <span class="ow">or</span> <span class="n">other</span><span class="o">.</span><span class="n">constantscore</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span>
+            <span class="n">startval</span><span class="p">,</span>
+            <span class="n">endval</span><span class="p">,</span>
+            <span class="n">startexcl</span><span class="p">,</span>
+            <span class="n">endexcl</span><span class="p">,</span>
+            <span class="n">boost</span><span class="o">=</span><span class="n">boost</span><span class="p">,</span>
+            <span class="n">constantscore</span><span class="o">=</span><span class="n">constantscore</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="TermRange"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.TermRange">[docs]</a><span class="k">class</span> <span class="nc">TermRange</span><span class="p">(</span><span class="n">RangeMixin</span><span class="p">,</span> <span class="n">terms</span><span class="o">.</span><span class="n">MultiTerm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Matches documents containing any terms in a given range.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Match documents where the indexed &quot;id&quot; field is greater than or equal</span>
+<span class="sd">    &gt;&gt;&gt; # to &#39;apple&#39; and less than or equal to &#39;pear&#39;.</span>
+<span class="sd">    &gt;&gt;&gt; TermRange(&quot;id&quot;, u&quot;apple&quot;, u&quot;pear&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fieldname</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">,</span>
+        <span class="n">startexcl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">endexcl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">constantscore</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param fieldname: The name of the field to search.</span>
+<span class="sd">        :param start: Match terms equal to or greater than this.</span>
+<span class="sd">        :param end: Match terms equal to or less than this.</span>
+<span class="sd">        :param startexcl: If True, the range start is exclusive. If False, the</span>
+<span class="sd">            range start is inclusive.</span>
+<span class="sd">        :param endexcl: If True, the range end is exclusive. If False, the</span>
+<span class="sd">            range end is inclusive.</span>
+<span class="sd">        :param boost: Boost factor that should be applied to the raw score of</span>
+<span class="sd">            results matched by this query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="o">=</span> <span class="n">startexcl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span> <span class="o">=</span> <span class="n">endexcl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span> <span class="o">=</span> <span class="n">constantscore</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">in</span> <span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\uffff</span><span class="s2">&quot;</span><span class="p">),</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">whoosh_reloaded.query</span> <span class="kn">import</span> <span class="n">Every</span>
+
+            <span class="k">return</span> <span class="n">Every</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+            <span class="k">return</span> <span class="n">terms</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TermRange</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span><span class="p">,</span>
+                <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="c1"># def replace(self, fieldname, oldtext, newtext):</span>
+    <span class="c1">#    q = self.copy()</span>
+    <span class="c1">#    if q.fieldname == fieldname:</span>
+    <span class="c1">#        if q.start == oldtext:</span>
+    <span class="c1">#            q.start = newtext</span>
+    <span class="c1">#        if q.end == oldtext:</span>
+    <span class="c1">#            q.end = newtext</span>
+    <span class="c1">#    return q</span>
+
+    <span class="k">def</span> <span class="nf">_btexts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">ixreader</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="n">startexcl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span>
+        <span class="n">endexcl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">b</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">b</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\xFF\xFF\xFF\xFF</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ixreader</span><span class="o">.</span><span class="n">terms_from</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">fname</span> <span class="o">!=</span> <span class="n">fieldname</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">startexcl</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="n">end</span> <span class="ow">and</span> <span class="n">endexcl</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="n">end</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="NumericRange"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.NumericRange">[docs]</a><span class="k">class</span> <span class="nc">NumericRange</span><span class="p">(</span><span class="n">RangeMixin</span><span class="p">,</span> <span class="n">qcore</span><span class="o">.</span><span class="n">Query</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A range query for NUMERIC fields. Takes advantage of tiered indexing</span>
+<span class="sd">    to speed up large ranges by matching at a high resolution at the edges of</span>
+<span class="sd">    the range and a low resolution in the middle.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Match numbers from 10 to 5925 in the &quot;number&quot; field.</span>
+<span class="sd">    &gt;&gt;&gt; nr = NumericRange(&quot;number&quot;, 10, 5925)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fieldname</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">,</span>
+        <span class="n">startexcl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">endexcl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">constantscore</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param fieldname: The name of the field to search.</span>
+<span class="sd">        :param start: Match terms equal to or greater than this number. This</span>
+<span class="sd">            should be a number type, not a string.</span>
+<span class="sd">        :param end: Match terms equal to or less than this number. This should</span>
+<span class="sd">            be a number type, not a string.</span>
+<span class="sd">        :param startexcl: If True, the range start is exclusive. If False, the</span>
+<span class="sd">            range start is inclusive.</span>
+<span class="sd">        :param endexcl: If True, the range end is exclusive. If False, the</span>
+<span class="sd">            range end is inclusive.</span>
+<span class="sd">        :param boost: Boost factor that should be applied to the raw score of</span>
+<span class="sd">            results matched by this query.</span>
+<span class="sd">        :param constantscore: If True, the compiled query returns a constant</span>
+<span class="sd">            score (the value of the ``boost`` keyword argument) instead of</span>
+<span class="sd">            actually scoring the matched terms. This gives a nice speed boost</span>
+<span class="sd">            and won&#39;t affect the results in most cases since numeric ranges</span>
+<span class="sd">            will almost always be used as a filter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="o">=</span> <span class="n">startexcl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span> <span class="o">=</span> <span class="n">endexcl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span> <span class="o">=</span> <span class="n">constantscore</span>
+
+    <span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">estimate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">estimate_min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">estimate_min_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">q</span><span class="o">.</span><span class="n">docs</span><span class="p">(</span><span class="n">searcher</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_compile_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">NUMERIC</span>
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded.util.numeric</span> <span class="kn">import</span> <span class="n">tiered_ranges</span>
+
+        <span class="n">field</span> <span class="o">=</span> <span class="n">ixreader</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">NUMERIC</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;NumericRange: field </span><span class="si">%r</span><span class="s2"> is not numeric&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">)</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">prepare_number</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">prepare_number</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+
+        <span class="n">subqueries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">stb</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">sortable_to_bytes</span>
+        <span class="c1"># Get the term ranges for the different resolutions</span>
+        <span class="n">ranges</span> <span class="o">=</span> <span class="n">tiered_ranges</span><span class="p">(</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">numtype</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">signed</span><span class="p">,</span>
+            <span class="n">start</span><span class="p">,</span>
+            <span class="n">end</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">shift_step</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">startnum</span><span class="p">,</span> <span class="n">endnum</span><span class="p">,</span> <span class="n">shift</span> <span class="ow">in</span> <span class="n">ranges</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">startnum</span> <span class="o">==</span> <span class="n">endnum</span><span class="p">:</span>
+                <span class="n">subq</span> <span class="o">=</span> <span class="n">terms</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">stb</span><span class="p">(</span><span class="n">startnum</span><span class="p">,</span> <span class="n">shift</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">startbytes</span> <span class="o">=</span> <span class="n">stb</span><span class="p">(</span><span class="n">startnum</span><span class="p">,</span> <span class="n">shift</span><span class="p">)</span>
+                <span class="n">endbytes</span> <span class="o">=</span> <span class="n">stb</span><span class="p">(</span><span class="n">endnum</span><span class="p">,</span> <span class="n">shift</span><span class="p">)</span>
+                <span class="n">subq</span> <span class="o">=</span> <span class="n">TermRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">startbytes</span><span class="p">,</span> <span class="n">endbytes</span><span class="p">)</span>
+            <span class="n">subqueries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subq</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subqueries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">subqueries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">subqueries</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">compound</span><span class="o">.</span><span class="n">Or</span><span class="p">(</span><span class="n">subqueries</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">wrappers</span><span class="o">.</span><span class="n">ConstantScoreQuery</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">q</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">q</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DateRange"><a class="viewcode-back" href="../../../api/query.html#whoosh_reloaded.query.DateRange">[docs]</a><span class="k">class</span> <span class="nc">DateRange</span><span class="p">(</span><span class="n">NumericRange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a very thin subclass of :class:`NumericRange` that only</span>
+<span class="sd">    overrides the initializer and ``__repr__()`` methods to work with datetime</span>
+<span class="sd">    objects instead of numbers. Internally this object converts the datetime</span>
+<span class="sd">    objects it&#39;s created with to numbers and otherwise acts like a</span>
+<span class="sd">    ``NumericRange`` query.</span>
+
+<span class="sd">    &gt;&gt;&gt; DateRange(&quot;date&quot;, datetime(2010, 11, 3, 3, 0),</span>
+<span class="sd">    ...           datetime(2010, 11, 3, 17, 59))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fieldname</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">,</span>
+        <span class="n">startexcl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">endexcl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">constantscore</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startdate</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enddate</span> <span class="o">=</span> <span class="n">end</span>
+        <span class="k">if</span> <span class="n">start</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">datetime_to_long</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">datetime_to_long</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DateRange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">fieldname</span><span class="p">,</span>
+            <span class="n">start</span><span class="p">,</span>
+            <span class="n">end</span><span class="p">,</span>
+            <span class="n">startexcl</span><span class="o">=</span><span class="n">startexcl</span><span class="p">,</span>
+            <span class="n">endexcl</span><span class="o">=</span><span class="n">endexcl</span><span class="p">,</span>
+            <span class="n">boost</span><span class="o">=</span><span class="n">boost</span><span class="p">,</span>
+            <span class="n">constantscore</span><span class="o">=</span><span class="n">constantscore</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, boost=</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">startdate</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enddate</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How to index documents &mdash; Whoosh 2.7.4 documentation</title>
+  <title>How to index documents &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -96,7 +96,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -120,7 +120,7 @@
 <h2>Creating an Index object<a class="headerlink" href="#creating-an-index-object" title="Permalink to this heading">¶</a></h2>
 <p>To create an index in a directory, use <code class="docutils literal notranslate"><span class="pre">index.create_in</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">os.path</span>
-<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">index</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
@@ -129,13 +129,13 @@
 </pre></div>
 </div>
 <p>To open an existing index in a directory, use <code class="docutils literal notranslate"><span class="pre">index.open_dir</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">whoosh.index</span> <span class="k">as</span> <span class="nn">index</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">whoosh_reloaded.index</span> <span class="k">as</span> <span class="nn">index</span>
 
 <span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>These are convenience methods for:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
 <span class="n">storage</span> <span class="o">=</span> <span class="n">FileStorage</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
 
 <span class="c1"># Create an index</span>
@@ -187,10 +187,10 @@ a time can have a writer open.</p>
 <p class="admonition-title">Note</p>
 <p>Because opening a writer locks the index for writing, in a multi-threaded
 or multi-process environment your code needs to be aware that opening a
-writer may raise an exception (<code class="docutils literal notranslate"><span class="pre">whoosh.store.LockError</span></code>) if a writer is
+writer may raise an exception (<code class="docutils literal notranslate"><span class="pre">whoosh_reloaded.store.LockError</span></code>) if a writer is
 already open. Whoosh includes a couple of example implementations
-(<a class="reference internal" href="api/writing.html#whoosh.writing.AsyncWriter" title="whoosh.writing.AsyncWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.AsyncWriter</span></code></a> and
-<a class="reference internal" href="api/writing.html#whoosh.writing.BufferedWriter" title="whoosh.writing.BufferedWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.BufferedWriter</span></code></a>) of ways to work around the write
+(<a class="reference internal" href="api/writing.html#whoosh_reloaded.writing.AsyncWriter" title="whoosh_reloaded.writing.AsyncWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.writing.AsyncWriter</span></code></a> and
+<a class="reference internal" href="api/writing.html#whoosh_reloaded.writing.BufferedWriter" title="whoosh_reloaded.writing.BufferedWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.writing.BufferedWriter</span></code></a>) of ways to work around the write
 lock.</p>
 </div>
 <div class="admonition note">
@@ -293,7 +293,7 @@ index (merge all the segments together). It simply creates a writer and calls
 <p>For more control over segment merging, you can write your own merge policy
 function and use it as an argument to the <code class="docutils literal notranslate"><span class="pre">commit()</span></code> method. See the
 implementation of the <code class="docutils literal notranslate"><span class="pre">NO_MERGE</span></code>, <code class="docutils literal notranslate"><span class="pre">MERGE_SMALL</span></code>, and <code class="docutils literal notranslate"><span class="pre">OPTIMIZE</span></code> functions
-in the <code class="docutils literal notranslate"><span class="pre">whoosh.writing</span></code> module.</p>
+in the <code class="docutils literal notranslate"><span class="pre">whoosh_reloaded.writing</span></code> module.</p>
 </section>
 <section id="deleting-documents">
 <h2>Deleting documents<a class="headerlink" href="#deleting-documents" title="Permalink to this heading">¶</a></h2>
@@ -342,7 +342,7 @@ using one of the <code class="docutils literal notranslate"><span class="pre">de
 <p>For <code class="docutils literal notranslate"><span class="pre">update_document</span></code> to work, you must have marked at least one of the fields
 in the schema as “unique”. Whoosh will then use the contents of the “unique”
 field(s) to search for documents to delete:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">TEXT</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">TEXT</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">path</span> <span class="o">=</span> <span class="n">ID</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
 
@@ -374,8 +374,8 @@ documents that have changed (leaving aside web applications where you need to
 add/update documents according to user actions).</p>
 <p>Indexing everything from scratch is pretty easy. Here’s a simple example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
-<span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">TEXT</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">TEXT</span>
 
 <span class="k">def</span> <span class="nf">clean_index</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
   <span class="c1"># Always create the index from scratch</span>
@@ -496,7 +496,7 @@ need to index it.</p></li>
 <h2>Clearing the index<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
 <p>In some cases you may want to re-index from scratch. To clear the index without
 disrupting any existing readers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">writing</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">writing</span>
 
 <span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">mywriter</span><span class="p">:</span>
     <span class="c1"># You can optionally add documents to the writer here</span>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Whoosh 2.x release notes &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Whoosh 2.x release notes &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -102,7 +102,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -160,12 +160,12 @@ actually be faster for certain types of values.</p>
 matchers to speed them up by several times.</p></li>
 <li><p>Whoosh now includes pure-Python implementations of the Snowball stemmers and
 stop word lists for various languages adapted from NLTK. These are available
-through the <a class="reference internal" href="../api/analysis.html#whoosh.analysis.LanguageAnalyzer" title="whoosh.analysis.LanguageAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.LanguageAnalyzer</span></code></a> analyzer or through the
+through the :class:` whoosh_reloaded.analysis.LanguageAnalyzer` analyzer or through the
 <code class="docutils literal notranslate"><span class="pre">lang=</span></code> keyword argument to the
-<a class="reference internal" href="../api/fields.html#whoosh.fields.TEXT" title="whoosh.fields.TEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">TEXT</span></code></a> field.</p></li>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">TEXT</span></code> field.</p></li>
 <li><p>You can now use the
-<a class="reference internal" href="../api/filedb/filestore.html#whoosh.filedb.filestore.Storage.create" title="whoosh.filedb.filestore.Storage.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.filedb.filestore.Storage.create()</span></code></a> and
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.filedb.filestore.Storage.destory()</span></code>
+:meth:` whoosh_reloaded.filedb.filestore.Storage.create()` and
+:meth:` whoosh_reloaded.filedb.filestore.Storage.destory()`
 methods as a consistent API to set up and tear down different types of
 storage.</p></li>
 <li><p>Many bug fixes and speed improvements.</p></li>
@@ -223,12 +223,12 @@ results.</p></li>
 <section id="whoosh-2-3">
 <h2>Whoosh 2.3<a class="headerlink" href="#whoosh-2-3" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Added a <a class="reference internal" href="../api/query.html#whoosh.query.Regex" title="whoosh.query.Regex"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Regex</span></code></a> term query type, similar to
-<a class="reference internal" href="../api/query.html#whoosh.query.Wildcard" title="whoosh.query.Wildcard"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Wildcard</span></code></a>. The parser does not allow regex term queries
-by default. You need to add the <a class="reference internal" href="../api/qparser.html#whoosh.qparser.RegexPlugin" title="whoosh.qparser.RegexPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.RegexPlugin</span></code></a> plugin.
+<li><p>Added a :class:` whoosh_reloaded.query.Regex` term query type, similar to
+:class:` whoosh_reloaded.query.Wildcard`. The parser does not allow regex term queries
+by default. You need to add the :class:` whoosh_reloaded.qparser.RegexPlugin` plugin.
 After you add the plugin, you can use <code class="docutils literal notranslate"><span class="pre">r&quot;expression&quot;</span></code> query syntax for
 regular expression term queries. For example, <code class="docutils literal notranslate"><span class="pre">r&quot;foo.*bar&quot;</span></code>.</p></li>
-<li><p>Added the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.PseudoFieldPlugin</span></code> parser plugin. This
+<li><p>Added the :class:` whoosh_reloaded.qparser.PseudoFieldPlugin` parser plugin. This
 plugin lets you create “pseudo-fields” that run a transform function on
 whatever query syntax the user applies the field to. This is fairly advanced
 functionality right now; I’m trying to think of ways to make its power easier
@@ -237,10 +237,10 @@ to access.</p></li>
 by default are now in the same relative order as in the results. This makes
 it much easier to display the “top N” results in each category, for example.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">groupids</span></code> keyword argument to <code class="docutils literal notranslate"><span class="pre">Searcher.search</span></code> has been removed.
-Instead you can now pass a <a class="reference internal" href="../api/sorting.html#whoosh.sorting.FacetMap" title="whoosh.sorting.FacetMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.FacetMap</span></code></a> object to the
+Instead you can now pass a :class:` whoosh_reloaded.sorting.FacetMap` object to the
 <code class="docutils literal notranslate"><span class="pre">Searcher.search</span></code> method’s <code class="docutils literal notranslate"><span class="pre">maptype</span></code> argument to control how faceted
 documents are grouped, and/or set the <code class="docutils literal notranslate"><span class="pre">maptype</span></code> argument on individual
-<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.FacetType`</span></code> objects to set custom grouping per facet.
+:class:` whoosh_reloaded.sorting.FacetType`` objects to set custom grouping per facet.
 See <a class="reference internal" href="../facets.html"><span class="doc">Sorting and faceting</span></a> for more information.</p></li>
 <li><p>Calling <code class="docutils literal notranslate"><span class="pre">Searcher.documents()</span></code> or <code class="docutils literal notranslate"><span class="pre">Searcher.document_numbers()</span></code> with no
 arguments now yields all documents/numbers.</p></li>
@@ -262,15 +262,15 @@ vector.</p></li>
 <h2>Whoosh 2.2<a class="headerlink" href="#whoosh-2-2" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Fixes several bugs, including a bad bug in BM25F scoring.</p></li>
-<li><p>Added <code class="docutils literal notranslate"><span class="pre">allow_overlap</span></code> option to <a class="reference internal" href="../api/sorting.html#whoosh.sorting.StoredFieldFacet" title="whoosh.sorting.StoredFieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.StoredFieldFacet</span></code></a>.</p></li>
-<li><p>In <a class="reference internal" href="../api/writing.html#whoosh.writing.IndexWriter.add_document" title="whoosh.writing.IndexWriter.add_document"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_document()</span></code></a>, You can now pass
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">allow_overlap</span></code> option to :class:` whoosh_reloaded.sorting.StoredFieldFacet`.</p></li>
+<li><p>In <code class="xref py py-meth docutils literal notranslate"><span class="pre">add_document()</span></code>, You can now pass
 query-like strings for BOOLEAN and DATETIME fields (e.g <code class="docutils literal notranslate"><span class="pre">boolfield=&quot;true&quot;</span></code>
 and <code class="docutils literal notranslate"><span class="pre">dtfield=&quot;20101131-16:01&quot;</span></code>) as an alternative to actual <code class="docutils literal notranslate"><span class="pre">bool</span></code> or
 <code class="docutils literal notranslate"><span class="pre">datetime</span></code> objects. The implementation of this is incomplete: it only works
 in the default <code class="docutils literal notranslate"><span class="pre">filedb</span></code> backend, and if the field is stored, the stored
 value will be the string, not the parsed object.</p></li>
-<li><p>Added <a class="reference internal" href="../api/analysis.html#whoosh.analysis.CompoundWordFilter" title="whoosh.analysis.CompoundWordFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.CompoundWordFilter</span></code></a> and
-<a class="reference internal" href="../api/analysis.html#whoosh.analysis.TeeFilter" title="whoosh.analysis.TeeFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.TeeFilter</span></code></a>.</p></li>
+<li><p>Added :class:` whoosh_reloaded.analysis.CompoundWordFilter` and
+:class:` whoosh_reloaded.analysis.TeeFilter`.</p></li>
 </ul>
 </section>
 <section id="whoosh-2-1">
@@ -289,7 +289,7 @@ fix later issues.</p></li>
 <li><p>Sorting and grouping (faceting) now use a new system of “facet” objects which
 are much more flexible than the previous field-based system.</p>
 <p>For example, to sort by first name and then score:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">sorting</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">sorting</span>
 
 <span class="n">mf</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">MultiFacet</span><span class="p">([</span><span class="n">sorting</span><span class="o">.</span><span class="n">FieldFacet</span><span class="p">(</span><span class="s2">&quot;firstname&quot;</span><span class="p">),</span>
                          <span class="n">sorting</span><span class="o">.</span><span class="n">ScoreFacet</span><span class="p">()])</span>
@@ -314,14 +314,14 @@ but will slower.) The spelling graph will be updated automatically as new
 documents are added – it is no longer necessary to maintain a separate
 “spelling index”.</p>
 <p>You can get suggestions for individual words using
-<a class="reference internal" href="../api/searching.html#whoosh.searching.Searcher.suggest" title="whoosh.searching.Searcher.suggest"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.suggest()</span></code></a>:</p>
+:meth:` whoosh_reloaded.searching.Searcher.suggest`:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suglist</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">suggest</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;werd&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Whoosh now includes convenience methods to spell-check and correct user
 queries, with optional highlighting of corrections using the
-<code class="docutils literal notranslate"><span class="pre">whoosh.highlight</span></code> module:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">highlight</span><span class="p">,</span> <span class="n">qparser</span>
+`` whoosh_reloaded.highlight`` module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">highlight</span><span class="p">,</span> <span class="n">qparser</span>
 
 <span class="c1"># User query string</span>
 <span class="n">qstring</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
@@ -349,16 +349,16 @@ motivated users could conceivably replace the defaults with more
 sophisticated behaviors (for example, to take context into account).</p>
 <p>See <a class="reference internal" href="../spelling.html"><span class="doc">“Did you mean… ?” Correcting errors in user queries</span></a> for more information.</p>
 </li>
-<li><p><a class="reference internal" href="../api/query.html#whoosh.query.FuzzyTerm" title="whoosh.query.FuzzyTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.FuzzyTerm</span></code></a> now uses the new word graph feature as well
+<li><p>:class:` whoosh_reloaded.query.FuzzyTerm` now uses the new word graph feature as well
 and so is much faster.</p></li>
 <li><p>You can now set a boost factor for individual documents as you index them,
 to increase the score of terms in those documents in searches. See the
-documentation for the <a class="reference internal" href="../api/writing.html#whoosh.writing.IndexWriter.add_document" title="whoosh.writing.IndexWriter.add_document"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_document()</span></code></a> for
+documentation for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">add_document()</span></code> for
 more information.</p></li>
 <li><p>Added built-in recording of which terms matched in which documents. Use the
-<code class="docutils literal notranslate"><span class="pre">terms=True</span></code> argument to <a class="reference internal" href="../api/searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Searcher.search()</span></code></a> and use
-<a class="reference internal" href="../api/searching.html#whoosh.searching.Hit.matched_terms" title="whoosh.searching.Hit.matched_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Hit.matched_terms()</span></code></a> and
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.searching.Hit.contains_term()</span></code> to check matched terms.</p></li>
+<code class="docutils literal notranslate"><span class="pre">terms=True</span></code> argument to :meth:` whoosh_reloaded.searching.Searcher.search` and use
+:meth:` whoosh_reloaded.searching.Hit.matched_terms` and
+:meth:` whoosh_reloaded.searching.Hit.contains_term` to check matched terms.</p></li>
 <li><p>Whoosh now supports whole-term quality optimizations, so for example if the
 system knows that a UnionMatcher cannot possibly contribute to the “top N”
 results unless both sub-matchers match, it will replace the UnionMatcher with
@@ -394,8 +394,8 @@ the new built-in term recording functionality.</p></li>
 <li><p>Removed the experimental <code class="docutils literal notranslate"><span class="pre">Searcher.define_facets</span></code> feature until a future
 release when it will be replaced by a more robust and useful feature.</p></li>
 <li><p>Reader iteration methods (<code class="docutils literal notranslate"><span class="pre">__iter__</span></code>, <code class="docutils literal notranslate"><span class="pre">iter_from</span></code>, <code class="docutils literal notranslate"><span class="pre">iter_field</span></code>, etc.)
-now yield <a class="reference internal" href="../api/reading.html#whoosh.reading.TermInfo" title="whoosh.reading.TermInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.reading.TermInfo</span></code></a> objects.</p></li>
-<li><p>The arguments to <a class="reference internal" href="../api/query.html#whoosh.query.FuzzyTerm" title="whoosh.query.FuzzyTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.FuzzyTerm</span></code></a> changed.</p></li>
+now yield :class:` whoosh_reloaded.reading.TermInfo` objects.</p></li>
+<li><p>The arguments to :class:` whoosh_reloaded.query.FuzzyTerm` changed.</p></li>
 </ul>
 </section>
 </section>

@@ -2,7 +2,7 @@
 ``filedb.filestore`` module
 ===========================
 
-.. automodule:: whoosh.filedb.filestore
+.. automodule:: whoosh_reloaded.filedb.filestore
 
 Base class
 ==========

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lang.wordnet module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>lang.wordnet module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -89,13 +89,13 @@
 <li class="toctree-l2"><a class="reference internal" href="porter.html"><code class="docutils literal notranslate"><span class="pre">lang.porter</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#thesaurus">Thesaurus</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.lang.wordnet.Thesaurus"><code class="docutils literal notranslate"><span class="pre">Thesaurus</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.lang.wordnet.Thesaurus"><code class="docutils literal notranslate"><span class="pre">Thesaurus</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#low-level-functions">Low-level functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.lang.wordnet.parse_file"><code class="docutils literal notranslate"><span class="pre">parse_file()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.lang.wordnet.synonyms"><code class="docutils literal notranslate"><span class="pre">synonyms()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.lang.wordnet.make_index"><code class="docutils literal notranslate"><span class="pre">make_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.lang.wordnet.parse_file"><code class="docutils literal notranslate"><span class="pre">parse_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.lang.wordnet.synonyms"><code class="docutils literal notranslate"><span class="pre">synonyms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.lang.wordnet.make_index"><code class="docutils literal notranslate"><span class="pre">make_index()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -123,7 +123,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Whoosh</a>
+          <a href="../../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -142,8 +142,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.lang.wordnet">
-<span id="lang-wordnet-module"></span><h1><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module<a class="headerlink" href="#module-whoosh.lang.wordnet" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.lang.wordnet">
+<span id="lang-wordnet-module"></span><h1><code class="docutils literal notranslate"><span class="pre">lang.wordnet</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.lang.wordnet" title="Permalink to this heading">¶</a></h1>
 <p>This module contains low-level functions and a high-level class for parsing
 the prolog file “wn_s.pl” from the WordNet prolog download
 into an object suitable for looking up synonyms and performing query expansion.</p>
@@ -151,8 +151,8 @@ into an object suitable for looking up synonyms and performing query expansion.<
 <section id="thesaurus">
 <h2>Thesaurus<a class="headerlink" href="#thesaurus" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.Thesaurus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.lang.wordnet.</span></span><span class="sig-name descname"><span class="pre">Thesaurus</span></span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#Thesaurus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.Thesaurus" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.Thesaurus">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.lang.wordnet.</span></span><span class="sig-name descname"><span class="pre">Thesaurus</span></span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#Thesaurus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.Thesaurus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents the WordNet synonym database, either loaded into memory
 from the wn_s.pl Prolog file, or stored on disk in a Whoosh index.</p>
 <p>This class allows you to parse the prolog file “wn_s.pl” from the WordNet prolog
@@ -164,7 +164,7 @@ expansion.</p>
 </pre></div>
 </div>
 <p>To save the in-memory Thesaurus to a Whoosh index…</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">FileStorage</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">to_storage</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
 </pre></div>
@@ -214,8 +214,8 @@ give an idea of relative costs for in-memory vs. on-disk.</p>
 <p>Basically, if you can afford spending the memory necessary to parse the
 Thesaurus and then cache it, it’s faster. Otherwise, use an on-disk index.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.Thesaurus.from_file">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#Thesaurus.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.Thesaurus.from_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.Thesaurus.from_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#Thesaurus.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.Thesaurus.from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a Thesaurus object from the given file-like object, which should
 contain the WordNet wn_s.pl file.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;wn_s.pl&quot;</span><span class="p">)</span>
@@ -227,8 +227,8 @@ contain the WordNet wn_s.pl file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.Thesaurus.from_filename">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#Thesaurus.from_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.Thesaurus.from_filename" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.Thesaurus.from_filename">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#Thesaurus.from_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.Thesaurus.from_filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a Thesaurus object from the given filename, which should
 contain the WordNet wn_s.pl file.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">Thesaurus</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span><span class="s2">&quot;wn_s.pl&quot;</span><span class="p">)</span>
@@ -239,11 +239,11 @@ contain the WordNet wn_s.pl file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.Thesaurus.from_storage">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_storage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'THES'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#Thesaurus.from_storage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.Thesaurus.from_storage" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.Thesaurus.from_storage">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_storage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'THES'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#Thesaurus.from_storage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.Thesaurus.from_storage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a Thesaurus object from the given storage object,
 which should contain an index created by Thesaurus.to_storage().</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">FileStorage</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">Thesaurus</span><span class="o">.</span><span class="n">from_storage</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">synonyms</span><span class="p">(</span><span class="s2">&quot;hail&quot;</span><span class="p">)</span>
@@ -253,7 +253,7 @@ which should contain an index created by Thesaurus.to_storage().</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>storage</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.store.Storage</span></code> object from
+<li><p><strong>storage</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.store.Storage</span></code> object from
 which to load the index.</p></li>
 <li><p><strong>indexname</strong> – A name for the index. This allows you to
 store multiple indexes in the same storage object.</p></li>
@@ -263,8 +263,8 @@ store multiple indexes in the same storage object.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.Thesaurus.synonyms">
-<span class="sig-name descname"><span class="pre">synonyms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#Thesaurus.synonyms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.Thesaurus.synonyms" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.Thesaurus.synonyms">
+<span class="sig-name descname"><span class="pre">synonyms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#Thesaurus.synonyms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.Thesaurus.synonyms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of synonyms for the given word.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">thesaurus</span><span class="o">.</span><span class="n">synonyms</span><span class="p">(</span><span class="s2">&quot;hail&quot;</span><span class="p">)</span>
 <span class="go">[&#39;acclaim&#39;, &#39;come&#39;, &#39;herald&#39;]</span>
@@ -273,11 +273,11 @@ store multiple indexes in the same storage object.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.Thesaurus.to_storage">
-<span class="sig-name descname"><span class="pre">to_storage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'THES'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#Thesaurus.to_storage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.Thesaurus.to_storage" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.Thesaurus.to_storage">
+<span class="sig-name descname"><span class="pre">to_storage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'THES'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#Thesaurus.to_storage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.Thesaurus.to_storage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates am index in the given storage object from the
 synonyms loaded from a WordNet file.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fs</span> <span class="o">=</span> <span class="n">FileStorage</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">Thesaurus</span><span class="o">.</span><span class="n">from_filename</span><span class="p">(</span><span class="s2">&quot;wn_s.pl&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">to_storage</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
@@ -286,7 +286,7 @@ synonyms loaded from a WordNet file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>storage</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.store.Storage</span></code> object in
+<li><p><strong>storage</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.store.Storage</span></code> object in
 which to save the index.</p></li>
 <li><p><strong>indexname</strong> – A name for the index. This allows you to
 store multiple indexes in the same storage object.</p></li>
@@ -301,22 +301,22 @@ store multiple indexes in the same storage object.</p></li>
 <section id="low-level-functions">
 <h2>Low-level functions<a class="headerlink" href="#low-level-functions" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.parse_file">
-<span class="sig-prename descclassname"><span class="pre">whoosh.lang.wordnet.</span></span><span class="sig-name descname"><span class="pre">parse_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#parse_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.parse_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.parse_file">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.lang.wordnet.</span></span><span class="sig-name descname"><span class="pre">parse_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#parse_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.parse_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses the WordNet wn_s.pl prolog file and returns two dictionaries:
 word2nums and num2words.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.synonyms">
-<span class="sig-prename descclassname"><span class="pre">whoosh.lang.wordnet.</span></span><span class="sig-name descname"><span class="pre">synonyms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word2nums</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num2words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#synonyms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.synonyms" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.synonyms">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.lang.wordnet.</span></span><span class="sig-name descname"><span class="pre">synonyms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word2nums</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num2words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#synonyms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.synonyms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses the word2nums and num2words dicts to look up synonyms
 for the given word. Returns a list of synonym strings.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.lang.wordnet.make_index">
-<span class="sig-prename descclassname"><span class="pre">whoosh.lang.wordnet.</span></span><span class="sig-name descname"><span class="pre">make_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word2nums</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num2words</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/lang/wordnet.html#make_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.lang.wordnet.make_index" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.lang.wordnet.make_index">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.lang.wordnet.</span></span><span class="sig-name descname"><span class="pre">make_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word2nums</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num2words</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/lang/wordnet.html#make_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.lang.wordnet.make_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a Whoosh index in the given storage object containing
 synonyms taken from word2nums and num2words. Returns the Index
 object.</p>

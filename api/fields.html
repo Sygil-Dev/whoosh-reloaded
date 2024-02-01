@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>fields module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>fields module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -79,30 +79,30 @@
 <li class="toctree-l2"><a class="reference internal" href="columns.html"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">fields</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#schema-class">Schema class</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.SchemaClass"><code class="docutils literal notranslate"><span class="pre">SchemaClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.SchemaClass"><code class="docutils literal notranslate"><span class="pre">SchemaClass</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#fieldtype-base-class">FieldType base class</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.FieldType"><code class="docutils literal notranslate"><span class="pre">FieldType</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.FieldType"><code class="docutils literal notranslate"><span class="pre">FieldType</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#pre-made-field-types">Pre-made field types</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.ID"><code class="docutils literal notranslate"><span class="pre">ID</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.IDLIST"><code class="docutils literal notranslate"><span class="pre">IDLIST</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.STORED"><code class="docutils literal notranslate"><span class="pre">STORED</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.KEYWORD"><code class="docutils literal notranslate"><span class="pre">KEYWORD</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.TEXT"><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.NUMERIC"><code class="docutils literal notranslate"><span class="pre">NUMERIC</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.DATETIME"><code class="docutils literal notranslate"><span class="pre">DATETIME</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.BOOLEAN"><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.NGRAM"><code class="docutils literal notranslate"><span class="pre">NGRAM</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.NGRAMWORDS"><code class="docutils literal notranslate"><span class="pre">NGRAMWORDS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.ID"><code class="docutils literal notranslate"><span class="pre">ID</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.IDLIST"><code class="docutils literal notranslate"><span class="pre">IDLIST</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.STORED"><code class="docutils literal notranslate"><span class="pre">STORED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.KEYWORD"><code class="docutils literal notranslate"><span class="pre">KEYWORD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.TEXT"><code class="docutils literal notranslate"><span class="pre">TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.NUMERIC"><code class="docutils literal notranslate"><span class="pre">NUMERIC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.DATETIME"><code class="docutils literal notranslate"><span class="pre">DATETIME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.BOOLEAN"><code class="docutils literal notranslate"><span class="pre">BOOLEAN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.NGRAM"><code class="docutils literal notranslate"><span class="pre">NGRAM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.NGRAMWORDS"><code class="docutils literal notranslate"><span class="pre">NGRAMWORDS</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.FieldConfigurationError"><code class="docutils literal notranslate"><span class="pre">FieldConfigurationError</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.fields.UnknownFieldError"><code class="docutils literal notranslate"><span class="pre">UnknownFieldError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.FieldConfigurationError"><code class="docutils literal notranslate"><span class="pre">FieldConfigurationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.fields.UnknownFieldError"><code class="docutils literal notranslate"><span class="pre">UnknownFieldError</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -140,7 +140,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -159,14 +159,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.fields">
-<span id="fields-module"></span><h1><code class="docutils literal notranslate"><span class="pre">fields</span></code> module<a class="headerlink" href="#module-whoosh.fields" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.fields">
+<span id="fields-module"></span><h1><code class="docutils literal notranslate"><span class="pre">fields</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.fields" title="Permalink to this heading">¶</a></h1>
 <p>Contains functions and classes related to fields.</p>
 <section id="schema-class">
 <h2>Schema class<a class="headerlink" href="#schema-class" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.Schema">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">Schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#Schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.Schema" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.Schema">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">Schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#Schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.Schema" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents the collection of fields in an index. Maps field names to
 FieldType objects which define the behavior of each field.</p>
 <p>Low-level parts of the index use field numbers instead of field names for
@@ -183,8 +183,8 @@ with the default constructor before adding it).</p>
 </pre></div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.Schema.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">glob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#Schema.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.Schema.add" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.Schema.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">glob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#Schema.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.Schema.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a field to this schema.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -201,22 +201,22 @@ instantiate it with the default constructor.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.Schema.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#Schema.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.Schema.copy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.Schema.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#Schema.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.Schema.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a shallow copy of the schema. The field instances are not
 deep copied, so they are shared between schema copies.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.Schema.items">
-<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#Schema.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.Schema.items" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.Schema.items">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#Schema.items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.Schema.items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of (“fieldname”, field_object) pairs for the fields
 in this schema.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.Schema.names">
-<span class="sig-name descname"><span class="pre">names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#Schema.names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.Schema.names" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.Schema.names">
+<span class="sig-name descname"><span class="pre">names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">check_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#Schema.names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.Schema.names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the names of the fields in this schema.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -231,23 +231,23 @@ will not be in the result list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.Schema.scorable_names">
-<span class="sig-name descname"><span class="pre">scorable_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#Schema.scorable_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.Schema.scorable_names" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.Schema.scorable_names">
+<span class="sig-name descname"><span class="pre">scorable_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#Schema.scorable_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.Schema.scorable_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the names of fields that store field
 lengths.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.Schema.stored_names">
-<span class="sig-name descname"><span class="pre">stored_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#Schema.stored_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.Schema.stored_names" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.Schema.stored_names">
+<span class="sig-name descname"><span class="pre">stored_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#Schema.stored_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.Schema.stored_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the names of fields that are stored.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.SchemaClass">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">SchemaClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#SchemaClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.SchemaClass" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.SchemaClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">SchemaClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#SchemaClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.SchemaClass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allows you to define a schema using declarative syntax, similar to
 Django models:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MySchema</span><span class="p">(</span><span class="n">SchemaClass</span><span class="p">):</span>
@@ -276,7 +276,7 @@ results in an instance of <code class="docutils literal notranslate"><span class
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">MySchema</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="go">&lt;class &#39;whoosh.fields.Schema&#39;&gt;</span>
+<span class="go">&lt;class &#39;whoosh_reloaded.fields.Schema&#39;&gt;</span>
 </pre></div>
 </div>
 <p>All keyword arguments to the constructor are treated as fieldname =
@@ -295,8 +295,8 @@ with the default constructor before adding it).</p>
 <section id="fieldtype-base-class">
 <h2>FieldType base class<a class="headerlink" href="#fieldtype-base-class" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">FieldType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multitoken_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">FieldType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multitoken_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a field configuration.</p>
 <p>The FieldType object supports the following attributes:</p>
 <ul class="simple">
@@ -332,14 +332,14 @@ store term vectors for this field.</p>
 <p>The constructor for the base field type simply lets you supply your own
 attribute values.  Subclasses may configure some or all of this for you.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.clean">
-<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.clean" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.clean">
+<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.clean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears any cached information in the field and any child objects.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.index">
-<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.index" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator of (btext, frequency, weight, encoded_value)
 tuples for each unique word in the input value.</p>
 <p>The default implementation uses the <code class="docutils literal notranslate"><span class="pre">analyzer</span></code> attribute to tokenize
@@ -347,15 +347,15 @@ the value into strings, then encodes them into bytes using UTF-8.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.parse_query">
-<span class="sig-name descname"><span class="pre">parse_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.parse_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.parse_query" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.parse_query">
+<span class="sig-name descname"><span class="pre">parse_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.parse_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.parse_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>When <code class="docutils literal notranslate"><span class="pre">self_parsing()</span></code> returns True, the query parser will call
 this method to parse basic query text.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.parse_range">
-<span class="sig-name descname"><span class="pre">parse_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startexcl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endexcl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.parse_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.parse_range" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.parse_range">
+<span class="sig-name descname"><span class="pre">parse_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startexcl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endexcl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.parse_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.parse_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>When <code class="docutils literal notranslate"><span class="pre">self_parsing()</span></code> returns True, the query parser will call
 this method to parse range query text. If this method returns None
 instead of a query object, the parser will fall back to parsing the
@@ -363,8 +363,8 @@ start and end terms using process_text().</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.process_text">
-<span class="sig-name descname"><span class="pre">process_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.process_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.process_text" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.process_text">
+<span class="sig-name descname"><span class="pre">process_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.process_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.process_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyzes the given string and returns an iterator of token texts.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">process_text</span><span class="p">(</span><span class="s2">&quot;The ides of March&quot;</span><span class="p">))</span>
@@ -374,8 +374,8 @@ start and end terms using process_text().</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.self_parsing">
-<span class="sig-name descname"><span class="pre">self_parsing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.self_parsing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.self_parsing" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.self_parsing">
+<span class="sig-name descname"><span class="pre">self_parsing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.self_parsing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.self_parsing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subclasses should override this method to return True if they want
 the query parser to call the field’s <code class="docutils literal notranslate"><span class="pre">parse_query()</span></code> method instead
 of running the analyzer on text in this field. This is useful where
@@ -384,15 +384,15 @@ as in the numeric field type.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.separate_spelling">
-<span class="sig-name descname"><span class="pre">separate_spelling</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.separate_spelling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.separate_spelling" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.separate_spelling">
+<span class="sig-name descname"><span class="pre">separate_spelling</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.separate_spelling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.separate_spelling" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if the field stores unstemmed words in a separate field for
 spelling suggestions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.sortable_terms">
-<span class="sig-name descname"><span class="pre">sortable_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.sortable_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.sortable_terms" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.sortable_terms">
+<span class="sig-name descname"><span class="pre">sortable_terms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.sortable_terms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.sortable_terms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator of the “sortable” tokens in the given reader and
 field. These values can be used for sorting. The default implementation
 simply returns all tokens in the field.</p>
@@ -401,8 +401,8 @@ in a field are not useful for sorting.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.spellable_words">
-<span class="sig-name descname"><span class="pre">spellable_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.spellable_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.spellable_words" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.spellable_words">
+<span class="sig-name descname"><span class="pre">spellable_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.spellable_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.spellable_words" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator of each unique word (in sorted order) in the
 input value, suitable for inclusion in the field’s word graph.</p>
 <p>The default behavior is to call the field analyzer with the keyword
@@ -413,8 +413,8 @@ this behavior.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.spelling_fieldname">
-<span class="sig-name descname"><span class="pre">spelling_fieldname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.spelling_fieldname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.spelling_fieldname" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.spelling_fieldname">
+<span class="sig-name descname"><span class="pre">spelling_fieldname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.spelling_fieldname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.spelling_fieldname" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the name of a field to use for spelling suggestions instead of
 this field.</p>
 <dl class="field-list simple">
@@ -425,16 +425,16 @@ this field.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.subfields">
-<span class="sig-name descname"><span class="pre">subfields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.subfields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.subfields" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.subfields">
+<span class="sig-name descname"><span class="pre">subfields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.subfields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.subfields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator of <code class="docutils literal notranslate"><span class="pre">(name_prefix,</span> <span class="pre">fieldobject)</span></code> pairs for the
 fields that need to be indexed when content is put in this field. The
 default implementation simply yields <code class="docutils literal notranslate"><span class="pre">(&quot;&quot;,</span> <span class="pre">self)</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.supports">
-<span class="sig-name descname"><span class="pre">supports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.supports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.supports" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.supports">
+<span class="sig-name descname"><span class="pre">supports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.supports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.supports" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if the underlying format supports the given posting
 value type.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">TEXT</span><span class="p">()</span>
@@ -447,24 +447,24 @@ value type.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.to_bytes">
-<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.to_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.to_bytes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.to_bytes">
+<span class="sig-name descname"><span class="pre">to_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.to_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.to_bytes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a bytes representation of the given value, appropriate to be
 written to disk. The default implementation assumes a unicode value and
 encodes it using UTF-8.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.to_column_value">
-<span class="sig-name descname"><span class="pre">to_column_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.to_column_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.to_column_value" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.to_column_value">
+<span class="sig-name descname"><span class="pre">to_column_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.to_column_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.to_column_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an object suitable to be inserted into the document values
 column for this field. The default implementation simply calls
 <code class="docutils literal notranslate"><span class="pre">self.to_bytes(value)</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.fields.FieldType.tokenize">
-<span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldType.tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldType.tokenize" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldType.tokenize">
+<span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldType.tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldType.tokenize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyzes the given string and returns an iterator of Token objects
 (note: for performance reasons, actually the same token yielded over
 and over with different attributes).</p>
@@ -476,8 +476,8 @@ and over with different attributes).</p>
 <section id="pre-made-field-types">
 <h2>Pre-made field types<a class="headerlink" href="#pre-made-field-types" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.ID">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">ID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#ID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.ID" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.ID">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">ID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#ID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.ID" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configured field type that indexes the entire value of the field as one
 token. This is useful for data you don’t want to tokenize, such as the path
 of a file.</p>
@@ -490,8 +490,8 @@ document.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.IDLIST">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">IDLIST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#IDLIST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.IDLIST" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.IDLIST">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">IDLIST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#IDLIST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.IDLIST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configured field type for fields containing IDs separated by whitespace
 and/or punctuation (or anything else, using the expression param).</p>
 <dl class="field-list simple">
@@ -509,14 +509,14 @@ spaces, commas, and semicolons.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.STORED">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">STORED</span></span><a class="reference internal" href="../_modules/whoosh/fields.html#STORED"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.STORED" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.STORED">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">STORED</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#STORED"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.STORED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configured field type for fields you want to store but not index.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.KEYWORD">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">KEYWORD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowercase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#KEYWORD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.KEYWORD" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.KEYWORD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">KEYWORD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowercase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#KEYWORD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.KEYWORD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configured field type for fields containing space-separated or
 comma-separated keyword-like data (such as tags). The default is to not
 store positional information (so phrase searching is not allowed in this
@@ -535,8 +535,8 @@ document.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.TEXT">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">TEXT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analyzer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phrase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multitoken_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spelling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spelling_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'spell_'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#TEXT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.TEXT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.TEXT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">TEXT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analyzer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phrase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multitoken_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spelling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spelling_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'spell_'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#TEXT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.TEXT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configured field type for text fields (for example, the body text of an
 article). The default is to store positional information to allow phrase
 searching. This field type is always scorable.</p>
@@ -560,14 +560,14 @@ extra information in a separate field (named using the
 <code class="docutils literal notranslate"><span class="pre">spelling_prefix</span></code> keyword argument) to allow spelling suggestions
 to use the unchanged word forms as spelling suggestions.</p></li>
 <li><p><strong>sortable</strong> – If True, make this field sortable using the default
-column type. If you pass a <a class="reference internal" href="columns.html#whoosh.columns.Column" title="whoosh.columns.Column"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.columns.Column</span></code></a> instance
+column type. If you pass a <a class="reference internal" href="columns.html#whoosh_reloaded.columns.Column" title="whoosh_reloaded.columns.Column"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.columns.Column</span></code></a> instance
 instead of True, the field will use the given column type.</p></li>
 <li><p><strong>lang</strong> – automaticaly configure a
-<a class="reference internal" href="analysis.html#whoosh.analysis.LanguageAnalyzer" title="whoosh.analysis.LanguageAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.LanguageAnalyzer</span></code></a> for the given language.
+<a class="reference internal" href="analysis.html#whoosh_reloaded.analysis.LanguageAnalyzer" title="whoosh_reloaded.analysis.LanguageAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis.LanguageAnalyzer</span></code></a> for the given language.
 This is ignored if you also specify an <code class="docutils literal notranslate"><span class="pre">analyzer</span></code>.</p></li>
 <li><p><strong>vector</strong> – if this value evaluates to true, store a list of the
 terms in this field in each document. If the value is an instance
-of <a class="reference internal" href="formats.html#whoosh.formats.Format" title="whoosh.formats.Format"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.formats.Format</span></code></a>, the index will use the object to
+of <a class="reference internal" href="formats.html#whoosh_reloaded.formats.Format" title="whoosh_reloaded.formats.Format"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.formats.Format</span></code></a>, the index will use the object to
 store the term vector. Any other true value (e.g. <code class="docutils literal notranslate"><span class="pre">vector=True</span></code>)
 will use the field’s index format to store the term vector as well.</p></li>
 </ul>
@@ -576,8 +576,8 @@ will use the field’s index format to store the term vector as well.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.NUMERIC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">NUMERIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numtype=&lt;class</span> <span class="pre">'int'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_step=4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#NUMERIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.NUMERIC" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.NUMERIC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">NUMERIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numtype=&lt;class</span> <span class="pre">'int'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_step=4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#NUMERIC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.NUMERIC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Special field type that lets you index integer or floating point
 numbers in relatively short fixed-width terms. The field converts numbers
 to sortable bytes for you before indexing.</p>
@@ -633,8 +633,8 @@ negative.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.DATETIME">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">DATETIME</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#DATETIME"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.DATETIME" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.DATETIME">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">DATETIME</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unique</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#DATETIME"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.DATETIME" title="Permalink to this definition">¶</a></dt>
 <dd><p>Special field type that lets you index datetime objects. The field
 converts the datetime objects to sortable text for you before indexing.</p>
 <p>Since this field is based on Python’s datetime module it shares all the
@@ -662,8 +662,8 @@ document.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.BOOLEAN">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">BOOLEAN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#BOOLEAN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.BOOLEAN" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.BOOLEAN">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">BOOLEAN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#BOOLEAN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.BOOLEAN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Special field type that lets you index boolean values (True and False).
 The field converts the boolean values to text for you before indexing.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">STORED</span><span class="p">,</span> <span class="n">done</span><span class="o">=</span><span class="n">BOOLEAN</span><span class="p">)</span>
@@ -682,12 +682,12 @@ document.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.NGRAM">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">NGRAM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phrase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#NGRAM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.NGRAM" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.NGRAM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">NGRAM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phrase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#NGRAM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.NGRAM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configured field that indexes text as N-grams. For example, with a field
 type NGRAM(3,4), the value “hello” will be indexed as tokens
 “hel”, “hell”, “ell”, “ello”, “llo”. This field type chops the entire text
-into N-grams, including whitespace and punctuation. See <a class="reference internal" href="#whoosh.fields.NGRAMWORDS" title="whoosh.fields.NGRAMWORDS"><code class="xref py py-class docutils literal notranslate"><span class="pre">NGRAMWORDS</span></code></a>
+into N-grams, including whitespace and punctuation. See <a class="reference internal" href="#whoosh_reloaded.fields.NGRAMWORDS" title="whoosh_reloaded.fields.NGRAMWORDS"><code class="xref py py-class docutils literal notranslate"><span class="pre">NGRAMWORDS</span></code></a>
 for a field type that breaks the text into words first before chopping the
 words into N-grams.</p>
 <dl class="field-list simple">
@@ -709,8 +709,8 @@ searching. The default is off.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.fields.NGRAMWORDS">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">NGRAMWORDS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/fields.html#NGRAMWORDS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.NGRAMWORDS" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.NGRAMWORDS">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">NGRAMWORDS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stored</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sortable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#NGRAMWORDS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.NGRAMWORDS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configured field that chops text into words using a tokenizer,
 lowercases the words, and then chops the words into N-grams.</p>
 <dl class="field-list simple">
@@ -722,7 +722,7 @@ lowercases the words, and then chops the words into N-grams.</p>
 document. Since this field type generally contains a lot of text,
 you should avoid storing it with the document unless you need to,
 for example to allow fast excerpts in the search results.</p></li>
-<li><p><strong>tokenizer</strong> – an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.Tokenizer</span></code>
+<li><p><strong>tokenizer</strong> – an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis.Tokenizer</span></code>
 used to break the text into words.</p></li>
 <li><p><strong>at</strong> – if ‘start’, only takes N-grams from the start of the word.
 If ‘end’, only takes N-grams from the end. Otherwise the default
@@ -738,13 +738,13 @@ default is to combine N-grams with an And query.</p></li>
 <section id="exceptions">
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading">¶</a></h2>
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.fields.FieldConfigurationError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">FieldConfigurationError</span></span><a class="reference internal" href="../_modules/whoosh/fields.html#FieldConfigurationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.FieldConfigurationError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.FieldConfigurationError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">FieldConfigurationError</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#FieldConfigurationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.FieldConfigurationError" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.fields.UnknownFieldError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.fields.</span></span><span class="sig-name descname"><span class="pre">UnknownFieldError</span></span><a class="reference internal" href="../_modules/whoosh/fields.html#UnknownFieldError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.fields.UnknownFieldError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.fields.UnknownFieldError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.fields.</span></span><span class="sig-name descname"><span class="pre">UnknownFieldError</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/fields.html#UnknownFieldError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.fields.UnknownFieldError" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>

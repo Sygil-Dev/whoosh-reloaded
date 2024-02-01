@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>scoring module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>scoring module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -94,22 +94,22 @@
 <li class="toctree-l2"><a class="reference internal" href="reading.html"><code class="docutils literal notranslate"><span class="pre">reading</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#base-classes">Base classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.WeightingModel"><code class="docutils literal notranslate"><span class="pre">WeightingModel</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.BaseScorer"><code class="docutils literal notranslate"><span class="pre">BaseScorer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.WeightScorer"><code class="docutils literal notranslate"><span class="pre">WeightScorer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.WeightLengthScorer"><code class="docutils literal notranslate"><span class="pre">WeightLengthScorer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.WeightingModel"><code class="docutils literal notranslate"><span class="pre">WeightingModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.BaseScorer"><code class="docutils literal notranslate"><span class="pre">BaseScorer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.WeightScorer"><code class="docutils literal notranslate"><span class="pre">WeightScorer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.WeightLengthScorer"><code class="docutils literal notranslate"><span class="pre">WeightLengthScorer</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#scoring-algorithm-classes">Scoring algorithm classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.BM25F"><code class="docutils literal notranslate"><span class="pre">BM25F</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.TF_IDF"><code class="docutils literal notranslate"><span class="pre">TF_IDF</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.Frequency"><code class="docutils literal notranslate"><span class="pre">Frequency</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.BM25F"><code class="docutils literal notranslate"><span class="pre">BM25F</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.TF_IDF"><code class="docutils literal notranslate"><span class="pre">TF_IDF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.Frequency"><code class="docutils literal notranslate"><span class="pre">Frequency</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#scoring-utility-classes">Scoring utility classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.FunctionWeighting"><code class="docutils literal notranslate"><span class="pre">FunctionWeighting</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.MultiWeighting"><code class="docutils literal notranslate"><span class="pre">MultiWeighting</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.scoring.ReverseWeighting"><code class="docutils literal notranslate"><span class="pre">ReverseWeighting</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.FunctionWeighting"><code class="docutils literal notranslate"><span class="pre">FunctionWeighting</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.MultiWeighting"><code class="docutils literal notranslate"><span class="pre">MultiWeighting</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.scoring.ReverseWeighting"><code class="docutils literal notranslate"><span class="pre">ReverseWeighting</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -132,7 +132,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -151,24 +151,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.scoring">
-<span id="scoring-module"></span><h1><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module<a class="headerlink" href="#module-whoosh.scoring" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.scoring">
+<span id="scoring-module"></span><h1><code class="docutils literal notranslate"><span class="pre">scoring</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.scoring" title="Permalink to this heading">¶</a></h1>
 <p>This module contains classes for scoring (and sorting) search results.</p>
 <section id="base-classes">
 <h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.WeightingModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightingModel</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightingModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightingModel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.WeightingModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightingModel</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#WeightingModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.WeightingModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for scoring models. A WeightingModel object provides
 a method, <code class="docutils literal notranslate"><span class="pre">scorer</span></code>, which returns an instance of
-<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.scoring.Scorer</span></code>.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.scoring.Scorer</span></code>.</p>
 <p>Basically, WeightingModel objects store the configuration information for
 the model (for example, the values of B and K1 in the BM25F model), and
 then creates a scorer instance based on additional run-time information
 (the searcher, the fieldname, and term text) to do the actual scoring.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.scoring.WeightingModel.final">
-<span class="sig-name descname"><span class="pre">final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightingModel.final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightingModel.final" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.WeightingModel.final">
+<span class="sig-name descname"><span class="pre">final</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#WeightingModel.final"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.WeightingModel.final" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a final score for each document. You can use this method
 in subclasses to apply document-level adjustments to the score, for
 example using the value of stored field to influence the score
@@ -178,7 +178,7 @@ attribute <code class="docutils literal notranslate"><span class="pre">use_final
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>searcher</strong> – <a class="reference internal" href="searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> for the index.</p></li>
+<li><p><strong>searcher</strong> – <a class="reference internal" href="searching.html#whoosh_reloaded.searching.Searcher" title="whoosh_reloaded.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.searching.Searcher</span></code></a> for the index.</p></li>
 <li><p><strong>docnum</strong> – the doc number of the document being scored.</p></li>
 <li><p><strong>score</strong> – the document’s accumulated term score.</p></li>
 </ul>
@@ -190,23 +190,23 @@ attribute <code class="docutils literal notranslate"><span class="pre">use_final
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.scoring.WeightingModel.idf">
-<span class="sig-name descname"><span class="pre">idf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightingModel.idf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightingModel.idf" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.WeightingModel.idf">
+<span class="sig-name descname"><span class="pre">idf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#WeightingModel.idf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.WeightingModel.idf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the inverse document frequency of the given term.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.scoring.WeightingModel.scorer">
-<span class="sig-name descname"><span class="pre">scorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightingModel.scorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightingModel.scorer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.scoring.Scorer</span></code> configured
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.WeightingModel.scorer">
+<span class="sig-name descname"><span class="pre">scorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#WeightingModel.scorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.WeightingModel.scorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.scoring.Scorer</span></code> configured
 for the given searcher, fieldname, and term text.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">BaseScorer</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.BaseScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">BaseScorer</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#BaseScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.BaseScorer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for “scorer” implementations. A scorer provides a method for
 scoring a document, and sometimes methods for rating the “quality” of a
 document and a matcher’s current “block”, to implement quality-based
@@ -216,8 +216,8 @@ WeightingModel objects store the configuration information for the model
 (for example, the values of B and K1 in the BM25F model), and then creates
 a scorer instance.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer.block_quality">
-<span class="sig-name descname"><span class="pre">block_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer.block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer.block_quality" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.BaseScorer.block_quality">
+<span class="sig-name descname"><span class="pre">block_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#BaseScorer.block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.BaseScorer.block_quality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the <em>maximum limit</em> on the possible score the matcher can
 give <strong>in its current “block”</strong> (whatever concept of “block” the
 backend might use). This can be an estimate and not necessarily the
@@ -229,8 +229,8 @@ skip ahead to another block with better “quality”.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer.max_quality">
-<span class="sig-name descname"><span class="pre">max_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer.max_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer.max_quality" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.BaseScorer.max_quality">
+<span class="sig-name descname"><span class="pre">max_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#BaseScorer.max_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.BaseScorer.max_quality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the <em>maximum limit</em> on the possible score the matcher can
 give. This can be an estimate and not necessarily the actual maximum
 score possible, but it must never be less than the actual maximum
@@ -238,30 +238,30 @@ score.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer.score">
-<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer.score" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.BaseScorer.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#BaseScorer.score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.BaseScorer.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a score for the current document of the matcher.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.scoring.BaseScorer.supports_block_quality">
-<span class="sig-name descname"><span class="pre">supports_block_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BaseScorer.supports_block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BaseScorer.supports_block_quality" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.BaseScorer.supports_block_quality">
+<span class="sig-name descname"><span class="pre">supports_block_quality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#BaseScorer.supports_block_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.BaseScorer.supports_block_quality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if this class supports quality optimizations.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.WeightScorer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightScorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxweight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightScorer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.WeightScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightScorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxweight</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#WeightScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.WeightScorer" title="Permalink to this definition">¶</a></dt>
 <dd><p>A scorer that simply returns the weight as the score. This is useful
 for more complex weighting models to return when they are asked for a
 scorer for fields that aren’t scorable (don’t store field lengths).</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.WeightLengthScorer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightLengthScorer</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#WeightLengthScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.WeightLengthScorer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.WeightLengthScorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">WeightLengthScorer</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#WeightLengthScorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.WeightLengthScorer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for scorers where the only per-document variables are term
 weight and field length.</p>
 <p>Subclasses should override the <code class="docutils literal notranslate"><span class="pre">_score(weight,</span> <span class="pre">length)</span></code> method to return
@@ -274,10 +274,10 @@ attributes.</p>
 <section id="scoring-algorithm-classes">
 <h2>Scoring algorithm classes<a class="headerlink" href="#scoring-algorithm-classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.BM25F">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">BM25F</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#BM25F"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.BM25F" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.BM25F">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">BM25F</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#BM25F"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.BM25F" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implements the BM25F scoring algorithm.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">scoring</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">scoring</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set a custom B value for the &quot;content&quot; field</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">w</span> <span class="o">=</span> <span class="n">scoring</span><span class="o">.</span><span class="n">BM25F</span><span class="p">(</span><span class="n">B</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">content_B</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">K1</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 </pre></div>
@@ -295,21 +295,21 @@ specific values for B.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.TF_IDF">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">TF_IDF</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#TF_IDF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.TF_IDF" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.TF_IDF">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">TF_IDF</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#TF_IDF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.TF_IDF" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.Frequency">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">Frequency</span></span><a class="reference internal" href="../_modules/whoosh/scoring.html#Frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.Frequency" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.Frequency">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">Frequency</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#Frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.Frequency" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="scoring-utility-classes">
 <h2>Scoring utility classes<a class="headerlink" href="#scoring-utility-classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.FunctionWeighting">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">FunctionWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#FunctionWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.FunctionWeighting" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.FunctionWeighting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">FunctionWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#FunctionWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.FunctionWeighting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses a supplied function to do the scoring. For simple scoring functions
 and experiments this may be simpler to use than writing a full weighting
 model class and scorer class.</p>
@@ -334,8 +334,8 @@ write a real model/scorer combo so you can cache them on the object.)</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.MultiWeighting">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">MultiWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">weightings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#MultiWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.MultiWeighting" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.MultiWeighting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">MultiWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">weightings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#MultiWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.MultiWeighting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Chooses from multiple scoring algorithms based on the field.</p>
 <p>The only non-keyword argument specifies the default
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Weighting</span></code> instance to use. Keyword arguments specify
@@ -354,8 +354,8 @@ specified in the keyword arguments.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.scoring.ReverseWeighting">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.scoring.</span></span><span class="sig-name descname"><span class="pre">ReverseWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighting</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/scoring.html#ReverseWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.scoring.ReverseWeighting" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.scoring.ReverseWeighting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.scoring.</span></span><span class="sig-name descname"><span class="pre">ReverseWeighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weighting</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/scoring.html#ReverseWeighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.scoring.ReverseWeighting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps a weighting object and subtracts the wrapped model’s scores from
 0, essentially reversing the weighting model.</p>
 </dd></dl>

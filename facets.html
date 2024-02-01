@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sorting and faceting &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Sorting and faceting &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -116,7 +116,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -171,22 +171,22 @@ requires Whoosh to load the unique terms in the field into memory. Using
 <p>When you create a field using <code class="docutils literal notranslate"><span class="pre">sortable=True</span></code>, you are telling Whoosh to store
 per-document values for that field in a <em>column</em>. A column object specifies the
 format to use to store the per-document values on disk.</p>
-<p>The <a class="reference internal" href="api/columns.html#module-whoosh.columns" title="whoosh.columns"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.columns</span></code></a> module contains several different column object
+<p>The <a class="reference internal" href="api/columns.html#module-whoosh_reloaded.columns" title="whoosh_reloaded.columns"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh_reloaded.columns</span></code></a> module contains several different column object
 implementations. Each field type specifies a reasonable default column type (for
-example, the default for text fields is <a class="reference internal" href="api/columns.html#whoosh.columns.VarBytesColumn" title="whoosh.columns.VarBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.columns.VarBytesColumn</span></code></a>,
-the default for numeric fields is <a class="reference internal" href="api/columns.html#whoosh.columns.NumericColumn" title="whoosh.columns.NumericColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.columns.NumericColumn</span></code></a>).
+example, the default for text fields is <a class="reference internal" href="api/columns.html#whoosh_reloaded.columns.VarBytesColumn" title="whoosh_reloaded.columns.VarBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.columns.VarBytesColumn</span></code></a>,
+the default for numeric fields is <a class="reference internal" href="api/columns.html#whoosh_reloaded.columns.NumericColumn" title="whoosh_reloaded.columns.NumericColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.columns.NumericColumn</span></code></a>).
 However, if you want maximum efficiency you may want to use a different column
 type for a field.</p>
 <p>For example, if all document values in a field are a fixed length, you can use a
-<a class="reference internal" href="api/columns.html#whoosh.columns.FixedBytesColumn" title="whoosh.columns.FixedBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.columns.FixedBytesColumn</span></code></a>. If you have a field where many
+<a class="reference internal" href="api/columns.html#whoosh_reloaded.columns.FixedBytesColumn" title="whoosh_reloaded.columns.FixedBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.columns.FixedBytesColumn</span></code></a>. If you have a field where many
 documents share a relatively small number of possible values (an example might
 be a “category” field, or “month” or other enumeration type fields), you might
-want to use <a class="reference internal" href="api/columns.html#whoosh.columns.RefBytesColumn" title="whoosh.columns.RefBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.columns.RefBytesColumn</span></code></a> (which can handle both
+want to use <a class="reference internal" href="api/columns.html#whoosh_reloaded.columns.RefBytesColumn" title="whoosh_reloaded.columns.RefBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.columns.RefBytesColumn</span></code></a> (which can handle both
 variable and fixed-length values). There are column types for storing
 per-document bit values, structs, pickled objects, and compressed byte values.</p>
 <p>To specify a custom column object for a field, pass it as the <code class="docutils literal notranslate"><span class="pre">sortable</span></code>
 keyword argument instead of <code class="docutils literal notranslate"><span class="pre">True</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">columns</span><span class="p">,</span> <span class="n">fields</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">columns</span><span class="p">,</span> <span class="n">fields</span>
 
 <span class="n">category_col</span> <span class="o">=</span> <span class="n">columns</span><span class="o">.</span><span class="n">RefBytesColumn</span><span class="p">()</span>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">sortable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
@@ -217,16 +217,16 @@ different values for the visible title and the value used for sorting:</p>
 </pre></div>
 </div>
 <p>The best way to do this is to use an additional field just for sorting. You can
-use the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.COLUMN</span></code> field type to create a field that is not
+use the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.fields.COLUMN</span></code> field type to create a field that is not
 indexed or stored, it only holds per-document column values:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                        <span class="n">sort_title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">COLUMN</span><span class="p">(</span><span class="n">columns</span><span class="o">.</span><span class="n">VarBytesColumn</span><span class="p">())</span>
                        <span class="p">)</span>
 </pre></div>
 </div>
-<p>The single argument to the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.COLUMN</span></code> initializer is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.columns.ColumnType</span></code> object. You can use any of the various
-column types in the <a class="reference internal" href="api/columns.html#module-whoosh.columns" title="whoosh.columns"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.columns</span></code></a> module.</p>
+<p>The single argument to the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.fields.COLUMN</span></code> initializer is a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.columns.ColumnType</span></code> object. You can use any of the various
+column types in the <a class="reference internal" href="api/columns.html#module-whoosh_reloaded.columns" title="whoosh_reloaded.columns"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh_reloaded.columns</span></code></a> module.</p>
 <p>As another example, say you are indexing documents that have a custom sorting
 order associated with each document, such as a “priority” number:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span><span class="o">=</span><span class="n">Big</span> <span class="n">Wheel</span>
@@ -259,8 +259,8 @@ codes used by Python’s <code class="docutils literal notranslate"><span class=
 <p>If you have an existing index from before the <code class="docutils literal notranslate"><span class="pre">sortable</span></code> argument was added
 in Whoosh 3.0, or you didn’t think you needed a field to be sortable but now
 you find that you need to sort it, you can add “sortability” to an existing
-index using the <code class="xref py py-func docutils literal notranslate"><span class="pre">whoosh.sorting.add_sortable()</span></code> utility function:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">columns</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">sorting</span>
+index using the <code class="xref py py-func docutils literal notranslate"><span class="pre">whoosh_reloaded.sorting.add_sortable()</span></code> utility function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">columns</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">sorting</span>
 
 <span class="c1"># Say we have an existing index with this schema</span>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span>
@@ -293,8 +293,8 @@ information.</p>
 values in the field’s column as sorting keys for the documents.</p>
 <p>Normally search results are sorted by descending relevance score. You can tell
 Whoosh to use a different ordering by passing the <code class="docutils literal notranslate"><span class="pre">sortedby</span></code> keyword argument
-to the <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code></a> method:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">fields</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">qparser</span>
+to the <a class="reference internal" href="api/searching.html#whoosh_reloaded.searching.Searcher.search" title="whoosh_reloaded.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code></a> method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">fields</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">qparser</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                        <span class="n">price</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">(</span><span class="n">sortable</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
@@ -368,7 +368,7 @@ is more efficient than reversing each individual facet.</p>
 </section>
 <section id="accessing-column-values">
 <h3>Accessing column values<a class="headerlink" href="#accessing-column-values" title="Permalink to this heading">¶</a></h3>
-<p>Per-document column values are available in <a class="reference internal" href="api/searching.html#whoosh.searching.Hit" title="whoosh.searching.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hit</span></code></a>
+<p>Per-document column values are available in <a class="reference internal" href="api/searching.html#whoosh_reloaded.searching.Hit" title="whoosh_reloaded.searching.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hit</span></code></a>
 objects just like stored field values:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                        <span class="n">price</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">(</span><span class="n">sortable</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
@@ -506,7 +506,7 @@ return the document’s stored fields as a dictionary:</p>
 </div>
 <p>If you want different information about the groups, for example just the count
 of documents in each group, or you don’t need the groups to be ordered, you can
-specify a <a class="reference internal" href="api/sorting.html#whoosh.sorting.FacetMap" title="whoosh.sorting.FacetMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.FacetMap</span></code></a> type or instance with the
+specify a <a class="reference internal" href="api/sorting.html#whoosh_reloaded.sorting.FacetMap" title="whoosh_reloaded.sorting.FacetMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.sorting.FacetMap</span></code></a> type or instance with the
 <code class="docutils literal notranslate"><span class="pre">maptype</span></code> keyword argument when creating the <code class="docutils literal notranslate"><span class="pre">FacetType</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is the same as the default</span>
 <span class="n">myfacet</span> <span class="o">=</span> <span class="n">FieldFacet</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="n">maptype</span><span class="o">=</span><span class="n">sorting</span><span class="o">.</span><span class="n">OrderedList</span><span class="p">)</span>
@@ -702,7 +702,7 @@ having equal occurances of two terms:</p>
 documents. This is usually slower than using an indexed field, but when using
 <code class="docutils literal notranslate"><span class="pre">allow_overlap</span></code> it can actually be faster for large indexes just because it
 avoids the overhead of reading posting lists.</p>
-<p><a class="reference internal" href="api/sorting.html#whoosh.sorting.StoredFieldFacet" title="whoosh.sorting.StoredFieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredFieldFacet</span></code></a> supports <code class="docutils literal notranslate"><span class="pre">allow_overlap</span></code> by
+<p><a class="reference internal" href="api/sorting.html#whoosh_reloaded.sorting.StoredFieldFacet" title="whoosh_reloaded.sorting.StoredFieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredFieldFacet</span></code></a> supports <code class="docutils literal notranslate"><span class="pre">allow_overlap</span></code> by
 splitting the stored value into separate keys. By default it calls the value’s
 <code class="docutils literal notranslate"><span class="pre">split()</span></code> method (since most stored values are strings), but you can supply
 a custom split function. See the section on <code class="docutils literal notranslate"><span class="pre">allow_overlap</span></code> below.</p>
@@ -749,9 +749,9 @@ single-value approach.</p>
 <p>Of course, there are situations where you want documents to be sorted into
 multiple groups based on a field with multiple terms per document. The most
 common example would be a <code class="docutils literal notranslate"><span class="pre">tags</span></code> field. The <code class="docutils literal notranslate"><span class="pre">allow_overlap</span></code> keyword
-argument to the <a class="reference internal" href="api/sorting.html#whoosh.sorting.FieldFacet" title="whoosh.sorting.FieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldFacet</span></code></a>,
-<a class="reference internal" href="api/sorting.html#whoosh.sorting.QueryFacet" title="whoosh.sorting.QueryFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryFacet</span></code></a>, and
-<a class="reference internal" href="api/sorting.html#whoosh.sorting.StoredFieldFacet" title="whoosh.sorting.StoredFieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredFieldFacet</span></code></a> allows this multi-value approach.</p>
+argument to the <a class="reference internal" href="api/sorting.html#whoosh_reloaded.sorting.FieldFacet" title="whoosh_reloaded.sorting.FieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">FieldFacet</span></code></a>,
+<a class="reference internal" href="api/sorting.html#whoosh_reloaded.sorting.QueryFacet" title="whoosh_reloaded.sorting.QueryFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">QueryFacet</span></code></a>, and
+<a class="reference internal" href="api/sorting.html#whoosh_reloaded.sorting.StoredFieldFacet" title="whoosh_reloaded.sorting.StoredFieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredFieldFacet</span></code></a> allows this multi-value approach.</p>
 <p>However, there is an important caveat: using <code class="docutils literal notranslate"><span class="pre">allow_overlap=True</span></code> is slower
 than the default, potentially <em>much</em> slower for very large result sets. This is
 because Whoosh must read every posting of every term in the field to
@@ -761,7 +761,7 @@ speed up <code class="docutils literal notranslate"><span class="pre">allow_over
 sets, where Whoosh has to open the vector list for every matched document, this
 can still be very slow.</p>
 <p>For very large indexes and result sets, if a field is stored, you can get
-faster overlapped faceting using <a class="reference internal" href="api/sorting.html#whoosh.sorting.StoredFieldFacet" title="whoosh.sorting.StoredFieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredFieldFacet</span></code></a>
+faster overlapped faceting using <a class="reference internal" href="api/sorting.html#whoosh_reloaded.sorting.StoredFieldFacet" title="whoosh_reloaded.sorting.StoredFieldFacet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StoredFieldFacet</span></code></a>
 instead of <code class="docutils literal notranslate"><span class="pre">FieldFacet</span></code>. While reading stored values is usually slower than
 using the index, in this case avoiding the overhead of opening large numbers of
 posting readers can make it worthwhile.</p>
@@ -798,7 +798,7 @@ different languages use different sort orders. If you have a function to return
 the sorting order you want for a given field value, such as an implementation of
 the Unicode Collation Algorithm (UCA), you can customize the sort order
 for the user’s language.</p>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.sorting.TranslateFacet</span></code> lets you apply a function to the
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.sorting.TranslateFacet</span></code> lets you apply a function to the
 value of another facet. This lets you “translate” a field value into an
 arbitrary sort key, such as with UCA:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyuca</span> <span class="kn">import</span> <span class="n">Collator</span>

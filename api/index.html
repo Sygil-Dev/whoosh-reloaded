@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>index module &mdash; Whoosh 2.7.4 documentation</title>
+  <title>index module &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -86,28 +86,28 @@
 <li class="toctree-l2"><a class="reference internal" href="idsets.html"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">index</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.create_in"><code class="docutils literal notranslate"><span class="pre">create_in()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.open_dir"><code class="docutils literal notranslate"><span class="pre">open_dir()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.exists_in"><code class="docutils literal notranslate"><span class="pre">exists_in()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.exists"><code class="docutils literal notranslate"><span class="pre">exists()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.version_in"><code class="docutils literal notranslate"><span class="pre">version_in()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.version"><code class="docutils literal notranslate"><span class="pre">version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.create_in"><code class="docutils literal notranslate"><span class="pre">create_in()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.open_dir"><code class="docutils literal notranslate"><span class="pre">open_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.exists_in"><code class="docutils literal notranslate"><span class="pre">exists_in()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.exists"><code class="docutils literal notranslate"><span class="pre">exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.version_in"><code class="docutils literal notranslate"><span class="pre">version_in()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.version"><code class="docutils literal notranslate"><span class="pre">version()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#base-class">Base class</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.Index"><code class="docutils literal notranslate"><span class="pre">Index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.Index"><code class="docutils literal notranslate"><span class="pre">Index</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.FileIndex"><code class="docutils literal notranslate"><span class="pre">FileIndex</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.FileIndex"><code class="docutils literal notranslate"><span class="pre">FileIndex</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.LockError"><code class="docutils literal notranslate"><span class="pre">LockError</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.IndexError"><code class="docutils literal notranslate"><span class="pre">IndexError</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.IndexVersionError"><code class="docutils literal notranslate"><span class="pre">IndexVersionError</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.OutOfDateError"><code class="docutils literal notranslate"><span class="pre">OutOfDateError</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh.index.EmptyIndexError"><code class="docutils literal notranslate"><span class="pre">EmptyIndexError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.LockError"><code class="docutils literal notranslate"><span class="pre">LockError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.IndexError"><code class="docutils literal notranslate"><span class="pre">IndexError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.IndexVersionError"><code class="docutils literal notranslate"><span class="pre">IndexVersionError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.OutOfDateError"><code class="docutils literal notranslate"><span class="pre">OutOfDateError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.index.EmptyIndexError"><code class="docutils literal notranslate"><span class="pre">EmptyIndexError</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +138,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -157,15 +157,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh.index">
-<span id="index-module"></span><h1><code class="docutils literal notranslate"><span class="pre">index</span></code> module<a class="headerlink" href="#module-whoosh.index" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh_reloaded.index">
+<span id="index-module"></span><h1><code class="docutils literal notranslate"><span class="pre">index</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.index" title="Permalink to this heading">¶</a></h1>
 <p>Contains the main functions/classes for creating, maintaining, and using
 an index.</p>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.index.create_in">
-<span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">create_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#create_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.create_in" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.create_in">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">create_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#create_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.create_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function to create an index in a directory. Takes care of
 creating a FileStorage object for you.</p>
 <dl class="field-list simple">
@@ -173,7 +173,7 @@ creating a FileStorage object for you.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dirname</strong> – the path string of the directory in which to create the
 index.</p></li>
-<li><p><strong>schema</strong> – a <a class="reference internal" href="fields.html#whoosh.fields.Schema" title="whoosh.fields.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.Schema</span></code></a> object describing the
+<li><p><strong>schema</strong> – a <a class="reference internal" href="fields.html#whoosh_reloaded.fields.Schema" title="whoosh_reloaded.fields.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.fields.Schema</span></code></a> object describing the
 index’s fields.</p></li>
 <li><p><strong>indexname</strong> – the name of the index to create; you only need to specify
 this if you are creating multiple indexes within the same storage
@@ -181,14 +181,14 @@ object.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#whoosh.index.Index" title="whoosh.index.Index"><code class="xref py py-class docutils literal notranslate"><span class="pre">Index</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#whoosh_reloaded.index.Index" title="whoosh_reloaded.index.Index"><code class="xref py py-class docutils literal notranslate"><span class="pre">Index</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.index.open_dir">
-<span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">open_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readonly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#open_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.open_dir" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.open_dir">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">open_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readonly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#open_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.open_dir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function for opening an index in a directory. Takes care of
 creating a FileStorage object for you. dirname is the filename of the
 directory in containing the index. indexname is the name of the index to
@@ -207,8 +207,8 @@ this if you have multiple indexes within the same storage object.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.index.exists_in">
-<span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">exists_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#exists_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.exists_in" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.exists_in">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">exists_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#exists_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.exists_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if dirname contains a Whoosh index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -222,8 +222,8 @@ used.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.index.exists">
-<span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.exists" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.exists">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deprecated; use <code class="docutils literal notranslate"><span class="pre">storage.index_exists()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -237,8 +237,8 @@ used.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.index.version_in">
-<span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">version_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#version_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.version_in" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.version_in">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">version_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#version_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.version_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a tuple of (release_version, format_version), where
 release_version is the release version number of the Whoosh code that
 created the index – e.g. (0, 1, 24) – and format_version is the version
@@ -247,7 +247,7 @@ number of the on-disk format used for the index – e.g. -102.</p>
 version). This is simply a version number for the TOC file and probably
 should not have been exposed in a public interface. The best way to check
 if the current version of Whoosh can open an index is to actually try to
-open it and see if it raises a <code class="docutils literal notranslate"><span class="pre">whoosh.index.IndexVersionError</span></code> exception.</p>
+open it and see if it raises a <code class="docutils literal notranslate"><span class="pre">whoosh_reloaded.index.IndexVersionError</span></code> exception.</p>
 <p>Note that the release and format version are available as attributes on the
 Index object in Index.release and Index.version.</p>
 <dl class="field-list simple">
@@ -265,8 +265,8 @@ used.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh.index.version">
-<span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.version" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.version">
+<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a tuple of (release_version, format_version), where
 release_version is the release version number of the Whoosh code that
 created the index – e.g. (0, 1, 24) – and format_version is the version
@@ -275,7 +275,7 @@ number of the on-disk format used for the index – e.g. -102.</p>
 version). This is simply a version number for the TOC file and probably
 should not have been exposed in a public interface. The best way to check
 if the current version of Whoosh can open an index is to actually try to
-open it and see if it raises a <code class="docutils literal notranslate"><span class="pre">whoosh.index.IndexVersionError</span></code> exception.</p>
+open it and see if it raises a <code class="docutils literal notranslate"><span class="pre">whoosh_reloaded.index.IndexVersionError</span></code> exception.</p>
 <p>Note that the release and format version are available as attributes on the
 Index object in Index.release and Index.version.</p>
 <dl class="field-list simple">
@@ -296,18 +296,18 @@ used.</p></li>
 <section id="base-class">
 <h2>Base class<a class="headerlink" href="#base-class" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.index.Index">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">Index</span></span><a class="reference internal" href="../_modules/whoosh/index.html#Index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">Index</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents an indexed collection of documents.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.add_field">
-<span class="sig-name descname"><span class="pre">add_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldspec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.add_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.add_field" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.add_field">
+<span class="sig-name descname"><span class="pre">add_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldspec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.add_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.add_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a field to the index’s schema.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fieldname</strong> – the name of the field to add.</p></li>
-<li><p><strong>fieldspec</strong> – an instantiated <a class="reference internal" href="fields.html#whoosh.fields.FieldType" title="whoosh.fields.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.FieldType</span></code></a>
+<li><p><strong>fieldspec</strong> – an instantiated <a class="reference internal" href="fields.html#whoosh_reloaded.fields.FieldType" title="whoosh_reloaded.fields.FieldType"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.fields.FieldType</span></code></a>
 object.</p></li>
 </ul>
 </dd>
@@ -315,68 +315,68 @@ object.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.close" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Closes any open resources held by the Index object itself. This may
 not close all resources being used everywhere, for example by a
 Searcher object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.doc_count">
-<span class="sig-name descname"><span class="pre">doc_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.doc_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.doc_count" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.doc_count">
+<span class="sig-name descname"><span class="pre">doc_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.doc_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.doc_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the total number of UNDELETED documents in this index.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.doc_count_all">
-<span class="sig-name descname"><span class="pre">doc_count_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.doc_count_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.doc_count_all" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.doc_count_all">
+<span class="sig-name descname"><span class="pre">doc_count_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.doc_count_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.doc_count_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the total number of documents, DELETED OR UNDELETED,
 in this index.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.field_length">
-<span class="sig-name descname"><span class="pre">field_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.field_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.field_length" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.field_length">
+<span class="sig-name descname"><span class="pre">field_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.field_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.field_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the total length of the field across all documents.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.is_empty">
-<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.is_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.is_empty" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.is_empty">
+<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.is_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.is_empty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if this index is empty (that is, it has never had any
 documents successfully written to it.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.last_modified">
-<span class="sig-name descname"><span class="pre">last_modified</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.last_modified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.last_modified" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.last_modified">
+<span class="sig-name descname"><span class="pre">last_modified</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.last_modified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.last_modified" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the last modified time of the index, or -1 if the backend
 doesn’t support last-modified times.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.latest_generation">
-<span class="sig-name descname"><span class="pre">latest_generation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.latest_generation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.latest_generation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.latest_generation">
+<span class="sig-name descname"><span class="pre">latest_generation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.latest_generation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.latest_generation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the generation number of the latest generation of this
 index, or -1 if the backend doesn’t support versioning.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.max_field_length">
-<span class="sig-name descname"><span class="pre">max_field_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.max_field_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.max_field_length" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.max_field_length">
+<span class="sig-name descname"><span class="pre">max_field_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.max_field_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.max_field_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the maximum length of the field across all documents.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.optimize">
-<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.optimize" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.optimize">
+<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.optimize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.optimize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimizes this index, if necessary.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.reader">
-<span class="sig-name descname"><span class="pre">reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reuse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.reader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.reader">
+<span class="sig-name descname"><span class="pre">reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reuse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.reader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an IndexReader object for this index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -386,27 +386,27 @@ that any resources in the “recycled” reader that are not used by
 the new reader will be CLOSED, so you CANNOT use it afterward.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="reading.html#whoosh.reading.IndexReader" title="whoosh.reading.IndexReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.reading.IndexReader</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="reading.html#whoosh_reloaded.reading.IndexReader" title="whoosh_reloaded.reading.IndexReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.reading.IndexReader</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.refresh" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.refresh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a new Index object representing the latest generation
 of this index (if this object is the latest generation, or the backend
 doesn’t support versioning, returns self).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#whoosh.index.Index" title="whoosh.index.Index"><code class="xref py py-class docutils literal notranslate"><span class="pre">Index</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#whoosh_reloaded.index.Index" title="whoosh_reloaded.index.Index"><code class="xref py py-class docutils literal notranslate"><span class="pre">Index</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.remove_field">
-<span class="sig-name descname"><span class="pre">remove_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.remove_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.remove_field" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.remove_field">
+<span class="sig-name descname"><span class="pre">remove_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.remove_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.remove_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes the named field from the index’s schema. Depending on the
 backend implementation, this may or may not actually remove existing
 data for the field from the index. Optimizing the index should always
@@ -414,20 +414,20 @@ clear out existing data for a removed field.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.searcher">
-<span class="sig-name descname"><span class="pre">searcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.searcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.searcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.searcher">
+<span class="sig-name descname"><span class="pre">searcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.searcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.searcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a Searcher object for this index. Keyword arguments are
 passed to the Searcher object’s constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="searching.html#whoosh_reloaded.searching.Searcher" title="whoosh_reloaded.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.searching.Searcher</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.up_to_date">
-<span class="sig-name descname"><span class="pre">up_to_date</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.up_to_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.up_to_date" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.up_to_date">
+<span class="sig-name descname"><span class="pre">up_to_date</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.up_to_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.up_to_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if this object represents the latest generation of
 this index. Returns False if this object is not the latest generation
 (that is, someone else has updated the index since you opened this
@@ -435,12 +435,12 @@ object).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh.index.Index.writer">
-<span class="sig-name descname"><span class="pre">writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#Index.writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.Index.writer" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.Index.writer">
+<span class="sig-name descname"><span class="pre">writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#Index.writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.Index.writer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an IndexWriter object for this index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="writing.html#whoosh.writing.IndexWriter" title="whoosh.writing.IndexWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.writing.IndexWriter</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="writing.html#whoosh_reloaded.writing.IndexWriter" title="whoosh_reloaded.writing.IndexWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.writing.IndexWriter</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -451,27 +451,27 @@ object).</p>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh.index.FileIndex">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">FileIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MAIN'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#FileIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.FileIndex" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.FileIndex">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">FileIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MAIN'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#FileIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.FileIndex" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="exceptions">
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this heading">¶</a></h2>
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.index.LockError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">LockError</span></span><a class="reference internal" href="../_modules/whoosh/index.html#LockError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.LockError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.LockError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">LockError</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#LockError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.LockError" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.index.IndexError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">IndexError</span></span><a class="reference internal" href="../_modules/whoosh/index.html#IndexError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.IndexError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.IndexError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">IndexError</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#IndexError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.IndexError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generic index error.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.index.IndexVersionError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">IndexVersionError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/index.html#IndexVersionError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.IndexVersionError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.IndexVersionError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">IndexVersionError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#IndexVersionError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.IndexVersionError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when you try to open an index using a format that the current
 version of Whoosh cannot read. That is, when the index you’re trying to
 open is either not backward or forward compatible with this version of
@@ -479,15 +479,15 @@ Whoosh.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.index.OutOfDateError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">OutOfDateError</span></span><a class="reference internal" href="../_modules/whoosh/index.html#OutOfDateError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.OutOfDateError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.OutOfDateError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">OutOfDateError</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#OutOfDateError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.OutOfDateError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when you try to commit changes to an index which is not the
 latest generation.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="whoosh.index.EmptyIndexError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.index.</span></span><span class="sig-name descname"><span class="pre">EmptyIndexError</span></span><a class="reference internal" href="../_modules/whoosh/index.html#EmptyIndexError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.index.EmptyIndexError" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh_reloaded.index.EmptyIndexError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.index.</span></span><span class="sig-name descname"><span class="pre">EmptyIndexError</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/index.html#EmptyIndexError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.index.EmptyIndexError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when you try to work with an index that has no indexed terms.</p>
 </dd></dl>
 

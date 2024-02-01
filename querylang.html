@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The default query language &mdash; Whoosh 2.7.4 documentation</title>
+  <title>The default query language &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -92,7 +92,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -118,7 +118,7 @@
 terms and <em>phrases</em>. Multiple terms can be combined with operators such as
 <em>AND</em> and <em>OR</em>.</p>
 <p>Whoosh supports indexing text in different <em>fields</em>. You must specify the
-<em>default field</em> when you create the <a class="reference internal" href="api/qparser.html#whoosh.qparser.QueryParser" title="whoosh.qparser.QueryParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.QueryParser</span></code></a> object.
+<em>default field</em> when you create the :class:` whoosh_reloaded.qparser.QueryParser` object.
 This is the field in which any terms the user does not explicitly specify a field
 for will be searched.</p>
 <p>Whoosh’s query parser is capable of parsing different and/or additional syntax
@@ -139,8 +139,8 @@ that field.</p>
 <p>Normally when you specify a phrase, the maximum difference in position between
 each word in the phrase is 1 (that is, the words must be right next to each
 other in the document). For example, the following matches if a document has
-<code class="docutils literal notranslate"><span class="pre">library</span></code> within 5 words after <code class="docutils literal notranslate"><span class="pre">whoosh</span></code>:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot;whoosh library&quot;~5
+<code class="docutils literal notranslate"><span class="pre">library</span></code> within 5 words after `` whoosh_reloaded``:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot; whoosh_reloaded library&quot;~5
 </pre></div>
 </div>
 </section>

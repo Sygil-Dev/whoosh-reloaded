@@ -45,25 +45,25 @@ When you create a field using ``sortable=True``, you are telling Whoosh to store
 per-document values for that field in a *column*. A column object specifies the
 format to use to store the per-document values on disk.
 
-The :mod:`whoosh.columns` module contains several different column object
+The :mod:`whoosh_reloaded.columns` module contains several different column object
 implementations. Each field type specifies a reasonable default column type (for
-example, the default for text fields is :class:`whoosh.columns.VarBytesColumn`,
-the default for numeric fields is :class:`whoosh.columns.NumericColumn`).
+example, the default for text fields is :class:`whoosh_reloaded.columns.VarBytesColumn`,
+the default for numeric fields is :class:`whoosh_reloaded.columns.NumericColumn`).
 However, if you want maximum efficiency you may want to use a different column
 type for a field.
 
 For example, if all document values in a field are a fixed length, you can use a
-:class:`whoosh.columns.FixedBytesColumn`. If you have a field where many
+:class:`whoosh_reloaded.columns.FixedBytesColumn`. If you have a field where many
 documents share a relatively small number of possible values (an example might
 be a "category" field, or "month" or other enumeration type fields), you might
-want to use :class:`whoosh.columns.RefBytesColumn` (which can handle both
+want to use :class:`whoosh_reloaded.columns.RefBytesColumn` (which can handle both
 variable and fixed-length values). There are column types for storing
 per-document bit values, structs, pickled objects, and compressed byte values.
 
 To specify a custom column object for a field, pass it as the ``sortable``
 keyword argument instead of ``True``::
 
-    from whoosh import columns, fields
+    from whoosh_reloaded import columns, fields
 
     category_col = columns.RefBytesColumn()
     schema = fields.Schema(title=fields.TEXT(sortable=True),
@@ -95,16 +95,16 @@ different values for the visible title and the value used for sorting::
     sort_title = "unbearable lightness of being, the"
 
 The best way to do this is to use an additional field just for sorting. You can
-use the :class:`whoosh.fields.COLUMN` field type to create a field that is not
+use the :class:`whoosh_reloaded.fields.COLUMN` field type to create a field that is not
 indexed or stored, it only holds per-document column values::
 
     schema = fields.Schema(title=fields.TEXT(stored=True),
                            sort_title=fields.COLUMN(columns.VarBytesColumn())
                            )
 
-The single argument to the :class:`whoosh.fields.COLUMN` initializer is a
-:class:`whoosh.columns.ColumnType` object. You can use any of the various
-column types in the :mod:`whoosh.columns` module.
+The single argument to the :class:`whoosh_reloaded.fields.COLUMN` initializer is a
+:class:`whoosh_reloaded.columns.ColumnType` object. You can use any of the various
+column types in the :mod:`whoosh_reloaded.columns` module.
 
 As another example, say you are indexing documents that have a custom sorting
 order associated with each document, such as a "priority" number::
@@ -140,9 +140,9 @@ Making existing fields sortable
 If you have an existing index from before the ``sortable`` argument was added
 in Whoosh 3.0, or you didn't think you needed a field to be sortable but now
 you find that you need to sort it, you can add "sortability" to an existing
-index using the :func:`whoosh.sorting.add_sortable` utility function::
+index using the :func:`whoosh_reloaded.sorting.add_sortable` utility function::
 
-    from whoosh import columns, fields, index, sorting
+    from whoosh_reloaded import columns, fields, index, sorting
 
     # Say we have an existing index with this schema
     schema = fields.Schema(title=fields.TEXT,
@@ -165,7 +165,7 @@ You can specify a custom column type when you call ``add_sortable`` using the
     add_sortable(w, "chapter", sorting.FieldFacet("chapter"),
                  column=columns.RefBytesColumn())
 
-See the documentation for :func:`~whoosh.sorting.add_sortable` for more
+See the documentation for :func:`~whoosh_reloaded.sorting.add_sortable` for more
 information.
 
 
@@ -177,9 +177,9 @@ values in the field's column as sorting keys for the documents.
 
 Normally search results are sorted by descending relevance score. You can tell
 Whoosh to use a different ordering by passing the ``sortedby`` keyword argument
-to the :meth:`~whoosh.searching.Searcher.search` method::
+to the :meth:`~whoosh_reloaded.searching.Searcher.search` method::
 
-    from whoosh import fields, index, qparser
+    from whoosh_reloaded import fields, index, qparser
 
     schema = fields.Schema(title=fields.TEXT(stored=True),
                            price=fields.NUMERIC(sortable=True))
@@ -255,7 +255,7 @@ Sort by the "category" field, then by the document's score::
 Accessing column values
 -----------------------
 
-Per-document column values are available in :class:`~whoosh.searching.Hit`
+Per-document column values are available in :class:`~whoosh_reloaded.searching.Hit`
 objects just like stored field values::
 
     schema = fields.Schema(title=fields.TEXT(stored=True),
@@ -395,7 +395,7 @@ return the document's stored fields as a dictionary::
 
 If you want different information about the groups, for example just the count
 of documents in each group, or you don't need the groups to be ordered, you can
-specify a :class:`whoosh.sorting.FacetMap` type or instance with the
+specify a :class:`whoosh_reloaded.sorting.FacetMap` type or instance with the
 ``maptype`` keyword argument when creating the ``FacetType``::
 
     # This is the same as the default
@@ -607,7 +607,7 @@ documents. This is usually slower than using an indexed field, but when using
 ``allow_overlap`` it can actually be faster for large indexes just because it
 avoids the overhead of reading posting lists.
 
-:class:`~whoosh.sorting.StoredFieldFacet` supports ``allow_overlap`` by
+:class:`~whoosh_reloaded.sorting.StoredFieldFacet` supports ``allow_overlap`` by
 splitting the stored value into separate keys. By default it calls the value's
 ``split()`` method (since most stored values are strings), but you can supply
 a custom split function. See the section on ``allow_overlap`` below.
@@ -659,9 +659,9 @@ single-value approach.
 Of course, there are situations where you want documents to be sorted into
 multiple groups based on a field with multiple terms per document. The most
 common example would be a ``tags`` field. The ``allow_overlap`` keyword
-argument to the :class:`~whoosh.sorting.FieldFacet`,
-:class:`~whoosh.sorting.QueryFacet`, and
-:class:`~whoosh.sorting.StoredFieldFacet` allows this multi-value approach.
+argument to the :class:`~whoosh_reloaded.sorting.FieldFacet`,
+:class:`~whoosh_reloaded.sorting.QueryFacet`, and
+:class:`~whoosh_reloaded.sorting.StoredFieldFacet` allows this multi-value approach.
 
 However, there is an important caveat: using ``allow_overlap=True`` is slower
 than the default, potentially *much* slower for very large result sets. This is
@@ -674,7 +674,7 @@ sets, where Whoosh has to open the vector list for every matched document, this
 can still be very slow.
 
 For very large indexes and result sets, if a field is stored, you can get
-faster overlapped faceting using :class:`~whoosh.sorting.StoredFieldFacet`
+faster overlapped faceting using :class:`~whoosh_reloaded.sorting.StoredFieldFacet`
 instead of ``FieldFacet``. While reading stored values is usually slower than
 using the index, in this case avoiding the overhead of opening large numbers of
 posting readers can make it worthwhile.
@@ -716,7 +716,7 @@ the sorting order you want for a given field value, such as an implementation of
 the Unicode Collation Algorithm (UCA), you can customize the sort order
 for the user's language.
 
-The :class:`whoosh.sorting.TranslateFacet` lets you apply a function to the
+The :class:`whoosh_reloaded.sorting.TranslateFacet` lets you apply a function to the
 value of another facet. This lets you "translate" a field value into an
 arbitrary sort key, such as with UCA::
 

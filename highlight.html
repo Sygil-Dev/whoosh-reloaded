@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How to create highlighted search result excerpts &mdash; Whoosh 2.7.4 documentation</title>
+  <title>How to create highlighted search result excerpts &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -107,7 +107,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -158,8 +158,8 @@ need to process the text to remove e.g. HTML tags, wiki markup, etc.</p>
     <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>You can use the <a class="reference internal" href="api/searching.html#whoosh.searching.Hit.highlights" title="whoosh.searching.Hit.highlights"><code class="xref py py-meth docutils literal notranslate"><span class="pre">highlights()</span></code></a> method on the
-<a class="reference internal" href="api/searching.html#whoosh.searching.Hit" title="whoosh.searching.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Hit</span></code></a> object to get highlighted snippets from the
+<p>You can use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">highlights()</span></code> method on the
+:class:` whoosh_reloaded.searching.Hit` object to get highlighted snippets from the
 document containing the search terms.</p>
 <p>The first argument is the name of the field to highlight. If the field is
 stored, this is the only argument you need to supply:</p>
@@ -244,26 +244,26 @@ and end of a fragment:</p>
 <p>A fragmenter controls how to extract excerpts from the original text.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">highlight</span></code> module has the following pre-made fragmenters:</p>
 <dl class="simple">
-<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.ContextFragmenter" title="whoosh.highlight.ContextFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.ContextFragmenter</span></code></a> (the default)</dt><dd><p>This is a “smart” fragmenter that finds matched terms and then pulls
+<dt>:class:` whoosh_reloaded.highlight.ContextFragmenter` (the default)</dt><dd><p>This is a “smart” fragmenter that finds matched terms and then pulls
 in surround text to form fragments. This fragmenter only yields
 fragments that contain matched terms.</p>
 </dd>
-<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.SentenceFragmenter" title="whoosh.highlight.SentenceFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.SentenceFragmenter</span></code></a></dt><dd><p>Tries to break the text into fragments based on sentence punctuation
+<dt>:class:` whoosh_reloaded.highlight.SentenceFragmenter`</dt><dd><p>Tries to break the text into fragments based on sentence punctuation
 (“.”, “!”, and “?”). This object works by looking in the original
 text for a sentence end as the next character after each token’s
 ‘endchar’. Can be fooled by e.g. source code, decimals, etc.</p>
 </dd>
-<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.WholeFragmenter" title="whoosh.highlight.WholeFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.WholeFragmenter</span></code></a></dt><dd><p>Returns the entire text as one “fragment”. This can be useful if you
+<dt>:class:` whoosh_reloaded.highlight.WholeFragmenter`</dt><dd><p>Returns the entire text as one “fragment”. This can be useful if you
 are highlighting a short bit of text and don’t need to fragment it.</p>
 </dd>
 </dl>
 <p>The different fragmenters have different options. For example, the default
-<a class="reference internal" href="api/highlight.html#whoosh.highlight.ContextFragmenter" title="whoosh.highlight.ContextFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContextFragmenter</span></code></a> lets you set the maximum
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ContextFragmenter</span></code> lets you set the maximum
 fragment size and the size of the context to add on either side:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_cf</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">ContextFragmenter</span><span class="p">(</span><span class="n">maxchars</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">surround</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>See the <a class="reference internal" href="api/highlight.html#module-whoosh.highlight" title="whoosh.highlight"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.highlight</span></code></a> docs for more information.</p>
+<p>See the :mod:` whoosh_reloaded.highlight` docs for more information.</p>
 <p>To use a different fragmenter:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span> <span class="o">=</span> <span class="n">my_cf</span>
 </pre></div>
@@ -271,7 +271,7 @@ fragment size and the size of the context to add on either side:</p>
 </section>
 <section id="scorer">
 <h3>Scorer<a class="headerlink" href="#scorer" title="Permalink to this heading">¶</a></h3>
-<p>A scorer is a callable that takes a <a class="reference internal" href="api/highlight.html#whoosh.highlight.Fragment" title="whoosh.highlight.Fragment"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Fragment</span></code></a> object and
+<p>A scorer is a callable that takes a :class:` whoosh_reloaded.highlight.Fragment` object and
 returns a sortable value (where higher values represent better fragments).
 The default scorer adds up the number of matched terms in the fragment, and
 adds a “bonus” for the number of __different__ matched terms. The highlighting
@@ -321,12 +321,12 @@ formatted bit of text for display to the user. It can return anything
 or anything else useful to the calling system).</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">highlight</span></code> module contains the following pre-made formatters.</p>
 <dl class="simple">
-<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.HtmlFormatter" title="whoosh.highlight.HtmlFormatter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.HtmlFormatter</span></code></a></dt><dd><p>Outputs a string containing HTML tags (with a class attribute)
+<dt>:class:` whoosh_reloaded.highlight.HtmlFormatter`</dt><dd><p>Outputs a string containing HTML tags (with a class attribute)
 around the matched terms.</p>
 </dd>
-<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.UppercaseFormatter" title="whoosh.highlight.UppercaseFormatter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.UppercaseFormatter</span></code></a></dt><dd><p>Converts the matched terms to UPPERCASE.</p>
+<dt>:class:` whoosh_reloaded.highlight.UppercaseFormatter`</dt><dd><p>Converts the matched terms to UPPERCASE.</p>
 </dd>
-<dt><a class="reference internal" href="api/highlight.html#whoosh.highlight.GenshiFormatter" title="whoosh.highlight.GenshiFormatter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.GenshiFormatter</span></code></a></dt><dd><p>Outputs a Genshi event stream, with the matched terms wrapped in a
+<dt>:class:` whoosh_reloaded.highlight.GenshiFormatter`</dt><dd><p>Outputs a Genshi event stream, with the matched terms wrapped in a
 configurable element.</p>
 </dd>
 </dl>
@@ -353,18 +353,18 @@ configurable element.</p>
 </div>
 <p>If you need more control over the formatting (or want to output something other
 than strings), you will need to override other methods. See the documentation
-for the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Formatter</span></code> class.</p>
+for the :class:` whoosh_reloaded.highlight.Formatter` class.</p>
 </section>
 </section>
 <section id="highlighter-object">
 <h2>Highlighter object<a class="headerlink" href="#highlighter-object" title="Permalink to this heading">¶</a></h2>
 <p>Rather than setting attributes on the results object, you can create a
-reusable <a class="reference internal" href="api/highlight.html#whoosh.highlight.Highlighter" title="whoosh.highlight.Highlighter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Highlighter</span></code></a> object. Keyword arguments let
+reusable :class:` whoosh_reloaded.highlight.Highlighter` object. Keyword arguments let
 you change the <code class="docutils literal notranslate"><span class="pre">fragmenter</span></code>, <code class="docutils literal notranslate"><span class="pre">scorer</span></code>, <code class="docutils literal notranslate"><span class="pre">order</span></code>, and/or <code class="docutils literal notranslate"><span class="pre">formatter</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hi</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">Highlighter</span><span class="p">(</span><span class="n">fragmenter</span><span class="o">=</span><span class="n">my_cf</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="n">sds</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can then use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.highlight.Highlighter.highlight_hit()</span></code> method
+<p>You can then use the :meth:` whoosh_reloaded.highlight.Highlighter.highlight_hit` method
 to get highlights for a <code class="docutils literal notranslate"><span class="pre">Hit</span></code> object:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
@@ -393,7 +393,7 @@ has a very complex analyzer, re-tokenizing may be slow.</p>
 <p>Instead of retokenizing, Whoosh can look up the character positions of the
 matched terms in the index. Looking up the character positions is not
 instantaneous, but is usually faster than analyzing large amounts of text.</p>
-<p>To use <a class="reference internal" href="api/highlight.html#whoosh.highlight.PinpointFragmenter" title="whoosh.highlight.PinpointFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.PinpointFragmenter</span></code></a> and avoid re-tokenizing the
+<p>To use :class:` whoosh_reloaded.highlight.PinpointFragmenter` and avoid re-tokenizing the
 document text, you must do all of the following:</p>
 <p>Index the field with character information (this will require re-indexing an
 existing index):</p>
@@ -406,7 +406,7 @@ existing index):</p>
 <span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">,</span> <span class="n">terms</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Set a <a class="reference internal" href="api/highlight.html#whoosh.highlight.PinpointFragmenter" title="whoosh.highlight.PinpointFragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.PinpointFragmenter</span></code></a> as the fragmenter:</p>
+<p>Set a :class:` whoosh_reloaded.highlight.PinpointFragmenter` as the fragmenter:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">fragmenter</span> <span class="o">=</span> <span class="n">highlight</span><span class="o">.</span><span class="n">PinpointFragmenter</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -451,7 +451,7 @@ strip text before the first space and after the last space in the fragments:</p>
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h3>
 <p>The following function lets you retokenize and highlight a piece of text using
 an analyzer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.highlight</span> <span class="kn">import</span> <span class="n">highlight</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.highlight</span> <span class="kn">import</span> <span class="n">highlight</span>
 
 <span class="n">excerpts</span> <span class="o">=</span> <span class="n">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">analyzer</span><span class="p">,</span> <span class="n">fragmenter</span><span class="p">,</span> <span class="n">formatter</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                      <span class="n">scorer</span><span class="o">=</span><span class="n">BasicFragmentScorer</span><span class="p">,</span> <span class="n">minscore</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">FIRST</span><span class="p">)</span>
@@ -467,14 +467,14 @@ an analyzer:</p>
 against the query terms. This is usually the analyzer for the field the
 query terms are in.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">fragmenter</span></code></dt><dd><p>A <a class="reference internal" href="api/highlight.html#whoosh.highlight.Fragmenter" title="whoosh.highlight.Fragmenter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Fragmenter</span></code></a> object, see below.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">fragmenter</span></code></dt><dd><p>A :class:` whoosh_reloaded.highlight.Fragmenter` object, see below.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">formatter</span></code></dt><dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Formatter</span></code> object, see below.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">formatter</span></code></dt><dd><p>A :class:` whoosh_reloaded.highlight.Formatter` object, see below.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">top</span></code></dt><dd><p>The number of fragments to include in the output.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">scorer</span></code></dt><dd><p>A <a class="reference internal" href="api/highlight.html#whoosh.highlight.FragmentScorer" title="whoosh.highlight.FragmentScorer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.FragmentScorer</span></code></a> object. The only scorer currently
-included with Whoosh is <a class="reference internal" href="api/highlight.html#whoosh.highlight.BasicFragmentScorer" title="whoosh.highlight.BasicFragmentScorer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasicFragmentScorer</span></code></a>, the
+<dt><code class="docutils literal notranslate"><span class="pre">scorer</span></code></dt><dd><p>A :class:` whoosh_reloaded.highlight.FragmentScorer` object. The only scorer currently
+included with Whoosh is <code class="xref py py-class docutils literal notranslate"><span class="pre">BasicFragmentScorer</span></code>, the
 default.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">minscore</span></code></dt><dd><p>The minimum score a fragment must have to be considered for inclusion.</p>

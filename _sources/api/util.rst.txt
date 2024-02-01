@@ -2,6 +2,6 @@
 ``util`` module
 ===============
 
-.. automodule:: whoosh.util
+.. automodule:: whoosh_reloaded.util
     :members:
 

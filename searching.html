@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How to search &mdash; Whoosh 2.7.4 documentation</title>
+  <title>How to search &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -98,7 +98,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -122,7 +122,7 @@
 documents.</p>
 <section id="the-searcher-object">
 <h2>The <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object<a class="headerlink" href="#the-searcher-object" title="Permalink to this heading">¶</a></h2>
-<p>To get a <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> object, call <code class="docutils literal notranslate"><span class="pre">searcher()</span></code> on your
+<p>To get a :class:` whoosh_reloaded.searching.Searcher` object, call <code class="docutils literal notranslate"><span class="pre">searcher()</span></code> on your
 <code class="docutils literal notranslate"><span class="pre">Index</span></code> object:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">searcher</span> <span class="o">=</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span>
 </pre></div>
@@ -147,14 +147,14 @@ system is slow to collect them, you can run out of file handles):</p>
 has lots of useful methods for getting information about the index, such as
 <code class="docutils literal notranslate"><span class="pre">lexicon(fieldname)</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">lexicon</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">))</span>
-<span class="go">[u&quot;document&quot;, u&quot;index&quot;, u&quot;whoosh&quot;]</span>
+<span class="go">[u&quot;document&quot;, u&quot;index&quot;, u&quot; whoosh_reloaded&quot;]</span>
 </pre></div>
 </div>
 <p>However, the most important method on the <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object is
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code></a>, which takes a
-<a class="reference internal" href="api/query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object and returns a
-<a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> object:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code>, which takes a
+:class:` whoosh_reloaded.query.Query` object and returns a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
 
 <span class="n">qp</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">myindex</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
 <span class="n">q</span> <span class="o">=</span> <span class="n">qp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">u</span><span class="s2">&quot;hello world&quot;</span><span class="p">)</span>
@@ -185,7 +185,7 @@ to set a different page length:</p>
 </section>
 <section id="results-object">
 <h2>Results object<a class="headerlink" href="#results-object" title="Permalink to this heading">¶</a></h2>
-<p>The <a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> object acts like a list of the matched
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code> object acts like a list of the matched
 documents. You can use it to access the stored fields of each hit document, to
 display to the user.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Show the best hit&#39;s stored fields</span>
@@ -213,9 +213,9 @@ matching documents in the index.</p>
 figure out the total number of matching documents. This is usually very fast
 but for large indexes it can cause a noticeable delay. If you want to avoid
 this delay on very large indexes, you can use the
-<a class="reference internal" href="api/searching.html#whoosh.searching.Results.has_exact_length" title="whoosh.searching.Results.has_exact_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_exact_length()</span></code></a>,
-<a class="reference internal" href="api/searching.html#whoosh.searching.Results.estimated_length" title="whoosh.searching.Results.estimated_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">estimated_length()</span></code></a>, and
-<a class="reference internal" href="api/searching.html#whoosh.searching.Results.estimated_min_length" title="whoosh.searching.Results.estimated_min_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">estimated_min_length()</span></code></a> methods to estimate the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">has_exact_length()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">estimated_length()</span></code>, and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">estimated_min_length()</span></code> methods to estimate the
 number of matching documents without calling <code class="docutils literal notranslate"><span class="pre">len()</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">found</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">scored_length</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">has_exact_length</span><span class="p">():</span>
@@ -233,17 +233,17 @@ number of matching documents without calling <code class="docutils literal notra
 <section id="scoring">
 <h3>Scoring<a class="headerlink" href="#scoring" title="Permalink to this heading">¶</a></h3>
 <p>Normally the list of result documents is sorted by <em>score</em>. The
-<a class="reference internal" href="api/scoring.html#module-whoosh.scoring" title="whoosh.scoring"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.scoring</span></code></a> module contains implementations of various scoring
-algorithms. The default is <a class="reference internal" href="api/scoring.html#whoosh.scoring.BM25F" title="whoosh.scoring.BM25F"><code class="xref py py-class docutils literal notranslate"><span class="pre">BM25F</span></code></a>.</p>
+:mod:` whoosh_reloaded.scoring` module contains implementations of various scoring
+algorithms. The default is <code class="xref py py-class docutils literal notranslate"><span class="pre">BM25F</span></code>.</p>
 <p>You can set the scoring object to use when you create the searcher using the
 <code class="docutils literal notranslate"><span class="pre">weighting</span></code> keyword argument:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">scoring</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">scoring</span>
 
 <span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">(</span><span class="n">weighting</span><span class="o">=</span><span class="n">scoring</span><span class="o">.</span><span class="n">TF_IDF</span><span class="p">())</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
     <span class="o">...</span>
 </pre></div>
 </div>
-<p>A weighting model is a <a class="reference internal" href="api/scoring.html#whoosh.scoring.WeightingModel" title="whoosh.scoring.WeightingModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">WeightingModel</span></code></a> subclass with a
+<p>A weighting model is a <code class="xref py py-class docutils literal notranslate"><span class="pre">WeightingModel</span></code> subclass with a
 <code class="docutils literal notranslate"><span class="pre">scorer()</span></code> method that produces a “scorer” instance. This instance has a
 method that takes the current matcher and returns a floating point score.</p>
 </section>
@@ -260,7 +260,7 @@ method that takes the current matcher and returns a floating point score.</p>
 <h2>Filtering results<a class="headerlink" href="#filtering-results" title="Permalink to this heading">¶</a></h2>
 <p>You can use the <code class="docutils literal notranslate"><span class="pre">filter</span></code> keyword argument to <code class="docutils literal notranslate"><span class="pre">search()</span></code> to specify a set of
 documents to permit in the results. The argument can be a
-<a class="reference internal" href="api/query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object, a <a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object,
+:class:` whoosh_reloaded.query.Query` object, a :class:` whoosh_reloaded.searching.Results` object,
 or a set-like object containing document numbers. The searcher caches filters
 so if for example you use the same query filter with a searcher multiple times,
 the additional searches will be faster because the searcher will cache the
@@ -304,7 +304,7 @@ search record which terms in the query matched which documents:</p>
 </pre></div>
 </div>
 <p>You can then get information about which terms matched from the
-<a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> and <a class="reference internal" href="api/searching.html#whoosh.searching.Hit" title="whoosh.searching.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Hit</span></code></a> objects:</p>
+:class:` whoosh_reloaded.searching.Results` and :class:` whoosh_reloaded.searching.Hit` objects:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Was this results object created with terms=True?</span>
 <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">has_matched_terms</span><span class="p">():</span>
     <span class="c1"># What terms matched in the results?</span>
@@ -341,14 +341,14 @@ in the results.</p>
 </pre></div>
 </div>
 <p>Collapsing works with both scored and sorted results. You can use any of the
-facet types available in the <a class="reference internal" href="api/sorting.html#module-whoosh.sorting" title="whoosh.sorting"><code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.sorting</span></code></a> module.</p>
+facet types available in the :mod:` whoosh_reloaded.sorting` module.</p>
 <p>By default, Whoosh uses the results order (score or sort key) to determine the
 documents to collapse. For example, in scored results, the best scoring
 documents would be kept. You can optionally specify a <code class="docutils literal notranslate"><span class="pre">collapse_order</span></code> facet
 to control which documents to keep when collapsing.</p>
 <p>For example, in a product search you could display results sorted by decreasing
 price, and eliminate all but the highest rated item of each product type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">sorting</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">sorting</span>
 
 <span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
     <span class="n">price_facet</span> <span class="o">=</span> <span class="n">sorting</span><span class="o">.</span><span class="n">FieldFacet</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -368,15 +368,15 @@ because the search has to consider more documents and remove many
 already-collected documents.</p>
 <p>Since this collector must sometimes go back and remove already-collected
 documents, if you use it in combination with
-<a class="reference internal" href="api/collectors.html#whoosh.collectors.TermsCollector" title="whoosh.collectors.TermsCollector"><code class="xref py py-class docutils literal notranslate"><span class="pre">TermsCollector</span></code></a> and/or
-<a class="reference internal" href="api/collectors.html#whoosh.collectors.FacetCollector" title="whoosh.collectors.FacetCollector"><code class="xref py py-class docutils literal notranslate"><span class="pre">FacetCollector</span></code></a>, those collectors may contain
+<code class="xref py py-class docutils literal notranslate"><span class="pre">TermsCollector</span></code> and/or
+<code class="xref py py-class docutils literal notranslate"><span class="pre">FacetCollector</span></code>, those collectors may contain
 information about documents that were filtered out of the final results by
 collapsing.</p>
 </section>
 <section id="time-limited-searches">
 <h2>Time limited searches<a class="headerlink" href="#time-limited-searches" title="Permalink to this heading">¶</a></h2>
 <p>To limit the amount of time a search can take:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.collectors</span> <span class="kn">import</span> <span class="n">TimeLimitCollector</span><span class="p">,</span> <span class="n">TimeLimit</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.collectors</span> <span class="kn">import</span> <span class="n">TimeLimitCollector</span><span class="p">,</span> <span class="n">TimeLimit</span>
 
 <span class="k">with</span> <span class="n">myindex</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
     <span class="c1"># Get a collector object</span>
@@ -397,8 +397,8 @@ collapsing.</p>
 </section>
 <section id="convenience-methods">
 <h2>Convenience methods<a class="headerlink" href="#convenience-methods" title="Permalink to this heading">¶</a></h2>
-<p>The <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.document" title="whoosh.searching.Searcher.document"><code class="xref py py-meth docutils literal notranslate"><span class="pre">document()</span></code></a> and
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.documents" title="whoosh.searching.Searcher.documents"><code class="xref py py-meth docutils literal notranslate"><span class="pre">documents()</span></code></a> methods on the <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object let
+<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">document()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">documents()</span></code> methods on the <code class="docutils literal notranslate"><span class="pre">Searcher</span></code> object let
 you retrieve the stored fields of documents matching terms you pass in keyword
 arguments.</p>
 <p>This is especially useful for fields such as dates/times, identifiers, paths,
@@ -420,7 +420,7 @@ can’t search for multiple terms in the same field.</p></li>
 <section id="combining-results-objects">
 <h2>Combining Results objects<a class="headerlink" href="#combining-results-objects" title="Permalink to this heading">¶</a></h2>
 <p>It is sometimes useful to use the results of another query to influence the
-order of a <a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object.</p>
+order of a :class:` whoosh_reloaded.searching.Results` object.</p>
 <p>For example, you might have a “best bet” field. This field contains hand-picked
 keywords for documents. When the user searches for those keywords, you want
 those documents to be placed at the top of the results list. You could try to

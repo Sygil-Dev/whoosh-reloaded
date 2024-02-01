@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>filedb notes &mdash; Whoosh 2.7.4 documentation</title>
+  <title>filedb notes &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
 
@@ -34,7 +34,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -88,7 +88,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Whoosh</a>
+          <a href="../index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -116,7 +116,7 @@
 <dt>&lt;revision_number&gt;.toc</dt><dd><p>The “master” file containing information about the index and its segments.</p>
 </dd>
 </dl>
-<p>The index directory will contain a set of files for each segment. A segment is like a mini-index – when you add documents to the index, whoosh creates a new segment and then searches the old segment(s) and the new segment to avoid having to do a big merge every time you add a document. When you get enough small segments whoosh will merge them into larger segments or a single segment.</p>
+<p>The index directory will contain a set of files for each segment. A segment is like a mini-index – when you add documents to the index, whoosh_reloaded creates a new segment and then searches the old segment(s) and the new segment to avoid having to do a big merge every time you add a document. When you get enough small segments whoosh_reloaded will merge them into larger segments or a single segment.</p>
 <dl class="simple">
 <dt>&lt;segment_number&gt;.dci</dt><dd><p>Contains per-document information (e.g. field lengths). This will grow linearly with the number of documents.</p>
 </dd>

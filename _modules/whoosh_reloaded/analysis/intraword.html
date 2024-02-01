@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh_reloaded.analysis.intraword &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh_reloaded.analysis.intraword</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh_reloaded.analysis.intraword</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2007 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">u</span><span class="p">,</span> <span class="n">text_type</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">xrange</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis.filters</span> <span class="kn">import</span> <span class="n">Filter</span>
+
+
+<div class="viewcode-block" id="CompoundWordFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh_reloaded.analysis.CompoundWordFilter">[docs]</a><span class="k">class</span> <span class="nc">CompoundWordFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Given a set of words (or any object with a ``__contains__`` method),</span>
+<span class="sd">    break any tokens in the stream that are composites of words in the word set</span>
+<span class="sd">    into their individual parts.</span>
+
+<span class="sd">    Given the correct set of words, this filter can break apart run-together</span>
+<span class="sd">    words and trademarks (e.g. &quot;turbosquid&quot;, &quot;applescript&quot;). It can also be</span>
+<span class="sd">    useful for agglutinative languages such as German.</span>
+
+<span class="sd">    The ``keep_compound`` argument lets you decide whether to keep the</span>
+<span class="sd">    compound word in the token stream along with the word segments.</span>
+
+<span class="sd">    &gt;&gt;&gt; cwf = CompoundWordFilter(wordset, keep_compound=True)</span>
+<span class="sd">    &gt;&gt;&gt; analyzer = RegexTokenizer(r&quot;\S+&quot;) | cwf</span>
+<span class="sd">    &gt;&gt;&gt; [t.text for t in analyzer(&quot;I do not like greeneggs and ham&quot;)</span>
+<span class="sd">    [&quot;I&quot;, &quot;do&quot;, &quot;not&quot;, &quot;like&quot;, &quot;greeneggs&quot;, &quot;green&quot;, &quot;eggs&quot;, &quot;and&quot;, &quot;ham&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; cwf.keep_compound = False</span>
+<span class="sd">    &gt;&gt;&gt; [t.text for t in analyzer(&quot;I do not like greeneggs and ham&quot;)</span>
+<span class="sd">    [&quot;I&quot;, &quot;do&quot;, &quot;not&quot;, &quot;like&quot;, &quot;green&quot;, &quot;eggs&quot;, &quot;and&quot;, &quot;ham&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wordset</span><span class="p">,</span> <span class="n">keep_compound</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param wordset: an object with a ``__contains__`` method, such as a</span>
+<span class="sd">            set, containing strings to look for inside the tokens.</span>
+<span class="sd">        :param keep_compound: if True (the default), the original compound</span>
+<span class="sd">            token will be retained in the stream before the subwords.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wordset</span> <span class="o">=</span> <span class="n">wordset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_compound</span> <span class="o">=</span> <span class="n">keep_compound</span>
+
+    <span class="k">def</span> <span class="nf">subwords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wordset</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">s</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">memo</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">memo</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)):</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wordset</span><span class="p">:</span>
+                <span class="n">suffix</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>
+                <span class="n">suffix_subs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subwords</span><span class="p">(</span><span class="n">suffix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">suffix_subs</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">+</span> <span class="n">suffix_subs</span>
+                    <span class="n">memo</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+                    <span class="k">return</span> <span class="n">result</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">keep_compound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_compound</span>
+        <span class="n">memo</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">subwords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subwords</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">subs</span> <span class="o">=</span> <span class="n">subwords</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">subs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">keep_compound</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">t</span>
+                <span class="k">for</span> <span class="n">subword</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">:</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">subword</span>
+                    <span class="k">yield</span> <span class="n">t</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="BiWordFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh_reloaded.analysis.BiWordFilter">[docs]</a><span class="k">class</span> <span class="nc">BiWordFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merges adjacent tokens into &quot;bi-word&quot; tokens, so that for example::</span>
+
+<span class="sd">        &quot;the&quot;, &quot;sign&quot;, &quot;of&quot;, &quot;four&quot;</span>
+
+<span class="sd">    becomes::</span>
+
+<span class="sd">        &quot;the-sign&quot;, &quot;sign-of&quot;, &quot;of-four&quot;</span>
+
+<span class="sd">    This can be used to create fields for pseudo-phrase searching, where if</span>
+<span class="sd">    all the terms match the document probably contains the phrase, but the</span>
+<span class="sd">    searching is faster than actually doing a phrase search on individual word</span>
+<span class="sd">    terms.</span>
+
+<span class="sd">    The ``BiWordFilter`` is much faster than using the otherwise equivalent</span>
+<span class="sd">    ``ShingleFilter(2)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sep</span>
+        <span class="n">prev_text</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">prev_startchar</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">prev_pos</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">atleastone</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="c1"># Save the original text of this token</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">text</span>
+
+            <span class="c1"># Save the original position</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">positions</span>
+            <span class="k">if</span> <span class="n">positions</span><span class="p">:</span>
+                <span class="n">ps</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">pos</span>
+
+            <span class="c1"># Save the original start char</span>
+            <span class="n">chars</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">chars</span>
+            <span class="k">if</span> <span class="n">chars</span><span class="p">:</span>
+                <span class="n">sc</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">startchar</span>
+
+            <span class="k">if</span> <span class="n">prev_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Use the pos and startchar from the previous token</span>
+                <span class="k">if</span> <span class="n">positions</span><span class="p">:</span>
+                    <span class="n">token</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">prev_pos</span>
+                <span class="k">if</span> <span class="n">chars</span><span class="p">:</span>
+                    <span class="n">token</span><span class="o">.</span><span class="n">startchar</span> <span class="o">=</span> <span class="n">prev_startchar</span>
+
+                <span class="c1"># Join the previous token text and the current token text to</span>
+                <span class="c1"># form the biword token</span>
+                <span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">prev_text</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+                <span class="k">yield</span> <span class="n">token</span>
+                <span class="n">atleastone</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># Save the originals and the new &quot;previous&quot; values</span>
+            <span class="n">prev_text</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="k">if</span> <span class="n">chars</span><span class="p">:</span>
+                <span class="n">prev_startchar</span> <span class="o">=</span> <span class="n">sc</span>
+            <span class="k">if</span> <span class="n">positions</span><span class="p">:</span>
+                <span class="n">prev_pos</span> <span class="o">=</span> <span class="n">ps</span>
+
+        <span class="c1"># If no bi-words were emitted, that is, the token stream only had</span>
+        <span class="c1"># a single token, then emit that single token.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">atleastone</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">token</span></div>
+
+
+<div class="viewcode-block" id="ShingleFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh_reloaded.analysis.ShingleFilter">[docs]</a><span class="k">class</span> <span class="nc">ShingleFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merges a certain number of adjacent tokens into multi-word tokens, so</span>
+<span class="sd">    that for example::</span>
+
+<span class="sd">        &quot;better&quot;, &quot;a&quot;, &quot;witty&quot;, &quot;fool&quot;, &quot;than&quot;, &quot;a&quot;, &quot;foolish&quot;, &quot;wit&quot;</span>
+
+<span class="sd">    with ``ShingleFilter(3, &#39; &#39;)`` becomes::</span>
+
+<span class="sd">        &#39;better a witty&#39;, &#39;a witty fool&#39;, &#39;witty fool than&#39;, &#39;fool than a&#39;,</span>
+<span class="sd">        &#39;than a foolish&#39;, &#39;a foolish wit&#39;</span>
+
+<span class="sd">    This can be used to create fields for pseudo-phrase searching, where if</span>
+<span class="sd">    all the terms match the document probably contains the phrase, but the</span>
+<span class="sd">    searching is faster than actually doing a phrase search on individual word</span>
+<span class="sd">    terms.</span>
+
+<span class="sd">    If you&#39;re using two-word shingles, you should use the functionally</span>
+<span class="sd">    equivalent ``BiWordFilter`` instead because it&#39;s faster than</span>
+<span class="sd">    ``ShingleFilter``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">sep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sep</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+        <span class="n">atleastone</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">def</span> <span class="nf">make_token</span><span class="p">():</span>
+            <span class="n">tk</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">tk</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">tk</span><span class="o">.</span><span class="n">chars</span><span class="p">:</span>
+                <span class="n">tk</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endchar</span>
+            <span class="k">return</span> <span class="n">tk</span>
+
+        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="o">.</span><span class="n">stopped</span><span class="p">:</span>
+                <span class="n">buf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">==</span> <span class="n">size</span><span class="p">:</span>
+                    <span class="n">atleastone</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">yield</span> <span class="n">make_token</span><span class="p">()</span>
+                    <span class="n">buf</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+
+        <span class="c1"># If no shingles were emitted, that is, the token stream had fewer than</span>
+        <span class="c1"># &#39;size&#39; tokens, then emit a single token with whatever tokens there</span>
+        <span class="c1"># were</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">atleastone</span> <span class="ow">and</span> <span class="n">buf</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">make_token</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="IntraWordFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh_reloaded.analysis.IntraWordFilter">[docs]</a><span class="k">class</span> <span class="nc">IntraWordFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Splits words into subwords and performs optional transformations on</span>
+<span class="sd">    subword groups. This filter is funtionally based on yonik&#39;s</span>
+<span class="sd">    WordDelimiterFilter in Solr, but shares no code with it.</span>
+
+<span class="sd">    * Split on intra-word delimiters, e.g. `Wi-Fi` -&gt; `Wi`, `Fi`.</span>
+<span class="sd">    * When splitwords=True, split on case transitions,</span>
+<span class="sd">      e.g. `PowerShot` -&gt; `Power`, `Shot`.</span>
+<span class="sd">    * When splitnums=True, split on letter-number transitions,</span>
+<span class="sd">      e.g. `SD500` -&gt; `SD`, `500`.</span>
+<span class="sd">    * Leading and trailing delimiter characters are ignored.</span>
+<span class="sd">    * Trailing possesive &quot;&#39;s&quot; removed from subwords,</span>
+<span class="sd">      e.g. `O&#39;Neil&#39;s` -&gt; `O`, `Neil`.</span>
+
+<span class="sd">    The mergewords and mergenums arguments turn on merging of subwords.</span>
+
+<span class="sd">    When the merge arguments are false, subwords are not merged.</span>
+
+<span class="sd">    * `PowerShot` -&gt; `0`:`Power`, `1`:`Shot` (where `0` and `1` are token</span>
+<span class="sd">      positions).</span>
+
+<span class="sd">    When one or both of the merge arguments are true, consecutive runs of</span>
+<span class="sd">    alphabetic and/or numeric subwords are merged into an additional token with</span>
+<span class="sd">    the same position as the last sub-word.</span>
+
+<span class="sd">    * `PowerShot` -&gt; `0`:`Power`, `1`:`Shot`, `1`:`PowerShot`</span>
+<span class="sd">    * `A&#39;s+B&#39;s&amp;C&#39;s` -&gt; `0`:`A`, `1`:`B`, `2`:`C`, `2`:`ABC`</span>
+<span class="sd">    * `Super-Duper-XL500-42-AutoCoder!` -&gt; `0`:`Super`, `1`:`Duper`, `2`:`XL`,</span>
+<span class="sd">      `2`:`SuperDuperXL`,</span>
+<span class="sd">      `3`:`500`, `4`:`42`, `4`:`50042`, `5`:`Auto`, `6`:`Coder`,</span>
+<span class="sd">      `6`:`AutoCoder`</span>
+
+<span class="sd">    When using this filter you should use a tokenizer that only splits on</span>
+<span class="sd">    whitespace, so the tokenizer does not remove intra-word delimiters before</span>
+<span class="sd">    this filter can see them, and put this filter before any use of</span>
+<span class="sd">    LowercaseFilter.</span>
+
+<span class="sd">    &gt;&gt;&gt; rt = RegexTokenizer(r&quot;\\S+&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; iwf = IntraWordFilter()</span>
+<span class="sd">    &gt;&gt;&gt; lcf = LowercaseFilter()</span>
+<span class="sd">    &gt;&gt;&gt; analyzer = rt | iwf | lcf</span>
+
+<span class="sd">    One use for this filter is to help match different written representations</span>
+<span class="sd">    of a concept. For example, if the source text contained `wi-fi`, you</span>
+<span class="sd">    probably want `wifi`, `WiFi`, `wi-fi`, etc. to match. One way of doing this</span>
+<span class="sd">    is to specify mergewords=True and/or mergenums=True in the analyzer used</span>
+<span class="sd">    for indexing, and mergewords=False / mergenums=False in the analyzer used</span>
+<span class="sd">    for querying.</span>
+
+<span class="sd">    &gt;&gt;&gt; iwf_i = IntraWordFilter(mergewords=True, mergenums=True)</span>
+<span class="sd">    &gt;&gt;&gt; iwf_q = IntraWordFilter(mergewords=False, mergenums=False)</span>
+<span class="sd">    &gt;&gt;&gt; iwf = MultiFilter(index=iwf_i, query=iwf_q)</span>
+<span class="sd">    &gt;&gt;&gt; analyzer = RegexTokenizer(r&quot;\\S+&quot;) | iwf | LowercaseFilter()</span>
+
+<span class="sd">    (See :class:`MultiFilter`.)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">is_morph</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">delims</span><span class="o">=</span><span class="n">text_type</span><span class="p">,</span>
+        <span class="n">splitwords</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
+        <span class="n">splitnums</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
+        <span class="n">mergewords</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
+        <span class="n">mergenums</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">delims</span><span class="o">=</span><span class="n">u</span><span class="p">(</span><span class="s2">&quot;-_&#39;</span><span class="se">\&quot;</span><span class="s2">()!@#$%^&amp;*[]</span><span class="si">{}</span><span class="s2">&lt;&gt;</span><span class="se">\\</span><span class="s2">|;:,./?`~=+&quot;</span><span class="p">),</span>
+        <span class="n">splitwords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">splitnums</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">mergewords</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">mergenums</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param delims: a string of delimiter characters.</span>
+<span class="sd">        :param splitwords: if True, split at case transitions,</span>
+<span class="sd">            e.g. `PowerShot` -&gt; `Power`, `Shot`</span>
+<span class="sd">        :param splitnums: if True, split at letter-number transitions,</span>
+<span class="sd">            e.g. `SD500` -&gt; `SD`, `500`</span>
+<span class="sd">        :param mergewords: merge consecutive runs of alphabetic subwords into</span>
+<span class="sd">            an additional token with the same position as the last subword.</span>
+<span class="sd">        :param mergenums: merge consecutive runs of numeric subwords into an</span>
+<span class="sd">            additional token with the same position as the last subword.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded.support.unicode</span> <span class="kn">import</span> <span class="n">digits</span><span class="p">,</span> <span class="n">lowercase</span><span class="p">,</span> <span class="n">uppercase</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delims</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">delims</span><span class="p">)</span>
+
+        <span class="c1"># Expression for text between delimiter characters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">between</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="s2">&quot;[^</span><span class="si">%s</span><span class="s2">]+&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delims</span><span class="p">,),</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+        <span class="c1"># Expression for removing &quot;&#39;s&quot; from the end of sub-words</span>
+        <span class="n">dispat</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;(?&lt;=[</span><span class="si">%s%s</span><span class="s2">])&#39;[Ss](?=$|[</span><span class="si">%s</span><span class="s2">])&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">lowercase</span><span class="p">,</span> <span class="n">uppercase</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delims</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">possessive</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">dispat</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+
+        <span class="c1"># Expression for finding case and letter-number transitions</span>
+        <span class="n">lower2upper</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">lowercase</span><span class="p">,</span> <span class="n">uppercase</span><span class="p">)</span>
+        <span class="n">letter2digit</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">lowercase</span><span class="p">,</span> <span class="n">uppercase</span><span class="p">,</span> <span class="n">digits</span><span class="p">)</span>
+        <span class="n">digit2letter</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s%s</span><span class="s2">]&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="n">lowercase</span><span class="p">,</span> <span class="n">uppercase</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">splitwords</span> <span class="ow">and</span> <span class="n">splitnums</span><span class="p">:</span>
+            <span class="n">splitpat</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">lower2upper</span><span class="p">,</span> <span class="n">letter2digit</span><span class="p">,</span> <span class="n">digit2letter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">splitpat</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">splitwords</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">text_type</span><span class="p">(</span><span class="n">lower2upper</span><span class="p">),</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">splitnums</span><span class="p">:</span>
+            <span class="n">numpat</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">letter2digit</span><span class="p">,</span> <span class="n">digit2letter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">numpat</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">splitting</span> <span class="o">=</span> <span class="n">splitwords</span> <span class="ow">or</span> <span class="n">splitnums</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mergewords</span> <span class="o">=</span> <span class="n">mergewords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mergenums</span> <span class="o">=</span> <span class="n">mergenums</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundary</span>
+
+        <span class="c1"># Yields (startchar, endchar) pairs for each indexable substring in</span>
+        <span class="c1"># the given string, e.g. &quot;WikiWord&quot; -&gt; (0, 4), (4, 8)</span>
+
+        <span class="c1"># Whether we&#39;re splitting on transitions (case changes, letter -&gt; num,</span>
+        <span class="c1"># num -&gt; letter, etc.)</span>
+        <span class="n">splitting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">splitting</span>
+
+        <span class="c1"># Make a list (dispos, for &quot;dispossessed&quot;) of (startchar, endchar)</span>
+        <span class="c1"># pairs for runs of text between &quot;&#39;s&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+            <span class="c1"># Split on possessive &#39;s</span>
+            <span class="n">dispos</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">possessive</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+                <span class="n">dispos</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">prev</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()))</span>
+                <span class="n">prev</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">prev</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+                <span class="n">dispos</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">prev</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Shortcut if there&#39;s no apostrophe in the string</span>
+            <span class="n">dispos</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)),)</span>
+
+        <span class="c1"># For each run between &#39;s</span>
+        <span class="k">for</span> <span class="n">sc</span><span class="p">,</span> <span class="n">ec</span> <span class="ow">in</span> <span class="n">dispos</span><span class="p">:</span>
+            <span class="c1"># Split on boundary characters</span>
+            <span class="k">for</span> <span class="n">part_match</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">between</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">ec</span><span class="p">):</span>
+                <span class="n">part_start</span> <span class="o">=</span> <span class="n">part_match</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+                <span class="n">part_end</span> <span class="o">=</span> <span class="n">part_match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">splitting</span><span class="p">:</span>
+                    <span class="c1"># The point to start splitting at</span>
+                    <span class="n">prev</span> <span class="o">=</span> <span class="n">part_start</span>
+                    <span class="c1"># Find transitions (e.g. &quot;iW&quot; or &quot;a0&quot;)</span>
+                    <span class="k">for</span> <span class="n">bmatch</span> <span class="ow">in</span> <span class="n">bound</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">part_start</span><span class="p">,</span> <span class="n">part_end</span><span class="p">):</span>
+                        <span class="c1"># The point in the middle of the transition</span>
+                        <span class="n">pivot</span> <span class="o">=</span> <span class="n">bmatch</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="c1"># Yield from the previous match to the transition</span>
+                        <span class="k">yield</span> <span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">pivot</span><span class="p">)</span>
+                        <span class="c1"># Make the transition the new starting point</span>
+                        <span class="n">prev</span> <span class="o">=</span> <span class="n">pivot</span>
+
+                    <span class="c1"># If there&#39;s leftover text at the end, yield it too</span>
+                    <span class="k">if</span> <span class="n">prev</span> <span class="o">&lt;</span> <span class="n">part_end</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">part_end</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Not splitting on transitions, just yield the part</span>
+                    <span class="k">yield</span> <span class="p">(</span><span class="n">part_start</span><span class="p">,</span> <span class="n">part_end</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
+        <span class="n">mergewords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mergewords</span>
+        <span class="n">mergenums</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mergenums</span>
+
+        <span class="c1"># Current type (1=alpah, 2=digit)</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Where to insert a merged term in the original list</span>
+        <span class="n">insertat</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Buffer for parts to merge</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Iterate on a copy of the parts list so we can modify the original as</span>
+        <span class="c1"># we go</span>
+
+        <span class="k">def</span> <span class="nf">insert_item</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">newpos</span><span class="p">):</span>
+            <span class="n">newtext</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">)</span>
+            <span class="n">newsc</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># start char of first item in buffer</span>
+            <span class="n">newec</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># end char of last item in buffer</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">insertat</span><span class="p">,</span> <span class="p">(</span><span class="n">newtext</span><span class="p">,</span> <span class="n">newpos</span><span class="p">,</span> <span class="n">newsc</span><span class="p">,</span> <span class="n">newec</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">parts</span><span class="p">):</span>
+            <span class="c1"># item = (text, pos, startchar, endchar)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># Set the type of this part</span>
+            <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+                <span class="n">this</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">text</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                <span class="n">this</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">this</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># Is this the same type as the previous part?</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">buf</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">this</span> <span class="o">==</span> <span class="n">last</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">mergewords</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="p">(</span><span class="n">this</span> <span class="o">==</span> <span class="n">last</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">mergenums</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="c1"># This part is the same type as the previous. Add it to the</span>
+                <span class="c1"># buffer of parts to merge.</span>
+                <span class="n">buf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># This part is different than the previous.</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># If the buffer has at least two parts in it, merge them</span>
+                    <span class="c1"># and add them to the original list of parts.</span>
+                    <span class="n">insert_item</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">insertat</span><span class="p">,</span> <span class="n">pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">insertat</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># Reset the buffer</span>
+                <span class="n">buf</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">]</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="n">this</span>
+            <span class="n">insertat</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># If there are parts left in the buffer at the end, merge them and add</span>
+        <span class="c1"># them to the original list.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">insert_item</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">),</span> <span class="n">pos</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">mergewords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mergewords</span>
+        <span class="n">mergenums</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mergenums</span>
+
+        <span class="c1"># This filter renumbers tokens as it expands them. New position</span>
+        <span class="c1"># counter.</span>
+        <span class="n">newpos</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span>
+
+            <span class="c1"># If this is the first token we&#39;ve seen, use it to set the new</span>
+            <span class="c1"># position counter</span>
+            <span class="k">if</span> <span class="n">newpos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">positions</span><span class="p">:</span>
+                    <span class="n">newpos</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">pos</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Token doesn&#39;t have positions, just use 0</span>
+                    <span class="n">newpos</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">text</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">isupper</span><span class="p">())</span>
+            <span class="p">)</span> <span class="ow">or</span> <span class="n">text</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                <span class="c1"># Short-circuit the common cases of no delimiters, no case</span>
+                <span class="c1"># transitions, only digits, etc.</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">newpos</span>
+                <span class="k">yield</span> <span class="n">t</span>
+                <span class="n">newpos</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Split the token text on delimiters, word and/or number</span>
+                <span class="c1"># boundaries into a list of (text, pos, startchar, endchar)</span>
+                <span class="c1"># tuples</span>
+                <span class="n">ranges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">sc</span><span class="p">:</span><span class="n">ec</span><span class="p">],</span> <span class="n">i</span> <span class="o">+</span> <span class="n">newpos</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">ec</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ec</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ranges</span><span class="p">)</span>
+                <span class="p">]</span>
+
+                <span class="c1"># Did the split yield more than one part?</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># If the options are set, merge consecutive runs of all-</span>
+                    <span class="c1"># letters and/or all-numbers.</span>
+                    <span class="k">if</span> <span class="n">mergewords</span> <span class="ow">or</span> <span class="n">mergenums</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_merge</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+                <span class="c1"># Yield tokens for the parts</span>
+                <span class="n">chars</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">chars</span>
+                <span class="k">if</span> <span class="n">chars</span><span class="p">:</span>
+                    <span class="n">base</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">startchar</span>
+                <span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span>
+                    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">chars</span><span class="p">:</span>
+                        <span class="n">t</span><span class="o">.</span><span class="n">startchar</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">startchar</span>
+                        <span class="n">t</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">endchar</span>
+                    <span class="k">yield</span> <span class="n">t</span>
+
+                <span class="k">if</span> <span class="n">parts</span><span class="p">:</span>
+                    <span class="c1"># Set the new position counter based on the last part</span>
+                    <span class="n">newpos</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

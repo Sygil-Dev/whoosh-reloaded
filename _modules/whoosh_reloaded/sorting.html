@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh_reloaded.sorting &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh_reloaded.sorting</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh_reloaded.sorting</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2011 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">string_type</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">izip</span><span class="p">,</span> <span class="n">xrange</span>
+
+
+<span class="c1"># Faceting objects</span>
+
+
+<div class="viewcode-block" id="FacetType"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.FacetType">[docs]</a><span class="k">class</span> <span class="nc">FacetType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for &quot;facets&quot;, aspects that can be sorted/faceted.&quot;&quot;&quot;</span>
+
+    <span class="n">maptype</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FacetType.categorizer"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.FacetType.categorizer">[docs]</a>    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a :class:`Categorizer` corresponding to this facet.</span>
+
+<span class="sd">        :param global_searcher: A parent searcher. You can use this searcher if</span>
+<span class="sd">            you need global document ID references.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">default</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">OrderedList</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">t</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">t</span>
+
+    <span class="k">def</span> <span class="nf">default_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;facet&quot;</span></div>
+
+
+<div class="viewcode-block" id="Categorizer"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Categorizer">[docs]</a><span class="k">class</span> <span class="nc">Categorizer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for categorizer objects which compute a key value for a</span>
+<span class="sd">    document based on certain criteria, for use in sorting/faceting.</span>
+
+<span class="sd">    Categorizers are created by FacetType objects through the</span>
+<span class="sd">    :meth:`FacetType.categorizer` method. The</span>
+<span class="sd">    :class:`whoosh_reloaded.searching.Searcher` object passed to the ``categorizer``</span>
+<span class="sd">    method may be a composite searcher (that is, wrapping a multi-reader), but</span>
+<span class="sd">    categorizers are always run **per-segment**, with segment-relative document</span>
+<span class="sd">    numbers.</span>
+
+<span class="sd">    The collector will call a categorizer&#39;s ``set_searcher`` method as it</span>
+<span class="sd">    searches each segment to let the cateogorizer set up whatever segment-</span>
+<span class="sd">    specific data it needs.</span>
+
+<span class="sd">    ``Collector.allow_overlap`` should be ``True`` if the caller can use the</span>
+<span class="sd">    ``keys_for`` method instead of ``key_for`` to group documents into</span>
+<span class="sd">    potentially overlapping groups. The default is ``False``.</span>
+
+<span class="sd">    If a categorizer subclass can categorize the document using only the</span>
+<span class="sd">    document number, it should set ``Collector.needs_current`` to ``False``</span>
+<span class="sd">    (this is the default) and NOT USE the given matcher in the ``key_for`` or</span>
+<span class="sd">    ``keys_for`` methods, since in that case ``segment_docnum`` is not</span>
+<span class="sd">    guaranteed to be consistent with the given matcher. If a categorizer</span>
+<span class="sd">    subclass needs to access information on the matcher, it should set</span>
+<span class="sd">    ``needs_current`` to ``True``. This will prevent the caller from using</span>
+<span class="sd">    optimizations that might leave the matcher in an inconsistent state.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">allow_overlap</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">needs_current</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Categorizer.set_searcher"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Categorizer.set_searcher">[docs]</a>    <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called by the collector when the collector moves to a new segment.</span>
+<span class="sd">        The ``segment_searcher`` will be atomic. The ``docoffset`` is the</span>
+<span class="sd">        offset of the segment&#39;s document numbers relative to the entire index.</span>
+<span class="sd">        You can use the offset to get absolute index docnums by adding the</span>
+<span class="sd">        offset to segment-relative docnums.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Categorizer.key_for"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Categorizer.key_for">[docs]</a>    <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">segment_docnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a key for the current match.</span>
+
+<span class="sd">        :param matcher: a :class:`whoosh_reloaded.matching.Matcher` object. If</span>
+<span class="sd">            ``self.needs_current`` is ``False``, DO NOT use this object,</span>
+<span class="sd">            since it may be inconsistent. Use the given ``segment_docnum``</span>
+<span class="sd">            instead.</span>
+<span class="sd">        :param segment_docnum: the segment-relative document number of the</span>
+<span class="sd">            current match.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Backwards compatibility</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;key_for_id&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_for_id</span><span class="p">(</span><span class="n">segment_docnum</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;key_for_matcher&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_for_matcher</span><span class="p">(</span><span class="n">matcher</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Categorizer.keys_for"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Categorizer.keys_for">[docs]</a>    <span class="k">def</span> <span class="nf">keys_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">segment_docnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields a series of keys for the current match.</span>
+
+<span class="sd">        This method will be called instead of ``key_for`` if</span>
+<span class="sd">        ``self.allow_overlap`` is ``True``.</span>
+
+<span class="sd">        :param matcher: a :class:`whoosh_reloaded.matching.Matcher` object. If</span>
+<span class="sd">            ``self.needs_current`` is ``False``, DO NOT use this object,</span>
+<span class="sd">            since it may be inconsistent. Use the given ``segment_docnum``</span>
+<span class="sd">            instead.</span>
+<span class="sd">        :param segment_docnum: the segment-relative document number of the</span>
+<span class="sd">            current match.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Backwards compatibility</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;keys_for_id&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys_for_id</span><span class="p">(</span><span class="n">segment_docnum</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Categorizer.key_to_name"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Categorizer.key_to_name">[docs]</a>    <span class="k">def</span> <span class="nf">key_to_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a representation of the key to be used as a dictionary key</span>
+<span class="sd">        in faceting. For example, the sorting key for date fields is a large</span>
+<span class="sd">        integer; this method translates it into a ``datetime`` object to make</span>
+<span class="sd">        the groupings clearer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">key</span></div></div>
+
+
+<span class="c1"># General field facet</span>
+
+
+<div class="viewcode-block" id="FieldFacet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.FieldFacet">[docs]</a><span class="k">class</span> <span class="nc">FieldFacet</span><span class="p">(</span><span class="n">FacetType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sorts/facets by the contents of a field.</span>
+
+<span class="sd">    For example, to sort by the contents of the &quot;path&quot; field in reverse order,</span>
+<span class="sd">    and facet by the contents of the &quot;tag&quot; field::</span>
+
+<span class="sd">        paths = FieldFacet(&quot;path&quot;, reverse=True)</span>
+<span class="sd">        tags = FieldFacet(&quot;tag&quot;)</span>
+<span class="sd">        results = searcher.search(myquery, sortedby=paths, groupedby=tags)</span>
+
+<span class="sd">    This facet returns different categorizers based on the field type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_overlap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">maptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param fieldname: the name of the field to sort/facet on.</span>
+<span class="sd">        :param reverse: if True, when sorting, reverse the sort order of this</span>
+<span class="sd">            facet.</span>
+<span class="sd">        :param allow_overlap: if True, when grouping, allow documents to appear</span>
+<span class="sd">            in multiple groups when they have multiple terms in the field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">=</span> <span class="n">reverse</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_overlap</span> <span class="o">=</span> <span class="n">allow_overlap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span> <span class="o">=</span> <span class="n">maptype</span>
+
+    <span class="k">def</span> <span class="nf">default_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+
+    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+        <span class="c1"># The searcher we&#39;re passed here may wrap a multireader, but the</span>
+        <span class="c1"># actual key functions will always be called per-segment following a</span>
+        <span class="c1"># Categorizer.set_searcher method call</span>
+        <span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+        <span class="n">fieldobj</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+
+        <span class="c1"># If we&#39;re grouping with allow_overlap=True, all we can use is</span>
+        <span class="c1"># OverlappingCategorizer</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_overlap</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">OverlappingCategorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span><span class="o">.</span><span class="n">has_column</span><span class="p">(</span><span class="n">fieldname</span><span class="p">):</span>
+            <span class="n">coltype</span> <span class="o">=</span> <span class="n">fieldobj</span><span class="o">.</span><span class="n">column_type</span>
+            <span class="k">if</span> <span class="n">coltype</span><span class="o">.</span><span class="n">reversible</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">ColumnCategorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">ReversedColumnCategorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">PostingCategorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c</span></div>
+
+
+<span class="k">class</span> <span class="nc">ColumnCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span><span class="o">.</span><span class="n">column_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reverse</span> <span class="o">=</span> <span class="n">reverse</span>
+
+        <span class="c1"># The column reader is set in set_searcher() as we iterate over the</span>
+        <span class="c1"># sub-searchers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, reverse=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reverse</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">segment_searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">column_reader</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_reverse</span><span class="p">,</span> <span class="n">translate</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">segment_docnum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span><span class="o">.</span><span class="n">sort_key</span><span class="p">(</span><span class="n">segment_docnum</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">key_to_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span><span class="o">.</span><span class="n">from_column_value</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ReversedColumnCategorizer</span><span class="p">(</span><span class="n">ColumnCategorizer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Categorizer that reverses column values for columns that aren&#39;t</span>
+<span class="sd">    naturally reversible.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="n">ColumnCategorizer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>
+
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doccount</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span>
+
+        <span class="n">global_creader</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">column_reader</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">translate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">global_creader</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">segment_docnum</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span><span class="p">[</span><span class="n">segment_docnum</span><span class="p">]</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># Subtract from 0 to reverse the order</span>
+        <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">order</span>
+
+    <span class="k">def</span> <span class="nf">key_to_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="c1"># Re-reverse the key to get the index into _values</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="mi">0</span> <span class="o">-</span> <span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ColumnCategorizer</span><span class="o">.</span><span class="n">key_to_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">OverlappingCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+    <span class="n">allow_overlap</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+
+        <span class="n">field</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_use_vectors</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_use_column</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">has_column</span><span class="p">(</span><span class="n">fieldname</span><span class="p">)</span> <span class="ow">and</span> <span class="n">field</span><span class="o">.</span><span class="n">column_type</span><span class="o">.</span><span class="n">stores_lists</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="c1"># These are set in set_searcher() as we iterate over the sub-searchers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_segment_searcher</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lists</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">):</span>
+        <span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_segment_searcher</span> <span class="o">=</span> <span class="n">segment_searcher</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">segment_searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_vectors</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_column</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">column_reader</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">translate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Otherwise, cache the values in each document in a huge list</span>
+            <span class="c1"># of lists</span>
+            <span class="n">dc</span> <span class="o">=</span> <span class="n">segment_searcher</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">segment_searcher</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+            <span class="n">from_bytes</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">from_bytes</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lists</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">dc</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">btext</span> <span class="ow">in</span> <span class="n">field</span><span class="o">.</span><span class="n">sortable_terms</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">from_bytes</span><span class="p">(</span><span class="n">btext</span><span class="p">)</span>
+                <span class="n">postings</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">postings</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">docid</span> <span class="ow">in</span> <span class="n">postings</span><span class="o">.</span><span class="n">all_ids</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_lists</span><span class="p">[</span><span class="n">docid</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">keys_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_vectors</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment_searcher</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="n">docid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">all_ids</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_column</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span><span class="p">[</span><span class="n">docid</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lists</span><span class="p">[</span><span class="n">docid</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_vectors</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment_searcher</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="n">docid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_column</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span><span class="o">.</span><span class="n">sort_key</span><span class="p">(</span><span class="n">docid</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lists</span><span class="p">[</span><span class="n">docid</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">ls</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">class</span> <span class="nc">PostingCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Categorizer for fields that don&#39;t store column values. This is very</span>
+<span class="sd">    inefficient. Instead of relying on this categorizer you should plan for</span>
+<span class="sd">    which fields you&#39;ll want to sort on and set ``sortable=True`` in their</span>
+<span class="sd">    field type.</span>
+
+<span class="sd">    This object builds an array caching the order of all documents according to</span>
+<span class="sd">    the field, then uses the cached order as a numeric key. This is useful when</span>
+<span class="sd">    a field cache is not available, and also for reversed fields (since field</span>
+<span class="sd">    cache keys for non- numeric fields are arbitrary data, it&#39;s not possible to</span>
+<span class="sd">    &quot;negate&quot; them to reverse the sort order).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">reverse</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">=</span> <span class="n">reverse</span>
+
+        <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">_field_caches</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">_field_caches</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Cache the relative positions of all docs with the given field</span>
+            <span class="c1"># across the entire index</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+            <span class="n">dc</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+            <span class="n">from_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span><span class="o">.</span><span class="n">from_bytes</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">dc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">dc</span><span class="p">)</span>
+
+            <span class="n">btexts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span><span class="o">.</span><span class="n">sortable_terms</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">btext</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">btexts</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">btext</span><span class="p">))</span>
+                <span class="c1"># Get global docids from global reader</span>
+                <span class="n">postings</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">postings</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">docid</span> <span class="ow">in</span> <span class="n">postings</span><span class="o">.</span><span class="n">all_ids</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">docid</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+            <span class="n">global_searcher</span><span class="o">.</span><span class="n">_field_caches</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_searcher</span> <span class="o">=</span> <span class="n">segment_searcher</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docoffset</span> <span class="o">=</span> <span class="n">docoffset</span>
+
+    <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">segment_docnum</span><span class="p">):</span>
+        <span class="n">global_docnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">docoffset</span> <span class="o">+</span> <span class="n">segment_docnum</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">global_docnum</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span>
+        <span class="k">return</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">key_to_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+
+<span class="c1"># Special facet types</span>
+
+
+<div class="viewcode-block" id="QueryFacet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.QueryFacet">[docs]</a><span class="k">class</span> <span class="nc">QueryFacet</span><span class="p">(</span><span class="n">FacetType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sorts/facets based on the results of a series of queries.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querydict</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_overlap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">maptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param querydict: a dictionary mapping keys to</span>
+<span class="sd">            :class:`whoosh_reloaded.query.Query` objects.</span>
+<span class="sd">        :param other: the key to use for documents that don&#39;t match any of the</span>
+<span class="sd">            queries.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">querydict</span> <span class="o">=</span> <span class="n">querydict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">other</span> <span class="o">=</span> <span class="n">other</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span> <span class="o">=</span> <span class="n">maptype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_overlap</span> <span class="o">=</span> <span class="n">allow_overlap</span>
+
+    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">QueryCategorizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">querydict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_overlap</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">QueryCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querydict</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">allow_overlap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">querydict</span> <span class="o">=</span> <span class="n">querydict</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">other</span> <span class="o">=</span> <span class="n">other</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">allow_overlap</span> <span class="o">=</span> <span class="n">allow_overlap</span>
+
+        <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">docsets</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">qname</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">querydict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">docset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">docs</span><span class="p">(</span><span class="n">segment_searcher</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">docset</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">docsets</span><span class="p">[</span><span class="n">qname</span><span class="p">]</span> <span class="o">=</span> <span class="n">docset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+        <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">qname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">docsets</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">docid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">docsets</span><span class="p">[</span><span class="n">qname</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">qname</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">other</span>
+
+        <span class="k">def</span> <span class="nf">keys_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">qname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">docsets</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">docid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">docsets</span><span class="p">[</span><span class="n">qname</span><span class="p">]:</span>
+                    <span class="k">yield</span> <span class="n">qname</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="RangeFacet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.RangeFacet">[docs]</a><span class="k">class</span> <span class="nc">RangeFacet</span><span class="p">(</span><span class="n">QueryFacet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sorts/facets based on numeric ranges. For textual ranges, use</span>
+<span class="sd">    :class:`QueryFacet`.</span>
+
+<span class="sd">    For example, to facet the &quot;price&quot; field into $100 buckets, up to $1000::</span>
+
+<span class="sd">        prices = RangeFacet(&quot;price&quot;, 0, 1000, 100)</span>
+<span class="sd">        results = searcher.search(myquery, groupedby=prices)</span>
+
+<span class="sd">    The ranges/buckets are always **inclusive** at the start and **exclusive**</span>
+<span class="sd">    at the end.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">gap</span><span class="p">,</span> <span class="n">hardend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">maptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param fieldname: the numeric field to sort/facet on.</span>
+<span class="sd">        :param start: the start of the entire range.</span>
+<span class="sd">        :param end: the end of the entire range.</span>
+<span class="sd">        :param gap: the size of each &quot;bucket&quot; in the range. This can be a</span>
+<span class="sd">            sequence of sizes. For example, ``gap=[1,5,10]`` will use 1 as the</span>
+<span class="sd">            size of the first bucket, 5 as the size of the second bucket, and</span>
+<span class="sd">            10 as the size of all subsequent buckets.</span>
+<span class="sd">        :param hardend: if True, the end of the last bucket is clamped to the</span>
+<span class="sd">            value of ``end``. If False (the default), the last bucket is always</span>
+<span class="sd">            ``gap`` sized, even if that means the end of the last bucket is</span>
+<span class="sd">            after ``end``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="n">gap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hardend</span> <span class="o">=</span> <span class="n">hardend</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span> <span class="o">=</span> <span class="n">maptype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queries</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">default_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+
+    <span class="k">def</span> <span class="nf">_rangetype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">query</span>
+
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">NumericRange</span>
+
+    <span class="k">def</span> <span class="nf">_range_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startval</span><span class="p">,</span> <span class="n">endval</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">startval</span><span class="p">,</span> <span class="n">endval</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_queries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No gap secified (</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gap</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="n">gaps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span>
+            <span class="n">gapindex</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gaps</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gap</span><span class="p">]</span>
+            <span class="n">gapindex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="n">rangetype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rangetype</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">querydict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">cstart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="k">while</span> <span class="n">cstart</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
+            <span class="n">thisgap</span> <span class="o">=</span> <span class="n">gaps</span><span class="p">[</span><span class="n">gapindex</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">gapindex</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">gapindex</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">gapindex</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">gaps</span><span class="p">):</span>
+                    <span class="n">gapindex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+            <span class="n">cend</span> <span class="o">=</span> <span class="n">cstart</span> <span class="o">+</span> <span class="n">thisgap</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hardend</span><span class="p">:</span>
+                <span class="n">cend</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">cend</span><span class="p">)</span>
+
+            <span class="n">rangename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_range_name</span><span class="p">(</span><span class="n">cstart</span><span class="p">,</span> <span class="n">cend</span><span class="p">)</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">rangetype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">cstart</span><span class="p">,</span> <span class="n">cend</span><span class="p">,</span> <span class="n">endexcl</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">querydict</span><span class="p">[</span><span class="n">rangename</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span>
+
+            <span class="n">cstart</span> <span class="o">=</span> <span class="n">cend</span>
+
+    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QueryFacet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">querydict</span><span class="p">)</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DateRangeFacet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.DateRangeFacet">[docs]</a><span class="k">class</span> <span class="nc">DateRangeFacet</span><span class="p">(</span><span class="n">RangeFacet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sorts/facets based on date ranges. This is the same as RangeFacet</span>
+<span class="sd">    except you are expected to use ``daterange`` objects as the start and end</span>
+<span class="sd">    of the range, and ``timedelta`` or ``relativedelta`` objects as the gap(s),</span>
+<span class="sd">    and it generates :class:`~whoosh_reloaded.query.DateRange` queries instead of</span>
+<span class="sd">    :class:`~whoosh_reloaded.query.TermRange` queries.</span>
+
+<span class="sd">    For example, to facet a &quot;birthday&quot; range into 5 year buckets::</span>
+
+<span class="sd">        from datetime import datetime</span>
+<span class="sd">        from whoosh_reloaded.support.relativedelta import relativedelta</span>
+
+<span class="sd">        startdate = datetime(1920, 0, 0)</span>
+<span class="sd">        enddate = datetime.now()</span>
+<span class="sd">        gap = relativedelta(years=5)</span>
+<span class="sd">        bdays = DateRangeFacet(&quot;birthday&quot;, startdate, enddate, gap)</span>
+<span class="sd">        results = searcher.search(myquery, groupedby=bdays)</span>
+
+<span class="sd">    The ranges/buckets are always **inclusive** at the start and **exclusive**</span>
+<span class="sd">    at the end.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_rangetype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">query</span>
+
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">DateRange</span></div>
+
+
+<div class="viewcode-block" id="ScoreFacet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.ScoreFacet">[docs]</a><span class="k">class</span> <span class="nc">ScoreFacet</span><span class="p">(</span><span class="n">FacetType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Uses a document&#39;s score as a sorting criterion.</span>
+
+<span class="sd">    For example, to sort by the ``tag`` field, and then within that by relative</span>
+<span class="sd">    score::</span>
+
+<span class="sd">        tag_score = MultiFacet([&quot;tag&quot;, ScoreFacet()])</span>
+<span class="sd">        results = searcher.search(myquery, sortedby=tag_score)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ScoreCategorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">ScoreCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+        <span class="n">needs_current</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">global_searcher</span><span class="o">.</span><span class="n">weighting</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">use_final</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">use_final</span>
+            <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">use_final</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">final</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">final</span>
+
+        <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">segment_searcher</span> <span class="o">=</span> <span class="n">segment_searcher</span>
+
+        <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">score</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_final</span><span class="p">:</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+            <span class="c1"># Negate the score so higher values sort first</span>
+            <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">score</span></div>
+
+
+<div class="viewcode-block" id="FunctionFacet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.FunctionFacet">[docs]</a><span class="k">class</span> <span class="nc">FunctionFacet</span><span class="p">(</span><span class="n">FacetType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This facet type is low-level. In most cases you should use</span>
+<span class="sd">    :class:`TranslateFacet` instead.</span>
+
+<span class="sd">    This facet type ets you pass an arbitrary function that will compute the</span>
+<span class="sd">    key. This may be easier than subclassing FacetType and Categorizer to set up</span>
+<span class="sd">    the desired behavior.</span>
+
+<span class="sd">    The function is called with the arguments ``(searcher, docid)``, where the</span>
+<span class="sd">    ``searcher`` may be a composite searcher, and the ``docid`` is an absolute</span>
+<span class="sd">    index document number (not segment-relative).</span>
+
+<span class="sd">    For example, to use the number of words in the document&#39;s &quot;content&quot; field</span>
+<span class="sd">    as the sorting/faceting key::</span>
+
+<span class="sd">        fn = lambda s, docid: s.doc_field_length(docid, &quot;content&quot;)</span>
+<span class="sd">        lengths = FunctionFacet(fn)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">maptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span> <span class="o">=</span> <span class="n">maptype</span>
+
+    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">FunctionCategorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">FunctionCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">global_searcher</span> <span class="o">=</span> <span class="n">global_searcher</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+
+        <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">docoffset</span>
+
+        <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_searcher</span><span class="p">,</span> <span class="n">docid</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">TranslateFacet</span><span class="p">(</span><span class="n">FacetType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lets you specify a function to compute the key based on a key generated</span>
+<span class="sd">    by a wrapped facet.</span>
+
+<span class="sd">    This is useful if you want to use a custom ordering of a sortable field. For</span>
+<span class="sd">    example, if you want to use an implementation of the Unicode Collation</span>
+<span class="sd">    Algorithm (UCA) to sort a field using the rules from a particular language::</span>
+
+<span class="sd">        from pyuca import Collator</span>
+
+<span class="sd">        # The Collator object has a sort_key() method which takes a unicode</span>
+<span class="sd">        # string and returns a sort key</span>
+<span class="sd">        c = Collator(&quot;allkeys.txt&quot;)</span>
+
+<span class="sd">        # Make a facet object for the field you want to sort on</span>
+<span class="sd">        facet = sorting.FieldFacet(&quot;name&quot;)</span>
+<span class="sd">        # Wrap the facet in a TranslateFacet with the translation function</span>
+<span class="sd">        # (the Collator object&#39;s sort_key method)</span>
+<span class="sd">        facet = sorting.TranslateFacet(c.sort_key, facet)</span>
+
+<span class="sd">        # Use the facet to sort the search results</span>
+<span class="sd">        results = searcher.search(myquery, sortedby=facet)</span>
+
+<span class="sd">    You can pass multiple facets to the</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">facets</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param fn: The function to apply. For each matching document, this</span>
+<span class="sd">            function will be called with the values of the given facets as</span>
+<span class="sd">            arguments.</span>
+<span class="sd">        :param facets: One or more :class:`FacetType` objects. These facets are</span>
+<span class="sd">            used to compute facet value(s) for a matching document, and then the</span>
+<span class="sd">            value(s) is/are passed to the function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span> <span class="o">=</span> <span class="n">facets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+        <span class="n">catters</span> <span class="o">=</span> <span class="p">[</span><span class="n">facet</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">)</span> <span class="k">for</span> <span class="n">facet</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TranslateCategorizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">,</span> <span class="n">catters</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">TranslateCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">catters</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fn</span> <span class="o">=</span> <span class="n">fn</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catters</span> <span class="o">=</span> <span class="n">catters</span>
+
+        <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">catter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catters</span><span class="p">:</span>
+                <span class="n">catter</span><span class="o">.</span><span class="n">set_searcher</span><span class="p">(</span><span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">segment_docnum</span><span class="p">):</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">catter</span><span class="o">.</span><span class="n">key_for</span><span class="p">(</span><span class="n">matcher</span><span class="p">,</span> <span class="n">segment_docnum</span><span class="p">)</span> <span class="k">for</span> <span class="n">catter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catters</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">keys</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="StoredFieldFacet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.StoredFieldFacet">[docs]</a><span class="k">class</span> <span class="nc">StoredFieldFacet</span><span class="p">(</span><span class="n">FacetType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lets you sort/group using the value in an unindexed, stored field (e.g.</span>
+<span class="sd">    :class:`whoosh_reloaded.fields.STORED`). This is usually slower than using an indexed</span>
+<span class="sd">    field.</span>
+
+<span class="sd">    For fields where the stored value is a space-separated list of keywords,</span>
+<span class="sd">    (e.g. ``&quot;tag1 tag2 tag3&quot;``), you can use the ``allow_overlap`` keyword</span>
+<span class="sd">    argument to allow overlapped faceting on the result of calling the</span>
+<span class="sd">    ``split()`` method on the field value (or calling a custom split function</span>
+<span class="sd">    if one is supplied).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">allow_overlap</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">split_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param fieldname: the name of the stored field.</span>
+<span class="sd">        :param allow_overlap: if True, when grouping, allow documents to appear</span>
+<span class="sd">            in multiple groups when they have multiple terms in the field. The</span>
+<span class="sd">            categorizer uses ``string.split()`` or the custom ``split_fn`` to</span>
+<span class="sd">            convert the stored value into a list of facet values.</span>
+<span class="sd">        :param split_fn: a custom function to split a stored field value into</span>
+<span class="sd">            multiple facet values when ``allow_overlap`` is True. If not</span>
+<span class="sd">            supplied, the categorizer simply calls the value&#39;s ``split()``</span>
+<span class="sd">            method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_overlap</span> <span class="o">=</span> <span class="n">allow_overlap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">split_fn</span> <span class="o">=</span> <span class="n">split_fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span> <span class="o">=</span> <span class="n">maptype</span>
+
+    <span class="k">def</span> <span class="nf">default_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+
+    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">StoredFieldCategorizer</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_overlap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_fn</span>
+        <span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">StoredFieldCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">allow_overlap</span><span class="p">,</span> <span class="n">split_fn</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">allow_overlap</span> <span class="o">=</span> <span class="n">allow_overlap</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">split_fn</span> <span class="o">=</span> <span class="n">split_fn</span>
+
+        <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">segment_searcher</span> <span class="o">=</span> <span class="n">segment_searcher</span>
+
+        <span class="k">def</span> <span class="nf">keys_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_searcher</span><span class="o">.</span><span class="n">stored_fields</span><span class="p">(</span><span class="n">docid</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_fn</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_fn</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_searcher</span><span class="o">.</span><span class="n">stored_fields</span><span class="p">(</span><span class="n">docid</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MultiFacet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.MultiFacet">[docs]</a><span class="k">class</span> <span class="nc">MultiFacet</span><span class="p">(</span><span class="n">FacetType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sorts/facets by the combination of multiple &quot;sub-facets&quot;.</span>
+
+<span class="sd">    For example, to sort by the value of the &quot;tag&quot; field, and then (for</span>
+<span class="sd">    documents where the tag is the same) by the value of the &quot;path&quot; field::</span>
+
+<span class="sd">        facet = MultiFacet([FieldFacet(&quot;tag&quot;), FieldFacet(&quot;path&quot;)])</span>
+<span class="sd">        results = searcher.search(myquery, sortedby=facet)</span>
+
+<span class="sd">    As a shortcut, you can use strings to refer to field names, and they will</span>
+<span class="sd">    be assumed to be field names and turned into FieldFacet objects::</span>
+
+<span class="sd">        facet = MultiFacet([&quot;tag&quot;, &quot;path&quot;])</span>
+
+<span class="sd">    You can also use the ``add_*`` methods to add criteria to the multifacet::</span>
+
+<span class="sd">        facet = MultiFacet()</span>
+<span class="sd">        facet.add_field(&quot;tag&quot;)</span>
+<span class="sd">        facet.add_field(&quot;path&quot;, reverse=True)</span>
+<span class="sd">        facet.add_query({&quot;a-m&quot;: TermRange(&quot;name&quot;, &quot;a&quot;, &quot;m&quot;),</span>
+<span class="sd">                         &quot;n-z&quot;: TermRange(&quot;name&quot;, &quot;n&quot;, &quot;z&quot;)})</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span> <span class="o">=</span> <span class="n">maptype</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maptype</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_sortedby</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sortedby</span><span class="p">):</span>
+        <span class="n">multi</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sortedby</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+            <span class="n">multi</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">sortedby</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sortedby</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sortedby</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sortedby</span><span class="p">:</span>
+                <span class="n">multi</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">multi</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">sortedby</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">multi</span>
+
+    <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">FacetType</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_facet</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_field</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Don&#39;t know what to do with facet </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="p">,))</span>
+
+    <span class="k">def</span> <span class="nf">add_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FieldFacet</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="n">reverse</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querydict</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_overlap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">QueryFacet</span><span class="p">(</span><span class="n">querydict</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="n">other</span><span class="p">,</span> <span class="n">allow_overlap</span><span class="o">=</span><span class="n">allow_overlap</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ScoreFacet</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">add_facet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">facet</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">facet</span><span class="p">,</span> <span class="n">FacetType</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> is not a facet object, perhaps you meant &quot;</span> <span class="s2">&quot;add_field()&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">facet</span><span class="p">,)</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">facet</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">categorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">global_searcher</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No facets&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">catter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">catter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MultiCategorizer</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">facet</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">global_searcher</span><span class="p">)</span> <span class="k">for</span> <span class="n">facet</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">catter</span>
+
+    <span class="k">class</span> <span class="nc">MultiCategorizer</span><span class="p">(</span><span class="n">Categorizer</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catters</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">catters</span> <span class="o">=</span> <span class="n">catters</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">needs_current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">needs_current</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catters</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">set_searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">catter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catters</span><span class="p">:</span>
+                <span class="n">catter</span><span class="o">.</span><span class="n">set_searcher</span><span class="p">(</span><span class="n">segment_searcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">key_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">catter</span><span class="o">.</span><span class="n">key_for</span><span class="p">(</span><span class="n">matcher</span><span class="p">,</span> <span class="n">docid</span><span class="p">)</span> <span class="k">for</span> <span class="n">catter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catters</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">key_to_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">catter</span><span class="o">.</span><span class="n">key_to_name</span><span class="p">(</span><span class="n">keypart</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">catter</span><span class="p">,</span> <span class="n">keypart</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">catters</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Facets"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Facets">[docs]</a><span class="k">class</span> <span class="nc">Facets</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps facet names to :class:`FacetType` objects, for creating multiple</span>
+<span class="sd">    groupings of documents.</span>
+
+<span class="sd">    For example, to group by tag, and **also** group by price range::</span>
+
+<span class="sd">        facets = Facets()</span>
+<span class="sd">        facets.add_field(&quot;tag&quot;)</span>
+<span class="sd">        facets.add_facet(&quot;price&quot;, RangeFacet(&quot;price&quot;, 0, 1000, 100))</span>
+<span class="sd">        results = searcher.search(myquery, groupedby=facets)</span>
+
+<span class="sd">        tag_groups = results.groups(&quot;tag&quot;)</span>
+<span class="sd">        price_groups = results.groups(&quot;price&quot;)</span>
+
+<span class="sd">    (To group by the combination of multiple facets, use :class:`MultiFacet`.)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_facets</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_groupedby</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">groupedby</span><span class="p">):</span>
+        <span class="n">facets</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupedby</span><span class="p">,</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
+            <span class="n">facets</span><span class="o">.</span><span class="n">add_facets</span><span class="p">(</span><span class="n">groupedby</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupedby</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+            <span class="n">facets</span><span class="o">.</span><span class="n">add_field</span><span class="p">(</span><span class="n">groupedby</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupedby</span><span class="p">,</span> <span class="n">FacetType</span><span class="p">):</span>
+            <span class="n">facets</span><span class="o">.</span><span class="n">add_facet</span><span class="p">(</span><span class="n">groupedby</span><span class="o">.</span><span class="n">default_name</span><span class="p">(),</span> <span class="n">groupedby</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupedby</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">groupedby</span><span class="p">:</span>
+                <span class="n">facets</span><span class="o">.</span><span class="n">add_facets</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">from_groupedby</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Don&#39;t know what to do with groupedby=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">groupedby</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">facets</span>
+
+<div class="viewcode-block" id="Facets.names"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Facets.names">[docs]</a>    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an iterator of the facet names in this object.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Facets.items"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Facets.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of (facetname, facetobject) tuples for the facets in</span>
+<span class="sd">        this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="o">.</span><span class="n">items</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Facets.add_field"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Facets.add_field">[docs]</a>    <span class="k">def</span> <span class="nf">add_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a :class:`FieldFacet` for the given field name (the field name</span>
+<span class="sd">        is automatically used as the facet name).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span> <span class="o">=</span> <span class="n">FieldFacet</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Facets.add_query"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Facets.add_query">[docs]</a>    <span class="k">def</span> <span class="nf">add_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">querydict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a :class:`QueryFacet` under the given ``name``.</span>
+
+<span class="sd">        :param name: a name for the facet.</span>
+<span class="sd">        :param querydict: a dictionary mapping keys to</span>
+<span class="sd">            :class:`whoosh_reloaded.query.Query` objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">QueryFacet</span><span class="p">(</span><span class="n">querydict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Facets.add_facet"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Facets.add_facet">[docs]</a>    <span class="k">def</span> <span class="nf">add_facet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">facet</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a :class:`FacetType` object under the given ``name``.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">facet</span><span class="p">,</span> <span class="n">FacetType</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2">:</span><span class="si">%r</span><span class="s2"> is not a facet&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">facet</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">facet</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Facets.add_facets"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Facets.add_facets">[docs]</a>    <span class="k">def</span> <span class="nf">add_facets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">facets</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds the contents of the given ``Facets`` or ``dict`` object to this</span>
+<span class="sd">        object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">facets</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Facets</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> is not a Facets object or dict&quot;</span> <span class="o">%</span> <span class="n">facets</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">facet</span> <span class="ow">in</span> <span class="n">facets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">replace</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">facets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">facet</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<span class="c1"># Objects for holding facet groups</span>
+
+
+<div class="viewcode-block" id="FacetMap"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.FacetMap">[docs]</a><span class="k">class</span> <span class="nc">FacetMap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for objects holding the results of grouping search results by</span>
+<span class="sd">    a Facet. Use an object&#39;s ``as_dict()`` method to access the results.</span>
+
+<span class="sd">    You can pass a subclass of this to the ``maptype`` keyword argument when</span>
+<span class="sd">    creating a ``FacetType`` object to specify what information the facet</span>
+<span class="sd">    should record about the group. For example::</span>
+
+<span class="sd">        # Record each document in each group in its sorted order</span>
+<span class="sd">        myfacet = FieldFacet(&quot;size&quot;, maptype=OrderedList)</span>
+
+<span class="sd">        # Record only the count of documents in each group</span>
+<span class="sd">        myfacet = FieldFacet(&quot;size&quot;, maptype=Count)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FacetMap.add"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.FacetMap.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">docid</span><span class="p">,</span> <span class="n">sortkey</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a document to the facet results.</span>
+
+<span class="sd">        :param groupname: the name of the group to add this document to.</span>
+<span class="sd">        :param docid: the document number of the document to add.</span>
+<span class="sd">        :param sortkey: a value representing the sort position of the document</span>
+<span class="sd">            in the full results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="FacetMap.as_dict"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.FacetMap.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary object mapping group names to</span>
+<span class="sd">        implementation-specific values. For example, the value might be a list</span>
+<span class="sd">        of document numbers, or a integer representing the number of documents</span>
+<span class="sd">        in the group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="OrderedList"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.OrderedList">[docs]</a><span class="k">class</span> <span class="nc">OrderedList</span><span class="p">(</span><span class="n">FacetMap</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stores a list of document numbers for each group, in the same order as</span>
+<span class="sd">    they appear in the search results.</span>
+
+<span class="sd">    The ``as_dict`` method returns a dictionary mapping group names to lists</span>
+<span class="sd">    of document numbers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">docid</span><span class="p">,</span> <span class="n">sortkey</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="n">groupname</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sortkey</span><span class="p">,</span> <span class="n">docid</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">items</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">):</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">docnum</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">docnum</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">items</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="UnorderedList"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.UnorderedList">[docs]</a><span class="k">class</span> <span class="nc">UnorderedList</span><span class="p">(</span><span class="n">FacetMap</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stores a list of document numbers for each group, in arbitrary order.</span>
+<span class="sd">    This is slightly faster and uses less memory than</span>
+<span class="sd">    :class:`OrderedListResult` if you don&#39;t care about the ordering of the</span>
+<span class="sd">    documents within groups.</span>
+
+<span class="sd">    The ``as_dict`` method returns a dictionary mapping group names to lists</span>
+<span class="sd">    of document numbers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">docid</span><span class="p">,</span> <span class="n">sortkey</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="n">groupname</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">docid</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Count"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Count">[docs]</a><span class="k">class</span> <span class="nc">Count</span><span class="p">(</span><span class="n">FacetMap</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stores the number of documents in each group.</span>
+
+<span class="sd">    The ``as_dict`` method returns a dictionary mapping group names to</span>
+<span class="sd">    integers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">docid</span><span class="p">,</span> <span class="n">sortkey</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">[</span><span class="n">groupname</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Best"><a class="viewcode-back" href="../../api/sorting.html#whoosh_reloaded.sorting.Best">[docs]</a><span class="k">class</span> <span class="nc">Best</span><span class="p">(</span><span class="n">FacetMap</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stores the &quot;best&quot; document in each group (that is, the one with the</span>
+<span class="sd">    highest sort key).</span>
+
+<span class="sd">    The ``as_dict`` method returns a dictionary mapping group names to</span>
+<span class="sd">    docnument numbers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bestids</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bestkeys</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestids</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">docid</span><span class="p">,</span> <span class="n">sortkey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestids</span> <span class="ow">or</span> <span class="n">sortkey</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestkeys</span><span class="p">[</span><span class="n">groupname</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bestids</span><span class="p">[</span><span class="n">groupname</span><span class="p">]</span> <span class="o">=</span> <span class="n">docid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bestkeys</span><span class="p">[</span><span class="n">groupname</span><span class="p">]</span> <span class="o">=</span> <span class="n">sortkey</span>
+
+    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bestids</span></div>
+
+
+<span class="c1"># Helper functions</span>
+
+
+<span class="k">def</span> <span class="nf">add_sortable</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">facet</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds a per-document value column to an existing field which was created</span>
+<span class="sd">    without the ``sortable`` keyword argument.</span>
+
+<span class="sd">    &gt;&gt;&gt; from whoosh_reloaded import index, sorting</span>
+<span class="sd">    &gt;&gt;&gt; ix = index.open_dir(&quot;indexdir&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; with ix.writer() as w:</span>
+<span class="sd">    ...   facet = sorting.FieldFacet(&quot;price&quot;)</span>
+<span class="sd">    ...   sorting.add_sortable(w, &quot;price&quot;, facet)</span>
+<span class="sd">    ...</span>
+
+<span class="sd">    :param writer: a :class:`whoosh_reloaded.writing.IndexWriter` object.</span>
+<span class="sd">    :param fieldname: the name of the field to add the per-document sortable</span>
+<span class="sd">        values to. If this field doesn&#39;t exist in the writer&#39;s schema, the</span>
+<span class="sd">        function will add a :class:`whoosh_reloaded.fields.COLUMN` field to the schema,</span>
+<span class="sd">        and you must specify the column object to using the ``column`` keyword</span>
+<span class="sd">        argument.</span>
+<span class="sd">    :param facet: a :class:`FacetType` object to use to generate the</span>
+<span class="sd">        per-document values.</span>
+<span class="sd">    :param column: a :class:`whosh.columns.ColumnType` object to use to store</span>
+<span class="sd">        the per-document values. If you don&#39;t specify a column object, the</span>
+<span class="sd">        function will use the default column type for the given field.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">storage</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">storage</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">schema</span>
+
+    <span class="n">field</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">column_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> field is already sortable&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">column</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">COLUMN</span>
+
+            <span class="n">field</span> <span class="o">=</span> <span class="n">COLUMN</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">default_column</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Field </span><span class="si">%r</span><span class="s2"> does not exist&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+
+    <span class="n">searcher</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span>
+    <span class="n">catter</span> <span class="o">=</span> <span class="n">facet</span><span class="o">.</span><span class="n">categorizer</span><span class="p">(</span><span class="n">searcher</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">subsearcher</span><span class="p">,</span> <span class="n">docoffset</span> <span class="ow">in</span> <span class="n">searcher</span><span class="o">.</span><span class="n">leaf_searchers</span><span class="p">():</span>
+        <span class="n">catter</span><span class="o">.</span><span class="n">set_searcher</span><span class="p">(</span><span class="n">subsearcher</span><span class="p">,</span> <span class="n">docoffset</span><span class="p">)</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">subsearcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">reader</span><span class="o">.</span><span class="n">has_column</span><span class="p">(</span><span class="n">fieldname</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> field already has a column&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+
+        <span class="n">codec</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">codec</span><span class="p">()</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">segment</span><span class="p">()</span>
+
+        <span class="n">colname</span> <span class="o">=</span> <span class="n">codec</span><span class="o">.</span><span class="n">column_filename</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>
+        <span class="n">colfile</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="n">colname</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">colwriter</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">colfile</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">docnum</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">all_doc_ids</span><span class="p">():</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">catter</span><span class="o">.</span><span class="n">key_to_name</span><span class="p">(</span><span class="n">catter</span><span class="o">.</span><span class="n">key_for</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">docnum</span><span class="p">))</span>
+                <span class="n">cv</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">to_column_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                <span class="n">colwriter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">docnum</span><span class="p">,</span> <span class="n">cv</span><span class="p">)</span>
+            <span class="n">colwriter</span><span class="o">.</span><span class="n">finish</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">())</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">colfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">field</span><span class="o">.</span><span class="n">column_type</span> <span class="o">=</span> <span class="n">column</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

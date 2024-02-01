@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Designing a schema &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Designing a schema &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -96,7 +96,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -134,9 +134,9 @@ emails without attachments, you would omit the attachments field.</p>
 <h2>Built-in field types<a class="headerlink" href="#built-in-field-types" title="Permalink to this heading">¶</a></h2>
 <p>Whoosh provides some useful predefined field types:</p>
 <dl>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.TEXT" title="whoosh.fields.TEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.TEXT</span></code></a></dt><dd><p>This type is for body text. It indexes (and optionally stores) the text and
+<dt>:class:` whoosh_reloaded.fields.TEXT`</dt><dd><p>This type is for body text. It indexes (and optionally stores) the text and
 stores term positions to allow phrase searching.</p>
-<p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code> fields use <a class="reference internal" href="api/analysis.html#whoosh.analysis.StandardAnalyzer" title="whoosh.analysis.StandardAnalyzer"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardAnalyzer</span></code></a> by default. To specify a different
+<p><code class="docutils literal notranslate"><span class="pre">TEXT</span></code> fields use <code class="xref py py-class docutils literal notranslate"><span class="pre">StandardAnalyzer</span></code> by default. To specify a different
 analyzer, use the <code class="docutils literal notranslate"><span class="pre">analyzer</span></code> keyword argument to the constructor, e.g.
 <code class="docutils literal notranslate"><span class="pre">TEXT(analyzer=analysis.StemmingAnalyzer())</span></code>. See <a class="reference internal" href="analysis.html"><span class="doc">About analyzers</span></a>.</p>
 <p>By default, <code class="docutils literal notranslate"><span class="pre">TEXT</span></code> fields store position information for each indexed term, to
@@ -150,7 +150,7 @@ don’t need to store their text in the search index. However, in some
 circumstances it can be useful (see <a class="reference internal" href="highlight.html"><span class="doc">How to create highlighted search result excerpts</span></a>). Use
 <code class="docutils literal notranslate"><span class="pre">TEXT(stored=True)</span></code> to specify that the text should be stored in the index.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.KEYWORD" title="whoosh.fields.KEYWORD"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.KEYWORD</span></code></a></dt><dd><p>This field type is designed for space- or comma-separated keywords. This
+<dt>:class:` whoosh_reloaded.fields.KEYWORD`</dt><dd><p>This field type is designed for space- or comma-separated keywords. This
 type is indexed and searchable (and optionally stored). To save space, it
 does not support phrase searching.</p>
 <p>To store the value of the field in the index, use <code class="docutils literal notranslate"><span class="pre">stored=True</span></code> in the
@@ -160,7 +160,7 @@ use <code class="docutils literal notranslate"><span class="pre">lowercase=True<
 commas instead (to allow keywords containing spaces), use <code class="docutils literal notranslate"><span class="pre">commas=True</span></code>.</p>
 <p>If your users will use the keyword field for searching, use <code class="docutils literal notranslate"><span class="pre">scorable=True</span></code>.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.ID" title="whoosh.fields.ID"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.ID</span></code></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">ID</span></code> field type simply indexes (and optionally stores) the entire value of
+<dt>:class:` whoosh_reloaded.fields.ID`</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">ID</span></code> field type simply indexes (and optionally stores) the entire value of
 the field as a single unit (that is, it doesn’t break it up into individual
 terms). This type of field does not store frequency information, so it’s
 quite compact, but not very useful for scoring.</p>
@@ -172,19 +172,19 @@ the value of the field should be stored with the document for use in the
 search results. For example, you would want to store the value of a url
 field so you could provide links to the original in your search results.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.STORED" title="whoosh.fields.STORED"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.STORED</span></code></a></dt><dd><p>This field is stored with the document, but not indexed and not searchable.
+<dt>:class:` whoosh_reloaded.fields.STORED`</dt><dd><p>This field is stored with the document, but not indexed and not searchable.
 This is useful for document information you want to display to the user in
 the search results, but don’t need to be able to search for.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.NUMERIC" title="whoosh.fields.NUMERIC"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.NUMERIC</span></code></a></dt><dd><p>This field stores int, long, or floating point numbers in a compact,
+<dt>:class:` whoosh_reloaded.fields.NUMERIC`</dt><dd><p>This field stores int, long, or floating point numbers in a compact,
 sortable format.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.DATETIME" title="whoosh.fields.DATETIME"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.DATETIME</span></code></a></dt><dd><p>This field stores datetime objects in a compact, sortable format.</p>
+<dt>:class:` whoosh_reloaded.fields.DATETIME`</dt><dd><p>This field stores datetime objects in a compact, sortable format.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.BOOLEAN" title="whoosh.fields.BOOLEAN"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.BOOLEAN</span></code></a></dt><dd><p>This simple filed indexes boolean values and allows users to search for
+<dt>:class:` whoosh_reloaded.fields.BOOLEAN`</dt><dd><p>This simple filed indexes boolean values and allows users to search for
 <code class="docutils literal notranslate"><span class="pre">yes</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code> or <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.NGRAM" title="whoosh.fields.NGRAM"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.NGRAM</span></code></a></dt><dd><p>TBD.</p>
+<dt>:class:` whoosh_reloaded.fields.NGRAM`</dt><dd><p>TBD.</p>
 </dd>
 </dl>
 <p>Expert users can create their own field types.</p>
@@ -192,8 +192,8 @@ sortable format.</p>
 <section id="creating-a-schema">
 <h2>Creating a Schema<a class="headerlink" href="#creating-a-schema" title="Permalink to this heading">¶</a></h2>
 <p>To create a schema:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">KEYWORD</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">STORED</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">StemmingAnalyzer</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">KEYWORD</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">STORED</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.analysis</span> <span class="kn">import</span> <span class="n">StemmingAnalyzer</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">from_addr</span><span class="o">=</span><span class="n">ID</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                 <span class="n">to_addr</span><span class="o">=</span><span class="n">ID</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
@@ -207,7 +207,7 @@ predefined fields, you can leave off the brackets (e.g. <code class="docutils li
 of <code class="docutils literal notranslate"><span class="pre">fieldname=TEXT()</span></code>). Whoosh will instantiate the class for you.</p>
 <p>Alternatively you can create a schema declaratively using the <code class="docutils literal notranslate"><span class="pre">SchemaClass</span></code>
 base class:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">SchemaClass</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">KEYWORD</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">STORED</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">SchemaClass</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">KEYWORD</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">STORED</span>
 
 <span class="k">class</span> <span class="nc">MySchema</span><span class="p">(</span><span class="n">SchemaClass</span><span class="p">):</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">ID</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -216,9 +216,9 @@ base class:</p>
     <span class="n">tags</span> <span class="o">=</span> <span class="n">KEYWORD</span>
 </pre></div>
 </div>
-<p>You can pass a declarative class to <a class="reference internal" href="api/index.html#whoosh.index.create_in" title="whoosh.index.create_in"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_in()</span></code></a> or
+<p>You can pass a declarative class to <code class="xref py py-func docutils literal notranslate"><span class="pre">create_in()</span></code> or
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_index()</span></code> instead of a
-<a class="reference internal" href="api/fields.html#whoosh.fields.Schema" title="whoosh.fields.Schema"><code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code></a> instance.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Schema</span></code> instance.</p>
 </section>
 <section id="modifying-the-schema-after-indexing">
 <h2>Modifying the schema after indexing<a class="headerlink" href="#modifying-the-schema-after-indexing" title="Permalink to this heading">¶</a></h2>

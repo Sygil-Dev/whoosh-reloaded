@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quick start &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Quick start &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -88,7 +88,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -114,8 +114,8 @@ creating blogging software, you could use Whoosh to add a search function to all
 search blog entries.</p>
 <section id="a-quick-introduction">
 <h2>A quick introduction<a class="headerlink" href="#a-quick-introduction" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.index</span> <span class="kn">import</span> <span class="n">create_in</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.index</span> <span class="kn">import</span> <span class="n">create_in</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">path</span><span class="o">=</span><span class="n">ID</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ix</span> <span class="o">=</span> <span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
@@ -124,7 +124,7 @@ search blog entries.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">add_document</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;Second document&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;/b&quot;</span><span class="p">,</span>
 <span class="gp">... </span>                    <span class="n">content</span><span class="o">=</span><span class="sa">u</span><span class="s2">&quot;The second one is even more interesting!&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">ix</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">searcher</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">query</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;first&quot;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">results</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -143,7 +143,7 @@ such as its title or text content. A field can be <em>indexed</em> (meaning it c
 be searched) and/or <em>stored</em> (meaning the value that gets indexed is returned
 with the results; this is useful for fields such as the title).</p>
 <p>This schema has two fields, “title” and “content”:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">TEXT</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">TEXT</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
 </pre></div>
@@ -155,36 +155,36 @@ to field types. The list of fields and their types defines what you are indexing
 and what’s searchable. Whoosh comes with some very useful predefined field
 types, and you can easily create your own.</p>
 <dl class="simple">
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.ID" title="whoosh.fields.ID"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.ID</span></code></a></dt><dd><p>This type simply indexes (and optionally stores) the entire value of the
+<dt>:class:` whoosh_reloaded.fields.ID`</dt><dd><p>This type simply indexes (and optionally stores) the entire value of the
 field as a single unit (that is, it doesn’t break it up into individual
 words). This is useful for fields such as a file path, URL, date, category,
 etc.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.STORED" title="whoosh.fields.STORED"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.STORED</span></code></a></dt><dd><p>This field is stored with the document, but not indexed. This field type is
+<dt>:class:` whoosh_reloaded.fields.STORED`</dt><dd><p>This field is stored with the document, but not indexed. This field type is
 not indexed and not searchable. This is useful for document information you
 want to display to the user in the search results.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.KEYWORD" title="whoosh.fields.KEYWORD"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.KEYWORD</span></code></a></dt><dd><p>This type is designed for space- or comma-separated keywords. This type is
+<dt>:class:` whoosh_reloaded.fields.KEYWORD`</dt><dd><p>This type is designed for space- or comma-separated keywords. This type is
 indexed and searchable (and optionally stored). To save space, it does not
 support phrase searching.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.TEXT" title="whoosh.fields.TEXT"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.TEXT</span></code></a></dt><dd><p>This type is for body text. It indexes (and optionally stores) the text and
+<dt>:class:` whoosh_reloaded.fields.TEXT`</dt><dd><p>This type is for body text. It indexes (and optionally stores) the text and
 stores term positions to allow phrase searching.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.NUMERIC" title="whoosh.fields.NUMERIC"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.NUMERIC</span></code></a></dt><dd><p>This type is for numbers. You can store integers or floating point numbers.</p>
+<dt>:class:` whoosh_reloaded.fields.NUMERIC`</dt><dd><p>This type is for numbers. You can store integers or floating point numbers.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.BOOLEAN" title="whoosh.fields.BOOLEAN"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.BOOLEAN</span></code></a></dt><dd><p>This type is for boolean (true/false) values.</p>
+<dt>:class:` whoosh_reloaded.fields.BOOLEAN`</dt><dd><p>This type is for boolean (true/false) values.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.DATETIME" title="whoosh.fields.DATETIME"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.DATETIME</span></code></a></dt><dd><p>This type is for <code class="docutils literal notranslate"><span class="pre">datetime</span></code> objects. See <a class="reference internal" href="dates.html"><span class="doc">Indexing and parsing dates/times</span></a> for more
+<dt>:class:` whoosh_reloaded.fields.DATETIME`</dt><dd><p>This type is for <code class="docutils literal notranslate"><span class="pre">datetime</span></code> objects. See <a class="reference internal" href="dates.html"><span class="doc">Indexing and parsing dates/times</span></a> for more
 information.</p>
 </dd>
-<dt><a class="reference internal" href="api/fields.html#whoosh.fields.NGRAM" title="whoosh.fields.NGRAM"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.NGRAM</span></code></a> and <a class="reference internal" href="api/fields.html#whoosh.fields.NGRAMWORDS" title="whoosh.fields.NGRAMWORDS"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.NGRAMWORDS</span></code></a></dt><dd><p>These types break the field text or individual terms into N-grams.
+<dt>:class:` whoosh_reloaded.fields.NGRAM` and :class:` whoosh_reloaded.fields.NGRAMWORDS`</dt><dd><p>These types break the field text or individual terms into N-grams.
 See <a class="reference internal" href="ngrams.html"><span class="doc">Indexing and searching N-grams</span></a> for more information.</p>
 </dd>
 </dl>
 <p>(As a shortcut, if you don’t need to pass any arguments to the field type, you
 can just give the class name and Whoosh will instantiate the object for you.)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">STORED</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">KEYWORD</span><span class="p">,</span> <span class="n">TEXT</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">STORED</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">KEYWORD</span><span class="p">,</span> <span class="n">TEXT</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span>
                 <span class="n">path</span><span class="o">=</span><span class="n">ID</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">tags</span><span class="o">=</span><span class="n">KEYWORD</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="n">STORED</span><span class="p">)</span>
@@ -194,7 +194,7 @@ can just give the class name and Whoosh will instantiate the object for you.)</p
 <p>Once you have the schema, you can create an index using the <code class="docutils literal notranslate"><span class="pre">create_in</span></code>
 function:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">from</span> <span class="nn">whoosh.index</span> <span class="kn">import</span> <span class="n">create_in</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.index</span> <span class="kn">import</span> <span class="n">create_in</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
@@ -207,7 +207,7 @@ Usually this will be <code class="docutils literal notranslate"><span class="pre
 in a directory.)</p>
 <p>After you’ve created an index, you can open it using the <code class="docutils literal notranslate"><span class="pre">open_dir</span></code>
 convenience function:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.index</span> <span class="kn">import</span> <span class="n">open_dir</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.index</span> <span class="kn">import</span> <span class="n">open_dir</span>
 
 <span class="n">ix</span> <span class="o">=</span> <span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
 </pre></div>
@@ -277,7 +277,7 @@ query objects directly or use a query parser to parse a query string.</p>
 “bear” in the “content” field:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Construct query objects directly</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.query</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.query</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">myquery</span> <span class="o">=</span> <span class="n">And</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;apple&quot;</span><span class="p">),</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;bear&quot;</span><span class="p">)])</span>
 </pre></div>
 </div>
@@ -287,7 +287,7 @@ field to search. This is usually the “body text” field. The second optional
 argument is a schema to use to understand how to parse the fields:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parse a query string</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">ix</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
 <span class="n">myquery</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">querystring</span><span class="p">)</span>
 </pre></div>

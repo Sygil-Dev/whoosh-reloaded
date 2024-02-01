@@ -2,7 +2,7 @@
 ``scoring`` module
 ==================
 
-.. automodule:: whoosh.scoring
+.. automodule:: whoosh_reloaded.scoring
 
 
 Base classes

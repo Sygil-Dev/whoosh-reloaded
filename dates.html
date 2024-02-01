@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Indexing and parsing dates/times &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Indexing and parsing dates/times &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -95,7 +95,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -118,10 +118,10 @@
 <section id="indexing-dates">
 <h2>Indexing dates<a class="headerlink" href="#indexing-dates" title="Permalink to this heading">¶</a></h2>
 <p>Whoosh lets you index and search dates/times using the
-<a class="reference internal" href="api/fields.html#whoosh.fields.DATETIME" title="whoosh.fields.DATETIME"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.fields.DATETIME</span></code></a> field type. Instead of passing text for the
+<a class="reference internal" href="api/fields.html#whoosh_reloaded.fields.DATETIME" title="whoosh_reloaded.fields.DATETIME"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.fields.DATETIME</span></code></a> field type. Instead of passing text for the
 field in <code class="docutils literal notranslate"><span class="pre">add_document()</span></code>, you use a Python <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> object:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">fields</span><span class="p">,</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">fields</span><span class="p">,</span> <span class="n">index</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span>
                        <span class="n">date</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">DATETIME</span><span class="p">)</span>
@@ -139,10 +139,10 @@ field in <code class="docutils literal notranslate"><span class="pre">add_docume
 <section id="parsing-date-queries">
 <h2>Parsing date queries<a class="headerlink" href="#parsing-date-queries" title="Permalink to this heading">¶</a></h2>
 <p>Once you’ve have an indexed <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code> field, you can search it using a rich
-date parser contained in the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.qparser.dateparse.DateParserPlugin</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
-<span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
-<span class="kn">from</span> <span class="nn">whoosh.qparser.dateparse</span> <span class="kn">import</span> <span class="n">DateParserPlugin</span>
+date parser contained in the <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.qparser.dateparse.DateParserPlugin</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser.dateparse</span> <span class="kn">import</span> <span class="n">DateParserPlugin</span>
 
 <span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
 
@@ -200,8 +200,8 @@ with other types of queries without quotes:</p>
 <p>If you don’t use the <code class="docutils literal notranslate"><span class="pre">DateParserPlugin</span></code>, users can still search DATETIME
 fields using a simple numeric form <code class="docutils literal notranslate"><span class="pre">YYYY[MM[DD[hh[mm[ss]]]]]</span></code> that is built
 into the <code class="docutils literal notranslate"><span class="pre">DATETIME</span></code> field:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
-<span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">index</span>
+<span class="kn">from</span> <span class="nn">whoosh_reloaded.qparser</span> <span class="kn">import</span> <span class="n">QueryParser</span>
 
 <span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
 <span class="n">qp</span> <span class="o">=</span> <span class="n">QueryParser</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">ix</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>

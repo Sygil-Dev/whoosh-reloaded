@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Query expansion and Key word extraction &mdash; Whoosh 2.7.4 documentation</title>
+  <title>Query expansion and Key word extraction &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Whoosh
+            Whoosh-Reloaded
           </a>
               <div class="version">
                 2.7
@@ -87,7 +87,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Whoosh</a>
+          <a href="index.html">Whoosh-Reloaded</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -134,7 +134,7 @@ didn’t think of.</p></li>
 <li><p>Get more documents like a certain search hit. <em>This requires that the field
 you want to match on is vectored or stored, or that you have access to the
 original text (such as from a database)</em>.</p>
-<p>Use <a class="reference internal" href="api/searching.html#whoosh.searching.Hit.more_like_this" title="whoosh.searching.Hit.more_like_this"><code class="xref py py-meth docutils literal notranslate"><span class="pre">more_like_this()</span></code></a>:</p>
+<p>Use <code class="xref py py-meth docutils literal notranslate"><span class="pre">more_like_this()</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">myquery</span><span class="p">)</span>
 <span class="n">first_hit</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">more_results</span> <span class="o">=</span> <span class="n">first_hit</span><span class="o">.</span><span class="n">more_like_this</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
@@ -142,10 +142,10 @@ original text (such as from a database)</em>.</p>
 </div>
 </li>
 <li><p>Extract keywords for the top N documents in a
-<a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object. <em>This requires that the field is
+:class:` whoosh_reloaded.searching.Results` object. <em>This requires that the field is
 either vectored or stored</em>.</p>
-<p>Use the <a class="reference internal" href="api/searching.html#whoosh.searching.Results.key_terms" title="whoosh.searching.Results.key_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms()</span></code></a> method of the
-<a class="reference internal" href="api/searching.html#whoosh.searching.Results" title="whoosh.searching.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Results</span></code></a> object to extract keywords from the top N
+<p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms()</span></code> method of the
+:class:` whoosh_reloaded.searching.Results` object to extract keywords from the top N
 documents of the result set.</p>
 <p>For example, to extract <em>five</em> key terms from the <code class="docutils literal notranslate"><span class="pre">content</span></code> field of the top
 <em>ten</em> documents of a results object:</p>
@@ -156,12 +156,12 @@ documents of the result set.</p>
 </li>
 <li><p>Extract keywords for an arbitrary set of documents. <em>This requires that the
 field is either vectored or stored</em>.</p>
-<p>Use the <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.document_number" title="whoosh.searching.Searcher.document_number"><code class="xref py py-meth docutils literal notranslate"><span class="pre">document_number()</span></code></a> or
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.document_numbers" title="whoosh.searching.Searcher.document_numbers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">document_numbers()</span></code></a> methods of the
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> object to get the document numbers for the
+<p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">document_number()</span></code> or
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">document_numbers()</span></code> methods of the
+:class:` whoosh_reloaded.searching.Searcher` object to get the document numbers for the
 document(s) you want to extract keywords from.</p>
-<p>Use the <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.key_terms" title="whoosh.searching.Searcher.key_terms"><code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms()</span></code></a> method of a
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> to extract the keywords, given the list of
+<p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms()</span></code> method of a
+:class:` whoosh_reloaded.searching.Searcher` to extract the keywords, given the list of
 document numbers.</p>
 <p>For example, let’s say you have an index of emails. To extract key terms from
 the <code class="docutils literal notranslate"><span class="pre">content</span></code> field of emails whose <code class="docutils literal notranslate"><span class="pre">emailto</span></code> field contains
@@ -174,8 +174,8 @@ the <code class="docutils literal notranslate"><span class="pre">content</span><
 </div>
 </li>
 <li><p>Extract keywords from arbitrary text not in the index.</p>
-<p>Use the <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.key_terms_from_text" title="whoosh.searching.Searcher.key_terms_from_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms_from_text()</span></code></a> method of a
-<a class="reference internal" href="api/searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> to extract the keywords, given the text:</p>
+<p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms_from_text()</span></code> method of a
+:class:` whoosh_reloaded.searching.Searcher` to extract the keywords, given the text:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">email_index</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
     <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="n">keyword</span> <span class="k">for</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">score</span>
                 <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">key_terms_from_text</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">,</span> <span class="n">mytext</span><span class="p">)]</span>
@@ -186,7 +186,7 @@ the <code class="docutils literal notranslate"><span class="pre">content</span><
 </section>
 <section id="expansion-models">
 <h2>Expansion models<a class="headerlink" href="#expansion-models" title="Permalink to this heading">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">ExpansionModel</span></code> subclasses in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">whoosh.classify</span></code> module implement
+<p>The <code class="docutils literal notranslate"><span class="pre">ExpansionModel</span></code> subclasses in the :mod:` whoosh_reloaded.classify` module implement
 different weighting functions for key words. These models are translated into
 Python from original Java implementations in Terrier.</p>
 </section>
