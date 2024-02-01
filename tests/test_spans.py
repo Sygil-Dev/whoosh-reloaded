@@ -218,14 +218,13 @@ def test_span_near_tree():
     w = ix.writer()
     w.add_document(
         text=u(
-            "The Lucene library is by Doug Cutting and Whoosh "
-            + "was made by Matt Chaput"
+            "The Lucene library is by Doug Cutting and Whoosh was made by Matt Chaput"
         )
     )
     w.commit()
 
     nq1 = spans.SpanNear(Term("text", "lucene"), Term("text", "doug"), slop=5)
-    nq2 = spans.SpanNear(nq1, Term("text", "whoosh-reloaded"), slop=4)
+    nq2 = spans.SpanNear(nq1, Term("text", "whoosh"), slop=4)
 
     with ix.searcher() as s:
         m = nq2.matcher(s)

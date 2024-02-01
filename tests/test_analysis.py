@@ -435,8 +435,7 @@ def test_porter2():
 
 def test_url():
     sample = u(
-        "Visit http://bitbucket.org/mchaput/whoosh-reloaded or "
-        + "urn:isbn:5930502 or http://www.apple.com/."
+        "Visit https://github.com/sygil-dev/whoosh-reloaded or urn:isbn:5930502 or http://www.apple.com/."
     )
 
     anas = [
@@ -447,7 +446,7 @@ def test_url():
         ts = [t.text for t in ana(sample)]
         assert ts == [
             u("visit"),
-            u("http://bitbucket.org/mchaput/whoosh-reloaded"),
+            u("https://github.com/sygil-dev/whoosh-reloaded"),
             u("or"),
             u("urn:isbn:5930502"),
             u("or"),
@@ -491,7 +490,7 @@ def test_start_pos():
 
 
 def test_frowny_face():
-    # See https://bitbucket.org/mchaput/whoosh-reloaded/issue/166/
+    # See https://bitbucket.org/mchaput/whoosh/issue/166/
     ana = analysis.RegexTokenizer(r"\S+") | analysis.IntraWordFilter()
     # text is all delimiters
     tokens = [t.text for t in ana(u(":-("))]

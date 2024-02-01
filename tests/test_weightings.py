@@ -9,7 +9,7 @@ from whoosh_reloaded.filedb.filestore import RamStorage
 
 
 def _weighting_classes(ignore):
-    # Get all the subclasses of Weighting in whoosh-reloaded.scoring
+    # Get all the subclasses of Weighting in whoosh_reloaded.scoring
     return [
         c
         for _, c in inspect.getmembers(scoring, inspect.isclass)

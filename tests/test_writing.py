@@ -507,7 +507,7 @@ def test_delete_by_term_has_del():
 
 def test_add_fail_with_absorbed_exception():
     """
-    Issue #375 https://github.com/whoosh-reloaded-community/whoosh-reloaded/issues/375
+    Issue #375 https://github.com/whoosh-community/whoosh/issues/375
     Test that a failed document add with absorbed exceptions does not leave
     an unfinished document state for the next document to be added.
 
