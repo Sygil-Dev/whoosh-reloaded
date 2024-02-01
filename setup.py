@@ -44,7 +44,7 @@ if __name__ == "__main__":
         url="https://github.com/Sygil-Dev/whoosh-reloaded",
         zip_safe=True,
         install_requires=["cached-property", "jieba"],
-        tests_require=["pytest", "jieba"],
+        tests_require=["pytest", "jieba", "nose"],
         cmdclass={"test": PyTest},
         classifiers=[
             "Programming Language :: Python :: 3",
