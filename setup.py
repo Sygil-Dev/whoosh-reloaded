@@ -43,8 +43,15 @@ if __name__ == "__main__":
         keywords="index search text spell",
         url="https://github.com/Sygil-Dev/whoosh-reloaded",
         zip_safe=True,
-        install_requires=["cached-property", "jieba"],
-        tests_require=["pytest", "jieba", "nose"],
+        install_requires=[
+            "cached-property",
+            "jieba @ git+https://github.com/Sygil-Dev/jieba.git",
+        ],
+        tests_require=[
+            "pytest",
+            "jieba @ git+https://github.com/Sygil-Dev/jieba.git",
+            "nose",
+        ],
         cmdclass={"test": PyTest},
         classifiers=[
             "Programming Language :: Python :: 3",
