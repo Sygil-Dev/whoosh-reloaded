@@ -3,15 +3,18 @@ import array, sys
 
 # Run time aliasing of Python2/3 differences
 
+
 def htmlescape(s, quote=True):
     # this is html.escape reimplemented with cgi.escape,
     # so it works for python 2.x, 3.0 and 3.1
     import cgi
+
     s = cgi.escape(s, quote)
     if quote:
         # python 3.2 also replaces the single quotes:
         s = s.replace("'", "&#x27;")
     return s
+
 
 if sys.version_info[0] < 3:
     PY3 = False
@@ -20,6 +23,7 @@ if sys.version_info[0] < 3:
         return s
 
     import cStringIO as StringIO
+
     StringIO = BytesIO = StringIO.StringIO
     callable = callable
     integer_types = (int, long)
@@ -27,10 +31,12 @@ if sys.version_info[0] < 3:
     itervalues = lambda o: o.itervalues()
     iterkeys = lambda o: o.iterkeys()
     from itertools import izip
+
     long_type = long
     next = lambda o: o.next()
-    import cPickle as pickle
+    # import cPickle as pickle
     from cPickle import dumps, loads, dump, load
+
     string_type = basestring
     text_type = unicode
     bytes_type = str
@@ -47,6 +53,7 @@ if sys.version_info[0] < 3:
     def with_metaclass(meta, base=object):
         class _WhooshBase(base):
             __metaclass__ = meta
+
         return _WhooshBase
 
     xrange = xrange
@@ -66,6 +73,7 @@ else:
         return s.encode("latin-1")
 
     import io
+
     BytesIO = io.BytesIO
     callable = lambda o: isinstance(o, collections.Callable)
     exec_ = eval("exec")
@@ -78,6 +86,7 @@ else:
     next = next
     import pickle
     from pickle import dumps, loads, dump, load
+
     StringIO = io.StringIO
     string_type = str
     text_type = str
@@ -96,17 +105,20 @@ else:
 
     def with_metaclass(meta, base=object):
         ns = dict(base=base, meta=meta)
-        exec_("""class _WhooshBase(base, metaclass=meta):
-    pass""", ns)
+        exec_(
+            """class _WhooshBase(base, metaclass=meta):
+    pass""",
+            ns,
+        )
         return ns["_WhooshBase"]
 
     xrange = range
-    zip_ = lambda * args: list(zip(*args))
+    zip_ = lambda *args: list(zip(*args))
 
     def memoryview_(source, offset=None, length=None):
         mv = memoryview(source)
         if offset or length:
-            return mv[offset:offset + length]
+            return mv[offset : offset + length]
         else:
             return mv
 
@@ -118,12 +130,15 @@ else:
 
 
 if hasattr(array.array, "tobytes"):
+
     def array_tobytes(arry):
         return arry.tobytes()
 
     def array_frombytes(arry, bs):
         return arry.frombytes(bs)
+
 else:
+
     def array_tobytes(arry):
         return arry.tostring()
 
@@ -150,7 +165,7 @@ except ImportError:
             for i in reversed(range(r)):
                 cycles[i] -= 1
                 if cycles[i] == 0:
-                    indices[i:] = indices[i + 1:] + indices[i:i + 1]
+                    indices[i:] = indices[i + 1 :] + indices[i : i + 1]
                     cycles[i] = n - i
                 else:
                     j = cycles[i]
@@ -173,7 +188,7 @@ except ImportError:
         from itertools import chain, izip, repeat
 
         def izip_longest(*args, **kwds):
-            fillvalue = kwds.get('fillvalue')
+            fillvalue = kwds.get("fillvalue")
 
             def sentinel(counter=([fillvalue] * (len(args) - 1)).pop):
                 yield counter()
@@ -194,6 +209,7 @@ except ImportError:
     def methodcaller(name, *args, **kwargs):
         def caller(obj):
             return getattr(obj, name)(*args, **kwargs)
+
         return caller
 
 
@@ -202,7 +218,6 @@ try:
 except ImportError:
     # Python 2.5
     def abstractmethod(funcobj):
-        """A decorator indicating abstract methods.
-        """
+        """A decorator indicating abstract methods."""
         funcobj.__isabstractmethod__ = True
         return funcobj
