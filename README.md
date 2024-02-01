@@ -1,4 +1,8 @@
-[![Build Status](https://travis-ci.org/whoosh-community/whoosh.svg?branch=master)](https://travis-ci.org/whoosh-community/whoosh)
+[![Build Status](https://travis-ci.org/Sygil-Dev/whoosh-reloaded.svg?branch=master)](https://travis-ci.org/Sygil-Dev/whoosh-reloaded)
+
+This repository (whoosh-reloaded) is a fork and continuation of the Whoosh project. The original Whoosh project is no longer maintained. This fork is maintained by the Sygil-Dev Organization.
+
+--------------------------------------
 
 About Whoosh
 ============
@@ -51,18 +55,24 @@ or ``pip`` to download and install Whoosh automatically::
     # Install the development version from Github.
     $ pip install git+https://github.com/Sygil-Dev/whoosh.git
 
-Learning more
-=============
-
-* Read the online documentation at https://docs.red-dove.com/whoosh/ (Search DOES work).
-
-* Read the old online documentation at https://whoosh.readthedocs.org/en/latest/ (Search DOES NOT work).
-
-* File bug reports and issues at https://github.com/Sygil-Dev/whoosh/issues
-
 Getting the source.
 ==================
 
 You can check out the latest version of the source code on GitHub using git:
 
     $ git clone https://github.com/Sygil-Dev/whoosh.git
+
+Learning more
+=============
+
+* Online Documentation:
+  
+  *   [Github Pages](https://sygil-dev.github.io/whoosh-reloaded/)
+  
+  *   [Read the Docs](https://whoosh-reloaded.readthedocs.io/en/latest/) 
+
+* Read the old online documentation at https://docs.red-dove.com/whoosh/ (Search work properly).
+
+* Read the old online documentation at https://whoosh.readthedocs.org/en/latest/ (Search DOES NOT work).
+
+* File bug reports and issues at https://github.com/Sygil-Dev/whoosh/issues
