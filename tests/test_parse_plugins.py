@@ -2,29 +2,37 @@ from __future__ import with_statement
 import inspect
 from datetime import datetime
 
-from whoosh import analysis, fields, formats, qparser, query
-from whoosh.compat import u, text_type, xrange
-from whoosh.filedb.filestore import RamStorage
-from whoosh.qparser import dateparse, default, plugins, syntax
-from whoosh.util.times import adatetime
+from whoosh_reloaded import analysis, fields, formats, qparser, query
+from whoosh_reloaded.compat import u, text_type, xrange
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.qparser import dateparse, default, plugins, syntax
+from whoosh_reloaded.util.times import adatetime
 
 
 def _plugin_classes(ignore):
-    # Get all the subclasses of Plugin in whoosh.qparser.plugins
-    return [c for _, c in inspect.getmembers(plugins, inspect.isclass)
-            if plugins.Plugin in c.__bases__ and c not in ignore]
+    # Get all the subclasses of Plugin in whoosh_reloaded.qparser.plugins
+    return [
+        c
+        for _, c in inspect.getmembers(plugins, inspect.isclass)
+        if plugins.Plugin in c.__bases__ and c not in ignore
+    ]
 
 
 def test_combos():
-    qs = ('w:a "hi there"^4.2 AND x:b^2.3 OR c AND (y:d OR e) ' +
-          '(apple ANDNOT bear)^2.3')
+    qs = (
+        'w:a "hi there"^4.2 AND x:b^2.3 OR c AND (y:d OR e) '
+        + "(apple ANDNOT bear)^2.3"
+    )
 
-    init_args = {plugins.MultifieldPlugin: (["content", "title"],
-                                            {"content": 1.0, "title": 1.2}),
-                 plugins.FieldAliasPlugin: ({"content": ("text", "body")},),
-                 plugins.CopyFieldPlugin: ({"name": "phone"},),
-                 plugins.PseudoFieldPlugin: ({"name": lambda x: x}),
-                 }
+    init_args = {
+        plugins.MultifieldPlugin: (
+            ["content", "title"],
+            {"content": 1.0, "title": 1.2},
+        ),
+        plugins.FieldAliasPlugin: ({"content": ("text", "body")},),
+        plugins.CopyFieldPlugin: ({"name": "phone"},),
+        plugins.PseudoFieldPlugin: ({"name": lambda x: x}),
+    }
 
     pis = _plugin_classes(())
     for i, plugin in enumerate(pis):
@@ -48,7 +56,9 @@ def test_field_alias():
     qp = qparser.QueryParser("content", None)
     qp.add_plugin(plugins.FieldAliasPlugin({"title": ("article", "caption")}))
     q = qp.parse("alfa title:bravo article:charlie caption:delta")
-    assert text_type(q) == u("(content:alfa AND title:bravo AND title:charlie AND title:delta)")
+    assert text_type(q) == u(
+        "(content:alfa AND title:bravo AND title:charlie AND title:delta)"
+    )
 
 
 def test_dateparser():
@@ -144,8 +154,7 @@ def test_date_range():
 
 
 def test_daterange_multi():
-    schema = fields.Schema(text=fields.TEXT, start=fields.DATETIME,
-                           end=fields.DATETIME)
+    schema = fields.Schema(text=fields.TEXT, start=fields.DATETIME, end=fields.DATETIME)
     qp = qparser.QueryParser("text", schema)
     basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)
     qp.add_plugin(dateparse.DateParserPlugin(basedate))
@@ -169,8 +178,7 @@ def test_daterange_empty_field():
     writer.commit()
 
     with ix.searcher() as s:
-        q = query.DateRange("test", datetime.fromtimestamp(86400),
-                            datetime.today())
+        q = query.DateRange("test", datetime.fromtimestamp(86400), datetime.today())
         r = s.search(q)
         assert len(r) == 0
 
@@ -261,8 +269,7 @@ def test_custom_tokens():
     qp = qparser.QueryParser("text", None)
     qp.remove_plugin_class(plugins.OperatorsPlugin)
 
-    cp = plugins.OperatorsPlugin(And="&", Or="\\|", AndNot="&!", AndMaybe="&~",
-                                 Not="-")
+    cp = plugins.OperatorsPlugin(And="&", Or="\\|", AndNot="&!", AndMaybe="&~", Not="-")
     qp.add_plugin(cp)
 
     q = qp.parse("this | that")
@@ -289,33 +296,38 @@ def test_custom_tokens():
 def test_copyfield():
     qp = qparser.QueryParser("a", None)
     qp.add_plugin(plugins.CopyFieldPlugin({"b": "c"}, None))
-    assert (text_type(qp.parse("hello b:matt"))
-            == "(a:hello AND b:matt AND c:matt)")
+    assert text_type(qp.parse("hello b:matt")) == "(a:hello AND b:matt AND c:matt)"
 
     qp = qparser.QueryParser("a", None)
     qp.add_plugin(plugins.CopyFieldPlugin({"b": "c"}, syntax.AndMaybeGroup))
-    assert (text_type(qp.parse("hello b:matt"))
-            == "(a:hello AND (b:matt ANDMAYBE c:matt))")
+    assert (
+        text_type(qp.parse("hello b:matt")) == "(a:hello AND (b:matt ANDMAYBE c:matt))"
+    )
 
     qp = qparser.QueryParser("a", None)
     qp.add_plugin(plugins.CopyFieldPlugin({"b": "c"}, syntax.RequireGroup))
-    assert (text_type(qp.parse("hello (there OR b:matt)"))
-            == "(a:hello AND (a:there OR (b:matt REQUIRE c:matt)))")
+    assert (
+        text_type(qp.parse("hello (there OR b:matt)"))
+        == "(a:hello AND (a:there OR (b:matt REQUIRE c:matt)))"
+    )
 
     qp = qparser.QueryParser("a", None)
     qp.add_plugin(plugins.CopyFieldPlugin({"a": "c"}, syntax.OrGroup))
-    assert (text_type(qp.parse("hello there"))
-            == "((a:hello OR c:hello) AND (a:there OR c:there))")
+    assert (
+        text_type(qp.parse("hello there"))
+        == "((a:hello OR c:hello) AND (a:there OR c:there))"
+    )
 
     qp = qparser.QueryParser("a", None)
     qp.add_plugin(plugins.CopyFieldPlugin({"b": "c"}, mirror=True))
-    assert (text_type(qp.parse("hello c:matt"))
-            == "(a:hello AND (c:matt OR b:matt))")
+    assert text_type(qp.parse("hello c:matt")) == "(a:hello AND (c:matt OR b:matt))"
 
     qp = qparser.QueryParser("a", None)
     qp.add_plugin(plugins.CopyFieldPlugin({"c": "a"}, mirror=True))
-    assert (text_type(qp.parse("hello c:matt"))
-            == "((a:hello OR c:hello) AND (c:matt OR a:matt))")
+    assert (
+        text_type(qp.parse("hello c:matt"))
+        == "((a:hello OR c:hello) AND (c:matt OR a:matt))"
+    )
 
     ana = analysis.RegexAnalyzer(r"\w+") | analysis.DoubleMetaphoneFilter()
     fmt = formats.Frequency()
@@ -323,15 +335,21 @@ def test_copyfield():
     schema = fields.Schema(name=fields.KEYWORD, name_phone=ft)
     qp = qparser.QueryParser("name", schema)
     qp.add_plugin(plugins.CopyFieldPlugin({"name": "name_phone"}))
-    target = ("((name:spruce OR name_phone:SPRS) "
-              "AND (name:view OR name_phone:F OR name_phone:FF))")
+    target = (
+        "((name:spruce OR name_phone:SPRS) "
+        "AND (name:view OR name_phone:F OR name_phone:FF))"
+    )
     assert text_type(qp.parse(u("spruce view"))) == target
 
 
 def test_gtlt():
-    schema = fields.Schema(a=fields.KEYWORD, b=fields.NUMERIC,
-                           c=fields.KEYWORD,
-                           d=fields.NUMERIC(float), e=fields.DATETIME)
+    schema = fields.Schema(
+        a=fields.KEYWORD,
+        b=fields.NUMERIC,
+        c=fields.KEYWORD,
+        d=fields.NUMERIC(float),
+        e=fields.DATETIME,
+    )
     qp = qparser.QueryParser("a", schema)
     qp.add_plugin(plugins.GtLtPlugin())
     qp.add_plugin(dateparse.DateParserPlugin())
@@ -341,7 +359,7 @@ def test_gtlt():
     assert len(q) == 4
     assert q[0] == query.Term("a", "hello")
     assert q[1] == query.NumericRange("b", 100, None, startexcl=True)
-    assert q[2] == query.TermRange("c", None, 'z')
+    assert q[2] == query.TermRange("c", None, "z")
     assert q[3] == query.Term("a", "there")
 
     q = qp.parse(u("hello e:>'29 mar 2001' there"))
@@ -367,7 +385,7 @@ def test_regex():
     qp.add_plugin(plugins.RegexPlugin())
 
     q = qp.parse(u("a:foo-bar b:foo-bar"))
-    assert q.__unicode__() == '(a:foo-bar AND b:foo AND b:bar)'
+    assert q.__unicode__() == "(a:foo-bar AND b:foo AND b:bar)"
 
     q = qp.parse(u('a:r"foo-bar" b:r"foo-bar"'))
     assert q.__unicode__() == '(a:r"foo-bar" AND b:r"foo-bar")'
@@ -407,7 +425,7 @@ def test_pseudofield():
     qp = qparser.QueryParser("content", schema)
     qp.add_plugin(qparser.PseudoFieldPlugin({"reverse": rev_text}))
     q = qp.parse(u("alfa reverse:bravo"))
-    assert q.__unicode__() == '(content:alfa AND (reverse:bravo OR reverse:ovarb))'
+    assert q.__unicode__() == "(content:alfa AND (reverse:bravo OR reverse:ovarb))"
 
 
 def test_fuzzy_plugin():
@@ -461,30 +479,35 @@ def test_fuzzy_plugin():
 
 
 def test_fuzzy_prefix():
-    from whoosh import scoring
+    from whoosh_reloaded import scoring
 
-    schema = fields.Schema(title=fields.TEXT(stored=True),
-                           content=fields.TEXT(spelling=True))
+    schema = fields.Schema(
+        title=fields.TEXT(stored=True), content=fields.TEXT(spelling=True)
+    )
 
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         # Match -> first
-        w.add_document(title=u("First"),
-                       content=u("This is the first document we've added!"))
+        w.add_document(
+            title=u("First"), content=u("This is the first document we've added!")
+        )
         # No match
-        w.add_document(title=u("Second"),
-                       content=u("The second one is even more interesting! filst"))
+        w.add_document(
+            title=u("Second"),
+            content=u("The second one is even more interesting! filst"),
+        )
         # Match -> first
-        w.add_document(title=u("Third"),
-                       content=u("The world first line we've added!"))
+        w.add_document(title=u("Third"), content=u("The world first line we've added!"))
         # Match -> zeroth
-        w.add_document(title=u("Fourth"),
-                       content=u("The second one is alaways comes after zeroth!"))
+        w.add_document(
+            title=u("Fourth"),
+            content=u("The second one is alaways comes after zeroth!"),
+        )
         # Match -> fire is within 2 edits (transpose + delete) of first
-        w.add_document(title=u("Fifth"),
-                       content=u("The fire is beautiful"))
+        w.add_document(title=u("Fifth"), content=u("The fire is beautiful"))
 
-    from whoosh.qparser import QueryParser, FuzzyTermPlugin
+    from whoosh_reloaded.qparser import QueryParser, FuzzyTermPlugin
+
     parser = QueryParser("content", ix.schema)
     parser.add_plugin(FuzzyTermPlugin())
     q = parser.parse("first~2/3 OR zeroth", debug=False)
@@ -498,8 +521,10 @@ def test_fuzzy_prefix():
     with ix.searcher(weighting=scoring.TF_IDF()) as searcher:
         results = searcher.search(q)
         assert len(results) == 4
-        assert (" ".join(sorted(hit["title"] for hit in results))
-                == "Fifth First Fourth Third")
+        assert (
+            " ".join(sorted(hit["title"] for hit in results))
+            == "Fifth First Fourth Third"
+        )
 
 
 def test_function_plugin():
@@ -524,8 +549,9 @@ def test_function_plugin():
     def fuzzy(qs, prefix=0, maxdist=2):
         prefix = int(prefix)
         maxdist = int(maxdist)
-        return query.FuzzyTerm(qs[0].fieldname, qs[0].text,
-                               prefixlength=prefix, maxdist=maxdist)
+        return query.FuzzyTerm(
+            qs[0].fieldname, qs[0].text, prefixlength=prefix, maxdist=maxdist
+        )
 
     fp = plugins.FunctionPlugin({"foo": FakeQuery, "fuzzy": fuzzy})
     qp = default.QueryParser("f", None)
@@ -535,36 +561,46 @@ def test_function_plugin():
         q = qp.parse(u(qstring), normalize=False)
         assert str(q) == target
 
-    check("alfa #foo charlie delta",
-          "(f:alfa AND <  > AND f:charlie AND f:delta)")
+    check("alfa #foo charlie delta", "(f:alfa AND <  > AND f:charlie AND f:delta)")
 
-    check("alfa #foo(charlie delta) echo",
-          "(f:alfa AND <f:charlie|f:delta  > AND f:echo)")
+    check(
+        "alfa #foo(charlie delta) echo", "(f:alfa AND <f:charlie|f:delta  > AND f:echo)"
+    )
 
-    check("alfa #foo(charlie AND delta) echo",
-          "(f:alfa AND <(f:charlie AND f:delta)  > AND f:echo)")
+    check(
+        "alfa #foo(charlie AND delta) echo",
+        "(f:alfa AND <(f:charlie AND f:delta)  > AND f:echo)",
+    )
 
-    check("alfa #foo[a] charlie delta",
-          "(f:alfa AND < a > AND f:charlie AND f:delta)")
+    check("alfa #foo[a] charlie delta", "(f:alfa AND < a > AND f:charlie AND f:delta)")
 
-    check("alfa #foo[a, b](charlie delta) echo",
-          "(f:alfa AND <f:charlie|f:delta a,b > AND f:echo)")
+    check(
+        "alfa #foo[a, b](charlie delta) echo",
+        "(f:alfa AND <f:charlie|f:delta a,b > AND f:echo)",
+    )
 
-    check("alfa #foo[a,b,c=d](charlie AND delta) echo",
-          "(f:alfa AND <(f:charlie AND f:delta) a,b c:d> AND f:echo)")
+    check(
+        "alfa #foo[a,b,c=d](charlie AND delta) echo",
+        "(f:alfa AND <(f:charlie AND f:delta) a,b c:d> AND f:echo)",
+    )
 
-    check("alfa #foo[a,b,c=d]() (charlie AND delta)",
-          "(f:alfa AND < a,b c:d> AND ((f:charlie AND f:delta)))")
+    check(
+        "alfa #foo[a,b,c=d]() (charlie AND delta)",
+        "(f:alfa AND < a,b c:d> AND ((f:charlie AND f:delta)))",
+    )
 
-    check("alfa #foo[a=1,b=2](charlie AND delta)^2.0 echo",
-          "(f:alfa AND <(f:charlie AND f:delta)  a:1,b:2,boost:2.0> AND f:echo)")
+    check(
+        "alfa #foo[a=1,b=2](charlie AND delta)^2.0 echo",
+        "(f:alfa AND <(f:charlie AND f:delta)  a:1,b:2,boost:2.0> AND f:echo)",
+    )
 
-    check("alfa #fuzzy[maxdist=2](bravo) charlie",
-          "(f:alfa AND f:bravo~2 AND f:charlie)")
+    check(
+        "alfa #fuzzy[maxdist=2](bravo) charlie", "(f:alfa AND f:bravo~2 AND f:charlie)"
+    )
 
 
 def test_function_first():
-    from whoosh.query.spans import SpanFirst
+    from whoosh_reloaded.query.spans import SpanFirst
 
     def make_first(qs):
         return SpanFirst(qs[0])
@@ -584,7 +620,10 @@ def test_sequence_plugin():
     qp.add_plugin(plugins.SequencePlugin())
 
     q = qp.parse(u('alfa "bravo charlie~2 (delta OR echo)" foxtrot'))
-    assert q.__unicode__() == "(f:alfa AND (f:bravo NEAR f:charlie~2 NEAR (f:delta OR f:echo)) AND f:foxtrot)"
+    assert (
+        q.__unicode__()
+        == "(f:alfa AND (f:bravo NEAR f:charlie~2 NEAR (f:delta OR f:echo)) AND f:foxtrot)"
+    )
     assert q[1].__class__ == query.Sequence
 
     q = qp.parse(u('alfa "bravo charlie~2 d?lt*'))
@@ -594,7 +633,10 @@ def test_sequence_plugin():
     assert q[3].__class__ == query.Wildcard
 
     q = qp.parse(u('alfa "bravo charlie~2" d?lt* "[a TO z] [0 TO 9]" echo'))
-    assert q.__unicode__() == "(f:alfa AND (f:bravo NEAR f:charlie~2) AND f:d?lt* AND (f:[a TO z] NEAR f:[0 TO 9]) AND f:echo)"
+    assert (
+        q.__unicode__()
+        == "(f:alfa AND (f:bravo NEAR f:charlie~2) AND f:d?lt* AND (f:[a TO z] NEAR f:[0 TO 9]) AND f:echo)"
+    )
     assert q[0].text == "alfa"
     assert q[1].__class__ == query.Sequence
     assert q[2].__class__ == query.Wildcard
@@ -618,25 +660,35 @@ def test_sequence_andmaybe():
     q = qp.parse(u('Dahmen ANDMAYBE "Besov Spaces"'))
     assert isinstance(q, query.AndMaybe)
     assert q[0] == query.Term("f", u("Dahmen"))
-    assert q[1] == query.Sequence([query.Term("f", u("Besov")),
-                                   query.Term("f", u("Spaces"))])
+    assert q[1] == query.Sequence(
+        [query.Term("f", u("Besov")), query.Term("f", u("Spaces"))]
+    )
 
 
 def test_sequence_complex():
     ana = analysis.StandardAnalyzer(stoplist=None)
-    schema = fields.Schema(title=fields.TEXT(stored=True),
-                           path=fields.ID(stored=True),
-                           content=fields.TEXT(stored=True, phrase=True,
-                                               analyzer=ana))
+    schema = fields.Schema(
+        title=fields.TEXT(stored=True),
+        path=fields.ID(stored=True),
+        content=fields.TEXT(stored=True, phrase=True, analyzer=ana),
+    )
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
-        w.add_document(title=u"First document", path=u"/a",
-                       content=u"This is the first document we've added!")
-        w.add_document(title=u"Second document", path=u"/b",
-                       content=(u"In truth, he said, I would like to combine "
-                                u"logical operators with proximity-based "
-                                u"search in Whoosh!"))
+        w.add_document(
+            title="First document",
+            path="/a",
+            content="This is the first document we've added!",
+        )
+        w.add_document(
+            title="Second document",
+            path="/b",
+            content=(
+                "In truth, he said, I would like to combine "
+                "logical operators with proximity-based "
+                "search in Whoosh!"
+            ),
+        )
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("content", ix.schema)
@@ -644,7 +696,6 @@ def test_sequence_complex():
         qp.add_plugin(plugins.SequencePlugin())
         qp.add_plugin(plugins.FuzzyTermPlugin())
 
-        q = qp.parse(u'"(he OR she OR we~) would*"~3')
+        q = qp.parse('"(he OR she OR we~) would*"~3')
         r = s.search(q)
         assert r.scored_length()
-

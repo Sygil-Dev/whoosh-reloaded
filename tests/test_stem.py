@@ -1,7 +1,7 @@
-from whoosh.lang.snowball.english import EnglishStemmer
-from whoosh.lang.snowball.french import FrenchStemmer
-from whoosh.lang.snowball.finnish import FinnishStemmer
-from whoosh.lang.snowball.spanish import SpanishStemmer
+from whoosh_reloaded.lang.snowball.english import EnglishStemmer
+from whoosh_reloaded.lang.snowball.french import FrenchStemmer
+from whoosh_reloaded.lang.snowball.finnish import FinnishStemmer
+from whoosh_reloaded.lang.snowball.spanish import SpanishStemmer
 
 
 def test_english():
@@ -25,7 +25,7 @@ def test_finnish():
 
 
 def test_spanish_spell_suffix():
-    word = 'tgue'
+    word = "tgue"
     s = SpanishStemmer()
     w = s.stem(word)
     assert w == "tgu"

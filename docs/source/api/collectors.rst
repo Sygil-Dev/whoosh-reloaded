@@ -2,7 +2,7 @@
 ``collectors`` module
 =====================
 
-.. automodule:: whoosh.collectors
+.. automodule:: whoosh_reloaded.collectors
 
 
 Base classes

@@ -1,14 +1,18 @@
 from __future__ import with_statement
 
-from whoosh import fields, query, sorting
-from whoosh.compat import u
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempIndex
+from whoosh_reloaded import fields, query, sorting
+from whoosh_reloaded.compat import u
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.util.testing import TempIndex
 
 
 def test_nested_parent():
-    schema = fields.Schema(name=fields.ID(stored=True), type=fields.ID,
-                           part=fields.ID, price=fields.NUMERIC)
+    schema = fields.Schema(
+        name=fields.ID(stored=True),
+        type=fields.ID,
+        part=fields.ID,
+        price=fields.NUMERIC,
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
@@ -40,8 +44,9 @@ def test_nested_parent():
 
 
 def test_scoring():
-    schema = fields.Schema(kind=fields.ID,
-                           name=fields.KEYWORD(scorable=True, stored=True))
+    schema = fields.Schema(
+        kind=fields.ID, name=fields.KEYWORD(scorable=True, stored=True)
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
@@ -62,15 +67,15 @@ def test_scoring():
             w.add_document(kind=u("method"), name=u("close"))
 
     with ix.searcher() as s:
-        q = query.NestedParent(query.Term("kind", "class"),
-                               query.Term("name", "add"))
+        q = query.NestedParent(query.Term("kind", "class"), query.Term("name", "add"))
         r = s.search(q)
         assert [hit["name"] for hit in r] == ["Calculator", "Index", "Accumulator"]
 
 
 def test_missing():
-    schema = fields.Schema(kind=fields.ID,
-                           name=fields.KEYWORD(scorable=True, stored=True))
+    schema = fields.Schema(
+        kind=fields.ID, name=fields.KEYWORD(scorable=True, stored=True)
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
@@ -95,11 +100,15 @@ def test_missing():
             w.add_document(kind=u("method"), name=u("delete"))
 
     with ix.searcher() as s:
-        q = query.NestedParent(query.Term("kind", "class"),
-                               query.Term("name", "add"))
+        q = query.NestedParent(query.Term("kind", "class"), query.Term("name", "add"))
 
         r = s.search(q)
-        assert [hit["name"] for hit in r] == ["Calculator", "Index", "Accumulator", "Deleter"]
+        assert [hit["name"] for hit in r] == [
+            "Calculator",
+            "Index",
+            "Accumulator",
+            "Deleter",
+        ]
 
     with ix.writer() as w:
         w.delete_by_term("name", "Accumulator")
@@ -114,8 +123,9 @@ def test_missing():
 
 
 def test_nested_delete():
-    schema = fields.Schema(kind=fields.ID,
-                           name=fields.KEYWORD(scorable=True, stored=True))
+    schema = fields.Schema(
+        kind=fields.ID, name=fields.KEYWORD(scorable=True, stored=True)
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
@@ -141,8 +151,9 @@ def test_nested_delete():
 
     # Delete "Accumulator" class
     with ix.writer() as w:
-        q = query.NestedParent(query.Term("kind", "class"),
-                               query.Term("name", "Accumulator"))
+        q = query.NestedParent(
+            query.Term("kind", "class"), query.Term("name", "Accumulator")
+        )
         w.delete_by_query(q)
 
     # Check that Accumulator AND ITS METHODS are deleted
@@ -151,14 +162,25 @@ def test_nested_delete():
         assert sorted(hit["name"] for hit in r) == ["Calculator", "Deleter", "Index"]
 
         names = [fs["name"] for _, fs in s.iter_docs()]
-        assert names == ["Index", "add document", "add reader", "close",
-                         "Calculator", "add", "add all", "add some",
-                         "multiply", "close", "Deleter", "add", "delete"]
+        assert names == [
+            "Index",
+            "add document",
+            "add reader",
+            "close",
+            "Calculator",
+            "add",
+            "add all",
+            "add some",
+            "multiply",
+            "close",
+            "Deleter",
+            "add",
+            "delete",
+        ]
 
     # Delete any class with a close method
     with ix.writer() as w:
-        q = query.NestedParent(query.Term("kind", "class"),
-                               query.Term("name", "close"))
+        q = query.NestedParent(query.Term("kind", "class"), query.Term("name", "close"))
         w.delete_by_query(q)
 
     # Check the CLASSES AND METHODS are gone
@@ -168,8 +190,9 @@ def test_nested_delete():
 
 
 def test_all_parents_deleted():
-    schema = fields.Schema(kind=fields.ID,
-                           name=fields.KEYWORD(scorable=True, stored=True))
+    schema = fields.Schema(
+        kind=fields.ID, name=fields.KEYWORD(scorable=True, stored=True)
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
@@ -200,15 +223,15 @@ def test_all_parents_deleted():
         w.delete_by_term("name", "Deleter")
 
     with ix.searcher() as s:
-        q = query.NestedParent(query.Term("kind", "class"),
-                               query.Term("name", "add"))
+        q = query.NestedParent(query.Term("kind", "class"), query.Term("name", "add"))
         r = s.search(q)
         assert r.is_empty()
 
 
 def test_everything_is_a_parent():
-    schema = fields.Schema(id=fields.STORED, kind=fields.ID,
-                           name=fields.ID(stored=True))
+    schema = fields.Schema(
+        id=fields.STORED, kind=fields.ID, name=fields.ID(stored=True)
+    )
     k = u("alfa")
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
@@ -234,8 +257,9 @@ def test_everything_is_a_parent():
 
 
 def test_no_parents():
-    schema = fields.Schema(id=fields.STORED, kind=fields.ID,
-                           name=fields.ID(stored=True))
+    schema = fields.Schema(
+        id=fields.STORED, kind=fields.ID, name=fields.ID(stored=True)
+    )
     k = u("alfa")
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
@@ -261,75 +285,68 @@ def test_no_parents():
 
 
 def test_parent_score_fn():
-    from whoosh.scoring import Frequency
+    from whoosh_reloaded.scoring import Frequency
 
-    schema = fields.Schema(name=fields.ID(unique=True, stored=True),
-                           keys=fields.TEXT,
-                           type=fields.ID)
+    schema = fields.Schema(
+        name=fields.ID(unique=True, stored=True), keys=fields.TEXT, type=fields.ID
+    )
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(name=u"p1", type=u"parent")
-            w.add_document(name=u"c1.1", type=u"child", keys=u"key key")
-            w.add_document(name=u"c1.2", type=u"child", keys=u"key key key")
-            w.add_document(name=u"c1.3", type=u"child", keys=u"key key")
+            w.add_document(name="p1", type="parent")
+            w.add_document(name="c1.1", type="child", keys="key key")
+            w.add_document(name="c1.2", type="child", keys="key key key")
+            w.add_document(name="c1.3", type="child", keys="key key")
 
-            w.add_document(name=u"p2", type=u"parent")
-            w.add_document(name=u"c2.1", type=u"child", keys=u"")
-            w.add_document(name=u"c2.2", type=u"child", keys=u"key key key key")
-            w.add_document(name=u"c2.3", type=u"child", keys=u"key")
+            w.add_document(name="p2", type="parent")
+            w.add_document(name="c2.1", type="child", keys="")
+            w.add_document(name="c2.2", type="child", keys="key key key key")
+            w.add_document(name="c2.3", type="child", keys="key")
 
         with ix.searcher(weighting=Frequency()) as s:
-            parents = query.Term("type", u"parent")
-            children = query.Term("keys", u"key")
+            parents = query.Term("type", "parent")
+            children = query.Term("keys", "key")
             q = query.NestedParent(parents, children, score_fn=max)
             print(list(q.docs(s)))
             r = s.search(q)
             assert r.scored_length() == 2
-            assert r[0]["name"] == u"p2"
+            assert r[0]["name"] == "p2"
             assert r[0].score == 4
-            assert r[1]["name"] == u"p1"
+            assert r[1]["name"] == "p1"
             assert r[1].score == 3
 
             q = query.NestedParent(parents, children, score_fn=min)
             r = s.search(q)
             assert r.scored_length() == 2
-            assert r[0]["name"] == u"p1"
+            assert r[0]["name"] == "p1"
             assert r[0].score == 2
-            assert r[1]["name"] == u"p2"
+            assert r[1]["name"] == "p2"
             assert r[1].score == 1
 
 
 def test_nested_children():
-    schema = fields.Schema(t=fields.ID(stored=True),
-                           track=fields.NUMERIC(stored=True),
-                           album_name=fields.TEXT(stored=True),
-                           song_name=fields.TEXT(stored=True))
+    schema = fields.Schema(
+        t=fields.ID(stored=True),
+        track=fields.NUMERIC(stored=True),
+        album_name=fields.TEXT(stored=True),
+        song_name=fields.TEXT(stored=True),
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
             w.add_document(t=u("album"), album_name=u("alfa bravo charlie"))
-            w.add_document(t=u("track"), track=1,
-                           song_name=u("delta echo foxtrot"))
-            w.add_document(t=u("track"), track=2,
-                           song_name=u("golf hotel india"))
-            w.add_document(t=u("track"), track=3,
-                           song_name=u("juliet kilo lima"))
+            w.add_document(t=u("track"), track=1, song_name=u("delta echo foxtrot"))
+            w.add_document(t=u("track"), track=2, song_name=u("golf hotel india"))
+            w.add_document(t=u("track"), track=3, song_name=u("juliet kilo lima"))
         with w.group():
             w.add_document(t=u("album"), album_name=u("mike november oskar"))
-            w.add_document(t=u("track"), track=1,
-                           song_name=u("papa quebec romeo"))
-            w.add_document(t=u("track"), track=2,
-                           song_name=u("sierra tango ultra"))
-            w.add_document(t=u("track"), track=3,
-                           song_name=u("victor whiskey xray"))
+            w.add_document(t=u("track"), track=1, song_name=u("papa quebec romeo"))
+            w.add_document(t=u("track"), track=2, song_name=u("sierra tango ultra"))
+            w.add_document(t=u("track"), track=3, song_name=u("victor whiskey xray"))
         with w.group():
             w.add_document(t=u("album"), album_name=u("yankee zulu one"))
-            w.add_document(t=u("track"), track=1,
-                           song_name=u("two three four"))
-            w.add_document(t=u("track"), track=2,
-                           song_name=u("five six seven"))
-            w.add_document(t=u("track"), track=3,
-                           song_name=u("eight nine ten"))
+            w.add_document(t=u("track"), track=1, song_name=u("two three four"))
+            w.add_document(t=u("track"), track=2, song_name=u("five six seven"))
+            w.add_document(t=u("track"), track=3, song_name=u("eight nine ten"))
 
     with ix.searcher() as s:
         pq = query.Term("t", "album")
@@ -343,9 +360,11 @@ def test_nested_children():
         assert list(ncq.docs(s)) == [5, 6, 7]
         r = s.search(ncq, limit=None)
         assert len(r) == 3
-        assert [str(hit["song_name"]) for hit in r] == ["papa quebec romeo",
-                                                        "sierra tango ultra",
-                                                        "victor whiskey xray"]
+        assert [str(hit["song_name"]) for hit in r] == [
+            "papa quebec romeo",
+            "sierra tango ultra",
+            "victor whiskey xray",
+        ]
 
         zq = query.NestedChildren(pq, query.Term("album_name", "zulu"))
         f = sorting.StoredFieldFacet("song_name")
@@ -362,11 +381,11 @@ def test_nested_skip():
     )
 
     domain = [
-        (u"book_1", u"The Dark Knight Returns", u"book"),
-        (u"chapter_1", u"The Dark Knight Returns", u"chapter"),
-        (u"chapter_2", u"The Dark Knight Triumphant", u"chapter"),
-        (u"chapter_3", u"Hunt the Dark Knight", u"chapter"),
-        (u"chapter_4", u"The Dark Knight Falls", u"chapter")
+        ("book_1", "The Dark Knight Returns", "book"),
+        ("chapter_1", "The Dark Knight Returns", "chapter"),
+        ("chapter_2", "The Dark Knight Triumphant", "chapter"),
+        ("chapter_3", "Hunt the Dark Knight", "chapter"),
+        ("chapter_4", "The Dark Knight Falls", "chapter"),
     ]
 
     with TempIndex(schema) as ix:
@@ -377,26 +396,29 @@ def test_nested_skip():
         with ix.searcher() as s:
             all_parents = query.Term("type", "book")
             wanted_parents = query.Term("name", "dark")
-            children_of_wanted_parents = query.NestedChildren(all_parents,
-                                                              wanted_parents)
+            children_of_wanted_parents = query.NestedChildren(
+                all_parents, wanted_parents
+            )
 
             r1 = s.search(children_of_wanted_parents)
             assert r1.scored_length() == 4
-            assert [hit["id"] for hit in r1] == ["chapter_1", "chapter_2",
-                                                 "chapter_3", "chapter_4"]
+            assert [hit["id"] for hit in r1] == [
+                "chapter_1",
+                "chapter_2",
+                "chapter_3",
+                "chapter_4",
+            ]
 
-            wanted_children = query.And([query.Term("type", "chapter"),
-                                         query.Term("name", "hunt")])
+            wanted_children = query.And(
+                [query.Term("type", "chapter"), query.Term("name", "hunt")]
+            )
 
             r2 = s.search(wanted_children)
             assert r2.scored_length() == 1
             assert [hit["id"] for hit in r2] == ["chapter_3"]
 
-            complex_query = query.And([children_of_wanted_parents,
-                                       wanted_children])
+            complex_query = query.And([children_of_wanted_parents, wanted_children])
 
             r3 = s.search(complex_query)
             assert r3.scored_length() == 1
             assert [hit["id"] for hit in r3] == ["chapter_3"]
-
-

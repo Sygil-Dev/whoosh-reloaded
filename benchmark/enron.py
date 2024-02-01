@@ -9,13 +9,14 @@ try:
 except ImportError:
     pass
 
-from whoosh import analysis, fields
-from whoosh.compat import urlretrieve, next
-from whoosh.support.bench import Bench, Spec
-from whoosh.util import now
+from whoosh_reloaded import analysis, fields
+from whoosh_reloaded.compat import urlretrieve, next
+from whoosh_reloaded.support.bench import Bench, Spec
+from whoosh_reloaded.util import now
 
 
 # Benchmark class
+
 
 class Enron(Spec):
     name = "enron"
@@ -24,8 +25,14 @@ class Enron(Spec):
     enron_archive_filename = "enron_mail_082109.tar.gz"
     cache_filename = "enron_cache.pickle"
 
-    header_to_field = {"Date": "date", "From": "frm", "To": "to",
-                   "Subject": "subject", "Cc": "cc", "Bcc": "bcc"}
+    header_to_field = {
+        "Date": "date",
+        "From": "frm",
+        "To": "to",
+        "Subject": "subject",
+        "Cc": "cc",
+        "Bcc": "bcc",
+    }
 
     main_field = "body"
     headline_field = "subject"
@@ -64,12 +71,13 @@ class Enron(Spec):
             body = message.as_string().decode("latin_1")
             blank = body.find("\n\n")
             if blank > -1:
-                body = body[blank+2:]
+                body = body[blank + 2 :]
             d = {"body": body}
             if headers:
                 for k in message.keys():
                     fn = header_to_field.get(k)
-                    if not fn: continue
+                    if not fn:
+                        continue
                     v = message.get(k).strip()
                     if v:
                         d[fn] = v.decode("latin_1")
@@ -87,12 +95,15 @@ class Enron(Spec):
         for d in self.get_messages(archive):
             c += 1
             dump(d, f)
-            if not c % 1000: print(c)
+            if not c % 1000:
+                print(c)
         f.close()
         print("Cached messages in ", now() - t, "seconds")
 
     def setup(self):
-        archive = os.path.abspath(os.path.join(self.options.dir, self.enron_archive_filename))
+        archive = os.path.abspath(
+            os.path.join(self.options.dir, self.enron_archive_filename)
+        )
         cache = os.path.abspath(os.path.join(self.options.dir, self.cache_filename))
 
         if not os.path.exists(archive):
@@ -122,35 +133,40 @@ class Enron(Spec):
     def whoosh_schema(self):
         ana = analysis.StemmingAnalyzer(maxsize=40, cachesize=None)
         storebody = self.options.storebody
-        schema = fields.Schema(body=fields.TEXT(analyzer=ana, stored=storebody),
-                               filepos=fields.STORED,
-                               date=fields.ID(stored=True),
-                               frm=fields.ID(stored=True),
-                               to=fields.IDLIST(stored=True),
-                               subject=fields.TEXT(stored=True),
-                               cc=fields.IDLIST,
-                               bcc=fields.IDLIST)
+        schema = fields.Schema(
+            body=fields.TEXT(analyzer=ana, stored=storebody),
+            filepos=fields.STORED,
+            date=fields.ID(stored=True),
+            frm=fields.ID(stored=True),
+            to=fields.IDLIST(stored=True),
+            subject=fields.TEXT(stored=True),
+            cc=fields.IDLIST,
+            bcc=fields.IDLIST,
+        )
         return schema
 
     def xappy_indexer_connection(self, path):
         conn = xappy.IndexerConnection(path)
-        conn.add_field_action('body', xappy.FieldActions.INDEX_FREETEXT, language='en')
+        conn.add_field_action("body", xappy.FieldActions.INDEX_FREETEXT, language="en")
         if self.options.storebody:
-            conn.add_field_action('body', xappy.FieldActions.STORE_CONTENT)
-        conn.add_field_action('date', xappy.FieldActions.INDEX_EXACT)
-        conn.add_field_action('date', xappy.FieldActions.STORE_CONTENT)
-        conn.add_field_action('frm', xappy.FieldActions.INDEX_EXACT)
-        conn.add_field_action('frm', xappy.FieldActions.STORE_CONTENT)
-        conn.add_field_action('to', xappy.FieldActions.INDEX_EXACT)
-        conn.add_field_action('to', xappy.FieldActions.STORE_CONTENT)
-        conn.add_field_action('subject', xappy.FieldActions.INDEX_FREETEXT, language='en')
-        conn.add_field_action('subject', xappy.FieldActions.STORE_CONTENT)
-        conn.add_field_action('cc', xappy.FieldActions.INDEX_EXACT)
-        conn.add_field_action('bcc', xappy.FieldActions.INDEX_EXACT)
+            conn.add_field_action("body", xappy.FieldActions.STORE_CONTENT)
+        conn.add_field_action("date", xappy.FieldActions.INDEX_EXACT)
+        conn.add_field_action("date", xappy.FieldActions.STORE_CONTENT)
+        conn.add_field_action("frm", xappy.FieldActions.INDEX_EXACT)
+        conn.add_field_action("frm", xappy.FieldActions.STORE_CONTENT)
+        conn.add_field_action("to", xappy.FieldActions.INDEX_EXACT)
+        conn.add_field_action("to", xappy.FieldActions.STORE_CONTENT)
+        conn.add_field_action(
+            "subject", xappy.FieldActions.INDEX_FREETEXT, language="en"
+        )
+        conn.add_field_action("subject", xappy.FieldActions.STORE_CONTENT)
+        conn.add_field_action("cc", xappy.FieldActions.INDEX_EXACT)
+        conn.add_field_action("bcc", xappy.FieldActions.INDEX_EXACT)
         return conn
 
     def zcatalog_setup(self, cat):
         from zcatalog import indexes
+
         for name in ("date", "frm"):
             cat[name] = indexes.FieldIndex(field_name=name)
         for name in ("to", "subject", "cc", "bcc", "body"):
@@ -176,10 +192,8 @@ class Enron(Spec):
         return d
 
     def process_document_xapian(self, d):
-        d[self.main_field] = " ".join([d.get(name, "") for name
-                                       in self.field_order])
+        d[self.main_field] = " ".join([d.get(name, "") for name in self.field_order])
 
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     Bench().run(Enron)

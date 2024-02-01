@@ -1,9 +1,9 @@
 from __future__ import with_statement
 
-from whoosh.compat import b
-from whoosh.filedb.compound import CompoundStorage
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempStorage
+from whoosh_reloaded.compat import b
+from whoosh_reloaded.filedb.compound import CompoundStorage
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.util.testing import TempStorage
 
 
 def _test_simple_compound(st):
@@ -28,17 +28,17 @@ def _test_simple_compound(st):
     with f.open_file("a") as af:
         for x in alist:
             assert x == af.read_int()
-        assert af.read() == b('')
+        assert af.read() == b("")
 
     with f.open_file("b") as bf:
         for x in blist:
             assert x == bf.read_varint()
-        assert bf.read() == b('')
+        assert bf.read() == b("")
 
     with f.open_file("c") as cf:
         for x in clist:
             assert x == cf.read_int()
-        assert cf.read() == b('')
+        assert cf.read() == b("")
 
 
 def test_simple_compound_mmap():
@@ -52,7 +52,7 @@ def test_simple_compound_nomap():
     _test_simple_compound(st)
 
 
-#def test_unclosed_mmap():
+# def test_unclosed_mmap():
 #    with TempStorage("unclosed") as st:
 #        assert st.supports_mmap
 #        with st.create_file("a") as af:

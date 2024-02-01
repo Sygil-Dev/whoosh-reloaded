@@ -12,7 +12,7 @@ except ImportError:
     pytest = None
 
 sys.path.insert(0, os.path.abspath("src"))
-from whoosh import versionstring
+from whoosh_reloaded import versionstring
 
 
 class PyTest(TestCommand):
@@ -24,31 +24,33 @@ class PyTest(TestCommand):
     def run_tests(self):
         # import here, cause outside the eggs aren't loaded
         import pytest
+
         pytest.main(self.test_args)
 
 
 if __name__ == "__main__":
     setup(
-        name="Whoosh",
+        name="Whoosh-Reloaded",
         version=versionstring(),
-        package_dir={'': 'src'},
+        package_dir={"": "src"},
         packages=find_packages("src"),
-
         author="Matt Chaput",
         author_email="matt@whoosh.ca",
-
+        maintainer="Sygil-Dev",
         description="Fast, pure-Python full text indexing, search, and spell checking library.",
         long_description=open("README.md").read(),
-
         license="Two-clause BSD license",
         keywords="index search text spell",
-        url="http://bitbucket.org/mchaput/whoosh",
-
+        url="https://github.com/Sygil-Dev/whoosh-reloaded",
         zip_safe=True,
-        install_requires=['cached-property', 'jieba'],
-        tests_require=['pytest', 'jieba'],
-        cmdclass={'test': PyTest},
-
+        install_requires=[
+            "cached-property",
+        ],
+        tests_require=[
+            "pytest",
+            "nose",
+        ],
+        cmdclass={"test": PyTest},
         classifiers=[
             "Programming Language :: Python :: 3",
             "Development Status :: 5 - Production/Stable",

@@ -1,12 +1,12 @@
 from __future__ import with_statement
 import struct
 
-from nose.tools import assert_equal  #@UnresolvedImport
+from nose.tools import assert_equal  # @UnresolvedImport
 
-from whoosh import formats
-from whoosh.compat import xrange
-from whoosh.filedb.filepostings import FilePostingReader, FilePostingWriter
-from whoosh.util.testing import TempStorage
+from whoosh_reloaded import formats
+from whoosh_reloaded.compat import xrange
+from whoosh_reloaded.filedb.filepostings import FilePostingReader, FilePostingWriter
+from whoosh_reloaded.util.testing import TempStorage
 
 
 def test_huge_postfile():

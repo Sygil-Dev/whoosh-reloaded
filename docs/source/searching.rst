@@ -8,7 +8,7 @@ documents.
 The ``Searcher`` object
 =======================
 
-To get a :class:`whoosh.searching.Searcher` object, call ``searcher()`` on your
+To get a :class:` whoosh_reloaded.searching.Searcher` object, call ``searcher()`` on your
 ``Index`` object::
 
     searcher = myindex.searcher()
@@ -36,14 +36,14 @@ has lots of useful methods for getting information about the index, such as
 ::
 
     >>> list(searcher.lexicon("content"))
-    [u"document", u"index", u"whoosh"]
+    [u"document", u"index", u" whoosh_reloaded"]
 
 However, the most important method on the ``Searcher`` object is
-:meth:`~whoosh.searching.Searcher.search`, which takes a
-:class:`whoosh.query.Query` object and returns a
-:class:`~whoosh.searching.Results` object::
+:meth:`~ whoosh_reloaded.searching.Searcher.search`, which takes a
+:class:` whoosh_reloaded.query.Query` object and returns a
+:class:`~ whoosh_reloaded.searching.Results` object::
 
-    from whoosh.qparser import QueryParser
+    from whoosh_reloaded.qparser import QueryParser
 
     qp = QueryParser("content", schema=myindex.schema)
     q = qp.parse(u"hello world")
@@ -75,7 +75,7 @@ to set a different page length::
 Results object
 ==============
 
-The :class:`~whoosh.searching.Results` object acts like a list of the matched
+The :class:`~ whoosh_reloaded.searching.Results` object acts like a list of the matched
 documents. You can use it to access the stored fields of each hit document, to
 display to the user.
 
@@ -107,9 +107,9 @@ Calling ``len(Results)`` runs a fast (unscored) version of the query again to
 figure out the total number of matching documents. This is usually very fast
 but for large indexes it can cause a noticeable delay. If you want to avoid
 this delay on very large indexes, you can use the
-:meth:`~whoosh.searching.Results.has_exact_length`,
-:meth:`~whoosh.searching.Results.estimated_length`, and
-:meth:`~whoosh.searching.Results.estimated_min_length` methods to estimate the
+:meth:`~ whoosh_reloaded.searching.Results.has_exact_length`,
+:meth:`~ whoosh_reloaded.searching.Results.estimated_length`, and
+:meth:`~ whoosh_reloaded.searching.Results.estimated_min_length` methods to estimate the
 number of matching documents without calling ``len()``::
 
     found = results.scored_length()
@@ -129,18 +129,18 @@ Scoring
 -------
 
 Normally the list of result documents is sorted by *score*. The
-:mod:`whoosh.scoring` module contains implementations of various scoring
-algorithms. The default is :class:`~whoosh.scoring.BM25F`.
+:mod:` whoosh_reloaded.scoring` module contains implementations of various scoring
+algorithms. The default is :class:`~ whoosh_reloaded.scoring.BM25F`.
 
 You can set the scoring object to use when you create the searcher using the
 ``weighting`` keyword argument::
 
-    from whoosh import scoring
+    from whoosh_reloaded import scoring
 
     with myindex.searcher(weighting=scoring.TF_IDF()) as s:
         ...
 
-A weighting model is a :class:`~whoosh.scoring.WeightingModel` subclass with a
+A weighting model is a :class:`~ whoosh_reloaded.scoring.WeightingModel` subclass with a
 ``scorer()`` method that produces a "scorer" instance. This instance has a
 method that takes the current matcher and returns a floating point score.
 
@@ -161,7 +161,7 @@ Filtering results
 
 You can use the ``filter`` keyword argument to ``search()`` to specify a set of
 documents to permit in the results. The argument can be a
-:class:`whoosh.query.Query` object, a :class:`whoosh.searching.Results` object,
+:class:` whoosh_reloaded.query.Query` object, a :class:` whoosh_reloaded.searching.Results` object,
 or a set-like object containing document numbers. The searcher caches filters
 so if for example you use the same query filter with a searcher multiple times,
 the additional searches will be faster because the searcher will cache the
@@ -210,7 +210,7 @@ search record which terms in the query matched which documents::
         results = s.seach(myquery, terms=True)
 
 You can then get information about which terms matched from the
-:class:`whoosh.searching.Results` and :class:`whoosh.searching.Hit` objects::
+:class:` whoosh_reloaded.searching.Results` and :class:` whoosh_reloaded.searching.Hit` objects::
 
     # Was this results object created with terms=True?
     if results.has_matched_terms():
@@ -254,7 +254,7 @@ See :doc:`/facets` for information on facets.
         print(results.collapsed_counts)
 
 Collapsing works with both scored and sorted results. You can use any of the
-facet types available in the :mod:`whoosh.sorting` module.
+facet types available in the :mod:` whoosh_reloaded.sorting` module.
 
 By default, Whoosh uses the results order (score or sort key) to determine the
 documents to collapse. For example, in scored results, the best scoring
@@ -264,7 +264,7 @@ to control which documents to keep when collapsing.
 For example, in a product search you could display results sorted by decreasing
 price, and eliminate all but the highest rated item of each product type::
 
-    from whoosh import sorting
+    from whoosh_reloaded import sorting
 
     with myindex.searcher() as s:
         price_facet = sorting.FieldFacet("price", reverse=True)
@@ -284,8 +284,8 @@ already-collected documents.
 
 Since this collector must sometimes go back and remove already-collected
 documents, if you use it in combination with
-:class:`~whoosh.collectors.TermsCollector` and/or
-:class:`~whoosh.collectors.FacetCollector`, those collectors may contain
+:class:`~ whoosh_reloaded.collectors.TermsCollector` and/or
+:class:`~ whoosh_reloaded.collectors.FacetCollector`, those collectors may contain
 information about documents that were filtered out of the final results by
 collapsing.
 
@@ -295,7 +295,7 @@ Time limited searches
 
 To limit the amount of time a search can take::
 
-    from whoosh.collectors import TimeLimitCollector, TimeLimit
+    from whoosh_reloaded.collectors import TimeLimitCollector, TimeLimit
 
     with myindex.searcher() as s:
         # Get a collector object
@@ -316,8 +316,8 @@ To limit the amount of time a search can take::
 Convenience methods
 ===================
 
-The :meth:`~whoosh.searching.Searcher.document` and
-:meth:`~whoosh.searching.Searcher.documents` methods on the ``Searcher`` object let
+The :meth:`~ whoosh_reloaded.searching.Searcher.document` and
+:meth:`~ whoosh_reloaded.searching.Searcher.documents` methods on the ``Searcher`` object let
 you retrieve the stored fields of documents matching terms you pass in keyword
 arguments.
 
@@ -343,7 +343,7 @@ Combining Results objects
 =========================
 
 It is sometimes useful to use the results of another query to influence the
-order of a :class:`whoosh.searching.Results` object.
+order of a :class:` whoosh_reloaded.searching.Results` object.
 
 For example, you might have a "best bet" field. This field contains hand-picked
 keywords for documents. When the user searches for those keywords, you want

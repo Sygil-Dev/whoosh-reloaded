@@ -27,11 +27,11 @@ Built-in field types
 
 Whoosh provides some useful predefined field types:
 
-:class:`whoosh.fields.TEXT`
+:class:` whoosh_reloaded.fields.TEXT`
     This type is for body text. It indexes (and optionally stores) the text and
     stores term positions to allow phrase searching.
 
-    ``TEXT`` fields use :class:`~whoosh.analysis.StandardAnalyzer` by default. To specify a different
+    ``TEXT`` fields use :class:`~ whoosh_reloaded.analysis.StandardAnalyzer` by default. To specify a different
     analyzer, use the ``analyzer`` keyword argument to the constructor, e.g.
     ``TEXT(analyzer=analysis.StemmingAnalyzer())``. See :doc:`analysis`.
 
@@ -47,7 +47,7 @@ Whoosh provides some useful predefined field types:
     circumstances it can be useful (see :doc:`highlight`). Use
     ``TEXT(stored=True)`` to specify that the text should be stored in the index.
 
-:class:`whoosh.fields.KEYWORD`
+:class:` whoosh_reloaded.fields.KEYWORD`
     This field type is designed for space- or comma-separated keywords. This
     type is indexed and searchable (and optionally stored). To save space, it
     does not support phrase searching.
@@ -61,7 +61,7 @@ Whoosh provides some useful predefined field types:
 
     If your users will use the keyword field for searching, use ``scorable=True``.
 
-:class:`whoosh.fields.ID`
+:class:` whoosh_reloaded.fields.ID`
     The ``ID`` field type simply indexes (and optionally stores) the entire value of
     the field as a single unit (that is, it doesn't break it up into individual
     terms). This type of field does not store frequency information, so it's
@@ -76,23 +76,23 @@ Whoosh provides some useful predefined field types:
     search results. For example, you would want to store the value of a url
     field so you could provide links to the original in your search results.
 
-:class:`whoosh.fields.STORED`
+:class:` whoosh_reloaded.fields.STORED`
     This field is stored with the document, but not indexed and not searchable.
     This is useful for document information you want to display to the user in
     the search results, but don't need to be able to search for.
 
-:class:`whoosh.fields.NUMERIC`
+:class:` whoosh_reloaded.fields.NUMERIC`
     This field stores int, long, or floating point numbers in a compact,
     sortable format.
 
-:class:`whoosh.fields.DATETIME`
+:class:` whoosh_reloaded.fields.DATETIME`
     This field stores datetime objects in a compact, sortable format.
 
-:class:`whoosh.fields.BOOLEAN`
+:class:` whoosh_reloaded.fields.BOOLEAN`
     This simple filed indexes boolean values and allows users to search for
     ``yes``, ``no``, ``true``, ``false``, ``1``, ``0``, ``t`` or ``f``.
 
-:class:`whoosh.fields.NGRAM`
+:class:` whoosh_reloaded.fields.NGRAM`
     TBD.
 
 Expert users can create their own field types.
@@ -103,8 +103,8 @@ Creating a Schema
 
 To create a schema::
 
-    from whoosh.fields import Schema, TEXT, KEYWORD, ID, STORED
-    from whoosh.analysis import StemmingAnalyzer
+    from whoosh_reloaded.fields import Schema, TEXT, KEYWORD, ID, STORED
+    from whoosh_reloaded.analysis import StemmingAnalyzer
 
     schema = Schema(from_addr=ID(stored=True),
                     to_addr=ID(stored=True),
@@ -119,7 +119,7 @@ of ``fieldname=TEXT()``). Whoosh will instantiate the class for you.
 Alternatively you can create a schema declaratively using the ``SchemaClass``
 base class::
 
-    from whoosh.fields import SchemaClass, TEXT, KEYWORD, ID, STORED
+    from whoosh_reloaded.fields import SchemaClass, TEXT, KEYWORD, ID, STORED
 
     class MySchema(SchemaClass):
         path = ID(stored=True)
@@ -127,9 +127,9 @@ base class::
         content = TEXT
         tags = KEYWORD
 
-You can pass a declarative class to :func:`~whoosh.index.create_in` or
-:meth:`~whoosh.store.Storage.create_index()` instead of a
-:class:`~whoosh.fields.Schema` instance.
+You can pass a declarative class to :func:`~ whoosh_reloaded.index.create_in` or
+:meth:`~ whoosh_reloaded.store.Storage.create_index()` instead of a
+:class:`~ whoosh_reloaded.fields.Schema` instance.
 
 
 Modifying the schema after indexing
@@ -264,7 +264,7 @@ stored       bool            If True, the value of this field is stored
 unique       bool            If True, the value of this field may be used to
                              replace documents with the same value when the user
                              calls
-                             :meth:`~whoosh.writing.IndexWriter.document_update`
+                             :meth:`~ whoosh_reloaded.writing.IndexWriter.document_update`
                              on an ``IndexWriter``.
 ============ =============== ======================================================
 

@@ -2,32 +2,35 @@ from __future__ import with_statement
 
 import pytest
 
-from whoosh import analysis, fields, formats, highlight, qparser, query
-from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import u, xrange, text_type, permutations
-from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempStorage, TempIndex
+from whoosh_reloaded import analysis, fields, formats, highlight, qparser, query
+from whoosh_reloaded.codec.whoosh_reloaded3 import W3Codec
+from whoosh_reloaded.compat import u, xrange, text_type, permutations
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.util.testing import TempStorage, TempIndex
 
 
 def test_score_retrieval():
-    schema = fields.Schema(title=fields.TEXT(stored=True),
-                           content=fields.TEXT(stored=True))
+    schema = fields.Schema(
+        title=fields.TEXT(stored=True), content=fields.TEXT(stored=True)
+    )
     storage = RamStorage()
     ix = storage.create_index(schema)
     writer = ix.writer()
-    writer.add_document(title=u("Miss Mary"),
-                        content=u("Mary had a little white lamb its fleece"
-                                  " was white as snow"))
-    writer.add_document(title=u("Snow White"),
-                        content=u("Snow white lived in the forest with seven"
-                                  " dwarfs"))
+    writer.add_document(
+        title=u("Miss Mary"),
+        content=u("Mary had a little white lamb its fleece" " was white as snow"),
+    )
+    writer.add_document(
+        title=u("Snow White"),
+        content=u("Snow white lived in the forest with seven" " dwarfs"),
+    )
     writer.commit()
 
     with ix.searcher() as s:
         results = s.search(query.Term("content", "white"))
         assert len(results) == 2
-        assert results[0]['title'] == u("Miss Mary")
-        assert results[1]['title'] == u("Snow White")
+        assert results[0]["title"] == u("Miss Mary")
+        assert results[1]["title"] == u("Snow White")
         assert results.score(0) is not None
         assert results.score(0) != 0
         assert results.score(0) != 1
@@ -53,8 +56,7 @@ def test_resultcopy():
 
 
 def test_resultslength():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           value=fields.TEXT)
+    schema = fields.Schema(id=fields.ID(stored=True), value=fields.TEXT)
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
@@ -74,8 +76,7 @@ def test_resultslength():
 
 
 def test_combine():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           value=fields.TEXT)
+    schema = fields.Schema(id=fields.ID(stored=True), value=fields.TEXT)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
     w.add_document(id=u("1"), value=u("alfa bravo charlie all"))
@@ -89,6 +90,7 @@ def test_combine():
     w.commit()
 
     with ix.searcher() as s:
+
         def idsof(r):
             return "".join(hit["id"] for hit in r)
 
@@ -122,6 +124,7 @@ def test_results_filter():
     w.commit()
 
     with ix.searcher() as s:
+
         def check(r, target):
             result = "".join(s.stored_fields(d)["id"] for d in r.docs())
             assert result == target
@@ -132,13 +135,15 @@ def test_results_filter():
 
 
 def test_sorted_extend():
-    from whoosh import sorting
+    from whoosh_reloaded import sorting
 
-    schema = fields.Schema(title=fields.TEXT(stored=True),
-                           keywords=fields.TEXT,
-                           num=fields.NUMERIC(stored=True, sortable=True))
-    domain = u"alfa bravo charlie delta echo foxtrot golf hotel india".split()
-    keys = u"juliet kilo lima november oskar papa quebec romeo".split()
+    schema = fields.Schema(
+        title=fields.TEXT(stored=True),
+        keywords=fields.TEXT,
+        num=fields.NUMERIC(stored=True, sortable=True),
+    )
+    domain = "alfa bravo charlie delta echo foxtrot golf hotel india".split()
+    keys = "juliet kilo lima november oskar papa quebec romeo".split()
 
     combined = 0
     tcount = 0
@@ -154,16 +159,15 @@ def test_sorted_extend():
                 if "bravo" in words or key == "kilo":
                     combined += 1
 
-                w.add_document(title=u" ".join(words), keywords=key, num=i)
+                w.add_document(title=" ".join(words), keywords=key, num=i)
 
         with ix.searcher() as s:
-            facet = sorting.MultiFacet([sorting.FieldFacet("num", reverse=True),
-                                        sorting.ScoreFacet()])
+            facet = sorting.MultiFacet(
+                [sorting.FieldFacet("num", reverse=True), sorting.ScoreFacet()]
+            )
 
-            r1 = s.search(query.Term("title", "bravo"), limit=None,
-                          sortedby=facet)
-            r2 = s.search(query.Term("keywords", "kilo"), limit=None,
-                          sortedby=facet)
+            r1 = s.search(query.Term("title", "bravo"), limit=None, sortedby=facet)
+            r2 = s.search(query.Term("keywords", "kilo"), limit=None, sortedby=facet)
 
             assert len(r1) == tcount
             assert len(r2) == kcount
@@ -228,7 +232,7 @@ def test_extend_filtered():
 
 
 def test_pages():
-    from whoosh.scoring import Frequency
+    from whoosh_reloaded.scoring import Frequency
 
     schema = fields.Schema(id=fields.ID(stored=True), c=fields.TEXT)
     ix = RamStorage().create_index(schema)
@@ -256,11 +260,9 @@ def test_pages():
 
 
 def test_pages_with_filter():
-    from whoosh.scoring import Frequency
+    from whoosh_reloaded.scoring import Frequency
 
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           type=fields.TEXT(),
-                           c=fields.TEXT)
+    schema = fields.Schema(id=fields.ID(stored=True), type=fields.TEXT(), c=fields.TEXT)
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
@@ -295,7 +297,7 @@ def test_extra_slice():
 
 
 def test_page_counts():
-    from whoosh.scoring import Frequency
+    from whoosh_reloaded.scoring import Frequency
 
     schema = fields.Schema(id=fields.ID(stored=True))
     st = RamStorage()
@@ -393,16 +395,38 @@ def test_snippets():
     schema = fields.Schema(text=fields.TEXT(stored=True, analyzer=ana))
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(text=u("Lay out the rough animation by creating the important poses where they occur on the timeline."))
-    w.add_document(text=u("Set key frames on everything that's key-able. This is for control and predictability: you don't want to accidentally leave something un-keyed. This is also much faster than selecting the parameters to key."))
-    w.add_document(text=u("Use constant (straight) or sometimes linear transitions between keyframes in the channel editor. This makes the character jump between poses."))
-    w.add_document(text=u("Keying everything gives quick, immediate results. But it can become difficult to tweak the animation later, especially for complex characters."))
-    w.add_document(text=u("Copy the current pose to create the next one: pose the character, key everything, then copy the keyframe in the playbar to another frame, and key everything at that frame."))
+    w.add_document(
+        text=u(
+            "Lay out the rough animation by creating the important poses where they occur on the timeline."
+        )
+    )
+    w.add_document(
+        text=u(
+            "Set key frames on everything that's key-able. This is for control and predictability: you don't want to accidentally leave something un-keyed. This is also much faster than selecting the parameters to key."
+        )
+    )
+    w.add_document(
+        text=u(
+            "Use constant (straight) or sometimes linear transitions between keyframes in the channel editor. This makes the character jump between poses."
+        )
+    )
+    w.add_document(
+        text=u(
+            "Keying everything gives quick, immediate results. But it can become difficult to tweak the animation later, especially for complex characters."
+        )
+    )
+    w.add_document(
+        text=u(
+            "Copy the current pose to create the next one: pose the character, key everything, then copy the keyframe in the playbar to another frame, and key everything at that frame."
+        )
+    )
     w.commit()
 
-    target = ["Set KEY frames on everything that's KEY-able",
-              "Copy the current pose to create the next one: pose the character, KEY everything, then copy the keyframe in the playbar to another frame, and KEY everything at that frame",
-              "KEYING everything gives quick, immediate results"]
+    target = [
+        "Set KEY frames on everything that's KEY-able",
+        "Copy the current pose to create the next one: pose the character, KEY everything, then copy the keyframe in the playbar to another frame, and KEY everything at that frame",
+        "KEYING everything gives quick, immediate results",
+    ]
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("text", ix.schema)
@@ -417,9 +441,9 @@ def test_snippets():
 def test_keyterms():
     ana = analysis.StandardAnalyzer()
     vectorformat = formats.Frequency()
-    schema = fields.Schema(path=fields.ID,
-                           content=fields.TEXT(analyzer=ana,
-                                               vector=vectorformat))
+    schema = fields.Schema(
+        path=fields.ID, content=fields.TEXT(analyzer=ana, vector=vectorformat)
+    )
     st = RamStorage()
     ix = st.create_index(schema)
     w = ix.writer()
@@ -455,7 +479,9 @@ def test_lengths():
     w.commit()
 
     with ix.searcher() as s:
-        q = query.Or([query.Term("text", u("needle")), query.Term("text", u("charlie"))])
+        q = query.Or(
+            [query.Term("text", u("needle")), query.Term("text", u("charlie"))]
+        )
         r = s.search(q, limit=2)
         assert not r.has_exact_length()
         assert r.estimated_length() == 7
@@ -559,18 +585,18 @@ def test_hit_column():
 
 
 def test_closed_searcher():
-    from whoosh.reading import ReaderClosed
+    from whoosh_reloaded.reading import ReaderClosed
 
     schema = fields.Schema(key=fields.KEYWORD(stored=True, sortable=True))
 
     with TempStorage() as st:
         ix = st.create_index(schema)
         with ix.writer() as w:
-            w.add_document(key=u"alfa")
-            w.add_document(key=u"bravo")
-            w.add_document(key=u"charlie")
-            w.add_document(key=u"delta")
-            w.add_document(key=u"echo")
+            w.add_document(key="alfa")
+            w.add_document(key="bravo")
+            w.add_document(key="charlie")
+            w.add_document(key="delta")
+            w.add_document(key="echo")
 
         s = ix.searcher()
         r = s.search(query.TermRange("key", "b", "d"))
@@ -650,8 +676,9 @@ def test_every_keywords():
 
 
 def test_filter_by_result():
-    schema = fields.Schema(title=fields.TEXT(stored=True),
-                           content=fields.TEXT(stored=True))
+    schema = fields.Schema(
+        title=fields.TEXT(stored=True), content=fields.TEXT(stored=True)
+    )
 
     with TempIndex(schema, "filter") as ix:
         words = u("foo bar baz qux barney").split()
@@ -670,6 +697,4 @@ def test_filter_by_result():
 
             # filter_result.docs()
             result = searcher.search(q, filter=filter_result)
-            assert all(x["title"] == "even" and x["content"] == "foo"
-                       for x in result)
-
+            assert all(x["title"] == "even" and x["content"] == "foo" for x in result)

@@ -1,5 +1,5 @@
-from whoosh.filedb.filestore import RamStorage
-from whoosh.idsets import BitSet, OnDiskBitSet, SortedIntSet
+from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh_reloaded.idsets import BitSet, OnDiskBitSet, SortedIntSet
 
 
 def test_bit_basics(c=BitSet):
@@ -9,8 +9,18 @@ def test_bit_basics(c=BitSet):
 
     b.update([0, 2, 4, 6, 7])
     assert b
-    assert ([(n in b) for n in range(10)] ==
-            [True, False, True, False, True, False, True, True, False, False])
+    assert [(n in b) for n in range(10)] == [
+        True,
+        False,
+        True,
+        False,
+        True,
+        False,
+        True,
+        True,
+        False,
+        False,
+    ]
 
     b.add(9)
     assert 9 in b

@@ -13,8 +13,8 @@ A quick introduction
 
 ::
 
-    >>> from whoosh.index import create_in
-    >>> from whoosh.fields import *
+    >>> from whoosh_reloaded.index import create_in
+    >>> from whoosh_reloaded.fields import *
     >>> schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT)
     >>> ix = create_in("indexdir", schema)
     >>> writer = ix.writer()
@@ -23,7 +23,7 @@ A quick introduction
     >>> writer.add_document(title=u"Second document", path=u"/b",
     ...                     content=u"The second one is even more interesting!")
     >>> writer.commit()
-    >>> from whoosh.qparser import QueryParser
+    >>> from whoosh_reloaded.qparser import QueryParser
     >>> with ix.searcher() as searcher:
     ...     query = QueryParser("content", ix.schema).parse("first")
     ...     results = searcher.search(query)
@@ -44,7 +44,7 @@ with the results; this is useful for fields such as the title).
 
 This schema has two fields, "title" and "content"::
 
-    from whoosh.fields import Schema, TEXT
+    from whoosh_reloaded.fields import Schema, TEXT
 
     schema = Schema(title=TEXT, content=TEXT)
 
@@ -56,44 +56,44 @@ to field types. The list of fields and their types defines what you are indexing
 and what's searchable. Whoosh comes with some very useful predefined field
 types, and you can easily create your own.
 
-:class:`whoosh.fields.ID`
+:class:` whoosh_reloaded.fields.ID`
     This type simply indexes (and optionally stores) the entire value of the
     field as a single unit (that is, it doesn't break it up into individual
     words). This is useful for fields such as a file path, URL, date, category,
     etc.
 
-:class:`whoosh.fields.STORED`
+:class:` whoosh_reloaded.fields.STORED`
     This field is stored with the document, but not indexed. This field type is
     not indexed and not searchable. This is useful for document information you
     want to display to the user in the search results.
 
-:class:`whoosh.fields.KEYWORD`
+:class:` whoosh_reloaded.fields.KEYWORD`
     This type is designed for space- or comma-separated keywords. This type is
     indexed and searchable (and optionally stored). To save space, it does not
     support phrase searching.
 
-:class:`whoosh.fields.TEXT`
+:class:` whoosh_reloaded.fields.TEXT`
     This type is for body text. It indexes (and optionally stores) the text and
     stores term positions to allow phrase searching.
 
-:class:`whoosh.fields.NUMERIC`
+:class:` whoosh_reloaded.fields.NUMERIC`
     This type is for numbers. You can store integers or floating point numbers.
 
-:class:`whoosh.fields.BOOLEAN`
+:class:` whoosh_reloaded.fields.BOOLEAN`
     This type is for boolean (true/false) values.
 
-:class:`whoosh.fields.DATETIME`
+:class:` whoosh_reloaded.fields.DATETIME`
     This type is for ``datetime`` objects. See :doc:`dates` for more
     information.
 
-:class:`whoosh.fields.NGRAM` and :class:`whoosh.fields.NGRAMWORDS`
+:class:` whoosh_reloaded.fields.NGRAM` and :class:` whoosh_reloaded.fields.NGRAMWORDS`
     These types break the field text or individual terms into N-grams.
     See :doc:`ngrams` for more information.
 
 (As a shortcut, if you don't need to pass any arguments to the field type, you
 can just give the class name and Whoosh will instantiate the object for you.) ::
 
-    from whoosh.fields import Schema, STORED, ID, KEYWORD, TEXT
+    from whoosh_reloaded.fields import Schema, STORED, ID, KEYWORD, TEXT
 
     schema = Schema(title=TEXT(stored=True), content=TEXT,
                     path=ID(stored=True), tags=KEYWORD, icon=STORED)
@@ -104,7 +104,7 @@ Once you have the schema, you can create an index using the ``create_in``
 function::
 
     import os.path
-    from whoosh.index import create_in
+    from whoosh_reloaded.index import create_in
 
     if not os.path.exists("index"):
         os.mkdir("index")
@@ -118,7 +118,7 @@ in a directory.)
 After you've created an index, you can open it using the ``open_dir``
 convenience function::
 
-    from whoosh.index import open_dir
+    from whoosh_reloaded.index import open_dir
 
     ix = open_dir("index")
 
@@ -194,7 +194,7 @@ For example, this query would match documents that contain both "apple" and
 
     # Construct query objects directly
 
-    from whoosh.query import *
+    from whoosh_reloaded.query import *
     myquery = And([Term("content", u"apple"), Term("content", "bear")])
 
 To parse a query string, you can use the default query parser in the ``qparser``
@@ -204,7 +204,7 @@ argument is a schema to use to understand how to parse the fields::
 
     # Parse a query string
 
-    from whoosh.qparser import QueryParser
+    from whoosh_reloaded.qparser import QueryParser
     parser = QueryParser("content", ix.schema)
     myquery = parser.parse(querystring)
 

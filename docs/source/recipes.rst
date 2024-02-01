@@ -18,7 +18,7 @@ Analysis
 Eliminate words shorter/longer than N
 -------------------------------------
 
-Use a :class:`~whoosh.analysis.StopFilter` and the ``minsize`` and ``maxsize``
+Use a :class:`~ whoosh_reloaded.analysis.StopFilter` and the ``minsize`` and ``maxsize``
 keyword arguments. If you just want to filter based on size and not common
 words, set the ``stoplist`` to ``None``::
 
@@ -61,7 +61,7 @@ Find every document
 iTunes-style search-as-you-type
 -------------------------------
 
-Use the :class:`whoosh.analysis.NgramWordAnalyzer` as the analyzer for the
+Use the :class:` whoosh_reloaded.analysis.NgramWordAnalyzer` as the analyzer for the
 field you want to search as the user types. You can save space in the index by
 turning off positions in the field using ``phrase=False``, since phrase
 searching on N-gram fields usually doesn't make much sense::
@@ -71,7 +71,7 @@ searching on N-gram fields usually doesn't make much sense::
     title_field = fields.TEXT(analyzer=analyzer, phrase=False)
     schema = fields.Schema(title=title_field)
 
-See the documentation for the :class:`~whoosh.analysis.NgramWordAnalyzer` class
+See the documentation for the :class:`~ whoosh_reloaded.analysis.NgramWordAnalyzer` class
 for information on the available options.
 
 
@@ -103,7 +103,7 @@ The following scoring function uses the position of the first occurance of a
 term in each document to calculate the score, so documents with the given term
 earlier in the document will score higher::
 
-    from whoosh import scoring
+    from whoosh_reloaded import scoring
 
     def pos_score_fn(searcher, fieldname, text, matcher):
         poses = matcher.value_as("positions")

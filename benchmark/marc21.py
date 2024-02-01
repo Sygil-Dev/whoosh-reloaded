@@ -1,9 +1,9 @@
 from __future__ import with_statement, print_function
 import fnmatch, logging, os.path, re
 
-from whoosh import analysis, fields, index, qparser, query, scoring
-from whoosh.compat import xrange
-from whoosh.util import now
+from whoosh_reloaded import analysis, fields, index, qparser, query, scoring
+from whoosh_reloaded.compat import xrange
+from whoosh_reloaded.util import now
 
 
 log = logging.getLogger(__name__)
@@ -11,13 +11,13 @@ log = logging.getLogger(__name__)
 
 # Functions for reading MARC format
 
-LEADER = (' ' * 10) + '22' + (' ' * 8) + '4500'
+LEADER = (" " * 10) + "22" + (" " * 8) + "4500"
 LEADER_LEN = len(LEADER)
 DIRECTORY_ENTRY_LEN = 12
 SUBFIELD_INDICATOR = "\x1F"
 END_OF_FIELD = "\x1E"
 END_OF_RECORD = "\x1D"
-isbn_regex = re.compile(r'[-0-9xX]+')
+isbn_regex = re.compile(r"[-0-9xX]+")
 
 
 def read_file(dbfile, tags=None):
@@ -62,14 +62,14 @@ def parse_record(data, tags=None):
     for i in xrange(field_count):
         start = dirstart + i * DIRECTORY_ENTRY_LEN
         end = start + DIRECTORY_ENTRY_LEN
-        tag = data[start:start + 3]
+        tag = data[start : start + 3]
         if tags and not tag in tags:
             continue
 
         entry = data[start:end]
         elen = int(entry[3:7])
         offset = dataoffset + int(entry[7:12])
-        edata = data[offset:offset + elen - 1]
+        edata = data[offset : offset + elen - 1]
 
         if not (tag < "010" and tag.isdigit()):
             edata = edata.split(SUBFIELD_INDICATOR)[1:]
@@ -115,7 +115,7 @@ def isbn(d):
         if num:
             match = isbn_regex.search(num)
             if match:
-                return match.group(0).replace('-', '')
+                return match.group(0).replace("-", "")
 
 
 def author(d):
@@ -134,8 +134,9 @@ def uniform_title(d):
         return joinsubfields(d["240"])
 
 
-subjectfields = ("600 610 611 630 648 650 651 653 654 655 656 657 658 662 "
-                 "690 691 696 697 698 699").split()
+subjectfields = (
+    "600 610 611 630 648 650 651 653 654 655 656 657 658 662 " "690 691 696 697 698 699"
+).split()
 
 
 def subjects(d):
@@ -161,50 +162,57 @@ def pubyear(d):
 
 
 def uni(v):
-    return u"" if v is None else v.decode("utf-8", "replace")
+    return "" if v is None else v.decode("utf-8", "replace")
 
 
 # Indexing and searching
 
-def make_index(basedir, ixdir, procs=4, limitmb=128, multisegment=True,
-               glob="*.mrc"):
+
+def make_index(basedir, ixdir, procs=4, limitmb=128, multisegment=True, glob="*.mrc"):
     if not os.path.exists(ixdir):
         os.mkdir(ixdir)
 
     # Multi-lingual stop words
-    stoplist = (analysis.STOP_WORDS
-                | set("de la der und le die et en al no von di du da "
-                      "del zur ein".split()))
+    stoplist = analysis.STOP_WORDS | set(
+        "de la der und le die et en al no von di du da " "del zur ein".split()
+    )
     # Schema
     ana = analysis.StemmingAnalyzer(stoplist=stoplist)
-    schema = fields.Schema(title=fields.TEXT(analyzer=ana),
-                           author=fields.TEXT(phrase=False),
-                           subject=fields.TEXT(analyzer=ana, phrase=False),
-                           file=fields.STORED, pos=fields.STORED,
-                           )
+    schema = fields.Schema(
+        title=fields.TEXT(analyzer=ana),
+        author=fields.TEXT(phrase=False),
+        subject=fields.TEXT(analyzer=ana, phrase=False),
+        file=fields.STORED,
+        pos=fields.STORED,
+    )
 
     # MARC fields to extract
     mfields = set(subjectfields)  # Subjects
     mfields.update("100 110 111".split())  # Author
     mfields.add("245")  # Title
 
-    print("Indexing with %d processor(s) and %d MB per processor"
-          % (procs, limitmb))
+    print("Indexing with %d processor(s) and %d MB per processor" % (procs, limitmb))
     c = 0
     t = now()
     ix = index.create_in(ixdir, schema)
-    with ix.writer(procs=procs, limitmb=limitmb,
-                   multisegment=multisegment) as w:
-        filenames = [filename for filename in os.listdir(basedir)
-                     if fnmatch.fnmatch(filename, glob)]
+    with ix.writer(procs=procs, limitmb=limitmb, multisegment=multisegment) as w:
+        filenames = [
+            filename
+            for filename in os.listdir(basedir)
+            if fnmatch.fnmatch(filename, glob)
+        ]
         for filename in filenames:
             path = os.path.join(basedir, filename)
             print("Indexing", path)
-            f = open(path, 'rb')
+            f = open(path, "rb")
             for x, pos in read_file(f, mfields):
-                w.add_document(title=uni(title(x)), author=uni(author(x)),
-                               subject=uni(subjects(x)),
-                               file=filename, pos=pos)
+                w.add_document(
+                    title=uni(title(x)),
+                    author=uni(author(x)),
+                    subject=uni(subjects(x)),
+                    file=filename,
+                    pos=pos,
+                )
                 c += 1
             f.close()
         print("Committing...")
@@ -248,50 +256,113 @@ if __name__ == "__main__":
 
     p = OptionParser(usage="usage: %prog [options] query")
     # Common options
-    p.add_option("-f", "--filedir", metavar="DIR", dest="basedir",
-                 help="Directory containing the .mrc files to index",
-                 default="data/HLOM")
-    p.add_option("-d", "--dir", metavar="DIR", dest="ixdir",
-                 help="Directory containing the index", default="marc_index")
+    p.add_option(
+        "-f",
+        "--filedir",
+        metavar="DIR",
+        dest="basedir",
+        help="Directory containing the .mrc files to index",
+        default="data/HLOM",
+    )
+    p.add_option(
+        "-d",
+        "--dir",
+        metavar="DIR",
+        dest="ixdir",
+        help="Directory containing the index",
+        default="marc_index",
+    )
 
     # Indexing options
-    p.add_option("-i", "--index", dest="index",
-                 help="Index the records", action="store_true", default=False)
-    p.add_option("-p", "--procs", metavar="NPROCS", dest="procs",
-                 help="Number of processors to use", default="1")
-    p.add_option("-m", "--mb", metavar="MB", dest="limitmb",
-                 help="Limit the indexer to this many MB of memory per writer",
-                 default="128")
-    p.add_option("-M", "--merge-segments", dest="multisegment",
-                 help="If indexing with multiproc, merge the segments after"
-                 " indexing", action="store_false", default=True)
-    p.add_option("-g", "--match", metavar="GLOB", dest="glob",
-                 help="Only index file names matching the given pattern",
-                 default="*.mrc")
+    p.add_option(
+        "-i",
+        "--index",
+        dest="index",
+        help="Index the records",
+        action="store_true",
+        default=False,
+    )
+    p.add_option(
+        "-p",
+        "--procs",
+        metavar="NPROCS",
+        dest="procs",
+        help="Number of processors to use",
+        default="1",
+    )
+    p.add_option(
+        "-m",
+        "--mb",
+        metavar="MB",
+        dest="limitmb",
+        help="Limit the indexer to this many MB of memory per writer",
+        default="128",
+    )
+    p.add_option(
+        "-M",
+        "--merge-segments",
+        dest="multisegment",
+        help="If indexing with multiproc, merge the segments after" " indexing",
+        action="store_false",
+        default=True,
+    )
+    p.add_option(
+        "-g",
+        "--match",
+        metavar="GLOB",
+        dest="glob",
+        help="Only index file names matching the given pattern",
+        default="*.mrc",
+    )
 
     # Search options
-    p.add_option("-l", "--limit", metavar="NHITS", dest="limit",
-                 help="Maximum number of search results to print (0=no limit)",
-                 default="10")
-    p.add_option("-O", "--no-optimize", dest="optimize",
-                 help="Turn off searcher optimization (for debugging)",
-                 action="store_false", default=True)
-    p.add_option("-s", "--scoring", dest="scores",
-                 help="Score the results", action="store_true", default=False)
+    p.add_option(
+        "-l",
+        "--limit",
+        metavar="NHITS",
+        dest="limit",
+        help="Maximum number of search results to print (0=no limit)",
+        default="10",
+    )
+    p.add_option(
+        "-O",
+        "--no-optimize",
+        dest="optimize",
+        help="Turn off searcher optimization (for debugging)",
+        action="store_false",
+        default=True,
+    )
+    p.add_option(
+        "-s",
+        "--scoring",
+        dest="scores",
+        help="Score the results",
+        action="store_true",
+        default=False,
+    )
 
     options, args = p.parse_args()
 
     if options.index:
-        make_index(options.basedir, options.ixdir,
-                   procs=int(options.procs),
-                   limitmb=int(options.limitmb),
-                   multisegment=options.multisegment,
-                   glob=options.glob)
+        make_index(
+            options.basedir,
+            options.ixdir,
+            procs=int(options.procs),
+            limitmb=int(options.limitmb),
+            multisegment=options.multisegment,
+            glob=options.glob,
+        )
 
     if args:
         qstring = " ".join(args).decode("utf-8")
         limit = int(options.limit)
         if limit < 1:
             limit = None
-        search(qstring, options.ixdir, options.basedir, limit=limit,
-               optimize=options.optimize, scores=options.scores)
+        search(
+            qstring,
+            options.ixdir,
+            options.basedir,
+            limit=limit,
+            optimize=options.optimize,
+            scores=options.scores,
+        )
