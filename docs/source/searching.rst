@@ -36,7 +36,7 @@ has lots of useful methods for getting information about the index, such as
 ::
 
     >>> list(searcher.lexicon("content"))
-    [u"document", u"index", u" whoosh_reloaded"]
+    [u"document", u"index", u" whoosh"]
 
 However, the most important method on the ``Searcher`` object is
 :meth:`~ whoosh.searching.Searcher.search`, which takes a

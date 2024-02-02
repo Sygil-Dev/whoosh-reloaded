@@ -27,7 +27,7 @@
 
 import codecs, re
 
-from whoosh_reloaded.compat import string_type, u, byte
+from whoosh.compat import string_type, u, byte
 
 
 # Note: these functions return a tuple of (text, length), so when you call

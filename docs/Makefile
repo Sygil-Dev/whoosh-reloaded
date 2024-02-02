@@ -94,8 +94,8 @@ devhelp:
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/whoosh_reloaded"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/whoosh_reloaded"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/whoosh"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/whoosh"
 	@echo "# devhelp"
 
 epub:

@@ -28,9 +28,9 @@
 from __future__ import division
 from array import array
 
-from whoosh_reloaded import matching
-from whoosh_reloaded.compat import text_type, u
-from whoosh_reloaded.query import qcore
+from whoosh import matching
+from whoosh.compat import text_type, u
+from whoosh.query import qcore
 
 
 class WrappingQuery(qcore.Query):
@@ -173,7 +173,7 @@ class ConstantScoreQuery(WrappingQuery):
         return self.__class__(child, self.score)
 
     def matcher(self, searcher, context=None):
-        from whoosh_reloaded.searching import SearchContext
+        from whoosh.searching import SearchContext
 
         context = context or SearchContext()
         m = self.child.matcher(searcher, context)
@@ -185,7 +185,7 @@ class ConstantScoreQuery(WrappingQuery):
 
 
 class WeightingQuery(WrappingQuery):
-    """Wraps a query and uses a specific :class:`whoosh_reloaded.sorting.WeightingModel`
+    """Wraps a query and uses a specific :class:`whoosh.sorting.WeightingModel`
     to score documents that match the wrapped query.
     """
 

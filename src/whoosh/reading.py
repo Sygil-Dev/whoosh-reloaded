@@ -34,13 +34,13 @@ from heapq import heapify, heapreplace, heappop, nlargest
 
 from cached_property import cached_property
 
-from whoosh_reloaded import columns
-from whoosh_reloaded.compat import abstractmethod
-from whoosh_reloaded.compat import xrange, zip_, next, iteritems
-from whoosh_reloaded.filedb.filestore import OverlayStorage
-from whoosh_reloaded.matching import MultiMatcher
-from whoosh_reloaded.support.levenshtein import distance
-from whoosh_reloaded.system import emptybytes
+from whoosh import columns
+from whoosh.compat import abstractmethod
+from whoosh.compat import xrange, zip_, next, iteritems
+from whoosh.filedb.filestore import OverlayStorage
+from whoosh.matching import MultiMatcher
+from whoosh.support.levenshtein import distance
+from whoosh.system import emptybytes
 
 
 # Exceptions
@@ -162,7 +162,7 @@ class IndexReader(object):
         raise NotImplementedError
 
     def codec(self):
-        """Returns the :class:`whoosh_reloaded.codec.base.Codec` object used to read
+        """Returns the :class:`whoosh.codec.base.Codec` object used to read
         this reader's segment. If this reader is not atomic
         (``reader.is_atomic() == True``), returns None.
         """
@@ -170,7 +170,7 @@ class IndexReader(object):
         return None
 
     def segment(self):
-        """Returns the :class:`whoosh_reloaded.index.Segment` object used by this reader.
+        """Returns the :class:`whoosh.index.Segment` object used by this reader.
         If this reader is not atomic (``reader.is_atomic() == True``), returns
         None.
         """
@@ -178,12 +178,12 @@ class IndexReader(object):
         return None
 
     def segments(self):
-        """Returns a list of :class:`whoosh_reloaded.index.Segment` objects used by this reader."""
+        """Returns a list of :class:`whoosh.index.Segment` objects used by this reader."""
 
         return None
 
     def storage(self):
-        """Returns the :class:`whoosh_reloaded.filedb.filestore.Storage` object used by
+        """Returns the :class:`whoosh.filedb.filestore.Storage` object used by
         this reader to read its files. If the reader is not atomic,
         (``reader.is_atomic() == True``), returns None.
         """
@@ -435,7 +435,7 @@ class IndexReader(object):
 
     @abstractmethod
     def postings(self, fieldname, text):
-        """Returns a :class:`~whoosh_reloaded.matching.Matcher` for the postings of the
+        """Returns a :class:`~whoosh.matching.Matcher` for the postings of the
         given term.
 
         >>> pr = reader.postings("content", "render")
@@ -445,7 +445,7 @@ class IndexReader(object):
 
         :param fieldname: the field name or field number of the term.
         :param text: the text of the term.
-        :rtype: :class:`whoosh_reloaded.matching.Matcher`
+        :rtype: :class:`whoosh.matching.Matcher`
         """
 
         raise NotImplementedError
@@ -459,7 +459,7 @@ class IndexReader(object):
 
     @abstractmethod
     def vector(self, docnum, fieldname, format_=None):
-        """Returns a :class:`~whoosh_reloaded.matching.Matcher` object for the
+        """Returns a :class:`~whoosh.matching.Matcher` object for the
         given term vector.
 
         >>> docnum = searcher.document_number(path=u'/a/b/c')
@@ -471,7 +471,7 @@ class IndexReader(object):
             the term vector.
         :param fieldname: the field name or field number of the field for which
             you want the term vector.
-        :rtype: :class:`whoosh_reloaded.matching.Matcher`
+        :rtype: :class:`whoosh.matching.Matcher`
         """
         raise NotImplementedError
 
@@ -506,11 +506,11 @@ class IndexReader(object):
                 vec.next()
 
     def corrector(self, fieldname):
-        """Returns a :class:`whoosh_reloaded.spelling.Corrector` object that suggests
+        """Returns a :class:`whoosh.spelling.Corrector` object that suggests
         corrections based on the terms in the given field.
         """
 
-        from whoosh_reloaded.spelling import ReaderCorrector
+        from whoosh.spelling import ReaderCorrector
 
         fieldobj = self.schema[fieldname]
         return ReaderCorrector(self, fieldname, fieldobj)
@@ -592,7 +592,7 @@ class IndexReader(object):
             reversible, this will raise a ``NotImplementedError``.
         :param translate: if True, wrap the reader to call the field's
             ``from_bytes()`` method on the returned values.
-        :return: a :class:`whoosh_reloaded.columns.ColumnReader` object.
+        :return: a :class:`whoosh.columns.ColumnReader` object.
         """
 
         raise NotImplementedError
@@ -829,7 +829,7 @@ class SegmentReader(IndexReader):
         return frozenset(self._perdoc.deleted_docs())
 
     def postings(self, fieldname, text, scorer=None):
-        from whoosh_reloaded.matching.wrappers import FilterMatcher
+        from whoosh.matching.wrappers import FilterMatcher
 
         if self.is_closed:
             raise ReaderClosed
@@ -922,7 +922,7 @@ class EmptyReader(IndexReader):
         return None
 
     def cursor(self, fieldname):
-        from whoosh_reloaded.codec.base import EmptyCursor
+        from whoosh.codec.base import EmptyCursor
 
         return EmptyCursor()
 

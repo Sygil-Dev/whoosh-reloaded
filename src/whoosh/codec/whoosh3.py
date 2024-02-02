@@ -33,19 +33,19 @@ import struct
 from array import array
 from collections import defaultdict
 
-from whoosh_reloaded import columns, formats
-from whoosh_reloaded.compat import b, bytes_type, string_type, integer_types
-from whoosh_reloaded.compat import dumps, loads, iteritems, xrange
-from whoosh_reloaded.codec import base
-from whoosh_reloaded.filedb import compound, filetables
-from whoosh_reloaded.matching import ListMatcher, ReadTooFar, LeafMatcher
-from whoosh_reloaded.reading import TermInfo, TermNotFound
-from whoosh_reloaded.system import emptybytes
-from whoosh_reloaded.system import _SHORT_SIZE, _INT_SIZE, _LONG_SIZE, _FLOAT_SIZE
-from whoosh_reloaded.system import pack_ushort, unpack_ushort
-from whoosh_reloaded.system import pack_int, unpack_int, pack_long, unpack_long
-from whoosh_reloaded.util.numlists import delta_encode, delta_decode
-from whoosh_reloaded.util.numeric import length_to_byte, byte_to_length
+from whoosh import columns, formats
+from whoosh.compat import b, bytes_type, string_type, integer_types
+from whoosh.compat import dumps, loads, iteritems, xrange
+from whoosh.codec import base
+from whoosh.filedb import compound, filetables
+from whoosh.matching import ListMatcher, ReadTooFar, LeafMatcher
+from whoosh.reading import TermInfo, TermNotFound
+from whoosh.system import emptybytes
+from whoosh.system import _SHORT_SIZE, _INT_SIZE, _LONG_SIZE, _FLOAT_SIZE
+from whoosh.system import pack_ushort, unpack_ushort
+from whoosh.system import pack_int, unpack_int, pack_long, unpack_long
+from whoosh.util.numlists import delta_encode, delta_decode
+from whoosh.util.numeric import length_to_byte, byte_to_length
 
 try:
     import zlib
@@ -896,7 +896,7 @@ class W3PostingsWriter(base.PostingsWriter):
 
 class W3LeafMatcher(LeafMatcher):
     """Reads on-disk postings from the postings file and presents the
-    :class:`whoosh_reloaded.matching.Matcher` interface.
+    :class:`whoosh.matching.Matcher` interface.
     """
 
     def __init__(

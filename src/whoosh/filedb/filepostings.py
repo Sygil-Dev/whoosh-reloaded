@@ -17,12 +17,12 @@
 import types
 from array import array
 from struct import Struct
-from whoosh_reloaded.support import unicode
+from whoosh.support import unicode
 
-from whoosh_reloaded.writing import PostingWriter
-from whoosh_reloaded.matching import Matcher, ReadTooFar
-from whoosh_reloaded.system import _INT_SIZE, _FLOAT_SIZE
-from whoosh_reloaded.util import utf8encode, utf8decode, length_to_byte, byte_to_length
+from whoosh.writing import PostingWriter
+from whoosh.matching import Matcher, ReadTooFar
+from whoosh.system import _INT_SIZE, _FLOAT_SIZE
+from whoosh.util import utf8encode, utf8decode, length_to_byte, byte_to_length
 
 
 class BlockInfo(object):

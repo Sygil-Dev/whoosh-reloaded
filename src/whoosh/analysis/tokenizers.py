@@ -25,9 +25,9 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh_reloaded.compat import u, text_type
-from whoosh_reloaded.analysis.acore import Composable, Token
-from whoosh_reloaded.util.text import rcompile
+from whoosh.compat import u, text_type
+from whoosh.analysis.acore import Composable, Token
+from whoosh.util.text import rcompile
 
 
 default_pattern = rcompile(r"[\w\*]+(\.?[\w\*]+)*")
@@ -210,10 +210,10 @@ class CharsetTokenizer(Tokenizer):
     slower than :class:`RegexTokenizer`.
 
     One way to get a character mapping object is to convert a Sphinx charset
-    table file using :func:`whoosh_reloaded.support.charset.charset_table_to_dict`.
+    table file using :func:`whoosh.support.charset.charset_table_to_dict`.
 
-    >>> from whoosh_reloaded.support.charset import charset_table_to_dict
-    >>> from whoosh_reloaded.support.charset import default_charset
+    >>> from whoosh.support.charset import charset_table_to_dict
+    >>> from whoosh.support.charset import default_charset
     >>> charmap = charset_table_to_dict(default_charset)
     >>> chtokenizer = CharsetTokenizer(charmap)
     >>> [t.text for t in chtokenizer(u'Stra\\xdfe ABC')]
@@ -339,7 +339,7 @@ def CommaSeparatedTokenizer():
     ["hi there", "what's", "up"]
     """
 
-    from whoosh_reloaded.analysis.filters import StripFilter
+    from whoosh.analysis.filters import StripFilter
 
     return RegexTokenizer(r"[^,]+") | StripFilter()
 

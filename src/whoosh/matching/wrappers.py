@@ -27,7 +27,7 @@
 
 from __future__ import division
 
-from whoosh_reloaded.matching import mcore
+from whoosh.matching import mcore
 
 
 class WrappingMatcher(mcore.Matcher):
@@ -435,7 +435,7 @@ class RequireMatcher(WrappingMatcher):
     """
 
     def __init__(self, a, b):
-        from whoosh_reloaded.matching.binary import IntersectionMatcher
+        from whoosh.matching.binary import IntersectionMatcher
 
         self.a = a
         self.b = b

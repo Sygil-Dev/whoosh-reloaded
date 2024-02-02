@@ -17,19 +17,19 @@
 from threading import Lock
 from marshal import loads
 
-from whoosh_reloaded.fields import FieldConfigurationError
-from whoosh_reloaded.filedb.filepostings import FilePostingReader
-from whoosh_reloaded.filedb.filetables import (
+from whoosh.fields import FieldConfigurationError
+from whoosh.filedb.filepostings import FilePostingReader
+from whoosh.filedb.filetables import (
     FileTableReader,
     FileListReader,
     StructHashReader,
     LengthReader,
 )
-from whoosh_reloaded.filedb import misc
+from whoosh.filedb import misc
 
-# from whoosh_reloaded.postings import Exclude
-from whoosh_reloaded.reading import IndexReader, TermNotFound
-from whoosh_reloaded.util import protected, byte_to_length
+# from whoosh.postings import Exclude
+from whoosh.reading import IndexReader, TermNotFound
+from whoosh.util import protected, byte_to_length
 
 
 # Reader class

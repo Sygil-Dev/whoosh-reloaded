@@ -1,8 +1,8 @@
 import gzip, os.path
 
-from whoosh_reloaded import analysis, fields, index, qparser, query
-from whoosh_reloaded.support.bench import Bench, Spec
-from whoosh_reloaded.util import now
+from whoosh import analysis, fields, index, qparser, query
+from whoosh.support.bench import Bench, Spec
+from whoosh.util import now
 
 
 class Reuters(Spec):

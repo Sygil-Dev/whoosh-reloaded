@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import pytest
 
 from whoosh import analysis, fields, index, qparser, query, scoring
-from whoosh.codec.whoosh_reloaded3 import W3Codec
+from whoosh.codec.whoosh3 import W3Codec
 from whoosh.compat import b, u, text_type
 from whoosh.compat import xrange, permutations, izip_longest
 from whoosh.filedb.filestore import RamStorage

@@ -30,11 +30,11 @@ import copy
 import fnmatch
 import re
 
-from whoosh_reloaded import matching
-from whoosh_reloaded.analysis import Token
-from whoosh_reloaded.compat import bytes_type, text_type, u
-from whoosh_reloaded.lang.morph_en import variations
-from whoosh_reloaded.query import qcore
+from whoosh import matching
+from whoosh.analysis import Token
+from whoosh.compat import bytes_type, text_type, u
+from whoosh.lang.morph_en import variations
+from whoosh.query import qcore
 
 
 class Term(qcore.Query):
@@ -197,7 +197,7 @@ class MultiTerm(qcore.Query):
         if len(existing) == 1:
             return existing[0]
         elif existing:
-            from whoosh_reloaded.query import Or
+            from whoosh.query import Or
 
             return Or(existing)
         else:
@@ -216,7 +216,7 @@ class MultiTerm(qcore.Query):
         )
 
     def matcher(self, searcher, context=None):
-        from whoosh_reloaded.query import Or
+        from whoosh.query import Or
 
         fieldname = self.field()
         constantscore = self.constantscore
@@ -236,7 +236,7 @@ class MultiTerm(qcore.Query):
                 if context:
                     context = context.set(weighting=None)
                 else:
-                    from whoosh_reloaded.searching import SearchContext
+                    from whoosh.searching import SearchContext
 
                     context = SearchContext(weighting=None)
             # Or the terms together
@@ -327,7 +327,7 @@ class Prefix(PatternQuery):
 
     def matcher(self, searcher, context=None):
         if self.text == "":
-            from whoosh_reloaded.query import Every
+            from whoosh.query import Every
 
             eq = Every(self.fieldname, boost=self.boost)
             return eq.matcher(searcher, context)
@@ -357,7 +357,7 @@ class Wildcard(PatternQuery):
         # a simple Term
         text = self.text
         if text == "*":
-            from whoosh_reloaded.query import Every
+            from whoosh.query import Every
 
             return Every(self.fieldname, boost=self.boost)
         if "*" not in text and "?" not in text:
@@ -372,7 +372,7 @@ class Wildcard(PatternQuery):
 
     def matcher(self, searcher, context=None):
         if self.text == "*":
-            from whoosh_reloaded.query import Every
+            from whoosh.query import Every
 
             eq = Every(self.fieldname, boost=self.boost)
             return eq.matcher(searcher, context)
@@ -419,7 +419,7 @@ class Regex(PatternQuery):
 
     def matcher(self, searcher, context=None):
         if self.text == ".*":
-            from whoosh_reloaded.query import Every
+            from whoosh.query import Every
 
             eq = Every(self.fieldname, boost=self.boost)
             return eq.matcher(searcher, context)

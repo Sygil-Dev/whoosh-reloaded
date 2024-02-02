@@ -25,7 +25,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh_reloaded.automata.fst import Arc
+from whoosh.automata.fst import Arc
 
 
 class Instruction(object):
@@ -292,10 +292,10 @@ def regex_limit(graph, mode, program, address):
 
 
 # if __name__ == "__main__":
-#     from whoosh_reloaded import index, query
-#     from whoosh_reloaded.filedb.filestore import RamStorage
-#     from whoosh_reloaded.automata import fst
-#     from whoosh_reloaded.util.testing import timing
+#     from whoosh import index, query
+#     from whoosh.filedb.filestore import RamStorage
+#     from whoosh.automata import fst
+#     from whoosh.util.testing import timing
 #
 #     st = RamStorage()
 #     gw = fst.GraphWriter(st.create_file("test"))

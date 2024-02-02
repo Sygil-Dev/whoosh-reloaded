@@ -36,11 +36,11 @@ try:
 except ImportError:
     mmap = None
 
-from whoosh_reloaded.compat import BytesIO, memoryview_
-from whoosh_reloaded.filedb.structfile import BufferFile, StructFile
-from whoosh_reloaded.filedb.filestore import FileStorage, StorageError
-from whoosh_reloaded.system import emptybytes
-from whoosh_reloaded.util import random_name
+from whoosh.compat import BytesIO, memoryview_
+from whoosh.filedb.structfile import BufferFile, StructFile
+from whoosh.filedb.filestore import FileStorage, StorageError
+from whoosh.system import emptybytes
+from whoosh.util import random_name
 
 
 class CompoundStorage(FileStorage):

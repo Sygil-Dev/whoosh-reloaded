@@ -37,9 +37,9 @@ that field.
 Normally when you specify a phrase, the maximum difference in position between
 each word in the phrase is 1 (that is, the words must be right next to each
 other in the document). For example, the following matches if a document has
-``library`` within 5 words after `` whoosh_reloaded``::
+``library`` within 5 words after `` whoosh``::
 
-    " whoosh_reloaded library"~5
+    " whoosh library"~5
 
 
 Boolean operators

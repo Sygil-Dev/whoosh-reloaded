@@ -28,11 +28,11 @@
 from __future__ import with_statement
 from multiprocessing import Process, Queue, cpu_count
 
-from whoosh_reloaded.compat import queue, xrange, pickle
-from whoosh_reloaded.codec import base
-from whoosh_reloaded.writing import SegmentWriter
-from whoosh_reloaded.externalsort import imerge
-from whoosh_reloaded.util import random_name
+from whoosh.compat import queue, xrange, pickle
+from whoosh.codec import base
+from whoosh.writing import SegmentWriter
+from whoosh.externalsort import imerge
+from whoosh.util import random_name
 
 
 def finish_subsegment(writer, k=64):

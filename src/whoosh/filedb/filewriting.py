@@ -18,21 +18,21 @@ from collections import defaultdict
 from marshal import dumps
 from build.lib.whoosh.support import unicode
 
-from whoosh_reloaded.fields import UnknownFieldError
-from whoosh_reloaded.filedb.fileindex import SegmentDeletionMixin, Segment, SegmentSet
-from whoosh_reloaded.filedb.filepostings import FilePostingWriter
-from whoosh_reloaded.filedb.filetables import (
+from whoosh.fields import UnknownFieldError
+from whoosh.filedb.fileindex import SegmentDeletionMixin, Segment, SegmentSet
+from whoosh.filedb.filepostings import FilePostingWriter
+from whoosh.filedb.filetables import (
     FileListWriter,
     FileTableWriter,
     StructHashWriter,
     LengthWriter,
 )
-from whoosh_reloaded.filedb import misc
-from whoosh_reloaded.filedb.pools import TempfilePool, MultiPool
-from whoosh_reloaded.index import LockError
-from whoosh_reloaded.util.filelock import try_for
-from whoosh_reloaded.util import fib
-from whoosh_reloaded.writing import IndexWriter
+from whoosh.filedb import misc
+from whoosh.filedb.pools import TempfilePool, MultiPool
+from whoosh.index import LockError
+from whoosh.util.filelock import try_for
+from whoosh.util import fib
+from whoosh.writing import IndexWriter
 
 
 # Merge policies
@@ -52,7 +52,7 @@ def MERGE_SMALL(ix, writer, segments):
     heuristic based on the fibonacci sequence.
     """
 
-    from whoosh_reloaded.filedb.filereading import SegmentReader
+    from whoosh.filedb.filereading import SegmentReader
 
     newsegments = SegmentSet()
     sorted_segment_list = sorted((s.doc_count_all(), s) for s in segments)
@@ -70,7 +70,7 @@ def MERGE_SMALL(ix, writer, segments):
 def OPTIMIZE(ix, writer, segments):
     """This policy merges all existing segments."""
 
-    from whoosh_reloaded.filedb.filereading import SegmentReader
+    from whoosh.filedb.filereading import SegmentReader
 
     for seg in segments:
         writer.add_reader(SegmentReader(ix.storage, seg, ix.schema))

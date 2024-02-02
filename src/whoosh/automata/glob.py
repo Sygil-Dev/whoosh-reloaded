@@ -25,7 +25,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh_reloaded.automata.fsa import ANY, EPSILON, NFA
+from whoosh.automata.fsa import ANY, EPSILON, NFA
 
 
 # Constants for glob

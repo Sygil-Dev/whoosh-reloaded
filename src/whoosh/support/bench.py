@@ -30,24 +30,24 @@ import os.path
 from optparse import OptionParser
 from shutil import rmtree
 
-from whoosh_reloaded import index, qparser, query, scoring
-from whoosh_reloaded.util import now, find_object
+from whoosh import index, qparser, query, scoring
+from whoosh.util import now, find_object
 
 try:
-    import xappy
+    import xappy  # type: ignore
 except ImportError:
     pass
 try:
-    import xapian
+    import xapian  # type: ignore
 except ImportError:
     pass
 try:
-    import pysolr
+    import pysolr  # type: ignore
 except ImportError:
     pass
 
 try:
-    from persistent import Persistent
+    from persistent import Persistent  # type: ignore
 
     class ZDoc(Persistent):
         def __init__(self, d):
@@ -134,9 +134,7 @@ class Spec(object):
 class WhooshModule(Module):
     def indexer(self, create=True):
         schema = self.bench.spec.whoosh_schema()
-        path = os.path.join(
-            self.options.dir, "%s_whoosh_reloaded" % self.options.indexname
-        )
+        path = os.path.join(self.options.dir, "%s_whoosh" % self.options.indexname)
 
         if not os.path.exists(path):
             os.mkdir(path)
@@ -158,8 +156,8 @@ class WhooshModule(Module):
             multisegment=self.options.xms,
         )
         self._procdoc = None
-        if hasattr(self.bench.spec, "process_document_whoosh_reloaded"):
-            self._procdoc = self.bench.spec.process_document_whoosh - reloaded
+        if hasattr(self.bench.spec, "process_document_whoosh"):
+            self._procdoc = self.bench.spec.process_document_whoosh
 
     def index_document(self, d):
         _procdoc = self._procdoc
@@ -171,9 +169,7 @@ class WhooshModule(Module):
         self.writer.commit(merge=merge, optimize=optimize)
 
     def searcher(self):
-        path = os.path.join(
-            self.options.dir, "%s_whoosh_reloaded" % self.options.indexname
-        )
+        path = os.path.join(self.options.dir, "%s_whoosh" % self.options.indexname)
         ix = index.open_dir(path)
         self.srch = ix.searcher(weighting=scoring.PL2())
         self.parser = qparser.QueryParser(self.bench.spec.main_field, schema=ix.schema)
@@ -324,10 +320,10 @@ class SolrModule(Module):
 
 class ZcatalogModule(Module):
     def indexer(self, **kwargs):
-        from ZODB.FileStorage import FileStorage  # @UnresolvedImport
-        from ZODB.DB import DB  # @UnresolvedImport
-        from zcatalog import catalog  # @UnresolvedImport
-        import transaction  # @UnresolvedImport
+        from ZODB.FileStorage import FileStorage  # type: ignore # @UnresolvedImport
+        from ZODB.DB import DB  # type: ignore # @UnresolvedImport
+        from zcatalog import catalog  # type: ignore # @UnresolvedImport
+        import transaction  # type: ignore # @UnresolvedImport
 
         dir = os.path.join(self.options.dir, "%s_zcatalog" % self.options.indexname)
         if os.path.exists(dir):
@@ -352,20 +348,20 @@ class ZcatalogModule(Module):
         self.cat.index_doc(doc)
         self.zcatalog_count += 1
         if self.zcatalog_count >= 100:
-            import transaction  # @UnresolvedImport
+            import transaction  # type: ignore # @UnresolvedImport
 
             transaction.commit()
             self.zcatalog_count = 0
 
     def finish(self, **kwargs):
-        import transaction  # @UnresolvedImport
+        import transaction  # type: ignore # @UnresolvedImport
 
         transaction.commit()
         del self.zcatalog_count
 
     def searcher(self):
-        from ZODB.FileStorage import FileStorage  # @UnresolvedImport
-        from ZODB.DB import DB  # @UnresolvedImport
+        from ZODB.FileStorage import FileStorage  # type: ignore # @UnresolvedImport
+        from ZODB.DB import DB  # type: ignore # @UnresolvedImport
 
         path = os.path.join(
             self.options.dir, "%s_zcatalog" % self.options.indexname, "index"
@@ -397,7 +393,7 @@ class ZcatalogModule(Module):
 class NucularModule(Module):
     def indexer(self, create=True):
         import shutil
-        from nucular import Nucular
+        from nucular import Nucular  # type: ignore # @UnresolvedImport
 
         dir = os.path.join(self.options.dir, "%s_nucular" % self.options.indexname)
         if create:
@@ -428,7 +424,7 @@ class NucularModule(Module):
         self.archive.cleanUp()
 
     def searcher(self):
-        from nucular import Nucular
+        from nucular import Nucular  # type: ignore # @UnresolvedImport
 
         dir = os.path.join(self.options.dir, "%s_nucular" % self.options.indexname)
         self.archive = Nucular.Nucular(dir)
@@ -448,7 +444,7 @@ class NucularModule(Module):
 
 class Bench(object):
     libs = {
-        "whoosh_reloaded": WhooshModule,
+        "whoosh": WhooshModule,
         "xappy": XappyModule,
         "xapian": XapianModule,
         "solr": SolrModule,
@@ -538,7 +534,7 @@ class Bench(object):
             "--lib",
             dest="lib",
             help="Name of the library to use to index/search.",
-            default="whoosh_reloaded",
+            default="whoosh",
         )
         p.add_option(
             "-d",

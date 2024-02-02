@@ -521,7 +521,7 @@ def test_skip():
 def test_plaintext_codec():
     pytest.importorskip("ast")
     from whoosh.codec.plaintext import PlainTextCodec
-    from whoosh.codec.whoosh_reloaded3 import W3Codec
+    from whoosh.codec.whoosh3 import W3Codec
 
     ana = analysis.StemmingAnalyzer()
     schema = fields.Schema(

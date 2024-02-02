@@ -7,8 +7,8 @@ from __future__ import print_function, with_statement
 import os.path, random, sys
 from datetime import datetime
 
-from whoosh_reloaded import fields, index
-from whoosh_reloaded.compat import u, xrange
+from whoosh import fields, index
+from whoosh.compat import u, xrange
 
 
 if len(sys.argv) < 2:

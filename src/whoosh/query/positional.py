@@ -28,10 +28,10 @@
 from __future__ import division
 import copy
 
-from whoosh_reloaded import matching
-from whoosh_reloaded.analysis import Token
-from whoosh_reloaded.compat import u
-from whoosh_reloaded.query import qcore, terms, compound
+from whoosh import matching
+from whoosh.analysis import Token
+from whoosh.compat import u
+from whoosh.query import qcore, terms, compound
 
 
 class Sequence(compound.CompoundQuery):
@@ -47,7 +47,7 @@ class Sequence(compound.CompoundQuery):
 
     def __init__(self, subqueries, slop=1, ordered=True, boost=1.0):
         """
-        :param subqueries: a list of :class:`whoosh_reloaded.query.Query` objects to
+        :param subqueries: a list of :class:`whoosh.query.Query` objects to
             match in sequence.
         :param slop: the maximum difference in position allowed between the
             subqueries.
@@ -104,7 +104,7 @@ class Sequence(compound.CompoundQuery):
         return self._and_query().estimate_min_size(ixreader)
 
     def _matcher(self, subs, searcher, context):
-        from whoosh_reloaded.query.spans import SpanNear
+        from whoosh.query.spans import SpanNear
 
         # Tell the sub-queries this matcher will need the current match to get
         # spans
@@ -127,7 +127,7 @@ class Ordered(Sequence):
     JOINT = " BEFORE "
 
     def _matcher(self, subs, searcher, context):
-        from whoosh_reloaded.query.spans import SpanBefore
+        from whoosh.query.spans import SpanBefore
 
         return self._tree_matcher(subs, SpanBefore._Matcher, searcher, context, None)
 
@@ -244,7 +244,7 @@ class Phrase(qcore.Query):
         return self._and_query().estimate_min_size(ixreader)
 
     def matcher(self, searcher, context=None):
-        from whoosh_reloaded.query import Term, SpanNear2
+        from whoosh.query import Term, SpanNear2
 
         fieldname = self.fieldname
         if fieldname not in searcher.schema:

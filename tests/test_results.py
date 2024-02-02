@@ -3,7 +3,7 @@ from __future__ import with_statement
 import pytest
 
 from whoosh import analysis, fields, formats, highlight, qparser, query
-from whoosh.codec.whoosh_reloaded3 import W3Codec
+from whoosh.codec.whoosh3 import W3Codec
 from whoosh.compat import u, xrange, text_type, permutations
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempStorage, TempIndex

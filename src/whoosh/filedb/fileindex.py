@@ -21,18 +21,18 @@ from threading import Lock
 from time import time
 
 import pickle
-from whoosh_reloaded import __version__
-from whoosh_reloaded.fields import Schema
-from whoosh_reloaded.index import (
+from whoosh import __version__
+from whoosh.fields import Schema
+from whoosh.index import (
     _DEF_INDEX_NAME,
     EmptyIndexError,
     Index,
     IndexVersionError,
     OutOfDateError,
 )
-from whoosh_reloaded.index import LockError
-from whoosh_reloaded.support.bitvector import BitVector
-from whoosh_reloaded.system import _FLOAT_SIZE, _INT_SIZE
+from whoosh.index import LockError
+from whoosh.support.bitvector import BitVector
+from whoosh.system import _FLOAT_SIZE, _INT_SIZE
 
 _INDEX_VERSION = -105
 
@@ -240,7 +240,7 @@ class FileIndex(SegmentDeletionMixin, Index):
         if len(self.segments) < 2 and not self.segments.has_deletions():
             return
 
-        from whoosh_reloaded.filedb.filewriting import OPTIMIZE
+        from whoosh.filedb.filewriting import OPTIMIZE
 
         w = self.writer()
         w.commit(OPTIMIZE)
@@ -309,7 +309,7 @@ class FileIndex(SegmentDeletionMixin, Index):
         return self.segments.reader(self.storage, self.schema)
 
     def writer(self, **kwargs):
-        from whoosh_reloaded.filedb.filewriting import SegmentWriter
+        from whoosh.filedb.filewriting import SegmentWriter
 
         return SegmentWriter(self, **kwargs)
 
@@ -438,13 +438,13 @@ class SegmentSet(object):
         return segment.is_deleted(segdocnum)
 
     def reader(self, storage, schema):
-        from whoosh_reloaded.filedb.filereading import SegmentReader
+        from whoosh.filedb.filereading import SegmentReader
 
         segments = self.segments
         if len(segments) == 1:
             return SegmentReader(storage, segments[0], schema)
         else:
-            from whoosh_reloaded.reading import MultiReader
+            from whoosh.reading import MultiReader
 
             readers = [SegmentReader(storage, segment, schema) for segment in segments]
             return MultiReader(readers, schema)

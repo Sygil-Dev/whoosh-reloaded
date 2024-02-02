@@ -33,11 +33,11 @@ occurance of a term.
 
 from collections import defaultdict
 
-from whoosh_reloaded.analysis import unstopped, entoken
-from whoosh_reloaded.compat import iteritems, dumps, loads, b
-from whoosh_reloaded.system import emptybytes
-from whoosh_reloaded.system import _INT_SIZE, _FLOAT_SIZE
-from whoosh_reloaded.system import pack_uint, unpack_uint, pack_float, unpack_float
+from whoosh.analysis import unstopped, entoken
+from whoosh.compat import iteritems, dumps, loads, b
+from whoosh.system import emptybytes
+from whoosh.system import _INT_SIZE, _FLOAT_SIZE
+from whoosh.system import pack_uint, unpack_uint, pack_float, unpack_float
 
 
 # Format base class

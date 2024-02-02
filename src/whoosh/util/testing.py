@@ -31,8 +31,8 @@ import sys
 import tempfile
 from contextlib import contextmanager
 
-from whoosh_reloaded.filedb.filestore import FileStorage
-from whoosh_reloaded.util import now, random_name
+from whoosh.filedb.filestore import FileStorage
+from whoosh.util import now, random_name
 
 
 class TempDir(object):
@@ -40,7 +40,7 @@ class TempDir(object):
         self,
         basename="",
         parentdir=None,
-        ext=".whoosh_reloaded",
+        ext=".whoosh",
         suppress=frozenset(),
         keepdir=False,
     ):

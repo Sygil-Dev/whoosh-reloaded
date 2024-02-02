@@ -27,7 +27,7 @@
 
 from array import array
 
-from whoosh_reloaded.compat import array_tobytes, xrange
+from whoosh.compat import array_tobytes, xrange
 
 
 # Varint cache

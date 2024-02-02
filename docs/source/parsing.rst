@@ -283,7 +283,7 @@ Allowing complex phrase queries
 
 The default parser setup allows phrase (proximity) queries such as::
 
-    " whoosh_reloaded search library"
+    " whoosh search library"
 
 The default phrase query tokenizes the text between the quotes and creates a
 search for those terms in proximity.
