@@ -5,9 +5,14 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    target-branch: "main"
-
+  # Enable version updates for npm
+  - package-ecosystem: 'pip'
+    directory: '/'
+    # Check the npm registry for updates once a week (Monday)
     schedule:
-      interval: "daily"
+      interval: 'daily'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'daily'
