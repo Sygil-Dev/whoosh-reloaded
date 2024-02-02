@@ -30,11 +30,11 @@ from array import array
 from bisect import bisect_left
 from struct import pack, unpack
 
-from whoosh_reloaded.compat import b, long_type
-from whoosh_reloaded.system import pack_byte, unpack_byte, pack_ushort, unpack_ushort
-from whoosh_reloaded.system import pack_int, unpack_int, pack_uint, unpack_uint
-from whoosh_reloaded.system import pack_long, unpack_long, pack_ulong, unpack_ulong
-from whoosh_reloaded.system import pack_float, unpack_float, pack_double, unpack_double
+from whoosh.compat import b, long_type
+from whoosh.system import pack_byte, unpack_byte, pack_ushort, unpack_ushort
+from whoosh.system import pack_int, unpack_int, pack_uint, unpack_uint
+from whoosh.system import pack_long, unpack_long, pack_ulong, unpack_ulong
+from whoosh.system import pack_float, unpack_float, pack_double, unpack_double
 
 
 NaN = struct.unpack("<d", b("\xff\xff\xff\xff\xff\xff\xff\xff"))[0]

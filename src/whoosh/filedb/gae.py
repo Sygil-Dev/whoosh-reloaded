@@ -8,7 +8,7 @@ Use at your own risk, but please report any problems to me so I can fix them.
 
 To create a new index::
 
-    from whoosh_reloaded.filedb.gae import DatastoreStorage
+    from whoosh.filedb.gae import DatastoreStorage
 
     ix = DatastoreStorage().create_index(schema)
 
@@ -22,10 +22,10 @@ import time
 from google.appengine.api import memcache  # @UnresolvedImport
 from google.appengine.ext import db  # @UnresolvedImport
 
-from whoosh_reloaded.compat import BytesIO
-from whoosh_reloaded.index import TOC, FileIndex, _DEF_INDEX_NAME
-from whoosh_reloaded.filedb.filestore import ReadOnlyError, Storage
-from whoosh_reloaded.filedb.structfile import StructFile
+from whoosh.compat import BytesIO
+from whoosh.index import TOC, FileIndex, _DEF_INDEX_NAME
+from whoosh.filedb.filestore import ReadOnlyError, Storage
+from whoosh.filedb.structfile import StructFile
 
 
 class DatastoreFile(db.Model):
@@ -100,7 +100,7 @@ class MemcacheLock(object):
 
 
 class DatastoreStorage(Storage):
-    """An implementation of :class:`whoosh_reloaded.store.Storage` that stores files in
+    """An implementation of :class:`whoosh.store.Storage` that stores files in
     the app engine datastore as blob properties.
     """
 

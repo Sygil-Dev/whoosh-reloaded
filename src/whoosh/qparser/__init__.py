@@ -25,6 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh_reloaded.qparser.default import *
-from whoosh_reloaded.qparser.plugins import *
-from whoosh_reloaded.qparser.syntax import *
+from whoosh.qparser.default import *
+from whoosh.qparser.plugins import *
+from whoosh.qparser.syntax import *

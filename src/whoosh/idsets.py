@@ -6,8 +6,8 @@ import operator
 from array import array
 from bisect import bisect_left, bisect_right
 
-from whoosh_reloaded.compat import izip, izip_longest, next, xrange
-from whoosh_reloaded.util.numeric import bytes_for_bits
+from whoosh.compat import izip, izip_longest, next, xrange
+from whoosh.util.numeric import bytes_for_bits
 
 
 # Number of '1' bits in each byte (0-255)
@@ -504,7 +504,7 @@ class OnDiskBitSet(BaseBitSet):
 
     def __init__(self, dbfile, basepos, bytecount):
         """
-        :param dbfile: a :class:`~whoosh_reloaded.filedb.structfile.StructFile` object
+        :param dbfile: a :class:`~whoosh.filedb.structfile.StructFile` object
             to read from.
         :param basepos: the base position of the bytes in the given file.
         :param bytecount: the number of bytes to use for the bit array.

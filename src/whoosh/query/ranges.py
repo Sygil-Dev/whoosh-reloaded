@@ -27,9 +27,9 @@
 
 from __future__ import division
 
-from whoosh_reloaded.compat import b, u
-from whoosh_reloaded.query import qcore, terms, compound, wrappers
-from whoosh_reloaded.util.times import datetime_to_long
+from whoosh.compat import b, u
+from whoosh.query import qcore, terms, compound, wrappers
+from whoosh.util.times import datetime_to_long
 
 
 class RangeMixin(object):
@@ -194,7 +194,7 @@ class TermRange(RangeMixin, terms.MultiTerm):
 
     def normalize(self):
         if self.start in ("", None) and self.end in (u("\uffff"), None):
-            from whoosh_reloaded.query import Every
+            from whoosh.query import Every
 
             return Every(self.fieldname, boost=self.boost)
         elif self.start == self.end:
@@ -314,8 +314,8 @@ class NumericRange(RangeMixin, qcore.Query):
         return q.docs(searcher)
 
     def _compile_query(self, ixreader):
-        from whoosh_reloaded.fields import NUMERIC
-        from whoosh_reloaded.util.numeric import tiered_ranges
+        from whoosh.fields import NUMERIC
+        from whoosh.util.numeric import tiered_ranges
 
         field = ixreader.schema[self.fieldname]
         if not isinstance(field, NUMERIC):

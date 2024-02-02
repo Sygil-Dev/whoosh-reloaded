@@ -28,8 +28,8 @@
 from array import array
 from collections import defaultdict
 
-from whoosh_reloaded.compat import string_type
-from whoosh_reloaded.compat import iteritems, izip, xrange
+from whoosh.compat import string_type
+from whoosh.compat import iteritems, izip, xrange
 
 
 # Faceting objects
@@ -71,7 +71,7 @@ class Categorizer(object):
 
     Categorizers are created by FacetType objects through the
     :meth:`FacetType.categorizer` method. The
-    :class:`whoosh_reloaded.searching.Searcher` object passed to the ``categorizer``
+    :class:`whoosh.searching.Searcher` object passed to the ``categorizer``
     method may be a composite searcher (that is, wrapping a multi-reader), but
     categorizers are always run **per-segment**, with segment-relative document
     numbers.
@@ -110,7 +110,7 @@ class Categorizer(object):
     def key_for(self, matcher, segment_docnum):
         """Returns a key for the current match.
 
-        :param matcher: a :class:`whoosh_reloaded.matching.Matcher` object. If
+        :param matcher: a :class:`whoosh.matching.Matcher` object. If
             ``self.needs_current`` is ``False``, DO NOT use this object,
             since it may be inconsistent. Use the given ``segment_docnum``
             instead.
@@ -132,7 +132,7 @@ class Categorizer(object):
         This method will be called instead of ``key_for`` if
         ``self.allow_overlap`` is ``True``.
 
-        :param matcher: a :class:`whoosh_reloaded.matching.Matcher` object. If
+        :param matcher: a :class:`whoosh.matching.Matcher` object. If
             ``self.needs_current`` is ``False``, DO NOT use this object,
             since it may be inconsistent. Use the given ``segment_docnum``
             instead.
@@ -409,7 +409,7 @@ class QueryFacet(FacetType):
     def __init__(self, querydict, other=None, allow_overlap=False, maptype=None):
         """
         :param querydict: a dictionary mapping keys to
-            :class:`whoosh_reloaded.query.Query` objects.
+            :class:`whoosh.query.Query` objects.
         :param other: the key to use for documents that don't match any of the
             queries.
         """
@@ -492,7 +492,7 @@ class RangeFacet(QueryFacet):
         return self.fieldname
 
     def _rangetype(self):
-        from whoosh_reloaded import query
+        from whoosh import query
 
         return query.NumericRange
 
@@ -537,13 +537,13 @@ class DateRangeFacet(RangeFacet):
     """Sorts/facets based on date ranges. This is the same as RangeFacet
     except you are expected to use ``daterange`` objects as the start and end
     of the range, and ``timedelta`` or ``relativedelta`` objects as the gap(s),
-    and it generates :class:`~whoosh_reloaded.query.DateRange` queries instead of
-    :class:`~whoosh_reloaded.query.TermRange` queries.
+    and it generates :class:`~whoosh.query.DateRange` queries instead of
+    :class:`~whoosh.query.TermRange` queries.
 
     For example, to facet a "birthday" range into 5 year buckets::
 
         from datetime import datetime
-        from whoosh_reloaded.support.relativedelta import relativedelta
+        from whoosh.support.relativedelta import relativedelta
 
         startdate = datetime(1920, 0, 0)
         enddate = datetime.now()
@@ -556,7 +556,7 @@ class DateRangeFacet(RangeFacet):
     """
 
     def _rangetype(self):
-        from whoosh_reloaded import query
+        from whoosh import query
 
         return query.DateRange
 
@@ -691,7 +691,7 @@ class TranslateFacet(FacetType):
 
 class StoredFieldFacet(FacetType):
     """Lets you sort/group using the value in an unindexed, stored field (e.g.
-    :class:`whoosh_reloaded.fields.STORED`). This is usually slower than using an indexed
+    :class:`whoosh.fields.STORED`). This is usually slower than using an indexed
     field.
 
     For fields where the stored value is a space-separated list of keywords,
@@ -921,7 +921,7 @@ class Facets(object):
 
         :param name: a name for the facet.
         :param querydict: a dictionary mapping keys to
-            :class:`whoosh_reloaded.query.Query` objects.
+            :class:`whoosh.query.Query` objects.
         """
 
         self.facets[name] = QueryFacet(querydict, **kwargs)
@@ -1085,17 +1085,17 @@ def add_sortable(writer, fieldname, facet, column=None):
     """Adds a per-document value column to an existing field which was created
     without the ``sortable`` keyword argument.
 
-    >>> from whoosh_reloaded import index, sorting
+    >>> from whoosh import index, sorting
     >>> ix = index.open_dir("indexdir")
     >>> with ix.writer() as w:
     ...   facet = sorting.FieldFacet("price")
     ...   sorting.add_sortable(w, "price", facet)
     ...
 
-    :param writer: a :class:`whoosh_reloaded.writing.IndexWriter` object.
+    :param writer: a :class:`whoosh.writing.IndexWriter` object.
     :param fieldname: the name of the field to add the per-document sortable
         values to. If this field doesn't exist in the writer's schema, the
-        function will add a :class:`whoosh_reloaded.fields.COLUMN` field to the schema,
+        function will add a :class:`whoosh.fields.COLUMN` field to the schema,
         and you must specify the column object to using the ``column`` keyword
         argument.
     :param facet: a :class:`FacetType` object to use to generate the
@@ -1116,7 +1116,7 @@ def add_sortable(writer, fieldname, facet, column=None):
 
     if column:
         if fieldname not in schema:
-            from whoosh_reloaded.fields import COLUMN
+            from whoosh.fields import COLUMN
 
             field = COLUMN(column)
             schema.add(fieldname, field)

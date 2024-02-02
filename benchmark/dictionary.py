@@ -1,7 +1,7 @@
 import os.path, gzip
 
-from whoosh_reloaded import analysis, fields
-from whoosh_reloaded.support.bench import Bench, Spec
+from whoosh import analysis, fields
+from whoosh.support.bench import Bench, Spec
 
 
 class VulgarTongue(Spec):

@@ -1,6 +1,6 @@
 from .bases import _ScandinavianStemmer
 
-from whoosh_reloaded.compat import u
+from whoosh.compat import u
 
 
 class NorwegianStemmer(_ScandinavianStemmer):

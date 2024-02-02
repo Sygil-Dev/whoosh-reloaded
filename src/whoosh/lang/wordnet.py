@@ -34,8 +34,8 @@ http://wordnetcode.princeton.edu/3.0/WNprolog-3.0.tar.gz
 
 from collections import defaultdict
 
-from whoosh_reloaded.compat import iterkeys, text_type
-from whoosh_reloaded.fields import Schema, ID, STORED
+from whoosh.compat import iterkeys, text_type
+from whoosh.fields import Schema, ID, STORED
 
 
 def parse_file(f):
@@ -113,7 +113,7 @@ class Thesaurus(object):
 
     To save the in-memory Thesaurus to a Whoosh index...
 
-    >>> from whoosh_reloaded.filedb.filestore import FileStorage
+    >>> from whoosh.filedb.filestore import FileStorage
     >>> fs = FileStorage("index")
     >>> t.to_storage(fs)
 
@@ -192,13 +192,13 @@ class Thesaurus(object):
         """Creates a Thesaurus object from the given storage object,
         which should contain an index created by Thesaurus.to_storage().
 
-        >>> from whoosh_reloaded.filedb.filestore import FileStorage
+        >>> from whoosh.filedb.filestore import FileStorage
         >>> fs = FileStorage("index")
         >>> t = Thesaurus.from_storage(fs)
         >>> t.synonyms("hail")
         ['acclaim', 'come', 'herald']
 
-        :param storage: A :class:`whoosh_reloaded.store.Storage` object from
+        :param storage: A :class:`whoosh.store.Storage` object from
             which to load the index.
         :param indexname: A name for the index. This allows you to
             store multiple indexes in the same storage object.
@@ -213,12 +213,12 @@ class Thesaurus(object):
         """Creates am index in the given storage object from the
         synonyms loaded from a WordNet file.
 
-        >>> from whoosh_reloaded.filedb.filestore import FileStorage
+        >>> from whoosh.filedb.filestore import FileStorage
         >>> fs = FileStorage("index")
         >>> t = Thesaurus.from_filename("wn_s.pl")
         >>> t.to_storage(fs)
 
-        :param storage: A :class:`whoosh_reloaded.store.Storage` object in
+        :param storage: A :class:`whoosh.store.Storage` object in
             which to save the index.
         :param indexname: A name for the index. This allows you to
             store multiple indexes in the same storage object.

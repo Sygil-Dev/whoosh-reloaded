@@ -8,7 +8,7 @@
 
 import re
 
-from whoosh_reloaded.compat import u
+from whoosh.compat import u
 
 vowels = frozenset("AEIOUY")
 slavo_germ_exp = re.compile("W|K|CZ|WITZ")

@@ -25,11 +25,11 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh_reloaded.analysis.filters import Filter
-from whoosh_reloaded.compat import integer_types
-from whoosh_reloaded.lang.dmetaphone import double_metaphone
-from whoosh_reloaded.lang.porter import stem
-from whoosh_reloaded.util.cache import lfu_cache, unbound_cache
+from whoosh.analysis.filters import Filter
+from whoosh.compat import integer_types
+from whoosh.lang.dmetaphone import double_metaphone
+from whoosh.lang.porter import stem
+from whoosh.util.cache import lfu_cache, unbound_cache
 
 
 class StemFilter(Filter):
@@ -52,8 +52,8 @@ class StemFilter(Filter):
 
     >>> stemfilter = StemFilter(lang="ru")
 
-    The list of available languages is in `whoosh_reloaded.lang.languages`.
-    You can use :func:`whoosh_reloaded.lang.has_stemmer` to check if a given language has
+    The list of available languages is in `whoosh.lang.languages`.
+    You can use :func:`whoosh.lang.has_stemmer` to check if a given language has
     a stemming function available.
 
     By default, this class wraps an LRU cache around the stemming function. The
@@ -74,7 +74,7 @@ class StemFilter(Filter):
         """
         :param stemfn: the function to use for stemming.
         :param lang: if not None, overrides the stemfn with a language stemmer
-            from the ``whoosh_reloaded.lang.snowball`` package.
+            from the ``whoosh.lang.snowball`` package.
         :param ignore: a set/list of words that should not be stemmed. This is
             converted into a frozenset. If you omit this argument, all tokens
             are stemmed.
@@ -114,7 +114,7 @@ class StemFilter(Filter):
 
     def clear(self):
         if self.lang:
-            from whoosh_reloaded.lang import stemmer_for_language
+            from whoosh.lang import stemmer_for_language
 
             stemfn = stemmer_for_language(self.lang)
         else:

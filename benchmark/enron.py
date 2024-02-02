@@ -5,14 +5,14 @@ from marshal import dump, load
 from zlib import compress, decompress
 
 try:
-    import xappy
+    import xappy  # type: ignore
 except ImportError:
     pass
 
-from whoosh_reloaded import analysis, fields
-from whoosh_reloaded.compat import urlretrieve, next
-from whoosh_reloaded.support.bench import Bench, Spec
-from whoosh_reloaded.util import now
+from whoosh import analysis, fields
+from whoosh.compat import urlretrieve, next
+from whoosh.support.bench import Bench, Spec
+from whoosh.util import now
 
 
 # Benchmark class
@@ -165,7 +165,7 @@ class Enron(Spec):
         return conn
 
     def zcatalog_setup(self, cat):
-        from zcatalog import indexes
+        from zcatalog import indexes  # type: ignore
 
         for name in ("date", "frm"):
             cat[name] = indexes.FieldIndex(field_name=name)

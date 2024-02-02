@@ -29,14 +29,14 @@ import re
 import sys
 from datetime import datetime, timedelta
 
-from whoosh_reloaded.compat import string_type, iteritems
-from whoosh_reloaded.qparser import plugins, syntax
-from whoosh_reloaded.qparser.taggers import Tagger
-from whoosh_reloaded.support.relativedelta import relativedelta
-from whoosh_reloaded.util.text import rcompile
-from whoosh_reloaded.util.times import adatetime, timespan
-from whoosh_reloaded.util.times import fill_in, is_void, relative_days
-from whoosh_reloaded.util.times import TimeError
+from whoosh.compat import string_type, iteritems
+from whoosh.qparser import plugins, syntax
+from whoosh.qparser.taggers import Tagger
+from whoosh.support.relativedelta import relativedelta
+from whoosh.util.text import rcompile
+from whoosh.util.times import adatetime, timespan
+from whoosh.util.times import fill_in, is_void, relative_days
+from whoosh.util.times import TimeError
 
 
 class DateParseError(Exception):
@@ -803,9 +803,9 @@ class DateParserPlugin(plugins.Plugin):
             against which to measure relative dates. If you do not supply this
             argument, the plugin uses ``datetime.utcnow()``.
         :param dateparser: an instance of
-            :class:`whoosh_reloaded.qparser.dateparse.DateParser`. If you do not supply
+            :class:`whoosh.qparser.dateparse.DateParser`. If you do not supply
             this argument, the plugin automatically uses
-            :class:`whoosh_reloaded.qparser.dateparse.English`.
+            :class:`whoosh.qparser.dateparse.English`.
         :param callback: a callback function for parsing errors. This allows
             you to provide feedback to the user about problems parsing dates.
         :param remove: if True, unparseable dates are removed from the token
@@ -889,7 +889,7 @@ class DateParserPlugin(plugins.Plugin):
         if not schema:
             return group
 
-        from whoosh_reloaded.fields import DATETIME
+        from whoosh.fields import DATETIME
 
         datefields = frozenset(
             fieldname
@@ -926,7 +926,7 @@ class DateTimeNode(syntax.SyntaxNode):
         return repr(self.dt)
 
     def query(self, parser):
-        from whoosh_reloaded import query
+        from whoosh import query
 
         fieldname = self.fieldname or parser.fieldname
         field = parser.schema[fieldname]
@@ -954,7 +954,7 @@ class DateRangeNode(syntax.SyntaxNode):
         return "%r-%r" % (self.start, self.end)
 
     def query(self, parser):
-        from whoosh_reloaded import query
+        from whoosh import query
 
         fieldname = self.fieldname or parser.fieldname
         return query.DateRange(fieldname, self.start, self.end, boost=self.boost)
@@ -966,7 +966,7 @@ class DateTagger(Tagger):
         self.expr = rcompile(expr, re.IGNORECASE)
 
     def match(self, parser, text, pos):
-        from whoosh_reloaded.fields import DATETIME
+        from whoosh.fields import DATETIME
 
         match = self.expr.match(text, pos)
         if match:

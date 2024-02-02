@@ -1,10 +1,10 @@
 from array import array
 
-from whoosh_reloaded.compat import xrange
-from whoosh_reloaded.system import emptybytes
-from whoosh_reloaded.system import pack_byte, unpack_byte
-from whoosh_reloaded.system import pack_ushort_le, unpack_ushort_le
-from whoosh_reloaded.system import pack_uint_le, unpack_uint_le
+from whoosh.compat import xrange
+from whoosh.system import emptybytes
+from whoosh.system import pack_byte, unpack_byte
+from whoosh.system import pack_ushort_le, unpack_ushort_le
+from whoosh.system import pack_uint_le, unpack_uint_le
 
 
 def delta_encode(nums):

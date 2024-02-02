@@ -2,13 +2,13 @@
 
 """This module contains tools for working with Sphinx charset table files. These files
 are useful for doing case and accent folding.
-See :class:`whoosh_reloaded.analysis.CharsetTokenizer` and :class:`whoosh_reloaded.analysis.CharsetFilter`.
+See :class:`whoosh.analysis.CharsetTokenizer` and :class:`whoosh.analysis.CharsetFilter`.
 """
 
 from collections import defaultdict
 import re
 
-from whoosh_reloaded.compat import izip, u, iteritems, unichr, xrange
+from whoosh.compat import izip, u, iteritems, unichr, xrange
 
 # This is a straightforward accent-folding charset taken from Carlos Bueno's
 # article "Accent Folding for Auto-Complete", for use with CharsetFilter.

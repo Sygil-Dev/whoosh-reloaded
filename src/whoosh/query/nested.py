@@ -25,18 +25,18 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh_reloaded import matching
-from whoosh_reloaded.compat import xrange
-from whoosh_reloaded.query import qcore
-from whoosh_reloaded.query.wrappers import WrappingQuery
+from whoosh import matching
+from whoosh.compat import xrange
+from whoosh.query import qcore
+from whoosh.query.wrappers import WrappingQuery
 
 
 class NestedParent(WrappingQuery):
     """A query that allows you to search for "nested" documents, where you can
     index (possibly multiple levels of) "parent" and "child" documents using
-    the :meth:`~whoosh_reloaded.writing.IndexWriter.group` and/or
-    :meth:`~whoosh_reloaded.writing.IndexWriter.start_group` methods of a
-    :class:`whoosh_reloaded.writing.IndexWriter` to indicate that hierarchically related
+    the :meth:`~whoosh.writing.IndexWriter.group` and/or
+    :meth:`~whoosh.writing.IndexWriter.start_group` methods of a
+    :class:`whoosh.writing.IndexWriter` to indicate that hierarchically related
     documents should be kept together::
 
         schema = fields.Schema(type=fields.ID, text=fields.TEXT(stored=True))

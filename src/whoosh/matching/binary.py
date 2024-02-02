@@ -25,7 +25,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh_reloaded.matching import mcore
+from whoosh.matching import mcore
 
 
 class BiMatcher(mcore.Matcher):

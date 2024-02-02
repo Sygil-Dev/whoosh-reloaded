@@ -30,8 +30,8 @@ import os.path
 from optparse import OptionParser
 from shutil import rmtree
 
-from whoosh_reloaded import index, qparser, query, scoring
-from whoosh_reloaded.util import now, find_object
+from whoosh import index, qparser, query, scoring
+from whoosh.util import now, find_object
 
 try:
     import xappy

@@ -27,10 +27,10 @@
 
 import sys
 
-from whoosh_reloaded import query
-from whoosh_reloaded.compat import text_type
-from whoosh_reloaded.qparser import syntax
-from whoosh_reloaded.qparser.common import print_debug, QueryParserError
+from whoosh import query
+from whoosh.compat import text_type
+from whoosh.qparser import syntax
+from whoosh.qparser.common import print_debug, QueryParserError
 
 
 # Query parser object
@@ -45,7 +45,7 @@ class QueryParser(object):
     the default list of plug-ins, and/or use ``add_plugin()`` and/or
     ``remove_plugin_class()`` to change the plug-ins included in the parser.
 
-    >>> from whoosh_reloaded import qparser
+    >>> from whoosh import qparser
     >>> parser = qparser.QueryParser("content", schema)
     >>> parser.remove_plugin_class(qparser.WildcardPlugin)
     >>> parser.add_plugin(qparser.PrefixPlugin())
@@ -65,7 +65,7 @@ class QueryParser(object):
         """
         :param fieldname: the default field -- the parser uses this as the
             field for any terms without an explicit field.
-        :param schema: a :class:`whoosh_reloaded.fields.Schema` object to use when
+        :param schema: a :class:`whoosh.fields.Schema` object to use when
             parsing. The appropriate fields in the schema will be used to
             tokenize terms/phrases before they are turned into query objects.
             You can specify None for the schema to create a parser that does
@@ -75,9 +75,9 @@ class QueryParser(object):
             the default list of plugins. Classes in the list will be
             automatically instantiated.
         :param termclass: the query class to use for individual search terms.
-            The default is :class:`whoosh_reloaded.query.Term`.
+            The default is :class:`whoosh.query.Term`.
         :param phraseclass: the query class to use for phrases. The default
-            is :class:`whoosh_reloaded.query.Phrase`.
+            is :class:`whoosh.query.Phrase`.
         :param group: the default grouping. ``AndGroup`` makes terms required
             by default. ``OrGroup`` makes terms optional by default.
         """
@@ -97,7 +97,7 @@ class QueryParser(object):
     def default_set(self):
         """Returns the default list of plugins to use."""
 
-        from whoosh_reloaded.qparser import plugins
+        from whoosh.qparser import plugins
 
         return [
             # plugins.WhitespacePlugin(),
@@ -128,7 +128,7 @@ class QueryParser(object):
         self.plugins.append(pin)
 
     def _add_ws_plugin(self):
-        from whoosh_reloaded.qparser.plugins import WhitespacePlugin
+        from whoosh.qparser.plugins import WhitespacePlugin
 
         self.add_plugin(WhitespacePlugin())
 
@@ -356,14 +356,14 @@ class QueryParser(object):
         return nodes
 
     def parse(self, text, normalize=True, debug=False):
-        """Parses the input string and returns a :class:`whoosh_reloaded.query.Query`
+        """Parses the input string and returns a :class:`whoosh.query.Query`
         object/tree.
 
         :param text: the unicode string to parse.
         :param normalize: whether to call normalize() on the query object/tree
             before returning it. This should be left on unless you're trying to
             debug the parser output.
-        :rtype: :class:`whoosh_reloaded.query.Query`
+        :rtype: :class:`whoosh.query.Query`
         """
 
         if not isinstance(text, text_type):
@@ -406,7 +406,7 @@ def MultifieldParser(fieldnames, schema, fieldboosts=None, **kwargs):
     :param fieldboosts: an optional dictionary mapping field names to boosts.
     """
 
-    from whoosh_reloaded.qparser.plugins import MultifieldPlugin
+    from whoosh.qparser.plugins import MultifieldPlugin
 
     p = QueryParser(None, schema, **kwargs)
     mfp = MultifieldPlugin(fieldnames, fieldboosts=fieldboosts)
@@ -419,7 +419,7 @@ def SimpleParser(fieldname, schema, **kwargs):
     syntax.
     """
 
-    from whoosh_reloaded.qparser import plugins, syntax
+    from whoosh.qparser import plugins, syntax
 
     pins = [plugins.WhitespacePlugin, plugins.PlusMinusPlugin, plugins.PhrasePlugin]
     orgroup = syntax.OrGroup
@@ -434,7 +434,7 @@ def DisMaxParser(fieldboosts, schema, tiebreak=0.0, **kwargs):
     :param fieldboosts: a dictionary mapping field names to boosts.
     """
 
-    from whoosh_reloaded.qparser import plugins, syntax
+    from whoosh.qparser import plugins, syntax
 
     mfp = plugins.MultifieldPlugin(
         list(fieldboosts.keys()), fieldboosts=fieldboosts, group=syntax.DisMaxGroup

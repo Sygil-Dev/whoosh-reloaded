@@ -1,7 +1,7 @@
 import re
 from bisect import bisect_right
 
-from whoosh_reloaded.compat import text_type, u
+from whoosh.compat import text_type, u
 
 
 # http://unicode.org/Public/UNIDATA/Blocks.txt

@@ -1,9 +1,9 @@
 from __future__ import with_statement, print_function
 import fnmatch, logging, os.path, re
 
-from whoosh_reloaded import analysis, fields, index, qparser, query, scoring
-from whoosh_reloaded.compat import xrange
-from whoosh_reloaded.util import now
+from whoosh import analysis, fields, index, qparser, query, scoring
+from whoosh.compat import xrange
+from whoosh.util import now
 
 
 log = logging.getLogger(__name__)

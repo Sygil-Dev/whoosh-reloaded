@@ -33,16 +33,16 @@ import datetime, fnmatch, re, struct, sys
 from array import array
 from decimal import Decimal
 
-from whoosh_reloaded import analysis, columns, formats
-from whoosh_reloaded.compat import with_metaclass
-from whoosh_reloaded.compat import itervalues, xrange
-from whoosh_reloaded.compat import bytes_type, string_type, text_type
-from whoosh_reloaded.system import emptybytes
-from whoosh_reloaded.system import pack_byte
-from whoosh_reloaded.util.numeric import to_sortable, from_sortable
-from whoosh_reloaded.util.numeric import typecode_max, NaN
-from whoosh_reloaded.util.text import utf8encode, utf8decode
-from whoosh_reloaded.util.times import datetime_to_long, long_to_datetime
+from whoosh import analysis, columns, formats
+from whoosh.compat import with_metaclass
+from whoosh.compat import itervalues, xrange
+from whoosh.compat import bytes_type, string_type, text_type
+from whoosh.system import emptybytes
+from whoosh.system import pack_byte
+from whoosh.util.numeric import to_sortable, from_sortable
+from whoosh.util.numeric import typecode_max, NaN
+from whoosh.util.text import utf8encode, utf8decode
+from whoosh.util.times import datetime_to_long, long_to_datetime
 
 
 # Exceptions
@@ -775,8 +775,8 @@ class NUMERIC(FieldType):
         return True
 
     def parse_query(self, fieldname, qstring, boost=1.0):
-        from whoosh_reloaded import query
-        from whoosh_reloaded.qparser.common import QueryParserError
+        from whoosh import query
+        from whoosh.qparser.common import QueryParserError
 
         if qstring == "*":
             return query.Every(fieldname, boost=boost)
@@ -788,8 +788,8 @@ class NUMERIC(FieldType):
         return query.Term(fieldname, token, boost=boost)
 
     def parse_range(self, fieldname, start, end, startexcl, endexcl, boost=1.0):
-        from whoosh_reloaded import query
-        from whoosh_reloaded.qparser.common import QueryParserError
+        from whoosh import query
+        from whoosh.qparser.common import QueryParserError
 
         if start is not None:
             if not self.is_valid(start):
@@ -843,7 +843,7 @@ class DATETIME(NUMERIC):
         )
 
     def prepare_datetime(self, x):
-        from whoosh_reloaded.util.times import floor
+        from whoosh.util.times import floor
 
         if isinstance(x, text_type):
             # For indexing, support same strings as for query parsing --
@@ -879,7 +879,7 @@ class DATETIME(NUMERIC):
     def _parse_datestring(self, qstring):
         # This method parses a very simple datetime representation of the form
         # YYYY[MM[DD[hh[mm[ss[uuuuuu]]]]]]
-        from whoosh_reloaded.util.times import adatetime, fix, is_void
+        from whoosh.util.times import adatetime, fix, is_void
 
         qstring = qstring.replace(" ", "").replace("-", "").replace(".", "")
         year = month = day = hour = minute = second = microsecond = None
@@ -904,8 +904,8 @@ class DATETIME(NUMERIC):
         return at
 
     def parse_query(self, fieldname, qstring, boost=1.0):
-        from whoosh_reloaded import query
-        from whoosh_reloaded.util.times import is_ambiguous
+        from whoosh import query
+        from whoosh.util.times import is_ambiguous
 
         try:
             at = self._parse_datestring(qstring)
@@ -921,7 +921,7 @@ class DATETIME(NUMERIC):
             return query.Term(fieldname, at, boost=boost)
 
     def parse_range(self, fieldname, start, end, startexcl, endexcl, boost=1.0):
-        from whoosh_reloaded import query
+        from whoosh import query
 
         if start is None and end is None:
             return query.Every(fieldname, boost=boost)
@@ -998,7 +998,7 @@ class BOOLEAN(FieldType):
         return True
 
     def parse_query(self, fieldname, qstring, boost=1.0):
-        from whoosh_reloaded import query
+        from whoosh import query
 
         if qstring == "*":
             return query.Every(fieldname, boost=boost)
@@ -1129,14 +1129,14 @@ class TEXT(FieldType):
             ``spelling_prefix`` keyword argument) to allow spelling suggestions
             to use the unchanged word forms as spelling suggestions.
         :param sortable: If True, make this field sortable using the default
-            column type. If you pass a :class:`whoosh_reloaded.columns.Column` instance
+            column type. If you pass a :class:`whoosh.columns.Column` instance
             instead of True, the field will use the given column type.
         :param lang: automaticaly configure a
-            :class:`whoosh_reloaded.analysis.LanguageAnalyzer` for the given language.
+            :class:`whoosh.analysis.LanguageAnalyzer` for the given language.
             This is ignored if you also specify an ``analyzer``.
         :param vector: if this value evaluates to true, store a list of the
             terms in this field in each document. If the value is an instance
-            of :class:`whoosh_reloaded.formats.Format`, the index will use the object to
+            of :class:`whoosh.formats.Format`, the index will use the object to
             store the term vector. Any other true value (e.g. ``vector=True``)
             will use the field's index format to store the term vector as well.
         """
@@ -1278,7 +1278,7 @@ class NGRAM(FieldType):
         return True
 
     def parse_query(self, fieldname, qstring, boost=1.0):
-        from whoosh_reloaded import query
+        from whoosh import query
 
         terms = []
         for g in self.process_text(qstring, mode="query"):
@@ -1317,7 +1317,7 @@ class NGRAMWORDS(NGRAM):
             document. Since this field type generally contains a lot of text,
             you should avoid storing it with the document unless you need to,
             for example to allow fast excerpts in the search results.
-        :param tokenizer: an instance of :class:`whoosh_reloaded.analysis.Tokenizer`
+        :param tokenizer: an instance of :class:`whoosh.analysis.Tokenizer`
             used to break the text into words.
         :param at: if 'start', only takes N-grams from the start of the word.
             If 'end', only takes N-grams from the end. Otherwise the default
@@ -1638,7 +1638,7 @@ class SchemaClass(with_metaclass(MetaSchema, Schema)):
     ...
     >>> s = MySchema()
     >>> type(s)
-    <class 'whoosh_reloaded.fields.Schema'>
+    <class 'whoosh.fields.Schema'>
 
     """
 
