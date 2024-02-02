@@ -1,12 +1,17 @@
 # encoding: utf-8
 
 from __future__ import with_statement
+
 import random
 
-from whoosh.compat import b, range, iteritems
+from whoosh.compat import b, iteritems, range
 from whoosh.filedb.filestore import RamStorage
-from whoosh.filedb.filetables import HashReader, HashWriter
-from whoosh.filedb.filetables import OrderedHashWriter, OrderedHashReader
+from whoosh.filedb.filetables import (
+    HashReader,
+    HashWriter,
+    OrderedHashReader,
+    OrderedHashWriter,
+)
 from whoosh.util.testing import TempStorage
 
 
@@ -199,8 +204,9 @@ def test_extras():
 
 
 def test_checksum_file():
-    from whoosh.filedb.structfile import ChecksumFile
     from zlib import crc32
+
+    from whoosh.filedb.structfile import ChecksumFile
 
     def wr(f):
         f.write(b("Testing"))
