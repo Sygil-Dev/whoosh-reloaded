@@ -4,10 +4,10 @@ from __future__ import with_statement
 
 import pytest
 
-from whoosh_reloaded import analysis, fields, qparser
-from whoosh_reloaded.compat import b, u, unichr
-from whoosh_reloaded.compat import dumps
-from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh import analysis, fields, qparser
+from whoosh.compat import b, u, unichr
+from whoosh.compat import dumps
+from whoosh.filedb.filestore import RamStorage
 
 
 def test_regextokenizer():
@@ -256,7 +256,7 @@ def test_shingles():
 
 
 def test_unicode_blocks():
-    from whoosh_reloaded.support.unicode import blocks, blockname, blocknum
+    from whoosh.support.unicode import blocks, blockname, blocknum
 
     assert blockname(u("a")) == "Basic Latin"
     assert blockname(unichr(0x0B80)) == "Tamil"
@@ -269,7 +269,7 @@ def test_unicode_blocks():
 
 
 def test_double_metaphone():
-    from whoosh_reloaded.lang.dmetaphone import double_metaphone
+    from whoosh.lang.dmetaphone import double_metaphone
 
     names = {
         "maurice": ("MRS", None),
@@ -360,7 +360,7 @@ def test_delimited_attribute():
 
 
 def test_porter2():
-    from whoosh_reloaded.lang.porter2 import stem
+    from whoosh.lang.porter2 import stem
 
     plurals = [
         "caresses",
@@ -476,7 +476,7 @@ def test_name_field():
 
 
 def test_start_pos():
-    from whoosh_reloaded import formats
+    from whoosh import formats
 
     ana = analysis.RegexTokenizer(r"\S+") | analysis.LowercaseFilter()
     kw = {"positions": True}
@@ -562,7 +562,7 @@ def test_la_pickleability():
 
 
 def test_charset_pickeability():
-    from whoosh_reloaded.support import charset
+    from whoosh.support import charset
 
     charmap = charset.charset_table_to_dict(charset.default_charset)
     ana = analysis.StandardAnalyzer() | analysis.CharsetFilter(charmap)

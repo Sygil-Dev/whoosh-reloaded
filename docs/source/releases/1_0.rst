@@ -71,7 +71,7 @@ Whoosh 1.7.7
 ============
 
 Setting a TEXT field to store term vectors is now much easier. Instead of
-having to pass an instantiated whoosh_reloaded.formats.Format object to the vector=
+having to pass an instantiated whoosh.formats.Format object to the vector=
 keyword argument, you can pass True to automatically use the same format and
 analyzer as the inverted index. Alternatively, you can pass a Format subclass
 and Whoosh will instantiate it for you.
@@ -79,14 +79,14 @@ and Whoosh will instantiate it for you.
 For example, to store term vectors using the same settings as the inverted
 index (Positions format and StandardAnalyzer)::
 
-    from whoosh_reloaded.fields import Schema, TEXT
+    from whoosh.fields import Schema, TEXT
 
     schema = Schema(content=TEXT(vector=True))
 
 To store term vectors that use the same analyzer as the inverted index
 (StandardAnalyzer by default) but only store term frequency::
 
-    from whoosh_reloaded.formats import Frequency
+    from whoosh.formats import Frequency
 
     schema = Schema(content=TEXT(vector=Frequency))
 
@@ -94,13 +94,13 @@ Note that currently the only place term vectors are used in Whoosh is keyword
 extraction/more like this, but they can be useful for expert users with custom
 code.
 
-Added :meth:` whoosh_reloaded.searching.Searcher.more_like` and
-:meth:` whoosh_reloaded.searching.Hit.more_like_this` methods, as shortcuts for doing
+Added :meth:` whoosh.searching.Searcher.more_like` and
+:meth:` whoosh.searching.Hit.more_like_this` methods, as shortcuts for doing
 keyword extraction yourself. Return a Results object.
 
 "python setup.py test" works again, as long as you have nose installed.
 
-The :meth:` whoosh_reloaded.searching.Searcher.sort_query_using` method lets you sort documents matching a given query using an arbitrary function. Note that like "complex" searching with the Sorter object, this can be slow on large multi-segment indexes.
+The :meth:` whoosh.searching.Searcher.sort_query_using` method lets you sort documents matching a given query using an arbitrary function. Note that like "complex" searching with the Sorter object, this can be slow on large multi-segment indexes.
 
 
 Whoosh 1.7
@@ -110,9 +110,9 @@ You can once again perform complex sorting of search results (that is, a sort
 with some fields ascending and some fields descending).
 
 You can still use the ``sortedby`` keyword argument to
-:meth:` whoosh_reloaded.searching.Searcher.search` to do a simple sort (where all fields
+:meth:` whoosh.searching.Searcher.search` to do a simple sort (where all fields
 are sorted in the same direction), or you can use the new
-:class:`~ whoosh_reloaded.sorting.Sorter` class to do a simple or complex sort::
+:class:`~ whoosh.sorting.Sorter` class to do a simple or complex sort::
 
     searcher = myindex.searcher()
     sorter = searcher.sorter()
@@ -123,19 +123,19 @@ are sorted in the same direction), or you can use the new
     # Get the Results
     results = sorter.sort_query(myquery)
 
-See the documentation for the :class:`~ whoosh_reloaded.sorting.Sorter` class for more
+See the documentation for the :class:`~ whoosh.sorting.Sorter` class for more
 information. Bear in mind that complex sorts will be much slower on large
 indexes because they can't use the per-segment field caches.
 
 You can now get highlighted snippets for a hit automatically using
-:meth:` whoosh_reloaded.searching.Hit.highlights`::
+:meth:` whoosh.searching.Hit.highlights`::
 
     results = searcher.search(myquery, limit=20)
     for hit in results:
         print hit["title"]
         print hit.highlights("content")
 
-See :meth:` whoosh_reloaded.searching.Hit.highlights` for more information.
+See :meth:` whoosh.searching.Hit.highlights` for more information.
 
 Added the ability to filter search results so that only hits in a Results
 set, a set of docnums, or matching a query are returned. The filter is
@@ -148,12 +148,12 @@ cached on the searcher.
     results = searcher.search(userquery, filter=query.Term("chapter", "basics"))
 
 You can now specify a time limit for a search. If the search does not finish
-in the given time, a :class:` whoosh_reloaded.searching.TimeLimit` exception is raised,
+in the given time, a :class:` whoosh.searching.TimeLimit` exception is raised,
 but you can still retrieve the partial results from the collector. See the
 ``timelimit`` and ``greedy`` arguments in the
-:class:` whoosh_reloaded.searching.Collector` documentation.
+:class:` whoosh.searching.Collector` documentation.
 
-Added back the ability to set :class:` whoosh_reloaded.analysis.StemFilter` to use an
+Added back the ability to set :class:` whoosh.analysis.StemFilter` to use an
 unlimited cache. This is useful for one-shot batch indexing (see
 :doc:`../batch`).
 
@@ -180,8 +180,8 @@ correctly. The change alters the semantics of certain parsing "corner cases"
 Whoosh 1.6
 ==========
 
-The `` whoosh_reloaded.writing.BatchWriter`` class is now called
-:class:` whoosh_reloaded.writing.BufferedWriter`. It is similar to the old ``BatchWriter``
+The `` whoosh.writing.BatchWriter`` class is now called
+:class:` whoosh.writing.BufferedWriter`. It is similar to the old ``BatchWriter``
 class but allows you to search and update the buffered documents as well as the
 documents that have been flushed to disk::
 
@@ -198,26 +198,26 @@ documents that have been flushed to disk::
 
 (BatchWriter is still available as an alias for backwards compatibility.)
 
-The :class:` whoosh_reloaded.qparser.QueryParser` initialization method now requires a
+The :class:` whoosh.qparser.QueryParser` initialization method now requires a
 schema as the second argument. Previously the default was to create a
 ``QueryParser`` without a schema, which was confusing::
 
     qp = qparser.QueryParser("content", myindex.schema)
 
-The :meth:` whoosh_reloaded.searching.Searcher.search` method now takes a ``scored``
+The :meth:` whoosh.searching.Searcher.search` method now takes a ``scored``
 keyword. If you search with ``scored=False``, the results will be in "natural"
 order (the order the documents were added to the index). This is useful when
 you don't need scored results but want the convenience of the Results object.
 
-Added the :class:` whoosh_reloaded.qparser.GtLtPlugin` parser plugin to allow greater
+Added the :class:` whoosh.qparser.GtLtPlugin` parser plugin to allow greater
 than/less as an alternative syntax for ranges::
 
     count:>100 tag:<=zebra date:>='29 march 2001'
 
 Added the ability to define schemas declaratively, similar to Django models::
 
-    from whoosh_reloaded import index
-    from whoosh_reloaded.fields import SchemaClass, ID, KEYWORD, STORED, TEXT
+    from whoosh import index
+    from whoosh.fields import SchemaClass, ID, KEYWORD, STORED, TEXT
 
     class MySchema(SchemaClass):
         uuid = ID(stored=True, unique=True)
@@ -227,14 +227,14 @@ Added the ability to define schemas declaratively, similar to Django models::
 
     index.create_in("indexdir", MySchema)
 
-Whoosh 1.6.2: Added :class:` whoosh_reloaded.searching.TermTrackingCollector` which tracks
+Whoosh 1.6.2: Added :class:` whoosh.searching.TermTrackingCollector` which tracks
 which part of the query matched which documents in the final results.
 
-Replaced the unbounded cache in :class:` whoosh_reloaded.analysis.StemFilter` with a
+Replaced the unbounded cache in :class:` whoosh.analysis.StemFilter` with a
 bounded LRU (least recently used) cache. This will make stemming analysis
 slightly slower but prevent it from eating up too much memory over time.
 
-Added a simple :class:` whoosh_reloaded.analysis.PyStemmerFilter` that works when the
+Added a simple :class:` whoosh.analysis.PyStemmerFilter` that works when the
 py-stemmer library is installed::
 
     ana = RegexTokenizer() | PyStemmerFilter("spanish")
@@ -243,8 +243,8 @@ The estimation of memory usage for the ``limitmb`` keyword argument to
 ``FileIndex.writer()`` is more accurate, which should help keep memory usage
 memory usage by the sorting pool closer to the limit.
 
-The `` whoosh_reloaded.ramdb`` package was removed and replaced with a single
-`` whoosh_reloaded.ramindex`` module.
+The `` whoosh.ramdb`` package was removed and replaced with a single
+`` whoosh.ramindex`` module.
 
 Miscellaneous bug fixes.
 
@@ -272,13 +272,13 @@ deals with a "term" that when analyzed generates multiple tokens. The default
 value is `"first"` which throws away all but the first token (the previous
 behavior). Other possible values are `"and"`, `"or"`, or `"phrase"`.
 
-Added :class:` whoosh_reloaded.analysis.DoubleMetaphoneFilter`,
-:class:` whoosh_reloaded.analysis.SubstitutionFilter`, and
-:class:` whoosh_reloaded.analysis.ShingleFilter`.
+Added :class:` whoosh.analysis.DoubleMetaphoneFilter`,
+:class:` whoosh.analysis.SubstitutionFilter`, and
+:class:` whoosh.analysis.ShingleFilter`.
 
-Added :class:` whoosh_reloaded.qparser.CopyFieldPlugin`.
+Added :class:` whoosh.qparser.CopyFieldPlugin`.
 
-Added :class:` whoosh_reloaded.query.Otherwise`.
+Added :class:` whoosh.query.Otherwise`.
 
 Generalized parsing of operators (such as OR, AND, NOT, etc.) in the query
 parser to make it easier to add new operators. In intend to add a better API
@@ -289,7 +289,7 @@ representations of numbers.
 
 Fixed a bug in the porter2 stemmer when stemming the string `"y"`.
 
-Added methods to :class:` whoosh_reloaded.searching.Hit` to make it more like a `dict`.
+Added methods to :class:` whoosh.searching.Hit` to make it more like a `dict`.
 
 Short posting lists (by default, single postings) are inline in the term file
 instead of written to the posting file for faster retrieval and a small saving
@@ -327,48 +327,48 @@ Faster indexing and ability to use multiple processors (via ``multiprocessing``
 module) to speed up indexing.
 
 Flexible Schema: you can now add and remove fields in an index with the
-:meth:` whoosh_reloaded.writing.IndexWriter.add_field` and
-:meth:` whoosh_reloaded.writing.IndexWriter.remove_field` methods.
+:meth:` whoosh.writing.IndexWriter.add_field` and
+:meth:` whoosh.writing.IndexWriter.remove_field` methods.
 
 New hand-written query parser based on plug-ins. Less brittle, more robust,
 more flexible, and easier to fix/improve than the old pyparsing-based parser.
 
 On-disk formats now use 64-bit disk pointers allowing files larger than 4 GB.
 
-New :class:` whoosh_reloaded.searching.Facets` class efficiently sorts results into
+New :class:` whoosh.searching.Facets` class efficiently sorts results into
 facets based on any criteria that can be expressed as queries, for example
 tags or price ranges.
 
-New :class:` whoosh_reloaded.writing.BatchWriter` class automatically batches up
+New :class:` whoosh.writing.BatchWriter` class automatically batches up
 individual ``add_document`` and/or ``delete_document`` calls until a certain
 number of calls or a certain amount of time passes, then commits them all at
 once.
 
-New :class:` whoosh_reloaded.analysis.BiWordFilter` lets you create bi-word indexed
+New :class:` whoosh.analysis.BiWordFilter` lets you create bi-word indexed
 fields a possible alternative to phrase searching.
 
 Fixed bug where files could be deleted before a reader could open them  in
 threaded situations.
 
-New :class:` whoosh_reloaded.analysis.NgramFilter` filter,
-:class:` whoosh_reloaded.analysis.NgramWordAnalyzer` analyzer, and
-:class:` whoosh_reloaded.fields.NGRAMWORDS` field type allow producing n-grams from
+New :class:` whoosh.analysis.NgramFilter` filter,
+:class:` whoosh.analysis.NgramWordAnalyzer` analyzer, and
+:class:` whoosh.fields.NGRAMWORDS` field type allow producing n-grams from
 tokenized text.
 
-Errors in query parsing now raise a specific `` whoosh_reloaded.qparse.QueryParserError``
+Errors in query parsing now raise a specific `` whoosh.qparse.QueryParserError``
 exception instead of a generic exception.
 
 Previously, the query string ``*`` was optimized to a
-:class:` whoosh_reloaded.query.Every` query which matched every document. Now the
+:class:` whoosh.query.Every` query which matched every document. Now the
 ``Every`` query only matches documents that actually have an indexed term from
 the given field, to better match the intuitive sense of what a query string like
 ``tag:*`` should do.
 
-New :meth:` whoosh_reloaded.searching.Searcher.key_terms_from_text` method lets you
+New :meth:` whoosh.searching.Searcher.key_terms_from_text` method lets you
 extract key words from arbitrary text instead of documents in the index.
 
-Previously the :meth:` whoosh_reloaded.searching.Searcher.key_terms` and
-:meth:` whoosh_reloaded.searching.Results.key_terms` methods required that the given
+Previously the :meth:` whoosh.searching.Searcher.key_terms` and
+:meth:` whoosh.searching.Results.key_terms` methods required that the given
 field store term vectors. They now also work if the given field is stored
 instead. They will analyze the stored string into a term vector on-the-fly.
 The field must still be indexed.
@@ -378,7 +378,7 @@ User API changes
 ================
 
 The default for the ``limit`` keyword argument to
-:meth:` whoosh_reloaded.searching.Searcher.search` is now ``10``. To return all results
+:meth:` whoosh.searching.Searcher.search` is now ``10``. To return all results
 in a single ``Results`` object, use ``limit=None``.
 
 The ``Index`` object no longer represents a snapshot of the index at the time
@@ -390,9 +390,9 @@ created.
 Because the ``Index`` object no longer represents the index at a specific
 version, several methods such as ``up_to_date`` and ``refresh`` were removed
 from its interface. The Searcher object now has
-:meth:`~ whoosh_reloaded.searching.Searcher.last_modified`,
-:meth:`~ whoosh_reloaded.searching.Searcher.up_to_date`, and
-:meth:`~ whoosh_reloaded.searching.Searcher.refresh` methods similar to those that used to
+:meth:`~ whoosh.searching.Searcher.last_modified`,
+:meth:`~ whoosh.searching.Searcher.up_to_date`, and
+:meth:`~ whoosh.searching.Searcher.refresh` methods similar to those that used to
 be on ``Index``.
 
 The document deletion and field add/remove methods on the ``Index`` object now
@@ -417,8 +417,8 @@ The ``postlimit`` argument to ``Index.writer()`` has been changed to
 
     writer = myindex.writer(postlimitmb=128)
 
-Instead of having to import `` whoosh_reloaded.filedb.filewriting.NO_MERGE`` or
-`` whoosh_reloaded.filedb.filewriting.OPTIMIZE`` to use as arguments to ``commit()``, you
+Instead of having to import `` whoosh.filedb.filewriting.NO_MERGE`` or
+`` whoosh.filedb.filewriting.OPTIMIZE`` to use as arguments to ``commit()``, you
 can now simply do the following::
 
     # Do not merge segments
@@ -429,7 +429,7 @@ can now simply do the following::
     # Merge all segments
     writer.commit(optimize=True)
 
-The `` whoosh_reloaded.postings`` module is gone. The `` whoosh_reloaded.matching`` module contains
+The `` whoosh.postings`` module is gone. The `` whoosh.matching`` module contains
 classes for posting list readers.
 
 Whoosh no longer maps field names to numbers for internal use or writing to
@@ -439,7 +439,7 @@ instead.
 Custom Weighting implementations that use the ``final()`` method must now
 set the ``use_final`` attribute to ``True``::
 
-    from whoosh_reloaded.scoring import BM25F
+    from whoosh.scoring import BM25F
 
     class MyWeighting(BM25F):
         use_final = True
@@ -450,7 +450,7 @@ set the ``use_final`` attribute to ``True``::
 This disables the new optimizations, forcing Whoosh to score every matching
 document.
 
-:class:` whoosh_reloaded.writing.AsyncWriter` now takes an :class:` whoosh_reloaded.index.Index`
+:class:` whoosh.writing.AsyncWriter` now takes an :class:` whoosh.index.Index`
 object as its first argument, not a callable. Also, the keyword arguments to
 pass to the index's ``writer()`` method should now be passed as a dictionary
 using the ``writerargs`` keyword argument.
@@ -464,11 +464,11 @@ argument representing the default to return if the given document and field
 do not have a length (i.e. the field is not scored or the field was not
 provided for the given document).
 
-The :class:` whoosh_reloaded.analysis.StopFilter` now has a ``maxsize`` argument as well
+The :class:` whoosh.analysis.StopFilter` now has a ``maxsize`` argument as well
 as a ``minsize`` argument to its initializer. Analyzers that use the
 ``StopFilter`` have the ``maxsize`` argument in their initializers now also.
 
-The interface of :class:` whoosh_reloaded.writing.AsyncWriter` has changed.
+The interface of :class:` whoosh.writing.AsyncWriter` has changed.
 
 
 Misc

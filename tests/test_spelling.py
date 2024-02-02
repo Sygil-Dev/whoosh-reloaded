@@ -1,11 +1,11 @@
 from __future__ import with_statement
 import gzip
 
-from whoosh_reloaded import analysis, fields, highlight, query, spelling
-from whoosh_reloaded.compat import u
-from whoosh_reloaded.qparser import QueryParser
-from whoosh_reloaded.support.levenshtein import levenshtein
-from whoosh_reloaded.util.testing import TempIndex
+from whoosh import analysis, fields, highlight, query, spelling
+from whoosh.compat import u
+from whoosh.qparser import QueryParser
+from whoosh.support.levenshtein import levenshtein
+from whoosh.util.testing import TempIndex
 
 
 _wordlist = sorted(
@@ -297,7 +297,7 @@ def test_prefix_address():
 
 
 def test_correct_correct():
-    from whoosh_reloaded import qparser
+    from whoosh import qparser
 
     schema = fields.Schema(a=fields.TEXT())
     with TempIndex(schema) as ix:
@@ -357,7 +357,7 @@ def test_very_long_words():
 #         assert not r.has_word_graph("text1")
 #         assert not r.has_word_graph("text2")
 #
-#     from whoosh_reloaded.writing import add_spelling
+#     from whoosh.writing import add_spelling
 #     add_spelling(ix, ["text1", "text2"])
 #
 #     with ix.reader() as r:

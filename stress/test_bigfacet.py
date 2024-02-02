@@ -4,8 +4,8 @@ import os.path
 import random
 import string
 
-from whoosh_reloaded import fields, formats, index, query, sorting
-from whoosh_reloaded.util import now
+from whoosh import fields, formats, index, query, sorting
+from whoosh.util import now
 
 tagcount = 100
 doccount = 500000

@@ -3,34 +3,34 @@ import copy
 
 import pytest
 
-from whoosh_reloaded import fields, qparser, query
-from whoosh_reloaded.compat import b, u
-from whoosh_reloaded.filedb.filestore import RamStorage
-from whoosh_reloaded.qparser import QueryParser
-from whoosh_reloaded.query import And
-from whoosh_reloaded.query import AndMaybe
-from whoosh_reloaded.query import ConstantScoreQuery
-from whoosh_reloaded.query import DateRange
-from whoosh_reloaded.query import DisjunctionMax
-from whoosh_reloaded.query import Every
-from whoosh_reloaded.query import FuzzyTerm
-from whoosh_reloaded.query import Not
-from whoosh_reloaded.query import NullQuery
-from whoosh_reloaded.query import NumericRange
-from whoosh_reloaded.query import Or
-from whoosh_reloaded.query import Phrase
-from whoosh_reloaded.query import Prefix
-from whoosh_reloaded.query import Require
-from whoosh_reloaded.query import Term
-from whoosh_reloaded.query import TermRange
-from whoosh_reloaded.query import Variations
-from whoosh_reloaded.query import Wildcard
-from whoosh_reloaded.query.spans import SpanContains
-from whoosh_reloaded.query.spans import SpanFirst
-from whoosh_reloaded.query.spans import SpanNear
-from whoosh_reloaded.query.spans import SpanNot
-from whoosh_reloaded.query.spans import SpanOr
-from whoosh_reloaded.util.testing import TempIndex
+from whoosh import fields, qparser, query
+from whoosh.compat import b, u
+from whoosh.filedb.filestore import RamStorage
+from whoosh.qparser import QueryParser
+from whoosh.query import And
+from whoosh.query import AndMaybe
+from whoosh.query import ConstantScoreQuery
+from whoosh.query import DateRange
+from whoosh.query import DisjunctionMax
+from whoosh.query import Every
+from whoosh.query import FuzzyTerm
+from whoosh.query import Not
+from whoosh.query import NullQuery
+from whoosh.query import NumericRange
+from whoosh.query import Or
+from whoosh.query import Phrase
+from whoosh.query import Prefix
+from whoosh.query import Require
+from whoosh.query import Term
+from whoosh.query import TermRange
+from whoosh.query import Variations
+from whoosh.query import Wildcard
+from whoosh.query.spans import SpanContains
+from whoosh.query.spans import SpanFirst
+from whoosh.query.spans import SpanNear
+from whoosh.query.spans import SpanNot
+from whoosh.query.spans import SpanOr
+from whoosh.util.testing import TempIndex
 
 
 def test_all_terms():

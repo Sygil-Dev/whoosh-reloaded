@@ -6,12 +6,12 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from whoosh_reloaded import analysis, fields, index, qparser, query, scoring
-from whoosh_reloaded.codec.whoosh_reloaded3 import W3Codec
-from whoosh_reloaded.compat import b, u, text_type
-from whoosh_reloaded.compat import xrange, permutations, izip_longest
-from whoosh_reloaded.filedb.filestore import RamStorage
-from whoosh_reloaded.util.testing import TempIndex
+from whoosh import analysis, fields, index, qparser, query, scoring
+from whoosh.codec.whoosh3 import W3Codec
+from whoosh.compat import b, u, text_type
+from whoosh.compat import range, permutations, izip_longest
+from whoosh.filedb.filestore import RamStorage
+from whoosh.util.testing import TempIndex
 
 
 def make_index():
@@ -112,7 +112,7 @@ def test_ors():
 
     with ix.searcher() as s:
         qs = [query.Term("text", word) for word in domain]
-        for i in xrange(1, len(domain)):
+        for i in range(1, len(domain)):
             q = query.Or(qs[:i])
             r1 = [(hit.docnum, hit.score) for hit in s.search(q, limit=None)]
 
@@ -372,7 +372,7 @@ def test_open_numeric_ranges():
 
 def test_open_date_ranges():
     basedate = datetime(2011, 1, 24, 6, 25, 0, 0)
-    domain = [basedate + timedelta(days=n) for n in xrange(-20, 20)]
+    domain = [basedate + timedelta(days=n) for n in range(-20, 20)]
 
     schema = fields.Schema(date=fields.DATETIME(stored=True))
     ix = RamStorage().create_index(schema)
@@ -397,7 +397,7 @@ def test_open_date_ranges():
         assert r == target
 
         # With date parser
-        from whoosh_reloaded.qparser.dateparse import DateParserPlugin
+        from whoosh.qparser.dateparse import DateParserPlugin
 
         qp.add_plugin(DateParserPlugin(basedate))
 
@@ -747,7 +747,7 @@ def test_short_prefix():
 
 
 def test_weighting():
-    from whoosh_reloaded.scoring import Weighting, BaseScorer
+    from whoosh.scoring import Weighting, BaseScorer
 
     schema = fields.Schema(id=fields.ID(stored=True), n_comments=fields.STORED)
     st = RamStorage()
@@ -861,7 +861,7 @@ def test_missing_wildcard():
 
 
 def test_finalweighting():
-    from whoosh_reloaded.scoring import Frequency
+    from whoosh.scoring import Frequency
 
     schema = fields.Schema(
         id=fields.ID(stored=True), summary=fields.TEXT, n_comments=fields.STORED
@@ -1311,7 +1311,7 @@ def test_pos_scorer():
 #     schema = fields.Schema(id=fields.STORED, text=fields.TEXT)
 #     ix = RamStorage().create_index(schema)
 #     with ix.writer() as w:
-#         for i in xrange(200):
+#         for i in range(200):
 #             text = u("a%s" % i)
 #             w.add_document(id=i, text=text)
 #
@@ -1322,11 +1322,11 @@ def test_pos_scorer():
 #         m = q.matcher(s)
 #         assert m.supports("positions")
 #         items = list(m.items_as("positions"))
-#         assert [(i, [0]) for i in xrange(200)] == items
+#         assert [(i, [0]) for i in range(200)] == items
 
 
 def test_collapse():
-    from whoosh_reloaded import collectors
+    from whoosh import collectors
 
     # id, text, size, tag
     domain = [
@@ -1379,7 +1379,7 @@ def test_collapse():
 
 
 def test_collapse_nocolumn():
-    from whoosh_reloaded import collectors
+    from whoosh import collectors
 
     # id, text, size, tag
     domain = [
@@ -1501,7 +1501,7 @@ def test_collapse_length_nocolumn():
 
 
 def test_collapse_order():
-    from whoosh_reloaded import sorting
+    from whoosh import sorting
 
     schema = fields.Schema(
         id=fields.STORED,
@@ -1540,7 +1540,7 @@ def test_collapse_order():
 
 
 def test_collapse_order_nocolumn():
-    from whoosh_reloaded import sorting
+    from whoosh import sorting
 
     schema = fields.Schema(
         id=fields.STORED,
@@ -1579,7 +1579,7 @@ def test_collapse_order_nocolumn():
 
 
 def test_coord():
-    from whoosh_reloaded.matching import CoordMatcher
+    from whoosh.matching import CoordMatcher
 
     schema = fields.Schema(id=fields.STORED, hits=fields.STORED, tags=fields.KEYWORD)
     ix = RamStorage().create_index(schema)
@@ -1646,7 +1646,7 @@ def test_groupedby_with_terms():
 
 
 def test_buffered_refresh():
-    from whoosh_reloaded import writing
+    from whoosh import writing
 
     schema = fields.Schema(foo=fields.ID())
     ix = RamStorage().create_index(schema)

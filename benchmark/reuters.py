@@ -1,8 +1,8 @@
 import gzip, os.path
 
-from whoosh_reloaded import analysis, fields, index, qparser, query
-from whoosh_reloaded.support.bench import Bench, Spec
-from whoosh_reloaded.util import now
+from whoosh import analysis, fields, index, qparser, query
+from whoosh.support.bench import Bench, Spec
+from whoosh.util import now
 
 
 class Reuters(Spec):
@@ -22,7 +22,7 @@ class Reuters(Spec):
         return schema
 
     def zcatalog_setup(self, cat):
-        from zcatalog import indexes  # @UnresolvedImport
+        from zcatalog import indexes  # type: ignore @UnresolvedImport
 
         cat["id"] = indexes.FieldIndex(field_name="id")
         cat["headline"] = indexes.TextIndex(field_name="headline")

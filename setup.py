@@ -3,7 +3,7 @@
 import os.path
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 
 try:
@@ -12,7 +12,7 @@ except ImportError:
     pytest = None
 
 sys.path.insert(0, os.path.abspath("src"))
-from whoosh_reloaded import versionstring
+from whoosh import versionstring
 
 
 class PyTest(TestCommand):

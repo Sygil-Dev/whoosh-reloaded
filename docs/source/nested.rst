@@ -13,7 +13,7 @@ hierarchy, such as "Chapter - Section - Paragraph" or
 
 You can specify parent-child relationships *at indexing time*, by grouping
 documents in the same hierarchy, and then use the
-:class:` whoosh_reloaded.query.NestedParent` and/or :class:`whoosh_reloaded.query.NestedChildren`
+:class:` whoosh.query.NestedParent` and/or :class:`whoosh.query.NestedChildren`
 to find parents based on their children or vice-versa.
 
 Alternatively, you can use *query time joins*, essentially like external key
@@ -80,7 +80,7 @@ find parents based on children or vice-versa.
 NestedParent query
 ------------------
 
-The :class:` whoosh_reloaded.query.NestedParent` query type lets you specify a query for
+The :class:` whoosh.query.NestedParent` query type lets you specify a query for
 child documents, but have the query return an "ancestor" document from higher
 in the hierarchy::
 
@@ -124,7 +124,7 @@ no matter how many children match). This parent lookup is very efficient::
 NestedChildren query
 --------------------
 
-The opposite of ``NestedParent`` is :class:` whoosh_reloaded.query.NestedChildren`. This
+The opposite of ``NestedParent`` is :class:` whoosh.query.NestedChildren`. This
 query lets you match parents but return their children. This is useful, for
 example, to search for an album title and return the songs in the album::
 

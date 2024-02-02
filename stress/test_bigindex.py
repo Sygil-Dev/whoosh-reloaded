@@ -2,10 +2,10 @@ from __future__ import with_statement
 
 import random
 
-from whoosh_reloaded import fields
-from whoosh_reloaded.compat import xrange, text_type, u
-from whoosh_reloaded.util.testing import TempIndex
-from whoosh_reloaded.util import now
+from whoosh import fields
+from whoosh.compat import range, text_type, u
+from whoosh.util.testing import TempIndex
+from whoosh.util import now
 
 
 def test_20000_single():
@@ -27,7 +27,7 @@ def test_20000_single():
         ]
 
         t = now()
-        for i in xrange(20000):
+        for i in range(20000):
             w = ix.writer()
             w.add_document(id=text_type(i), text=u(" ").join(random.sample(domain, 5)))
             w.commit()
@@ -39,7 +39,7 @@ def test_20000_single():
 
 
 def test_20000_buffered():
-    from whoosh_reloaded.writing import BufferedWriter
+    from whoosh.writing import BufferedWriter
 
     sc = fields.Schema(id=fields.ID(stored=True), text=fields.TEXT)
     with TempIndex(sc, "20000buffered") as ix:
@@ -60,7 +60,7 @@ def test_20000_buffered():
 
         t = now()
         w = BufferedWriter(ix, limit=100, period=None)
-        for i in xrange(20000):
+        for i in range(20000):
             w.add_document(id=text_type(i), text=u(" ").join(random.sample(domain, 5)))
         w.close()
         print("Write buffered:", now() - t)
@@ -90,7 +90,7 @@ def test_20000_batch():
 
         t = now()
         w = ix.writer()
-        for i in xrange(20000):
+        for i in range(20000):
             w.add_document(id=text_type(i), text=u(" ").join(random.sample(domain, 5)))
             if not i % 100:
                 w.commit()

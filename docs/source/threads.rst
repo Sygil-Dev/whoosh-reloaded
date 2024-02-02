@@ -24,12 +24,12 @@ Locking
 
 Only one thread/process can write to an index at a time. When you open a writer,
 it locks the index. If you try to open a writer on the same index in another
-thread/process, it will raise `` whoosh_reloaded.store.LockError``.
+thread/process, it will raise `` whoosh.store.LockError``.
 
 In a multi-threaded or multi-process environment your code needs to be aware
 that opening a writer may raise this exception if a writer is already open.
 Whoosh includes a couple of example implementations
-(:class:` whoosh_reloaded.writing.AsyncWriter` and :class:` whoosh_reloaded.writing.BufferedWriter`)
+(:class:` whoosh.writing.AsyncWriter` and :class:` whoosh.writing.BufferedWriter`)
 of ways to work around the write lock.
 
 While the writer is open and during the commit, **the index is still available
@@ -56,9 +56,9 @@ always sees the index as it existed when the reader was opened.
 
 If you are re-using a Searcher across multiple search requests, you can check
 whether the Searcher is a view of the latest version of the index using
-:meth:` whoosh_reloaded.searching.Searcher.up_to_date`. If the searcher is not up to date,
+:meth:` whoosh.searching.Searcher.up_to_date`. If the searcher is not up to date,
 you can get an up-to-date copy of the searcher using
-:meth:` whoosh_reloaded.searching.Searcher.refresh`::
+:meth:` whoosh.searching.Searcher.refresh`::
 
     # If 'searcher' is not up-to-date, replace it
     searcher = searcher.refresh()

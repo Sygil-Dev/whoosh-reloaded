@@ -1,9 +1,9 @@
 from __future__ import with_statement
 
-from whoosh_reloaded import fields, query, sorting
-from whoosh_reloaded.compat import u
-from whoosh_reloaded.filedb.filestore import RamStorage
-from whoosh_reloaded.util.testing import TempIndex
+from whoosh import fields, query, sorting
+from whoosh.compat import u
+from whoosh.filedb.filestore import RamStorage
+from whoosh.util.testing import TempIndex
 
 
 def test_nested_parent():
@@ -285,7 +285,7 @@ def test_no_parents():
 
 
 def test_parent_score_fn():
-    from whoosh_reloaded.scoring import Frequency
+    from whoosh.scoring import Frequency
 
     schema = fields.Schema(
         name=fields.ID(unique=True, stored=True), keys=fields.TEXT, type=fields.ID

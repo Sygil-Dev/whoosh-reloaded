@@ -2,7 +2,7 @@
 ``writing`` module
 ==================
 
-.. automodule:: whoosh_reloaded.writing
+.. automodule:: whoosh.writing
 
 
 Writer

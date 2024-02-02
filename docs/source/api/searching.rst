@@ -2,7 +2,7 @@
 ``searching`` module
 ====================
 
-.. automodule:: whoosh_reloaded.searching
+.. automodule:: whoosh.searching
 
 
 Searching classes

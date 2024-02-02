@@ -2,11 +2,11 @@ from __future__ import with_statement
 from datetime import datetime, timedelta
 import random
 
-from whoosh_reloaded import fields, query, sorting, columns
-from whoosh_reloaded.compat import u
-from whoosh_reloaded.compat import permutations, xrange
-from whoosh_reloaded.filedb.filestore import RamStorage
-from whoosh_reloaded.util.testing import TempIndex
+from whoosh import fields, query, sorting, columns
+from whoosh.compat import u
+from whoosh.compat import permutations, range
+from whoosh.filedb.filestore import RamStorage
+from whoosh.util.testing import TempIndex
 
 
 try:
@@ -60,7 +60,7 @@ def make_single_index(ix):
 
 
 def make_multi_index(ix):
-    for i in xrange(0, len(docs), 3):
+    for i in range(0, len(docs), 3):
         w = ix.writer()
         for doc in docs[i : i + 3]:
             w.add_document(ev=u("a"), **doc)
@@ -418,7 +418,7 @@ def test_daterange_facet():
 
 
 def test_relative_daterange():
-    from whoosh_reloaded.support.relativedelta import relativedelta
+    from whoosh.support.relativedelta import relativedelta
 
     dt = datetime
 
@@ -572,7 +572,7 @@ def test_sort_filter():
     groups = u("alfa bravo charlie").split()
     keys = u("abcdefghijklmnopqrstuvwxyz")
     source = []
-    for i in xrange(100):
+    for i in range(100):
         key = keys[i % len(keys)]
         group = groups[i % len(groups)]
         source.append({"key": key, "group": group})
@@ -991,7 +991,7 @@ def test_add_sortable():
 
 
 def test_missing_column():
-    from whoosh_reloaded import collectors
+    from whoosh import collectors
 
     schema = fields.Schema(id=fields.STORED, tags=fields.KEYWORD)
     ix = RamStorage().create_index(schema)
@@ -1045,7 +1045,7 @@ def test_compound_sort():
     assert all(len(ls) == 10 for ls in (alist, blist, clist))
 
     with ix.writer() as w:
-        for i in xrange(10):
+        for i in range(10):
             w.add_document(a=alist[i], b=blist[i], c=clist[i])
 
     with ix.searcher() as s:
@@ -1076,7 +1076,7 @@ def test_compound_sort():
 
 
 def test_column_scoring():
-    from whoosh_reloaded import scoring
+    from whoosh import scoring
 
     # "sortable=True" on the "id" field tells it to build a column store
     # of field values. If you didn't ever need to actually search on this field,

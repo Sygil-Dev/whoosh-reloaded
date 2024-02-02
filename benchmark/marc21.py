@@ -1,9 +1,9 @@
 from __future__ import with_statement, print_function
 import fnmatch, logging, os.path, re
 
-from whoosh_reloaded import analysis, fields, index, qparser, query, scoring
-from whoosh_reloaded.compat import xrange
-from whoosh_reloaded.util import now
+from whoosh import analysis, fields, index, qparser, query, scoring
+from whoosh.compat import range
+from whoosh.util import now
 
 
 log = logging.getLogger(__name__)
@@ -59,7 +59,7 @@ def parse_record(data, tags=None):
     field_count = (dirend - dirstart) // DIRECTORY_ENTRY_LEN
 
     result = {}
-    for i in xrange(field_count):
+    for i in range(field_count):
         start = dirstart + i * DIRECTORY_ENTRY_LEN
         end = start + DIRECTORY_ENTRY_LEN
         tag = data[start : start + 3]

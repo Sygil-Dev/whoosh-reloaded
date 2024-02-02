@@ -1,7 +1,7 @@
 import os.path, gzip
 
-from whoosh_reloaded import analysis, fields
-from whoosh_reloaded.support.bench import Bench, Spec
+from whoosh import analysis, fields
+from whoosh.support.bench import Bench, Spec
 
 
 class VulgarTongue(Spec):
@@ -35,7 +35,7 @@ class VulgarTongue(Spec):
         return schema
 
     def zcatalog_setup(self, cat):
-        from zcatalog import indexes  # @UnresolvedImport
+        from zcatalog import indexes  # type: ignore @UnresolvedImport
 
         cat["head"] = indexes.FieldIndex(field_name="head")
         cat["body"] = indexes.TextIndex(field_name="body")

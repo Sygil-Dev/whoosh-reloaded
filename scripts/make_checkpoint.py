@@ -7,8 +7,8 @@ from __future__ import print_function, with_statement
 import os.path, random, sys
 from datetime import datetime
 
-from whoosh_reloaded import fields, index
-from whoosh_reloaded.compat import u, xrange
+from whoosh import fields, index
+from whoosh.compat import u, range
 
 
 if len(sys.argv) < 2:
@@ -44,7 +44,7 @@ for segnum in range(3):
         for num in range(100):
             frac += 0.15
             path = u("%s/%s" % (segnum, num))
-            title = " ".join(random.choice(words) for _ in xrange(100))
+            title = " ".join(random.choice(words) for _ in range(100))
             dt = datetime(year=2000 + counter, month=(counter % 12) + 1, day=15)
 
             w.add_document(

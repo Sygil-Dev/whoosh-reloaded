@@ -1,6 +1,6 @@
-from whoosh_reloaded import analysis, fields, query
-from whoosh_reloaded.compat import u, text_type
-from whoosh_reloaded.qparser import default, plugins
+from whoosh import analysis, fields, query
+from whoosh.compat import u, text_type
+from whoosh.qparser import default, plugins
 
 
 def test_whitespace():
@@ -1115,7 +1115,7 @@ def test_quoted_prefix():
 
 
 def test_multitoken_with_factory():
-    from whoosh_reloaded.qparser.syntax import OrGroup
+    from whoosh.qparser.syntax import OrGroup
 
     schema = fields.Schema(title=fields.TEXT)
 

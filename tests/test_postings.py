@@ -1,12 +1,12 @@
 from __future__ import with_statement
 
-from whoosh_reloaded import analysis, fields
-from whoosh_reloaded.compat import u
-from whoosh_reloaded.codec import default_codec
-from whoosh_reloaded.formats import Existence, Frequency
-from whoosh_reloaded.formats import Positions, PositionBoosts
-from whoosh_reloaded.formats import Characters, CharacterBoosts
-from whoosh_reloaded.util.testing import TempStorage
+from whoosh import analysis, fields
+from whoosh.compat import u
+from whoosh.codec import default_codec
+from whoosh.formats import Existence, Frequency
+from whoosh.formats import Positions, PositionBoosts
+from whoosh.formats import Characters, CharacterBoosts
+from whoosh.util.testing import TempStorage
 
 
 def _roundtrip(content, format_, astype, ana=None):
