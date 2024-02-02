@@ -90,14 +90,14 @@ class BitVector(object):
     
     def __iter__(self):
         get = self.__getitem__
-        for i in xrange(0, self.size):
+        for i in range(0, self.size):
             if get(i):
                 yield i
     
     def __str__(self):
         get = self.__getitem__
         return "".join("1" if get(i) else "0"
-                       for i in xrange(0, self.size)) 
+                       for i in range(0, self.size)) 
     
     def __nonzero__(self):
         return self.count() > 0
@@ -147,7 +147,7 @@ class BitVector(object):
         return self._logic(operator.__xor__, other)
     
     def __invert__(self):
-        return BitVector(self.size, source=(x for x in xrange(self.size) if x not in self))
+        return BitVector(self.size, source=(x for x in range(self.size) if x not in self))
     
     def count(self):
         """Returns the number of "on" bits in the bit array."""

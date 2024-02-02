@@ -34,7 +34,7 @@ import random
 from collections import defaultdict
 from math import log
 
-from whoosh.compat import xrange, iteritems
+from whoosh.compat import range, iteritems
 
 
 # Expansion models
@@ -211,7 +211,7 @@ class Expander(object):
 
 def shingles(input, size=2):
     d = defaultdict(int)
-    for shingle in (input[i : i + size] for i in xrange(len(input) - (size - 1))):
+    for shingle in (input[i : i + size] for i in range(len(input) - (size - 1))):
         d[shingle] += 1
     return iteritems(d)
 
@@ -225,7 +225,7 @@ def simhash(features, hashbits=32):
     vs = [0] * hashbits
     for feature, weight in features:
         h = hashfn(feature)
-        for i in xrange(hashbits):
+        for i in range(hashbits):
             if h & (1 << i):
                 vs[i] += weight
             else:
@@ -307,14 +307,14 @@ def kmeans(data, k, t=0.0001, distfun=None, maxiter=50, centers=None):
         error = 0
 
         # clear old counts and temp centroids
-        for i in xrange(k):
+        for i in range(k):
             counts[i] = 0
             c1[i] = 0
 
-        for h in xrange(n):
+        for h in range(n):
             # identify the closest cluster
             min_distance = DOUBLE_MAX
-            for i in xrange(k):
+            for i in range(k):
                 distance = (data[h] - c[i]) ** 2
                 if distance < min_distance:
                     labels[h] = i
@@ -326,7 +326,7 @@ def kmeans(data, k, t=0.0001, distfun=None, maxiter=50, centers=None):
             # update standard error
             error += min_distance
 
-        for i in xrange(k):  # update all centroids
+        for i in range(k):  # update all centroids
             c[i] = c1[i] / counts[i] if counts[i] else c1[i]
 
         niter += 1

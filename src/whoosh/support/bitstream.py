@@ -11,6 +11,7 @@ from whoosh.system import _LONG_SIZE
 
 _bitsperlong = _LONG_SIZE * 8
 
+
 class BitStreamReader(object):
     def __init__(self, source):
         self._totalbits = len(source) * _bitsperlong
@@ -33,14 +34,14 @@ class BitStreamReader(object):
         position = self._position
 
         if position < 0 or position + numbits > self._totalbits:
-            raise IndexError, "Invalid bitarray._position/numbits"
+            raise (IndexError, "Invalid bitarray._position/numbits")
 
         longaddress, bitoffset = divmod(position, _bitsperlong)
 
         # We may read bits in the final word after ones we care
         # about, so create a mask to remove them later.
 
-        finalmask = (1L << numbits) - 1
+        finalmask = (1 << numbits) - 1
 
         # We may read bits in the first word before the ones we
         # care about, so bump the total bits to read by this
@@ -50,7 +51,7 @@ class BitStreamReader(object):
 
         # Read and concatenate every long containing a bit we need
 
-        outval, outshift = 0L, 0
+        outval, outshift = 0, 0
         while numbits > 0:
             outval += self._bitstream[longaddress] << outshift
             longaddress += 1
@@ -67,5 +68,3 @@ class BitStreamReader(object):
         # off the high-order bits we don't want.
 
         return (outval >> bitoffset) & finalmask
-
-

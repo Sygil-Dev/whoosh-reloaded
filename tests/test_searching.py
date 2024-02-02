@@ -9,7 +9,7 @@ import pytest
 from whoosh import analysis, fields, index, qparser, query, scoring
 from whoosh.codec.whoosh3 import W3Codec
 from whoosh.compat import b, u, text_type
-from whoosh.compat import xrange, permutations, izip_longest
+from whoosh.compat import range, permutations, izip_longest
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
@@ -112,7 +112,7 @@ def test_ors():
 
     with ix.searcher() as s:
         qs = [query.Term("text", word) for word in domain]
-        for i in xrange(1, len(domain)):
+        for i in range(1, len(domain)):
             q = query.Or(qs[:i])
             r1 = [(hit.docnum, hit.score) for hit in s.search(q, limit=None)]
 
@@ -372,7 +372,7 @@ def test_open_numeric_ranges():
 
 def test_open_date_ranges():
     basedate = datetime(2011, 1, 24, 6, 25, 0, 0)
-    domain = [basedate + timedelta(days=n) for n in xrange(-20, 20)]
+    domain = [basedate + timedelta(days=n) for n in range(-20, 20)]
 
     schema = fields.Schema(date=fields.DATETIME(stored=True))
     ix = RamStorage().create_index(schema)
@@ -1311,7 +1311,7 @@ def test_pos_scorer():
 #     schema = fields.Schema(id=fields.STORED, text=fields.TEXT)
 #     ix = RamStorage().create_index(schema)
 #     with ix.writer() as w:
-#         for i in xrange(200):
+#         for i in range(200):
 #             text = u("a%s" % i)
 #             w.add_document(id=i, text=text)
 #
@@ -1322,7 +1322,7 @@ def test_pos_scorer():
 #         m = q.matcher(s)
 #         assert m.supports("positions")
 #         items = list(m.items_as("positions"))
-#         assert [(i, [0]) for i in xrange(200)] == items
+#         assert [(i, [0]) for i in range(200)] == items
 
 
 def test_collapse():

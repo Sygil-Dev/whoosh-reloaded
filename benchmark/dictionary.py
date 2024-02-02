@@ -35,7 +35,7 @@ class VulgarTongue(Spec):
         return schema
 
     def zcatalog_setup(self, cat):
-        from zcatalog import indexes  # @UnresolvedImport
+        from zcatalog import indexes  # type: ignore @UnresolvedImport
 
         cat["head"] = indexes.FieldIndex(field_name="head")
         cat["body"] = indexes.TextIndex(field_name="body")

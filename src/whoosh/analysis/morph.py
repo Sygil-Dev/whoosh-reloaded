@@ -180,7 +180,7 @@ class PyStemmerFilter(StemFilter):
         library.
         """
 
-        import Stemmer  # @UnresolvedImport
+        import Stemmer  # type: ignore @UnresolvedImport
 
         return Stemmer.algorithms()
 
@@ -188,7 +188,7 @@ class PyStemmerFilter(StemFilter):
         return None
 
     def _get_stemmer_fn(self):
-        import Stemmer  # @UnresolvedImport
+        import Stemmer  # type: ignore @UnresolvedImport
 
         stemmer = Stemmer.Stemmer(self.lang)
         stemmer.maxCacheSize = self.cachesize

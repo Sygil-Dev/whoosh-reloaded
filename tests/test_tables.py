@@ -3,7 +3,7 @@
 from __future__ import with_statement
 import random
 
-from whoosh.compat import b, xrange, iteritems
+from whoosh.compat import b, range, iteritems
 from whoosh.filedb.filestore import RamStorage
 from whoosh.filedb.filetables import HashReader, HashWriter
 from whoosh.filedb.filetables import OrderedHashWriter, OrderedHashReader
@@ -99,7 +99,7 @@ def test_random_hash():
         return b(s)
 
     with TempStorage("randomhash") as st:
-        samp = dict((randstring(), randstring()) for _ in xrange(times))
+        samp = dict((randstring(), randstring()) for _ in range(times))
 
         hw = HashWriter(st.create_file("test.hsh"))
         for k, v in iteritems(samp):
@@ -118,7 +118,7 @@ def test_random_access():
     times = 1000
     with TempStorage("orderedhash") as st:
         hw = HashWriter(st.create_file("test.hsh"))
-        hw.add_all((b("%08x" % x), b(str(x))) for x in xrange(times))
+        hw.add_all((b("%08x" % x), b(str(x))) for x in range(times))
         hw.close()
 
         keys = list(range(times))

@@ -297,7 +297,7 @@ def byte_to_float(b, mantissabits=5, zeroexp=2):
 #    return int(round(log((length / 27.0) + 1, 1.033)))
 # def _byte_to_length(n):
 #    return int(round((pow(1.033, n) - 1) * 27))
-# _b2l_cache = array("i", (_byte_to_length(i) for i in xrange(256)))
+# _b2l_cache = array("i", (_byte_to_length(i) for i in range(256)))
 # byte_to_length = _b2l_cache.__getitem__
 
 # New implementation

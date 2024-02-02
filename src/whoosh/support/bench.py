@@ -320,10 +320,10 @@ class SolrModule(Module):
 
 class ZcatalogModule(Module):
     def indexer(self, **kwargs):
-        from ZODB.FileStorage import FileStorage  # type: ignore # @UnresolvedImport
-        from ZODB.DB import DB  # type: ignore # @UnresolvedImport
-        from zcatalog import catalog  # type: ignore # @UnresolvedImport
-        import transaction  # type: ignore # @UnresolvedImport
+        from ZODB.FileStorage import FileStorage  # type: ignore # type: ignore @UnresolvedImport
+        from ZODB.DB import DB  # type: ignore # type: ignore @UnresolvedImport
+        from zcatalog import catalog  # type: ignore # type: ignore @UnresolvedImport
+        import transaction  # type: ignore # type: ignore @UnresolvedImport
 
         dir = os.path.join(self.options.dir, "%s_zcatalog" % self.options.indexname)
         if os.path.exists(dir):
@@ -348,20 +348,20 @@ class ZcatalogModule(Module):
         self.cat.index_doc(doc)
         self.zcatalog_count += 1
         if self.zcatalog_count >= 100:
-            import transaction  # type: ignore # @UnresolvedImport
+            import transaction  # type: ignore # type: ignore @UnresolvedImport
 
             transaction.commit()
             self.zcatalog_count = 0
 
     def finish(self, **kwargs):
-        import transaction  # type: ignore # @UnresolvedImport
+        import transaction  # type: ignore # type: ignore @UnresolvedImport
 
         transaction.commit()
         del self.zcatalog_count
 
     def searcher(self):
-        from ZODB.FileStorage import FileStorage  # type: ignore # @UnresolvedImport
-        from ZODB.DB import DB  # type: ignore # @UnresolvedImport
+        from ZODB.FileStorage import FileStorage  # type: ignore # type: ignore @UnresolvedImport
+        from ZODB.DB import DB  # type: ignore # type: ignore @UnresolvedImport
 
         path = os.path.join(
             self.options.dir, "%s_zcatalog" % self.options.indexname, "index"
@@ -393,7 +393,7 @@ class ZcatalogModule(Module):
 class NucularModule(Module):
     def indexer(self, create=True):
         import shutil
-        from nucular import Nucular  # type: ignore # @UnresolvedImport
+        from nucular import Nucular  # type: ignore # type: ignore @UnresolvedImport
 
         dir = os.path.join(self.options.dir, "%s_nucular" % self.options.indexname)
         if create:
@@ -424,7 +424,7 @@ class NucularModule(Module):
         self.archive.cleanUp()
 
     def searcher(self):
-        from nucular import Nucular  # type: ignore # @UnresolvedImport
+        from nucular import Nucular  # type: ignore # type: ignore @UnresolvedImport
 
         dir = os.path.join(self.options.dir, "%s_nucular" % self.options.indexname)
         self.archive = Nucular.Nucular(dir)

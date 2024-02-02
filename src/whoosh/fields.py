@@ -35,7 +35,7 @@ from decimal import Decimal
 
 from whoosh import analysis, columns, formats
 from whoosh.compat import with_metaclass
-from whoosh.compat import itervalues, xrange
+from whoosh.compat import itervalues
 from whoosh.compat import bytes_type, string_type, text_type
 from whoosh.system import emptybytes
 from whoosh.system import pack_byte
@@ -696,7 +696,7 @@ class NUMERIC(FieldType):
 
         # word, freq, weight, valuestring
         if self.shift_step:
-            for shift in xrange(0, self.bits, self.shift_step):
+            for shift in range(0, self.bits, self.shift_step):
                 yield (self.to_bytes(num, shift), 1, 1.0, emptybytes)
         else:
             yield (self.to_bytes(num), 1, 1.0, emptybytes)
@@ -1340,7 +1340,6 @@ class ReverseField(FieldWrapper):
     def __init__(self, subfield, prefix="rev_"):
         FieldWrapper.__init__(self, subfield, prefix)
         self.analyzer = subfield.analyzer | analysis.ReverseTextFilter()
-        self.format = BasicFormat(lengths=False, weights=False)
 
         self.scorable = False
         self.set_sortable(False)
@@ -1679,6 +1678,6 @@ def merge_schema(s1, s2):
 
 def merge_schemas(schemas):
     schema = schemas[0]
-    for i in xrange(1, len(schemas)):
+    for i in range(1, len(schemas)):
         schema = merge_schema(schema, schemas[i])
     return schema

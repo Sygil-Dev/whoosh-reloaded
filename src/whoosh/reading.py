@@ -36,7 +36,7 @@ from cached_property import cached_property
 
 from whoosh import columns
 from whoosh.compat import abstractmethod
-from whoosh.compat import xrange, zip_, next, iteritems
+from whoosh.compat import zip_, next, iteritems
 from whoosh.filedb.filestore import OverlayStorage
 from whoosh.matching import MultiMatcher
 from whoosh.support.levenshtein import distance
@@ -322,7 +322,7 @@ class IndexReader(object):
 
         is_deleted = self.is_deleted
         return (
-            docnum for docnum in xrange(self.doc_count_all()) if not is_deleted(docnum)
+            docnum for docnum in range(self.doc_count_all()) if not is_deleted(docnum)
         )
 
     def iter_docs(self):
@@ -353,7 +353,7 @@ class IndexReader(object):
         """Yields the stored fields for all non-deleted documents."""
 
         is_deleted = self.is_deleted
-        for docnum in xrange(self.doc_count_all()):
+        for docnum in range(self.doc_count_all()):
             if not is_deleted(docnum):
                 yield self.stored_fields(docnum)
 

@@ -28,7 +28,7 @@
 from ast import literal_eval
 
 from whoosh.compat import b, bytes_type, text_type, integer_types, PY3
-from whoosh.compat import iteritems, dumps, loads, xrange
+from whoosh.compat import iteritems, dumps, loads, range
 from whoosh.codec import base
 from whoosh.matching import ListMatcher
 from whoosh.reading import TermInfo, TermNotFound
@@ -106,7 +106,7 @@ class LineReader(object):
         parts = line.split("\t")
         command = parts[0]
         args = {}
-        for i in xrange(1, len(parts)):
+        for i in range(1, len(parts)):
             n, v = parts[i].split("=")
             args[n] = literal_eval(v)
         return (indent, command, args)

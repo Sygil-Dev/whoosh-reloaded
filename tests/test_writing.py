@@ -4,7 +4,7 @@ import random, time, threading
 import pytest
 
 from whoosh import analysis, fields, query, writing
-from whoosh.compat import b, u, xrange, text_type
+from whoosh.compat import b, u, range, text_type
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
@@ -25,7 +25,7 @@ def test_no_stored():
         )
 
         w = ix.writer()
-        for i in xrange(20):
+        for i in range(20):
             w.add_document(id=text_type(i), text=" ".join(random.sample(domain, 5)))
         w.commit()
 
@@ -52,7 +52,7 @@ def test_asyncwriter():
         # Simulate doing 20 (near-)simultaneous commits. If we weren't using
         # AsyncWriter, at least some of these would fail because the first
         # writer wouldn't be finished yet.
-        for i in xrange(20):
+        for i in range(20):
             w = writing.AsyncWriter(ix)
             writers.append(w)
             w.add_document(id=text_type(i), text=" ".join(random.sample(domain, 5)))
@@ -87,7 +87,7 @@ def test_asyncwriter_no_stored():
         # Simulate doing 20 (near-)simultaneous commits. If we weren't using
         # AsyncWriter, at least some of these would fail because the first
         # writer wouldn't be finished yet.
-        for i in xrange(20):
+        for i in range(20):
             w = writing.AsyncWriter(ix)
             writers.append(w)
             w.add_document(id=text_type(i), text=" ".join(random.sample(domain, 5)))
@@ -106,7 +106,7 @@ def test_asyncwriter_no_stored():
 def test_updates():
     schema = fields.Schema(id=fields.ID(unique=True, stored=True))
     ix = RamStorage().create_index(schema)
-    for _ in xrange(10):
+    for _ in range(10):
         with ix.writer() as w:
             w.update_document(id="a")
     assert ix.doc_count() == 1
@@ -121,7 +121,7 @@ def test_buffered():
         w = writing.BufferedWriter(
             ix, period=None, limit=10, commitargs={"merge": False}
         )
-        for i in xrange(20):
+        for i in range(20):
             w.add_document(id=text_type(i), text=" ".join(random.sample(domain, 5)))
         time.sleep(0.1)
         w.close()
@@ -160,7 +160,7 @@ def test_buffered_update():
     )
     with TempIndex(schema, "bufferedupdate") as ix:
         w = writing.BufferedWriter(ix, period=None, limit=5)
-        for i in xrange(10):
+        for i in range(10):
             for char in "abc":
                 fs = dict(id=char, payload=text_type(i) + char)
                 w.update_document(**fs)
@@ -186,11 +186,11 @@ def test_buffered_threads():
 
         class SimWriter(threading.Thread):
             def run(self):
-                for _ in xrange(5):
+                for _ in range(5):
                     w.update_document(name=random.choice(domain))
                     time.sleep(random.uniform(0.01, 0.1))
 
-        threads = [SimWriter() for _ in xrange(5)]
+        threads = [SimWriter() for _ in range(5)]
         for thread in threads:
             thread.start()
         for thread in threads:

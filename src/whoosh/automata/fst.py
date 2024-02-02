@@ -41,10 +41,10 @@ use in (at least) spell checking.
 
 import sys, copy
 from array import array
-from hashlib import sha1  # @UnresolvedImport
+from hashlib import sha1  # type: ignore @UnresolvedImport
 
 from whoosh.compat import b, u, BytesIO
-from whoosh.compat import xrange, iteritems, iterkeys, izip, array_tobytes
+from whoosh.compat import range, iteritems, iterkeys, izip, array_tobytes
 from whoosh.compat import bytes_type, text_type
 from whoosh.filedb.structfile import StructFile
 from whoosh.system import _INT_SIZE
@@ -72,9 +72,9 @@ MULTIBYTE_LABEL = 32
 
 # FST Value types
 
+
 class Values(object):
-    """Base for classes the describe how to encode and decode FST values.
-    """
+    """Base for classes the describe how to encode and decode FST values."""
 
     @staticmethod
     def is_valid(v):
@@ -106,29 +106,25 @@ class Values(object):
 
     @staticmethod
     def subtract(v, prefix):
-        """Subtracts the "common" part (the prefix) from the given value.
-        """
+        """Subtracts the "common" part (the prefix) from the given value."""
 
         raise NotImplementedError
 
     @staticmethod
     def write(dbfile, v):
-        """Writes value v to a file.
-        """
+        """Writes value v to a file."""
 
         raise NotImplementedError
 
     @staticmethod
     def read(dbfile):
-        """Reads a value from the given file.
-        """
+        """Reads a value from the given file."""
 
         raise NotImplementedError
 
     @classmethod
     def skip(cls, dbfile):
-        """Skips over a value in the given file.
-        """
+        """Skips over a value in the given file."""
 
         cls.read(dbfile)
 
@@ -148,8 +144,7 @@ class Values(object):
 
 
 class IntValues(Values):
-    """Stores integer values in an FST.
-    """
+    """Stores integer values in an FST."""
 
     @staticmethod
     def is_valid(v):
@@ -197,11 +192,10 @@ class IntValues(Values):
 
 
 class SequenceValues(Values):
-    """Abstract base class for value types that store sequences.
-    """
+    """Abstract base class for value types that store sequences."""
 
     @staticmethod
-    def is_valid(v):
+    def is_valid(self, v):
         return isinstance(self, (list, tuple))
 
     @staticmethod
@@ -241,7 +235,7 @@ class SequenceValues(Values):
             return None
         if len(v) < len(prefix) or len(prefix) == 0:
             raise ValueError((v, prefix))
-        return v[len(prefix):]
+        return v[len(prefix) :]
 
     @staticmethod
     def write(dbfile, v):
@@ -253,8 +247,7 @@ class SequenceValues(Values):
 
 
 class BytesValues(SequenceValues):
-    """Stores bytes objects (str in Python 2.x) in an FST.
-    """
+    """Stores bytes objects (str in Python 2.x) in an FST."""
 
     @staticmethod
     def is_valid(v):
@@ -281,8 +274,7 @@ class BytesValues(SequenceValues):
 
 
 class ArrayValues(SequenceValues):
-    """Stores array.array objects in an FST.
-    """
+    """Stores array.array objects in an FST."""
 
     def __init__(self, typecode):
         self.typecode = typecode
@@ -322,7 +314,7 @@ class IntListValues(SequenceValues):
         if isinstance(v, (list, tuple)):
             if len(v) < 2:
                 return True
-            for i in xrange(1, len(v)):
+            for i in range(1, len(v)):
                 if not isinstance(v[i], int) or v[i] < v[i - 1]:
                     return False
             return True
@@ -344,7 +336,7 @@ class IntListValues(SequenceValues):
         result = []
         if length > 0:
             base = 0
-            for _ in xrange(length):
+            for _ in range(length):
                 base += dbfile.read_varint()
                 result.append(base)
         return result
@@ -355,6 +347,7 @@ class IntListValues(SequenceValues):
 
 
 # Node-like interface wrappers
+
 
 class Node(object):
     """A slow but easier-to-use wrapper for FSA/DAWGs. Translates the low-level
@@ -383,8 +376,10 @@ class Node(object):
         if self.address is None:
             d = {}
         else:
-            d = dict((arc.label, Node(owner, arc.target, arc.accept))
-                     for arc in self.owner.iter_arcs(self.address))
+            d = dict(
+                (arc.label, Node(owner, arc.target, arc.accept))
+                for arc in self.owner.iter_arcs(self.address)
+            )
         self._edges = d
 
     def keys(self):
@@ -440,8 +435,7 @@ class ComboNode(Node):
 
 
 class UnionNode(ComboNode):
-    """Makes two graphs appear to be the union of the two graphs.
-    """
+    """Makes two graphs appear to be the union of the two graphs."""
 
     def edge(self, key):
         a = self.a
@@ -455,8 +449,7 @@ class UnionNode(ComboNode):
 
 
 class IntersectionNode(ComboNode):
-    """Makes two graphs appear to be the intersection of the two graphs.
-    """
+    """Makes two graphs appear to be the intersection of the two graphs."""
 
     def edge(self, key):
         a = self.a
@@ -466,6 +459,7 @@ class IntersectionNode(ComboNode):
 
 
 # Cursor
+
 
 class BaseCursor(object):
     """Base class for a cursor-type object for navigating an FST/word graph,
@@ -486,8 +480,7 @@ class BaseCursor(object):
         raise NotImplementedError
 
     def label(self):
-        """Returns the label bytes of the current arc.
-        """
+        """Returns the label bytes of the current arc."""
 
         raise NotImplementedError
 
@@ -525,8 +518,7 @@ class BaseCursor(object):
             yield c.label()
 
     def peek_key_bytes(self):
-        """Returns the next closest key in the graph as a single bytes object.
-        """
+        """Returns the next closest key in the graph as a single bytes object."""
 
         return emptybytes.join(self.peek_key())
 
@@ -538,14 +530,12 @@ class BaseCursor(object):
         return utf8decode(self.peek_key_bytes())[0]
 
     def stopped(self):
-        """Returns True if the current arc leads to a stop state.
-        """
+        """Returns True if the current arc leads to a stop state."""
 
         raise NotImplementedError
 
     def value(self):
-        """Returns the value at the current arc, if reading an FST.
-        """
+        """Returns the value at the current arc, if reading an FST."""
 
         raise NotImplementedError
 
@@ -564,20 +554,17 @@ class BaseCursor(object):
         raise NotImplementedError
 
     def next_arc(self):
-        """Moves to the next outgoing arc from the previous node.
-        """
+        """Moves to the next outgoing arc from the previous node."""
 
         raise NotImplementedError
 
     def follow(self):
-        """Follows the current arc.
-        """
+        """Follows the current arc."""
 
         raise NotImplementedError
 
     def switch_to(self, label):
-        """Switch to the sibling arc with the given label bytes.
-        """
+        """Switch to the sibling arc with the given label bytes."""
 
         _label = self.label
         _at_last_arc = self.at_last_arc
@@ -592,8 +579,7 @@ class BaseCursor(object):
             _next_arc()
 
     def skip_to(self, key):
-        """Moves the cursor to the path represented by the given key bytes.
-        """
+        """Moves the cursor to the path represented by the given key bytes."""
 
         _accept = self.accept
         _prefix = self.prefix
@@ -610,8 +596,7 @@ class BaseCursor(object):
             _next_arc()
 
     def flatten(self):
-        """Yields the keys in the graph, starting at the current position.
-        """
+        """Yields the keys in the graph, starting at the current position."""
 
         _is_active = self.is_active
         _accept = self.accept
@@ -901,11 +886,18 @@ class Arc(object):
     previous node.
     """
 
-    __slots__ = ("label", "target", "accept", "value", "lastarc", "acceptval",
-                 "endpos")
+    __slots__ = ("label", "target", "accept", "value", "lastarc", "acceptval", "endpos")
 
-    def __init__(self, label=None, target=None, value=None, accept=False,
-                 acceptval=None, lastarc=None, endpos=None):
+    def __init__(
+        self,
+        label=None,
+        target=None,
+        value=None,
+        accept=False,
+        acceptval=None,
+        lastarc=None,
+        endpos=None,
+    ):
         """
         :param label: The label bytes for this arc. For a word graph, this will
             be a character.
@@ -926,25 +918,40 @@ class Arc(object):
         self.endpos = endpos
 
     def __repr__(self):
-        return "<%r-%s %s%s>" % (self.label, self.target,
-                                 "." if self.accept else "",
-                                 (" %r" % self.value) if self.value else "")
+        return "<%r-%s %s%s>" % (
+            self.label,
+            self.target,
+            "." if self.accept else "",
+            (" %r" % self.value) if self.value else "",
+        )
 
     def __eq__(self, other):
-        if (isinstance(other, self.__class__) and self.accept == other.accept
-            and self.lastarc == other.lastarc and self.target == other.target
-            and self.value == other.value and self.label == other.label):
+        if (
+            isinstance(other, self.__class__)
+            and self.accept == other.accept
+            and self.lastarc == other.lastarc
+            and self.target == other.target
+            and self.value == other.value
+            and self.label == other.label
+        ):
             return True
         return False
 
     def copy(self):
         # This is faster than using the copy module
-        return Arc(label=self.label, target=self.target, value=self.value,
-                   accept=self.accept, acceptval=self.acceptval,
-                   lastarc=self.lastarc, endpos=self.endpos)
+        return Arc(
+            label=self.label,
+            target=self.target,
+            value=self.value,
+            accept=self.accept,
+            acceptval=self.acceptval,
+            lastarc=self.lastarc,
+            endpos=self.endpos,
+        )
 
 
 # Graph writer
+
 
 class GraphWriter(object):
     """Writes an FSA/FST graph to disk.
@@ -999,8 +1006,7 @@ class GraphWriter(object):
         self._infield = False
 
     def start_field(self, fieldname):
-        """Starts a new graph for the given field.
-        """
+        """Starts a new graph for the given field."""
 
         if not fieldname:
             raise ValueError("Field name cannot be equivalent to False")
@@ -1009,13 +1015,12 @@ class GraphWriter(object):
         self.fieldname = fieldname
         self.seen = {}
         self.nodes = [UncompiledNode(self)]
-        self.lastkey = ''
+        self.lastkey = ""
         self._inserted = False
         self._infield = True
 
     def finish_field(self):
-        """Finishes the graph for the current field.
-        """
+        """Finishes the graph for the current field."""
 
         if not self._infield:
             raise Exception("Called finish_field before start_field")
@@ -1025,8 +1030,7 @@ class GraphWriter(object):
         self.fieldname = None
 
     def close(self):
-        """Finishes the current graph and closes the underlying file.
-        """
+        """Finishes the current graph and closes the underlying file."""
 
         if self.fieldname is not None:
             self.finish_field()
@@ -1062,7 +1066,7 @@ class GraphWriter(object):
 
         # Find the common prefix shared by this key and the previous one
         prefixlen = 0
-        for i in xrange(min(len(lastkey), len(key))):
+        for i in range(min(len(lastkey), len(key))):
             if lastkey[i] != key[i]:
                 break
             prefixlen += 1
@@ -1085,7 +1089,7 @@ class GraphWriter(object):
 
             # Push value commonalities through the tree
             common = None
-            for i in xrange(1, prefixlen + 1):
+            for i in range(1, prefixlen + 1):
                 node = nodes[i]
                 parent = nodes[i - 1]
                 lastvalue = parent.last_value(key[i - 1])
@@ -1171,8 +1175,8 @@ class GraphWriter(object):
 
         buf = StructFile(BytesIO())
         nodestart = dbfile.tell()
-        #self.count += 1
-        #self.arccount += numarcs
+        # self.count += 1
+        # self.arccount += numarcs
 
         fixedsize = -1
         arcstart = buf.tell()
@@ -1227,6 +1231,7 @@ class GraphWriter(object):
 
 # Graph reader
 
+
 class BaseGraphReader(object):
     def cursor(self, rootname=None):
         return Cursor(self, self.root(rootname))
@@ -1260,8 +1265,7 @@ class BaseGraphReader(object):
         return list(arc.copy() for arc in self.iter_arcs(address))
 
     def arc_dict(self, address):
-        return dict((arc.label, arc.copy())
-                    for arc in self.iter_arcs(address))
+        return dict((arc.label, arc.copy()) for arc in self.iter_arcs(address))
 
     def find_path(self, path, arc=None, address=None):
         path = to_labels(path)
@@ -1447,15 +1451,16 @@ def to_labels(key):
         if keytype is list:
             key = tuple(key)
     elif isinstance(key, bytes_type):
-        key = tuple(key[i:i + 1] for i in xrange(len(key)))
+        key = tuple(key[i : i + 1] for i in range(len(key)))
     elif isinstance(key, text_type):
-        key = tuple(utf8encode(key[i:i + 1])[0] for i in xrange(len(key)))
+        key = tuple(utf8encode(key[i : i + 1])[0] for i in range(len(key)))
     else:
         raise TypeError("Don't know how to convert %r" % key)
     return key
 
 
 # Within edit distance function
+
 
 def within(graph, text, k=1, prefix=0, address=None):
     """Yields a series of keys in the given graph within ``k`` edit distance of
@@ -1502,8 +1507,7 @@ def within(graph, text, k=1, prefix=0, address=None):
         if i < len(text):
             arc = graph.find_arc(address, text[i])
             if arc:
-                stack.append((arc.target, k, i + 1, sofar + text[i],
-                              arc.accept))
+                stack.append((arc.target, k, i + 1, sofar + text[i], arc.accept))
         # If K is already 0, can't do any more edits
         if k < 1:
             continue
@@ -1511,8 +1515,10 @@ def within(graph, text, k=1, prefix=0, address=None):
 
         arcs = graph.arc_dict(address)
         # Insertions
-        stack.extend((arc.target, k, i, sofar + char, arc.accept)
-                     for char, arc in iteritems(arcs))
+        stack.extend(
+            (arc.target, k, i, sofar + char, arc.accept)
+            for char, arc in iteritems(arcs)
+        )
 
         # Deletion, replacement, and transpo only work before the end
         if i >= len(text):
@@ -1534,11 +1540,13 @@ def within(graph, text, k=1, prefix=0, address=None):
                 if target:
                     arc = graph.find_arc(target, char)
                     if arc:
-                        stack.append((arc.target, k, i + 2,
-                                      sofar + char2 + char, arc.accept))
+                        stack.append(
+                            (arc.target, k, i + 2, sofar + char2 + char, arc.accept)
+                        )
 
 
 # Utility functions
+
 
 def dump_graph(graph, address=None, tab=0, out=None):
     if address is None:
@@ -1553,7 +1561,6 @@ def dump_graph(graph, address=None, tab=0, out=None):
         else:
             out.write(" " * 6)
         out.write("  " * tab)
-        out.write("%r %r %s %r\n"
-                  % (arc.label, arc.target, arc.accept, arc.value))
+        out.write("%r %r %s %r\n" % (arc.label, arc.target, arc.accept, arc.value))
         if arc.target is not None:
             dump_graph(graph, arc.target, tab + 1, out=out)

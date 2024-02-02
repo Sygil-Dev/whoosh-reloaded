@@ -28,7 +28,7 @@
 from __future__ import division
 from array import array
 
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.matching import mcore
 
 
@@ -87,7 +87,7 @@ class PreloadedUnionMatcher(CombinationMatcher):
                     docnum = m.id()
                     place = docnum - offset
                     if len(a) <= place:
-                        a.extend(0 for _ in xrange(place - len(a) + 1))
+                        a.extend(0 for _ in range(place - len(a) + 1))
                     a[place] += score
                     m.next()
             self._a = a
@@ -180,7 +180,7 @@ class ArrayUnionMatcher(CombinationMatcher):
             partsize = doccount
         self._partsize = partsize
 
-        self._a = array("d", (0 for _ in xrange(self._partsize)))
+        self._a = array("d", (0 for _ in range(self._partsize)))
         self._docnum = self._min_id()
         self._read_part()
 
@@ -208,7 +208,7 @@ class ArrayUnionMatcher(CombinationMatcher):
         a = self._a
 
         # Clear the array
-        for i in xrange(self._partsize):
+        for i in range(self._partsize):
             a[i] = 0
 
         # Add the scores from the submatchers into the array

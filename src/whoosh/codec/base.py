@@ -33,7 +33,7 @@ from bisect import bisect_right
 
 from whoosh import columns
 from whoosh.automata import lev
-from whoosh.compat import abstractmethod, izip, unichr, xrange
+from whoosh.compat import abstractmethod, izip, unichr, range
 from whoosh.filedb.compound import CompoundStorage
 from whoosh.system import emptybytes
 from whoosh.util import random_name
@@ -420,7 +420,7 @@ class PerDocumentReader(object):
 
         is_deleted = self.is_deleted
         return (
-            docnum for docnum in xrange(self.doc_count_all()) if not is_deleted(docnum)
+            docnum for docnum in range(self.doc_count_all()) if not is_deleted(docnum)
         )
 
     def iter_docs(self):

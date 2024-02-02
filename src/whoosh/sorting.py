@@ -29,7 +29,7 @@ from array import array
 from collections import defaultdict
 
 from whoosh.compat import string_type
-from whoosh.compat import iteritems, izip, xrange
+from whoosh.compat import iteritems, izip, range
 
 
 # Faceting objects
@@ -305,7 +305,7 @@ class OverlappingCategorizer(Categorizer):
             field = segment_searcher.schema[fieldname]
             from_bytes = field.from_bytes
 
-            self._lists = [[] for _ in xrange(dc)]
+            self._lists = [[] for _ in range(dc)]
             for btext in field.sortable_terms(reader, fieldname):
                 text = from_bytes(btext)
                 postings = reader.postings(fieldname, btext)

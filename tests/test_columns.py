@@ -4,7 +4,7 @@ import inspect, random, sys
 from whoosh import columns, fields, query
 from whoosh.codec.whoosh3 import W3Codec
 from whoosh.compat import b, u, BytesIO, bytes_type, text_type
-from whoosh.compat import izip, xrange, dumps, loads
+from whoosh.compat import izip, range, dumps, loads
 from whoosh.filedb import compound
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex, TempStorage
@@ -71,11 +71,11 @@ def test_random_multistream():
     letters = "abcdefghijklmnopqrstuvwxyz"
 
     def randstring(n):
-        s = "".join(random.choice(letters) for _ in xrange(n))
+        s = "".join(random.choice(letters) for _ in range(n))
         return s.encode("latin1")
 
     domain = {}
-    for _ in xrange(100):
+    for _ in range(100):
         name = randstring(random.randint(5, 10))
         value = randstring(2500)
         domain[name] = value
@@ -129,7 +129,7 @@ def _rt(c, values, default):
     f = st.create_file("test2")
     f.write(b("hello"))
     w = c.writer(f)
-    for docnum, v in izip(xrange(10, doccount, 7), values):
+    for docnum, v in izip(range(10, doccount, 7), values):
         target[docnum] = v
         w.add(docnum, v)
     w.finish(doccount)
@@ -189,8 +189,8 @@ def test_roundtrip():
     _rt(numcol("d"), [1.5, -2.5, 3.5, -4.5, 1.25], 0)
 
     c = columns.BitColumn(compress_at=10)
-    _rt(c, [bool(random.randint(0, 1)) for _ in xrange(70)], False)
-    _rt(c, [bool(random.randint(0, 1)) for _ in xrange(90)], False)
+    _rt(c, [bool(random.randint(0, 1)) for _ in range(70)], False)
+    _rt(c, [bool(random.randint(0, 1)) for _ in range(90)], False)
 
     c = columns.PickleColumn(columns.VarBytesColumn())
     _rt(c, [None, True, False, 100, -7, "hello"], None)
@@ -284,7 +284,7 @@ def test_ref_switch():
 
         f = st.create_file("test")
         cw = col.writer(f)
-        for i in xrange(size):
+        for i in range(size):
             cw.add(i, hex(i).encode("latin1"))
         cw.finish(size)
         length = f.tell()
@@ -292,7 +292,7 @@ def test_ref_switch():
 
         f = st.open_file("test")
         cr = col.reader(f, 0, length, size)
-        for i in xrange(size):
+        for i in range(size):
             v = cr[i]
             # Column ignores additional unique values after 65535
             if i <= 65535 - 1:
@@ -324,7 +324,7 @@ def test_varbytes_offsets():
     schema = fields.Schema(name=fields.ID(sortable=col))
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            for i in xrange(5000):
+            for i in range(5000):
                 w.add_document(name=values[i % vlen])
 
         with ix.reader() as r:
@@ -339,7 +339,7 @@ def test_varbytes_offsets():
     schema = fields.Schema(name=fields.ID(sortable=col))
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            for i in xrange(5000):
+            for i in range(5000):
                 w.add_document(name=values[i % vlen])
 
         with ix.reader() as r:

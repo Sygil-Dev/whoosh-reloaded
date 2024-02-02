@@ -5,7 +5,7 @@ import random, threading, time
 import pytest
 from whoosh import fields, formats, reading
 
-from whoosh.compat import b, u, xrange
+from whoosh.compat import b, u, range
 from whoosh.reading import SegmentReader
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
@@ -343,7 +343,7 @@ class RecoverReader(threading.Thread):
         self.ix = ix
 
     def run(self):
-        for _ in xrange(50):
+        for _ in range(50):
             r = self.ix.reader()
             r.close()
 
@@ -357,7 +357,7 @@ class RecoverWriter(threading.Thread):
         self.ix = ix
 
     def run(self):
-        for _ in xrange(10):
+        for _ in range(10):
             w = self.ix.writer()
             w.add_document(text=random.sample(self.domain, 4))
             w.commit()
@@ -384,7 +384,7 @@ def test_nonexclusive_read():
             w.commit(merge=False)
 
         def fn():
-            for _ in xrange(5):
+            for _ in range(5):
                 r = ix.reader()
                 assert list(r.field_terms("text")) == [
                     "document",
@@ -397,7 +397,7 @@ def test_nonexclusive_read():
                 ]
                 r.close()
 
-        ths = [threading.Thread(target=fn) for _ in xrange(5)]
+        ths = [threading.Thread(target=fn) for _ in range(5)]
         for th in ths:
             th.start()
         for th in ths:
@@ -408,7 +408,7 @@ def test_doc_count():
     schema = fields.Schema(id=fields.NUMERIC)
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        for i in xrange(10):
+        for i in range(10):
             w.add_document(id=i)
 
     r = ix.reader()
@@ -427,7 +427,7 @@ def test_doc_count():
     assert r.doc_count_all() == 10
 
     w = ix.writer()
-    for i in xrange(10, 15):
+    for i in range(10, 15):
         w.add_document(id=i)
     w.commit(merge=False)
 

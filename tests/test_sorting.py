@@ -4,7 +4,7 @@ import random
 
 from whoosh import fields, query, sorting, columns
 from whoosh.compat import u
-from whoosh.compat import permutations, xrange
+from whoosh.compat import permutations, range
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
@@ -60,7 +60,7 @@ def make_single_index(ix):
 
 
 def make_multi_index(ix):
-    for i in xrange(0, len(docs), 3):
+    for i in range(0, len(docs), 3):
         w = ix.writer()
         for doc in docs[i : i + 3]:
             w.add_document(ev=u("a"), **doc)
@@ -572,7 +572,7 @@ def test_sort_filter():
     groups = u("alfa bravo charlie").split()
     keys = u("abcdefghijklmnopqrstuvwxyz")
     source = []
-    for i in xrange(100):
+    for i in range(100):
         key = keys[i % len(keys)]
         group = groups[i % len(groups)]
         source.append({"key": key, "group": group})
@@ -1045,7 +1045,7 @@ def test_compound_sort():
     assert all(len(ls) == 10 for ls in (alist, blist, clist))
 
     with ix.writer() as w:
-        for i in xrange(10):
+        for i in range(10):
             w.add_document(a=alist[i], b=blist[i], c=clist[i])
 
     with ix.searcher() as s:

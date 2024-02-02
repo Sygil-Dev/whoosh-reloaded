@@ -32,10 +32,10 @@ D. J. Bernstein's CDB format (http://cr.yp.to/cdb.html).
 
 import os, struct, sys
 from binascii import crc32
-from hashlib import md5  # @UnresolvedImport
+from hashlib import md5  # type: ignore @UnresolvedImport
 
 from whoosh.compat import b, bytes_type
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.util.numlists import GrowableArray
 from whoosh.system import _INT_SIZE, emptybytes
 
@@ -122,7 +122,7 @@ class HashWriter(object):
         dbfile.write_int(0)
 
         # 256 lists of hashed keys and positions
-        self.buckets = [[] for _ in xrange(256)]
+        self.buckets = [[] for _ in range(256)]
         # List to remember the positions of the hash tables
         self.directory = []
 
@@ -271,7 +271,7 @@ class HashReader(object):
         self.tables = []
         entrysize = _dir_entry.size
         unpackentry = _dir_entry.unpack
-        for _ in xrange(256):
+        for _ in range(256):
             # position, numslots
             self.tables.append(unpackentry(dbfile.read(entrysize)))
         # The position of the first hash table is the end of the key/value pairs
@@ -410,7 +410,7 @@ class HashReader(object):
         # Calculate where the key's slot should be
         slotpos = tablestart + (((keyhash >> 8) % numslots) * ptrsize)
         # Read slots looking for our key's hash value
-        for _ in xrange(numslots):
+        for _ in range(numslots):
             slothash, itempos = unpackptr(dbfile.get(slotpos, ptrsize))
             # If this slot is empty, we're done
             if not itempos:

@@ -33,7 +33,7 @@ from bisect import bisect_left
 from heapq import heappush, heapreplace
 
 from whoosh import highlight
-from whoosh.compat import iteritems, xrange
+from whoosh.compat import iteritems, range
 
 
 # Corrector objects
@@ -129,7 +129,7 @@ class ListCorrector(Corrector):
         from whoosh.automata.fsa import find_all_matches
 
         seen = set()
-        for mxd in xrange(1, maxdist + 1):
+        for mxd in range(1, maxdist + 1):
             dfa = levenshtein_automaton(text, mxd, prefix).to_dfa()
             sk = self.Skipper(self.wordlist)
             for sug in find_all_matches(dfa, sk):

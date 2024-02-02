@@ -29,7 +29,7 @@ import re
 from collections import deque
 
 from whoosh.compat import u, text_type
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.analysis.filters import Filter
 
 
@@ -71,7 +71,7 @@ class CompoundWordFilter(Filter):
         if s in memo:
             return memo[s]
 
-        for i in xrange(1, len(s)):
+        for i in range(1, len(s)):
             prefix = s[:i]
             if prefix in self.wordset:
                 suffix = s[i:]

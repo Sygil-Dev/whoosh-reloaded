@@ -6,7 +6,7 @@ import operator
 from array import array
 from bisect import bisect_left, bisect_right
 
-from whoosh.compat import izip, izip_longest, next, xrange
+from whoosh.compat import izip, izip_longest, next, range
 from whoosh.util.numeric import bytes_for_bits
 
 
@@ -339,7 +339,7 @@ class DocIdSet(object):
         ``[0 - size)`` except numbers that are in this set.
         """
 
-        for i in xrange(size):
+        for i in range(size):
             if i in self:
                 self.discard(i)
             else:
@@ -412,7 +412,7 @@ class BaseBitSet(DocIdSet):
     def __iter__(self):
         base = 0
         for byte in self._iter_bytes():
-            for i in xrange(8):
+            for i in range(8):
                 if byte & (1 << i):
                     yield base + i
             base += 8
@@ -531,7 +531,7 @@ class OnDiskBitSet(BaseBitSet):
     def _iter_bytes(self):
         dbfile = self._dbfile
         dbfile.seek(self._basepos)
-        for _ in xrange(self._bytecount):
+        for _ in range(self._bytecount):
             yield dbfile.read_byte()
 
 
@@ -553,7 +553,7 @@ class BitSet(BaseBitSet):
         if not size and isinstance(source, (list, tuple, set, frozenset)):
             size = max(source)
         bytecount = bytes_for_bits(size)
-        self.bits = array("B", (0 for _ in xrange(bytecount)))
+        self.bits = array("B", (0 for _ in range(bytecount)))
 
         if source:
             add = self.add
@@ -628,7 +628,7 @@ class BitSet(BaseBitSet):
         return b
 
     def clear(self):
-        for i in xrange(len(self.bits)):
+        for i in range(len(self.bits)):
             self.bits[i] = 0
 
     def add(self, i):
@@ -668,7 +668,7 @@ class BitSet(BaseBitSet):
 
     def invert_update(self, size):
         bits = self.bits
-        for i in xrange(len(bits)):
+        for i in range(len(bits)):
             bits[i] = ~bits[i] & 0xFF
         self._zero_extra_bits(size)
 
@@ -824,7 +824,7 @@ class ReverseIdSet(DocIdSet):
         except StopIteration:
             nx = -1
 
-        for i in xrange(self.limit):
+        for i in range(self.limit):
             if i == nx:
                 try:
                     nx = next(ids)
@@ -849,7 +849,7 @@ class ReverseIdSet(DocIdSet):
         if idset.last() < maxid - 1:
             return maxid
 
-        for i in xrange(maxid, -1, -1):
+        for i in range(maxid, -1, -1):
             if i not in idset:
                 return i
 
@@ -894,7 +894,7 @@ class RoaringIdSet(DocIdSet):
         floor = n << 16
         if bucket >= len(self.idsets):
             self.idsets.extend(
-                [SortedIntSet() for _ in xrange(len(self.idsets), bucket + 1)]
+                [SortedIntSet() for _ in range(len(self.idsets), bucket + 1)]
             )
         idset = self.idsets[bucket]
         return bucket, floor, idset

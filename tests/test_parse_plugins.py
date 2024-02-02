@@ -3,7 +3,7 @@ import inspect
 from datetime import datetime
 
 from whoosh import analysis, fields, formats, qparser, query
-from whoosh.compat import u, text_type, xrange
+from whoosh.compat import u, text_type, range
 from whoosh.filedb.filestore import RamStorage
 from whoosh.qparser import dateparse, default, plugins, syntax
 from whoosh.util.times import adatetime
@@ -43,7 +43,7 @@ def test_combos():
 
     count = 0
     for i, first in enumerate(pis):
-        for j in xrange(len(pis)):
+        for j in range(len(pis)):
             if i == j:
                 continue
             plist = [p for p in pis[:j] if p is not first] + [first]

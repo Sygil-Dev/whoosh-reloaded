@@ -83,7 +83,7 @@ from collections import defaultdict
 from heapq import heapify, heappush, heapreplace
 
 from whoosh import sorting
-from whoosh.compat import abstractmethod, iteritems, itervalues, xrange
+from whoosh.compat import abstractmethod, iteritems, itervalues, range
 from whoosh.searching import Results, TimeLimit
 from whoosh.util import now
 
@@ -260,7 +260,7 @@ class Collector(object):
         """
 
         items = self.items
-        for i in xrange(len(items)):
+        for i in range(len(items)):
             if items[i][1] == global_docnum:
                 items.pop(i)
                 return
@@ -489,7 +489,7 @@ class TopCollector(ScoredCollector):
 
         # Remove the document if it's on the list (it may not be since
         # TopCollector forgets documents that don't make the top N list)
-        for i in xrange(len(items)):
+        for i in range(len(items)):
             if items[i][1] == negated:
                 items.pop(i)
                 # Restore the heap invariant

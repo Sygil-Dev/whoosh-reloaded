@@ -27,7 +27,7 @@
 
 from array import array
 
-from whoosh.compat import array_tobytes, xrange
+from whoosh.compat import array_tobytes, range
 
 
 # Varint cache
@@ -48,7 +48,7 @@ def _varint(i):
 
 _varint_cache_size = 512
 _varint_cache = []
-for i in xrange(0, _varint_cache_size):
+for i in range(0, _varint_cache_size):
     _varint_cache.append(_varint(i))
 _varint_cache = tuple(_varint_cache)
 

@@ -2,7 +2,7 @@ from __future__ import with_statement
 import random
 
 from whoosh import fields, matching, scoring
-from whoosh.compat import u, xrange
+from whoosh.compat import u, range
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.numeric import length_to_byte, byte_to_length
 
@@ -15,7 +15,7 @@ def test_max_field_length():
     st = RamStorage()
     schema = fields.Schema(t=fields.TEXT)
     ix = st.create_index(schema)
-    for i in xrange(1, 200, 7):
+    for i in range(1, 200, 7):
         w = ix.writer()
         w.add_document(t=u(" ").join(["word"] * i))
         w.commit()
@@ -30,7 +30,7 @@ def test_minmax_field_length():
     ix = st.create_index(schema)
     least = 999999
     most = 0
-    for _ in xrange(1, 200, 7):
+    for _ in range(1, 200, 7):
         w = ix.writer()
         count = random.randint(1, 100)
         least = min(count, least)

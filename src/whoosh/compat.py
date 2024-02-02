@@ -1,5 +1,5 @@
-import array, sys
-
+import array
+import sys
 
 # Run time aliasing of Python2/3 differences
 
@@ -35,13 +35,14 @@ if sys.version_info[0] < 3:
     long_type = long
     next = lambda o: o.next()
     # import cPickle as pickle
-    from cPickle import dumps, loads, dump, load
+    from cPickle import dump, dumps, load, loads
 
     string_type = basestring
     text_type = unicode
     bytes_type = str
     unichr = unichr
     from urllib import urlretrieve
+
     import Queue as queue
 
     def byte(num):
@@ -56,7 +57,7 @@ if sys.version_info[0] < 3:
 
         return _WhooshBase
 
-    xrange = xrange
+    # range = range
     zip_ = zip
 
     def memoryview_(source, offset=None, length=None):
@@ -85,15 +86,15 @@ else:
     long_type = int
     next = next
     import pickle
-    from pickle import dumps, loads, dump, load
+    from pickle import dump, dumps, load, loads
 
     StringIO = io.StringIO
     string_type = str
     text_type = str
     bytes_type = bytes
     unichr = chr
-    from urllib.request import urlretrieve
     import queue
+    from urllib.request import urlretrieve
 
     def byte(num):
         return bytes((num,))
@@ -112,7 +113,7 @@ else:
         )
         return ns["_WhooshBase"]
 
-    xrange = range
+    range = range
     zip_ = lambda *args: list(zip(*args))
 
     def memoryview_(source, offset=None, length=None):

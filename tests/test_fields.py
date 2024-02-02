@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import pytest
 
 from whoosh import fields, qparser, query
-from whoosh.compat import u, b, xrange
+from whoosh.compat import u, b, range
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util import times
 from whoosh.util.testing import TempIndex
@@ -252,7 +252,7 @@ def test_numeric_ranges():
     ix = RamStorage().create_index(schema)
     w = ix.writer()
 
-    for i in xrange(400):
+    for i in range(400):
         w.add_document(id=i, num=i)
     w.commit()
 
@@ -299,7 +299,7 @@ def test_decimal_ranges():
     w = ix.writer()
     count = Decimal("0.0")
     inc = Decimal("0.2")
-    for _ in xrange(500):
+    for _ in range(500):
         w.add_document(id=str(count), num=count)
         count += inc
     w.commit()
@@ -344,7 +344,7 @@ def test_nontext_document():
 
     dt = datetime.now()
     w = ix.writer()
-    for i in xrange(50):
+    for i in range(50):
         w.add_document(id=i, num=i, date=dt + timedelta(days=i), even=not (i % 2))
     w.commit()
 
@@ -369,7 +369,7 @@ def test_nontext_update():
 
     dt = datetime.now()
     w = ix.writer()
-    for i in xrange(10):
+    for i in range(10):
         w.add_document(id=i, num=i, date=dt + timedelta(days=i))
     w.commit()
 
@@ -390,8 +390,8 @@ def test_datetime():
     ix = st.create_index(schema)
 
     w = ix.writer()
-    for month in xrange(1, 12):
-        for day in xrange(1, 28):
+    for month in range(1, 12):
+        for day in range(1, 28):
             w.add_document(
                 id=u("%s-%s") % (month, day), date=datetime(2010, month, day, 14, 0, 0)
             )
@@ -531,7 +531,7 @@ def test_boolean_find_deleted():
     ix = RamStorage().create_index(schema)
     count = 0
     # Create multiple segments just in case
-    for _ in xrange(5):
+    for _ in range(5):
         w = ix.writer()
         for c in domain:
             w.add_document(i=count, b=(c == "1"))
@@ -544,7 +544,7 @@ def test_boolean_find_deleted():
     with ix.searcher() as s:
         # Double check that documents with b=True are all deleted
         reader = s.reader()
-        for docnum in xrange(s.doc_count_all()):
+        for docnum in range(s.doc_count_all()):
             b = s.stored_fields(docnum)["b"]
             assert b == reader.is_deleted(docnum)
 

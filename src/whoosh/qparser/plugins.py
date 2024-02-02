@@ -29,7 +29,7 @@ import copy
 
 from whoosh import query
 from whoosh.compat import u
-from whoosh.compat import iteritems, xrange
+from whoosh.compat import iteritems, range
 from whoosh.qparser import syntax
 from whoosh.qparser.common import attach
 from whoosh.qparser.taggers import RegexTagger, FnTagger
@@ -173,7 +173,7 @@ class WildcardPlugin(TaggingPlugin):
                     self.do_wildcards(parser, node)
                 i += 1
 
-        for i in xrange(len(group)):
+        for i in range(len(group)):
             node = group[i]
             if isinstance(node, self.WildcardNode):
                 text = node.text

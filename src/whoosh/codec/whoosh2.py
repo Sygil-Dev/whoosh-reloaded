@@ -30,7 +30,7 @@ from array import array
 from binascii import crc32
 from collections import defaultdict
 from decimal import Decimal
-from hashlib import md5  # @UnresolvedImport
+from hashlib import md5  # type: ignore @UnresolvedImport
 from struct import Struct
 
 try:
@@ -40,7 +40,7 @@ except ImportError:
 
 from whoosh.compat import b, PY3
 from whoosh.compat import loads, dumps
-from whoosh.compat import xrange, iteritems
+from whoosh.compat import range, iteritems
 from whoosh.compat import bytes_type, text_type, string_type, integer_types
 from whoosh.compat import array_frombytes, array_tobytes
 from whoosh.codec import base
@@ -145,7 +145,7 @@ class HashWriter(object):
         directory = self.directory = []
 
         pos = dbfile.tell()
-        for i in xrange(0, 256):
+        for i in range(0, 256):
             entries = hashes[i]
             numslots = 2 * len(entries)
             directory.append((pos, numslots))
@@ -218,7 +218,7 @@ class HashReader(object):
 
         # Read pointers to hash tables
         self.buckets = []
-        for _ in xrange(256):
+        for _ in range(256):
             he = unpack_header_entry(dbfile.read(header_entry_size))
             self.buckets.append(he)
         self._start_of_hashes = self.buckets[0][0]
@@ -321,7 +321,7 @@ class HashReader(object):
             return
 
         slotpos = hpos + (((keyhash >> 8) % hslots) * pointer_size)
-        for _ in xrange(hslots):
+        for _ in range(hslots):
             slothash, pos = unpack_pointer(read(slotpos, pointer_size))
             if not pos:
                 return
@@ -779,7 +779,7 @@ class W2LeafMatcher(LeafMatcher):
 
     def all_ids(self):
         nextoffset = self.baseoffset
-        for _ in xrange(self.blockcount):
+        for _ in range(self.blockcount):
             block = self._read_block(nextoffset)
             nextoffset = block.nextoffset
             ids = block.read_ids()
@@ -1228,7 +1228,7 @@ class ByteLengthsBase(object):
 
         fieldcount = dbfile.read_ushort()  # Number of fields
         # Read per-field info
-        for i in xrange(fieldcount):
+        for i in range(fieldcount):
             fieldname = dbfile.read_string().decode('utf-8')
             self.totals[fieldname] = dbfile.read_long()
             self.minlens[fieldname] = byte_to_length(dbfile.read_byte())
@@ -1330,7 +1330,7 @@ class InMemoryLengths(ByteLengthsBase):
 
     def _create_field(self, fieldname, docnum):
         dc = max(self._count, docnum + 1)
-        self.lengths[fieldname] = array("B", (0 for _ in xrange(dc)))
+        self.lengths[fieldname] = array("B", (0 for _ in range(dc)))
         self._count = dc
 
     def _pad_arrays(self, doccount):
@@ -1338,7 +1338,7 @@ class InMemoryLengths(ByteLengthsBase):
         for fieldname in self.lengths.keys():
             arry = self.lengths[fieldname]
             if len(arry) < doccount:
-                for _ in xrange(doccount - len(arry)):
+                for _ in range(doccount - len(arry)):
                     arry.append(0)
         self._count = doccount
 
@@ -1351,7 +1351,7 @@ class InMemoryLengths(ByteLengthsBase):
             arry = self.lengths[fieldname]
             count = docnum + 1
             if len(arry) < count:
-                for _ in xrange(count - len(arry)):
+                for _ in range(count - len(arry)):
                     arry.append(0)
             if count > self._count:
                 self._count = count
@@ -1482,14 +1482,14 @@ class StoredFieldReader(object):
         lengths = array("I")
 
         dbfile.seek(self.directory_offset)
-        for i in xrange(self.length):
+        for i in range(self.length):
             dbfile.seek(_LONG_SIZE, 1)
             lengths.append(dbfile.read_uint())
 
         dbfile.seek(self.basepos)
         for length in lengths:
             vlist = loads(dbfile.read(length) + b("."))
-            vdict = dict((names[i], vlist[i]) for i in xrange(len(vlist))
+            vdict = dict((names[i], vlist[i]) for i in range(len(vlist))
                      if vlist[i] is not None)
             yield vdict
 
@@ -1513,7 +1513,7 @@ class StoredFieldReader(object):
         # Recreate a dictionary by putting the field names and values back
         # together by position. We can't just use dict(zip(...)) because we
         # want to filter out the None values.
-        vdict = dict((names[i], vlist[i]) for i in xrange(len(vlist))
+        vdict = dict((names[i], vlist[i]) for i in range(len(vlist))
                      if vlist[i] is not None)
         return vdict
 
@@ -1894,7 +1894,7 @@ def minimize_weights(weights, compression=0):
 
 def deminimize_weights(count, string, compression=0):
     if not string:
-        return array("f", (1.0 for _ in xrange(count)))
+        return array("f", (1.0 for _ in range(count)))
     if compression:
         string = zlib.decompress(string)
     arry = array("f")
@@ -1926,7 +1926,7 @@ def deminimize_values(postingsize, count, string, compression=0):
         return [None] * count
     else:
         return [string[i:i + postingsize] for i
-                in xrange(0, len(string), postingsize)]
+                in range(0, len(string), postingsize)]
 
 
 # Legacy field types

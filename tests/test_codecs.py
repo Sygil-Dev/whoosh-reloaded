@@ -6,7 +6,7 @@ import pytest
 
 from whoosh import analysis, fields, formats, query
 from whoosh.compat import u, b, text_type
-from whoosh.compat import array_tobytes, xrange
+from whoosh.compat import array_tobytes, range
 from whoosh.codec import default_codec
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempStorage
@@ -58,15 +58,15 @@ def test_termkey():
 
 def test_random_termkeys():
     def random_fieldname():
-        return "".join(chr(random.randint(65, 90)) for _ in xrange(1, 20))
+        return "".join(chr(random.randint(65, 90)) for _ in range(1, 20))
 
     def random_btext():
-        a = array("H", (random.randint(0, 0xD7FF) for _ in xrange(1, 20)))
+        a = array("H", (random.randint(0, 0xD7FF) for _ in range(1, 20)))
         return array_tobytes(a).decode("utf-16")
 
     domain = sorted(
         set(
-            [(random_fieldname(), random_btext().encode("utf-8")) for _ in xrange(1000)]
+            [(random_fieldname(), random_btext().encode("utf-8")) for _ in range(1000)]
         )
     )
 

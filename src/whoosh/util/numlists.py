@@ -1,6 +1,6 @@
 from array import array
 
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.system import emptybytes
 from whoosh.system import pack_byte, unpack_byte
 from whoosh.system import pack_ushort_le, unpack_ushort_le
@@ -123,7 +123,7 @@ class FixedEncoding(NumberEncoding):
     def read_nums(self, f, n):
         _decode = self._decode
 
-        for _ in xrange(n):
+        for _ in range(n):
             yield _decode(f.read(self.size))
 
     def get(self, f, pos, i):
@@ -163,7 +163,7 @@ class Varints(NumberEncoding):
             f.write_varint(n)
 
     def read_nums(self, f, n):
-        for _ in xrange(n):
+        for _ in range(n):
             yield f.read_varint()
 
 
@@ -221,7 +221,7 @@ class Simple16(NumberEncoding):
         _num = self._num
         _bits = self._bits
 
-        for key in xrange(_numsize):
+        for key in range(_numsize):
             value = key << _bitsize
             num = _num[key] if _num[key] < n else n
             bits = 0
@@ -257,7 +257,7 @@ class Simple16(NumberEncoding):
         key = value >> _bitsize
         num = _num[key] if _num[key] < n else n
         bits = 0
-        for j in xrange(num):
+        for j in range(num):
             v = value >> bits
             yield v & (0xFFFFFFFF >> (32 - _bits[key][j]))
             bits += _bits[key][j]
@@ -557,7 +557,7 @@ class GInts(NumberEncoding):
         byte.
         """
 
-        return [(key >> (i * 2) & 3) + 1 for i in xrange(4)]
+        return [(key >> (i * 2) & 3) + 1 for i in range(4)]
 
     def write_nums(self, f, numbers):
         buf = emptybytes
@@ -597,7 +597,7 @@ class GInts(NumberEncoding):
 
         count = 0
         key = None
-        for _ in xrange(n):
+        for _ in range(n):
             if count == 0:
                 key = f.read_byte()
             code = key >> (count * 2) & 3

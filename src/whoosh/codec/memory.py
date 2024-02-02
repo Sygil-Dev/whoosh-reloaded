@@ -29,7 +29,7 @@ from __future__ import with_statement
 from bisect import bisect_left
 from threading import Lock
 
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.codec import base
 from whoosh.matching import ListMatcher
 from whoosh.reading import SegmentReader, TermInfo, TermNotFound
@@ -273,7 +273,7 @@ class MemTermsReader(base.TermsReader):
         if not terms:
             return
         start = bisect_left(terms, prefix)
-        for i in xrange(start, len(terms)):
+        for i in range(start, len(terms)):
             yield (fieldname, terms[i])
 
     def term_info(self, fieldname, text):
@@ -332,7 +332,7 @@ class MemSegment(base.Segment):
 
     def deleted_docs(self):
         stored = self._stored
-        for docnum in xrange(self.doc_count_all()):
+        for docnum in range(self.doc_count_all()):
             if docnum not in stored:
                 yield docnum
 

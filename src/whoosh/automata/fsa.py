@@ -5,7 +5,7 @@ import operator
 import sys
 from bisect import bisect_left
 
-from whoosh.compat import iteritems, next, text_type, unichr, xrange
+from whoosh.compat import iteritems, next, text_type, unichr, range
 
 
 unull = unichr(0)
@@ -340,7 +340,7 @@ class DFA(FSA):
         parts = [final_states, reachable - final_states]
         while changed:
             changed = False
-            for i in xrange(len(parts)):
+            for i in range(len(parts)):
                 part = parts[i]
                 changed_part = False
                 for label in labels:

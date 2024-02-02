@@ -334,8 +334,8 @@ def regex_limit(graph, mode, program, address):
 # #    print len(x), x
 #
 #     with timing():
-#         print "lo=", regex_limit(gr, LO, program, gr.root("path"))
-#         print "hi=", regex_limit(gr, HI, program, gr.root("path"))
+#         print ("lo=", regex_limit(gr, LO, program, gr.root("path")))
+#         print ("hi=", regex_limit(gr, HI, program, gr.root("path")))
 #
 #
 #

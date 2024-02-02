@@ -9,7 +9,7 @@ http://paste.lisp.org/display/72815
 
 import struct
 
-from whoosh.compat import xrange
+from whoosh.compat import range
 
 
 # Instead of using the character set from the ascii85 algorithm, I put the
@@ -32,7 +32,7 @@ def to_base85(x, islong=False):
 
     size = 10 if islong else 5
     rems = ""
-    for i in xrange(size):
+    for i in range(size):
         rems = b85chars[x % 85] + rems
         x //= 85
     return rems

@@ -26,7 +26,7 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from whoosh.compat import text_type
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.analysis.acore import Token
 from whoosh.analysis.filters import Filter, LowercaseFilter
 from whoosh.analysis.tokenizers import Tokenizer, RegexTokenizer
@@ -89,7 +89,7 @@ class NgramTokenizer(Tokenizer):
 
         if mode == "query":
             size = min(self.max, inlen)
-            for start in xrange(0, inlen - size + 1):
+            for start in range(0, inlen - size + 1):
                 end = start + size
                 if end > inlen:
                     continue
@@ -105,8 +105,8 @@ class NgramTokenizer(Tokenizer):
                 yield t
                 pos += 1
         else:
-            for start in xrange(0, inlen - self.min + 1):
-                for size in xrange(self.min, self.max + 1):
+            for start in range(0, inlen - self.min + 1):
+                for size in range(self.min, self.max + 1):
                     end = start + size
                     if end > inlen:
                         continue
@@ -193,7 +193,7 @@ class NgramFilter(Filter):
                         t.startchar = t.endchar - size
                     yield t
                 else:
-                    for start in xrange(0, len(text) - size + 1):
+                    for start in range(0, len(text) - size + 1):
                         t.text = text[start : start + size]
                         if chars:
                             t.startchar = startchar + start
@@ -202,7 +202,7 @@ class NgramFilter(Filter):
             else:
                 if at == -1:
                     limit = min(self.max, len(text))
-                    for size in xrange(self.min, limit + 1):
+                    for size in range(self.min, limit + 1):
                         t.text = text[:size]
                         if chars:
                             t.endchar = startchar + size
@@ -212,14 +212,14 @@ class NgramFilter(Filter):
                     if chars:
                         original_startchar = t.startchar
                     start = max(0, len(text) - self.max)
-                    for i in xrange(start, len(text) - self.min + 1):
+                    for i in range(start, len(text) - self.min + 1):
                         t.text = text[i:]
                         if chars:
                             t.startchar = original_startchar + i
                         yield t
                 else:
-                    for start in xrange(0, len(text) - self.min + 1):
-                        for size in xrange(self.min, self.max + 1):
+                    for start in range(0, len(text) - self.min + 1):
+                        for size in range(self.min, self.max + 1):
                             end = start + size
                             if end > len(text):
                                 continue

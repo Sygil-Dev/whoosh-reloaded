@@ -5,7 +5,7 @@ from collections import deque
 import pytest
 
 from whoosh import fields, query
-from whoosh.compat import u, izip, xrange, permutations, text_type
+from whoosh.compat import u, izip, range, permutations, text_type
 from whoosh.util.numeric import length_to_byte, byte_to_length
 from whoosh.util.testing import TempIndex
 
@@ -81,7 +81,7 @@ def _do_basic(writerclass):
             # Check there are lengths
             total = sum(
                 r.doc_field_length(docnum, "text", 0)
-                for docnum in xrange(r.doc_count_all())
+                for docnum in range(r.doc_count_all())
             )
             assert total > 0
 
@@ -270,7 +270,7 @@ def test_batchsize_eq_doccount():
     schema = fields.Schema(a=fields.KEYWORD(stored=True))
     with TempIndex(schema) as ix:
         with ix.writer(procs=4, batchsize=10) as w:
-            for i in xrange(10):
+            for i in range(10):
                 w.add_document(a=u(str(i)))
 
 

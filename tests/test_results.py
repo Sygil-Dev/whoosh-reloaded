@@ -4,7 +4,7 @@ import pytest
 
 from whoosh import analysis, fields, formats, highlight, qparser, query
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import u, xrange, text_type, permutations
+from whoosh.compat import u, range, text_type, permutations
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempStorage, TempIndex
 
@@ -304,7 +304,7 @@ def test_page_counts():
     ix = st.create_index(schema)
 
     w = ix.writer()
-    for i in xrange(10):
+    for i in range(10):
         w.add_document(id=text_type(i))
     w.commit()
 
@@ -494,7 +494,7 @@ def test_lengths2():
     schema = fields.Schema(text=fields.TEXT(stored=True))
     ix = RamStorage().create_index(schema)
     count = 0
-    for _ in xrange(3):
+    for _ in range(3):
         w = ix.writer()
         for ls in permutations(u("alfa bravo charlie").split()):
             if "bravo" in ls and "charlie" in ls:
@@ -523,7 +523,7 @@ def test_stability():
     with ix.searcher() as s:
         q = query.Term("text", u("bravo"))
         last = []
-        for i in xrange(s.doc_frequency("text", u("bravo"))):
+        for i in range(s.doc_frequency("text", u("bravo"))):
             # Only un-optimized results are stable
             r = s.search(q, limit=i + 1, optimize=False)
             docnums = [hit.docnum for hit in r]
@@ -683,7 +683,7 @@ def test_filter_by_result():
     with TempIndex(schema, "filter") as ix:
         words = u("foo bar baz qux barney").split()
         with ix.writer() as w:
-            for x in xrange(100):
+            for x in range(100):
                 t = u("even" if x % 2 == 0 else "odd")
                 c = words[x % len(words)]
                 w.add_document(title=t, content=c)

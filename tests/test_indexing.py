@@ -6,7 +6,7 @@ from datetime import datetime
 import pytest
 
 from whoosh import analysis, fields, index, qparser, query, __version__
-from whoosh.compat import b, u, xrange, text_type, permutations
+from whoosh.compat import b, u, range, text_type, permutations
 from whoosh.filedb.filestore import RamStorage
 from whoosh.writing import IndexingError
 from whoosh.util.numeric import length_to_byte, byte_to_length
@@ -98,7 +98,7 @@ def test_simple_indexing():
     docs = defaultdict(list)
     with TempIndex(schema, "simple") as ix:
         with ix.writer() as w:
-            for i in xrange(100):
+            for i in range(100):
                 smp = random.sample(domain, 5)
                 for word in smp:
                     docs[word].append(i)
@@ -150,9 +150,9 @@ def test_lengths():
         w.commit()
 
         with ix.reader() as dr:
-            ls1 = [dr.doc_field_length(i, "f1") for i in xrange(0, len(lengths))]
+            ls1 = [dr.doc_field_length(i, "f1") for i in range(0, len(lengths))]
             assert ls1 == [0] * len(lengths)
-            ls2 = [dr.doc_field_length(i, "f2") for i in xrange(0, len(lengths))]
+            ls2 = [dr.doc_field_length(i, "f2") for i in range(0, len(lengths))]
             assert ls2 == [byte_to_length(length_to_byte(l)) for l in lengths]
 
 
@@ -163,7 +163,7 @@ def test_many_lengths():
     w = ix.writer()
     for i, word in enumerate(domain):
         length = (i + 1) ** 6
-        w.add_document(text=" ".join(word for _ in xrange(length)))
+        w.add_document(text=" ".join(word for _ in range(length)))
     w.commit()
 
     s = ix.searcher()
@@ -481,7 +481,7 @@ def test_noscorables1():
     schema = fields.Schema(id=fields.ID, tags=fields.KEYWORD)
     with TempIndex(schema, "noscorables1") as ix:
         w = ix.writer()
-        for _ in xrange(times):
+        for _ in range(times):
             w.add_document(
                 id=choice(values), tags=u(" ").join(sample(values, randint(2, 7)))
             )
@@ -560,7 +560,7 @@ def test_deleteall():
         # This is just a test, don't use this method to delete all docs IRL!
         doccount = ix.doc_count_all()
         w = ix.writer()
-        for docnum in xrange(doccount):
+        for docnum in range(doccount):
             w.delete_document(docnum)
         w.commit()
 

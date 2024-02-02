@@ -35,7 +35,7 @@ import weakref
 from math import ceil
 
 from whoosh import classify, highlight, query, scoring
-from whoosh.compat import iteritems, itervalues, iterkeys, xrange
+from whoosh.compat import iteritems, itervalues, iterkeys, range
 from whoosh.idsets import DocIdSet, BitSet
 from whoosh.reading import TermNotFound
 
@@ -1047,7 +1047,7 @@ class Results(object):
             start, stop, step = n.indices(len(self.top_n))
             return [
                 Hit(self, self.top_n[i][1], i, self.top_n[i][0])
-                for i in xrange(start, stop, step)
+                for i in range(start, stop, step)
             ]
         else:
             if n >= len(self.top_n):
@@ -1059,7 +1059,7 @@ class Results(object):
     def __iter__(self):
         """Yields a :class:`Hit` object for each result in ranked order."""
 
-        for i in xrange(len(self.top_n)):
+        for i in range(len(self.top_n)):
             yield Hit(self, self.top_n[i][1], i, self.top_n[i][0])
 
     def __contains__(self, docnum):

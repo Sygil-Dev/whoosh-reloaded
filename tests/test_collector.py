@@ -3,7 +3,7 @@ from __future__ import with_statement
 import pytest
 
 from whoosh import collectors, fields, query, searching
-from whoosh.compat import u, xrange
+from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
@@ -42,11 +42,12 @@ def test_timelimit():
     schema = fields.Schema(text=fields.TEXT)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    for _ in xrange(50):
+    for _ in range(50):
         w.add_document(text=u("alfa"))
     w.commit()
 
     import time
+
     from whoosh import collectors, matching
 
     class SlowMatcher(matching.WrappingMatcher):
@@ -86,6 +87,7 @@ def test_timelimit():
 @pytest.mark.skipif("not hasattr(__import__('signal'), 'SIGALRM')")
 def test_timelimit_alarm():
     import time
+
     from whoosh import matching
 
     class SlowMatcher(matching.Matcher):

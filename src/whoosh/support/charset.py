@@ -8,7 +8,7 @@ See :class:`whoosh.analysis.CharsetTokenizer` and :class:`whoosh.analysis.Charse
 from collections import defaultdict
 import re
 
-from whoosh.compat import izip, u, iteritems, unichr, xrange
+from whoosh.compat import izip, u, iteritems, unichr, range
 
 # This is a straightforward accent-folding charset taken from Carlos Bueno's
 # article "Accent Folding for Auto-Complete", for use with CharsetFilter.
@@ -1328,7 +1328,7 @@ def charset_table_to_dict(tablestring):
                 assert (end1 - start1) == (end2 - start2)
                 try:
                     for fromord, tooord in izip(
-                        xrange(start1, end1 + 1), xrange(start2, end2 + 1)
+                        range(start1, end1 + 1), range(start2, end2 + 1)
                     ):
                         map[fromord] = unichr(tooord)
                 except ValueError:
@@ -1359,7 +1359,7 @@ def charset_table_to_dict(tablestring):
                 start = charspec_to_int(match.group(1))
                 end = charspec_to_int(match.group(2))
                 try:
-                    for ord in xrange(start, end + 1):
+                    for ord in range(start, end + 1):
                         map[ord] = unichr(ord)
                 except ValueError:
                     pass
@@ -1370,7 +1370,7 @@ def charset_table_to_dict(tablestring):
                 fromord = charspec_to_int(match.group(1))
                 toord = charspec_to_int(match.group(2))
                 assert toord - fromord % 2 == 0
-                for ord in xrange(fromord, toord + 1, 2):
+                for ord in range(fromord, toord + 1, 2):
                     try:
                         map[ord] = unichr(ord + 1)
                         map[ord + 1] = unichr(ord + 1)
