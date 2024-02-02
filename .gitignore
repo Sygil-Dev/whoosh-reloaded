@@ -8,3 +8,4 @@ eggs/
 .eggs/
 *.egg
 *.egg-info/
+/test.py
