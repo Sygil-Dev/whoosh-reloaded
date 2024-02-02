@@ -1,11 +1,11 @@
 from __future__ import with_statement
 
-from whoosh_reloaded import analysis, fields, formats
-from whoosh_reloaded.compat import u, xrange, permutations
-from whoosh_reloaded.filedb.filestore import RamStorage
-from whoosh_reloaded.query import spans
-from whoosh_reloaded.query import And, Or, Term, Phrase
-from whoosh_reloaded.util.testing import TempIndex
+from whoosh import analysis, fields, formats
+from whoosh.compat import u, xrange, permutations
+from whoosh.filedb.filestore import RamStorage
+from whoosh.query import spans
+from whoosh.query import And, Or, Term, Phrase
+from whoosh.util.testing import TempIndex
 
 
 domain = ("alfa", "bravo", "bravo", "charlie", "delta", "echo")

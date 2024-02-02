@@ -1,10 +1,9 @@
 from __future__ import with_statement
 
-from whoosh_reloaded import analysis, classify, fields, formats, query, reading
-from whoosh_reloaded.compat import u, text_type
-from whoosh_reloaded.filedb.filestore import RamStorage
-from whoosh_reloaded.util.testing import TempIndex
-
+from whoosh import analysis, classify, fields, formats, query, reading
+from whoosh.compat import text_type, u
+from whoosh.filedb.filestore import RamStorage
+from whoosh.util.testing import TempIndex
 
 domain = [
     u(

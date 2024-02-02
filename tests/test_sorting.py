@@ -2,11 +2,11 @@ from __future__ import with_statement
 from datetime import datetime, timedelta
 import random
 
-from whoosh_reloaded import fields, query, sorting, columns
-from whoosh_reloaded.compat import u
-from whoosh_reloaded.compat import permutations, xrange
-from whoosh_reloaded.filedb.filestore import RamStorage
-from whoosh_reloaded.util.testing import TempIndex
+from whoosh import fields, query, sorting, columns
+from whoosh.compat import u
+from whoosh.compat import permutations, xrange
+from whoosh.filedb.filestore import RamStorage
+from whoosh.util.testing import TempIndex
 
 
 try:
@@ -418,7 +418,7 @@ def test_daterange_facet():
 
 
 def test_relative_daterange():
-    from whoosh_reloaded.support.relativedelta import relativedelta
+    from whoosh.support.relativedelta import relativedelta
 
     dt = datetime
 
@@ -991,7 +991,7 @@ def test_add_sortable():
 
 
 def test_missing_column():
-    from whoosh_reloaded import collectors
+    from whoosh import collectors
 
     schema = fields.Schema(id=fields.STORED, tags=fields.KEYWORD)
     ix = RamStorage().create_index(schema)
@@ -1076,7 +1076,7 @@ def test_compound_sort():
 
 
 def test_column_scoring():
-    from whoosh_reloaded import scoring
+    from whoosh import scoring
 
     # "sortable=True" on the "id" field tells it to build a column store
     # of field values. If you didn't ever need to actually search on this field,

@@ -3,10 +3,10 @@ import random, time, threading
 
 import pytest
 
-from whoosh_reloaded import analysis, fields, query, writing
-from whoosh_reloaded.compat import b, u, xrange, text_type
-from whoosh_reloaded.filedb.filestore import RamStorage
-from whoosh_reloaded.util.testing import TempIndex
+from whoosh import analysis, fields, query, writing
+from whoosh.compat import b, u, xrange, text_type
+from whoosh.filedb.filestore import RamStorage
+from whoosh.util.testing import TempIndex
 
 
 def test_no_stored():
@@ -279,7 +279,7 @@ def test_cancel_delete():
 
 
 def test_delete_nonexistant():
-    from whoosh_reloaded.writing import IndexingError
+    from whoosh.writing import IndexingError
 
     schema = fields.Schema(id=fields.ID(stored=True))
     # Single segment

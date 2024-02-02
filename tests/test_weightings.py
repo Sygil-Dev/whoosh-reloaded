@@ -3,13 +3,13 @@ import inspect
 from random import choice, randint
 import sys
 
-from whoosh_reloaded import fields, query, scoring
-from whoosh_reloaded.compat import u, xrange, permutations
-from whoosh_reloaded.filedb.filestore import RamStorage
+from whoosh import fields, query, scoring
+from whoosh.compat import u, xrange, permutations
+from whoosh.filedb.filestore import RamStorage
 
 
 def _weighting_classes(ignore):
-    # Get all the subclasses of Weighting in whoosh_reloaded.scoring
+    # Get all the subclasses of Weighting in whoosh.scoring
     return [
         c
         for _, c in inspect.getmembers(scoring, inspect.isclass)
@@ -59,7 +59,7 @@ def test_all():
 
 
 def test_compatibility():
-    from whoosh_reloaded.scoring import Weighting
+    from whoosh.scoring import Weighting
 
     # This is the old way of doing a custom weighting model, check that
     # it's still supported...

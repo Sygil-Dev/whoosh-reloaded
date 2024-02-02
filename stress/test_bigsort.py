@@ -1,9 +1,9 @@
 import os.path, random, shutil
 from datetime import datetime
 
-from whoosh_reloaded import fields, index, query
-from whoosh_reloaded.compat import text_type, xrange
-from whoosh_reloaded.util import now
+from whoosh import fields, index, query
+from whoosh.compat import text_type, xrange
+from whoosh.util import now
 
 
 def test_bigsort():

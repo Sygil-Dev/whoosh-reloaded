@@ -2,10 +2,10 @@ import gzip
 import os.path
 from bisect import bisect_left
 
-from whoosh_reloaded.compat import permutations
-from whoosh_reloaded.compat import xrange
-from whoosh_reloaded.automata import fsa, glob, lev
-from whoosh_reloaded.support.levenshtein import levenshtein
+from whoosh.compat import permutations
+from whoosh.compat import xrange
+from whoosh.automata import fsa, glob, lev
+from whoosh.support.levenshtein import levenshtein
 
 
 def test_nfa():
