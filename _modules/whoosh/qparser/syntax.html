@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.qparser.syntax &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.qparser.syntax</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.qparser.syntax</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2011 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">weakref</span>
+
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">query</span>
+<span class="kn">from</span> <span class="nn">whoosh.qparser.common</span> <span class="kn">import</span> <span class="n">get_single_text</span><span class="p">,</span> <span class="n">QueryParserError</span><span class="p">,</span> <span class="n">attach</span>
+
+
+<div class="viewcode-block" id="SyntaxNode"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.SyntaxNode">[docs]</a><span class="k">class</span> <span class="nc">SyntaxNode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for nodes that make up the abstract syntax tree (AST) of a</span>
+<span class="sd">    parsed user query string. The AST is an intermediate step, generated</span>
+<span class="sd">    from the query string, then converted into a :class:`whoosh.query.Query`</span>
+<span class="sd">    tree by calling the ``query()`` method on the nodes.</span>
+
+<span class="sd">    Instances have the following required attributes:</span>
+
+<span class="sd">    ``has_fieldname``</span>
+<span class="sd">        True if this node has a ``fieldname`` attribute.</span>
+<span class="sd">    ``has_text``</span>
+<span class="sd">        True if this node has a ``text`` attribute</span>
+<span class="sd">    ``has_boost``</span>
+<span class="sd">        True if this node has a ``boost`` attribute.</span>
+<span class="sd">    ``startchar``</span>
+<span class="sd">        The character position in the original text at which this node started.</span>
+<span class="sd">    ``endchar``</span>
+<span class="sd">        The character position in the original text at which this node ended.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">has_fieldname</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">has_text</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">has_boost</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">_parent</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="s2">&quot;&lt;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_fieldname</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%r</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_boost</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot; ^</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;&gt;&quot;</span>
+        <span class="k">return</span> <span class="n">r</span>
+
+<div class="viewcode-block" id="SyntaxNode.r"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.SyntaxNode.r">[docs]</a>    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a basic representation of this node. The base class&#39;s</span>
+<span class="sd">        ``__repr__`` method calls this, then does the extra busy work of adding</span>
+<span class="sd">        fieldname and boost where appropriate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">fn_wrapper</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fn_wrapper</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">fn_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SyntaxNode.query"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.SyntaxNode.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a :class:`whoosh.query.Query` instance corresponding to this</span>
+<span class="sd">        syntax tree node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SyntaxNode.is_ws"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.SyntaxNode.is_ws">[docs]</a>    <span class="k">def</span> <span class="nf">is_ws</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this node is ignorable whitespace.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">is_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="SyntaxNode.set_fieldname"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.SyntaxNode.set_fieldname">[docs]</a>    <span class="k">def</span> <span class="nf">set_fieldname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the fieldname associated with this node. If ``override`` is</span>
+<span class="sd">        False (the default), the fieldname will only be replaced if this node</span>
+<span class="sd">        does not already have a fieldname set.</span>
+
+<span class="sd">        For nodes that don&#39;t have a fieldname, this is a no-op.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_fieldname</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">override</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="SyntaxNode.set_boost"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.SyntaxNode.set_boost">[docs]</a>    <span class="k">def</span> <span class="nf">set_boost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boost</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the boost associated with this node.</span>
+
+<span class="sd">        For nodes that don&#39;t have a boost, this is a no-op.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_boost</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="SyntaxNode.set_range"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.SyntaxNode.set_range">[docs]</a>    <span class="k">def</span> <span class="nf">set_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the character range associated with this node.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">startchar</span> <span class="o">=</span> <span class="n">startchar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">endchar</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="c1"># Navigation methods</span>
+
+    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">next_sibling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="n">node_after</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">prev_sibling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="n">node_before</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">bake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">weakref</span><span class="o">.</span><span class="n">ref</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MarkerNode"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.MarkerNode">[docs]</a><span class="k">class</span> <span class="nc">MarkerNode</span><span class="p">(</span><span class="n">SyntaxNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for nodes that only exist to mark places in the tree.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span></div>
+
+
+<span class="k">class</span> <span class="nc">Whitespace</span><span class="p">(</span><span class="n">MarkerNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract syntax tree node for ignorable whitespace.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span>
+
+    <span class="k">def</span> <span class="nf">is_ws</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+
+<div class="viewcode-block" id="FieldnameNode"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.FieldnameNode">[docs]</a><span class="k">class</span> <span class="nc">FieldnameNode</span><span class="p">(</span><span class="n">SyntaxNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract syntax tree node for field name assignments.&quot;&quot;&quot;</span>
+
+    <span class="n">has_fieldname</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">original</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original</span> <span class="o">=</span> <span class="n">original</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%r</span><span class="s2">:&gt;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span></div>
+
+
+<div class="viewcode-block" id="GroupNode"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.GroupNode">[docs]</a><span class="k">class</span> <span class="nc">GroupNode</span><span class="p">(</span><span class="n">SyntaxNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for abstract syntax tree node types that group together</span>
+<span class="sd">    sub-nodes.</span>
+
+<span class="sd">    Instances have the following attributes:</span>
+
+<span class="sd">    ``merging``</span>
+<span class="sd">        True if side-by-side instances of this group can be merged into a</span>
+<span class="sd">        single group.</span>
+<span class="sd">    ``qclass``</span>
+<span class="sd">        If a subclass doesn&#39;t override ``query()``, the base class will simply</span>
+<span class="sd">        wrap this class around the queries returned by the subnodes.</span>
+
+<span class="sd">    This class implements a number of list methods for operating on the</span>
+<span class="sd">    subnodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">has_boost</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">merging</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">startchar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startchar</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">endchar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">endchar</span>
+
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">fn</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">],</span>
+            <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">subq</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">subq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">subs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subq</span><span class="p">)</span>
+
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qclass</span><span class="p">(</span><span class="n">subs</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">empty_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an empty copy of this group.</span>
+
+<span class="sd">        This is used in the common pattern where a filter creates an new</span>
+<span class="sd">        group and then adds nodes from the input group to it if they meet</span>
+<span class="sd">        certain criteria, then returns the new group::</span>
+
+<span class="sd">            def remove_whitespace(parser, group):</span>
+<span class="sd">                newgroup = group.empty_copy()</span>
+<span class="sd">                for node in group:</span>
+<span class="sd">                    if not node.is_ws():</span>
+<span class="sd">                        newgroup.append(node)</span>
+<span class="sd">                return newgroup</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_boost</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_fieldname</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_text</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="n">c</span>
+
+    <span class="k">def</span> <span class="nf">set_fieldname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">SyntaxNode</span><span class="o">.</span><span class="n">set_fieldname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="n">override</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">set_fieldname</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="n">override</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">set_range</span><span class="p">(</span><span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="c1"># List-like methods</span>
+
+    <span class="k">def</span> <span class="nf">__nonzero__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+
+    <span class="fm">__bool__</span> <span class="o">=</span> <span class="n">__nonzero__</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">extend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">vs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># Navigation methods</span>
+
+    <span class="k">def</span> <span class="nf">bake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="n">SyntaxNode</span><span class="o">.</span><span class="n">bake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">bake</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">node_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">node_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="BinaryGroup"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.BinaryGroup">[docs]</a><span class="k">class</span> <span class="nc">BinaryGroup</span><span class="p">(</span><span class="n">GroupNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Intermediate base class for group nodes that have two subnodes and</span>
+<span class="sd">    whose ``qclass`` initializer takes two arguments instead of a list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">merging</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">has_boost</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+
+        <span class="n">qa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+        <span class="n">qb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">qa</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">qb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">NullQuery</span>
+        <span class="k">elif</span> <span class="n">qa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">qb</span>
+        <span class="k">elif</span> <span class="n">qb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">qa</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">Wrapper</span><span class="p">(</span><span class="n">GroupNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Intermediate base class for nodes that wrap a single sub-node.&quot;&quot;&quot;</span>
+
+    <span class="n">merging</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">q</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qclass</span><span class="p">(</span><span class="n">q</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ErrorNode"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.ErrorNode">[docs]</a><span class="k">class</span> <span class="nc">ErrorNode</span><span class="p">(</span><span class="n">SyntaxNode</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node</span> <span class="o">=</span> <span class="n">node</span>
+
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;ERR </span><span class="si">%r</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">startchar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">startchar</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">endchar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">endchar</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">NullQuery</span>
+
+        <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">error_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">q</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AndGroup"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.AndGroup">[docs]</a><span class="k">class</span> <span class="nc">AndGroup</span><span class="p">(</span><span class="n">GroupNode</span><span class="p">):</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">And</span></div>
+
+
+<div class="viewcode-block" id="OrGroup"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.OrGroup">[docs]</a><span class="k">class</span> <span class="nc">OrGroup</span><span class="p">(</span><span class="n">GroupNode</span><span class="p">):</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Or</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">factory</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">class</span> <span class="nc">ScaledOrGroup</span><span class="p">(</span><span class="n">OrGroup</span><span class="p">):</span>
+            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">if</span> <span class="s2">&quot;scale&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">ScaledOrGroup</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">nodes</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ScaledOrGroup</span></div>
+
+
+<div class="viewcode-block" id="DisMaxGroup"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.DisMaxGroup">[docs]</a><span class="k">class</span> <span class="nc">DisMaxGroup</span><span class="p">(</span><span class="n">GroupNode</span><span class="p">):</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">DisjunctionMax</span></div>
+
+
+<span class="k">class</span> <span class="nc">OrderedGroup</span><span class="p">(</span><span class="n">GroupNode</span><span class="p">):</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Ordered</span>
+
+
+<div class="viewcode-block" id="AndNotGroup"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.AndNotGroup">[docs]</a><span class="k">class</span> <span class="nc">AndNotGroup</span><span class="p">(</span><span class="n">BinaryGroup</span><span class="p">):</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">AndNot</span></div>
+
+
+<div class="viewcode-block" id="AndMaybeGroup"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.AndMaybeGroup">[docs]</a><span class="k">class</span> <span class="nc">AndMaybeGroup</span><span class="p">(</span><span class="n">BinaryGroup</span><span class="p">):</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">AndMaybe</span></div>
+
+
+<div class="viewcode-block" id="RequireGroup"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.RequireGroup">[docs]</a><span class="k">class</span> <span class="nc">RequireGroup</span><span class="p">(</span><span class="n">BinaryGroup</span><span class="p">):</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Require</span></div>
+
+
+<div class="viewcode-block" id="NotGroup"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.NotGroup">[docs]</a><span class="k">class</span> <span class="nc">NotGroup</span><span class="p">(</span><span class="n">Wrapper</span><span class="p">):</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Not</span></div>
+
+
+<div class="viewcode-block" id="RangeNode"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.RangeNode">[docs]</a><span class="k">class</span> <span class="nc">RangeNode</span><span class="p">(</span><span class="n">SyntaxNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Syntax node for range queries.&quot;&quot;&quot;</span>
+
+    <span class="n">has_fieldname</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">has_boost</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">startexcl</span><span class="p">,</span> <span class="n">endexcl</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="o">=</span> <span class="n">startexcl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span> <span class="o">=</span> <span class="n">endexcl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="s2">&quot;{&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="k">else</span> <span class="s2">&quot;[&quot;</span>
+        <span class="n">b2</span> <span class="o">=</span> <span class="s2">&quot;}&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span> <span class="k">else</span> <span class="s2">&quot;]&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s%r</span><span class="s2"> </span><span class="si">%r%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">or</span> <span class="n">parser</span><span class="o">.</span><span class="n">fieldname</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span>
+
+        <span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">schema</span> <span class="ow">and</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">self_parsing</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">q</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">parse_range</span><span class="p">(</span>
+                        <span class="n">fieldname</span><span class="p">,</span>
+                        <span class="n">start</span><span class="p">,</span>
+                        <span class="n">end</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span><span class="p">,</span>
+                        <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">QueryParserError</span><span class="p">:</span>
+                    <span class="n">e</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">error_query</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">start</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">get_single_text</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">removestops</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">get_single_text</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">removestops</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">TermRange</span><span class="p">(</span>
+            <span class="n">fieldname</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TextNode"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.TextNode">[docs]</a><span class="k">class</span> <span class="nc">TextNode</span><span class="p">(</span><span class="n">SyntaxNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Intermediate base class for basic nodes that search for text, such as</span>
+<span class="sd">    term queries, wildcards, prefixes, etc.</span>
+
+<span class="sd">    Instances have the following attributes:</span>
+
+<span class="sd">    ``qclass``</span>
+<span class="sd">        If a subclass does not override ``query()``, the base class will use</span>
+<span class="sd">        this class to construct the query.</span>
+<span class="sd">    ``tokenize``</span>
+<span class="sd">        If True and the subclass does not override ``query()``, the node&#39;s text</span>
+<span class="sd">        will be tokenized before constructing the query</span>
+<span class="sd">    ``removestops``</span>
+<span class="sd">        If True and the subclass does not override ``query()``, and the field&#39;s</span>
+<span class="sd">        analyzer has a stop word filter, stop words will be removed from the</span>
+<span class="sd">        text before constructing the query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">has_fieldname</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">has_text</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">has_boost</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">qclass</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">tokenize</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">removestops</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="n">fieldname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="ow">or</span> <span class="n">parser</span><span class="o">.</span><span class="n">fieldname</span>
+        <span class="n">termclass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">qclass</span> <span class="ow">or</span> <span class="n">parser</span><span class="o">.</span><span class="n">termclass</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">term_query</span><span class="p">(</span>
+            <span class="n">fieldname</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">termclass</span><span class="p">,</span>
+            <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span>
+            <span class="n">tokenize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenize</span><span class="p">,</span>
+            <span class="n">removestops</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">removestops</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">attach</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WordNode"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.WordNode">[docs]</a><span class="k">class</span> <span class="nc">WordNode</span><span class="p">(</span><span class="n">TextNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Syntax node for term queries.&quot;&quot;&quot;</span>
+
+    <span class="n">tokenize</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">removestops</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<span class="c1"># Operators</span>
+
+
+<div class="viewcode-block" id="Operator"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.Operator">[docs]</a><span class="k">class</span> <span class="nc">Operator</span><span class="p">(</span><span class="n">SyntaxNode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for PrefixOperator, PostfixOperator, and InfixOperator.</span>
+
+<span class="sd">    Operators work by moving the nodes they apply to (e.g. for prefix operator,</span>
+<span class="sd">    the previous node, for infix operator, the nodes on either side, etc.) into</span>
+<span class="sd">    a group node. The group provides the code for what to do with the nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">grouptype</span><span class="p">,</span> <span class="n">leftassoc</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param text: the text of the operator in the query string.</span>
+<span class="sd">        :param grouptype: the type of group to create in place of the operator</span>
+<span class="sd">            and the node(s) it operates on.</span>
+<span class="sd">        :param leftassoc: for infix opeators, whether the operator is left</span>
+<span class="sd">            associative. use ``leftassoc=False`` for right-associative infix</span>
+<span class="sd">            operators.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grouptype</span> <span class="o">=</span> <span class="n">grouptype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leftassoc</span> <span class="o">=</span> <span class="n">leftassoc</span>
+
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;OP </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">replace_self</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called with the parser, a group, and the position at which the</span>
+<span class="sd">        operator occurs in that group. Should return a group with the operator</span>
+<span class="sd">        replaced by whatever effect the operator has (e.g. for an infix op,</span>
+<span class="sd">        replace the op and the nodes on either side with a sub-group).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="PrefixOperator"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.PrefixOperator">[docs]</a><span class="k">class</span> <span class="nc">PrefixOperator</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">replace_self</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">group</span><span class="p">[</span><span class="n">position</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">position</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">group</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouptype</span><span class="p">([</span><span class="n">group</span><span class="p">[</span><span class="n">position</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">position</span></div>
+
+
+<div class="viewcode-block" id="PostfixOperator"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.PostfixOperator">[docs]</a><span class="k">class</span> <span class="nc">PostfixOperator</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">replace_self</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">del</span> <span class="n">group</span><span class="p">[</span><span class="n">position</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">group</span><span class="p">[</span><span class="n">position</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouptype</span><span class="p">([</span><span class="n">group</span><span class="p">[</span><span class="n">position</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">position</span></div>
+
+
+<div class="viewcode-block" id="InfixOperator"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.InfixOperator">[docs]</a><span class="k">class</span> <span class="nc">InfixOperator</span><span class="p">(</span><span class="n">Operator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">replace_self</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="n">la</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leftassoc</span>
+        <span class="n">gtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouptype</span>
+        <span class="n">merging</span> <span class="o">=</span> <span class="n">gtype</span><span class="o">.</span><span class="n">merging</span>
+
+        <span class="k">if</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">position</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">position</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># The first two clauses check whether the &quot;strong&quot; side is already</span>
+            <span class="c1"># a group of the type we are going to create. If it is, we just</span>
+            <span class="c1"># append the &quot;weak&quot; side to the &quot;strong&quot; side instead of creating</span>
+            <span class="c1"># a new group inside the existing one. This is necessary because</span>
+            <span class="c1"># we can quickly run into Python&#39;s recursion limit otherwise.</span>
+            <span class="k">if</span> <span class="n">merging</span> <span class="ow">and</span> <span class="n">la</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">gtype</span><span class="p">):</span>
+                <span class="n">left</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">group</span><span class="p">[</span><span class="n">position</span> <span class="p">:</span> <span class="n">position</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">merging</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">la</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">gtype</span><span class="p">):</span>
+                <span class="n">right</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">group</span><span class="p">[</span><span class="n">position</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">position</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">position</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Replace the operator and the two surrounding objects</span>
+                <span class="n">group</span><span class="p">[</span><span class="n">position</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">position</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">gtype</span><span class="p">([</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">])]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">group</span><span class="p">[</span><span class="n">position</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">position</span></div>
+
+
+<span class="c1"># Functions</span>
+
+
+<span class="k">def</span> <span class="nf">to_word</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">WordNode</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">original</span><span class="p">)</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">startchar</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">startchar</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">endchar</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">endchar</span>
+    <span class="k">return</span> <span class="n">node</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.analysis.filters &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.analysis.filters</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.analysis.filters</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+
+<span class="c1"># Copyright 2007 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="nb">next</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.acore</span> <span class="kn">import</span> <span class="n">Composable</span>
+<span class="kn">from</span> <span class="nn">whoosh.util.text</span> <span class="kn">import</span> <span class="n">rcompile</span>
+
+
+<span class="c1"># Default list of stop words (words so common it&#39;s usually wasteful to index</span>
+<span class="c1"># them). This list is used by the StopFilter class, which allows you to supply</span>
+<span class="c1"># an optional list to override this one.</span>
+
+<span class="n">STOP_WORDS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;a&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;an&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;and&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;are&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;as&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;at&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;be&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;by&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;can&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;for&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;from&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;have&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;if&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;in&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;is&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;it&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;may&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;not&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;of&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;on&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;or&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tbd&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;that&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;the&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;this&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;to&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;us&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;we&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;when&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;will&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;with&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;yet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;you&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;your&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Simple pattern for filtering URLs, may be useful</span>
+
+<span class="n">url_pattern</span> <span class="o">=</span> <span class="n">rcompile</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">(</span>
+<span class="sd">    [A-Za-z+]+://          # URL protocol</span>
+<span class="sd">    \\S+?                  # URL body</span>
+<span class="sd">    (?=\\s|[.]\\s|$|[.]$)  # Stop at space/end, or a dot followed by space/end</span>
+<span class="sd">) | (                      # or...</span>
+<span class="sd">    \\w+([:.]?\\w+)*         # word characters, with opt. internal colons/dots</span>
+<span class="sd">)</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Filters</span>
+
+
+<span class="k">class</span> <span class="nc">Filter</span><span class="p">(</span><span class="n">Composable</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for Filter objects. A Filter subclass must implement a</span>
+<span class="sd">    filter() method that takes a single argument, which is an iterator of Token</span>
+<span class="sd">    objects, and yield a series of Token objects in return.</span>
+
+<span class="sd">    Filters that do morphological transformation of tokens (e.g. stemming)</span>
+<span class="sd">    should set their ``is_morph`` attribute to True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<div class="viewcode-block" id="PassFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.PassFilter">[docs]</a><span class="k">class</span> <span class="nc">PassFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An identity filter: passes the tokens through untouched.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tokens</span></div>
+
+
+<div class="viewcode-block" id="LoggingFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.LoggingFilter">[docs]</a><span class="k">class</span> <span class="nc">LoggingFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prints the contents of every filter that passes through as a debug</span>
+<span class="sd">    log entry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param target: the logger to use. If omitted, the &quot;whoosh.analysis&quot;</span>
+<span class="sd">            logger is used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">logging</span>
+
+            <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;whoosh.analysis&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="MultiFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.MultiFilter">[docs]</a><span class="k">class</span> <span class="nc">MultiFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Chooses one of two or more sub-filters based on the &#39;mode&#39; attribute</span>
+<span class="sd">    of the token stream.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">default_filter</span> <span class="o">=</span> <span class="n">PassFilter</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use keyword arguments to associate mode attribute values with</span>
+<span class="sd">        instantiated filters.</span>
+
+<span class="sd">        &gt;&gt;&gt; iwf_for_index = IntraWordFilter(mergewords=True, mergenums=False)</span>
+<span class="sd">        &gt;&gt;&gt; iwf_for_query = IntraWordFilter(mergewords=False, mergenums=False)</span>
+<span class="sd">        &gt;&gt;&gt; mf = MultiFilter(index=iwf_for_index, query=iwf_for_query)</span>
+
+<span class="sd">        This class expects that the value of the mode attribute is consistent</span>
+<span class="sd">        among all tokens in a token stream.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">filters</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="c1"># Only selects on the first token</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_filter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="n">chain</span><span class="p">([</span><span class="n">t</span><span class="p">],</span> <span class="n">tokens</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="TeeFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.TeeFilter">[docs]</a><span class="k">class</span> <span class="nc">TeeFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interleaves the results of two or more filters (or filter chains).</span>
+
+<span class="sd">    NOTE: because it needs to create copies of each token for each sub-filter,</span>
+<span class="sd">    this filter is quite slow.</span>
+
+<span class="sd">    &gt;&gt;&gt; target = &quot;ALFA BRAVO CHARLIE&quot;</span>
+<span class="sd">    &gt;&gt;&gt; # In one branch, we&#39;ll lower-case the tokens</span>
+<span class="sd">    &gt;&gt;&gt; f1 = LowercaseFilter()</span>
+<span class="sd">    &gt;&gt;&gt; # In the other branch, we&#39;ll reverse the tokens</span>
+<span class="sd">    &gt;&gt;&gt; f2 = ReverseTextFilter()</span>
+<span class="sd">    &gt;&gt;&gt; ana = RegexTokenizer(r&quot;\S+&quot;) | TeeFilter(f1, f2)</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(target)]</span>
+<span class="sd">    [&quot;alfa&quot;, &quot;AFLA&quot;, &quot;bravo&quot;, &quot;OVARB&quot;, &quot;charlie&quot;, &quot;EILRAHC&quot;]</span>
+
+<span class="sd">    To combine the incoming token stream with the output of a filter chain, use</span>
+<span class="sd">    ``TeeFilter`` and make one of the filters a :class:`PassFilter`.</span>
+
+<span class="sd">    &gt;&gt;&gt; f1 = PassFilter()</span>
+<span class="sd">    &gt;&gt;&gt; f2 = BiWordFilter()</span>
+<span class="sd">    &gt;&gt;&gt; ana = RegexTokenizer(r&quot;\S+&quot;) | TeeFilter(f1, f2) | LowercaseFilter()</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(target)]</span>
+<span class="sd">    [&quot;alfa&quot;, &quot;alfa-bravo&quot;, &quot;bravo&quot;, &quot;bravo-charlie&quot;, &quot;charlie&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">filters</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;TeeFilter requires two or more filters&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">fitlers</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">tee</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">)</span>
+        <span class="c1"># Tee the token iterator and wrap each teed iterator with the</span>
+        <span class="c1"># corresponding filter</span>
+        <span class="n">gens</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">gen</span><span class="p">)</span>
+            <span class="k">for</span> <span class="nb">filter</span><span class="p">,</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">,</span> <span class="n">tee</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">count</span><span class="p">))</span>
+        <span class="p">]</span>
+        <span class="c1"># Keep a count of the number of running iterators</span>
+        <span class="n">running</span> <span class="o">=</span> <span class="n">count</span>
+        <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gens</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">gen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                        <span class="n">gens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="n">running</span> <span class="o">-=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="ReverseTextFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.ReverseTextFilter">[docs]</a><span class="k">class</span> <span class="nc">ReverseTextFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reverses the text of each token.</span>
+
+<span class="sd">    &gt;&gt;&gt; ana = RegexTokenizer() | ReverseTextFilter()</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in ana(&quot;hello there&quot;)]</span>
+<span class="sd">    [&quot;olleh&quot;, &quot;ereht&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="LowercaseFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.LowercaseFilter">[docs]</a><span class="k">class</span> <span class="nc">LowercaseFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Uses unicode.lower() to lowercase token text.</span>
+
+<span class="sd">    &gt;&gt;&gt; rext = RegexTokenizer()</span>
+<span class="sd">    &gt;&gt;&gt; stream = rext(&quot;This is a TEST&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in LowercaseFilter(stream)]</span>
+<span class="sd">    [&quot;this&quot;, &quot;is&quot;, &quot;a&quot;, &quot;test&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="StripFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.StripFilter">[docs]</a><span class="k">class</span> <span class="nc">StripFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calls unicode.strip() on the token text.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="StopFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.StopFilter">[docs]</a><span class="k">class</span> <span class="nc">StopFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Marks &quot;stop&quot; words (words too common to index) in the stream (and by</span>
+<span class="sd">    default removes them).</span>
+
+<span class="sd">    Make sure you precede this filter with a :class:`LowercaseFilter`.</span>
+
+<span class="sd">    &gt;&gt;&gt; stopper = RegexTokenizer() | StopFilter()</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in stopper(u&quot;this is a test&quot;)]</span>
+<span class="sd">    [&quot;test&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; es_stopper = RegexTokenizer() | StopFilter(lang=&quot;es&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; [token.text for token in es_stopper(u&quot;el lapiz es en la mesa&quot;)]</span>
+<span class="sd">    [&quot;lapiz&quot;, &quot;mesa&quot;]</span>
+
+<span class="sd">    The list of available languages is in `whoosh.lang.languages`.</span>
+<span class="sd">    You can use :func:`whoosh.lang.has_stopwords` to check if a given language</span>
+<span class="sd">    has a stop word list available.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stoplist</span><span class="o">=</span><span class="n">STOP_WORDS</span><span class="p">,</span> <span class="n">minsize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">renumber</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param stoplist: A collection of words to remove from the stream.</span>
+<span class="sd">            This is converted to a frozenset. The default is a list of</span>
+<span class="sd">            common English stop words.</span>
+<span class="sd">        :param minsize: The minimum length of token texts. Tokens with</span>
+<span class="sd">            text smaller than this will be stopped. The default is 2.</span>
+<span class="sd">        :param maxsize: The maximum length of token texts. Tokens with text</span>
+<span class="sd">            larger than this will be stopped. Use None to allow any length.</span>
+<span class="sd">        :param renumber: Change the &#39;pos&#39; attribute of unstopped tokens</span>
+<span class="sd">            to reflect their position with the stopped words removed.</span>
+<span class="sd">        :param lang: Automatically get a list of stop words for the given</span>
+<span class="sd">            language</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">stops</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">stoplist</span><span class="p">:</span>
+            <span class="n">stops</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">stoplist</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lang</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">whoosh.lang</span> <span class="kn">import</span> <span class="n">stopwords_for_language</span>
+
+            <span class="n">stops</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">stopwords_for_language</span><span class="p">(</span><span class="n">lang</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stops</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">stops</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">minsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="n">maxsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">renumber</span> <span class="o">=</span> <span class="n">renumber</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">stops</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">stops</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">min</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">renumber</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">renumber</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">stoplist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stops</span>
+        <span class="n">minsize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span>
+        <span class="n">maxsize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span>
+        <span class="n">renumber</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">renumber</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">minsize</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">maxsize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">maxsize</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="n">text</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stoplist</span>
+            <span class="p">):</span>
+                <span class="c1"># This is not a stop word</span>
+                <span class="k">if</span> <span class="n">renumber</span> <span class="ow">and</span> <span class="n">t</span><span class="o">.</span><span class="n">positions</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">pos</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">pos</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">pos</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">t</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">stopped</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">yield</span> <span class="n">t</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># This is a stop word</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">t</span><span class="o">.</span><span class="n">removestops</span><span class="p">:</span>
+                    <span class="c1"># This IS a stop word, but we&#39;re not removing them</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">stopped</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="CharsetFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.CharsetFilter">[docs]</a><span class="k">class</span> <span class="nc">CharsetFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Translates the text of tokens by calling unicode.translate() using the</span>
+<span class="sd">    supplied character mapping object. This is useful for case and accent</span>
+<span class="sd">    folding.</span>
+
+<span class="sd">    The ``whoosh.support.charset`` module has a useful map for accent folding.</span>
+
+<span class="sd">    &gt;&gt;&gt; from whoosh.support.charset import accent_map</span>
+<span class="sd">    &gt;&gt;&gt; retokenizer = RegexTokenizer()</span>
+<span class="sd">    &gt;&gt;&gt; chfilter = CharsetFilter(accent_map)</span>
+<span class="sd">    &gt;&gt;&gt; [t.text for t in chfilter(retokenizer(u&#39;café&#39;))]</span>
+<span class="sd">    [u&#39;cafe&#39;]</span>
+
+<span class="sd">    Another way to get a character mapping object is to convert a Sphinx</span>
+<span class="sd">    charset table file using</span>
+<span class="sd">    :func:`whoosh.support.charset.charset_table_to_dict`.</span>
+
+<span class="sd">    &gt;&gt;&gt; from whoosh.support.charset import charset_table_to_dict</span>
+<span class="sd">    &gt;&gt;&gt; from whoosh.support.charset import default_charset</span>
+<span class="sd">    &gt;&gt;&gt; retokenizer = RegexTokenizer()</span>
+<span class="sd">    &gt;&gt;&gt; charmap = charset_table_to_dict(default_charset)</span>
+<span class="sd">    &gt;&gt;&gt; chfilter = CharsetFilter(charmap)</span>
+<span class="sd">    &gt;&gt;&gt; [t.text for t in chfilter(retokenizer(u&#39;Stra\\xdfe&#39;))]</span>
+<span class="sd">    [u&#39;strase&#39;]</span>
+
+<span class="sd">    The Sphinx charset table format is described at</span>
+<span class="sd">    http://www.sphinxsearch.com/docs/current.html#conf-charset-table.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">charmap</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">charmap</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param charmap: a dictionary mapping from integer character numbers to</span>
+<span class="sd">            unicode characters, as required by the unicode.translate() method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">charmap</span> <span class="o">=</span> <span class="n">charmap</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">charmap</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">charmap</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">)</span>
+        <span class="n">charmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">charmap</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">charmap</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="DelimitedAttributeFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.DelimitedAttributeFilter">[docs]</a><span class="k">class</span> <span class="nc">DelimitedAttributeFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Looks for delimiter characters in the text of each token and stores the</span>
+<span class="sd">    data after the delimiter in a named attribute on the token.</span>
+
+<span class="sd">    The defaults are set up to use the ``^`` character as a delimiter and store</span>
+<span class="sd">    the value after the ``^`` as the boost for the token.</span>
+
+<span class="sd">    &gt;&gt;&gt; daf = DelimitedAttributeFilter(delimiter=&quot;^&quot;, attribute=&quot;boost&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; ana = RegexTokenizer(&quot;\\\\S+&quot;) | DelimitedAttributeFilter()</span>
+<span class="sd">    &gt;&gt;&gt; for t in ana(u(&quot;image render^2 file^0.5&quot;))</span>
+<span class="sd">    ...    print(&quot;%r %f&quot; % (t.text, t.boost))</span>
+<span class="sd">    &#39;image&#39; 1.0</span>
+<span class="sd">    &#39;render&#39; 2.0</span>
+<span class="sd">    &#39;file&#39; 0.5</span>
+
+<span class="sd">    Note that you need to make sure your tokenizer includes the delimiter and</span>
+<span class="sd">    data as part of the token!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;boost&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param delimiter: a string that, when present in a token&#39;s text,</span>
+<span class="sd">            separates the actual text from the &quot;data&quot; payload.</span>
+<span class="sd">        :param attribute: the name of the attribute in which to store the</span>
+<span class="sd">            data on the token.</span>
+<span class="sd">        :param default: the value to use for the attribute for tokens that</span>
+<span class="sd">            don&#39;t have delimited data.</span>
+<span class="sd">        :param type: the type of the data, for example ``str`` or ``float``.</span>
+<span class="sd">            This is used to convert the string value of the data before</span>
+<span class="sd">            storing it in the attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delim</span> <span class="o">=</span> <span class="n">delimiter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attribute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">delim</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">delim</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">attr</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">default</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">delim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delim</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">delim</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">type_</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]))</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">chars</span><span class="p">:</span>
+                    <span class="n">t</span><span class="o">.</span><span class="n">endchar</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="n">pos</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="n">pos</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+            <span class="k">yield</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="SubstitutionFilter"><a class="viewcode-back" href="../../../api/analysis.html#whoosh.analysis.SubstitutionFilter">[docs]</a><span class="k">class</span> <span class="nc">SubstitutionFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs a regular expression substitution on the token text.</span>
+
+<span class="sd">    This is especially useful for removing text from tokens, for example</span>
+<span class="sd">    hyphens::</span>
+
+<span class="sd">        ana = RegexTokenizer(r&quot;\\S+&quot;) | SubstitutionFilter(&quot;-&quot;, &quot;&quot;)</span>
+
+<span class="sd">    Because it has the full power of the re.sub() method behind it, this filter</span>
+<span class="sd">    can perform some fairly complex transformations. For example, to take</span>
+<span class="sd">    tokens like ``&#39;a=b&#39;, &#39;c=d&#39;, &#39;e=f&#39;`` and change them to ``&#39;b=a&#39;, &#39;d=c&#39;,</span>
+<span class="sd">    &#39;f=e&#39;``::</span>
+
+<span class="sd">        # Analyzer that swaps the text on either side of an equal sign</span>
+<span class="sd">        rt = RegexTokenizer(r&quot;\\S+&quot;)</span>
+<span class="sd">        sf = SubstitutionFilter(&quot;([^/]*)/(./*)&quot;, r&quot;\\2/\\1&quot;)</span>
+<span class="sd">        ana = rt | sf</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param pattern: a pattern string or compiled regular expression object</span>
+<span class="sd">            describing the text to replace.</span>
+<span class="sd">        :param replacement: the substitution text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">rcompile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replacement</span> <span class="o">=</span> <span class="n">replacement</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">pattern</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacement</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">replacement</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replacement</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replacement</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">t</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

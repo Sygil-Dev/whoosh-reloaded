@@ -116,39 +116,39 @@
 <section id="index">
 <h2>Index<a class="headerlink" href="#index" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Subclass :class:` whoosh_reloaded.index.Index`.</p></li>
+<li><p>Subclass :class:` whoosh.index.Index`.</p></li>
 <li><p>Indexes must implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.index.Index.is_empty`</p></li>
-<li><p>:meth:` whoosh_reloaded.index.Index.doc_count`</p></li>
-<li><p>:meth:` whoosh_reloaded.index.Index.reader`</p></li>
-<li><p>:meth:` whoosh_reloaded.index.Index.writer`</p></li>
+<li><p>:meth:` whoosh.index.Index.is_empty`</p></li>
+<li><p>:meth:` whoosh.index.Index.doc_count`</p></li>
+<li><p>:meth:` whoosh.index.Index.reader`</p></li>
+<li><p>:meth:` whoosh.index.Index.writer`</p></li>
 </ul>
 </li>
 <li><p>Indexes that require/support locking must implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.index.Index.lock`</p></li>
-<li><p>:meth:` whoosh_reloaded.index.Index.unlock`</p></li>
+<li><p>:meth:` whoosh.index.Index.lock`</p></li>
+<li><p>:meth:` whoosh.index.Index.unlock`</p></li>
 </ul>
 </li>
 <li><p>Indexes that support deletion must implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.index.Index.delete_document`</p></li>
-<li><p>:meth:` whoosh_reloaded.index.Index.doc_count_all` – if the backend has delayed
+<li><p>:meth:` whoosh.index.Index.delete_document`</p></li>
+<li><p>:meth:` whoosh.index.Index.doc_count_all` – if the backend has delayed
 deletion.</p></li>
 </ul>
 </li>
 <li><p>Indexes that require/support versioning/transactions <em>may</em> implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.index.Index.latest_generation`</p></li>
-<li><p>:meth:` whoosh_reloaded.index.Index.up_to_date`</p></li>
-<li><p>:meth:` whoosh_reloaded.index.Index.last_modified`</p></li>
+<li><p>:meth:` whoosh.index.Index.latest_generation`</p></li>
+<li><p>:meth:` whoosh.index.Index.up_to_date`</p></li>
+<li><p>:meth:` whoosh.index.Index.last_modified`</p></li>
 </ul>
 </li>
 <li><p>Index <em>may</em> implement the following methods (the base class’s versions are no-ops).</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.index.Index.optimize`</p></li>
-<li><p>:meth:` whoosh_reloaded.index.Index.close`</p></li>
+<li><p>:meth:` whoosh.index.Index.optimize`</p></li>
+<li><p>:meth:` whoosh.index.Index.close`</p></li>
 </ul>
 </li>
 </ul>
@@ -156,23 +156,23 @@ deletion.</p></li>
 <section id="indexwriter">
 <h2>IndexWriter<a class="headerlink" href="#indexwriter" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Subclass :class:` whoosh_reloaded.writing.IndexWriter`.</p></li>
+<li><p>Subclass :class:` whoosh.writing.IndexWriter`.</p></li>
 <li><p>IndexWriters must implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.writing.IndexWriter.add_document`</p></li>
-<li><p>:meth:` whoosh_reloaded.writing.IndexWriter.add_reader`</p></li>
+<li><p>:meth:` whoosh.writing.IndexWriter.add_document`</p></li>
+<li><p>:meth:` whoosh.writing.IndexWriter.add_reader`</p></li>
 </ul>
 </li>
 <li><p>Backends that support deletion must implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.writing.IndexWriter.delete_document`</p></li>
+<li><p>:meth:` whoosh.writing.IndexWriter.delete_document`</p></li>
 </ul>
 </li>
 <li><p>IndexWriters that work as transactions must implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.reading.IndexWriter.commit` – Save the additions/deletions done with
+<li><p>:meth:` whoosh.reading.IndexWriter.commit` – Save the additions/deletions done with
 this IndexWriter to the main index, and release any resources used by the IndexWriter.</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexWriter.cancel` – Throw away any additions/deletions done
+<li><p>:meth:` whoosh.reading.IndexWriter.cancel` – Throw away any additions/deletions done
 with this IndexWriter, and release any resources used by the IndexWriter.</p></li>
 </ul>
 </li>
@@ -181,49 +181,49 @@ with this IndexWriter, and release any resources used by the IndexWriter.</p></l
 <section id="indexreader">
 <h2>IndexReader<a class="headerlink" href="#indexreader" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Subclass :class:` whoosh_reloaded.reading.IndexReader`.</p></li>
+<li><p>Subclass :class:` whoosh.reading.IndexReader`.</p></li>
 <li><p>IndexReaders must implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.__contains__`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.__iter__`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.iter_from`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.stored_fields`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.doc_count_all`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.doc_count`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.doc_field_length`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.field_length`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.max_field_length`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.postings`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.has_vector`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.vector`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.doc_frequency`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.frequency`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.__contains__`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.__iter__`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.iter_from`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.stored_fields`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.doc_count_all`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.doc_count`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.doc_field_length`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.field_length`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.max_field_length`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.postings`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.has_vector`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.vector`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.doc_frequency`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.frequency`</p></li>
 </ul>
 </li>
 <li><p>Backends that support deleting documents should implement the following
 methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.has_deletions`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.is_deleted`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.has_deletions`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.is_deleted`</p></li>
 </ul>
 </li>
 <li><p>Backends that support versioning should implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.generation`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.generation`</p></li>
 </ul>
 </li>
 <li><p>If the IndexReader object does not keep the schema in the <code class="docutils literal notranslate"><span class="pre">self.schema</span></code>
 attribute, it needs to override the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.field`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.field_names`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.scorable_names`</p></li>
-<li><p>:meth:` whoosh_reloaded.reading.IndexReader.vector_names`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.field`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.field_names`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.scorable_names`</p></li>
+<li><p>:meth:` whoosh.reading.IndexReader.vector_names`</p></li>
 </ul>
 </li>
 <li><p>IndexReaders <em>may</em> implement the following methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.reading.DocReader.close` – closes any open resources associated with the
+<li><p>:meth:` whoosh.reading.DocReader.close` – closes any open resources associated with the
 reader.</p></li>
 </ul>
 </li>
@@ -231,36 +231,36 @@ reader.</p></li>
 </section>
 <section id="matcher">
 <h2>Matcher<a class="headerlink" href="#matcher" title="Permalink to this heading">¶</a></h2>
-<p>The :meth:` whoosh_reloaded.reading.IndexReader.postings` method returns a
-:class:` whoosh_reloaded.matching.Matcher` object. You will probably need to implement
+<p>The :meth:` whoosh.reading.IndexReader.postings` method returns a
+:class:` whoosh.matching.Matcher` object. You will probably need to implement
 a custom Matcher class for reading from your posting lists.</p>
 <ul class="simple">
-<li><p>Subclass :class:` whoosh_reloaded.matching.Matcher`.</p></li>
+<li><p>Subclass :class:` whoosh.matching.Matcher`.</p></li>
 <li><p>Implement the following methods at minimum.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.is_active`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.copy`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.id`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.next`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.value`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.value_as`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.score`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.is_active`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.copy`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.id`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.next`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.value`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.value_as`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.score`</p></li>
 </ul>
 </li>
 <li><p>Depending on the implementation, you <em>may</em> implement the following methods
 more efficiently.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.skip_to`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.weight`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.skip_to`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.weight`</p></li>
 </ul>
 </li>
 <li><p>If the implementation supports quality, you should implement the following
 methods.</p>
 <ul>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.supports_quality`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.quality`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.block_quality`</p></li>
-<li><p>:meth:` whoosh_reloaded.matching.Matcher.skip_to_quality`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.supports_quality`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.quality`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.block_quality`</p></li>
+<li><p>:meth:` whoosh.matching.Matcher.skip_to_quality`</p></li>
 </ul>
 </li>
 </ul>

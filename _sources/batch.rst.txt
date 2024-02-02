@@ -39,7 +39,7 @@ analyzer, consider using an unbounded cache::
 The ``limitmb`` parameter
 =========================
 
-The ``limitmb`` parameter to :meth:`whoosh_reloaded.index.Index.writer` controls the
+The ``limitmb`` parameter to :meth:`whoosh.index.Index.writer` controls the
 *maximum* memory (in megabytes) the writer will use for the indexing pool. The
 higher the number, the faster indexing will be.
 
@@ -47,7 +47,7 @@ The default value of ``128`` is actually somewhat low, considering many people
 have multiple gigabytes of RAM these days. Setting it higher can speed up
 indexing considerably::
 
-    from whoosh_reloaded import index
+    from whoosh import index
 
     ix = index.open_dir("indexdir")
     writer = ix.writer(limitmb=256)
@@ -61,11 +61,11 @@ indexing considerably::
 The ``procs`` parameter
 =======================
 
-The ``procs`` parameter to :meth:`whoosh_reloaded.index.Index.writer` controls the
+The ``procs`` parameter to :meth:`whoosh.index.Index.writer` controls the
 number of processors the writer will use for indexing (via the
 ``multiprocessing`` module)::
 
-    from whoosh_reloaded import index
+    from whoosh import index
 
     ix = index.open_dir("indexdir")
     writer = ix.writer(procs=4)
@@ -89,7 +89,7 @@ You can get much better indexing speed by also using the ``multisegment=True``
 keyword argument, which instead of merging the results of each sub-writer,
 simply has them each just write out a new segment::
 
-    from whoosh_reloaded import index
+    from whoosh import index
 
     ix = index.open_dir("indexdir")
     writer = ix.writer(procs=4, multisegment=True)

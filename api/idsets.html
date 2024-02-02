@@ -85,15 +85,15 @@
 <li class="toctree-l2"><a class="reference internal" href="highlight.html"><code class="docutils literal notranslate"><span class="pre">highlight</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#base-classes">Base classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.idsets.DocIdSet"><code class="docutils literal notranslate"><span class="pre">DocIdSet</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.idsets.BaseBitSet"><code class="docutils literal notranslate"><span class="pre">BaseBitSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.DocIdSet"><code class="docutils literal notranslate"><span class="pre">DocIdSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.BaseBitSet"><code class="docutils literal notranslate"><span class="pre">BaseBitSet</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#implementation-classes">Implementation classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.idsets.BitSet"><code class="docutils literal notranslate"><span class="pre">BitSet</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.idsets.OnDiskBitSet"><code class="docutils literal notranslate"><span class="pre">OnDiskBitSet</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.idsets.SortedIntSet"><code class="docutils literal notranslate"><span class="pre">SortedIntSet</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.idsets.MultiIdSet"><code class="docutils literal notranslate"><span class="pre">MultiIdSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.BitSet"><code class="docutils literal notranslate"><span class="pre">BitSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.OnDiskBitSet"><code class="docutils literal notranslate"><span class="pre">OnDiskBitSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.SortedIntSet"><code class="docutils literal notranslate"><span class="pre">SortedIntSet</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.idsets.MultiIdSet"><code class="docutils literal notranslate"><span class="pre">MultiIdSet</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -144,14 +144,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh_reloaded.idsets">
-<span id="support-bitvector-module"></span><h1><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.idsets" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh.idsets">
+<span id="support-bitvector-module"></span><h1><code class="docutils literal notranslate"><span class="pre">support.bitvector</span></code> module<a class="headerlink" href="#module-whoosh.idsets" title="Permalink to this heading">¶</a></h1>
 <p>An implementation of an object that acts like a collection of on/off bits.</p>
 <section id="base-classes">
 <h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.DocIdSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.idsets.</span></span><span class="sig-name descname"><span class="pre">DocIdSet</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#DocIdSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.DocIdSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">DocIdSet</span></span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for a set of positive integers, implementing a subset of the
 built-in <code class="docutils literal notranslate"><span class="pre">set</span></code> type’s interface with extra docid-related methods.</p>
 <p>This is a superclass for alternative set implementations to the built-in
@@ -159,49 +159,49 @@ built-in <code class="docutils literal notranslate"><span class="pre">set</span>
 sorted lists of positive integers, though they will inevitably be slower
 than <code class="docutils literal notranslate"><span class="pre">set</span></code> for most operations since they’re pure Python.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.DocIdSet.after">
-<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#DocIdSet.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.DocIdSet.after" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.after">
+<span class="sig-name descname"><span class="pre">after</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.after"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.after" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the next integer in the set after <code class="docutils literal notranslate"><span class="pre">i</span></code>, or None.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.DocIdSet.before">
-<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#DocIdSet.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.DocIdSet.before" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.before">
+<span class="sig-name descname"><span class="pre">before</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.before"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.before" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the previous integer in the set before <code class="docutils literal notranslate"><span class="pre">i</span></code>, or None.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.DocIdSet.first">
-<span class="sig-name descname"><span class="pre">first</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#DocIdSet.first"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.DocIdSet.first" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.first">
+<span class="sig-name descname"><span class="pre">first</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.first"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.first" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the first (lowest) integer in the set.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.DocIdSet.invert_update">
-<span class="sig-name descname"><span class="pre">invert_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#DocIdSet.invert_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.DocIdSet.invert_update" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.invert_update">
+<span class="sig-name descname"><span class="pre">invert_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.invert_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.invert_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the set in-place to contain numbers in the range
 <code class="docutils literal notranslate"><span class="pre">[0</span> <span class="pre">-</span> <span class="pre">size)</span></code> except numbers that are in this set.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.DocIdSet.last">
-<span class="sig-name descname"><span class="pre">last</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#DocIdSet.last"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.DocIdSet.last" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.DocIdSet.last">
+<span class="sig-name descname"><span class="pre">last</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#DocIdSet.last"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.DocIdSet.last" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the last (highest) integer in the set.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.BaseBitSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.idsets.</span></span><span class="sig-name descname"><span class="pre">BaseBitSet</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#BaseBitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.BaseBitSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.BaseBitSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">BaseBitSet</span></span><a class="reference internal" href="../_modules/whoosh/idsets.html#BaseBitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.BaseBitSet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="implementation-classes">
 <h2>Implementation classes<a class="headerlink" href="#implementation-classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.BitSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.idsets.</span></span><span class="sig-name descname"><span class="pre">BitSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#BitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.BitSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.BitSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">BitSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#BitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.BitSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DocIdSet backed by an array of bits. This can also be useful as a bit
 array (e.g. for a Bloom filter). It is much more memory efficient than a
 large built-in set of integers, but wastes memory for sparse sets.</p>
@@ -218,8 +218,8 @@ bit array. This is used by some of the object’s methods.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.OnDiskBitSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.idsets.</span></span><span class="sig-name descname"><span class="pre">OnDiskBitSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basepos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytecount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#OnDiskBitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.OnDiskBitSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.OnDiskBitSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">OnDiskBitSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basepos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bytecount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#OnDiskBitSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.OnDiskBitSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DocIdSet backed by an array of bits on disk.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">st</span> <span class="o">=</span> <span class="n">RamStorage</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="s2">&quot;test.bin&quot;</span><span class="p">)</span>
@@ -236,7 +236,7 @@ bit array. This is used by some of the object’s methods.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dbfile</strong> – a <a class="reference internal" href="filedb/structfile.html#whoosh_reloaded.filedb.structfile.StructFile" title="whoosh_reloaded.filedb.structfile.StructFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructFile</span></code></a> object
+<li><p><strong>dbfile</strong> – a <a class="reference internal" href="filedb/structfile.html#whoosh.filedb.structfile.StructFile" title="whoosh.filedb.structfile.StructFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructFile</span></code></a> object
 to read from.</p></li>
 <li><p><strong>basepos</strong> – the base position of the bytes in the given file.</p></li>
 <li><p><strong>bytecount</strong> – the number of bytes to use for the bit array.</p></li>
@@ -246,14 +246,14 @@ to read from.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.SortedIntSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.idsets.</span></span><span class="sig-name descname"><span class="pre">SortedIntSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'I'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#SortedIntSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.SortedIntSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.SortedIntSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">SortedIntSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typecode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'I'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#SortedIntSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.SortedIntSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>A DocIdSet backed by a sorted array of integers.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.idsets.MultiIdSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.idsets.</span></span><span class="sig-name descname"><span class="pre">MultiIdSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/idsets.html#MultiIdSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.idsets.MultiIdSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.idsets.MultiIdSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.idsets.</span></span><span class="sig-name descname"><span class="pre">MultiIdSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/idsets.html#MultiIdSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.idsets.MultiIdSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps multiple SERIAL sub-DocIdSet objects and presents them as an
 aggregated, read-only set.</p>
 <dl class="field-list simple">

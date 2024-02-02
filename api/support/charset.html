@@ -97,8 +97,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../spelling.html"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.support.charset.default_charset"><code class="docutils literal notranslate"><span class="pre">default_charset</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.support.charset.charset_table_to_dict"><code class="docutils literal notranslate"><span class="pre">charset_table_to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh.support.charset.default_charset"><code class="docutils literal notranslate"><span class="pre">default_charset</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh.support.charset.charset_table_to_dict"><code class="docutils literal notranslate"><span class="pre">charset_table_to_dict()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
@@ -134,21 +134,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh_reloaded.support.charset">
-<span id="support-charset-module"></span><h1><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.support.charset" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh.support.charset">
+<span id="support-charset-module"></span><h1><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module<a class="headerlink" href="#module-whoosh.support.charset" title="Permalink to this heading">¶</a></h1>
 <p>This module contains tools for working with Sphinx charset table files. These files
 are useful for doing case and accent folding.
-See <a class="reference internal" href="../analysis.html#whoosh_reloaded.analysis.CharsetTokenizer" title="whoosh_reloaded.analysis.CharsetTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis.CharsetTokenizer</span></code></a> and <a class="reference internal" href="../analysis.html#whoosh_reloaded.analysis.CharsetFilter" title="whoosh_reloaded.analysis.CharsetFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.analysis.CharsetFilter</span></code></a>.</p>
+See <a class="reference internal" href="../analysis.html#whoosh.analysis.CharsetTokenizer" title="whoosh.analysis.CharsetTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.CharsetTokenizer</span></code></a> and <a class="reference internal" href="../analysis.html#whoosh.analysis.CharsetFilter" title="whoosh.analysis.CharsetFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.analysis.CharsetFilter</span></code></a>.</p>
 <dl class="py data">
-<dt class="sig sig-object py" id="whoosh_reloaded.support.charset.default_charset">
-<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.support.charset.</span></span><span class="sig-name descname"><span class="pre">default_charset</span></span><a class="headerlink" href="#whoosh_reloaded.support.charset.default_charset" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.support.charset.default_charset">
+<span class="sig-prename descclassname"><span class="pre">whoosh.support.charset.</span></span><span class="sig-name descname"><span class="pre">default_charset</span></span><a class="headerlink" href="#whoosh.support.charset.default_charset" title="Permalink to this definition">¶</a></dt>
 <dd><p>An extensive case- and accent folding charset table.
 Taken from <a class="reference external" href="http://speeple.com/unicode-maps.txt">http://speeple.com/unicode-maps.txt</a></p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh_reloaded.support.charset.charset_table_to_dict">
-<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.support.charset.</span></span><span class="sig-name descname"><span class="pre">charset_table_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tablestring</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh_reloaded/support/charset.html#charset_table_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.support.charset.charset_table_to_dict" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.support.charset.charset_table_to_dict">
+<span class="sig-prename descclassname"><span class="pre">whoosh.support.charset.</span></span><span class="sig-name descname"><span class="pre">charset_table_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tablestring</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/whoosh/support/charset.html#charset_table_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.support.charset.charset_table_to_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a string with the contents of a Sphinx charset table file and
 returns a mapping object (a defaultdict, actually) of the kind expected by
 the unicode.translate() method: that is, it maps a character number to a unicode

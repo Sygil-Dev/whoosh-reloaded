@@ -139,13 +139,13 @@ analyzer, consider using an unbounded cache:</p>
 </section>
 <section id="the-limitmb-parameter">
 <h2>The <code class="docutils literal notranslate"><span class="pre">limitmb</span></code> parameter<a class="headerlink" href="#the-limitmb-parameter" title="Permalink to this heading">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">limitmb</span></code> parameter to <a class="reference internal" href="api/index.html#whoosh_reloaded.index.Index.writer" title="whoosh_reloaded.index.Index.writer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh_reloaded.index.Index.writer()</span></code></a> controls the
+<p>The <code class="docutils literal notranslate"><span class="pre">limitmb</span></code> parameter to <a class="reference internal" href="api/index.html#whoosh.index.Index.writer" title="whoosh.index.Index.writer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.writer()</span></code></a> controls the
 <em>maximum</em> memory (in megabytes) the writer will use for the indexing pool. The
 higher the number, the faster indexing will be.</p>
 <p>The default value of <code class="docutils literal notranslate"><span class="pre">128</span></code> is actually somewhat low, considering many people
 have multiple gigabytes of RAM these days. Setting it higher can speed up
 indexing considerably:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">index</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
 
 <span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">limitmb</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
@@ -160,10 +160,10 @@ but not for trying to exactly control the memory usage of Whoosh.</p>
 </section>
 <section id="the-procs-parameter">
 <h2>The <code class="docutils literal notranslate"><span class="pre">procs</span></code> parameter<a class="headerlink" href="#the-procs-parameter" title="Permalink to this heading">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">procs</span></code> parameter to <a class="reference internal" href="api/index.html#whoosh_reloaded.index.Index.writer" title="whoosh_reloaded.index.Index.writer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh_reloaded.index.Index.writer()</span></code></a> controls the
+<p>The <code class="docutils literal notranslate"><span class="pre">procs</span></code> parameter to <a class="reference internal" href="api/index.html#whoosh.index.Index.writer" title="whoosh.index.Index.writer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">whoosh.index.Index.writer()</span></code></a> controls the
 number of processors the writer will use for indexing (via the
 <code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code> module):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">index</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
 
 <span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">procs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -185,7 +185,7 @@ of each sub-writer into a single segment.</p>
 <p>You can get much better indexing speed by also using the <code class="docutils literal notranslate"><span class="pre">multisegment=True</span></code>
 keyword argument, which instead of merging the results of each sub-writer,
 simply has them each just write out a new segment:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">index</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">index</span>
 
 <span class="n">ix</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">open_dir</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">)</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">procs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">multisegment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

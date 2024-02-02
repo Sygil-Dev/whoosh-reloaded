@@ -5,7 +5,7 @@ Introduction to Whoosh
 About Whoosh
 ------------
 
-Whoosh was created by `Matt Chaput <mailto:matt@whoosh-reloaded.ca>`_. It started as a quick and dirty
+Whoosh was created by `Matt Chaput <mailto:matt@whoosh.ca>`_. It started as a quick and dirty
 search server for the online documentation of the `Houdini <http://www.sidefx.com/>`_
 3D animation software package. Side Effects Software generously allowed Matt to open source
 the code in case it might be useful to anyone else who needs a very flexible or pure-Python
@@ -57,4 +57,4 @@ Getting help with Whoosh
 
 You can view outstanding issues on the
 `Whoosh Github page <http://github.com/Sygil-Dev/whoosh-reloaded>`_
-and get help on the `Whoosh mailing list <http://groups.google.com/group/whoosh-reloaded>`_.
+and get help on the `Whoosh mailing list <http://groups.google.com/group/whoosh>`_.

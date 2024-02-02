@@ -111,8 +111,8 @@
 <ul>
 <li><p>Major improvements to reading/writing of postings and query performance.</p></li>
 <li><p>Changed default post limit (run size) from 4 MB to 32 MB.</p></li>
-<li><p>Finished migrating backend-specific code into `` whoosh_reloaded.filedb`` package.</p></li>
-<li><p>Moved formats from whoosh_reloaded.fields module into new whoosh_reloaded.formats module.</p></li>
+<li><p>Finished migrating backend-specific code into `` whoosh.filedb`` package.</p></li>
+<li><p>Moved formats from whoosh.fields module into new whoosh.formats module.</p></li>
 <li><p>DocReader and TermReader classes combined into new IndexReader interface.
 You can get an IndexReader implementation by calling Index.reader().
 Searcher is now a wrapper around an IndexReader.</p></li>
@@ -123,8 +123,8 @@ mix the delimiters, for example <code class="docutils literal notranslate"><span
 inclusive start but exclusive end term.</p></li>
 <li><p>Added experimental DATETIME field type lets you pass a
 <code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> object as a field value to <code class="docutils literal notranslate"><span class="pre">add_document</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">DATETIME</span>
-<span class="kn">from</span> <span class="nn">whoosh_reloaded.filedb.filestore</span> <span class="kn">import</span> <span class="n">RamStorage</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">ID</span><span class="p">,</span> <span class="n">DATETIME</span>
+<span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">RamStorage</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">ID</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">DATETIME</span><span class="p">)</span>
@@ -147,12 +147,12 @@ easier to work with terms containing special characters.</p></li>
 <code class="docutils literal notranslate"><span class="pre">IndexReader.vector_as(astype,</span> <span class="pre">docnum,</span> <span class="pre">fieldid)</span></code> (i.e. the astype argument
 has moved from the last to the first argument), e.g.
 <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">ixreader.vector_as(&quot;frequency&quot;,</span> <span class="pre">102,</span> <span class="pre">&quot;content&quot;)</span></code>.</p></li>
-<li><p>Added whoosh_reloaded.support.charset for translating Sphinx charset table files.</p></li>
-<li><p>Added whoosh_reloaded.analysis.CharsetTokenizer and CharsetFilter to enable case and
+<li><p>Added whoosh.support.charset for translating Sphinx charset table files.</p></li>
+<li><p>Added whoosh.analysis.CharsetTokenizer and CharsetFilter to enable case and
 accent folding.</p></li>
-<li><p>Added experimental `` whoosh_reloaded.ramdb`` in-memory backend.</p></li>
-<li><p>Added experimental `` whoosh_reloaded.query.FuzzyTerm`` query type.</p></li>
-<li><p>Added `` whoosh_reloaded.lang.wordnet`` module containing <code class="docutils literal notranslate"><span class="pre">Thesaurus</span></code> object for using
+<li><p>Added experimental `` whoosh.ramdb`` in-memory backend.</p></li>
+<li><p>Added experimental `` whoosh.query.FuzzyTerm`` query type.</p></li>
+<li><p>Added `` whoosh.lang.wordnet`` module containing <code class="docutils literal notranslate"><span class="pre">Thesaurus</span></code> object for using
 WordNet synonym database.</p></li>
 </ul>
 </section>

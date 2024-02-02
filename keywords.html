@@ -142,10 +142,10 @@ original text (such as from a database)</em>.</p>
 </div>
 </li>
 <li><p>Extract keywords for the top N documents in a
-:class:` whoosh_reloaded.searching.Results` object. <em>This requires that the field is
+:class:` whoosh.searching.Results` object. <em>This requires that the field is
 either vectored or stored</em>.</p>
 <p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms()</span></code> method of the
-:class:` whoosh_reloaded.searching.Results` object to extract keywords from the top N
+:class:` whoosh.searching.Results` object to extract keywords from the top N
 documents of the result set.</p>
 <p>For example, to extract <em>five</em> key terms from the <code class="docutils literal notranslate"><span class="pre">content</span></code> field of the top
 <em>ten</em> documents of a results object:</p>
@@ -158,10 +158,10 @@ documents of the result set.</p>
 field is either vectored or stored</em>.</p>
 <p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">document_number()</span></code> or
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">document_numbers()</span></code> methods of the
-:class:` whoosh_reloaded.searching.Searcher` object to get the document numbers for the
+:class:` whoosh.searching.Searcher` object to get the document numbers for the
 document(s) you want to extract keywords from.</p>
 <p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms()</span></code> method of a
-:class:` whoosh_reloaded.searching.Searcher` to extract the keywords, given the list of
+:class:` whoosh.searching.Searcher` to extract the keywords, given the list of
 document numbers.</p>
 <p>For example, let’s say you have an index of emails. To extract key terms from
 the <code class="docutils literal notranslate"><span class="pre">content</span></code> field of emails whose <code class="docutils literal notranslate"><span class="pre">emailto</span></code> field contains
@@ -175,7 +175,7 @@ the <code class="docutils literal notranslate"><span class="pre">content</span><
 </li>
 <li><p>Extract keywords from arbitrary text not in the index.</p>
 <p>Use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">key_terms_from_text()</span></code> method of a
-:class:` whoosh_reloaded.searching.Searcher` to extract the keywords, given the text:</p>
+:class:` whoosh.searching.Searcher` to extract the keywords, given the text:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">email_index</span><span class="o">.</span><span class="n">searcher</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
     <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="n">keyword</span> <span class="k">for</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">score</span>
                 <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">key_terms_from_text</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">,</span> <span class="n">mytext</span><span class="p">)]</span>
@@ -186,7 +186,7 @@ the <code class="docutils literal notranslate"><span class="pre">content</span><
 </section>
 <section id="expansion-models">
 <h2>Expansion models<a class="headerlink" href="#expansion-models" title="Permalink to this heading">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">ExpansionModel</span></code> subclasses in the :mod:` whoosh_reloaded.classify` module implement
+<p>The <code class="docutils literal notranslate"><span class="pre">ExpansionModel</span></code> subclasses in the :mod:` whoosh.classify` module implement
 different weighting functions for key words. These models are translated into
 Python from original Java implementations in Terrier.</p>
 </section>

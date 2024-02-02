@@ -99,11 +99,11 @@
 <li class="toctree-l2"><a class="reference internal" href="support/charset.html"><code class="docutils literal notranslate"><span class="pre">support.charset</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="support/levenshtein.html"><code class="docutils literal notranslate"><span class="pre">support.levenshtein</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">util</span></code> module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.util.fib"><code class="docutils literal notranslate"><span class="pre">fib()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.util.make_binary_tree"><code class="docutils literal notranslate"><span class="pre">make_binary_tree()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.util.make_weighted_tree"><code class="docutils literal notranslate"><span class="pre">make_weighted_tree()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.util.synchronized"><code class="docutils literal notranslate"><span class="pre">synchronized()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#whoosh_reloaded.util.unclosed"><code class="docutils literal notranslate"><span class="pre">unclosed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh.util.fib"><code class="docutils literal notranslate"><span class="pre">fib()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh.util.make_binary_tree"><code class="docutils literal notranslate"><span class="pre">make_binary_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh.util.make_weighted_tree"><code class="docutils literal notranslate"><span class="pre">make_weighted_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh.util.synchronized"><code class="docutils literal notranslate"><span class="pre">synchronized()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whoosh.util.unclosed"><code class="docutils literal notranslate"><span class="pre">unclosed()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="writing.html"><code class="docutils literal notranslate"><span class="pre">writing</span></code> module</a></li>
@@ -137,17 +137,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh_reloaded.util">
-<span id="util-module"></span><h1><code class="docutils literal notranslate"><span class="pre">util</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.util" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh.util">
+<span id="util-module"></span><h1><code class="docutils literal notranslate"><span class="pre">util</span></code> module<a class="headerlink" href="#module-whoosh.util" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh_reloaded.util.fib">
-<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.util.</span></span><span class="sig-name descname"><span class="pre">fib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/util.html#fib"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.util.fib" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.util.fib">
+<span class="sig-prename descclassname"><span class="pre">whoosh.util.</span></span><span class="sig-name descname"><span class="pre">fib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/util.html#fib"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.util.fib" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the nth value in the Fibonacci sequence.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh_reloaded.util.make_binary_tree">
-<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.util.</span></span><span class="sig-name descname"><span class="pre">make_binary_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/util.html#make_binary_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.util.make_binary_tree" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.util.make_binary_tree">
+<span class="sig-prename descclassname"><span class="pre">whoosh.util.</span></span><span class="sig-name descname"><span class="pre">make_binary_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/util.html#make_binary_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.util.make_binary_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a function/class that takes two positional arguments and a list of
 arguments and returns a binary tree of results/instances.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_binary_tree</span><span class="p">(</span><span class="n">UnionMatcher</span><span class="p">,</span> <span class="p">[</span><span class="n">matcher1</span><span class="p">,</span> <span class="n">matcher2</span><span class="p">,</span> <span class="n">matcher3</span><span class="p">])</span>
@@ -159,23 +159,23 @@ initializer.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh_reloaded.util.make_weighted_tree">
-<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.util.</span></span><span class="sig-name descname"><span class="pre">make_weighted_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/util.html#make_weighted_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.util.make_weighted_tree" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.util.make_weighted_tree">
+<span class="sig-prename descclassname"><span class="pre">whoosh.util.</span></span><span class="sig-name descname"><span class="pre">make_weighted_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/util.html#make_weighted_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.util.make_weighted_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a function/class that takes two positional arguments and a list of
 (weight, argument) tuples and returns a huffman-like weighted tree of
 results/instances.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh_reloaded.util.synchronized">
-<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.util.</span></span><span class="sig-name descname"><span class="pre">synchronized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/util.html#synchronized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.util.synchronized" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.util.synchronized">
+<span class="sig-prename descclassname"><span class="pre">whoosh.util.</span></span><span class="sig-name descname"><span class="pre">synchronized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/util.html#synchronized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.util.synchronized" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator for storage-access methods, which synchronizes on a threading
 lock. The parent object must have ‘is_closed’ and ‘_sync_lock’ attributes.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="whoosh_reloaded.util.unclosed">
-<span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.util.</span></span><span class="sig-name descname"><span class="pre">unclosed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/util.html#unclosed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.util.unclosed" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.util.unclosed">
+<span class="sig-prename descclassname"><span class="pre">whoosh.util.</span></span><span class="sig-name descname"><span class="pre">unclosed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/util.html#unclosed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.util.unclosed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator to check if the object is closed.</p>
 </dd></dl>
 

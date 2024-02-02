@@ -97,15 +97,15 @@
 <li class="toctree-l2"><a class="reference internal" href="sorting.html"><code class="docutils literal notranslate"><span class="pre">sorting</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#corrector-objects">Corrector objects</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.spelling.Corrector"><code class="docutils literal notranslate"><span class="pre">Corrector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.spelling.ReaderCorrector"><code class="docutils literal notranslate"><span class="pre">ReaderCorrector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.spelling.MultiCorrector"><code class="docutils literal notranslate"><span class="pre">MultiCorrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.Corrector"><code class="docutils literal notranslate"><span class="pre">Corrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.ReaderCorrector"><code class="docutils literal notranslate"><span class="pre">ReaderCorrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.MultiCorrector"><code class="docutils literal notranslate"><span class="pre">MultiCorrector</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#querycorrector-objects">QueryCorrector objects</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.spelling.QueryCorrector"><code class="docutils literal notranslate"><span class="pre">QueryCorrector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.spelling.SimpleQueryCorrector"><code class="docutils literal notranslate"><span class="pre">SimpleQueryCorrector</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.spelling.Correction"><code class="docutils literal notranslate"><span class="pre">Correction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.QueryCorrector"><code class="docutils literal notranslate"><span class="pre">QueryCorrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.SimpleQueryCorrector"><code class="docutils literal notranslate"><span class="pre">SimpleQueryCorrector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.spelling.Correction"><code class="docutils literal notranslate"><span class="pre">Correction</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -147,17 +147,17 @@
   <section id="spelling-module">
 <h1><code class="docutils literal notranslate"><span class="pre">spelling</span></code> module<a class="headerlink" href="#spelling-module" title="Permalink to this heading">¶</a></h1>
 <p>See <a class="reference internal" href="../spelling.html"><span class="doc">correcting errors in user queries</span></a>.</p>
-<span class="target" id="module-whoosh_reloaded.spelling"></span><p>This module contains helper functions for correcting typos in user queries.</p>
+<span class="target" id="module-whoosh.spelling"></span><p>This module contains helper functions for correcting typos in user queries.</p>
 <section id="corrector-objects">
 <h2>Corrector objects<a class="headerlink" href="#corrector-objects" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.spelling.Corrector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.spelling.</span></span><span class="sig-name descname"><span class="pre">Corrector</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/spelling.html#Corrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.spelling.Corrector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.spelling.Corrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">Corrector</span></span><a class="reference internal" href="../_modules/whoosh/spelling.html#Corrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.Corrector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for spelling correction objects. Concrete sub-classes should
 implement the <code class="docutils literal notranslate"><span class="pre">_suggestions</span></code> method.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.spelling.Corrector.suggest">
-<span class="sig-name descname"><span class="pre">suggest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/spelling.html#Corrector.suggest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.spelling.Corrector.suggest" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.spelling.Corrector.suggest">
+<span class="sig-name descname"><span class="pre">suggest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#Corrector.suggest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.Corrector.suggest" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -181,16 +181,16 @@ list of words.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.spelling.ReaderCorrector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.spelling.</span></span><span class="sig-name descname"><span class="pre">ReaderCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/spelling.html#ReaderCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.spelling.ReaderCorrector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.spelling.ReaderCorrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">ReaderCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#ReaderCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.ReaderCorrector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suggests corrections based on the content of a field in a reader.</p>
 <p>Ranks suggestions by the edit distance, then by highest to lowest
 frequency.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.spelling.MultiCorrector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.spelling.</span></span><span class="sig-name descname"><span class="pre">MultiCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correctors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/spelling.html#MultiCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.spelling.MultiCorrector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.spelling.MultiCorrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">MultiCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correctors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#MultiCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.MultiCorrector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merges suggestions from a list of sub-correctors.</p>
 </dd></dl>
 
@@ -198,18 +198,18 @@ frequency.</p>
 <section id="querycorrector-objects">
 <h2>QueryCorrector objects<a class="headerlink" href="#querycorrector-objects" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.spelling.QueryCorrector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.spelling.</span></span><span class="sig-name descname"><span class="pre">QueryCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/spelling.html#QueryCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.spelling.QueryCorrector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.spelling.QueryCorrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">QueryCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#QueryCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.QueryCorrector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for objects that correct words in a user query.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.spelling.QueryCorrector.correct_query">
-<span class="sig-name descname"><span class="pre">correct_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/spelling.html#QueryCorrector.correct_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.spelling.QueryCorrector.correct_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a <a class="reference internal" href="#whoosh_reloaded.spelling.Correction" title="whoosh_reloaded.spelling.Correction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Correction</span></code></a> object representing the corrected
+<dt class="sig sig-object py" id="whoosh.spelling.QueryCorrector.correct_query">
+<span class="sig-name descname"><span class="pre">correct_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#QueryCorrector.correct_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.QueryCorrector.correct_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#whoosh.spelling.Correction" title="whoosh.spelling.Correction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Correction</span></code></a> object representing the corrected
 form of the given query.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>q</strong> – the original <a class="reference internal" href="query.html#whoosh_reloaded.query.Query" title="whoosh_reloaded.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.query.Query</span></code></a> tree to be
+<li><p><strong>q</strong> – the original <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> tree to be
 corrected.</p></li>
 <li><p><strong>qstring</strong> – the original user query. This may be None if the
 original query string is not available, in which case the
@@ -217,7 +217,7 @@ original query string is not available, in which case the
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#whoosh_reloaded.spelling.Correction" title="whoosh_reloaded.spelling.Correction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Correction</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#whoosh.spelling.Correction" title="whoosh.spelling.Correction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Correction</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -225,17 +225,17 @@ original query string is not available, in which case the
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.spelling.SimpleQueryCorrector">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.spelling.</span></span><span class="sig-name descname"><span class="pre">SimpleQueryCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correctors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/spelling.html#SimpleQueryCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.spelling.SimpleQueryCorrector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.spelling.SimpleQueryCorrector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">SimpleQueryCorrector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correctors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxdist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#SimpleQueryCorrector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.SimpleQueryCorrector" title="Permalink to this definition">¶</a></dt>
 <dd><p>A simple query corrector based on a mapping of field names to
-<a class="reference internal" href="#whoosh_reloaded.spelling.Corrector" title="whoosh_reloaded.spelling.Corrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corrector</span></code></a> objects, and a list of <code class="docutils literal notranslate"><span class="pre">(&quot;fieldname&quot;,</span> <span class="pre">&quot;text&quot;)</span></code> tuples
+<a class="reference internal" href="#whoosh.spelling.Corrector" title="whoosh.spelling.Corrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corrector</span></code></a> objects, and a list of <code class="docutils literal notranslate"><span class="pre">(&quot;fieldname&quot;,</span> <span class="pre">&quot;text&quot;)</span></code> tuples
 to correct. And terms in the query that appear in list of term tuples are
 corrected using the appropriate corrector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>correctors</strong> – a dictionary mapping field names to
-<a class="reference internal" href="#whoosh_reloaded.spelling.Corrector" title="whoosh_reloaded.spelling.Corrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corrector</span></code></a> objects.</p></li>
+<a class="reference internal" href="#whoosh.spelling.Corrector" title="whoosh.spelling.Corrector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Corrector</span></code></a> objects.</p></li>
 <li><p><strong>terms</strong> – a sequence of <code class="docutils literal notranslate"><span class="pre">(&quot;fieldname&quot;,</span> <span class="pre">&quot;text&quot;)</span></code> tuples
 representing terms to be corrected.</p></li>
 <li><p><strong>aliases</strong> – a dictionary mapping field names in the query to
@@ -255,16 +255,16 @@ slow.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.spelling.Correction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.spelling.</span></span><span class="sig-name descname"><span class="pre">Correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corr_q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/spelling.html#Correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.spelling.Correction" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.spelling.Correction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.spelling.</span></span><span class="sig-name descname"><span class="pre">Correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qstring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corr_q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/spelling.html#Correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.spelling.Correction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents the corrected version of a user query string. Has the
 following attributes:</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">query</span></code></dt><dd><p>The corrected <a class="reference internal" href="query.html#whoosh_reloaded.query.Query" title="whoosh_reloaded.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.query.Query</span></code></a> object.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">query</span></code></dt><dd><p>The corrected <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">string</span></code></dt><dd><p>The corrected user query string.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">original_query</span></code></dt><dd><p>The original <a class="reference internal" href="query.html#whoosh_reloaded.query.Query" title="whoosh_reloaded.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.query.Query</span></code></a> object that was corrected.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">original_query</span></code></dt><dd><p>The original <a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> object that was corrected.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">original_string</span></code></dt><dd><p>The original user query string.</p>
 </dd>
@@ -272,10 +272,10 @@ following attributes:</p>
 </dd>
 </dl>
 <p>You can also use the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Correction.format_string()</span></code> method to reformat the
-corrected query string using a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh_reloaded.highlight.Formatter</span></code> class.
+corrected query string using a <code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.highlight.Formatter</span></code> class.
 For example, to display the corrected query string as HTML with the
 changed words emphasized:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">highlight</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">highlight</span>
 
 <span class="n">correction</span> <span class="o">=</span> <span class="n">mysearcher</span><span class="o">.</span><span class="n">correct_query</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">qstring</span><span class="p">)</span>
 

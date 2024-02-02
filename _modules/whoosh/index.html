@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.index &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.index</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.index</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2007 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="sd">&quot;&quot;&quot;Contains the main functions/classes for creating, maintaining, and using</span>
+<span class="sd">an index.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">pickle</span><span class="p">,</span> <span class="n">string_type</span>
+<span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">ensure_schema</span>
+<span class="kn">from</span> <span class="nn">whoosh.legacy</span> <span class="kn">import</span> <span class="n">toc_loaders</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">_INT_SIZE</span><span class="p">,</span> <span class="n">_FLOAT_SIZE</span><span class="p">,</span> <span class="n">_LONG_SIZE</span>
+
+<span class="n">_DEF_INDEX_NAME</span> <span class="o">=</span> <span class="s2">&quot;MAIN&quot;</span>
+<span class="n">_CURRENT_TOC_VERSION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">111</span>
+
+
+<span class="c1"># Exceptions</span>
+
+
+<div class="viewcode-block" id="LockError"><a class="viewcode-back" href="../../api/index.html#whoosh.index.LockError">[docs]</a><span class="k">class</span> <span class="nc">LockError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="IndexError"><a class="viewcode-back" href="../../api/index.html#whoosh.index.IndexError">[docs]</a><span class="k">class</span> <span class="nc">IndexError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic index error.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="IndexVersionError"><a class="viewcode-back" href="../../api/index.html#whoosh.index.IndexVersionError">[docs]</a><span class="k">class</span> <span class="nc">IndexVersionError</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when you try to open an index using a format that the current</span>
+<span class="sd">    version of Whoosh cannot read. That is, when the index you&#39;re trying to</span>
+<span class="sd">    open is either not backward or forward compatible with this version of</span>
+<span class="sd">    Whoosh.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">release</span> <span class="o">=</span> <span class="n">release</span></div>
+
+
+<div class="viewcode-block" id="OutOfDateError"><a class="viewcode-back" href="../../api/index.html#whoosh.index.OutOfDateError">[docs]</a><span class="k">class</span> <span class="nc">OutOfDateError</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when you try to commit changes to an index which is not the</span>
+<span class="sd">    latest generation.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="EmptyIndexError"><a class="viewcode-back" href="../../api/index.html#whoosh.index.EmptyIndexError">[docs]</a><span class="k">class</span> <span class="nc">EmptyIndexError</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when you try to work with an index that has no indexed terms.&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Convenience functions</span>
+
+
+<div class="viewcode-block" id="create_in"><a class="viewcode-back" href="../../api/index.html#whoosh.index.create_in">[docs]</a><span class="k">def</span> <span class="nf">create_in</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience function to create an index in a directory. Takes care of</span>
+<span class="sd">    creating a FileStorage object for you.</span>
+
+<span class="sd">    :param dirname: the path string of the directory in which to create the</span>
+<span class="sd">        index.</span>
+<span class="sd">    :param schema: a :class:`whoosh.fields.Schema` object describing the</span>
+<span class="sd">        index&#39;s fields.</span>
+<span class="sd">    :param indexname: the name of the index to create; you only need to specify</span>
+<span class="sd">        this if you are creating multiple indexes within the same storage</span>
+<span class="sd">        object.</span>
+<span class="sd">    :returns: :class:`Index`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">indexname</span><span class="p">:</span>
+        <span class="n">indexname</span> <span class="o">=</span> <span class="n">_DEF_INDEX_NAME</span>
+    <span class="n">storage</span> <span class="o">=</span> <span class="n">FileStorage</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">FileIndex</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="open_dir"><a class="viewcode-back" href="../../api/index.html#whoosh.index.open_dir">[docs]</a><span class="k">def</span> <span class="nf">open_dir</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience function for opening an index in a directory. Takes care of</span>
+<span class="sd">    creating a FileStorage object for you. dirname is the filename of the</span>
+<span class="sd">    directory in containing the index. indexname is the name of the index to</span>
+<span class="sd">    create; you only need to specify this if you have multiple indexes within</span>
+<span class="sd">    the same storage object.</span>
+
+<span class="sd">    :param dirname: the path string of the directory in which to create the</span>
+<span class="sd">        index.</span>
+<span class="sd">    :param indexname: the name of the index to create; you only need to specify</span>
+<span class="sd">        this if you have multiple indexes within the same storage object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+
+    <span class="k">if</span> <span class="n">indexname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">indexname</span> <span class="o">=</span> <span class="n">_DEF_INDEX_NAME</span>
+    <span class="n">storage</span> <span class="o">=</span> <span class="n">FileStorage</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="n">readonly</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">FileIndex</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="n">indexname</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="exists_in"><a class="viewcode-back" href="../../api/index.html#whoosh.index.exists_in">[docs]</a><span class="k">def</span> <span class="nf">exists_in</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns True if dirname contains a Whoosh index.</span>
+
+<span class="sd">    :param dirname: the file path of a directory.</span>
+<span class="sd">    :param indexname: the name of the index. If None, the default index name is</span>
+<span class="sd">        used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ix</span> <span class="o">=</span> <span class="n">open_dir</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="n">indexname</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ix</span><span class="o">.</span><span class="n">latest_generation</span><span class="p">()</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">except</span> <span class="n">EmptyIndexError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="exists"><a class="viewcode-back" href="../../api/index.html#whoosh.index.exists">[docs]</a><span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deprecated; use ``storage.index_exists()``.</span>
+
+<span class="sd">    :param storage: a store.Storage object.</span>
+<span class="sd">    :param indexname: the name of the index. If None, the default index name is</span>
+<span class="sd">        used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">storage</span><span class="o">.</span><span class="n">index_exists</span><span class="p">(</span><span class="n">indexname</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="version_in"><a class="viewcode-back" href="../../api/index.html#whoosh.index.version_in">[docs]</a><span class="k">def</span> <span class="nf">version_in</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a tuple of (release_version, format_version), where</span>
+<span class="sd">    release_version is the release version number of the Whoosh code that</span>
+<span class="sd">    created the index -- e.g. (0, 1, 24) -- and format_version is the version</span>
+<span class="sd">    number of the on-disk format used for the index -- e.g. -102.</span>
+
+<span class="sd">    You should avoid attaching significance to the second number (the index</span>
+<span class="sd">    version). This is simply a version number for the TOC file and probably</span>
+<span class="sd">    should not have been exposed in a public interface. The best way to check</span>
+<span class="sd">    if the current version of Whoosh can open an index is to actually try to</span>
+<span class="sd">    open it and see if it raises a ``whoosh.index.IndexVersionError`` exception.</span>
+
+<span class="sd">    Note that the release and format version are available as attributes on the</span>
+<span class="sd">    Index object in Index.release and Index.version.</span>
+
+<span class="sd">    :param dirname: the file path of a directory containing an index.</span>
+<span class="sd">    :param indexname: the name of the index. If None, the default index name is</span>
+<span class="sd">        used.</span>
+<span class="sd">    :returns: ((major_ver, minor_ver, build_ver), format_ver)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">FileStorage</span>
+
+    <span class="n">storage</span> <span class="o">=</span> <span class="n">FileStorage</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">version</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="n">indexname</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="version"><a class="viewcode-back" href="../../api/index.html#whoosh.index.version">[docs]</a><span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a tuple of (release_version, format_version), where</span>
+<span class="sd">    release_version is the release version number of the Whoosh code that</span>
+<span class="sd">    created the index -- e.g. (0, 1, 24) -- and format_version is the version</span>
+<span class="sd">    number of the on-disk format used for the index -- e.g. -102.</span>
+
+<span class="sd">    You should avoid attaching significance to the second number (the index</span>
+<span class="sd">    version). This is simply a version number for the TOC file and probably</span>
+<span class="sd">    should not have been exposed in a public interface. The best way to check</span>
+<span class="sd">    if the current version of Whoosh can open an index is to actually try to</span>
+<span class="sd">    open it and see if it raises a ``whoosh.index.IndexVersionError`` exception.</span>
+
+<span class="sd">    Note that the release and format version are available as attributes on the</span>
+<span class="sd">    Index object in Index.release and Index.version.</span>
+
+<span class="sd">    :param storage: a store.Storage object.</span>
+<span class="sd">    :param indexname: the name of the index. If None, the default index name is</span>
+<span class="sd">        used.</span>
+<span class="sd">    :returns: ((major_ver, minor_ver, build_ver), format_ver)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">indexname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">indexname</span> <span class="o">=</span> <span class="n">_DEF_INDEX_NAME</span>
+
+        <span class="n">ix</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">open_index</span><span class="p">(</span><span class="n">indexname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">ix</span><span class="o">.</span><span class="n">release</span><span class="p">,</span> <span class="n">ix</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">IndexVersionError</span><span class="p">:</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">version</span><span class="p">)</span></div>
+
+
+<span class="c1"># Index base class</span>
+
+
+<div class="viewcode-block" id="Index"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index">[docs]</a><span class="k">class</span> <span class="nc">Index</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents an indexed collection of documents.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Index.close"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes any open resources held by the Index object itself. This may</span>
+<span class="sd">        not close all resources being used everywhere, for example by a</span>
+<span class="sd">        Searcher object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Index.add_field"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.add_field">[docs]</a>    <span class="k">def</span> <span class="nf">add_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">fieldspec</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a field to the index&#39;s schema.</span>
+
+<span class="sd">        :param fieldname: the name of the field to add.</span>
+<span class="sd">        :param fieldspec: an instantiated :class:`whoosh.fields.FieldType`</span>
+<span class="sd">            object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">add_field</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">fieldspec</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Index.remove_field"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.remove_field">[docs]</a>    <span class="k">def</span> <span class="nf">remove_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes the named field from the index&#39;s schema. Depending on the</span>
+<span class="sd">        backend implementation, this may or may not actually remove existing</span>
+<span class="sd">        data for the field from the index. Optimizing the index should always</span>
+<span class="sd">        clear out existing data for a removed field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">remove_field</span><span class="p">(</span><span class="n">fieldname</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Index.latest_generation"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.latest_generation">[docs]</a>    <span class="k">def</span> <span class="nf">latest_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the generation number of the latest generation of this</span>
+<span class="sd">        index, or -1 if the backend doesn&#39;t support versioning.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Index.refresh"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new Index object representing the latest generation</span>
+<span class="sd">        of this index (if this object is the latest generation, or the backend</span>
+<span class="sd">        doesn&#39;t support versioning, returns self).</span>
+
+<span class="sd">        :returns: :class:`Index`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Index.up_to_date"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.up_to_date">[docs]</a>    <span class="k">def</span> <span class="nf">up_to_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this object represents the latest generation of</span>
+<span class="sd">        this index. Returns False if this object is not the latest generation</span>
+<span class="sd">        (that is, someone else has updated the index since you opened this</span>
+<span class="sd">        object).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Index.last_modified"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.last_modified">[docs]</a>    <span class="k">def</span> <span class="nf">last_modified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the last modified time of the index, or -1 if the backend</span>
+<span class="sd">        doesn&#39;t support last-modified times.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Index.is_empty"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this index is empty (that is, it has never had any</span>
+<span class="sd">        documents successfully written to it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Index.optimize"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optimizes this index, if necessary.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Index.doc_count_all"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.doc_count_all">[docs]</a>    <span class="k">def</span> <span class="nf">doc_count_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of documents, DELETED OR UNDELETED,</span>
+<span class="sd">        in this index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Index.doc_count"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.doc_count">[docs]</a>    <span class="k">def</span> <span class="nf">doc_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of UNDELETED documents in this index.&quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">doc_count</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Index.searcher"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.searcher">[docs]</a>    <span class="k">def</span> <span class="nf">searcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a Searcher object for this index. Keyword arguments are</span>
+<span class="sd">        passed to the Searcher object&#39;s constructor.</span>
+
+<span class="sd">        :rtype: :class:`whoosh.searching.Searcher`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">whoosh.searching</span> <span class="kn">import</span> <span class="n">Searcher</span>
+
+        <span class="k">return</span> <span class="n">Searcher</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">(),</span> <span class="n">fromindex</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Index.field_length"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.field_length">[docs]</a>    <span class="k">def</span> <span class="nf">field_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total length of the field across all documents.&quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">field_length</span><span class="p">(</span><span class="n">fieldname</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Index.max_field_length"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.max_field_length">[docs]</a>    <span class="k">def</span> <span class="nf">max_field_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the maximum length of the field across all documents.&quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">max_field_length</span><span class="p">(</span><span class="n">fieldname</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Index.reader"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.reader">[docs]</a>    <span class="k">def</span> <span class="nf">reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an IndexReader object for this index.</span>
+
+<span class="sd">        :param reuse: an existing reader. Some implementations may recycle</span>
+<span class="sd">            resources from this existing reader to create the new reader. Note</span>
+<span class="sd">            that any resources in the &quot;recycled&quot; reader that are not used by</span>
+<span class="sd">            the new reader will be CLOSED, so you CANNOT use it afterward.</span>
+<span class="sd">        :rtype: :class:`whoosh.reading.IndexReader`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Index.writer"><a class="viewcode-back" href="../../api/index.html#whoosh.index.Index.writer">[docs]</a>    <span class="k">def</span> <span class="nf">writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an IndexWriter object for this index.</span>
+
+<span class="sd">        :rtype: :class:`whoosh.writing.IndexWriter`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+    <span class="k">def</span> <span class="nf">delete_by_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">searcher</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">delete_by_term</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">searcher</span><span class="o">=</span><span class="n">searcher</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">delete_by_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">searcher</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">delete_by_query</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">searcher</span><span class="o">=</span><span class="n">searcher</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<span class="c1"># Codec-based index implementation</span>
+
+
+<span class="k">def</span> <span class="nf">clean_files</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">segments</span><span class="p">):</span>
+    <span class="c1"># Attempts to remove unused index files (called when a new generation</span>
+    <span class="c1"># is created). If existing Index and/or reader objects have the files</span>
+    <span class="c1"># open, they may not be deleted immediately (i.e. on Windows) but will</span>
+    <span class="c1"># probably be deleted eventually by a later call to clean_files.</span>
+
+    <span class="n">current_segment_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">segment_id</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">)</span>
+    <span class="n">tocpattern</span> <span class="o">=</span> <span class="n">TOC</span><span class="o">.</span><span class="n">_pattern</span><span class="p">(</span><span class="n">indexname</span><span class="p">)</span>
+    <span class="n">segpattern</span> <span class="o">=</span> <span class="n">TOC</span><span class="o">.</span><span class="n">_segment_pattern</span><span class="p">(</span><span class="n">indexname</span><span class="p">)</span>
+
+    <span class="n">todelete</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">storage</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">tocm</span> <span class="o">=</span> <span class="n">tocpattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">segm</span> <span class="o">=</span> <span class="n">segpattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tocm</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">tocm</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">!=</span> <span class="n">gen</span><span class="p">:</span>
+                <span class="n">todelete</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">segm</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">segm</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_segment_names</span><span class="p">:</span>
+                <span class="n">todelete</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">todelete</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">storage</span><span class="o">.</span><span class="n">delete_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="c1"># Another process still has this file open, I guess</span>
+            <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="FileIndex"><a class="viewcode-back" href="../../api/index.html#whoosh.index.FileIndex">[docs]</a><span class="k">class</span> <span class="nc">FileIndex</span><span class="p">(</span><span class="n">Index</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="n">_DEF_INDEX_NAME</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">Storage</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">Storage</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> is not a Storage object&quot;</span> <span class="o">%</span> <span class="n">storage</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;indexname </span><span class="si">%r</span><span class="s2"> is not a string&quot;</span> <span class="o">%</span> <span class="n">indexname</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">schema</span><span class="p">:</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">ensure_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span> <span class="o">=</span> <span class="n">storage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indexname</span> <span class="o">=</span> <span class="n">indexname</span>
+
+        <span class="c1"># Try reading the TOC to see if it&#39;s possible</span>
+        <span class="n">TOC</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexname</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="n">_DEF_INDEX_NAME</span><span class="p">):</span>
+        <span class="n">TOC</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexname</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># add_field</span>
+    <span class="c1"># remove_field</span>
+
+    <span class="k">def</span> <span class="nf">latest_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">TOC</span><span class="o">.</span><span class="n">_latest_generation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexname</span><span class="p">)</span>
+
+    <span class="c1"># refresh</span>
+    <span class="c1"># up_to_date</span>
+
+    <span class="k">def</span> <span class="nf">last_modified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latest_generation</span><span class="p">()</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">TOC</span><span class="o">.</span><span class="n">_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indexname</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">file_modified</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_toc</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># searcher</span>
+
+    <span class="k">def</span> <span class="nf">writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">procs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">procs</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">whoosh.multiproc</span> <span class="kn">import</span> <span class="n">MpWriter</span>
+
+            <span class="k">return</span> <span class="n">MpWriter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">procs</span><span class="o">=</span><span class="n">procs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">whoosh.writing</span> <span class="kn">import</span> <span class="n">SegmentWriter</span>
+
+            <span class="k">return</span> <span class="n">SegmentWriter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a lock object that you can try to call acquire() on to</span>
+<span class="sd">        lock the index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">lock</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indexname</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_read_toc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">TOC</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexname</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_toc</span><span class="p">()</span><span class="o">.</span><span class="n">segments</span>
+
+    <span class="k">def</span> <span class="nf">_current_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_toc</span><span class="p">()</span><span class="o">.</span><span class="n">schema</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_schema</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_toc</span><span class="p">()</span><span class="o">.</span><span class="n">release</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_toc</span><span class="p">()</span><span class="o">.</span><span class="n">version</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_reader</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">segments</span><span class="p">,</span> <span class="n">generation</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Returns a reader for the given segments, possibly reusing already</span>
+        <span class="c1"># opened readers</span>
+        <span class="kn">from</span> <span class="nn">whoosh.reading</span> <span class="kn">import</span> <span class="n">SegmentReader</span><span class="p">,</span> <span class="n">MultiReader</span><span class="p">,</span> <span class="n">EmptyReader</span>
+
+        <span class="k">if</span> <span class="n">reuse</span><span class="p">:</span>
+            <span class="c1"># Merge segments with reuse segments</span>
+            <span class="n">segments</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">segment</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">reuse</span><span class="o">.</span><span class="n">segments</span><span class="p">()</span> <span class="k">if</span> <span class="n">segment</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="n">reusable</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># This index has no segments! Return an EmptyReader object,</span>
+                <span class="c1"># which simply returns empty or zero to every method</span>
+                <span class="k">return</span> <span class="n">EmptyReader</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">reuse</span><span class="p">:</span>
+                <span class="c1"># Put all atomic readers in a dictionary</span>
+                <span class="n">readers</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">reuse</span><span class="o">.</span><span class="n">leaf_readers</span><span class="p">()]</span>
+                <span class="n">reusable</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">segment</span><span class="p">(),</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">readers</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">segment</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Make a function to open readers, which reuses reusable readers.</span>
+            <span class="c1"># It removes any readers it reuses from the &quot;reusable&quot; dictionary,</span>
+            <span class="c1"># so later we can close any readers left in the dictionary.</span>
+            <span class="k">def</span> <span class="nf">segreader</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">reusable</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">reusable</span><span class="p">[</span><span class="n">segment</span><span class="p">]</span>
+                    <span class="k">del</span> <span class="n">reusable</span><span class="p">[</span><span class="n">segment</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="n">r</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">SegmentReader</span><span class="p">(</span>
+                        <span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">generation</span><span class="o">=</span><span class="n">generation</span>
+                    <span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># This index has one segment, so return a SegmentReader object</span>
+                <span class="c1"># for the segment</span>
+                <span class="k">return</span> <span class="n">segreader</span><span class="p">(</span><span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># This index has multiple segments, so create a list of</span>
+                <span class="c1"># SegmentReaders for the segments, then composite them with a</span>
+                <span class="c1"># MultiReader</span>
+
+                <span class="n">readers</span> <span class="o">=</span> <span class="p">[</span><span class="n">segreader</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">MultiReader</span><span class="p">(</span><span class="n">readers</span><span class="p">,</span> <span class="n">generation</span><span class="o">=</span><span class="n">generation</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reusable</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">retries</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">while</span> <span class="n">retries</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Read the information from the TOC file</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_toc</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span>
+                    <span class="n">info</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span>
+                    <span class="n">info</span><span class="o">.</span><span class="n">segments</span><span class="p">,</span>
+                    <span class="n">info</span><span class="o">.</span><span class="n">generation</span><span class="p">,</span>
+                    <span class="n">reuse</span><span class="o">=</span><span class="n">reuse</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="c1"># Presume that we got a &quot;file not found error&quot; because a writer</span>
+                <span class="c1"># deleted one of the files just as we were trying to open it,</span>
+                <span class="c1"># and so retry a few times before actually raising the</span>
+                <span class="c1"># exception</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">retries</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">retries</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span></div>
+
+
+<span class="c1"># TOC class</span>
+
+
+<span class="k">class</span> <span class="nc">TOC</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Object representing the state of the index after a commit. Essentially</span>
+<span class="sd">    a container for the index&#39;s schema and the list of segment objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">schema</span><span class="p">,</span>
+        <span class="n">segments</span><span class="p">,</span>
+        <span class="n">generation</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">_CURRENT_TOC_VERSION</span><span class="p">,</span>
+        <span class="n">release</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="o">=</span> <span class="n">segments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generation</span> <span class="o">=</span> <span class="n">generation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">release</span> <span class="o">=</span> <span class="n">release</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_filename</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">indexname</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.toc&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_pattern</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">indexname</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^_</span><span class="si">%s</span><span class="s2">_([0-9]+).toc$&quot;</span> <span class="o">%</span> <span class="n">indexname</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_segment_pattern</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">indexname</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">_[0-9a-z]+)[.][A-Za-z0-9_.]+&quot;</span> <span class="o">%</span> <span class="n">indexname</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_latest_generation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="p">):</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pattern</span><span class="p">(</span><span class="n">indexname</span><span class="p">)</span>
+
+        <span class="n">mx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">storage</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span> <span class="n">mx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mx</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="o">=</span><span class="n">_DEF_INDEX_NAME</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">ensure_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+        <span class="c1"># Clear existing files</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;_</span><span class="si">%s</span><span class="s2">_&quot;</span> <span class="o">%</span> <span class="n">indexname</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">storage</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+                <span class="n">storage</span><span class="o">.</span><span class="n">delete_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># Write a TOC file with an empty list of segments</span>
+        <span class="n">toc</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="p">[],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">toc</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="p">,</span> <span class="n">gen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">gen</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gen</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_latest_generation</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">gen</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">EmptyIndexError</span><span class="p">(</span>
+                    <span class="s2">&quot;Index </span><span class="si">%r</span><span class="s2"> does not exist in </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="n">storage</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Read the content of this index from the .toc file.</span>
+        <span class="n">tocfilename</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_filename</span><span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">tocfilename</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">check_size</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+            <span class="n">sz</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_varint</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">sz</span> <span class="o">!=</span> <span class="n">target</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span>
+                    <span class="s2">&quot;Index was created on different architecture:&quot;</span>
+                    <span class="s2">&quot; saved </span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">, this computer = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sz</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="n">check_size</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="n">_INT_SIZE</span><span class="p">)</span>
+        <span class="n">check_size</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">,</span> <span class="n">_LONG_SIZE</span><span class="p">)</span>
+        <span class="n">check_size</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">_FLOAT_SIZE</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">12345</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Number misread: byte order problem&quot;</span><span class="p">)</span>
+
+        <span class="n">version</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span>
+        <span class="n">release</span> <span class="o">=</span> <span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">read_varint</span><span class="p">(),</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_varint</span><span class="p">(),</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_varint</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">version</span> <span class="o">!=</span> <span class="n">_CURRENT_TOC_VERSION</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="n">toc_loaders</span><span class="p">:</span>
+                <span class="n">loader</span> <span class="o">=</span> <span class="n">toc_loaders</span><span class="p">[</span><span class="n">version</span><span class="p">]</span>
+                <span class="n">schema</span><span class="p">,</span> <span class="n">segments</span> <span class="o">=</span> <span class="n">loader</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">IndexVersionError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t read format </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If the user supplied a schema object with the constructor, don&#39;t</span>
+            <span class="c1"># load the pickled schema from the saved index.</span>
+            <span class="k">if</span> <span class="n">schema</span><span class="p">:</span>
+                <span class="n">stream</span><span class="o">.</span><span class="n">skip_string</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">schema</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">read_string</span><span class="p">())</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">ensure_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+            <span class="c1"># Generation</span>
+            <span class="n">index_gen</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span>
+            <span class="k">assert</span> <span class="n">gen</span> <span class="o">==</span> <span class="n">index_gen</span>
+
+            <span class="n">_</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span>  <span class="c1"># Unused</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">()</span>
+
+        <span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">segments</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="n">release</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="p">):</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">ensure_schema</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">schema</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+        <span class="c1"># Use a temporary file for atomic write.</span>
+        <span class="n">tocfilename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation</span><span class="p">)</span>
+        <span class="n">tempfilename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tocfilename</span><span class="p">,</span> <span class="n">time</span><span class="p">())</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="n">tempfilename</span><span class="p">)</span>
+
+        <span class="n">stream</span><span class="o">.</span><span class="n">write_varint</span><span class="p">(</span><span class="n">_INT_SIZE</span><span class="p">)</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">write_varint</span><span class="p">(</span><span class="n">_LONG_SIZE</span><span class="p">)</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">write_varint</span><span class="p">(</span><span class="n">_FLOAT_SIZE</span><span class="p">)</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">write_int</span><span class="p">(</span><span class="o">-</span><span class="mi">12345</span><span class="p">)</span>
+
+        <span class="n">stream</span><span class="o">.</span><span class="n">write_int</span><span class="p">(</span><span class="n">_CURRENT_TOC_VERSION</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">__version__</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+            <span class="n">stream</span><span class="o">.</span><span class="n">write_varint</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">stream</span><span class="o">.</span><span class="n">write_string</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">pickle</span><span class="o">.</span><span class="n">PicklingError</span><span class="p">:</span>
+            <span class="c1"># Try to narrow down the error to a single field</span>
+            <span class="k">for</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">pickle</span><span class="o">.</span><span class="n">PicklingError</span><span class="p">:</span>
+                    <span class="n">e</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">raise</span> <span class="n">pickle</span><span class="o">.</span><span class="n">PicklingError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                    <span class="n">e</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span>
+            <span class="c1"># Otherwise, re-raise the original exception</span>
+            <span class="k">raise</span>
+
+        <span class="n">stream</span><span class="o">.</span><span class="n">write_int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generation</span><span class="p">)</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">write_int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Unused</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">write_pickle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
+        <span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># Rename temporary file to the proper filename</span>
+        <span class="n">storage</span><span class="o">.</span><span class="n">rename_file</span><span class="p">(</span><span class="n">tempfilename</span><span class="p">,</span> <span class="n">tocfilename</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

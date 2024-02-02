@@ -118,7 +118,7 @@
 terms and <em>phrases</em>. Multiple terms can be combined with operators such as
 <em>AND</em> and <em>OR</em>.</p>
 <p>Whoosh supports indexing text in different <em>fields</em>. You must specify the
-<em>default field</em> when you create the :class:` whoosh_reloaded.qparser.QueryParser` object.
+<em>default field</em> when you create the :class:` whoosh.qparser.QueryParser` object.
 This is the field in which any terms the user does not explicitly specify a field
 for will be searched.</p>
 <p>Whoosh’s query parser is capable of parsing different and/or additional syntax
@@ -139,8 +139,8 @@ that field.</p>
 <p>Normally when you specify a phrase, the maximum difference in position between
 each word in the phrase is 1 (that is, the words must be right next to each
 other in the document). For example, the following matches if a document has
-<code class="docutils literal notranslate"><span class="pre">library</span></code> within 5 words after `` whoosh_reloaded``:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot; whoosh_reloaded library&quot;~5
+<code class="docutils literal notranslate"><span class="pre">library</span></code> within 5 words after `` whoosh``:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&quot; whoosh library&quot;~5
 </pre></div>
 </div>
 </section>

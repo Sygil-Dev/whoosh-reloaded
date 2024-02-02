@@ -78,27 +78,27 @@
 <li class="toctree-l2"><a class="reference internal" href="collectors.html"><code class="docutils literal notranslate"><span class="pre">collectors</span></code> module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">columns</span></code> module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#base-classes">Base classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.Column"><code class="docutils literal notranslate"><span class="pre">Column</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.ColumnWriter"><code class="docutils literal notranslate"><span class="pre">ColumnWriter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.ColumnReader"><code class="docutils literal notranslate"><span class="pre">ColumnReader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.Column"><code class="docutils literal notranslate"><span class="pre">Column</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.ColumnWriter"><code class="docutils literal notranslate"><span class="pre">ColumnWriter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.ColumnReader"><code class="docutils literal notranslate"><span class="pre">ColumnReader</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#basic-columns">Basic columns</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.VarBytesColumn"><code class="docutils literal notranslate"><span class="pre">VarBytesColumn</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.FixedBytesColumn"><code class="docutils literal notranslate"><span class="pre">FixedBytesColumn</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.RefBytesColumn"><code class="docutils literal notranslate"><span class="pre">RefBytesColumn</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.NumericColumn"><code class="docutils literal notranslate"><span class="pre">NumericColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.VarBytesColumn"><code class="docutils literal notranslate"><span class="pre">VarBytesColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.FixedBytesColumn"><code class="docutils literal notranslate"><span class="pre">FixedBytesColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.RefBytesColumn"><code class="docutils literal notranslate"><span class="pre">RefBytesColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.NumericColumn"><code class="docutils literal notranslate"><span class="pre">NumericColumn</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#technical-columns">Technical columns</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.BitColumn"><code class="docutils literal notranslate"><span class="pre">BitColumn</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.CompressedBytesColumn"><code class="docutils literal notranslate"><span class="pre">CompressedBytesColumn</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.StructColumn"><code class="docutils literal notranslate"><span class="pre">StructColumn</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.PickleColumn"><code class="docutils literal notranslate"><span class="pre">PickleColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.BitColumn"><code class="docutils literal notranslate"><span class="pre">BitColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.CompressedBytesColumn"><code class="docutils literal notranslate"><span class="pre">CompressedBytesColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.StructColumn"><code class="docutils literal notranslate"><span class="pre">StructColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.PickleColumn"><code class="docutils literal notranslate"><span class="pre">PickleColumn</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#experimental-columns">Experimental columns</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#whoosh_reloaded.columns.ClampedNumericColumn"><code class="docutils literal notranslate"><span class="pre">ClampedNumericColumn</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whoosh.columns.ClampedNumericColumn"><code class="docutils literal notranslate"><span class="pre">ClampedNumericColumn</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -156,8 +156,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-whoosh_reloaded.columns">
-<span id="columns-module"></span><h1><code class="docutils literal notranslate"><span class="pre">columns</span></code> module<a class="headerlink" href="#module-whoosh_reloaded.columns" title="Permalink to this heading">¶</a></h1>
+  <section id="module-whoosh.columns">
+<span id="columns-module"></span><h1><code class="docutils literal notranslate"><span class="pre">columns</span></code> module<a class="headerlink" href="#module-whoosh.columns" title="Permalink to this heading">¶</a></h1>
 <p>The API and implementation of columns may change in the next version of Whoosh!</p>
 <p>This module contains “Column” objects which you can use as the argument to a
 Field object’s <code class="docutils literal notranslate"><span class="pre">sortable=</span></code> keyword argument. Each field defines a default
@@ -176,22 +176,22 @@ and <code class="docutils literal notranslate"><span class="pre">reader()</span>
 <section id="base-classes">
 <h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.Column">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">Column</span></span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#Column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.Column" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.Column">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">Column</span></span><a class="reference internal" href="../_modules/whoosh/columns.html#Column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.Column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a “column” of rows mapping docnums to document values.</p>
 <p>The interface requires that you store the start offset of the column, the
 length of the column data, and the number of documents (rows) separately,
 and pass them to the reader object.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.Column.default_value">
-<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#Column.default_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.Column.default_value" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.Column.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#Column.default_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.Column.default_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the default value for this column type.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.Column.reader">
-<span class="sig-name descname"><span class="pre">reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basepos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doccount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#Column.reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.Column.reader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a <a class="reference internal" href="#whoosh_reloaded.columns.ColumnReader" title="whoosh_reloaded.columns.ColumnReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnReader</span></code></a> object you can use to read a column
+<dt class="sig sig-object py" id="whoosh.columns.Column.reader">
+<span class="sig-name descname"><span class="pre">reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basepos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doccount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#Column.reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.Column.reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#whoosh.columns.ColumnReader" title="whoosh.columns.ColumnReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnReader</span></code></a> object you can use to read a column
 of this type from disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -207,16 +207,16 @@ read from.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.Column.stores_lists">
-<span class="sig-name descname"><span class="pre">stores_lists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#Column.stores_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.Column.stores_lists" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.Column.stores_lists">
+<span class="sig-name descname"><span class="pre">stores_lists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#Column.stores_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.Column.stores_lists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if the column stores a list of values for each document
 instead of a single value.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.Column.writer">
-<span class="sig-name descname"><span class="pre">writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#Column.writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.Column.writer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a <a class="reference internal" href="#whoosh_reloaded.columns.ColumnWriter" title="whoosh_reloaded.columns.ColumnWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnWriter</span></code></a> object you can use to use to create
+<dt class="sig sig-object py" id="whoosh.columns.Column.writer">
+<span class="sig-name descname"><span class="pre">writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#Column.writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.Column.writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#whoosh.columns.ColumnWriter" title="whoosh.columns.ColumnWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnWriter</span></code></a> object you can use to use to create
 a column of this type on disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -229,22 +229,22 @@ write to.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.ColumnWriter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">ColumnWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#ColumnWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.ColumnWriter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.ColumnWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">ColumnWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#ColumnWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.ColumnWriter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.ColumnReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">ColumnReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basepos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doccount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#ColumnReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.ColumnReader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.ColumnReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">ColumnReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dbfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basepos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doccount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#ColumnReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.ColumnReader" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </section>
 <section id="basic-columns">
 <h2>Basic columns<a class="headerlink" href="#basic-columns" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.VarBytesColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">VarBytesColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allow_offsets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_offsets_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#VarBytesColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.VarBytesColumn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores variable length byte strings. See also <a class="reference internal" href="#whoosh_reloaded.columns.RefBytesColumn" title="whoosh_reloaded.columns.RefBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefBytesColumn</span></code></a>.</p>
+<dt class="sig sig-object py" id="whoosh.columns.VarBytesColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">VarBytesColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">allow_offsets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_offsets_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32768</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#VarBytesColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.VarBytesColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores variable length byte strings. See also <a class="reference internal" href="#whoosh.columns.RefBytesColumn" title="whoosh.columns.RefBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefBytesColumn</span></code></a>.</p>
 <p>The current implementation limits the total length of all document values
 a segment to 2 GB.</p>
 <p>The default value (the value returned for a document that didn’t have a
@@ -264,8 +264,8 @@ for testing.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.FixedBytesColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">FixedBytesColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixedlen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#FixedBytesColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.FixedBytesColumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.FixedBytesColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">FixedBytesColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixedlen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#FixedBytesColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.FixedBytesColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores fixed-length byte strings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -280,10 +280,10 @@ use <code class="docutils literal notranslate"><span class="pre">b'\x00'</span> 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.RefBytesColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">RefBytesColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixedlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#RefBytesColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.RefBytesColumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.RefBytesColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">RefBytesColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixedlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#RefBytesColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.RefBytesColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores variable-length or fixed-length byte strings, similar to
-<a class="reference internal" href="#whoosh_reloaded.columns.VarBytesColumn" title="whoosh_reloaded.columns.VarBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">VarBytesColumn</span></code></a> and <a class="reference internal" href="#whoosh_reloaded.columns.FixedBytesColumn" title="whoosh_reloaded.columns.FixedBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedBytesColumn</span></code></a>. However, where those
+<a class="reference internal" href="#whoosh.columns.VarBytesColumn" title="whoosh.columns.VarBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">VarBytesColumn</span></code></a> and <a class="reference internal" href="#whoosh.columns.FixedBytesColumn" title="whoosh.columns.FixedBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">FixedBytesColumn</span></code></a>. However, where those
 columns stores a value for each document, this column keeps a list of all
 the unique values in the field, and for each document stores a short
 pointer into the unique list. For fields where the number of possible
@@ -312,8 +312,8 @@ bytestring (<code class="docutils literal notranslate"><span class="pre">b''</sp
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.NumericColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">NumericColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typecode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#NumericColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.NumericColumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.NumericColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">NumericColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">typecode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#NumericColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.NumericColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores numbers (integers and floats) as compact binary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -332,8 +332,8 @@ specify one.</p></li>
 <section id="technical-columns">
 <h2>Technical columns<a class="headerlink" href="#technical-columns" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.BitColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">BitColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compress_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#BitColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.BitColumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.BitColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">BitColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compress_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#BitColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.BitColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores a column of True/False values compactly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -345,8 +345,8 @@ this to 0 to disable compression.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.CompressedBytesColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">CompressedBytesColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zlib'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#CompressedBytesColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.CompressedBytesColumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.CompressedBytesColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">CompressedBytesColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'zlib'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#CompressedBytesColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.CompressedBytesColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores variable-length byte strings compressed using deflate (by
 default).</p>
 <dl class="field-list simple">
@@ -362,8 +362,8 @@ and “decompress” functions.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.StructColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">StructColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#StructColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.StructColumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.StructColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">StructColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#StructColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.StructColumn" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -377,11 +377,11 @@ use <code class="docutils literal notranslate"><span class="pre">b'\x00'</span> 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.PickleColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">PickleColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#PickleColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.PickleColumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.PickleColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">PickleColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#PickleColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.PickleColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts arbitrary objects to pickled bytestrings and stores them using
-the wrapped column (usually a <a class="reference internal" href="#whoosh_reloaded.columns.VarBytesColumn" title="whoosh_reloaded.columns.VarBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">VarBytesColumn</span></code></a> or
-<a class="reference internal" href="#whoosh_reloaded.columns.CompressedBytesColumn" title="whoosh_reloaded.columns.CompressedBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompressedBytesColumn</span></code></a>).</p>
+the wrapped column (usually a <a class="reference internal" href="#whoosh.columns.VarBytesColumn" title="whoosh.columns.VarBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">VarBytesColumn</span></code></a> or
+<a class="reference internal" href="#whoosh.columns.CompressedBytesColumn" title="whoosh.columns.CompressedBytesColumn"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompressedBytesColumn</span></code></a>).</p>
 <p>If you can express the value you want to store as a number or bytestring,
 you should use the appropriate column type to avoid the time and size
 overhead of pickling and unpickling.</p>
@@ -391,8 +391,8 @@ overhead of pickling and unpickling.</p>
 <section id="experimental-columns">
 <h2>Experimental columns<a class="headerlink" href="#experimental-columns" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="whoosh_reloaded.columns.ClampedNumericColumn">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh_reloaded.columns.</span></span><span class="sig-name descname"><span class="pre">ClampedNumericColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh_reloaded/columns.html#ClampedNumericColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh_reloaded.columns.ClampedNumericColumn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="whoosh.columns.ClampedNumericColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">whoosh.columns.</span></span><span class="sig-name descname"><span class="pre">ClampedNumericColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/columns.html#ClampedNumericColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.columns.ClampedNumericColumn" title="Permalink to this definition">¶</a></dt>
 <dd><p>An experimental wrapper type for NumericColumn that clamps out-of-range
 values instead of raising an exception.</p>
 </dd></dl>

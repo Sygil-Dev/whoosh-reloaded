@@ -2,7 +2,7 @@
 ``highlight`` module
 ====================
 
-.. automodule:: whoosh_reloaded.highlight
+.. automodule:: whoosh.highlight
 
 See :doc:`how to highlight terms in search results </highlight>`.
 

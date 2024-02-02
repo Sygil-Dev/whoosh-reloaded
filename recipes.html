@@ -192,7 +192,7 @@ characters, it acts as a case-sensitive search:</p>
 </section>
 <section id="itunes-style-search-as-you-type">
 <h3>iTunes-style search-as-you-type<a class="headerlink" href="#itunes-style-search-as-you-type" title="Permalink to this heading">¶</a></h3>
-<p>Use the :class:` whoosh_reloaded.analysis.NgramWordAnalyzer` as the analyzer for the
+<p>Use the :class:` whoosh.analysis.NgramWordAnalyzer` as the analyzer for the
 field you want to search as the user types. You can save space in the index by
 turning off positions in the field using <code class="docutils literal notranslate"><span class="pre">phrase=False</span></code>, since phrase
 searching on N-gram fields usually doesn’t make much sense:</p>
@@ -228,7 +228,7 @@ for information on the available options.</p>
 <p>The following scoring function uses the position of the first occurance of a
 term in each document to calculate the score, so documents with the given term
 earlier in the document will score higher:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh_reloaded</span> <span class="kn">import</span> <span class="n">scoring</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">scoring</span>
 
 <span class="k">def</span> <span class="nf">pos_score_fn</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">matcher</span><span class="p">):</span>
     <span class="n">poses</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">value_as</span><span class="p">(</span><span class="s2">&quot;positions&quot;</span><span class="p">)</span>

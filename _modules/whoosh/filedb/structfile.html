@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.filedb.structfile &mdash; Whoosh-Reloaded 2.7.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.filedb.structfile</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.filedb.structfile</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2009 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">calcsize</span>
+
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">BytesIO</span><span class="p">,</span> <span class="n">bytes_type</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">dump</span> <span class="k">as</span> <span class="n">dump_pickle</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">load</span> <span class="k">as</span> <span class="n">load_pickle</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">array_frombytes</span><span class="p">,</span> <span class="n">array_tobytes</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">_INT_SIZE</span><span class="p">,</span> <span class="n">_SHORT_SIZE</span><span class="p">,</span> <span class="n">_FLOAT_SIZE</span><span class="p">,</span> <span class="n">_LONG_SIZE</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">IS_LITTLE</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">pack_byte</span><span class="p">,</span> <span class="n">unpack_byte</span><span class="p">,</span> <span class="n">pack_sbyte</span><span class="p">,</span> <span class="n">unpack_sbyte</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">pack_ushort</span><span class="p">,</span> <span class="n">unpack_ushort</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">pack_ushort_le</span><span class="p">,</span> <span class="n">unpack_ushort_le</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">pack_int</span><span class="p">,</span> <span class="n">unpack_int</span><span class="p">,</span> <span class="n">pack_uint</span><span class="p">,</span> <span class="n">unpack_uint</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">pack_uint_le</span><span class="p">,</span> <span class="n">unpack_uint_le</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">pack_long</span><span class="p">,</span> <span class="n">unpack_long</span><span class="p">,</span> <span class="n">pack_ulong</span><span class="p">,</span> <span class="n">unpack_ulong</span>
+<span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">pack_float</span><span class="p">,</span> <span class="n">unpack_float</span>
+<span class="kn">from</span> <span class="nn">whoosh.util.varints</span> <span class="kn">import</span> <span class="n">varint</span><span class="p">,</span> <span class="n">read_varint</span>
+<span class="kn">from</span> <span class="nn">whoosh.util.varints</span> <span class="kn">import</span> <span class="n">signed_varint</span><span class="p">,</span> <span class="n">decode_signed_varint</span>
+
+
+<span class="n">_SIZEMAP</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">typecode</span><span class="p">,</span> <span class="n">calcsize</span><span class="p">(</span><span class="n">typecode</span><span class="p">))</span> <span class="k">for</span> <span class="n">typecode</span> <span class="ow">in</span> <span class="s2">&quot;bBiIhHqQf&quot;</span><span class="p">)</span>
+<span class="n">_ORDERMAP</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;little&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">}</span>
+
+<span class="n">_types</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;sbyte&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;ushort&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">))</span>
+
+
+<span class="c1"># Main function</span>
+
+
+<div class="viewcode-block" id="StructFile"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile">[docs]</a><span class="k">class</span> <span class="nc">StructFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a &quot;structured file&quot; object that wraps the given file object and</span>
+<span class="sd">    provides numerous additional methods for writing structured data, such as</span>
+<span class="sd">    &quot;write_varint&quot; and &quot;write_long&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileobj</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">onclose</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">fileobj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span> <span class="o">=</span> <span class="n">onclose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fileobj</span><span class="p">,</span> <span class="s2">&quot;fileno&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fileno</span> <span class="o">=</span> <span class="n">fileobj</span><span class="o">.</span><span class="n">fileno</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">raw_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span>
+
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">tell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">tell</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StructFile.flush"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Flushes the buffer of the wrapped file. This is a no-op if the</span>
+<span class="sd">        wrapped file does not have a flush method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;flush&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="StructFile.close"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the wrapped file.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;This file is already closed&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;close&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="nf">subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">whoosh.filedb.compound</span> <span class="kn">import</span> <span class="n">SubFile</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="k">return</span> <span class="n">StructFile</span><span class="p">(</span><span class="n">SubFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">length</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StructFile.write_string"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.write_string">[docs]</a>    <span class="k">def</span> <span class="nf">write_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes a string to the wrapped file. This method writes the length</span>
+<span class="sd">        of the string first, so you can read the string back without having to</span>
+<span class="sd">        know how long it was.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_varint</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">write_string2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_ushort</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write_string4</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StructFile.read_string"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.read_string">[docs]</a>    <span class="k">def</span> <span class="nf">read_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads a string from the wrapped file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read_varint</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">read_string2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_ushort</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">read_string4</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_string2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ushort</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">_SHORT_SIZE</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">l</span><span class="p">),</span> <span class="n">base</span> <span class="o">+</span> <span class="n">l</span>
+
+    <span class="k">def</span> <span class="nf">get_string4</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_int</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">_INT_SIZE</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">l</span><span class="p">),</span> <span class="n">base</span> <span class="o">+</span> <span class="n">l</span>
+
+    <span class="k">def</span> <span class="nf">skip_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_varint</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StructFile.write_varint"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.write_varint">[docs]</a>    <span class="k">def</span> <span class="nf">write_varint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes a variable-length unsigned integer to the wrapped file.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">varint</span><span class="p">(</span><span class="n">i</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StructFile.write_svarint"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.write_svarint">[docs]</a>    <span class="k">def</span> <span class="nf">write_svarint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes a variable-length signed integer to the wrapped file.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">signed_varint</span><span class="p">(</span><span class="n">i</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StructFile.read_varint"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.read_varint">[docs]</a>    <span class="k">def</span> <span class="nf">read_varint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads a variable-length encoded unsigned integer from the wrapped</span>
+<span class="sd">        file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">read_varint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StructFile.read_svarint"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.read_svarint">[docs]</a>    <span class="k">def</span> <span class="nf">read_svarint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads a variable-length encoded signed integer from the wrapped</span>
+<span class="sd">        file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">decode_signed_varint</span><span class="p">(</span><span class="n">read_varint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StructFile.write_tagint"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.write_tagint">[docs]</a>    <span class="k">def</span> <span class="nf">write_tagint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes a sometimes-compressed unsigned integer to the wrapped file.</span>
+<span class="sd">        This is similar to the varint methods but uses a less compressed but</span>
+<span class="sd">        faster format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Store numbers 0-253 in one byte. Byte 254 means &quot;an unsigned 16-bit</span>
+        <span class="c1"># int follows.&quot; Byte 255 means &quot;An unsigned 32-bit int follows.&quot;</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">253</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">65535</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\xFE</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">pack_ushort</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\xFF</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">pack_uint</span><span class="p">(</span><span class="n">i</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StructFile.read_tagint"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.read_tagint">[docs]</a>    <span class="k">def</span> <span class="nf">read_tagint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads a sometimes-compressed unsigned integer from the wrapped file.</span>
+<span class="sd">        This is similar to the varint methods but uses a less compressed but</span>
+<span class="sd">        faster format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tb</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">254</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_ushort</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">tb</span> <span class="o">==</span> <span class="mi">255</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_uint</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tb</span></div>
+
+<div class="viewcode-block" id="StructFile.write_byte"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.write_byte">[docs]</a>    <span class="k">def</span> <span class="nf">write_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes a single byte to the wrapped file, shortcut for</span>
+<span class="sd">        ``file.write(chr(n))``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_byte</span><span class="p">(</span><span class="n">n</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">read_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">ord</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<div class="viewcode-block" id="StructFile.write_pickle"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.write_pickle">[docs]</a>    <span class="k">def</span> <span class="nf">write_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes a pickled representation of obj to the wrapped file.&quot;&quot;&quot;</span>
+        <span class="n">dump_pickle</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">protocol</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StructFile.read_pickle"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.read_pickle">[docs]</a>    <span class="k">def</span> <span class="nf">read_pickle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads a pickled object from the wrapped file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">load_pickle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">write_sbyte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_sbyte</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_int</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_uint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_uint</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_uint_le</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_uint_le</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_ushort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_ushort</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_ushort_le</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_ushort_le</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_long</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_long</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_ulong</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_ulong</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_float</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pack_float</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arry</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">IS_LITTLE</span><span class="p">:</span>
+            <span class="n">arry</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">arry</span><span class="p">)</span>
+            <span class="n">arry</span><span class="o">.</span><span class="n">byteswap</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="n">arry</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">array_tobytes</span><span class="p">(</span><span class="n">arry</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">read_sbyte</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_sbyte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_INT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_uint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_uint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_INT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_uint_le</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_uint_le</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_INT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_ushort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_ushort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_SHORT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_ushort_le</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_ushort_le</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_SHORT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_long</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_long</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_LONG_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_ulong</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_ulong</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_LONG_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_float</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_FLOAT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">read_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typecode</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">typecode</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">:</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">array_frombytes</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">length</span> <span class="o">*</span> <span class="n">_SIZEMAP</span><span class="p">[</span><span class="n">typecode</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">IS_LITTLE</span><span class="p">:</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">byteswap</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">a</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_byte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_sbyte</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_sbyte</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">_INT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_uint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_uint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">_INT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_ushort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_ushort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">_SHORT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_long</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_long</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">_LONG_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_ulong</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_ulong</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">_LONG_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_float</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">unpack_float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">_FLOAT_SIZE</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">typecode</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_array</span><span class="p">(</span><span class="n">typecode</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BufferFile"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.BufferFile">[docs]</a><span class="k">class</span> <span class="nc">BufferFile</span><span class="p">(</span><span class="n">StructFile</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">onclose</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buf</span> <span class="o">=</span> <span class="n">buf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onclose</span> <span class="o">=</span> <span class="n">onclose</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_real</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="k">return</span> <span class="n">BufferFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">length</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">bytes_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buf</span><span class="p">[</span><span class="n">position</span> <span class="p">:</span> <span class="n">position</span> <span class="o">+</span> <span class="n">length</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">get_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">typecode</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">typecode</span><span class="p">)</span>
+        <span class="n">array_frombytes</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">length</span> <span class="o">*</span> <span class="n">_SIZEMAP</span><span class="p">[</span><span class="n">typecode</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">IS_LITTLE</span><span class="p">:</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">byteswap</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="ChecksumFile"><a class="viewcode-back" href="../../../api/filedb/structfile.html#whoosh.filedb.structfile.ChecksumFile">[docs]</a><span class="k">class</span> <span class="nc">ChecksumFile</span><span class="p">(</span><span class="n">StructFile</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">StructFile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_crc32</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;zlib&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">crc32</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_crc32</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">line</span>
+
+    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cannot seek on a ChecksumFile&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_crc32</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">b</span>
+
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_crc32</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">checksum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
