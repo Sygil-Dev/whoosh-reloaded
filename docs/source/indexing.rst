@@ -8,7 +8,7 @@ Creating an Index object
 To create an index in a directory, use ``index.create_in``::
 
     import os, os.path
-    from whoosh_reloaded import index
+    from whoosh import index
 
     if not os.path.exists("indexdir"):
         os.mkdir("indexdir")
@@ -17,13 +17,13 @@ To create an index in a directory, use ``index.create_in``::
 
 To open an existing index in a directory, use ``index.open_dir``::
 
-    import whoosh_reloaded.index as index
+    import whoosh.index as index
 
     ix = index.open_dir("indexdir")
 
 These are convenience methods for::
 
-    from whoosh_reloaded.filedb.filestore import FileStorage
+    from whoosh.filedb.filestore import FileStorage
     storage = FileStorage("indexdir")
 
     # Create an index
@@ -80,10 +80,10 @@ a time can have a writer open.
 
     Because opening a writer locks the index for writing, in a multi-threaded
     or multi-process environment your code needs to be aware that opening a
-    writer may raise an exception (``whoosh_reloaded.store.LockError``) if a writer is
+    writer may raise an exception (``whoosh.store.LockError``) if a writer is
     already open. Whoosh includes a couple of example implementations
-    (:class:`whoosh_reloaded.writing.AsyncWriter` and
-    :class:`whoosh_reloaded.writing.BufferedWriter`) of ways to work around the write
+    (:class:`whoosh.writing.AsyncWriter` and
+    :class:`whoosh.writing.BufferedWriter`) of ways to work around the write
     lock.
 
 .. note::
@@ -199,7 +199,7 @@ index (merge all the segments together). It simply creates a writer and calls
 For more control over segment merging, you can write your own merge policy
 function and use it as an argument to the ``commit()`` method. See the
 implementation of the ``NO_MERGE``, ``MERGE_SMALL``, and ``OPTIMIZE`` functions
-in the ``whoosh_reloaded.writing`` module.
+in the ``whoosh.writing`` module.
 
 
 Deleting documents
@@ -256,7 +256,7 @@ For ``update_document`` to work, you must have marked at least one of the fields
 in the schema as "unique". Whoosh will then use the contents of the "unique"
 field(s) to search for documents to delete::
 
-    from whoosh_reloaded.fields import Schema, ID, TEXT
+    from whoosh.fields import Schema, ID, TEXT
 
     schema = Schema(path = ID(unique=True), content=TEXT)
 
@@ -293,8 +293,8 @@ add/update documents according to user actions).
 Indexing everything from scratch is pretty easy. Here's a simple example::
 
     import os.path
-    from whoosh_reloaded import index
-    from whoosh_reloaded.fields import Schema, ID, TEXT
+    from whoosh import index
+    from whoosh.fields import Schema, ID, TEXT
 
     def clean_index(dirname):
       # Always create the index from scratch
@@ -418,7 +418,7 @@ Clearing the index
 In some cases you may want to re-index from scratch. To clear the index without
 disrupting any existing readers::
 
-    from whoosh_reloaded import writing
+    from whoosh import writing
 
     with myindex.writer() as mywriter:
         # You can optionally add documents to the writer here

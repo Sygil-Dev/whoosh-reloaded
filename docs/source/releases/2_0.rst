@@ -46,13 +46,13 @@ Whoosh 2.5
 
 * Whoosh now includes pure-Python implementations of the Snowball stemmers and
   stop word lists for various languages adapted from NLTK. These are available
-  through the :class:` whoosh_reloaded.analysis.LanguageAnalyzer` analyzer or through the
+  through the :class:` whoosh.analysis.LanguageAnalyzer` analyzer or through the
   ``lang=`` keyword argument to the
-  :class:`~ whoosh_reloaded.fields.TEXT` field.
+  :class:`~ whoosh.fields.TEXT` field.
 
 * You can now use the
-  :meth:` whoosh_reloaded.filedb.filestore.Storage.create()` and
-  :meth:` whoosh_reloaded.filedb.filestore.Storage.destory()`
+  :meth:` whoosh.filedb.filestore.Storage.create()` and
+  :meth:` whoosh.filedb.filestore.Storage.destory()`
   methods as a consistent API to set up and tear down different types of
   storage.
 
@@ -120,13 +120,13 @@ Whoosh 2.3.1
 Whoosh 2.3
 ==========
 
-* Added a :class:` whoosh_reloaded.query.Regex` term query type, similar to
-  :class:` whoosh_reloaded.query.Wildcard`. The parser does not allow regex term queries
-  by default. You need to add the :class:` whoosh_reloaded.qparser.RegexPlugin` plugin.
+* Added a :class:` whoosh.query.Regex` term query type, similar to
+  :class:` whoosh.query.Wildcard`. The parser does not allow regex term queries
+  by default. You need to add the :class:` whoosh.qparser.RegexPlugin` plugin.
   After you add the plugin, you can use ``r"expression"`` query syntax for
   regular expression term queries. For example, ``r"foo.*bar"``.
 
-* Added the :class:` whoosh_reloaded.qparser.PseudoFieldPlugin` parser plugin. This
+* Added the :class:` whoosh.qparser.PseudoFieldPlugin` parser plugin. This
   plugin lets you create "pseudo-fields" that run a transform function on
   whatever query syntax the user applies the field to. This is fairly advanced
   functionality right now; I'm trying to think of ways to make its power easier
@@ -137,10 +137,10 @@ Whoosh 2.3
   it much easier to display the "top N" results in each category, for example.
 
 * The ``groupids`` keyword argument to ``Searcher.search`` has been removed.
-  Instead you can now pass a :class:` whoosh_reloaded.sorting.FacetMap` object to the
+  Instead you can now pass a :class:` whoosh.sorting.FacetMap` object to the
   ``Searcher.search`` method's ``maptype`` argument to control how faceted
   documents are grouped, and/or set the ``maptype`` argument on individual
-  :class:` whoosh_reloaded.sorting.FacetType`` objects to set custom grouping per facet.
+  :class:` whoosh.sorting.FacetType`` objects to set custom grouping per facet.
   See :doc:`../facets` for more information.
 
 * Calling ``Searcher.documents()`` or ``Searcher.document_numbers()`` with no
@@ -169,17 +169,17 @@ Whoosh 2.2
 
 * Fixes several bugs, including a bad bug in BM25F scoring.
 
-* Added ``allow_overlap`` option to :class:` whoosh_reloaded.sorting.StoredFieldFacet`.
+* Added ``allow_overlap`` option to :class:` whoosh.sorting.StoredFieldFacet`.
 
-* In :meth:`~ whoosh_reloaded.writing.IndexWriter.add_document`, You can now pass
+* In :meth:`~ whoosh.writing.IndexWriter.add_document`, You can now pass
   query-like strings for BOOLEAN and DATETIME fields (e.g ``boolfield="true"``
   and ``dtfield="20101131-16:01"``) as an alternative to actual ``bool`` or
   ``datetime`` objects. The implementation of this is incomplete: it only works
   in the default ``filedb`` backend, and if the field is stored, the stored
   value will be the string, not the parsed object.
 
-* Added :class:` whoosh_reloaded.analysis.CompoundWordFilter` and
-  :class:` whoosh_reloaded.analysis.TeeFilter`.
+* Added :class:` whoosh.analysis.CompoundWordFilter` and
+  :class:` whoosh.analysis.TeeFilter`.
 
 
 Whoosh 2.1
@@ -204,7 +204,7 @@ Improvements
 
   For example, to sort by first name and then score::
 
-      from whoosh_reloaded import sorting
+      from whoosh import sorting
 
       mf = sorting.MultiFacet([sorting.FieldFacet("firstname"),
                                sorting.ScoreFacet()])
@@ -231,15 +231,15 @@ Improvements
   "spelling index".
 
   You can get suggestions for individual words using
-  :meth:` whoosh_reloaded.searching.Searcher.suggest`::
+  :meth:` whoosh.searching.Searcher.suggest`::
 
       suglist = searcher.suggest("content", "werd", limit=3)
 
   Whoosh now includes convenience methods to spell-check and correct user
   queries, with optional highlighting of corrections using the
-  `` whoosh_reloaded.highlight`` module::
+  `` whoosh.highlight`` module::
 
-      from whoosh_reloaded import highlight, qparser
+      from whoosh import highlight, qparser
 
       # User query string
       qstring = request.get("q")
@@ -268,18 +268,18 @@ Improvements
 
   See :doc:`/spelling` for more information.
 
-* :class:` whoosh_reloaded.query.FuzzyTerm` now uses the new word graph feature as well
+* :class:` whoosh.query.FuzzyTerm` now uses the new word graph feature as well
   and so is much faster.
 
 * You can now set a boost factor for individual documents as you index them,
   to increase the score of terms in those documents in searches. See the
-  documentation for the :meth:`~ whoosh_reloaded.writing.IndexWriter.add_document` for
+  documentation for the :meth:`~ whoosh.writing.IndexWriter.add_document` for
   more information.
 
 * Added built-in recording of which terms matched in which documents. Use the
-  ``terms=True`` argument to :meth:` whoosh_reloaded.searching.Searcher.search` and use
-  :meth:` whoosh_reloaded.searching.Hit.matched_terms` and
-  :meth:` whoosh_reloaded.searching.Hit.contains_term` to check matched terms.
+  ``terms=True`` argument to :meth:` whoosh.searching.Searcher.search` and use
+  :meth:` whoosh.searching.Hit.matched_terms` and
+  :meth:` whoosh.searching.Hit.contains_term` to check matched terms.
 
 * Whoosh now supports whole-term quality optimizations, so for example if the
   system knows that a UnionMatcher cannot possibly contribute to the "top N"
@@ -325,9 +325,9 @@ Compatibility
   release when it will be replaced by a more robust and useful feature.
 
 * Reader iteration methods (``__iter__``, ``iter_from``, ``iter_field``, etc.)
-  now yield :class:` whoosh_reloaded.reading.TermInfo` objects.
+  now yield :class:` whoosh.reading.TermInfo` objects.
 
-* The arguments to :class:` whoosh_reloaded.query.FuzzyTerm` changed.
+* The arguments to :class:` whoosh.query.FuzzyTerm` changed.
 
 
 

@@ -2,7 +2,7 @@
 ``columns`` module
 =====================
 
-.. automodule:: whoosh_reloaded.columns
+.. automodule:: whoosh.columns
 
 
 Base classes

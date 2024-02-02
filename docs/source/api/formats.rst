@@ -2,7 +2,7 @@
 ``formats`` module
 ==================
 
-.. automodule:: whoosh_reloaded.formats
+.. automodule:: whoosh.formats
 
 Base class
 ==========

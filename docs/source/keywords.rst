@@ -34,18 +34,18 @@ Usage
   you want to match on is vectored or stored, or that you have access to the
   original text (such as from a database)*.
 
-  Use :meth:`~ whoosh_reloaded.searching.Hit.more_like_this`::
+  Use :meth:`~ whoosh.searching.Hit.more_like_this`::
 
         results = mysearcher.search(myquery)
         first_hit = results[0]
         more_results = first_hit.more_like_this("content")
 
 * Extract keywords for the top N documents in a
-  :class:` whoosh_reloaded.searching.Results` object. *This requires that the field is
+  :class:` whoosh.searching.Results` object. *This requires that the field is
   either vectored or stored*.
 
-  Use the :meth:`~ whoosh_reloaded.searching.Results.key_terms` method of the
-  :class:` whoosh_reloaded.searching.Results` object to extract keywords from the top N
+  Use the :meth:`~ whoosh.searching.Results.key_terms` method of the
+  :class:` whoosh.searching.Results` object to extract keywords from the top N
   documents of the result set.
 
   For example, to extract *five* key terms from the ``content`` field of the top
@@ -57,13 +57,13 @@ Usage
 * Extract keywords for an arbitrary set of documents. *This requires that the
   field is either vectored or stored*.
 
-  Use the :meth:`~ whoosh_reloaded.searching.Searcher.document_number` or
-  :meth:`~ whoosh_reloaded.searching.Searcher.document_numbers` methods of the
-  :class:` whoosh_reloaded.searching.Searcher` object to get the document numbers for the
+  Use the :meth:`~ whoosh.searching.Searcher.document_number` or
+  :meth:`~ whoosh.searching.Searcher.document_numbers` methods of the
+  :class:` whoosh.searching.Searcher` object to get the document numbers for the
   document(s) you want to extract keywords from.
 
-  Use the :meth:`~ whoosh_reloaded.searching.Searcher.key_terms` method of a
-  :class:` whoosh_reloaded.searching.Searcher` to extract the keywords, given the list of
+  Use the :meth:`~ whoosh.searching.Searcher.key_terms` method of a
+  :class:` whoosh.searching.Searcher` to extract the keywords, given the list of
   document numbers.
 
   For example, let's say you have an index of emails. To extract key terms from
@@ -77,8 +77,8 @@ Usage
 
 * Extract keywords from arbitrary text not in the index.
 
-  Use the :meth:`~ whoosh_reloaded.searching.Searcher.key_terms_from_text` method of a
-  :class:` whoosh_reloaded.searching.Searcher` to extract the keywords, given the text::
+  Use the :meth:`~ whoosh.searching.Searcher.key_terms_from_text` method of a
+  :class:` whoosh.searching.Searcher` to extract the keywords, given the text::
 
         with email_index.searcher() as s:
             keywords = [keyword for keyword, score
@@ -88,7 +88,7 @@ Usage
 Expansion models
 ================
 
-The ``ExpansionModel`` subclasses in the :mod:` whoosh_reloaded.classify` module implement
+The ``ExpansionModel`` subclasses in the :mod:` whoosh.classify` module implement
 different weighting functions for key words. These models are translated into
 Python from original Java implementations in Terrier.
 

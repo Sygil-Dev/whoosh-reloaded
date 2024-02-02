@@ -12,7 +12,7 @@ terms and *phrases*. Multiple terms can be combined with operators such as
 *AND* and *OR*.
 
 Whoosh supports indexing text in different *fields*. You must specify the
-*default field* when you create the :class:` whoosh_reloaded.qparser.QueryParser` object.
+*default field* when you create the :class:` whoosh.qparser.QueryParser` object.
 This is the field in which any terms the user does not explicitly specify a field
 for will be searched.
 

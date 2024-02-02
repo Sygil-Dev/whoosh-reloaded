@@ -2,7 +2,7 @@
 ``lang.wordnet`` module
 ========================
 
-.. automodule:: whoosh_reloaded.lang.wordnet
+.. automodule:: whoosh.lang.wordnet
 
 Thesaurus
 =========

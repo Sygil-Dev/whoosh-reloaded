@@ -6,7 +6,7 @@ Overview
 ========
 
 The job of a query parser is to convert a *query string* submitted by a user
-into *query objects* (objects from the :mod:` whoosh_reloaded.query` module).
+into *query objects* (objects from the :mod:` whoosh.query` module).
 
 For example, the user query:
 
@@ -19,10 +19,10 @@ might be parsed into query objects like this::
     And([Term("content", u"rendering"), Term("content", u"shading")])
 
 Whoosh includes a powerful, modular parser for user queries in the
-:mod:` whoosh_reloaded.qparser` module. The default parser implements a query language
+:mod:` whoosh.qparser` module. The default parser implements a query language
 similar to the one that ships with Lucene. However, by changing plugins or using
-functions such as :func:` whoosh_reloaded.qparser.MultifieldParser`,
-:func:` whoosh_reloaded.qparser.SimpleParser` or :func:` whoosh_reloaded.qparser.DisMaxParser`, you
+functions such as :func:` whoosh.qparser.MultifieldParser`,
+:func:` whoosh.qparser.SimpleParser` or :func:` whoosh.qparser.DisMaxParser`, you
 can change how the parser works, get a simpler parser or change the query
 language syntax.
 
@@ -32,7 +32,7 @@ The new hand-written parser is less brittle and more flexible.)
 .. note::
 
     Remember that you can directly create query objects programmatically using
-    the objects in the :mod:` whoosh_reloaded.query` module. If you are not processing
+    the objects in the :mod:` whoosh.query` module. If you are not processing
     actual user queries, this is preferable to building a query string just to
     parse it.
 
@@ -40,12 +40,12 @@ The new hand-written parser is less brittle and more flexible.)
 Using the default parser
 ========================
 
-To create a :class:` whoosh_reloaded.qparser.QueryParser` object, pass it the name of the
+To create a :class:` whoosh.qparser.QueryParser` object, pass it the name of the
 *default field* to search and the schema of the index you'll be searching.
 
 ::
 
-    from whoosh_reloaded.qparser import QueryParser
+    from whoosh.qparser import QueryParser
 
     parser = QueryParser("content", schema=myindex.schema)
 
@@ -88,7 +88,7 @@ present for a document to match, i.e.::
 
 ...configure the QueryParser using the ``group`` keyword argument like this::
 
-    from whoosh_reloaded import qparser
+    from whoosh import qparser
 
     parser = qparser.QueryParser(fieldname, schema=myindex.schema,
                                  group=qparser.OrGroup)
@@ -133,11 +133,11 @@ However, you might want to let the user search *multiple* fields by default. For
 example, you might want "unfielded" terms to search both the ``title`` and
 ``content`` fields.
 
-In that case, you can use a :class:` whoosh_reloaded.qparser.MultifieldParser`. This is
+In that case, you can use a :class:` whoosh.qparser.MultifieldParser`. This is
 just like the normal QueryParser, but instead of a default field name string, it
 takes a *sequence* of field names::
 
-    from whoosh_reloaded.qparser import MultifieldParser
+    from whoosh.qparser import MultifieldParser
 
     mparser = MultifieldParser(["title", "content"], schema=myschema)
 
@@ -157,7 +157,7 @@ Once you have a parser::
     parser = qparser.QueryParser("content", schema=myschema)
 
 you can remove features from it using the
-:meth:`~ whoosh_reloaded.qparser.QueryParser.remove_plugin_class` method.
+:meth:`~ whoosh.qparser.QueryParser.remove_plugin_class` method.
 
 For example, to remove the ability of the user to specify fields to search::
 
@@ -183,7 +183,7 @@ and NOT functions::
 You can replace the default ``OperatorsPlugin`` object to
 replace the default English tokens with your own regular expressions.
 
-The :class:` whoosh_reloaded.qparser.OperatorsPlugin` implements the ability to use AND,
+The :class:` whoosh.qparser.OperatorsPlugin` implements the ability to use AND,
 OR, NOT, ANDNOT, and ANDMAYBE clauses in queries. You can instantiate a new
 ``OperatorsPlugin`` and use the ``And``, ``Or``, ``Not``, ``AndNot``, and 
 ``AndMaybe`` keyword arguments to change the token patterns::
@@ -216,7 +216,7 @@ an open ended range::
 
     field:{apple to]
 
-The :class:` whoosh_reloaded.qparser.GtLtPlugin` lets you specify the same search like
+The :class:` whoosh.qparser.GtLtPlugin` lets you specify the same search like
 this::
 
     field:>apple
@@ -233,7 +233,7 @@ Adding fuzzy term queries
 -------------------------
 
 Fuzzy queries are good for catching misspellings and similar words.
-The :class:` whoosh_reloaded.qparser.FuzzyTermPlugin` lets you search for "fuzzy" terms,
+The :class:` whoosh.qparser.FuzzyTermPlugin` lets you search for "fuzzy" terms,
 that is, terms that don't have to match exactly. The fuzzy term will match any
 similar term within a certain number of "edits" (character insertions,
 deletions, and/or transpositions -- this is called the "Damerau-Levenshtein
@@ -289,7 +289,7 @@ The default phrase query tokenizes the text between the quotes and creates a
 search for those terms in proximity.
 
 If you want to do more complex proximity searches, you can replace the phrase
-plugin with the :class:` whoosh_reloaded.qparser.SequencePlugin`, which allows any query
+plugin with the :class:` whoosh.qparser.SequencePlugin`, which allows any query
 between the quotes. For example::
 
     "(john OR jon OR jonathan~) peters*"
@@ -331,24 +331,24 @@ QueryParser supports two extra keyword arguments:
     specify a boolean operator, such as ``AND`` or ``OR``. This lets you change
     the default operator from ``AND`` to ``OR``.
 
-    This will be the :class:` whoosh_reloaded.qparser.AndGroup` or
-    :class:` whoosh_reloaded.qparser.OrGroup` class (*not* an instantiated object) unless
+    This will be the :class:` whoosh.qparser.AndGroup` or
+    :class:` whoosh.qparser.OrGroup` class (*not* an instantiated object) unless
     you've written your own custom grouping syntax you want to use.
 
 ``termclass``
     The query class to use to wrap single terms.
 
-    This must be a :class:` whoosh_reloaded.query.Query` subclass (*not* an instantiated
+    This must be a :class:` whoosh.query.Query` subclass (*not* an instantiated
     object) that accepts a fieldname string and term text unicode string in its
-    ``__init__`` method. The default is :class:` whoosh_reloaded.query.Term`.
+    ``__init__`` method. The default is :class:` whoosh.query.Term`.
 
     This is useful if you want to change the default term class to
-    :class:` whoosh_reloaded.query.Variations`, or if you've written a custom term class
+    :class:` whoosh.query.Variations`, or if you've written a custom term class
     you want the parser to use instead of the ones shipped with Whoosh.
 
 ::
 
-    >>> from whoosh_reloaded.qparser import QueryParser, OrGroup
+    >>> from whoosh.qparser import QueryParser, OrGroup
     >>> orparser = QueryParser("content", schema=myschema, group=OrGroup)
 
 
@@ -359,9 +359,9 @@ The query parser's functionality is provided by a set of plugins. You can
 remove plugins to remove functionality, add plugins to add functionality, or
 replace default plugins with re-configured or rewritten versions.
 
-The :meth:` whoosh_reloaded.qparser.QueryParser.add_plugin`,
-:meth:` whoosh_reloaded.qparser.QueryParser.remove_plugin_class`, and
-:meth:` whoosh_reloaded.qparser.QueryParser.replace_plugin` methods let you manipulate
+The :meth:` whoosh.qparser.QueryParser.add_plugin`,
+:meth:` whoosh.qparser.QueryParser.remove_plugin_class`, and
+:meth:` whoosh.qparser.QueryParser.replace_plugin` methods let you manipulate
 the plugins in a ``QueryParser`` object.
 
 See :doc:`/api/qparser` for information about the available plugins.
@@ -374,9 +374,9 @@ Creating custom operators
 
 * Decide whether you want a ``PrefixOperator``, ``PostfixOperator``, or ``InfixOperator``.
 
-* Create a new :class:` whoosh_reloaded.qparser.syntax.GroupNode` subclass to hold
+* Create a new :class:` whoosh.qparser.syntax.GroupNode` subclass to hold
   nodes affected by your operator. This object is responsible for generating
-  a :class:` whoosh_reloaded.query.Query` object corresponding to the syntax.
+  a :class:` whoosh.query.Query` object corresponding to the syntax.
 
 * Create a regular expression pattern for the operator's query syntax.
 
@@ -389,7 +389,7 @@ Creating custom operators
 
 For example, if you were creating a ``BEFORE`` operator::
 
-    from whoosh_reloaded import qparser, query
+    from whoosh import qparser, query
 
     optype = qparser.InfixOperator
     pattern = " BEFORE "
@@ -410,7 +410,7 @@ infix operator, do this::
                                               qparser.InfixOperator,
                                               leftassoc=False)
 
-Create an :class:`~ whoosh_reloaded.qparser.plugins.OperatorsPlugin` instance with your
+Create an :class:`~ whoosh.qparser.plugins.OperatorsPlugin` instance with your
 new operator, and replace the default operators plugin in your query parser::
 
     qp = qparser.QueryParser("text", myschema)
