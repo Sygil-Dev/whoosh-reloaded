@@ -25,12 +25,17 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
+from ast import List
 from whoosh.automata.fst import Arc
 
 
 class Instruction(object):
     def __repr__(self):
-        return "%s()" % (self.__class__.__name__,)
+        return f"{self.__class__.__name__}()"
+
+    def handle_thread(self, threads):
+        thread = threads.current()
+        threads.add(thread)
 
 
 class Char(Instruction):
@@ -204,7 +209,7 @@ def advance(thread, arc, c):
     thread.accept = arc.accept
 
 
-def run(graph, program, address):
+def run(graph: Any, program: Any, address: Any) -> Any:
     threads = ThreadList(program)
     threads.add(Thread(0, address))
     arc = Arc()
@@ -215,34 +220,53 @@ def run(graph, program, address):
         optype = type(op)
 
         if optype is Char:
-            if address:
-                arc = graph.find_arc(address, op.c, arc)
-                if arc:
-                    advance(thread, arc)
-                    threads.add(thread)
+            handle_char(graph, address, op.c, arc, thread, threads)
         elif optype is Lit:
-            if address:
-                c = op.c
-                arc = graph.find_path(c, arc, address)
-                if arc:
-                    advance(thread, arc, c)
-                    threads.add(thread)
+            handle_lit(graph, address, op.c, arc, thread, threads)
         elif optype is Any:
-            if address:
-                sofar = thread.sofar
-                pc = thread.pc + 1
-                for arc in graph.iter_arcs(address, arc):
-                    t = Thread(pc, arc.target, sofar + arc.label, arc.accept)
-                    threads.add(t)
+            handle_any(graph, address, arc, thread, threads)
         elif op is Match:
-            if thread.accept:
-                yield thread.sofar
+            handle_match(thread)
         else:
-            raise Exception("Don't know what to do with %r" % op)
+            raise NotImplementedError("Don't know what to do with %r" % op)
+
+
+def handle_char(graph, address, c, arc, thread, threads):
+    if address:
+        arc = graph.find_arc(address, c, arc)
+        if arc:
+            advance(thread, arc, c)
+            threads.add(thread)
+
+
+def handle_lit(graph, address, c, arc, thread, threads):
+    if address:
+        arc = graph.find_path(c, arc, address)
+        if arc:
+            advance(thread, arc, c)
+            threads.add(thread)
+
+
+def handle_any(graph, address, arc, thread, threads):
+    if address:
+        sofar = thread.sofar
+        pc = thread.pc + 1
+        for arc in graph.iter_arcs(address, arc):
+            t = Thread(pc, arc.target, sofar + arc.label, arc.accept)
+            threads.add(t)
+
+
+def handle_match(thread):
+    if thread.accept:
+        yield thread.sofar
 
 
 LO = 0
 HI = 1
+
+
+class UnknownOperationException(Exception):
+    pass
 
 
 def regex_limit(graph, mode, program, address):
@@ -251,44 +275,70 @@ def regex_limit(graph, mode, program, address):
     threads = ThreadList(program)
     threads.add(Thread(0, address))
     arc = Arc()
-    while threads:
-        thread = threads.current()
+
+    def handle_char(
+        graph, mode, program, address, low, output, threads, thread, arc, op
+    ):
+        if address:
+            arc = graph.find_arc(address, op.c, arc)
+            if arc:
+                if low and arc.accept:
+                    return thread.sofar + thread.label
+                advance(thread, arc, op.c)
+                threads.add(thread)
+
+    def handle_lit(
+        graph, mode, program, address, low, output, threads, thread, arc, op
+    ):
+        if address:
+            labels = op.c
+            for label in labels:
+                arc = graph.find_arc(address, label)
+                if arc is None:
+                    return thread.sofar
+        elif thread.accept:
+            return thread.sofar
+
+    def handle_any(
+        graph, mode, program, address, low, output, threads, thread, arc, op
+    ):
+        if address:
+            if low:
+                arc = graph.arc_at(address, arc)
+            else:
+                for arc in graph.iter_arcs(address):
+                    pass
+            advance(thread, arc, arc.label)
+            threads.add(thread)
+        elif thread.accept:
+            return thread.sofar
+
+    def handle_match(
+        graph, mode, program, address, low, output, threads, thread, arc, op
+    ):
+        return thread.sofar
+
+    handlers = {
+        Char: handle_char,
+        Lit: handle_lit,
+        Any: handle_any,
+        Match: handle_match,
+    }
+
+    for thread in threads:
         address = thread.address
         op = program[thread.pc]
         optype = type(op)
 
-        if optype is Char:
-            if address:
-                arc = graph.find_arc(address, op.c, arc)
-                if arc:
-                    if low and arc.accept:
-                        return thread.sofar + thread.label
-                    advance(thread, arc)
-                    threads.add(thread)
-        elif optype is Lit:
-            if address:
-                labels = op.c
-                for label in labels:
-                    arc = graph.find_arc(address, label)
-                    if arc is None:
-                        return thread.sofar
-            elif thread.accept:
-                return thread.sofar
-        elif optype is Any:
-            if address:
-                if low:
-                    arc = graph.arc_at(address, arc)
-                else:
-                    for arc in graph.iter_arcs(address):
-                        pass
-                advance(thread, arc, arc.label)
-                threads.add(thread)
-            elif thread.accept:
-                return thread.sofar
-        elif op is Match:
-            return thread.sofar
+        handler = handlers.get(optype)
+        if handler is not None:
+            result = handler(
+                graph, mode, program, address, low, output, threads, thread, arc, op
+            )
+            if result is not None:
+                return result
         else:
-            raise Exception("Don't know what to do with %r" % op)
+            raise UnknownOperationException("Unknown operation: %r" % op)
 
 
 # if __name__ == "__main__":
