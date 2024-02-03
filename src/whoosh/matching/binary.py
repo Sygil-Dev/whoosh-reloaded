@@ -62,8 +62,7 @@ class BiMatcher(mcore.Matcher):
         return ra or rb
 
     def supports_block_quality(self):
-        return (self.a.supports_block_quality()
-                and self.b.supports_block_quality())
+        return self.a.supports_block_quality() and self.b.supports_block_quality()
 
     def supports(self, astype):
         return self.a.supports(astype) and self.b.supports(astype)
@@ -91,10 +90,10 @@ class AdditiveBiMatcher(BiMatcher):
         return bq
 
     def weight(self):
-        return (self.a.weight() + self.b.weight())
+        return self.a.weight() + self.b.weight()
 
     def score(self):
-        return (self.a.score() + self.b.score())
+        return self.a.score() + self.b.score()
 
     def __eq__(self, other):
         return self.__class__ is type(other)
@@ -116,8 +115,7 @@ class AdditiveBiMatcher(BiMatcher):
 
 
 class UnionMatcher(AdditiveBiMatcher):
-    """Matches the union (OR) of the postings in the two sub-matchers.
-    """
+    """Matches the union (OR) of the postings in the two sub-matchers."""
 
     _id = None
 
@@ -188,7 +186,7 @@ class UnionMatcher(AdditiveBiMatcher):
 
     # Using sets is faster in most cases, but could potentially use a lot of
     # memory. Comment out this method override to not use sets.
-    #def all_ids(self):
+    # def all_ids(self):
     #    return iter(sorted(set(self.a.all_ids()) | set(self.b.all_ids())))
 
     def next(self):
@@ -249,7 +247,7 @@ class UnionMatcher(AdditiveBiMatcher):
         elif id_b < id_a:
             return b.weight()
         else:
-            return (a.weight() + b.weight())
+            return a.weight() + b.weight()
 
     def score(self):
         a = self.a
@@ -267,7 +265,7 @@ class UnionMatcher(AdditiveBiMatcher):
         elif id_b < id_a:
             return b.score()
         else:
-            return (a.score() + b.score())
+            return a.score() + b.score()
 
     def skip_to_quality(self, minquality):
         self._id = None
@@ -313,8 +311,7 @@ class DisjunctionMaxMatcher(UnionMatcher):
         self.tiebreak = tiebreak
 
     def copy(self):
-        return self.__class__(self.a.copy(), self.b.copy(),
-                              tiebreak=self.tiebreak)
+        return self.__class__(self.a.copy(), self.b.copy(), tiebreak=self.tiebreak)
 
     def replace(self, minquality=0):
         a = self.a
@@ -406,8 +403,7 @@ class DisjunctionMaxMatcher(UnionMatcher):
 
 
 class IntersectionMatcher(AdditiveBiMatcher):
-    """Matches the intersection (AND) of the postings in the two sub-matchers.
-    """
+    """Matches the intersection (AND) of the postings in the two sub-matchers."""
 
     def __init__(self, a, b):
         super(IntersectionMatcher, self).__init__(a, b)
@@ -419,9 +415,7 @@ class IntersectionMatcher(AdditiveBiMatcher):
         self._find_first()
 
     def _find_first(self):
-        if (self.a.is_active()
-            and self.b.is_active()
-            and self.a.id() != self.b.id()):
+        if self.a.is_active() and self.b.is_active() and self.a.id() != self.b.id():
             self._find_next()
 
     def replace(self, minquality=0):
@@ -577,9 +571,7 @@ class AndNotMatcher(BiMatcher):
         self._find_first()
 
     def _find_first(self):
-        if (self.a.is_active()
-            and self.b.is_active()
-            and self.a.id() == self.b.id()):
+        if self.a.is_active() and self.b.is_active() and self.a.id() == self.b.id():
             self._find_next()
 
     def is_active(self):
@@ -615,8 +607,7 @@ class AndNotMatcher(BiMatcher):
             # The a matcher is required, so if it's inactive, return an
             # inactive matcher
             return mcore.NullMatcher()
-        elif (minquality
-              and self.a.max_quality() < minquality):
+        elif minquality and self.a.max_quality() < minquality:
             # If the quality of the required matcher isn't high enough to
             # contribute, return an inactive matcher
             return mcore.NullMatcher()

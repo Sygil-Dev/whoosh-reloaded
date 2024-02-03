@@ -29,7 +29,7 @@ from __future__ import with_statement
 from bisect import bisect_left
 from threading import Lock
 
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.codec import base
 from whoosh.matching import ListMatcher
 from whoosh.reading import SegmentReader, TermInfo, TermNotFound
@@ -50,8 +50,7 @@ class MemoryCodec(base.Codec):
 
     def writer(self, schema):
         ix = self.storage.create_index(schema)
-        return MemWriter(ix, _lk=False, codec=self,
-                         docbase=self.segment._doccount)
+        return MemWriter(ix, _lk=False, codec=self, docbase=self.segment._doccount)
 
     def reader(self, schema):
         return SegmentReader(self.storage, schema, self.segment, codec=self)
@@ -159,20 +158,27 @@ class MemPerDocReader(base.PerDocumentReader):
         return self._segment._lengths[docnum].get(fieldname, default)
 
     def field_length(self, fieldname):
-        return sum(lens.get(fieldname, 0) for lens
-                   in self._segment._lengths.values())
+        return sum(lens.get(fieldname, 0) for lens in self._segment._lengths.values())
 
     def min_field_length(self, fieldname):
-        return min(lens[fieldname] for lens in self._segment._lengths.values()
-                   if fieldname in lens)
+        return min(
+            lens[fieldname]
+            for lens in self._segment._lengths.values()
+            if fieldname in lens
+        )
 
     def max_field_length(self, fieldname):
-        return max(lens[fieldname] for lens in self._segment._lengths.values()
-                   if fieldname in lens)
+        return max(
+            lens[fieldname]
+            for lens in self._segment._lengths.values()
+            if fieldname in lens
+        )
 
     def has_vector(self, docnum, fieldname):
-        return (docnum in self._segment._vectors
-                and fieldname in self._segment._vectors[docnum])
+        return (
+            docnum in self._segment._vectors
+            and fieldname in self._segment._vectors[docnum]
+        )
 
     def vector(self, docnum, fieldname, format_):
         items = self._segment._vectors[docnum][fieldname]
@@ -267,7 +273,7 @@ class MemTermsReader(base.TermsReader):
         if not terms:
             return
         start = bisect_left(terms, prefix)
-        for i in xrange(start, len(terms)):
+        for i in range(start, len(terms)):
             yield (fieldname, terms[i])
 
     def term_info(self, fieldname, text):
@@ -326,7 +332,7 @@ class MemSegment(base.Segment):
 
     def deleted_docs(self):
         stored = self._stored
-        for docnum in xrange(self.doc_count_all()):
+        for docnum in range(self.doc_count_all()):
             if docnum not in stored:
                 yield docnum
 

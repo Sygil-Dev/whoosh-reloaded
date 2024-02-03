@@ -1,9 +1,16 @@
 ---
 name: Test
 
-on: [pull_request, push]
+on: [pull_request, push, workflow_dispatch]
 
 jobs:
+  codespell_and_ruff:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: pip install --user codespell[toml] ruff
+    # TODO: Fix lint issues and remove `--exit-zero` from the line below.
+    - run: ruff --exit-zero --output-format=github --target-version=py38 .
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -22,7 +29,20 @@ jobs:
           python setup.py clean build install
     - name: Run test
       run: pytest
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Generate coverage report
+      run: |
+        pip install pytest
+        pip install pytest-cov
+        pytest --cov=./ --cov-report=xml
+  
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        directory: ./
+        env_vars: OS,PYTHON
+        fail_ci_if_error: true
+        files: ./coverage.xml
+        handle_no_reports_found: true
+        token: ${{ secrets.CODECOV_TOKEN }} # required
+        verbose: true # optional (default = false)

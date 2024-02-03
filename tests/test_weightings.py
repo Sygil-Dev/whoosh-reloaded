@@ -4,34 +4,38 @@ from random import choice, randint
 import sys
 
 from whoosh import fields, query, scoring
-from whoosh.compat import u, xrange, permutations
+from whoosh.compat import u, range, permutations
 from whoosh.filedb.filestore import RamStorage
 
 
 def _weighting_classes(ignore):
     # Get all the subclasses of Weighting in whoosh.scoring
-    return [c for _, c in inspect.getmembers(scoring, inspect.isclass)
-            if scoring.Weighting in c.__bases__ and c not in ignore]
+    return [
+        c
+        for _, c in inspect.getmembers(scoring, inspect.isclass)
+        if scoring.Weighting in c.__bases__ and c not in ignore
+    ]
 
 
 def test_all():
-    domain = [u("alfa"), u("bravo"), u("charlie"), u("delta"), u("echo"),
-              u("foxtrot")]
+    domain = [u("alfa"), u("bravo"), u("charlie"), u("delta"), u("echo"), u("foxtrot")]
     schema = fields.Schema(text=fields.TEXT)
     storage = RamStorage()
     ix = storage.create_index(schema)
     w = ix.writer()
-    for _ in xrange(100):
-        w.add_document(text=u(" ").join(choice(domain)
-                                      for _ in xrange(randint(10, 20))))
+    for _ in range(100):
+        w.add_document(
+            text=u(" ").join(choice(domain) for _ in range(randint(10, 20)))
+        )
     w.commit()
 
     # List ABCs that should not be tested
     abcs = ()
     # provide initializer arguments for any weighting classes that require them
-    init_args = {"MultiWeighting": ([scoring.BM25F()],
-                                    {"text": scoring.Frequency()}),
-                 "ReverseWeighting": ([scoring.BM25F()], {})}
+    init_args = {
+        "MultiWeighting": ([scoring.BM25F()], {"text": scoring.Frequency()}),
+        "ReverseWeighting": ([scoring.BM25F()], {}),
+    }
 
     for wclass in _weighting_classes(abcs):
         try:

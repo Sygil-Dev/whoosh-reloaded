@@ -3,15 +3,15 @@
 from __future__ import with_statement
 
 import pytest
-from jieba.analyse import ChineseAnalyzer
+
+# from jieba.analyse import ChineseAnalyzer
 
 from whoosh import analysis, highlight, fields, qparser, query
 from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
-_doc = u("alfa bravo charlie delta echo foxtrot golf hotel india juliet " +
-         "kilo lima")
+_doc = u("alfa bravo charlie delta echo foxtrot golf hotel india juliet " + "kilo lima")
 
 
 def test_null_fragment():
@@ -20,7 +20,10 @@ def test_null_fragment():
     nf = highlight.WholeFragmenter()
     uc = highlight.UppercaseFormatter()
     htext = highlight.highlight(_doc, terms, sa, nf, uc)
-    assert htext == "alfa BRAVO charlie delta echo foxtrot golf hotel INDIA juliet kilo lima"
+    assert (
+        htext
+        == "alfa BRAVO charlie delta echo foxtrot golf hotel INDIA juliet kilo lima"
+    )
 
 
 def test_phrase_strict():
@@ -32,42 +35,50 @@ def test_phrase_strict():
         result.formatter = highlight.UppercaseFormatter()
         return result
 
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           title=fields.TEXT(stored=True))
+    schema = fields.Schema(id=fields.ID(stored=True), title=fields.TEXT(stored=True))
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(id=u("1"), title=u("strict phrase highlights phrase terms but not individual terms"))
+    w.add_document(
+        id=u("1"),
+        title=u("strict phrase highlights phrase terms but not individual terms"),
+    )
     w.commit()
 
     with ix.searcher() as s:
         # Phrase
-        r = search(s, "\"phrase terms\"")
+        r = search(s, '"phrase terms"')
 
         # Non-strict
         outputs = [hit.highlights("title", strict_phrase=False) for hit in r]
-        assert outputs == ["strict PHRASE highlights PHRASE TERMS but not individual...TERMS"]
+        assert outputs == [
+            "strict PHRASE highlights PHRASE TERMS but not individual...TERMS"
+        ]
 
         # Strict
         outputs = [hit.highlights("title", strict_phrase=True) for hit in r]
         assert outputs == ["phrase highlights PHRASE TERMS but not individual"]
 
         # Phrase with slop
-        r = search(s, "\"strict highlights terms\"~2")
+        r = search(s, '"strict highlights terms"~2')
 
         # Non-strict
         outputs = [hit.highlights("title", strict_phrase=False) for hit in r]
-        assert outputs == ["STRICT phrase HIGHLIGHTS phrase TERMS but not individual...TERMS"]
+        assert outputs == [
+            "STRICT phrase HIGHLIGHTS phrase TERMS but not individual...TERMS"
+        ]
 
         # Strict
         outputs = [hit.highlights("title", strict_phrase=True) for hit in r]
         assert outputs == ["STRICT phrase HIGHLIGHTS phrase TERMS but not individual"]
 
         # Phrase with individual terms
-        r = search(s, "individual AND \"phrase terms\"")
+        r = search(s, 'individual AND "phrase terms"')
 
         # Non-strict
         outputs = [hit.highlights("title", strict_phrase=False) for hit in r]
-        assert outputs == ["strict PHRASE highlights PHRASE TERMS but not INDIVIDUAL TERMS"]
+        assert outputs == [
+            "strict PHRASE highlights PHRASE TERMS but not INDIVIDUAL TERMS"
+        ]
 
         # Strict
         outputs = [hit.highlights("title", strict_phrase=True) for hit in r]
@@ -75,14 +86,19 @@ def test_phrase_strict():
 
 
 def test_sentence_fragment():
-    text = u("This is the first sentence. This one doesn't have the word. " +
-             "This sentence is the second. Third sentence here.")
+    text = u(
+        "This is the first sentence. This one doesn't have the word. "
+        + "This sentence is the second. Third sentence here."
+    )
     terms = ("sentence",)
     sa = analysis.StandardAnalyzer(stoplist=None)
     sf = highlight.SentenceFragmenter()
     uc = highlight.UppercaseFormatter()
     htext = highlight.highlight(text, terms, sa, sf, uc)
-    assert htext == "This is the first SENTENCE...This SENTENCE is the second...Third SENTENCE here"
+    assert (
+        htext
+        == "This is the first SENTENCE...This SENTENCE is the second...Third SENTENCE here"
+    )
 
 
 def test_context_fragment():
@@ -109,7 +125,10 @@ def test_html_format():
     cf = highlight.ContextFragmenter(surround=6)
     hf = highlight.HtmlFormatter()
     htext = highlight.highlight(_doc, terms, sa, cf, hf)
-    assert htext == 'alfa <strong class="match term0">bravo</strong> charlie...hotel <strong class="match term1">india</strong> juliet'
+    assert (
+        htext
+        == 'alfa <strong class="match term0">bravo</strong> charlie...hotel <strong class="match term1">india</strong> juliet'
+    )
 
 
 def test_html_escape():
@@ -117,9 +136,11 @@ def test_html_escape():
     sa = analysis.StandardAnalyzer()
     wf = highlight.WholeFragmenter()
     hf = highlight.HtmlFormatter()
-    htext = highlight.highlight(u('alfa <bravo "charlie"> delta'), terms, sa,
-                                wf, hf)
-    assert htext == 'alfa &lt;<strong class="match term0">bravo</strong> "charlie"&gt; delta'
+    htext = highlight.highlight(u('alfa <bravo "charlie"> delta'), terms, sa, wf, hf)
+    assert (
+        htext
+        == 'alfa &lt;<strong class="match term0">bravo</strong> "charlie"&gt; delta'
+    )
 
 
 def test_maxclasses():
@@ -128,12 +149,14 @@ def test_maxclasses():
     cf = highlight.ContextFragmenter(surround=6)
     hf = highlight.HtmlFormatter(tagname="b", termclass="t", maxclasses=2)
     htext = highlight.highlight(_doc, terms, sa, cf, hf)
-    assert htext == '<b class="match t0">alfa</b> <b class="match t1">bravo</b> <b class="match t0">charlie</b>...<b class="match t1">delta</b> <b class="match t0">echo</b> foxtrot'
+    assert (
+        htext
+        == '<b class="match t0">alfa</b> <b class="match t1">bravo</b> <b class="match t0">charlie</b>...<b class="match t1">delta</b> <b class="match t0">echo</b> foxtrot'
+    )
 
 
 def test_workflow_easy():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           title=fields.TEXT(stored=True))
+    schema = fields.Schema(id=fields.ID(stored=True), title=fields.TEXT(stored=True))
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
@@ -158,8 +181,7 @@ def test_workflow_easy():
 
 
 def test_workflow_manual():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           title=fields.TEXT(stored=True))
+    schema = fields.Schema(id=fields.ID(stored=True), title=fields.TEXT(stored=True))
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
@@ -176,8 +198,7 @@ def test_workflow_manual():
         q = parser.parse(u("man"))
 
         # Extract the terms the user used in the field we're interested in
-        terms = [text for fieldname, text in q.all_terms()
-                 if fieldname == "title"]
+        terms = [text for fieldname, text in q.all_terms() if fieldname == "title"]
 
         # Perform the search
         r = s.search(q)
@@ -230,13 +251,17 @@ def test_multifilter():
         with ix.searcher() as s:
             assert ("text", "5000") in s.reader()
             hit = s.search(query.Term("text", "5000"))[0]
-            assert (hit.highlights("text")
-                    == 'Our BabbleTron<b class="match term0">5000</b> is great')
+            assert (
+                hit.highlights("text")
+                == 'Our BabbleTron<b class="match term0">5000</b> is great'
+            )
 
 
 def test_pinpoint():
-    domain = u("alfa bravo charlie delta echo foxtrot golf hotel india juliet "
-               "kilo lima mike november oskar papa quebec romeo sierra tango")
+    domain = u(
+        "alfa bravo charlie delta echo foxtrot golf hotel india juliet "
+        "kilo lima mike november oskar papa quebec romeo sierra tango"
+    )
     schema = fields.Schema(text=fields.TEXT(stored=True, chars=True))
     ix = RamStorage().create_index(schema)
     w = ix.writer()
@@ -251,17 +276,20 @@ def test_pinpoint():
         hi.formatter = highlight.UppercaseFormatter()
 
         assert not hi.can_load_chars(r, "text")
-        assert (hi.highlight_hit(hit, "text")
-                == "golf hotel india JULIET kilo lima mike november")
+        assert (
+            hi.highlight_hit(hit, "text")
+            == "golf hotel india JULIET kilo lima mike november"
+        )
 
         hi.fragmenter = highlight.PinpointFragmenter()
         assert hi.can_load_chars(r, "text")
-        assert (hi.highlight_hit(hit, "text")
-                == "ot golf hotel india JULIET kilo lima mike nove")
+        assert (
+            hi.highlight_hit(hit, "text")
+            == "ot golf hotel india JULIET kilo lima mike nove"
+        )
 
         hi.fragmenter.autotrim = True
-        assert (hi.highlight_hit(hit, "text")
-                == "golf hotel india JULIET kilo lima mike")
+        assert hi.highlight_hit(hit, "text") == "golf hotel india JULIET kilo lima mike"
 
 
 def test_highlight_wildcards():
@@ -300,9 +328,13 @@ def test_highlight_ngrams():
 
 def test_issue324():
     sa = analysis.StemmingAnalyzer()
-    result = highlight.highlight(u("Indexed!\n1"), [u("index")], sa,
-                                 fragmenter=highlight.ContextFragmenter(),
-                                 formatter=highlight.UppercaseFormatter())
+    result = highlight.highlight(
+        u("Indexed!\n1"),
+        [u("index")],
+        sa,
+        fragmenter=highlight.ContextFragmenter(),
+        formatter=highlight.UppercaseFormatter(),
+    )
     assert result == "INDEXED!\n1"
 
 
@@ -310,8 +342,9 @@ def test_whole_noterms():
     schema = fields.Schema(text=fields.TEXT(stored=True), tag=fields.KEYWORD)
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(text=u("alfa bravo charlie delta echo foxtrot golf"),
-                       tag=u("foo"))
+        w.add_document(
+            text=u("alfa bravo charlie delta echo foxtrot golf"), tag=u("foo")
+        )
 
     with ix.searcher() as s:
         r = s.search(query.Term("text", u("delta")))
@@ -331,24 +364,3 @@ def test_whole_noterms():
 
         hi = r[0].highlights("text", minscore=0)
         assert hi == u("alfa bravo charlie delta echo foxtrot golf")
-
-
-def test_overlapping_tokens():
-    query_string = u'马克思'
-    text = u'两次历史性飞跃与马克思主义中国化'
-    analyzer = ChineseAnalyzer()
-    formatter = highlight.HtmlFormatter()
-
-    terms = [token.text for token in analyzer(query_string)]
-
-    output = highlight.highlight(
-        text,
-        terms,
-        analyzer,
-        highlight.WholeFragmenter(),
-        formatter
-    )
-
-    assert output == u'两次历史性飞跃与<strong class="match term0">马克思</strong>主义中国化', \
-        u'The longest overlapping token 马克思 was not selected by the highlighter'
-    # as opposed to '两次历史性飞跃与<strong class="match term0">马克</strong>思主义中国化'

@@ -14,7 +14,7 @@ mis-typed word::
         for mistyped_word in mistyped_words:
             print corrector.suggest(mistyped_word, limit=3)
 
-See the :meth:`whoosh.spelling.Corrector.suggest` method documentation
+See the :meth:` whoosh.spelling.Corrector.suggest` method documentation
 for information on the arguments.
 
 Currently the suggestion engine is more like a "typo corrector" than a
@@ -40,7 +40,7 @@ unmodified versions of the terms for spelling suggestions::
     ana = analysis.StemmingAnalyzer()
     schema = fields.Schema(text=TEXT(analyzer=ana, spelling=True))
 
-You can then use the :meth:`whoosh.searching.Searcher.corrector` method
+You can then use the :meth:` whoosh.searching.Searcher.corrector` method
 to get a corrector for a field::
 
     corrector = searcher.corrector("content")
@@ -61,7 +61,7 @@ populate the spelling dictionary.
 (In the following examples, ``word_list`` can be a list of unicode
 strings, or a file object with one word on each line.)
 
-To create a :class:`whoosh.spelling.Corrector` object from a sorted word list::
+To create a :class:` whoosh.spelling.Corrector` object from a sorted word list::
 
     from whoosh.spelling import ListCorrector
 
@@ -74,7 +74,7 @@ Merging two or more correctors
 
 You can combine suggestions from two sources (for example, the contents
 of an index field and a word list) using a
-:class:`whoosh.spelling.MultiCorrector`::
+:class:` whoosh.spelling.MultiCorrector`::
 
     c1 = searcher.corrector("content")
     c2 = spelling.ListCorrector(word_list)
@@ -85,7 +85,7 @@ Correcting user queries
 =======================
 
 You can spell-check a user query using the
-:meth:`whoosh.searching.Searcher.correct_query` method::
+:meth:` whoosh.searching.Searcher.correct_query` method::
 
     from whoosh import qparser
 
@@ -103,7 +103,7 @@ The ``correct_query`` method returns an object with the following
 attributes:
 
 ``query``
-    A corrected :class:`whoosh.query.Query` tree. You can test
+    A corrected :class:` whoosh.query.Query` tree. You can test
     whether this is equal (``==``) to the original parsed query to
     check if the corrector actually changed anything.
 
@@ -115,9 +115,9 @@ attributes:
     terms. You can use this to reformat the user query (see below).
 
 
-You can use a :class:`whoosh.highlight.Formatter` object to format the
+You can use a :class:` whoosh.highlight.Formatter` object to format the
 corrected query string. For example, use the
-:class:`~whoosh.highlight.HtmlFormatter` to format the corrected string
+:class:`~ whoosh.highlight.HtmlFormatter` to format the corrected string
 as HTML::
 
     from whoosh import highlight
@@ -126,5 +126,5 @@ as HTML::
     corrected = s.correct_query(q, qstring, formatter=hf)
 
 See the documentation for
-:meth:`whoosh.searching.Searcher.correct_query` for information on the
+:meth:` whoosh.searching.Searcher.correct_query` for information on the
 defaults and arguments.

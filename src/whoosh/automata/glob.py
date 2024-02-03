@@ -36,8 +36,9 @@ _QUEST = 3
 _RANGE = 4
 
 
-def parse_glob(pattern, _glob_multi="*", _glob_single="?",
-               _glob_range1="[", _glob_range2="]"):
+def parse_glob(
+    pattern, _glob_multi="*", _glob_single="?", _glob_range1="[", _glob_range2="]"
+):
     pos = 0
     last = None
     while pos < len(pattern):

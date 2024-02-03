@@ -5,7 +5,7 @@ from collections import deque
 import pytest
 
 from whoosh import fields, query
-from whoosh.compat import u, izip, xrange, permutations, text_type
+from whoosh.compat import u, izip, range, permutations, text_type
 from whoosh.util.numeric import length_to_byte, byte_to_length
 from whoosh.util.testing import TempIndex
 
@@ -19,6 +19,7 @@ def check_multi():
     else:
         try:
             from multiprocessing import Queue
+
             Queue()
         except OSError:
             pytest.skip()
@@ -57,9 +58,10 @@ def _do_basic(writerclass):
     # Shuffle the list of document values
     random.shuffle(docs)
 
-    schema = fields.Schema(text=fields.TEXT(stored=True, spelling=True,
-                                            vector=True),
-                           row=fields.NUMERIC(stored=True))
+    schema = fields.Schema(
+        text=fields.TEXT(stored=True, spelling=True, vector=True),
+        row=fields.NUMERIC(stored=True),
+    )
 
     with TempIndex(schema, storage_debug=True) as ix:
         # Add the domain data to the index
@@ -77,8 +79,10 @@ def _do_basic(writerclass):
             assert r.doc_count_all() == len(docs)
 
             # Check there are lengths
-            total = sum(r.doc_field_length(docnum, "text", 0)
-                        for docnum in xrange(r.doc_count_all()))
+            total = sum(
+                r.doc_field_length(docnum, "text", 0)
+                for docnum in range(r.doc_count_all())
+            )
             assert total > 0
 
             # Check per-doc info
@@ -120,24 +124,31 @@ def test_no_add():
     check_multi()
     from whoosh.multiproc import MpWriter
 
-    schema = fields.Schema(text=fields.TEXT(stored=True, spelling=True,
-                                            vector=True))
+    schema = fields.Schema(text=fields.TEXT(stored=True, spelling=True, vector=True))
     with TempIndex(schema) as ix:
         with ix.writer(procs=3) as w:
             assert type(w) == MpWriter
 
 
 def _do_merge(writerclass):
-    schema = fields.Schema(key=fields.ID(stored=True, unique=True),
-                           value=fields.TEXT(stored=True, spelling=True,
-                                             vector=True))
+    schema = fields.Schema(
+        key=fields.ID(stored=True, unique=True),
+        value=fields.TEXT(stored=True, spelling=True, vector=True),
+    )
 
-    domain = {"a": "aa", "b": "bb cc", "c": "cc dd ee", "d": "dd ee ff gg",
-              "e": "ee ff gg hh ii", "f": "ff gg hh ii jj kk",
-              "g": "gg hh ii jj kk ll mm", "h": "hh ii jj kk ll mm nn oo",
-              "i": "ii jj kk ll mm nn oo pp qq ww ww ww ww ww ww",
-              "j": "jj kk ll mm nn oo pp qq rr ss",
-              "k": "kk ll mm nn oo pp qq rr ss tt uu"}
+    domain = {
+        "a": "aa",
+        "b": "bb cc",
+        "c": "cc dd ee",
+        "d": "dd ee ff gg",
+        "e": "ee ff gg hh ii",
+        "f": "ff gg hh ii jj kk",
+        "g": "gg hh ii jj kk ll mm",
+        "h": "hh ii jj kk ll mm nn oo",
+        "i": "ii jj kk ll mm nn oo pp qq ww ww ww ww ww ww",
+        "j": "jj kk ll mm nn oo pp qq rr ss",
+        "k": "kk ll mm nn oo pp qq rr ss tt uu",
+    }
 
     with TempIndex(schema) as ix:
         w = ix.writer()
@@ -169,7 +180,10 @@ def _do_merge(writerclass):
             assert s.doc_count() == len(domain)
 
             assert "".join(r.field_terms("key")) == "acdefghijk"
-            assert " ".join(r.field_terms("value")) == "aa cc dd ee ff gg hh ii jj kk ll mm nn oo pp qq rr ss tt uu ww xx yy zz"
+            assert (
+                " ".join(r.field_terms("value"))
+                == "aa cc dd ee ff gg hh ii jj kk ll mm nn oo pp qq rr ss tt uu ww xx yy zz"
+            )
 
             for key in domain:
                 docnum = s.document_number(key=key)
@@ -232,8 +246,7 @@ def test_multisegment():
     check_multi()
     from whoosh.multiproc import MpWriter
 
-    schema = fields.Schema(a=fields.TEXT(stored=True, spelling=True,
-                                         vector=True))
+    schema = fields.Schema(a=fields.TEXT(stored=True, spelling=True, vector=True))
     words = u("alfa bravo charlie delta echo").split()
     with TempIndex(schema) as ix:
         with ix.writer(procs=3, multisegment=True, batchsize=10) as w:
@@ -257,7 +270,7 @@ def test_batchsize_eq_doccount():
     schema = fields.Schema(a=fields.KEYWORD(stored=True))
     with TempIndex(schema) as ix:
         with ix.writer(procs=4, batchsize=10) as w:
-            for i in xrange(10):
+            for i in range(10):
                 w.add_document(a=u(str(i)))
 
 
@@ -268,8 +281,7 @@ def test_finish_segment():
 
     schema = fields.Schema(a=fields.KEYWORD(stored=True))
     with TempIndex(schema) as ix:
-        w = MpWriter(ix, procs=2, batchsize=1, multisegment=False,
-                     limitmb=0.00001)
+        w = MpWriter(ix, procs=2, batchsize=1, multisegment=False, limitmb=0.00001)
 
         for i in range(100):
             w.add_document(a=text_type(i) * 10)

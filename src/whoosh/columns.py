@@ -57,7 +57,7 @@ except ImportError:
     zlib = None
 
 from whoosh.compat import b, bytes_type, BytesIO
-from whoosh.compat import array_tobytes, xrange
+from whoosh.compat import array_tobytes, range
 from whoosh.compat import dumps, loads
 from whoosh.filedb.structfile import StructFile
 from whoosh.idsets import BitSet, OnDiskBitSet
@@ -68,6 +68,7 @@ from whoosh.util.varints import varint, read_varint
 
 
 # Base classes
+
 
 class Column(object):
     """Represents a "column" of rows mapping docnums to document values.
@@ -83,7 +84,7 @@ class Column(object):
         """Returns a :class:`ColumnWriter` object you can use to use to create
         a column of this type on disk.
 
-        :param dbfile: the :class:`~whoosh.filedb.structfile.StructFile` to
+        :param dbfile: the :class:`~ whoosh.filedb.structfile.StructFile` to
             write to.
         """
 
@@ -93,7 +94,7 @@ class Column(object):
         """Returns a :class:`ColumnReader` object you can use to read a column
         of this type from disk.
 
-        :param dbfile: the :class:`~whoosh.filedb.structfile.StructFile` to
+        :param dbfile: the :class:`~ whoosh.filedb.structfile.StructFile` to
             read from.
         :param basepos: the offset within the file at which the column starts.
         :param length: the length in bytes of the column occupies in the file.
@@ -103,8 +104,7 @@ class Column(object):
         return self.Reader(dbfile, basepos, length, doccount)
 
     def default_value(self, reverse=False):
-        """Returns the default value for this column type.
-        """
+        """Returns the default value for this column type."""
 
         return self._default
 
@@ -125,7 +125,7 @@ class ColumnWriter(object):
         write = self._dbfile.write
         default = self._defaultbytes
         if docnum > self._count:
-            for _ in xrange(docnum - self._count):
+            for _ in range(docnum - self._count):
                 write(default)
 
     def add(self, docnum, value):
@@ -152,7 +152,7 @@ class ColumnReader(object):
         return self[docnum]
 
     def __iter__(self):
-        for i in xrange(self._doccount):
+        for i in range(self._doccount):
             yield self[i]
 
     def load(self):
@@ -163,6 +163,7 @@ class ColumnReader(object):
 
 
 # Arbitrary bytes column
+
 
 class VarBytesColumn(Column):
     """Stores variable length byte strings. See also :class:`RefBytesColumn`.
@@ -190,8 +191,7 @@ class VarBytesColumn(Column):
         self.write_offsets_cutoff = write_offsets_cutoff
 
     def writer(self, dbfile):
-        return self.Writer(dbfile, self.allow_offsets,
-                           self.write_offsets_cutoff)
+        return self.Writer(dbfile, self.allow_offsets, self.write_offsets_cutoff)
 
     class Writer(ColumnWriter):
         def __init__(self, dbfile, allow_offsets=True, cutoff=2**15):
@@ -210,8 +210,8 @@ class VarBytesColumn(Column):
         def fill(self, docnum):
             base = self._offset_base
             if docnum > self._count:
-                self._lengths.extend(0 for _ in xrange(docnum - self._count))
-                self._offsets.extend(base for _ in xrange(docnum - self._count))
+                self._lengths.extend(0 for _ in range(docnum - self._count))
+                self._offsets.extend(base for _ in range(docnum - self._count))
 
         def add(self, docnum, v):
             self.fill(docnum)
@@ -314,8 +314,7 @@ class VarBytesColumn(Column):
 
 
 class FixedBytesColumn(Column):
-    """Stores fixed-length byte strings.
-    """
+    """Stores fixed-length byte strings."""
 
     def __init__(self, fixedlen, default=None):
         """
@@ -337,8 +336,9 @@ class FixedBytesColumn(Column):
         return self.Writer(dbfile, self._fixedlen, self._default)
 
     def reader(self, dbfile, basepos, length, doccount):
-        return self.Reader(dbfile, basepos, length, doccount, self._fixedlen,
-                           self._default)
+        return self.Reader(
+            dbfile, basepos, length, doccount, self._fixedlen, self._default
+        )
 
     class Writer(ColumnWriter):
         def __init__(self, dbfile, fixedlen, default):
@@ -360,8 +360,7 @@ class FixedBytesColumn(Column):
             self._count = docnum + 1
 
     class Reader(ColumnReader):
-        def __init__(self, dbfile, basepos, length, doccount, fixedlen,
-                     default):
+        def __init__(self, dbfile, basepos, length, doccount, fixedlen, default):
             self._dbfile = dbfile
             self._basepos = basepos
             self._doccount = doccount
@@ -381,7 +380,7 @@ class FixedBytesColumn(Column):
         def __iter__(self):
             count = self._count
             default = self._default
-            for i in xrange(self._doccount):
+            for i in range(self._doccount):
                 if i < count:
                     yield self[i]
                 else:
@@ -389,6 +388,7 @@ class FixedBytesColumn(Column):
 
 
 # Variable/fixed length reference (enum) column
+
 
 class RefBytesColumn(Column):
     """Stores variable-length or fixed-length byte strings, similar to
@@ -459,10 +459,10 @@ class RefBytesColumn(Column):
         def fill(self, docnum):
             if docnum > self._count:
                 if self._refs is not None:
-                    self._refs.extend(0 for _ in xrange(docnum - self._count))
+                    self._refs.extend(0 for _ in range(docnum - self._count))
                 else:
                     dbfile = self._dbfile
-                    for _ in xrange(docnum - self._count):
+                    for _ in range(docnum - self._count):
                         dbfile.write_ushort(0)
 
         def add(self, docnum, v):
@@ -486,8 +486,9 @@ class RefBytesColumn(Column):
                 self._refs.append(ref)
             else:
                 if ref > 65535:
-                    warnings.warn("RefBytesColumn dropped unique value %r" % v,
-                                  UserWarning)
+                    warnings.warn(
+                        "RefBytesColumn dropped unique value %r" % v, UserWarning
+                    )
                     ref = 0
                 dbfile.write_ushort(ref)
 
@@ -545,7 +546,7 @@ class RefBytesColumn(Column):
             ucount = dbfile.read_varint()
             length = fixedlen
             uniques = []
-            for _ in xrange(ucount):
+            for _ in range(ucount):
                 if not fixedlen:
                     length = dbfile.read_varint()
                 uniques.append(dbfile.read(length))
@@ -563,7 +564,7 @@ class RefBytesColumn(Column):
             unpack = self._unpack
             itemsize = self._itemsize
 
-            for i in xrange(self._doccount):
+            for i in range(self._doccount):
                 pos = basepos + i * itemsize
                 ref = unpack(get(pos, itemsize))[0]
                 yield uniques[ref]
@@ -571,9 +572,9 @@ class RefBytesColumn(Column):
 
 # Numeric column
 
+
 class NumericColumn(FixedBytesColumn):
-    """Stores numbers (integers and floats) as compact binary.
-    """
+    """Stores numbers (integers and floats) as compact binary."""
 
     reversible = True
 
@@ -593,8 +594,9 @@ class NumericColumn(FixedBytesColumn):
         return self.Writer(dbfile, self._typecode, self._default)
 
     def reader(self, dbfile, basepos, length, doccount):
-        return self.Reader(dbfile, basepos, length, doccount, self._typecode,
-                           self._default)
+        return self.Reader(
+            dbfile, basepos, length, doccount, self._typecode, self._default
+        )
 
     def default_value(self, reverse=False):
         v = self._default
@@ -623,8 +625,7 @@ class NumericColumn(FixedBytesColumn):
             self._count = docnum + 1
 
     class Reader(FixedBytesColumn.Reader):
-        def __init__(self, dbfile, basepos, length, doccount, typecode,
-                     default):
+        def __init__(self, dbfile, basepos, length, doccount, typecode, default):
             self._dbfile = dbfile
             self._basepos = basepos
             self._doccount = doccount
@@ -662,9 +663,9 @@ class NumericColumn(FixedBytesColumn):
 
 # Column of boolean values
 
+
 class BitColumn(Column):
-    """Stores a column of True/False values compactly.
-    """
+    """Stores a column of True/False values compactly."""
 
     reversible = True
     _default = False
@@ -742,18 +743,17 @@ class BitColumn(Column):
             i = 0
             for num in self._bitset:
                 if num > i:
-                    for _ in xrange(num - i):
+                    for _ in range(num - i):
                         yield False
                 yield True
                 i = num + 1
             if self._doccount > i:
-                for _ in xrange(self._doccount - i):
+                for _ in range(self._doccount - i):
                     yield False
 
         def load(self):
             if isinstance(self._bitset, OnDiskBitSet):
-                bs = self._dbfile.get_array(self._basepos, "B",
-                                            self._length - 1)
+                bs = self._dbfile.get_array(self._basepos, "B", self._length - 1)
                 self._bitset = BitSet.from_bytes(bs)
             return self
 
@@ -762,6 +762,7 @@ class BitColumn(Column):
 
 
 # Compressed variants
+
 
 class CompressedBytesColumn(Column):
     """Stores variable-length byte strings compressed using deflate (by
@@ -800,8 +801,7 @@ class CompressedBytesColumn(Column):
 
     class Reader(VarBytesColumn.Reader):
         def __init__(self, dbfile, basepos, length, doccount, module):
-            VarBytesColumn.Reader.__init__(self, dbfile, basepos, length,
-                                           doccount)
+            VarBytesColumn.Reader.__init__(self, dbfile, basepos, length, doccount)
             self._decompress = __import__(module).decompress
 
         def __repr__(self):
@@ -867,8 +867,7 @@ class CompressedBlockColumn(Column):
         def _emit(self):
             dbfile = self._dbfile
             block = self._compress(self._block, self._level)
-            header = (self._startdoc, self._lastdoc, len(block),
-                      tuple(self._lengths))
+            header = (self._startdoc, self._lastdoc, len(block), tuple(self._lengths))
             dbfile.write_pickle(header)
             dbfile.write(block)
 
@@ -899,8 +898,7 @@ class CompressedBlockColumn(Column):
             while pos < length:
                 startdoc, enddoc, blocklen, lengths = dbfile.read_pickle()
                 here = dbfile.tell()
-                self._blocks.append((startdoc, enddoc, here, blocklen,
-                                     lengths))
+                self._blocks.append((startdoc, enddoc, here, blocklen, lengths))
                 dbfile.seek(blocklen, 1)
                 pos = here + blocklen
 
@@ -922,12 +920,11 @@ class CompressedBlockColumn(Column):
             blocklen = block[3]
             lengths = block[4]
 
-            data = self._decompress(self._dbfile.get(self._basepos + pos,
-                                                     blocklen))
+            data = self._decompress(self._dbfile.get(self._basepos + pos, blocklen))
             values = {}
             base = 0
             for docnum, vlen in lengths:
-                values[docnum] = data[base:base + vlen]
+                values[docnum] = data[base : base + vlen]
                 base += vlen
             return values
 
@@ -943,17 +940,17 @@ class CompressedBlockColumn(Column):
                 startdoc = block[0]
                 enddoc = block[1]
                 if startdoc > (last + 1):
-                    for _ in xrange(startdoc - last):
+                    for _ in range(startdoc - last):
                         yield emptybytes
                 values = self._get_block(i)
-                for docnum in xrange(startdoc, enddoc + 1):
+                for docnum in range(startdoc, enddoc + 1):
                     if docnum in values:
                         yield values[docnum]
                     else:
                         yield emptybytes
                 last = enddoc
             if enddoc < self._doccount - 1:
-                for _ in xrange(self._doccount - enddoc):
+                for _ in range(self._doccount - enddoc):
                     yield emptybytes
 
 
@@ -967,8 +964,7 @@ class StructColumn(FixedBytesColumn):
         return self.Writer(dbfile, self._spec, self._default)
 
     def reader(self, dbfile, basepos, length, doccount):
-        return self.Reader(dbfile, basepos, length, doccount, self._spec,
-                           self._default)
+        return self.Reader(dbfile, basepos, length, doccount, self._spec, self._default)
 
     class Writer(FixedBytesColumn.Writer):
         def __init__(self, dbfile, spec, default):
@@ -1007,6 +1003,7 @@ class StructColumn(FixedBytesColumn):
 
 # Utility readers
 
+
 class EmptyColumnReader(ColumnReader):
     """Acts like a reader for a column with no stored values. Always returns
     the default.
@@ -1025,7 +1022,7 @@ class EmptyColumnReader(ColumnReader):
         return self._default
 
     def __iter__(self):
-        return (self._default for _ in xrange(self._doccount))
+        return (self._default for _ in range(self._doccount))
 
     def load(self):
         return self
@@ -1092,8 +1089,7 @@ class TranslatingColumnReader(ColumnReader):
         self._translate = translate
 
     def raw_column(self):
-        """Returns the underlying column reader.
-        """
+        """Returns the underlying column reader."""
 
         return self._reader
 
@@ -1115,6 +1111,7 @@ class TranslatingColumnReader(ColumnReader):
 
 
 # Column wrappers
+
 
 class WrappedColumn(Column):
     def __init__(self, child):
@@ -1229,6 +1226,7 @@ class PickleColumn(WrappedColumn):
 
 # List columns
 
+
 class ListColumn(WrappedColumn):
     def stores_lists(self):
         return True
@@ -1239,7 +1237,7 @@ class ListColumnReader(ColumnReader):
         return self[docnum][0]
 
     def __iter__(self):
-        for docnum in xrange(len(self)):
+        for docnum in range(len(self)):
             yield self[docnum]
 
 
@@ -1264,7 +1262,7 @@ class VarBytesListColumn(ListColumn):
             bio = BytesIO(data)
             count = read_varint(bio.read)
             out = []
-            for _ in xrange(count):
+            for _ in range(count):
                 vlen = read_varint(bio.read)
                 v = bio.read(vlen)
                 out.append(v)
@@ -1307,11 +1305,11 @@ class FixedBytesListColumn(ListColumn):
             v = self._child[docnum]
             if not v:
                 return []
-            ls = [v[i:i + fixedlen] for i in xrange(0, len(v), fixedlen)]
+            ls = [v[i : i + fixedlen] for i in range(0, len(v), fixedlen)]
             return ls
 
 
-#class RefListColumn(Column):
+# class RefListColumn(Column):
 #    def __init__(self, fixedlen=0):
 #        """
 #        :param fixedlen: an optional fixed length for the values. If you
@@ -1348,7 +1346,7 @@ class FixedBytesListColumn(ListColumn):
 #
 #        def fill(self, docnum):
 #            if docnum > self._count:
-#                self._lengths.extend(0 for _ in xrange(docnum - self._count))
+#                self._lengths.extend(0 for _ in range(docnum - self._count))
 #
 #        def add(self, docnum, ls):
 #            uniques = self._uniques

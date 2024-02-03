@@ -48,6 +48,7 @@ _CURRENT_TOC_VERSION = -111
 
 # Exceptions
 
+
 class LockError(Exception):
     pass
 
@@ -76,11 +77,11 @@ class OutOfDateError(IndexError):
 
 
 class EmptyIndexError(IndexError):
-    """Raised when you try to work with an index that has no indexed terms.
-    """
+    """Raised when you try to work with an index that has no indexed terms."""
 
 
 # Convenience functions
+
 
 def create_in(dirname, schema, indexname=None):
     """Convenience function to create an index in a directory. Takes care of
@@ -176,6 +177,7 @@ def version_in(dirname, indexname=None):
     """
 
     from whoosh.filedb.filestore import FileStorage
+
     storage = FileStorage(dirname)
     return version(storage, indexname=indexname)
 
@@ -214,9 +216,9 @@ def version(storage, indexname=None):
 
 # Index base class
 
+
 class Index(object):
-    """Represents an indexed collection of documents.
-    """
+    """Represents an indexed collection of documents."""
 
     def close(self):
         """Closes any open resources held by the Index object itself. This may
@@ -284,8 +286,7 @@ class Index(object):
         raise NotImplementedError
 
     def optimize(self):
-        """Optimizes this index, if necessary.
-        """
+        """Optimizes this index, if necessary."""
         pass
 
     def doc_count_all(self):
@@ -300,8 +301,7 @@ class Index(object):
             r.close()
 
     def doc_count(self):
-        """Returns the total number of UNDELETED documents in this index.
-        """
+        """Returns the total number of UNDELETED documents in this index."""
 
         r = self.reader()
         try:
@@ -317,11 +317,11 @@ class Index(object):
         """
 
         from whoosh.searching import Searcher
+
         return Searcher(self.reader(), fromindex=self, **kwargs)
 
     def field_length(self, fieldname):
-        """Returns the total length of the field across all documents.
-        """
+        """Returns the total length of the field across all documents."""
 
         r = self.reader()
         try:
@@ -330,8 +330,7 @@ class Index(object):
             r.close()
 
     def max_field_length(self, fieldname):
-        """Returns the maximum length of the field across all documents.
-        """
+        """Returns the maximum length of the field across all documents."""
 
         r = self.reader()
         try:
@@ -370,6 +369,7 @@ class Index(object):
 
 
 # Codec-based index implementation
+
 
 def clean_files(storage, indexname, gen, segments):
     # Attempts to remove unused index files (called when a new generation
@@ -428,8 +428,7 @@ class FileIndex(Index):
         return cls(storage, schema, indexname)
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__,
-                               self.storage, self.indexname)
+        return "%s(%r, %r)" % (self.__class__.__name__, self.storage, self.indexname)
 
     def close(self):
         pass
@@ -460,9 +459,11 @@ class FileIndex(Index):
     def writer(self, procs=1, **kwargs):
         if procs > 1:
             from whoosh.multiproc import MpWriter
+
             return MpWriter(self, procs=procs, **kwargs)
         else:
             from whoosh.writing import SegmentWriter
+
             return SegmentWriter(self, **kwargs)
 
     def lock(self, name):
@@ -501,7 +502,9 @@ class FileIndex(Index):
 
         if reuse:
             # Merge segments with reuse segments
-            segments.extend([segment for segment in reuse.segments() if segment not in segments])
+            segments.extend(
+                [segment for segment in reuse.segments() if segment not in segments]
+            )
 
         reusable = {}
         try:
@@ -513,7 +516,9 @@ class FileIndex(Index):
             if reuse:
                 # Put all atomic readers in a dictionary
                 readers = [r for r, _ in reuse.leaf_readers()]
-                reusable = dict((r.segment(), r) for r in readers if r.segment() is not None)
+                reusable = dict(
+                    (r.segment(), r) for r in readers if r.segment() is not None
+                )
 
             # Make a function to open readers, which reuses reusable readers.
             # It removes any readers it reuses from the "reusable" dictionary,
@@ -524,8 +529,9 @@ class FileIndex(Index):
                     del reusable[segment]
                     return r
                 else:
-                    return SegmentReader(storage, schema, segment,
-                                         generation=generation)
+                    return SegmentReader(
+                        storage, schema, segment, generation=generation
+                    )
 
             if len(segments) == 1:
                 # This index has one segment, so return a SegmentReader object
@@ -548,8 +554,13 @@ class FileIndex(Index):
             # Read the information from the TOC file
             try:
                 info = self._read_toc()
-                return self._reader(self.storage, info.schema, info.segments,
-                                    info.generation, reuse=reuse)
+                return self._reader(
+                    self.storage,
+                    info.schema,
+                    info.segments,
+                    info.generation,
+                    reuse=reuse,
+                )
             except IOError:
                 # Presume that we got a "file not found error" because a writer
                 # deleted one of the files just as we were trying to open it,
@@ -564,13 +575,20 @@ class FileIndex(Index):
 
 # TOC class
 
+
 class TOC(object):
     """Object representing the state of the index after a commit. Essentially
     a container for the index's schema and the list of segment objects.
     """
 
-    def __init__(self, schema, segments, generation,
-                 version=_CURRENT_TOC_VERSION, release=__version__):
+    def __init__(
+        self,
+        schema,
+        segments,
+        generation,
+        version=_CURRENT_TOC_VERSION,
+        release=__version__,
+    ):
         self.schema = schema
         self.segments = segments
         self.generation = generation
@@ -619,8 +637,9 @@ class TOC(object):
         if gen is None:
             gen = cls._latest_generation(storage, indexname)
             if gen < 0:
-                raise EmptyIndexError("Index %r does not exist in %r"
-                                      % (indexname, storage))
+                raise EmptyIndexError(
+                    "Index %r does not exist in %r" % (indexname, storage)
+                )
 
         # Read the content of this index from the .toc file.
         tocfilename = cls._filename(indexname, gen)
@@ -629,9 +648,10 @@ class TOC(object):
         def check_size(name, target):
             sz = stream.read_varint()
             if sz != target:
-                raise IndexError("Index was created on different architecture:"
-                                 " saved %s = %s, this computer = %s"
-                                 % (name, sz, target))
+                raise IndexError(
+                    "Index was created on different architecture:"
+                    " saved %s = %s, this computer = %s" % (name, sz, target)
+                )
 
         check_size("int", _INT_SIZE)
         check_size("long", _LONG_SIZE)
@@ -641,16 +661,14 @@ class TOC(object):
             raise IndexError("Number misread: byte order problem")
 
         version = stream.read_int()
-        release = (stream.read_varint(), stream.read_varint(),
-                   stream.read_varint())
+        release = (stream.read_varint(), stream.read_varint(), stream.read_varint())
 
         if version != _CURRENT_TOC_VERSION:
             if version in toc_loaders:
                 loader = toc_loaders[version]
                 schema, segments = loader(stream, gen, schema, version)
             else:
-                raise IndexVersionError("Can't read format %s" % version,
-                                        version)
+                raise IndexVersionError("Can't read format %s" % version, version)
         else:
             # If the user supplied a schema object with the constructor, don't
             # load the pickled schema from the saved index.
@@ -676,7 +694,7 @@ class TOC(object):
 
         # Use a temporary file for atomic write.
         tocfilename = self._filename(indexname, self.generation)
-        tempfilename = '%s.%s' % (tocfilename, time())
+        tempfilename = "%s.%s" % (tocfilename, time())
         stream = storage.create_file(tempfilename)
 
         stream.write_varint(_INT_SIZE)

@@ -27,27 +27,27 @@
 
 """
 This module contains "collector" objects. Collectors provide a way to gather
-"raw" results from a :class:`whoosh.matching.Matcher` object, implement
+"raw" results from a :class:` whoosh.matching.Matcher` object, implement
 sorting, filtering, collation, etc., and produce a
-:class:`whoosh.searching.Results` object.
+:class:` whoosh.searching.Results` object.
 
 The basic collectors are:
 
 TopCollector
     Returns the top N matching results sorted by score, using block-quality
     optimizations to skip blocks of documents that can't contribute to the top
-    N. The :meth:`whoosh.searching.Searcher.search` method uses this type of
+    N. The :meth:` whoosh.searching.Searcher.search` method uses this type of
     collector by default or when you specify a ``limit``.
 
 UnlimitedCollector
     Returns all matching results sorted by score. The
-    :meth:`whoosh.searching.Searcher.search` method uses this type of collector
+    :meth:` whoosh.searching.Searcher.search` method uses this type of collector
     when you specify ``limit=None`` or you specify a limit equal to or greater
     than the number of documents in the searcher.
 
 SortingCollector
-    Returns all matching results sorted by a :class:`whoosh.sorting.Facet`
-    object. The :meth:`whoosh.searching.Searcher.search` method uses this type
+    Returns all matching results sorted by a :class:` whoosh.sorting.Facet`
+    object. The :meth:` whoosh.searching.Searcher.search` method uses this type
     of collector when you use the ``sortedby`` parameter.
 
 Here's an example of a simple collector that instead of remembering the matched
@@ -68,7 +68,7 @@ documents just counts up the number of matches::
     print(c.count)
 
 There are also several wrapping collectors that extend or modify the
-functionality of other collectors. The meth:`whoosh.searching.Searcher.search`
+functionality of other collectors. The meth:` whoosh.searching.Searcher.search`
 method uses many of these when you specify various parameters.
 
 NOTE: collectors are not designed to be reentrant or thread-safe. It is
@@ -83,12 +83,13 @@ from collections import defaultdict
 from heapq import heapify, heappush, heapreplace
 
 from whoosh import sorting
-from whoosh.compat import abstractmethod, iteritems, itervalues, xrange
+from whoosh.compat import abstractmethod, iteritems, itervalues, range
 from whoosh.searching import Results, TimeLimit
 from whoosh.util import now
 
 
 # Functions
+
 
 def ilen(iterator):
     total = 0
@@ -99,9 +100,9 @@ def ilen(iterator):
 
 # Base class
 
+
 class Collector(object):
-    """Base class for collectors.
-    """
+    """Base class for collectors."""
 
     def prepare(self, top_searcher, q, context):
         """This method is called before a search.
@@ -121,10 +122,10 @@ class Collector(object):
             to use faster methods that don't necessarily keep the matcher
             updated, such as ``matcher.all_ids()``.
 
-        :param top_searcher: the top-level :class:`whoosh.searching.Searcher`
+        :param top_searcher: the top-level :class:` whoosh.searching.Searcher`
             object.
-        :param q: the :class:`whoosh.query.Query` object being searched for.
-        :param context: a :class:`whoosh.searching.SearchContext` object
+        :param q: the :class:` whoosh.query.Query` object being searched for.
+        :param context: a :class:` whoosh.searching.SearchContext` object
             containing information about the search.
         """
 
@@ -162,7 +163,7 @@ class Collector(object):
             :meth:`Collector.collect` to get the top-level document number
             for use in results.
         self.matcher
-            A :class:`whoosh.matching.Matcher` object representing the matches
+            A :class:` whoosh.matching.Matcher` object representing the matches
             for the query in the current sub-searcher.
         """
 
@@ -259,7 +260,7 @@ class Collector(object):
         """
 
         items = self.items
-        for i in xrange(len(items)):
+        for i in range(len(items)):
             if items[i][1] == global_docnum:
                 items.pop(i)
                 return
@@ -306,7 +307,7 @@ class Collector(object):
 
     @abstractmethod
     def results(self):
-        """Returns a :class:`~whoosh.searching.Results` object containing the
+        """Returns a :class:`~ whoosh.searching.Results` object containing the
         results of the search. Subclasses must implement this method
         """
 
@@ -315,9 +316,9 @@ class Collector(object):
 
 # Scored collectors
 
+
 class ScoredCollector(Collector):
-    """Base class for collectors that sort the results based on document score.
-    """
+    """Base class for collectors that sort the results based on document score."""
 
     def __init__(self, replace=10):
         """
@@ -421,8 +422,7 @@ class ScoredCollector(Collector):
 
 
 class TopCollector(ScoredCollector):
-    """A collector that only returns the top "N" scored results.
-    """
+    """A collector that only returns the top "N" scored results."""
 
     def __init__(self, limit=10, usequality=True, **kwargs):
         """
@@ -437,9 +437,11 @@ class TopCollector(ScoredCollector):
         self.total = 0
 
     def _use_block_quality(self):
-        return (self.usequality
-                and not self.top_searcher.weighting.use_final
-                and self.matcher.supports_block_quality())
+        return (
+            self.usequality
+            and not self.top_searcher.weighting.use_final
+            and self.matcher.supports_block_quality()
+        )
 
     def computes_count(self):
         return not self._use_block_quality()
@@ -487,7 +489,7 @@ class TopCollector(ScoredCollector):
 
         # Remove the document if it's on the list (it may not be since
         # TopCollector forgets documents that don't make the top N list)
-        for i in xrange(len(items)):
+        for i in range(len(items)):
             if items[i][1] == negated:
                 items.pop(i)
                 # Restore the heap invariant
@@ -508,8 +510,7 @@ class TopCollector(ScoredCollector):
 
 
 class UnlimitedCollector(ScoredCollector):
-    """A collector that returns **all** scored results.
-    """
+    """A collector that returns **all** scored results."""
 
     def __init__(self, reverse=False):
         ScoredCollector.__init__(self)
@@ -532,9 +533,10 @@ class UnlimitedCollector(ScoredCollector):
 
 # Sorting collector
 
+
 class SortingCollector(Collector):
     """A collector that returns results sorted by a given
-    :class:`whoosh.sorting.Facet` object. See :doc:`/facets` for more
+    :class:` whoosh.sorting.Facet` object. See :doc:`/facets` for more
     information.
     """
 
@@ -578,7 +580,7 @@ class SortingCollector(Collector):
         items = self.items
         items.sort(reverse=self.reverse)
         if self.limit:
-            items = items[:self.limit]
+            items = items[: self.limit]
         return self._results(items, docset=self.docset)
 
 
@@ -599,9 +601,9 @@ class UnsortedCollector(Collector):
 
 # Wrapping collectors
 
+
 class WrappingCollector(Collector):
-    """Base class for collectors that wrap other collectors.
-    """
+    """Base class for collectors that wrap other collectors."""
 
     def __init__(self, child):
         self.child = child
@@ -653,6 +655,7 @@ class WrappingCollector(Collector):
 
 
 # Allow and disallow collector
+
 
 class FilterCollector(WrappingCollector):
     """A collector that lets you allow and/or restrict certain document numbers
@@ -713,11 +716,10 @@ class FilterCollector(WrappingCollector):
         _restrict = self._restrict
 
         for global_docnum in child.all_ids():
-            if (
-                (_allow and global_docnum not in _allow) or
-                (_restrict and global_docnum in _restrict)
+            if (_allow and global_docnum not in _allow) or (
+                _restrict and global_docnum in _restrict
             ):
-                    continue
+                continue
             yield global_docnum
 
     def count(self):
@@ -736,8 +738,9 @@ class FilterCollector(WrappingCollector):
             filtered_count = self.filtered_count
             for sub_docnum in child.matches():
                 global_docnum = self.offset + sub_docnum
-                if ((_allow is not None and global_docnum not in _allow)
-                    or (_restrict is not None and global_docnum in _restrict)):
+                if (_allow is not None and global_docnum not in _allow) or (
+                    _restrict is not None and global_docnum in _restrict
+                ):
                     filtered_count += 1
                     continue
                 child.collect(sub_docnum)
@@ -758,14 +761,15 @@ class FilterCollector(WrappingCollector):
 
 # Facet grouping collector
 
+
 class FacetCollector(WrappingCollector):
     """A collector that creates groups of documents based on
-    :class:`whoosh.sorting.Facet` objects. See :doc:`/facets` for more
+    :class:` whoosh.sorting.Facet` objects. See :doc:`/facets` for more
     information.
 
     This collector is used if you specify a ``groupedby`` parameter in the
-    :meth:`whoosh.searching.Searcher.search` method. You can use the
-    :meth:`whoosh.searching.Results.groups` method to access the facet groups.
+    :meth:` whoosh.searching.Searcher.search` method. You can use the
+    :meth:` whoosh.searching.Results.groups` method to access the facet groups.
 
     If you have a reference to the collector can also use
     ``FacetedCollector.facetmaps`` to access the groups directly::
@@ -779,7 +783,7 @@ class FacetCollector(WrappingCollector):
     def __init__(self, child, groupedby, maptype=None):
         """
         :param groupedby: see :doc:`/facets`.
-        :param maptype: a :class:`whoosh.sorting.FacetMap` type to use for any
+        :param maptype: a :class:` whoosh.sorting.FacetMap` type to use for any
             facets that don't specify their own.
         """
 
@@ -847,6 +851,7 @@ class FacetCollector(WrappingCollector):
 
 # Collapsing collector
 
+
 class CollapseCollector(WrappingCollector):
     """A collector that collapses results based on a facet. That is, it
     eliminates all but the top N results that share the same facet key.
@@ -871,11 +876,11 @@ class CollapseCollector(WrappingCollector):
     def __init__(self, child, keyfacet, limit=1, order=None):
         """
         :param child: the collector to wrap.
-        :param keyfacet: a :class:`whoosh.sorting.Facet` to use for collapsing.
+        :param keyfacet: a :class:` whoosh.sorting.Facet` to use for collapsing.
             All but the top N documents that share a key will be eliminated
             from the results.
         :param limit: the maximum number of documents to keep for each key.
-        :param order: an optional :class:`whoosh.sorting.Facet` to use
+        :param order: an optional :class:` whoosh.sorting.Facet` to use
             to determine the "top" document(s) to keep when collapsing. The
             default (``orderfaceet=None``) uses the results order (e.g. the
             highest score in a scored search).
@@ -909,11 +914,12 @@ class CollapseCollector(WrappingCollector):
 
         # If the keyer or orderer require a valid matcher, tell the child
         # collector we need it
-        needs_current = (context.needs_current
-                     or self.keyer.needs_current
-                     or (self.orderer and self.orderer.needs_current))
-        self.child.prepare(top_searcher, q,
-                           context.set(needs_current=needs_current))
+        needs_current = (
+            context.needs_current
+            or self.keyer.needs_current
+            or (self.orderer and self.orderer.needs_current)
+        )
+        self.child.prepare(top_searcher, q, context.set(needs_current=needs_current))
 
     def set_subsearcher(self, subsearcher, offset):
         WrappingCollector.set_subsearcher(self, subsearcher, offset)
@@ -1003,6 +1009,7 @@ class CollapseCollector(WrappingCollector):
 
 # Time limit collector
 
+
 class TimeLimitCollector(WrappingCollector):
     """A collector that raises a :class:`TimeLimit` exception if the search
     does not complete within a certain number of seconds::
@@ -1041,6 +1048,7 @@ class TimeLimitCollector(WrappingCollector):
 
         if use_alarm:
             import signal
+
             self.use_alarm = use_alarm and hasattr(signal, "SIGALRM")
         else:
             self.use_alarm = False
@@ -1054,6 +1062,7 @@ class TimeLimitCollector(WrappingCollector):
         self.timedout = False
         if self.use_alarm:
             import signal
+
             signal.signal(signal.SIGALRM, self._was_signaled)
 
         # Start a timer thread. If the timer fires, it will call this object's
@@ -1069,6 +1078,7 @@ class TimeLimitCollector(WrappingCollector):
 
         if self.use_alarm:
             import signal
+
             os.kill(os.getpid(), signal.SIGALRM)
 
     def _was_signaled(self, signum, frame):
@@ -1100,12 +1110,13 @@ class TimeLimitCollector(WrappingCollector):
 
 # Matched terms collector
 
+
 class TermsCollector(WrappingCollector):
     """A collector that remembers which terms appeared in which terms appeared
     in each matched document.
 
     This collector is used if you specify ``terms=True`` in the
-    :meth:`whoosh.searching.Searcher.search` method.
+    :meth:` whoosh.searching.Searcher.search` method.
 
     If you have a reference to the collector can also use
     ``TermsCollector.termslist`` to access the term lists directly::

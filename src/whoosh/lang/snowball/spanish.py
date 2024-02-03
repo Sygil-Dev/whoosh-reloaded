@@ -27,50 +27,182 @@ class SpanishStemmer(_StandardStemmer):
     """
 
     __vowels = u("aeiou\xE1\xE9\xED\xF3\xFA\xFC")
-    __step0_suffixes = ("selas", "selos", "sela", "selo", "las",
-                        "les", "los", "nos", "me", "se", "la", "le",
-                        "lo")
-    __step1_suffixes = ('amientos', 'imientos', 'amiento', 'imiento',
-                        'aciones', 'uciones', 'adoras', 'adores',
-                        'ancias', u('log\xEDas'), 'encias', 'amente',
-                        'idades', 'anzas', 'ismos', 'ables', 'ibles',
-                        'istas', 'adora', u('aci\xF3n'), 'antes',
-                        'ancia', u('log\xEDa'), u('uci\xf3n'), 'encia',
-                        'mente', 'anza', 'icos', 'icas', 'ismo',
-                        'able', 'ible', 'ista', 'osos', 'osas',
-                        'ador', 'ante', 'idad', 'ivas', 'ivos',
-                        'ico',
-                        'ica', 'oso', 'osa', 'iva', 'ivo')
-    __step2a_suffixes = ('yeron', 'yendo', 'yamos', 'yais', 'yan',
-                         'yen', 'yas', 'yes', 'ya', 'ye', 'yo',
-                         u('y\xF3'))
-    __step2b_suffixes = (u('ar\xEDamos'), u('er\xEDamos'), u('ir\xEDamos'),
-                         u('i\xE9ramos'), u('i\xE9semos'), u('ar\xEDais'),
-                         'aremos', u('er\xEDais'), 'eremos',
-                         u('ir\xEDais'), 'iremos', 'ierais', 'ieseis',
-                         'asteis', 'isteis', u('\xE1bamos'),
-                         u('\xE1ramos'), u('\xE1semos'), u('ar\xEDan'),
-                         u('ar\xEDas'), u('ar\xE9is'), u('er\xEDan'),
-                         u('er\xEDas'), u('er\xE9is'), u('ir\xEDan'),
-                         u('ir\xEDas'), u('ir\xE9is'),
-                         'ieran', 'iesen', 'ieron', 'iendo', 'ieras',
-                         'ieses', 'abais', 'arais', 'aseis',
-                         u('\xE9amos'), u('ar\xE1n'), u('ar\xE1s'),
-                         u('ar\xEDa'), u('er\xE1n'), u('er\xE1s'),
-                         u('er\xEDa'), u('ir\xE1n'), u('ir\xE1s'),
-                         u('ir\xEDa'), 'iera', 'iese', 'aste', 'iste',
-                         'aban', 'aran', 'asen', 'aron', 'ando',
-                         'abas', 'adas', 'idas', 'aras', 'ases',
-                         u('\xEDais'), 'ados', 'idos', 'amos', 'imos',
-                         'emos', u('ar\xE1'), u('ar\xE9'), u('er\xE1'),
-                         u('er\xE9'), u('ir\xE1'), u('ir\xE9'), 'aba',
-                         'ada', 'ida', 'ara', 'ase', u('\xEDan'),
-                         'ado', 'ido', u('\xEDas'), u('\xE1is'),
-                         u('\xE9is'), u('\xEDa'), 'ad', 'ed', 'id',
-                         'an', u('i\xF3'), 'ar', 'er', 'ir', 'as',
-                         u('\xEDs'), 'en', 'es')
-    __step3_suffixes = ("os", "a", "e", "o", u("\xE1"),
-                        u("\xE9"), u("\xED"), u("\xF3"))
+    __step0_suffixes = (
+        "selas",
+        "selos",
+        "sela",
+        "selo",
+        "las",
+        "les",
+        "los",
+        "nos",
+        "me",
+        "se",
+        "la",
+        "le",
+        "lo",
+    )
+    __step1_suffixes = (
+        "amientos",
+        "imientos",
+        "amiento",
+        "imiento",
+        "aciones",
+        "uciones",
+        "adoras",
+        "adores",
+        "ancias",
+        u("log\xEDas"),
+        "encias",
+        "amente",
+        "idades",
+        "anzas",
+        "ismos",
+        "ables",
+        "ibles",
+        "istas",
+        "adora",
+        u("aci\xF3n"),
+        "antes",
+        "ancia",
+        u("log\xEDa"),
+        u("uci\xf3n"),
+        "encia",
+        "mente",
+        "anza",
+        "icos",
+        "icas",
+        "ismo",
+        "able",
+        "ible",
+        "ista",
+        "osos",
+        "osas",
+        "ador",
+        "ante",
+        "idad",
+        "ivas",
+        "ivos",
+        "ico",
+        "ica",
+        "oso",
+        "osa",
+        "iva",
+        "ivo",
+    )
+    __step2a_suffixes = (
+        "yeron",
+        "yendo",
+        "yamos",
+        "yais",
+        "yan",
+        "yen",
+        "yas",
+        "yes",
+        "ya",
+        "ye",
+        "yo",
+        u("y\xF3"),
+    )
+    __step2b_suffixes = (
+        u("ar\xEDamos"),
+        u("er\xEDamos"),
+        u("ir\xEDamos"),
+        u("i\xE9ramos"),
+        u("i\xE9semos"),
+        u("ar\xEDais"),
+        "aremos",
+        u("er\xEDais"),
+        "eremos",
+        u("ir\xEDais"),
+        "iremos",
+        "ierais",
+        "ieseis",
+        "asteis",
+        "isteis",
+        u("\xE1bamos"),
+        u("\xE1ramos"),
+        u("\xE1semos"),
+        u("ar\xEDan"),
+        u("ar\xEDas"),
+        u("ar\xE9is"),
+        u("er\xEDan"),
+        u("er\xEDas"),
+        u("er\xE9is"),
+        u("ir\xEDan"),
+        u("ir\xEDas"),
+        u("ir\xE9is"),
+        "ieran",
+        "iesen",
+        "ieron",
+        "iendo",
+        "ieras",
+        "ieses",
+        "abais",
+        "arais",
+        "aseis",
+        u("\xE9amos"),
+        u("ar\xE1n"),
+        u("ar\xE1s"),
+        u("ar\xEDa"),
+        u("er\xE1n"),
+        u("er\xE1s"),
+        u("er\xEDa"),
+        u("ir\xE1n"),
+        u("ir\xE1s"),
+        u("ir\xEDa"),
+        "iera",
+        "iese",
+        "aste",
+        "iste",
+        "aban",
+        "aran",
+        "asen",
+        "aron",
+        "ando",
+        "abas",
+        "adas",
+        "idas",
+        "aras",
+        "ases",
+        u("\xEDais"),
+        "ados",
+        "idos",
+        "amos",
+        "imos",
+        "emos",
+        u("ar\xE1"),
+        u("ar\xE9"),
+        u("er\xE1"),
+        u("er\xE9"),
+        u("ir\xE1"),
+        u("ir\xE9"),
+        "aba",
+        "ada",
+        "ida",
+        "ara",
+        "ase",
+        u("\xEDan"),
+        "ado",
+        "ido",
+        u("\xEDas"),
+        u("\xE1is"),
+        u("\xE9is"),
+        u("\xEDa"),
+        "ad",
+        "ed",
+        "id",
+        "an",
+        u("i\xF3"),
+        "ar",
+        "er",
+        "ir",
+        "as",
+        u("\xEDs"),
+        "en",
+        "es",
+    )
+    __step3_suffixes = ("os", "a", "e", "o", u("\xE1"), u("\xE9"), u("\xED"), u("\xF3"))
 
     def stem(self, word):
         """
@@ -93,36 +225,55 @@ class SpanishStemmer(_StandardStemmer):
         for suffix in self.__step0_suffixes:
             if word.endswith(suffix):
                 if rv.endswith(suffix):
-                    if rv[:-len(suffix)].endswith((u("i\xE9ndo"),
-                                                   u("\xE1ndo"),
-                                                   u("\xE1r"), u("\xE9r"),
-                                                   u("\xEDr"))):
-                        word = (word[:-len(suffix)].replace(u("\xE1"), "a")
-                                                   .replace(u("\xE9"), "e")
-                                                   .replace(u("\xED"), "i"))
-                        r1 = (r1[:-len(suffix)].replace(u("\xE1"), "a")
-                                               .replace(u("\xE9"), "e")
-                                               .replace(u("\xED"), "i"))
-                        r2 = (r2[:-len(suffix)].replace(u("\xE1"), "a")
-                                               .replace(u("\xE9"), "e")
-                                               .replace(u("\xED"), "i"))
-                        rv = (rv[:-len(suffix)].replace(u("\xE1"), "a")
-                                               .replace(u("\xE9"), "e")
-                                               .replace(u("\xED"), "i"))
+                    if rv[: -len(suffix)].endswith(
+                        (
+                            u("i\xE9ndo"),
+                            u("\xE1ndo"),
+                            u("\xE1r"),
+                            u("\xE9r"),
+                            u("\xEDr"),
+                        )
+                    ):
+                        word = (
+                            word[: -len(suffix)]
+                            .replace(u("\xE1"), "a")
+                            .replace(u("\xE9"), "e")
+                            .replace(u("\xED"), "i")
+                        )
+                        r1 = (
+                            r1[: -len(suffix)]
+                            .replace(u("\xE1"), "a")
+                            .replace(u("\xE9"), "e")
+                            .replace(u("\xED"), "i")
+                        )
+                        r2 = (
+                            r2[: -len(suffix)]
+                            .replace(u("\xE1"), "a")
+                            .replace(u("\xE9"), "e")
+                            .replace(u("\xED"), "i")
+                        )
+                        rv = (
+                            rv[: -len(suffix)]
+                            .replace(u("\xE1"), "a")
+                            .replace(u("\xE9"), "e")
+                            .replace(u("\xED"), "i")
+                        )
 
-                    elif rv[:-len(suffix)].endswith(("ando", "iendo",
-                                                     "ar", "er", "ir")):
-                        word = word[:-len(suffix)]
-                        r1 = r1[:-len(suffix)]
-                        r2 = r2[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                    elif rv[: -len(suffix)].endswith(
+                        ("ando", "iendo", "ar", "er", "ir")
+                    ):
+                        word = word[: -len(suffix)]
+                        r1 = r1[: -len(suffix)]
+                        r2 = r2[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
 
-                    elif (rv[:-len(suffix)].endswith("yendo") and
-                          word[:-len(suffix)].endswith("uyendo")):
-                        word = word[:-len(suffix)]
-                        r1 = r1[:-len(suffix)]
-                        r2 = r2[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                    elif rv[: -len(suffix)].endswith("yendo") and word[
+                        : -len(suffix)
+                    ].endswith("uyendo"):
+                        word = word[: -len(suffix)]
+                        r1 = r1[: -len(suffix)]
+                        r2 = r2[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
                 break
 
         # STEP 1: Standard suffix removal
@@ -149,12 +300,21 @@ class SpanishStemmer(_StandardStemmer):
 
                 elif r2.endswith(suffix):
                     step1_success = True
-                    if suffix in ("adora", "ador", u("aci\xF3n"), "adoras",
-                                  "adores", "aciones", "ante", "antes",
-                                  "ancia", "ancias"):
-                        word = word[:-len(suffix)]
-                        r2 = r2[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                    if suffix in (
+                        "adora",
+                        "ador",
+                        u("aci\xF3n"),
+                        "adoras",
+                        "adores",
+                        "aciones",
+                        "ante",
+                        "antes",
+                        "ancia",
+                        "ancias",
+                    ):
+                        word = word[: -len(suffix)]
+                        r2 = r2[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
 
                         if r2.endswith("ic"):
                             word = word[:-2]
@@ -182,42 +342,41 @@ class SpanishStemmer(_StandardStemmer):
                             rv = rv[:-4]
 
                     elif suffix in ("idad", "idades"):
-                        word = word[:-len(suffix)]
-                        r2 = r2[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                        word = word[: -len(suffix)]
+                        r2 = r2[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
 
                         for pre_suff in ("abil", "ic", "iv"):
                             if r2.endswith(pre_suff):
-                                word = word[:-len(pre_suff)]
-                                rv = rv[:-len(pre_suff)]
+                                word = word[: -len(pre_suff)]
+                                rv = rv[: -len(pre_suff)]
 
                     elif suffix in ("ivo", "iva", "ivos", "ivas"):
-                        word = word[:-len(suffix)]
-                        r2 = r2[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                        word = word[: -len(suffix)]
+                        r2 = r2[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
                         if r2.endswith("at"):
                             word = word[:-2]
                             rv = rv[:-2]
                     else:
-                        word = word[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                        word = word[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
                 break
 
         # STEP 2a: Verb suffixes beginning 'y'
         if not step1_success:
             for suffix in self.__step2a_suffixes:
-                if (rv.endswith(suffix) and
-                    word[-len(suffix) - 1:-len(suffix)] == "u"):
-                    word = word[:-len(suffix)]
-                    rv = rv[:-len(suffix)]
+                if rv.endswith(suffix) and word[-len(suffix) - 1 : -len(suffix)] == "u":
+                    word = word[: -len(suffix)]
+                    rv = rv[: -len(suffix)]
                     break
 
-        # STEP 2b: Other verb suffixes
+            # STEP 2b: Other verb suffixes
             for suffix in self.__step2b_suffixes:
                 if rv.endswith(suffix):
                     if suffix in ("en", "es", u("\xE9is"), "emos"):
-                        word = word[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                        word = word[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
 
                         if word.endswith("gu"):
                             word = word[:-1]
@@ -225,24 +384,33 @@ class SpanishStemmer(_StandardStemmer):
                         if rv.endswith("gu"):
                             rv = rv[:-1]
                     else:
-                        word = word[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                        word = word[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
                     break
 
         # STEP 3: Residual suffix
         for suffix in self.__step3_suffixes:
             if rv.endswith(suffix):
                 if suffix in ("e", u("\xE9")):
-                    word = word[:-len(suffix)]
-                    rv = rv[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    rv = rv[: -len(suffix)]
 
-                    if len(word) >= 2 and word[-2:] == "gu" and len(rv) > 0 and rv[-1] == "u":
+                    if (
+                        len(word) >= 2
+                        and word[-2:] == "gu"
+                        and len(rv) > 0
+                        and rv[-1] == "u"
+                    ):
                         word = word[:-1]
                 else:
-                    word = word[:-len(suffix)]
+                    word = word[: -len(suffix)]
                 break
 
-        word = (word.replace(u("\xE1"), "a").replace(u("\xE9"), "e")
-                    .replace(u("\xED"), "i").replace(u("\xF3"), "o")
-                    .replace(u("\xFA"), "u"))
+        word = (
+            word.replace(u("\xE1"), "a")
+            .replace(u("\xE9"), "e")
+            .replace(u("\xED"), "i")
+            .replace(u("\xF3"), "o")
+            .replace(u("\xFA"), "u")
+        )
         return word

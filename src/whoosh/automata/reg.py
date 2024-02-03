@@ -29,15 +29,13 @@ from whoosh.automata.fsa import ANY, EPSILON, NFA
 
 
 # Operator precedence
-CHOICE = ("|", )
+CHOICE = ("|",)
 ops = ()
 
 
 def parse(pattern):
     stack = []
     ops = []
-
-
 
 
 class RegexBuilder(object):
@@ -127,8 +125,3 @@ class RegexBuilder(object):
 
     def question(self, n):
         return self.choice(n, self.epsilon())
-
-
-
-
-

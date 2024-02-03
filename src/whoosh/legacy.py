@@ -46,17 +46,21 @@ def load_110_toc(stream, gen, schema, version):
     else:
         # Remap the old classes and functions to their moved versions as we
         # unpickle the schema
-        scuts = {"wf": "whoosh.fields",
-                 "wsn": "whoosh.support.numeric",
-                 "wcw2": "whoosh.codec.whoosh2"}
-        objmap = {"%(wf)s.NUMERIC": "%(wcw2)s.OLD_NUMERIC",
-                  "%(wf)s.DATETIME": "%(wcw2)s.OLD_DATETIME",
-                  "%(wsn)s.int_to_text": "%(wcw2)s.int_to_text",
-                  "%(wsn)s.text_to_int": "%(wcw2)s.text_to_int",
-                  "%(wsn)s.long_to_text": "%(wcw2)s.long_to_text",
-                  "%(wsn)s.text_to_long": "%(wcw2)s.text_to_long",
-                  "%(wsn)s.float_to_text": "%(wcw2)s.float_to_text",
-                  "%(wsn)s.text_to_float": "%(wcw2)s.text_to_float", }
+        scuts = {
+            "wf": "whoosh.fields",
+            "wsn": "whoosh.support.numeric",
+            "wcw2": "whoosh.codec.whoosh2",
+        }
+        objmap = {
+            "%(wf)s.NUMERIC": "%(wcw2)s.OLD_NUMERIC",
+            "%(wf)s.DATETIME": "%(wcw2)s.OLD_DATETIME",
+            "%(wsn)s.int_to_text": "%(wcw2)s.int_to_text",
+            "%(wsn)s.text_to_int": "%(wcw2)s.text_to_int",
+            "%(wsn)s.long_to_text": "%(wcw2)s.long_to_text",
+            "%(wsn)s.text_to_long": "%(wcw2)s.text_to_long",
+            "%(wsn)s.float_to_text": "%(wcw2)s.float_to_text",
+            "%(wsn)s.text_to_float": "%(wcw2)s.text_to_float",
+        }
         ru = RenamingUnpickler(stream, objmap, shortcuts=scuts)
         schema = ru.load()
     # Read the generation number

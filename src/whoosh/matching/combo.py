@@ -28,7 +28,7 @@
 from __future__ import division
 from array import array
 
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.matching import mcore
 
 
@@ -41,8 +41,10 @@ class CombinationMatcher(mcore.Matcher):
         return all(m.supports_block_quality() for m in self._submatchers)
 
     def max_quality(self):
-        return max(m.max_quality() for m in self._submatchers
-                   if m.is_active()) * self._boost
+        return (
+            max(m.max_quality() for m in self._submatchers if m.is_active())
+            * self._boost
+        )
 
     def supports(self, astype):
         return all(m.supports(astype) for m in self._submatchers)
@@ -85,7 +87,7 @@ class PreloadedUnionMatcher(CombinationMatcher):
                     docnum = m.id()
                     place = docnum - offset
                     if len(a) <= place:
-                        a.extend(0 for _ in xrange(place - len(a) + 1))
+                        a.extend(0 for _ in range(place - len(a) + 1))
                     a[place] += score
                     m.next()
             self._a = a
@@ -115,7 +117,7 @@ class PreloadedUnionMatcher(CombinationMatcher):
         self._docnum = place + offset
 
     def max_quality(self):
-        return max(self._a[self._docnum - self._offset:])
+        return max(self._a[self._docnum - self._offset :])
 
     def block_quality(self):
         return self.max_quality()
@@ -169,8 +171,7 @@ class ArrayUnionMatcher(CombinationMatcher):
     current document, just an array of scores.
     """
 
-    def __init__(self, submatchers, doccount, boost=1.0, scored=True,
-                 partsize=2048):
+    def __init__(self, submatchers, doccount, boost=1.0, scored=True, partsize=2048):
         CombinationMatcher.__init__(self, submatchers, boost=boost)
         self._scored = scored
         self._doccount = doccount
@@ -179,14 +180,18 @@ class ArrayUnionMatcher(CombinationMatcher):
             partsize = doccount
         self._partsize = partsize
 
-        self._a = array("d", (0 for _ in xrange(self._partsize)))
+        self._a = array("d", (0 for _ in range(self._partsize)))
         self._docnum = self._min_id()
         self._read_part()
 
     def __repr__(self):
-        return ("%s(%r, boost=%f, scored=%r, partsize=%d)"
-                % (self.__class__.__name__, self._submatchers, self._boost,
-                   self._scored, self._partsize))
+        return "%s(%r, boost=%f, scored=%r, partsize=%d)" % (
+            self.__class__.__name__,
+            self._submatchers,
+            self._boost,
+            self._scored,
+            self._partsize,
+        )
 
     def _min_id(self):
         active = [subm for subm in self._submatchers if subm.is_active()]
@@ -203,7 +208,7 @@ class ArrayUnionMatcher(CombinationMatcher):
         a = self._a
 
         # Clear the array
-        for i in xrange(self._partsize):
+        for i in range(self._partsize):
             a[i] = 0
 
         # Add the scores from the submatchers into the array

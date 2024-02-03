@@ -91,17 +91,27 @@ def long_to_datetime(x):
 
 # Ambiguous datetime object
 
+
 class adatetime(object):
     """An "ambiguous" datetime object. This object acts like a
     ``datetime.datetime`` object but can have any of its attributes set to
     None, meaning unspecified.
     """
 
-    units = frozenset(("year", "month", "day", "hour", "minute", "second",
-                       "microsecond"))
+    units = frozenset(
+        ("year", "month", "day", "hour", "minute", "second", "microsecond")
+    )
 
-    def __init__(self, year=None, month=None, day=None, hour=None, minute=None,
-                 second=None, microsecond=None):
+    def __init__(
+        self,
+        year=None,
+        month=None,
+        day=None,
+        hour=None,
+        minute=None,
+        second=None,
+        microsecond=None,
+    ):
         if isinstance(year, datetime):
             dt = year
             self.year, self.month, self.day = dt.year, dt.month, dt.day
@@ -113,8 +123,12 @@ class adatetime(object):
 
             if day is not None and day < 1:
                 raise TimeError("day must be greater than 1")
-            if (year is not None and month is not None and day is not None
-                and day > calendar.monthrange(year, month)[1]):
+            if (
+                year is not None
+                and month is not None
+                and day is not None
+                and day > calendar.monthrange(year, month)[1]
+            ):
                 raise TimeError("day is out of range for month")
 
             if hour is not None and (hour < 0 or hour > 23):
@@ -123,8 +137,7 @@ class adatetime(object):
                 raise TimeError("minute must be in 0..59")
             if second is not None and (second < 0 or second > 59):
                 raise TimeError("second must be in 0..59")
-            if microsecond is not None and (microsecond < 0
-                                            or microsecond > 999999):
+            if microsecond is not None and (microsecond < 0 or microsecond > 999999):
                 raise TimeError("microsecond must be in 0..999999")
 
             self.year, self.month, self.day = year, month, day
@@ -137,8 +150,7 @@ class adatetime(object):
                 return fix(self) == other
             else:
                 return False
-        return all(getattr(self, unit) == getattr(other, unit)
-                   for unit in self.units)
+        return all(getattr(self, unit) == getattr(other, unit) for unit in self.units)
 
     def __repr__(self):
         return "%s%r" % (self.__class__.__name__, self.tuple())
@@ -148,16 +160,29 @@ class adatetime(object):
         ``(year, month, day, hour, minute, second, microsecond)``.
         """
 
-        return (self.year, self.month, self.day, self.hour, self.minute,
-                self.second, self.microsecond)
+        return (
+            self.year,
+            self.month,
+            self.day,
+            self.hour,
+            self.minute,
+            self.second,
+            self.microsecond,
+        )
 
     def date(self):
         return date(self.year, self.month, self.day)
 
     def copy(self):
-        return adatetime(year=self.year, month=self.month, day=self.day,
-                     hour=self.hour, minute=self.minute, second=self.second,
-                     microsecond=self.microsecond)
+        return adatetime(
+            year=self.year,
+            month=self.month,
+            day=self.day,
+            hour=self.hour,
+            minute=self.minute,
+            second=self.second,
+            microsecond=self.microsecond,
+        )
 
     def replace(self, **kwargs):
         """Returns a copy of this object with the attributes given as keyword
@@ -187,8 +212,15 @@ class adatetime(object):
         datetime.datetime(2009, 5, 1, 0, 0, 0, 0)
         """
 
-        y, m, d, h, mn, s, ms = (self.year, self.month, self.day, self.hour,
-                                 self.minute, self.second, self.microsecond)
+        y, m, d, h, mn, s, ms = (
+            self.year,
+            self.month,
+            self.day,
+            self.hour,
+            self.minute,
+            self.second,
+            self.microsecond,
+        )
 
         if y is None:
             raise ValueError("Date has no year")
@@ -218,8 +250,15 @@ class adatetime(object):
         datetime.datetime(2009, 5, 30, 23, 59, 59, 999999)
         """
 
-        y, m, d, h, mn, s, ms = (self.year, self.month, self.day, self.hour,
-                                 self.minute, self.second, self.microsecond)
+        y, m, d, h, mn, s, ms = (
+            self.year,
+            self.month,
+            self.day,
+            self.hour,
+            self.minute,
+            self.second,
+            self.microsecond,
+        )
 
         if y is None:
             raise ValueError("Date has no year")
@@ -261,9 +300,9 @@ class adatetime(object):
 
 # Time span class
 
+
 class timespan(object):
-    """A span of time between two ``datetime`` or ``adatetime`` objects.
-    """
+    """A span of time between two ``datetime`` or ``adatetime`` objects."""
 
     def __init__(self, start, end):
         """
@@ -301,11 +340,11 @@ class timespan(object):
         timespan(datetime(2009, 2, 28, 0, 0, 0, 0), datetime(2009, 10, 31, 23, 59 ,59, 999999)
         """
 
-        #- If year is in start but not end, use basedate.year for end
-        #-- If year is in start but not end, but startdate is > basedate,
+        # - If year is in start but not end, use basedate.year for end
+        # -- If year is in start but not end, but startdate is > basedate,
         #   use "next <monthname>" to get end month/year
-        #- If year is in end but not start, copy year from end to start
-        #- Support "next february", "last april", etc.
+        # - If year is in end but not start, copy year from end to start
+        # - Support "next february", "last april", etc.
 
         start, end = copy.copy(self.start), copy.copy(self.end)
         start_year_was_amb = start.year is None
@@ -383,6 +422,7 @@ class timespan(object):
 
 # Functions for working with datetime/adatetime objects
 
+
 def floor(at):
     if isinstance(at, datetime):
         return at
@@ -429,8 +469,12 @@ def has_no_time(at):
 
     if isinstance(at, datetime):
         return False
-    return (at.hour is None and at.minute is None and at.second is None
-            and at.microsecond is None)
+    return (
+        at.hour is None
+        and at.minute is None
+        and at.second is None
+        and at.microsecond is None
+    )
 
 
 def is_ambiguous(at):
@@ -462,6 +506,12 @@ def fix(at):
 
     if is_ambiguous(at) or isinstance(at, datetime):
         return at
-    return datetime(year=at.year, month=at.month, day=at.day, hour=at.hour,
-                    minute=at.minute, second=at.second,
-                    microsecond=at.microsecond)
+    return datetime(
+        year=at.year,
+        month=at.month,
+        day=at.day,
+        hour=at.hour,
+        minute=at.minute,
+        second=at.second,
+        microsecond=at.microsecond,
+    )

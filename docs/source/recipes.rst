@@ -18,7 +18,7 @@ Analysis
 Eliminate words shorter/longer than N
 -------------------------------------
 
-Use a :class:`~whoosh.analysis.StopFilter` and the ``minsize`` and ``maxsize``
+Use a :class:`~ whoosh.analysis.StopFilter` and the ``minsize`` and ``maxsize``
 keyword arguments. If you just want to filter based on size and not common
 words, set the ``stoplist`` to ``None``::
 
@@ -61,7 +61,7 @@ Find every document
 iTunes-style search-as-you-type
 -------------------------------
 
-Use the :class:`whoosh.analysis.NgramWordAnalyzer` as the analyzer for the
+Use the :class:` whoosh.analysis.NgramWordAnalyzer` as the analyzer for the
 field you want to search as the user types. You can save space in the index by
 turning off positions in the field using ``phrase=False``, since phrase
 searching on N-gram fields usually doesn't make much sense::
@@ -71,7 +71,7 @@ searching on N-gram fields usually doesn't make much sense::
     title_field = fields.TEXT(analyzer=analyzer, phrase=False)
     schema = fields.Schema(title=title_field)
 
-See the documentation for the :class:`~whoosh.analysis.NgramWordAnalyzer` class
+See the documentation for the :class:`~ whoosh.analysis.NgramWordAnalyzer` class
 for information on the available options.
 
 

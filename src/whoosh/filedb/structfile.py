@@ -49,11 +49,11 @@ from whoosh.util.varints import signed_varint, decode_signed_varint
 _SIZEMAP = dict((typecode, calcsize(typecode)) for typecode in "bBiIhHqQf")
 _ORDERMAP = {"little": "<", "big": ">"}
 
-_types = (("sbyte", "b"), ("ushort", "H"), ("int", "i"),
-          ("long", "q"), ("float", "f"))
+_types = (("sbyte", "b"), ("ushort", "H"), ("int", "i"), ("long", "q"), ("float", "f"))
 
 
 # Main function
+
 
 class StructFile(object):
     """Returns a "structured file" object that wraps the given file object and
@@ -116,8 +116,7 @@ class StructFile(object):
             self.file.flush()
 
     def close(self):
-        """Closes the wrapped file.
-        """
+        """Closes the wrapped file."""
 
         if self.is_closed:
             raise Exception("This file is already closed")
@@ -148,8 +147,7 @@ class StructFile(object):
         self.write(pack_int(len(s)) + s)
 
     def read_string(self):
-        """Reads a string from the wrapped file.
-        """
+        """Reads a string from the wrapped file."""
         return self.read(self.read_varint())
 
     def read_string2(self):
@@ -175,13 +173,11 @@ class StructFile(object):
         self.seek(l, 1)
 
     def write_varint(self, i):
-        """Writes a variable-length unsigned integer to the wrapped file.
-        """
+        """Writes a variable-length unsigned integer to the wrapped file."""
         self.write(varint(i))
 
     def write_svarint(self, i):
-        """Writes a variable-length signed integer to the wrapped file.
-        """
+        """Writes a variable-length signed integer to the wrapped file."""
         self.write(signed_varint(i))
 
     def read_varint(self):
@@ -235,13 +231,11 @@ class StructFile(object):
         return ord(self.read(1))
 
     def write_pickle(self, obj, protocol=-1):
-        """Writes a pickled representation of obj to the wrapped file.
-        """
+        """Writes a pickled representation of obj to the wrapped file."""
         dump_pickle(obj, self.file, protocol)
 
     def read_pickle(self):
-        """Reads a pickled object from the wrapped file.
-        """
+        """Reads a pickled object from the wrapped file."""
         return load_pickle(self.file)
 
     def write_sbyte(self, n):
@@ -365,7 +359,7 @@ class BufferFile(StructFile):
         return BufferFile(self.get(position, length), name=name)
 
     def get(self, position, length):
-        return bytes_type(self._buf[position:position + length])
+        return bytes_type(self._buf[position : position + length])
 
     def get_array(self, position, typecode, length):
         a = array(typecode)
@@ -399,4 +393,4 @@ class ChecksumFile(StructFile):
         self.file.write(b)
 
     def checksum(self):
-        return self._check & 0xffffffff
+        return self._check & 0xFFFFFFFF

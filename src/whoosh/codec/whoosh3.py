@@ -35,7 +35,7 @@ from collections import defaultdict
 
 from whoosh import columns, formats
 from whoosh.compat import b, bytes_type, string_type, integer_types
-from whoosh.compat import dumps, loads, iteritems, xrange
+from whoosh.compat import dumps, loads, iteritems, range
 from whoosh.codec import base
 from whoosh.filedb import compound, filetables
 from whoosh.matching import ListMatcher, ReadTooFar, LeafMatcher
@@ -92,21 +92,31 @@ class W3Codec(base.Codec):
     # Postings
 
     def postings_writer(self, dbfile, byteids=False):
-        return W3PostingsWriter(dbfile, blocklimit=self._blocklimit,
-                                byteids=byteids, compression=self._compression,
-                                inlinelimit=self._inlinelimit)
+        return W3PostingsWriter(
+            dbfile,
+            blocklimit=self._blocklimit,
+            byteids=byteids,
+            compression=self._compression,
+            inlinelimit=self._inlinelimit,
+        )
 
     def postings_reader(self, dbfile, terminfo, format_, term=None, scorer=None):
         if terminfo.is_inlined():
             # If the postings were inlined into the terminfo object, pull them
             # out and use a ListMatcher to wrap them in a Matcher interface
             ids, weights, values = terminfo.inlined_postings()
-            m = ListMatcher(ids, weights, values, format_, scorer=scorer,
-                            term=term, terminfo=terminfo)
+            m = ListMatcher(
+                ids,
+                weights,
+                values,
+                format_,
+                scorer=scorer,
+                term=term,
+                terminfo=terminfo,
+            )
         else:
             offset, length = terminfo.extent()
-            m = W3LeafMatcher(dbfile, offset, length, format_, term=term,
-                              scorer=scorer)
+            m = W3LeafMatcher(dbfile, offset, length, format_, term=term, scorer=scorer)
         return m
 
     # Readers
@@ -143,6 +153,7 @@ class W3Codec(base.Codec):
 
 # Common functions
 
+
 def _vecfield(fieldname):
     return "_%s_vec" % fieldname
 
@@ -152,6 +163,7 @@ def _lenfield(fieldname):
 
 
 # Per-doc information writer
+
 
 class W3PerDocWriter(base.PerDocWriterWithColumns):
     def __init__(self, codec, storage, segment):
@@ -202,8 +214,9 @@ class W3PerDocWriter(base.PerDocWriterWithColumns):
         if self._indoc:
             raise Exception("Called start_doc when already in a doc")
         if docnum != self._doccount:
-            raise Exception("Called start_doc(%r) was expecting %r"
-                            % (docnum, self._doccount))
+            raise Exception(
+                "Called start_doc(%r) was expecting %r" % (docnum, self._doccount)
+            )
 
         self._docnum = docnum
         self._doccount += 1
@@ -322,7 +335,7 @@ class W3FieldWriter(base.FieldWriter):
         if self._postwriter is None:
             raise Exception("Called start_term before start_field")
         self._btext = btext
-        self._postwriter.start_postings(self._fieldobj.format,  W3TermInfo())
+        self._postwriter.start_postings(self._fieldobj.format, W3TermInfo())
 
     def add(self, docnum, weight, vbytes, length):
         self._postwriter.add_posting(docnum, weight, vbytes, length)
@@ -350,6 +363,7 @@ class W3FieldWriter(base.FieldWriter):
 
 
 # Reader objects
+
 
 class W3PerDocReader(base.PerDocumentReader):
     def __init__(self, storage, segment):
@@ -419,8 +433,7 @@ class W3PerDocReader(base.PerDocumentReader):
 
     def doc_field_length(self, docnum, fieldname, default=0):
         if docnum > self._doccount:
-            raise IndexError("Asked for docnum %r of %d"
-                             % (docnum, self._doccount))
+            raise IndexError("Asked for docnum %r of %d" % (docnum, self._doccount))
 
         lenfield = _lenfield(fieldname)
         reader = self._cached_reader(lenfield, LENGTHS_COLUMN)
@@ -458,8 +471,7 @@ class W3PerDocReader(base.PerDocumentReader):
 
     def _vector_extent(self, docnum, fieldname):
         if docnum > self._doccount:
-            raise IndexError("Asked for document %r of %d"
-                             % (docnum, self._doccount))
+            raise IndexError("Asked for document %r of %d" % (docnum, self._doccount))
         vecfield = _vecfield(fieldname)  # Compute vector column name
 
         # Get the offset from the vector offset column
@@ -486,10 +498,8 @@ class W3PerDocReader(base.PerDocumentReader):
             self._prep_vectors()
         offset, length = self._vector_extent(docnum, fieldname)
         if not offset:
-            raise Exception("Field %r has no vector in docnum %s" %
-                            (fieldname, docnum))
-        m = W3LeafMatcher(self._vpostfile, offset, length, format_,
-                          byteids=True)
+            raise Exception("Field %r has no vector in docnum %s" % (fieldname, docnum))
+        m = W3LeafMatcher(self._vpostfile, offset, length, format_, byteids=True)
         return m
 
     # Stored fields
@@ -510,7 +520,7 @@ class W3FieldCursor(base.FieldCursor):
         self._keydecoder = keydecoder
         self._fieldobj = fieldobj
 
-        prefixbytes = keycoder(fieldname, b'')
+        prefixbytes = keycoder(fieldname, b"")
         self._startpos = self._tindex.closest_key_pos(prefixbytes)
 
         self._pos = self._startpos
@@ -603,21 +613,26 @@ class W3TermsReader(base.TermsReader):
     def terms_from(self, fieldname, prefix):
         prefixbytes = self._keycoder(fieldname, prefix)
         keydecoder = self._keydecoder
-        return (keydecoder(keybytes) for keybytes
-                in self._tindex.keys_from(prefixbytes))
+        return (
+            keydecoder(keybytes) for keybytes in self._tindex.keys_from(prefixbytes)
+        )
 
     def items(self):
         tidecoder = W3TermInfo.from_bytes
         keydecoder = self._keydecoder
-        return ((keydecoder(keybytes), tidecoder(valbytes))
-                for keybytes, valbytes in self._tindex.items())
+        return (
+            (keydecoder(keybytes), tidecoder(valbytes))
+            for keybytes, valbytes in self._tindex.items()
+        )
 
     def items_from(self, fieldname, prefix):
         prefixbytes = self._keycoder(fieldname, prefix)
         tidecoder = W3TermInfo.from_bytes
         keydecoder = self._keydecoder
-        return ((keydecoder(keybytes), tidecoder(valbytes))
-                for keybytes, valbytes in self._tindex.items_from(prefixbytes))
+        return (
+            (keydecoder(keybytes), tidecoder(valbytes))
+            for keybytes, valbytes in self._tindex.items_from(prefixbytes)
+        )
 
     def term_info(self, fieldname, tbytes):
         key = self._keycoder(fieldname, tbytes)
@@ -636,8 +651,9 @@ class W3TermsReader(base.TermsReader):
 
     def matcher(self, fieldname, tbytes, format_, scorer=None):
         terminfo = self.term_info(fieldname, tbytes)
-        m = self._codec.postings_reader(self._postfile, terminfo, format_,
-                                        term=(fieldname, tbytes), scorer=scorer)
+        m = self._codec.postings_reader(
+            self._postfile, terminfo, format_, term=(fieldname, tbytes), scorer=scorer
+        )
         return m
 
     def close(self):
@@ -647,14 +663,16 @@ class W3TermsReader(base.TermsReader):
 
 # Postings
 
+
 class W3PostingsWriter(base.PostingsWriter):
     """This object writes posting lists to the postings file. It groups postings
     into blocks and tracks block level statistics to makes it easier to skip
     through the postings.
     """
 
-    def __init__(self, postfile, blocklimit, byteids=False, compression=3,
-                 inlinelimit=1):
+    def __init__(
+        self, postfile, blocklimit, byteids=False, compression=3, inlinelimit=1
+    ):
         self._postfile = postfile
         self._blocklimit = blocklimit
         self._byteids = byteids
@@ -785,10 +803,17 @@ class W3PostingsWriter(base.PostingsWriter):
         # - Minimum length byte
         # - Maximum length byte
         ids = self._ids
-        infobytes = dumps((len(ids), ids[-1], self._maxweight, comp,
-                           length_to_byte(self._minlength),
-                           length_to_byte(self._maxlength),
-                           ), 2)
+        infobytes = dumps(
+            (
+                len(ids),
+                ids[-1],
+                self._maxweight,
+                comp,
+                length_to_byte(self._minlength),
+                length_to_byte(self._maxlength),
+            ),
+            2,
+        )
 
         # Write block length
         postfile = self._postfile
@@ -874,8 +899,16 @@ class W3LeafMatcher(LeafMatcher):
     :class:`whoosh.matching.Matcher` interface.
     """
 
-    def __init__(self, postfile, startoffset, length, format_, term=None,
-                 byteids=None, scorer=None):
+    def __init__(
+        self,
+        postfile,
+        startoffset,
+        length,
+        format_,
+        term=None,
+        byteids=None,
+        scorer=None,
+    ):
         self._postfile = postfile
         self._startoffset = startoffset
         self._length = length
@@ -947,8 +980,14 @@ class W3LeafMatcher(LeafMatcher):
         self._dataoffset = postfile.tell()
 
         # Decompose the info tuple to set the current block info
-        (self._blocklength, self._maxid, self._maxweight, self._compression,
-         mnlen, mxlen) = info
+        (
+            self._blocklength,
+            self._maxid,
+            self._maxweight,
+            self._compression,
+            mnlen,
+            mxlen,
+        ) = info
         self._minlength = byte_to_length(mnlen)
         self._maxlength = byte_to_length(mxlen)
 
@@ -1101,9 +1140,9 @@ class W3LeafMatcher(LeafMatcher):
         # De-minify the weights
         postcount = self._blocklength
         if weights is None:
-            self._weights = array("f", (1.0 for _ in xrange(postcount)))
+            self._weights = array("f", (1.0 for _ in range(postcount)))
         elif isinstance(weights, float):
-            self._weights = array("f", (weights for _ in xrange(postcount)))
+            self._weights = array("f", (weights for _ in range(postcount)))
         else:
             self._weights = weights
 
@@ -1121,11 +1160,13 @@ class W3LeafMatcher(LeafMatcher):
             self._values = (None,) * self._blocklength
         else:
             assert isinstance(vs, bytes_type)
-            self._values = tuple(vs[i:i + fixedsize]
-                                 for i in xrange(0, len(vs), fixedsize))
+            self._values = tuple(
+                vs[i : i + fixedsize] for i in range(0, len(vs), fixedsize)
+            )
 
 
 # Term info implementation
+
 
 class W3TermInfo(TermInfo):
     # B   | Flags
@@ -1180,18 +1221,24 @@ class W3TermInfo(TermInfo):
         isinlined = self.is_inlined()
 
         # Encode the lengths as 0-255 values
-        minlength = (0 if self._minlength is None
-                     else length_to_byte(self._minlength))
+        minlength = 0 if self._minlength is None else length_to_byte(self._minlength)
         maxlength = length_to_byte(self._maxlength)
         # Convert None values to the out-of-band NO_ID constant so they can be
         # stored as unsigned ints
-        minid = 0xffffffff if self._minid is None else self._minid
-        maxid = 0xffffffff if self._maxid is None else self._maxid
+        minid = 0xFFFFFFFF if self._minid is None else self._minid
+        maxid = 0xFFFFFFFF if self._maxid is None else self._maxid
 
         # Pack the term info into bytes
-        st = self._struct.pack(isinlined, self._weight, self._df,
-                               minlength, maxlength, self._maxweight,
-                               minid, maxid)
+        st = self._struct.pack(
+            isinlined,
+            self._weight,
+            self._df,
+            minlength,
+            maxlength,
+            self._maxweight,
+            minid,
+            maxid,
+        )
 
         if isinlined:
             # Postings are inlined - dump them using the pickle protocol
@@ -1204,7 +1251,7 @@ class W3TermInfo(TermInfo):
     @classmethod
     def from_bytes(cls, s):
         st = cls._struct
-        vals = st.unpack(s[:st.size])
+        vals = st.unpack(s[: st.size])
         terminfo = cls()
 
         flags = vals[0]
@@ -1213,18 +1260,18 @@ class W3TermInfo(TermInfo):
         terminfo._minlength = byte_to_length(vals[3])
         terminfo._maxlength = byte_to_length(vals[4])
         terminfo._maxweight = vals[5]
-        terminfo._minid = None if vals[6] == 0xffffffff else vals[6]
-        terminfo._maxid = None if vals[7] == 0xffffffff else vals[7]
+        terminfo._minid = None if vals[6] == 0xFFFFFFFF else vals[6]
+        terminfo._maxid = None if vals[7] == 0xFFFFFFFF else vals[7]
 
         if flags:
             # Postings are stored inline
-            terminfo._inlined = loads(s[st.size:])
+            terminfo._inlined = loads(s[st.size :])
         else:
             # Last bytes are pointer into posting file and length
             offpos = st.size
             lenpos = st.size + _LONG_SIZE
             terminfo._offset = unpack_long(s[offpos:lenpos])[0]
-            terminfo._length = unpack_int(s[lenpos:lenpos + _INT_SIZE])
+            terminfo._length = unpack_int(s[lenpos : lenpos + _INT_SIZE])
 
         return terminfo
 
@@ -1250,6 +1297,7 @@ class W3TermInfo(TermInfo):
 
 
 # Segment implementation
+
 
 class W3Segment(base.Segment):
     def __init__(self, codec, indexname, doccount=0, segid=None, deleted=None):

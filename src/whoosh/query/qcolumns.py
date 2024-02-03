@@ -59,6 +59,7 @@ class ColumnQuery(Query):
         if callable(condition):
             comp = condition
         else:
+
             def comp(v):
                 # Made this a function instead of a lambda so I could put
                 # debug prints here if necessary ;)

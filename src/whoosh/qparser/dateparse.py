@@ -45,12 +45,14 @@ class DateParseError(Exception):
 
 # Utility functions
 
+
 def print_debug(level, msg, *args):
     if level > 0:
         print(("  " * (level - 1)) + (msg % args))
 
 
 # Parser element objects
+
 
 class Props(object):
     """A dumb little object that just puts copies a dictionary into attibutes
@@ -69,8 +71,7 @@ class Props(object):
 
 
 class ParserBase(object):
-    """Base class for date parser elements.
-    """
+    """Base class for date parser elements."""
 
     def to_parser(self, e):
         if isinstance(e, string_type):
@@ -104,16 +105,13 @@ class MultiBase(ParserBase):
         self.name = name
 
     def __repr__(self):
-        return "%s<%s>%r" % (self.__class__.__name__, self.name or '',
-                             self.elements)
+        return "%s<%s>%r" % (self.__class__.__name__, self.name or "", self.elements)
 
 
 class Sequence(MultiBase):
-    """Merges the dates parsed by a sequence of sub-elements.
-    """
+    """Merges the dates parsed by a sequence of sub-elements."""
 
-    def __init__(self, elements, sep="(\\s+|\\s*,\\s*)", name=None,
-                 progressive=False):
+    def __init__(self, elements, sep="(\\s+|\\s*,\\s*)", name=None, progressive=False):
         """
         :param elements: the sequence of sub-elements to parse.
         :param sep: a separator regular expression to match between elements,
@@ -138,8 +136,9 @@ class Sequence(MultiBase):
         foundall = False
         failed = False
 
-        print_debug(debug, "Seq %s sep=%r text=%r", self.name,
-                    self.sep_pattern, text[pos:])
+        print_debug(
+            debug, "Seq %s sep=%r text=%r", self.name, self.sep_pattern, text[pos:]
+        )
         for e in self.elements:
             print_debug(debug, "Seq %s text=%r", self.name, text[pos:])
             if self.sep_expr and not first:
@@ -191,8 +190,9 @@ class Combo(Sequence):
     from the sub-elements and turn them into a range.
     """
 
-    def __init__(self, elements, fn=None, sep="(\\s+|\\s*,\\s*)", min=2, max=2,
-                 name=None):
+    def __init__(
+        self, elements, fn=None, sep="(\\s+|\\s*,\\s*)", min=2, max=2, name=None
+    ):
         """
         :param elements: the sequence of sub-elements to parse.
         :param fn: a function to run on all dates found. It should return a
@@ -214,12 +214,14 @@ class Combo(Sequence):
         dates = []
         first = True
 
-        print_debug(debug, "Combo %s sep=%r text=%r", self.name,
-                    self.sep_pattern, text[pos:])
+        print_debug(
+            debug, "Combo %s sep=%r text=%r", self.name, self.sep_pattern, text[pos:]
+        )
         for e in self.elements:
             if self.sep_expr and not first:
-                print_debug(debug, "Combo %s looking for sep at %r",
-                            self.name, text[pos:])
+                print_debug(
+                    debug, "Combo %s looking for sep at %r", self.name, text[pos:]
+                )
                 m = self.sep_expr.match(text, pos)
                 if m:
                     pos = m.end()
@@ -262,8 +264,7 @@ class Combo(Sequence):
 
 
 class Choice(MultiBase):
-    """Returns the date from the first of its sub-elements that matches.
-    """
+    """Returns the date from the first of its sub-elements that matches."""
 
     def parse(self, text, dt, pos=0, debug=-9999):
         print_debug(debug, "Choice %s text=%r", self.name, text[pos:])
@@ -282,11 +283,18 @@ class Choice(MultiBase):
 
 
 class Bag(MultiBase):
-    """Parses its sub-elements in any order and merges the dates.
-    """
+    """Parses its sub-elements in any order and merges the dates."""
 
-    def __init__(self, elements, sep="(\\s+|\\s*,\\s*)", onceper=True,
-                 requireall=False, allof=None, anyof=None, name=None):
+    def __init__(
+        self,
+        elements,
+        sep="(\\s+|\\s*,\\s*)",
+        onceper=True,
+        requireall=False,
+        allof=None,
+        anyof=None,
+        name=None,
+    ):
         """
         :param elements: the sub-elements to parse.
         :param sep: a separator regular expression to match between elements,
@@ -353,10 +361,12 @@ class Bag(MultiBase):
 
             first = False
 
-        if (not any(seen)
+        if (
+            not any(seen)
             or (self.allof and not all(seen[pos] for pos in self.allof))
             or (self.anyof and not any(seen[pos] for pos in self.anyof))
-            or (self.requireall and not all(seen))):
+            or (self.requireall and not all(seen))
+        ):
             return (None, None)
 
         print_debug(debug, "Bag %s final=%r", self.name, d)
@@ -364,8 +374,7 @@ class Bag(MultiBase):
 
 
 class Optional(ParserBase):
-    """Wraps a sub-element to indicate that the sub-element is optional.
-    """
+    """Wraps a sub-element to indicate that the sub-element is optional."""
 
     def __init__(self, element):
         self.element = self.to_parser(element)
@@ -480,9 +489,9 @@ class Month(Regex):
         self.patterns = patterns
         self.exprs = [rcompile(pat, re.IGNORECASE) for pat in self.patterns]
 
-        self.pattern = ("(?P<month>"
-                        + "|".join("(%s)" % pat for pat in self.patterns)
-                        + ")")
+        self.pattern = (
+            "(?P<month>" + "|".join("(%s)" % pat for pat in self.patterns) + ")"
+        )
         self.expr = rcompile(self.pattern, re.IGNORECASE)
 
     def modify_props(self, p):
@@ -504,9 +513,15 @@ class PlusMinus(Regex):
         rel_mins = "((?P<mins>[0-9]+) *(%s))?" % minutes
         rel_secs = "((?P<secs>[0-9]+) *(%s))?" % seconds
 
-        self.pattern = ("(?P<dir>[+-]) *%s *%s *%s *%s *%s *%s *%s(?=(\\W|$))"
-                        % (rel_years, rel_months, rel_weeks, rel_days,
-                           rel_hours, rel_mins, rel_secs))
+        self.pattern = "(?P<dir>[+-]) *%s *%s *%s *%s *%s *%s *%s(?=(\\W|$))" % (
+            rel_years,
+            rel_months,
+            rel_weeks,
+            rel_days,
+            rel_hours,
+            rel_mins,
+            rel_secs,
+        )
         self.expr = rcompile(self.pattern, re.IGNORECASE)
 
     def props_to_date(self, p, dt):
@@ -515,13 +530,15 @@ class PlusMinus(Regex):
         else:
             dir = 1
 
-        delta = relativedelta(years=(p.get("years") or 0) * dir,
-                              months=(p.get("months") or 0) * dir,
-                              weeks=(p.get("weeks") or 0) * dir,
-                              days=(p.get("days") or 0) * dir,
-                              hours=(p.get("hours") or 0) * dir,
-                              minutes=(p.get("mins") or 0) * dir,
-                              seconds=(p.get("secs") or 0) * dir)
+        delta = relativedelta(
+            years=(p.get("years") or 0) * dir,
+            months=(p.get("months") or 0) * dir,
+            weeks=(p.get("weeks") or 0) * dir,
+            days=(p.get("days") or 0) * dir,
+            hours=(p.get("hours") or 0) * dir,
+            minutes=(p.get("mins") or 0) * dir,
+            seconds=(p.get("secs") or 0) * dir,
+        )
         return dt + delta
 
 
@@ -529,11 +546,13 @@ class Daynames(Regex):
     def __init__(self, next, last, daynames):
         self.next_pattern = next
         self.last_pattern = last
-        self._dayname_exprs = tuple(rcompile(pat, re.IGNORECASE)
-                                    for pat in daynames)
+        self._dayname_exprs = tuple(rcompile(pat, re.IGNORECASE) for pat in daynames)
         dn_pattern = "|".join(daynames)
-        self.pattern = ("(?P<dir>%s|%s) +(?P<day>%s)(?=(\\W|$))"
-                        % (next, last, dn_pattern))
+        self.pattern = "(?P<dir>%s|%s) +(?P<day>%s)(?=(\\W|$))" % (
+            next,
+            last,
+            dn_pattern,
+        )
         self.expr = rcompile(self.pattern, re.IGNORECASE)
 
     def props_to_date(self, p, dt):
@@ -555,9 +574,11 @@ class Daynames(Regex):
 
 class Time12(Regex):
     def __init__(self):
-        self.pattern = ("(?P<hour>[1-9]|10|11|12)(:(?P<mins>[0-5][0-9])"
-                        "(:(?P<secs>[0-5][0-9])(\\.(?P<usecs>[0-9]{1,5}))?)?)?"
-                        "\\s*(?P<ampm>am|pm)(?=(\\W|$))")
+        self.pattern = (
+            "(?P<hour>[1-9]|10|11|12)(:(?P<mins>[0-5][0-9])"
+            "(:(?P<secs>[0-5][0-9])(\\.(?P<usecs>[0-9]{1,5}))?)?)?"
+            "\\s*(?P<ampm>am|pm)(?=(\\W|$))"
+        )
         self.expr = rcompile(self.pattern, re.IGNORECASE)
 
     def props_to_date(self, p, dt):
@@ -578,19 +599,23 @@ class Time12(Regex):
 
 # Top-level parser classes
 
-class DateParser(object):
-    """Base class for locale-specific parser classes.
-    """
 
-    day = Regex("(?P<day>([123][0-9])|[1-9])(?=(\\W|$))(?!=:)",
-                lambda p, dt: adatetime(day=p.day))
-    year = Regex("(?P<year>[0-9]{4})(?=(\\W|$))",
-                 lambda p, dt: adatetime(year=p.year))
-    time24 = Regex("(?P<hour>([0-1][0-9])|(2[0-3])):(?P<mins>[0-5][0-9])"
-                   "(:(?P<secs>[0-5][0-9])(\\.(?P<usecs>[0-9]{1,5}))?)?"
-                   "(?=(\\W|$))",
-                   lambda p, dt: adatetime(hour=p.hour, minute=p.mins,
-                                           second=p.secs, microsecond=p.usecs))
+class DateParser(object):
+    """Base class for locale-specific parser classes."""
+
+    day = Regex(
+        "(?P<day>([123][0-9])|[1-9])(?=(\\W|$))(?!=:)",
+        lambda p, dt: adatetime(day=p.day),
+    )
+    year = Regex("(?P<year>[0-9]{4})(?=(\\W|$))", lambda p, dt: adatetime(year=p.year))
+    time24 = Regex(
+        "(?P<hour>([0-1][0-9])|(2[0-3])):(?P<mins>[0-5][0-9])"
+        "(:(?P<secs>[0-5][0-9])(\\.(?P<usecs>[0-9]{1,5}))?)?"
+        "(?=(\\W|$))",
+        lambda p, dt: adatetime(
+            hour=p.hour, minute=p.mins, second=p.secs, microsecond=p.usecs
+        ),
+    )
     time12 = Time12()
 
     def __init__(self):
@@ -602,11 +627,17 @@ class DateParser(object):
         simple_second = "(?P<second>[0-5][0-9])"
         simple_usec = "(?P<microsecond>[0-9]{6})"
 
-        tup = (simple_year, simple_month, simple_day, simple_hour,
-               simple_minute, simple_second, simple_usec)
-        simple_seq = Sequence(tup, sep="[- .:/]*", name="simple",
-                              progressive=True)
-        self.simple = Sequence((simple_seq, "(?=(\\s|$))"), sep='')
+        tup = (
+            simple_year,
+            simple_month,
+            simple_day,
+            simple_hour,
+            simple_minute,
+            simple_second,
+            simple_usec,
+        )
+        simple_seq = Sequence(tup, sep="[- .:/]*", name="simple", progressive=True)
+        self.simple = Sequence((simple_seq, "(?=(\\s|$))"), sep="")
 
         self.setup()
 
@@ -642,87 +673,115 @@ class DateParser(object):
 
 
 class English(DateParser):
-    day = Regex("(?P<day>([123][0-9])|[1-9])(st|nd|rd|th)?(?=(\\W|$))",
-                lambda p, dt: adatetime(day=p.day))
+    day = Regex(
+        "(?P<day>([123][0-9])|[1-9])(st|nd|rd|th)?(?=(\\W|$))",
+        lambda p, dt: adatetime(day=p.day),
+    )
 
     def setup(self):
-        self.plusdate = PlusMinus("years|year|yrs|yr|ys|y",
-                                  "months|month|mons|mon|mos|mo",
-                                  "weeks|week|wks|wk|ws|w",
-                                  "days|day|dys|dy|ds|d",
-                                  "hours|hour|hrs|hr|hs|h",
-                                  "minutes|minute|mins|min|ms|m",
-                                  "seconds|second|secs|sec|s")
+        self.plusdate = PlusMinus(
+            "years|year|yrs|yr|ys|y",
+            "months|month|mons|mon|mos|mo",
+            "weeks|week|wks|wk|ws|w",
+            "days|day|dys|dy|ds|d",
+            "hours|hour|hrs|hr|hs|h",
+            "minutes|minute|mins|min|ms|m",
+            "seconds|second|secs|sec|s",
+        )
 
-        self.dayname = Daynames("next", "last",
-                                ("monday|mon|mo", "tuesday|tues|tue|tu",
-                                 "wednesday|wed|we", "thursday|thur|thu|th",
-                                 "friday|fri|fr", "saturday|sat|sa",
-                                 "sunday|sun|su"))
+        self.dayname = Daynames(
+            "next",
+            "last",
+            (
+                "monday|mon|mo",
+                "tuesday|tues|tue|tu",
+                "wednesday|wed|we",
+                "thursday|thur|thu|th",
+                "friday|fri|fr",
+                "saturday|sat|sa",
+                "sunday|sun|su",
+            ),
+        )
 
-        midnight_l = lambda p, dt: adatetime(hour=0, minute=0, second=0,
-                                             microsecond=0)
+        midnight_l = lambda p, dt: adatetime(hour=0, minute=0, second=0, microsecond=0)
         midnight = Regex("midnight", midnight_l)
 
-        noon_l = lambda p, dt: adatetime(hour=12, minute=0, second=0,
-                                         microsecond=0)
+        noon_l = lambda p, dt: adatetime(hour=12, minute=0, second=0, microsecond=0)
         noon = Regex("noon", noon_l)
 
         now = Regex("now", lambda p, dt: dt)
 
-        self.time = Choice((self.time12, self.time24, midnight, noon, now),
-                           name="time")
+        self.time = Choice((self.time12, self.time24, midnight, noon, now), name="time")
 
         def tomorrow_to_date(p, dt):
             d = dt.date() + timedelta(days=+1)
             return adatetime(year=d.year, month=d.month, day=d.day)
+
         tomorrow = Regex("tomorrow", tomorrow_to_date)
 
         def yesterday_to_date(p, dt):
             d = dt.date() + timedelta(days=-1)
             return adatetime(year=d.year, month=d.month, day=d.day)
+
         yesterday = Regex("yesterday", yesterday_to_date)
 
         thisyear = Regex("this year", lambda p, dt: adatetime(year=dt.year))
-        thismonth = Regex("this month",
-                          lambda p, dt: adatetime(year=dt.year,
-                                                  month=dt.month))
-        today = Regex("today",
-                      lambda p, dt: adatetime(year=dt.year, month=dt.month,
-                                              day=dt.day))
+        thismonth = Regex(
+            "this month", lambda p, dt: adatetime(year=dt.year, month=dt.month)
+        )
+        today = Regex(
+            "today", lambda p, dt: adatetime(year=dt.year, month=dt.month, day=dt.day)
+        )
 
-        self.month = Month("january|jan", "february|febuary|feb", "march|mar",
-                           "april|apr", "may", "june|jun", "july|jul",
-                           "august|aug", "september|sept|sep", "october|oct",
-                           "november|nov", "december|dec")
+        self.month = Month(
+            "january|jan",
+            "february|febuary|feb",
+            "march|mar",
+            "april|apr",
+            "may",
+            "june|jun",
+            "july|jul",
+            "august|aug",
+            "september|sept|sep",
+            "october|oct",
+            "november|nov",
+            "december|dec",
+        )
 
         # If you specify a day number you must also specify a month... this
         # Choice captures that constraint
 
-        self.dmy = Choice((Sequence((self.day, self.month, self.year),
-                                    name="dmy"),
-                           Sequence((self.month, self.day, self.year),
-                                    name="mdy"),
-                           Sequence((self.year, self.month, self.day),
-                                    name="ymd"),
-                           Sequence((self.year, self.day, self.month),
-                                    name="ydm"),
-                           Sequence((self.day, self.month), name="dm"),
-                           Sequence((self.month, self.day), name="md"),
-                           Sequence((self.month, self.year), name="my"),
-                           self.month, self.year, self.dayname, tomorrow,
-                           yesterday, thisyear, thismonth, today, now,
-                           ), name="date")
+        self.dmy = Choice(
+            (
+                Sequence((self.day, self.month, self.year), name="dmy"),
+                Sequence((self.month, self.day, self.year), name="mdy"),
+                Sequence((self.year, self.month, self.day), name="ymd"),
+                Sequence((self.year, self.day, self.month), name="ydm"),
+                Sequence((self.day, self.month), name="dm"),
+                Sequence((self.month, self.day), name="md"),
+                Sequence((self.month, self.year), name="my"),
+                self.month,
+                self.year,
+                self.dayname,
+                tomorrow,
+                yesterday,
+                thisyear,
+                thismonth,
+                today,
+                now,
+            ),
+            name="date",
+        )
 
         self.datetime = Bag((self.time, self.dmy), name="datetime")
-        self.bundle = Choice((self.plusdate, self.datetime, self.simple),
-                             name="bundle")
+        self.bundle = Choice((self.plusdate, self.datetime, self.simple), name="bundle")
         self.torange = Combo((self.bundle, "to", self.bundle), name="torange")
 
         self.all = Choice((self.torange, self.bundle), name="all")
 
 
 # QueryParser plugin
+
 
 class DateParserPlugin(plugins.Plugin):
     """Adds more powerful parsing of DATETIME fields.
@@ -731,8 +790,14 @@ class DateParserPlugin(plugins.Plugin):
     >>> parser.parse(u"date:'last tuesday'")
     """
 
-    def __init__(self, basedate=None, dateparser=None, callback=None,
-                 free=False, free_expr="([A-Za-z][A-Za-z_0-9]*):([^^]+)"):
+    def __init__(
+        self,
+        basedate=None,
+        dateparser=None,
+        callback=None,
+        free=False,
+        free_expr="([A-Za-z][A-Za-z_0-9]*):([^^]+)",
+    ):
         """
         :param basedate: a datetime object representing the current time
             against which to measure relative dates. If you do not supply this
@@ -825,9 +890,12 @@ class DateParserPlugin(plugins.Plugin):
             return group
 
         from whoosh.fields import DATETIME
-        datefields = frozenset(fieldname for fieldname, field
-                               in parser.schema.items()
-                               if isinstance(field, DATETIME))
+
+        datefields = frozenset(
+            fieldname
+            for fieldname, field in parser.schema.items()
+            if isinstance(field, DATETIME)
+        )
 
         for i, node in enumerate(group):
             if node.has_fieldname:
@@ -867,8 +935,7 @@ class DateTimeNode(syntax.SyntaxNode):
             btext = field.to_bytes(dt)
             return query.Term(fieldname, btext, boost=self.boost)
         elif isinstance(self.dt, timespan):
-            return query.DateRange(fieldname, dt.start, dt.end,
-                                   boost=self.boost)
+            return query.DateRange(fieldname, dt.start, dt.end, boost=self.boost)
         else:
             raise Exception("Unknown time object: %r" % dt)
 
@@ -890,8 +957,7 @@ class DateRangeNode(syntax.SyntaxNode):
         from whoosh import query
 
         fieldname = self.fieldname or parser.fieldname
-        return query.DateRange(fieldname, self.start, self.end,
-                               boost=self.boost)
+        return query.DateRange(fieldname, self.start, self.end, boost=self.boost)
 
 
 class DateTagger(Tagger):

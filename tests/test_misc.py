@@ -74,6 +74,7 @@ def test_threaded_filelock():
             if gotit:
                 result.append(True)
                 lock2.release()
+
         t = threading.Thread(target=fn)
 
         # Acquire the lock in this thread

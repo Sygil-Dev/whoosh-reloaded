@@ -30,20 +30,66 @@ class DanishStemmer(_ScandinavianStemmer):
     # The language's vowels and other important characters are defined.
     __vowels = u("aeiouy\xE6\xE5\xF8")
     __consonants = "bcdfghjklmnpqrstvwxz"
-    __double_consonants = ("bb", "cc", "dd", "ff", "gg", "hh", "jj",
-                           "kk", "ll", "mm", "nn", "pp", "qq", "rr",
-                           "ss", "tt", "vv", "ww", "xx", "zz")
+    __double_consonants = (
+        "bb",
+        "cc",
+        "dd",
+        "ff",
+        "gg",
+        "hh",
+        "jj",
+        "kk",
+        "ll",
+        "mm",
+        "nn",
+        "pp",
+        "qq",
+        "rr",
+        "ss",
+        "tt",
+        "vv",
+        "ww",
+        "xx",
+        "zz",
+    )
     __s_ending = u("abcdfghjklmnoprtvyz\xE5")
 
     # The different suffixes, divided into the algorithm's steps
     # and organized by length, are listed in tuples.
-    __step1_suffixes = ("erendes", "erende", "hedens", "ethed",
-                        "erede", "heden", "heder", "endes",
-                        "ernes", "erens", "erets", "ered",
-                        "ende", "erne", "eren", "erer", "heds",
-                        "enes", "eres", "eret", "hed", "ene", "ere",
-                        "ens", "ers", "ets", "en", "er", "es", "et",
-                        "e", "s")
+    __step1_suffixes = (
+        "erendes",
+        "erende",
+        "hedens",
+        "ethed",
+        "erede",
+        "heden",
+        "heder",
+        "endes",
+        "ernes",
+        "erens",
+        "erets",
+        "ered",
+        "ende",
+        "erne",
+        "eren",
+        "erer",
+        "heds",
+        "enes",
+        "eres",
+        "eret",
+        "hed",
+        "ene",
+        "ere",
+        "ens",
+        "ers",
+        "ets",
+        "en",
+        "er",
+        "es",
+        "et",
+        "e",
+        "s",
+    )
     __step2_suffixes = ("gd", "dt", "gt", "kt")
     __step3_suffixes = ("elig", u("l\xF8st"), "lig", "els", "ig")
 
@@ -76,8 +122,8 @@ class DanishStemmer(_ScandinavianStemmer):
                         word = word[:-1]
                         r1 = r1[:-1]
                 else:
-                    word = word[:-len(suffix)]
-                    r1 = r1[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    r1 = r1[: -len(suffix)]
                 break
 
         # STEP 2
@@ -98,8 +144,8 @@ class DanishStemmer(_ScandinavianStemmer):
                     word = word[:-1]
                     r1 = r1[:-1]
                 else:
-                    word = word[:-len(suffix)]
-                    r1 = r1[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    r1 = r1[: -len(suffix)]
 
                     if r1.endswith(self.__step2_suffixes):
                         word = word[:-1]

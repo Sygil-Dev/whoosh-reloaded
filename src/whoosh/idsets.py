@@ -6,22 +6,272 @@ import operator
 from array import array
 from bisect import bisect_left, bisect_right
 
-from whoosh.compat import izip, izip_longest, next, xrange
+from whoosh.compat import izip, izip_longest, next, range
 from whoosh.util.numeric import bytes_for_bits
 
 
 # Number of '1' bits in each byte (0-255)
-_1SPERBYTE = array('B', [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2,
-2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4,
-3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 1, 2, 2, 3, 2, 3,
-3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5,
-5, 6, 5, 6, 6, 7, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4,
-3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5,
-5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 2, 3, 3, 4, 3, 4, 4, 5,
-3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 3, 4,
-4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7,
-6, 7, 7, 8])
+_1SPERBYTE = array(
+    "B",
+    [
+        0,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        3,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        4,
+        5,
+        5,
+        6,
+        5,
+        6,
+        6,
+        7,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        4,
+        5,
+        5,
+        6,
+        5,
+        6,
+        6,
+        7,
+        2,
+        3,
+        3,
+        4,
+        3,
+        4,
+        4,
+        5,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        4,
+        5,
+        5,
+        6,
+        5,
+        6,
+        6,
+        7,
+        3,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        6,
+        4,
+        5,
+        5,
+        6,
+        5,
+        6,
+        6,
+        7,
+        4,
+        5,
+        5,
+        6,
+        5,
+        6,
+        6,
+        7,
+        5,
+        6,
+        6,
+        7,
+        6,
+        7,
+        7,
+        8,
+    ],
+)
 
 
 class DocIdSet(object):
@@ -89,7 +339,7 @@ class DocIdSet(object):
         ``[0 - size)`` except numbers that are in this set.
         """
 
-        for i in xrange(size):
+        for i in range(size):
             if i in self:
                 self.discard(i)
             else:
@@ -126,23 +376,19 @@ class DocIdSet(object):
         return True
 
     def before(self, i):
-        """Returns the previous integer in the set before ``i``, or None.
-        """
+        """Returns the previous integer in the set before ``i``, or None."""
         raise NotImplementedError
 
     def after(self, i):
-        """Returns the next integer in the set after ``i``, or None.
-        """
+        """Returns the next integer in the set after ``i``, or None."""
         raise NotImplementedError
 
     def first(self):
-        """Returns the first (lowest) integer in the set.
-        """
+        """Returns the first (lowest) integer in the set."""
         raise NotImplementedError
 
     def last(self):
-        """Returns the last (highest) integer in the set.
-        """
+        """Returns the last (highest) integer in the set."""
         raise NotImplementedError
 
 
@@ -166,7 +412,7 @@ class BaseBitSet(DocIdSet):
     def __iter__(self):
         base = 0
         for byte in self._iter_bytes():
-            for i in xrange(8):
+            for i in range(8):
                 if byte & (1 << i):
                     yield base + i
             base += 8
@@ -269,8 +515,12 @@ class OnDiskBitSet(BaseBitSet):
         self._bytecount = bytecount
 
     def __repr__(self):
-        return "%s(%s, %d, %d)" % (self.__class__.__name__, self.dbfile,
-                                   self._basepos, self.bytecount)
+        return "%s(%s, %d, %d)" % (
+            self.__class__.__name__,
+            self.dbfile,
+            self._basepos,
+            self.bytecount,
+        )
 
     def byte_count(self):
         return self._bytecount
@@ -281,7 +531,7 @@ class OnDiskBitSet(BaseBitSet):
     def _iter_bytes(self):
         dbfile = self._dbfile
         dbfile.seek(self._basepos)
-        for _ in xrange(self._bytecount):
+        for _ in range(self._bytecount):
             yield dbfile.read_byte()
 
 
@@ -303,7 +553,7 @@ class BitSet(BaseBitSet):
         if not size and isinstance(source, (list, tuple, set, frozenset)):
             size = max(source)
         bytecount = bytes_for_bits(size)
-        self.bits = array("B", (0 for _ in xrange(bytecount)))
+        self.bits = array("B", (0 for _ in range(bytecount)))
 
         if source:
             add = self.add
@@ -327,7 +577,7 @@ class BitSet(BaseBitSet):
         last = len(self.bits) - 1
         while last >= 0 and not bits[last]:
             last -= 1
-        del self.bits[last + 1:]
+        del self.bits[last + 1 :]
 
     def _resize(self, tosize):
         curlength = len(self.bits)
@@ -335,19 +585,20 @@ class BitSet(BaseBitSet):
         if newlength > curlength:
             self.bits.extend((0,) * (newlength - curlength))
         elif newlength < curlength:
-            del self.bits[newlength + 1:]
+            del self.bits[newlength + 1 :]
 
     def _zero_extra_bits(self, size):
         bits = self.bits
         spill = size - ((len(bits) - 1) * 8)
         if spill:
-            mask = 2 ** spill - 1
+            mask = 2**spill - 1
             bits[-1] = bits[-1] & mask
 
     def _logic(self, obj, op, other):
         objbits = obj.bits
-        for i, (byte1, byte2) in enumerate(izip_longest(objbits, other.bits,
-                                                        fillvalue=0)):
+        for i, (byte1, byte2) in enumerate(
+            izip_longest(objbits, other.bits, fillvalue=0)
+        ):
             value = op(byte1, byte2) & 0xFF
             if i >= len(objbits):
                 objbits.append(value)
@@ -377,7 +628,7 @@ class BitSet(BaseBitSet):
         return b
 
     def clear(self):
-        for i in xrange(len(self.bits)):
+        for i in range(len(self.bits)):
             self.bits[i] = 0
 
     def add(self, i):
@@ -417,7 +668,7 @@ class BitSet(BaseBitSet):
 
     def invert_update(self, size):
         bits = self.bits
-        for i in xrange(len(bits)):
+        for i in range(len(bits)):
             bits[i] = ~bits[i] & 0xFF
         self._zero_extra_bits(size)
 
@@ -440,8 +691,7 @@ class BitSet(BaseBitSet):
 
 
 class SortedIntSet(DocIdSet):
-    """A DocIdSet backed by a sorted array of integers.
-    """
+    """A DocIdSet backed by a sorted array of integers."""
 
     def __init__(self, source=None, typecode="I"):
         if source:
@@ -513,8 +763,7 @@ class SortedIntSet(DocIdSet):
         self.data = array(self.typecode, (num for num in self if num in other))
 
     def difference_update(self, other):
-        self.data = array(self.typecode,
-                          (num for num in self if num not in other))
+        self.data = array(self.typecode, (num for num in self if num not in other))
 
     def intersection(self, other):
         return SortedIntSet((num for num in self if num in other))
@@ -575,7 +824,7 @@ class ReverseIdSet(DocIdSet):
         except StopIteration:
             nx = -1
 
-        for i in xrange(self.limit):
+        for i in range(self.limit):
             if i == nx:
                 try:
                     nx = next(ids)
@@ -600,9 +849,10 @@ class ReverseIdSet(DocIdSet):
         if idset.last() < maxid - 1:
             return maxid
 
-        for i in xrange(maxid, -1, -1):
+        for i in range(maxid, -1, -1):
             if i not in idset:
                 return i
+
 
 ROARING_CUTOFF = 1 << 12
 
@@ -643,8 +893,9 @@ class RoaringIdSet(DocIdSet):
         bucket = n >> 16
         floor = n << 16
         if bucket >= len(self.idsets):
-            self.idsets.extend([SortedIntSet() for _
-                                in xrange(len(self.idsets), bucket + 1)])
+            self.idsets.extend(
+                [SortedIntSet() for _ in range(len(self.idsets), bucket + 1)]
+            )
         idset = self.idsets[bucket]
         return bucket, floor, idset
 
@@ -699,5 +950,3 @@ class MultiIdSet(DocIdSet):
     def __contains__(self, item):
         idset, n = self._set_and_docnum(item)
         return n in idset
-
-

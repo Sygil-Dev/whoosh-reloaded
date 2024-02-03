@@ -38,6 +38,7 @@ from whoosh.util.filelock import FileLock
 
 # Exceptions
 
+
 class StorageError(Exception):
     pass
 
@@ -47,6 +48,7 @@ class ReadOnlyError(StorageError):
 
 
 # Base class
+
 
 class Storage(object):
     """Abstract base class for storage objects.
@@ -146,6 +148,7 @@ class Storage(object):
             raise ReadOnlyError
         if indexclass is None:
             import whoosh.index
+
             indexclass = whoosh.index.FileIndex
         return indexclass.create(self, schema, indexname)
 
@@ -172,6 +175,7 @@ class Storage(object):
 
         if indexclass is None:
             import whoosh.index
+
             indexclass = whoosh.index.FileIndex
         return indexclass(self, schema=schema, indexname=indexname)
 
@@ -565,15 +569,14 @@ class FileStorage(Storage):
 
 
 class RamStorage(Storage):
-    """Storage object that keeps the index in memory.
-    """
+    """Storage object that keeps the index in memory."""
 
     supports_mmap = False
 
     def __init__(self):
         self.files = {}
         self.locks = {}
-        self.folder = ''
+        self.folder = ""
 
     def destroy(self):
         del self.files
@@ -617,6 +620,7 @@ class RamStorage(Storage):
     def create_file(self, name, **kwargs):
         def onclose_fn(sfile):
             self.files[name] = sfile.file.getvalue()
+
         f = StructFile(BytesIO(), name=name, onclose=onclose_fn)
         return f
 

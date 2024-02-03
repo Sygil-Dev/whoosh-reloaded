@@ -56,37 +56,37 @@ to field types. The list of fields and their types defines what you are indexing
 and what's searchable. Whoosh comes with some very useful predefined field
 types, and you can easily create your own.
 
-:class:`whoosh.fields.ID`
+:class:` whoosh.fields.ID`
     This type simply indexes (and optionally stores) the entire value of the
     field as a single unit (that is, it doesn't break it up into individual
     words). This is useful for fields such as a file path, URL, date, category,
     etc.
 
-:class:`whoosh.fields.STORED`
+:class:` whoosh.fields.STORED`
     This field is stored with the document, but not indexed. This field type is
     not indexed and not searchable. This is useful for document information you
     want to display to the user in the search results.
 
-:class:`whoosh.fields.KEYWORD`
+:class:` whoosh.fields.KEYWORD`
     This type is designed for space- or comma-separated keywords. This type is
     indexed and searchable (and optionally stored). To save space, it does not
     support phrase searching.
 
-:class:`whoosh.fields.TEXT`
+:class:` whoosh.fields.TEXT`
     This type is for body text. It indexes (and optionally stores) the text and
     stores term positions to allow phrase searching.
 
-:class:`whoosh.fields.NUMERIC`
+:class:` whoosh.fields.NUMERIC`
     This type is for numbers. You can store integers or floating point numbers.
 
-:class:`whoosh.fields.BOOLEAN`
+:class:` whoosh.fields.BOOLEAN`
     This type is for boolean (true/false) values.
 
-:class:`whoosh.fields.DATETIME`
+:class:` whoosh.fields.DATETIME`
     This type is for ``datetime`` objects. See :doc:`dates` for more
     information.
 
-:class:`whoosh.fields.NGRAM` and :class:`whoosh.fields.NGRAMWORDS`
+:class:` whoosh.fields.NGRAM` and :class:` whoosh.fields.NGRAMWORDS`
     These types break the field text or individual terms into N-grams.
     See :doc:`ngrams` for more information.
 

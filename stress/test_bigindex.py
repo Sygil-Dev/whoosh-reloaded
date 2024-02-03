@@ -3,7 +3,7 @@ from __future__ import with_statement
 import random
 
 from whoosh import fields
-from whoosh.compat import xrange, text_type, u
+from whoosh.compat import range, text_type, u
 from whoosh.util.testing import TempIndex
 from whoosh.util import now
 
@@ -11,14 +11,25 @@ from whoosh.util import now
 def test_20000_single():
     sc = fields.Schema(id=fields.ID(stored=True), text=fields.TEXT)
     with TempIndex(sc, "20000single") as ix:
-        domain = ["alfa", "bravo", "charlie", "delta", "echo", "foxtrot",
-                  "golf", "hotel", "india", "juliet", "kilo", "lima"]
+        domain = [
+            "alfa",
+            "bravo",
+            "charlie",
+            "delta",
+            "echo",
+            "foxtrot",
+            "golf",
+            "hotel",
+            "india",
+            "juliet",
+            "kilo",
+            "lima",
+        ]
 
         t = now()
-        for i in xrange(20000):
+        for i in range(20000):
             w = ix.writer()
-            w.add_document(id=text_type(i),
-                           text=u(" ").join(random.sample(domain, 5)))
+            w.add_document(id=text_type(i), text=u(" ").join(random.sample(domain, 5)))
             w.commit()
         print("Write single:", now() - t)
 
@@ -32,14 +43,25 @@ def test_20000_buffered():
 
     sc = fields.Schema(id=fields.ID(stored=True), text=fields.TEXT)
     with TempIndex(sc, "20000buffered") as ix:
-        domain = ["alfa", "bravo", "charlie", "delta", "echo", "foxtrot",
-                  "golf", "hotel", "india", "juliet", "kilo", "lima"]
+        domain = [
+            "alfa",
+            "bravo",
+            "charlie",
+            "delta",
+            "echo",
+            "foxtrot",
+            "golf",
+            "hotel",
+            "india",
+            "juliet",
+            "kilo",
+            "lima",
+        ]
 
         t = now()
         w = BufferedWriter(ix, limit=100, period=None)
-        for i in xrange(20000):
-            w.add_document(id=text_type(i),
-                           text=u(" ").join(random.sample(domain, 5)))
+        for i in range(20000):
+            w.add_document(id=text_type(i), text=u(" ").join(random.sample(domain, 5)))
         w.close()
         print("Write buffered:", now() - t)
 
@@ -51,14 +73,25 @@ def test_20000_buffered():
 def test_20000_batch():
     sc = fields.Schema(id=fields.ID(stored=True), text=fields.TEXT)
     with TempIndex(sc, "20000batch") as ix:
-        domain = ["alfa", "bravo", "charlie", "delta", "echo", "foxtrot",
-                  "golf", "hotel", "india", "juliet", "kilo", "lima"]
+        domain = [
+            "alfa",
+            "bravo",
+            "charlie",
+            "delta",
+            "echo",
+            "foxtrot",
+            "golf",
+            "hotel",
+            "india",
+            "juliet",
+            "kilo",
+            "lima",
+        ]
 
         t = now()
         w = ix.writer()
-        for i in xrange(20000):
-            w.add_document(id=text_type(i),
-                           text=u(" ").join(random.sample(domain, 5)))
+        for i in range(20000):
+            w.add_document(id=text_type(i), text=u(" ").join(random.sample(domain, 5)))
             if not i % 100:
                 w.commit()
                 w = ix.writer()

@@ -4,7 +4,7 @@
 
 .. automodule:: whoosh.query
 
-See also :mod:`whoosh.qparser` which contains code for parsing user queries
+See also :mod:` whoosh.qparser` which contains code for parsing user queries
 into query objects.
 
 Base classes

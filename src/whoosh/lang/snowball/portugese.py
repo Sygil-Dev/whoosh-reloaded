@@ -23,46 +23,176 @@ class PortugueseStemmer(_StandardStemmer):
     """
 
     __vowels = u("aeiou\xE1\xE9\xED\xF3\xFA\xE2\xEA\xF4")
-    __step1_suffixes = ('amentos', 'imentos', 'uciones', 'amento',
-                        'imento', 'adoras', 'adores', u('a\xE7o~es'),
-                        u('log\xEDas'), u('\xEAncias'), 'amente',
-                        'idades', 'ismos', 'istas', 'adora',
-                        u('a\xE7a~o'), 'antes', u('\xE2ncia'),
-                        u('log\xEDa'), u('uci\xF3n'), u('\xEAncia'),
-                        'mente', 'idade', 'ezas', 'icos', 'icas',
-                        'ismo', u('\xE1vel'), u('\xEDvel'), 'ista',
-                        'osos', 'osas', 'ador', 'ante', 'ivas',
-                        'ivos', 'iras', 'eza', 'ico', 'ica',
-                        'oso', 'osa', 'iva', 'ivo', 'ira')
-    __step2_suffixes = (u('ar\xEDamos'), u('er\xEDamos'), u('ir\xEDamos'),
-                        u('\xE1ssemos'), u('\xEAssemos'), u('\xEDssemos'),
-                        u('ar\xEDeis'), u('er\xEDeis'), u('ir\xEDeis'),
-                        u('\xE1sseis'), u('\xE9sseis'), u('\xEDsseis'),
-                        u('\xE1ramos'), u('\xE9ramos'), u('\xEDramos'),
-                        u('\xE1vamos'), 'aremos', 'eremos', 'iremos',
-                        'ariam', 'eriam', 'iriam', 'assem', 'essem',
-                        'issem', 'ara~o', 'era~o', 'ira~o', 'arias',
-                        'erias', 'irias', 'ardes', 'erdes', 'irdes',
-                        'asses', 'esses', 'isses', 'astes', 'estes',
-                        'istes', u('\xE1reis'), 'areis', u('\xE9reis'),
-                        'ereis', u('\xEDreis'), 'ireis', u('\xE1veis'),
-                        u('\xEDamos'), 'armos', 'ermos', 'irmos',
-                        'aria', 'eria', 'iria', 'asse', 'esse',
-                        'isse', 'aste', 'este', 'iste', 'arei',
-                        'erei', 'irei', 'aram', 'eram', 'iram',
-                        'avam', 'arem', 'erem', 'irem',
-                        'ando', 'endo', 'indo', 'adas', 'idas',
-                        u('ar\xE1s'), 'aras', u('er\xE1s'), 'eras',
-                        u('ir\xE1s'), 'avas', 'ares', 'eres', 'ires',
-                        u('\xEDeis'), 'ados', 'idos', u('\xE1mos'),
-                        'amos', 'emos', 'imos', 'iras', 'ada', 'ida',
-                        u('ar\xE1'), 'ara', u('er\xE1'), 'era',
-                        u('ir\xE1'), 'ava', 'iam', 'ado', 'ido',
-                        'ias', 'ais', 'eis', 'ira', 'ia', 'ei', 'am',
-                        'em', 'ar', 'er', 'ir', 'as',
-                        'es', 'is', 'eu', 'iu', 'ou')
-    __step4_suffixes = ("os", "a", "i", "o", u("\xE1"),
-                        u("\xED"), u("\xF3"))
+    __step1_suffixes = (
+        "amentos",
+        "imentos",
+        "uciones",
+        "amento",
+        "imento",
+        "adoras",
+        "adores",
+        u("a\xE7o~es"),
+        u("log\xEDas"),
+        u("\xEAncias"),
+        "amente",
+        "idades",
+        "ismos",
+        "istas",
+        "adora",
+        u("a\xE7a~o"),
+        "antes",
+        u("\xE2ncia"),
+        u("log\xEDa"),
+        u("uci\xF3n"),
+        u("\xEAncia"),
+        "mente",
+        "idade",
+        "ezas",
+        "icos",
+        "icas",
+        "ismo",
+        u("\xE1vel"),
+        u("\xEDvel"),
+        "ista",
+        "osos",
+        "osas",
+        "ador",
+        "ante",
+        "ivas",
+        "ivos",
+        "iras",
+        "eza",
+        "ico",
+        "ica",
+        "oso",
+        "osa",
+        "iva",
+        "ivo",
+        "ira",
+    )
+    __step2_suffixes = (
+        u("ar\xEDamos"),
+        u("er\xEDamos"),
+        u("ir\xEDamos"),
+        u("\xE1ssemos"),
+        u("\xEAssemos"),
+        u("\xEDssemos"),
+        u("ar\xEDeis"),
+        u("er\xEDeis"),
+        u("ir\xEDeis"),
+        u("\xE1sseis"),
+        u("\xE9sseis"),
+        u("\xEDsseis"),
+        u("\xE1ramos"),
+        u("\xE9ramos"),
+        u("\xEDramos"),
+        u("\xE1vamos"),
+        "aremos",
+        "eremos",
+        "iremos",
+        "ariam",
+        "eriam",
+        "iriam",
+        "assem",
+        "essem",
+        "issem",
+        "ara~o",
+        "era~o",
+        "ira~o",
+        "arias",
+        "erias",
+        "irias",
+        "ardes",
+        "erdes",
+        "irdes",
+        "asses",
+        "esses",
+        "isses",
+        "astes",
+        "estes",
+        "istes",
+        u("\xE1reis"),
+        "areis",
+        u("\xE9reis"),
+        "ereis",
+        u("\xEDreis"),
+        "ireis",
+        u("\xE1veis"),
+        u("\xEDamos"),
+        "armos",
+        "ermos",
+        "irmos",
+        "aria",
+        "eria",
+        "iria",
+        "asse",
+        "esse",
+        "isse",
+        "aste",
+        "este",
+        "iste",
+        "arei",
+        "erei",
+        "irei",
+        "aram",
+        "eram",
+        "iram",
+        "avam",
+        "arem",
+        "erem",
+        "irem",
+        "ando",
+        "endo",
+        "indo",
+        "adas",
+        "idas",
+        u("ar\xE1s"),
+        "aras",
+        u("er\xE1s"),
+        "eras",
+        u("ir\xE1s"),
+        "avas",
+        "ares",
+        "eres",
+        "ires",
+        u("\xEDeis"),
+        "ados",
+        "idos",
+        u("\xE1mos"),
+        "amos",
+        "emos",
+        "imos",
+        "iras",
+        "ada",
+        "ida",
+        u("ar\xE1"),
+        "ara",
+        u("er\xE1"),
+        "era",
+        u("ir\xE1"),
+        "ava",
+        "iam",
+        "ado",
+        "ido",
+        "ias",
+        "ais",
+        "eis",
+        "ira",
+        "ia",
+        "ei",
+        "am",
+        "em",
+        "ar",
+        "er",
+        "ir",
+        "as",
+        "es",
+        "is",
+        "eu",
+        "iu",
+        "ou",
+    )
+    __step4_suffixes = ("os", "a", "i", "o", u("\xE1"), u("\xED"), u("\xF3"))
 
     def stem(self, word):
         """
@@ -79,8 +209,7 @@ class PortugueseStemmer(_StandardStemmer):
         step1_success = False
         step2_success = False
 
-        word = (word.replace(u("\xE3"), "a~")
-                    .replace(u("\xF5"), "o~"))
+        word = word.replace(u("\xE3"), "a~").replace(u("\xF5"), "o~")
 
         r1, r2 = self._r1r2_standard(word, self.__vowels)
         rv = self._rv_standard(word, self.__vowels)
@@ -108,12 +237,15 @@ class PortugueseStemmer(_StandardStemmer):
                         word = word[:-2]
                         rv = rv[:-2]
 
-                elif (suffix in ("ira", "iras") and rv.endswith(suffix) and
-                      word[-len(suffix) - 1:-len(suffix)] == "e"):
+                elif (
+                    suffix in ("ira", "iras")
+                    and rv.endswith(suffix)
+                    and word[-len(suffix) - 1 : -len(suffix)] == "e"
+                ):
                     step1_success = True
 
-                    word = "".join((word[:-len(suffix)], "ir"))
-                    rv = "".join((rv[:-len(suffix)], "ir"))
+                    word = "".join((word[: -len(suffix)], "ir"))
+                    rv = "".join((rv[: -len(suffix)], "ir"))
 
                 elif r2.endswith(suffix):
                     step1_success = True
@@ -123,12 +255,12 @@ class PortugueseStemmer(_StandardStemmer):
                         rv = rv[:-2]
 
                     elif suffix in (u("uci\xF3n"), "uciones"):
-                        word = "".join((word[:-len(suffix)], "u"))
-                        rv = "".join((rv[:-len(suffix)], "u"))
+                        word = "".join((word[: -len(suffix)], "u"))
+                        rv = "".join((rv[: -len(suffix)], "u"))
 
                     elif suffix in (u("\xEAncia"), u("\xEAncias")):
-                        word = "".join((word[:-len(suffix)], "ente"))
-                        rv = "".join((rv[:-len(suffix)], "ente"))
+                        word = "".join((word[: -len(suffix)], "ente"))
+                        rv = "".join((rv[: -len(suffix)], "ente"))
 
                     elif suffix == "mente":
                         word = word[:-5]
@@ -140,9 +272,9 @@ class PortugueseStemmer(_StandardStemmer):
                             rv = rv[:-4]
 
                     elif suffix in ("idade", "idades"):
-                        word = word[:-len(suffix)]
-                        r2 = r2[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                        word = word[: -len(suffix)]
+                        r2 = r2[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
 
                         if r2.endswith(("ic", "iv")):
                             word = word[:-2]
@@ -153,16 +285,16 @@ class PortugueseStemmer(_StandardStemmer):
                             rv = rv[:-4]
 
                     elif suffix in ("iva", "ivo", "ivas", "ivos"):
-                        word = word[:-len(suffix)]
-                        r2 = r2[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                        word = word[: -len(suffix)]
+                        r2 = r2[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
 
                         if r2.endswith("at"):
                             word = word[:-2]
                             rv = rv[:-2]
                     else:
-                        word = word[:-len(suffix)]
-                        rv = rv[:-len(suffix)]
+                        word = word[: -len(suffix)]
+                        rv = rv[: -len(suffix)]
                 break
 
         # STEP 2: Verb suffixes
@@ -171,8 +303,8 @@ class PortugueseStemmer(_StandardStemmer):
                 if rv.endswith(suffix):
                     step2_success = True
 
-                    word = word[:-len(suffix)]
-                    rv = rv[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    rv = rv[: -len(suffix)]
                     break
 
         # STEP 3
@@ -185,8 +317,8 @@ class PortugueseStemmer(_StandardStemmer):
         if not step1_success and not step2_success:
             for suffix in self.__step4_suffixes:
                 if rv.endswith(suffix):
-                    word = word[:-len(suffix)]
-                    rv = rv[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    rv = rv[: -len(suffix)]
                     break
 
         # STEP 5
@@ -194,8 +326,9 @@ class PortugueseStemmer(_StandardStemmer):
             word = word[:-1]
             rv = rv[:-1]
 
-            if ((word.endswith("gu") and rv.endswith("u")) or
-                (word.endswith("ci") and rv.endswith("i"))):
+            if (word.endswith("gu") and rv.endswith("u")) or (
+                word.endswith("ci") and rv.endswith("i")
+            ):
                 word = word[:-1]
 
         elif word.endswith(u("\xE7")):

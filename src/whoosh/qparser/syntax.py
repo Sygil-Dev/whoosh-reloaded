@@ -91,8 +91,7 @@ class SyntaxNode(object):
         raise NotImplementedError(self.__class__.__name__)
 
     def is_ws(self):
-        """Returns True if this node is ignorable whitespace.
-        """
+        """Returns True if this node is ignorable whitespace."""
 
         return False
 
@@ -126,8 +125,7 @@ class SyntaxNode(object):
         return self
 
     def set_range(self, startchar, endchar):
-        """Sets the character range associated with this node.
-        """
+        """Sets the character range associated with this node."""
 
         self.startchar = startchar
         self.endchar = endchar
@@ -154,16 +152,14 @@ class SyntaxNode(object):
 
 
 class MarkerNode(SyntaxNode):
-    """Base class for nodes that only exist to mark places in the tree.
-    """
+    """Base class for nodes that only exist to mark places in the tree."""
 
     def r(self):
         return self.__class__.__name__
 
 
 class Whitespace(MarkerNode):
-    """Abstract syntax tree node for ignorable whitespace.
-    """
+    """Abstract syntax tree node for ignorable whitespace."""
 
     def r(self):
         return " "
@@ -173,8 +169,7 @@ class Whitespace(MarkerNode):
 
 
 class FieldnameNode(SyntaxNode):
-    """Abstract syntax tree node for field name assignments.
-    """
+    """Abstract syntax tree node for field name assignments."""
 
     has_fieldname = True
 
@@ -213,8 +208,10 @@ class GroupNode(SyntaxNode):
         self.kwargs = kwargs
 
     def r(self):
-        return "%s %s" % (self.__class__.__name__,
-                          ", ".join(repr(n) for n in self.nodes))
+        return "%s %s" % (
+            self.__class__.__name__,
+            ", ".join(repr(n) for n in self.nodes),
+        )
 
     @property
     def startchar(self):
@@ -229,8 +226,12 @@ class GroupNode(SyntaxNode):
         return self.nodes[-1].endchar
 
     def apply(self, fn):
-        return self.__class__(self.type, [fn(node) for node in self.nodes],
-                              boost=self.boost, **self.kwargs)
+        return self.__class__(
+            self.type,
+            [fn(node) for node in self.nodes],
+            boost=self.boost,
+            **self.kwargs
+        )
 
     def query(self, parser):
         subs = []
@@ -360,15 +361,13 @@ class BinaryGroup(GroupNode):
         elif qb is None:
             q = qa
         else:
-            q = self.qclass(self.nodes[0].query(parser),
-                            self.nodes[1].query(parser))
+            q = self.qclass(self.nodes[0].query(parser), self.nodes[1].query(parser))
 
         return attach(q, self)
 
 
 class Wrapper(GroupNode):
-    """Intermediate base class for nodes that wrap a single sub-node.
-    """
+    """Intermediate base class for nodes that wrap a single sub-node."""
 
     merging = False
 
@@ -416,8 +415,8 @@ class OrGroup(GroupNode):
             def __init__(self, nodes=None, **kwargs):
                 if "scale" in kwargs:
                     del kwargs["scale"]
-                super(ScaledOrGroup, self).__init__(nodes=nodes, scale=scale,
-                                                    **kwargs)
+                super(ScaledOrGroup, self).__init__(nodes=nodes, scale=scale, **kwargs)
+
         return ScaledOrGroup
 
 
@@ -446,8 +445,7 @@ class NotGroup(Wrapper):
 
 
 class RangeNode(SyntaxNode):
-    """Syntax node for range queries.
-    """
+    """Syntax node for range queries."""
 
     has_fieldname = True
     has_boost = True
@@ -475,9 +473,14 @@ class RangeNode(SyntaxNode):
             field = parser.schema[fieldname]
             if field.self_parsing():
                 try:
-                    q = field.parse_range(fieldname, start, end,
-                                          self.startexcl, self.endexcl,
-                                          boost=self.boost)
+                    q = field.parse_range(
+                        fieldname,
+                        start,
+                        end,
+                        self.startexcl,
+                        self.endexcl,
+                        boost=self.boost,
+                    )
                     if q is not None:
                         return attach(q, self)
                 except QueryParserError:
@@ -485,14 +488,13 @@ class RangeNode(SyntaxNode):
                     return attach(query.error_query(e), self)
 
             if start:
-                start = get_single_text(field, start, tokenize=False,
-                                        removestops=False)
+                start = get_single_text(field, start, tokenize=False, removestops=False)
             if end:
-                end = get_single_text(field, end, tokenize=False,
-                                      removestops=False)
+                end = get_single_text(field, end, tokenize=False, removestops=False)
 
-        q = query.TermRange(fieldname, start, end, self.startexcl,
-                            self.endexcl, boost=self.boost)
+        q = query.TermRange(
+            fieldname, start, end, self.startexcl, self.endexcl, boost=self.boost
+        )
         return attach(q, self)
 
 
@@ -535,15 +537,19 @@ class TextNode(SyntaxNode):
     def query(self, parser):
         fieldname = self.fieldname or parser.fieldname
         termclass = self.qclass or parser.termclass
-        q = parser.term_query(fieldname, self.text, termclass,
-                              boost=self.boost, tokenize=self.tokenize,
-                              removestops=self.removestops)
+        q = parser.term_query(
+            fieldname,
+            self.text,
+            termclass,
+            boost=self.boost,
+            tokenize=self.tokenize,
+            removestops=self.removestops,
+        )
         return attach(q, self)
 
 
 class WordNode(TextNode):
-    """Syntax node for term queries.
-    """
+    """Syntax node for term queries."""
 
     tokenize = True
     removestops = True
@@ -553,6 +559,7 @@ class WordNode(TextNode):
 
 
 # Operators
+
 
 class Operator(SyntaxNode):
     """Base class for PrefixOperator, PostfixOperator, and InfixOperator.
@@ -623,14 +630,14 @@ class InfixOperator(Operator):
             # we can quickly run into Python's recursion limit otherwise.
             if merging and la and isinstance(left, gtype):
                 left.append(right)
-                del group[position:position + 2]
+                del group[position : position + 2]
             elif merging and not la and isinstance(right, gtype):
                 right.insert(0, left)
-                del group[position - 1:position + 1]
+                del group[position - 1 : position + 1]
                 return position - 1
             else:
                 # Replace the operator and the two surrounding objects
-                group[position - 1:position + 2] = [gtype([left, right])]
+                group[position - 1 : position + 2] = [gtype([left, right])]
         else:
             del group[position]
 
@@ -638,6 +645,7 @@ class InfixOperator(Operator):
 
 
 # Functions
+
 
 def to_word(n):
     node = WordNode(n.original)

@@ -36,14 +36,14 @@ from whoosh.compat import iteritems
 try:
     from collections import Counter
 except ImportError:
+
     class Counter(dict):
         def __missing__(self, key):
             return 0
 
 
 def unbound_cache(func):
-    """Caching decorator with an unbounded cache size.
-    """
+    """Caching decorator with an unbounded cache size."""
 
     cache = {}
 
@@ -86,9 +86,9 @@ def lfu_cache(maxsize=100):
             except KeyError:
                 stats[1] += 1  # Miss
                 if len(data) == maxsize:
-                    for k, _ in nsmallest(maxsize // 10 or 1,
-                                          iteritems(usecount),
-                                          key=itemgetter(1)):
+                    for k, _ in nsmallest(
+                        maxsize // 10 or 1, iteritems(usecount), key=itemgetter(1)
+                    ):
                         del data[k]
                         del usecount[k]
                 data[args] = user_function(*args)
@@ -107,4 +107,5 @@ def lfu_cache(maxsize=100):
         wrapper.cache_info = cache_info
         wrapper.cache_clear = cache_clear
         return wrapper
+
     return decorating_function

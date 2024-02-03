@@ -34,10 +34,11 @@ import random
 from collections import defaultdict
 from math import log
 
-from whoosh.compat import xrange, iteritems
+from whoosh.compat import range, iteritems
 
 
 # Expansion models
+
 
 class ExpansionModel(object):
     def __init__(self, doc_count, field_length):
@@ -84,8 +85,7 @@ class KLModel(ExpansionModel):
     def normalizer(self, maxweight, top_total):
         if not self.collection_total:
             return maxweight
-        return (maxweight * log(self.collection_total / top_total) / log(2.0)
-                * top_total)
+        return maxweight * log(self.collection_total / top_total) / log(2.0) * top_total
 
     def score(self, weight_in_top, weight_in_collection, top_total):
         wit_over_tt = weight_in_top / top_total
@@ -94,9 +94,9 @@ class KLModel(ExpansionModel):
         if wit_over_tt < wic_over_ct:
             return 0
         else:
-            return wit_over_tt * log(wit_over_tt
-                                     / (weight_in_top / self.collection_total),
-                                     2)
+            return wit_over_tt * log(
+                wit_over_tt / (weight_in_top / self.collection_total), 2
+            )
 
 
 class Expander(object):
@@ -106,7 +106,7 @@ class Expander(object):
 
     def __init__(self, ixreader, fieldname, model=Bo1Model):
         """
-        :param reader: A :class:whoosh.reading.IndexReader object.
+        :param reader: A :class: whoosh.reading.IndexReader object.
         :param fieldname: The name of the field in which to search.
         :param model: (classify.ExpansionModel) The model to use for expanding
             the query terms. If you omit this parameter, the expander uses
@@ -115,7 +115,7 @@ class Expander(object):
 
         self.ixreader = ixreader
         self.fieldname = fieldname
-        doccount =  self.ixreader.doc_count_all()
+        doccount = self.ixreader.doc_count_all()
         fieldlen = self.ixreader.field_length(fieldname)
 
         if type(model) is type:
@@ -151,8 +151,10 @@ class Expander(object):
         elif self.ixreader.schema[self.fieldname].stored:
             self.add_text(ixreader.stored_fields(docnum).get(self.fieldname))
         else:
-            raise Exception("Field %r in document %s is not vectored or stored"
-                            % (self.fieldname, docnum))
+            raise Exception(
+                "Field %r in document %s is not vectored or stored"
+                % (self.fieldname, docnum)
+            )
 
     def add_text(self, string):
         # Unfortunately since field.index() yields bytes texts, and we want
@@ -162,8 +164,9 @@ class Expander(object):
 
         field = self.ixreader.schema[self.fieldname]
         from_bytes = field.from_bytes
-        self.add((from_bytes(text), weight) for text, _, weight, _
-                 in field.index(string))
+        self.add(
+            (from_bytes(text), weight) for text, _, weight, _ in field.index(string)
+        )
 
     def expanded_terms(self, number, normalize=True):
         """Returns the N most important terms in the vectors added so far.
@@ -205,10 +208,10 @@ class Expander(object):
 
 # Similarity functions
 
+
 def shingles(input, size=2):
     d = defaultdict(int)
-    for shingle in (input[i:i + size]
-                    for i in xrange(len(input) - (size - 1))):
+    for shingle in (input[i : i + size] for i in range(len(input) - (size - 1))):
         d[shingle] += 1
     return iteritems(d)
 
@@ -222,7 +225,7 @@ def simhash(features, hashbits=32):
     vs = [0] * hashbits
     for feature, weight in features:
         h = hashfn(feature)
-        for i in xrange(hashbits):
+        for i in range(hashbits):
             if h & (1 << i):
                 vs[i] += weight
             else:
@@ -242,7 +245,7 @@ def _hash(s, hashbits):
     else:
         x = ord(s[0]) << 7
         m = 1000003
-        mask = 2 ** hashbits - 1
+        mask = 2**hashbits - 1
         for c in s:
             x = ((x * m) ^ ord(c)) & mask
         x ^= len(s)
@@ -261,6 +264,7 @@ def hamming_distance(first_hash, other_hash, hashbits=32):
 
 
 # Clustering
+
 
 def kmeans(data, k, t=0.0001, distfun=None, maxiter=50, centers=None):
     """
@@ -303,14 +307,14 @@ def kmeans(data, k, t=0.0001, distfun=None, maxiter=50, centers=None):
         error = 0
 
         # clear old counts and temp centroids
-        for i in xrange(k):
+        for i in range(k):
             counts[i] = 0
             c1[i] = 0
 
-        for h in xrange(n):
+        for h in range(n):
             # identify the closest cluster
             min_distance = DOUBLE_MAX
-            for i in xrange(k):
+            for i in range(k):
                 distance = (data[h] - c[i]) ** 2
                 if distance < min_distance:
                     labels[h] = i
@@ -322,7 +326,7 @@ def kmeans(data, k, t=0.0001, distfun=None, maxiter=50, centers=None):
             # update standard error
             error += min_distance
 
-        for i in xrange(k):  # update all centroids
+        for i in range(k):  # update all centroids
             c[i] = c1[i] / counts[i] if counts[i] else c1[i]
 
         niter += 1
@@ -333,6 +337,7 @@ def kmeans(data, k, t=0.0001, distfun=None, maxiter=50, centers=None):
 
 
 # Sliding window clusters
+
 
 def two_pass_variance(data):
     n = 0
@@ -377,7 +382,7 @@ def swin(data, size):
             right = data[j]
         v = 99999
         if j - i > 1:
-            v = two_pass_variance(data[i:j + 1])
+            v = two_pass_variance(data[i : j + 1])
         clusters.append((left, right, j - i, v))
     clusters.sort(key=lambda x: (0 - x[2], x[3]))
     return clusters

@@ -386,12 +386,12 @@ document numbers in the same relative order as in the results. You can use the
 return the document's stored fields as a dictionary::
 
     for category_name in categories:
-        print "Top 5 documents in the %s category" % category_name
+        print ("Top 5 documents in the %s category") % category_name
         doclist = categories[category_name]
         for docnum, score in doclist[:5]:
-            print "  ", searcher.stored_fields(docnum)
+            print ("  ", searcher.stored_fields(docnum))
         if len(doclist) > 5:
-            print "  (%s more)" % (len(doclist) - 5)
+            print ("  (%s more)") % (len(doclist) - 5)
 
 If you want different information about the groups, for example just the count
 of documents in each group, or you don't need the groups to be ordered, you can

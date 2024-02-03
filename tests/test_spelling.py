@@ -8,12 +8,16 @@ from whoosh.support.levenshtein import levenshtein
 from whoosh.util.testing import TempIndex
 
 
-_wordlist = sorted(u("render animation animate shader shading zebra koala"
-                     "ready kismet reaction page delete quick fox jumped"
-                     "over lazy dog wicked erase red team yellow under interest"
-                     "open print acrid sear deaf feed grow heal jolly kilt"
-                     "low zone xylophone crown vale brown neat meat reduction"
-                     "blunder preaction lamppost").split())
+_wordlist = sorted(
+    u(
+        "render animation animate shader shading zebra koala"
+        "ready kismet reaction page delete quick fox jumped"
+        "over lazy dog wicked erase red team yellow under interest"
+        "open print acrid sear deaf feed grow heal jolly kilt"
+        "low zone xylophone crown vale brown neat meat reduction"
+        "blunder preaction lamppost"
+    ).split()
+)
 
 
 def test_list_corrector():
@@ -24,8 +28,9 @@ def test_list_corrector():
     for lev_dist in range(1, 3):
         # sugs will return suggest first ordered by levenshtein distance
         # then second order by dictionary order
-        target += [w for w in _wordlist
-                   if levenshtein(typo, w) <= lev_dist and w not in target]
+        target += [
+            w for w in _wordlist if levenshtein(typo, w) <= lev_dist and w not in target
+        ]
     assert sugs == target
 
 
@@ -33,7 +38,7 @@ def test_automaton():
     schema = fields.Schema(text=fields.TEXT)
     with TempIndex(schema, "automatonspell") as ix:
         with ix.writer() as w:
-            w.add_document(text=u" ".join(_wordlist))
+            w.add_document(text=" ".join(_wordlist))
 
         with ix.reader() as r:
             bterms = list(r.lexicon("text"))
@@ -50,27 +55,28 @@ def test_reader_corrector():
     schema = fields.Schema(text=fields.TEXT())
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(text=u"render zorro kaori postal")
-            w.add_document(text=u"reader zebra koala pastry")
-            w.add_document(text=u"leader libra oola paster")
-            w.add_document(text=u"feeder lorry zoala baster")
+            w.add_document(text="render zorro kaori postal")
+            w.add_document(text="reader zebra koala pastry")
+            w.add_document(text="leader libra oola paster")
+            w.add_document(text="feeder lorry zoala baster")
 
         with ix.reader() as r:
             sp = spelling.ReaderCorrector(r, "text", schema["text"])
-            assert sp.suggest(u"koala", maxdist=1) == [u'koala', u"zoala"]
+            assert sp.suggest("koala", maxdist=1) == ["koala", "zoala"]
 
-            target = [u'kaori', u'koala', u'oola']
-            sugs = sp.suggest(u"kaola", maxdist=2)
+            target = ["kaori", "koala", "oola"]
+            sugs = sp.suggest("kaola", maxdist=2)
             assert sugs == target
 
 
 def test_unicode_spelling():
     schema = fields.Schema(text=fields.ID())
 
-    domain = [u"\u0924\u092a\u093e\u0907\u0939\u0930\u0941",
-              u"\u65e5\u672c",
-              u"\uc774\uc124\ud76c",
-              ]
+    domain = [
+        "\u0924\u092a\u093e\u0907\u0939\u0930\u0941",
+        "\u65e5\u672c",
+        "\uc774\uc124\ud76c",
+    ]
 
     with TempIndex(schema) as ix:
         with ix.writer() as w:
@@ -79,7 +85,7 @@ def test_unicode_spelling():
 
         with ix.reader() as r:
             rc = spelling.ReaderCorrector(r, "text", schema["text"])
-            assert rc.suggest(u"\u65e5\u672e\u672c") == [u"\u65e5\u672c"]
+            assert rc.suggest("\u65e5\u672e\u672c") == ["\u65e5\u672c"]
 
 
 def test_wordfile():
@@ -107,37 +113,49 @@ def test_query_highlight():
         return hf.format_fragment(fragment)
 
     assert do("a b c d", ["b"]) == 'a <strong class="match term0">b</strong> c d'
-    assert do('a (x:b OR y:"c d") e', ("b", "c")) == 'a (x:<strong class="match term0">b</strong> OR y:"<strong class="match term1">c</strong> d") e'
+    assert (
+        do('a (x:b OR y:"c d") e', ("b", "c"))
+        == 'a (x:<strong class="match term0">b</strong> OR y:"<strong class="match term1">c</strong> d") e'
+    )
 
 
 def test_query_terms():
     qp = QueryParser("a", None)
 
     q = qp.parse("alfa b:(bravo OR c:charlie) delta")
-    assert sorted(q.iter_all_terms()) == [("a", "alfa"), ("a", "delta"),
-                                          ("b", "bravo"), ("c", "charlie")]
+    assert sorted(q.iter_all_terms()) == [
+        ("a", "alfa"),
+        ("a", "delta"),
+        ("b", "bravo"),
+        ("c", "charlie"),
+    ]
 
     q = qp.parse("alfa brav*")
     assert sorted(q.iter_all_terms()) == [("a", "alfa")]
 
     q = qp.parse('a b:("b c" d)^2 e')
     tokens = [(t.fieldname, t.text, t.boost) for t in q.all_tokens()]
-    assert tokens == [('a', 'a', 1.0), ('b', 'b', 2.0), ('b', 'c', 2.0),
-                      ('b', 'd', 2.0), ('a', 'e', 1.0)]
+    assert tokens == [
+        ("a", "a", 1.0),
+        ("b", "b", 2.0),
+        ("b", "c", 2.0),
+        ("b", "d", 2.0),
+        ("a", "e", 1.0),
+    ]
 
 
 def test_correct_query():
     schema = fields.Schema(a=fields.TEXT(), b=fields.TEXT)
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(a=u"alfa bravo charlie delta")
-            w.add_document(a=u"delta echo foxtrot golf")
-            w.add_document(a=u"golf hotel india juliet")
-            w.add_document(a=u"juliet kilo lima mike")
+            w.add_document(a="alfa bravo charlie delta")
+            w.add_document(a="delta echo foxtrot golf")
+            w.add_document(a="golf hotel india juliet")
+            w.add_document(a="juliet kilo lima mike")
 
         with ix.searcher() as s:
             qp = QueryParser("a", ix.schema)
-            qtext = u'alpha ("brovo november" OR b:dolta) detail'
+            qtext = 'alpha ("brovo november" OR b:dolta) detail'
             q = qp.parse(qtext, ix.schema)
 
             c = s.correct_query(q, qtext)
@@ -148,18 +166,24 @@ def test_correct_query():
             assert isinstance(cq[1][0], query.Phrase)
             assert cq[1][0].words == ["bravo", "november"]
 
-            qtext = u'alpha b:("brovo november" a:delta) detail'
+            qtext = 'alpha b:("brovo november" a:delta) detail'
             q = qp.parse(qtext, ix.schema)
             c = s.correct_query(q, qtext)
-            assert c.query.__unicode__() == '(a:alfa AND b:"brovo november" AND a:delta AND a:detail)'
+            assert (
+                c.query.__unicode__()
+                == '(a:alfa AND b:"brovo november" AND a:delta AND a:detail)'
+            )
             assert c.string == 'alfa b:("brovo november" a:delta) detail'
 
             hf = highlight.HtmlFormatter(classname="c")
-            assert c.format_string(hf) == '<strong class="c term0">alfa</strong> b:("brovo november" a:delta) detail'
+            assert (
+                c.format_string(hf)
+                == '<strong class="c term0">alfa</strong> b:("brovo november" a:delta) detail'
+            )
 
 
 def test_spelling_field():
-    text = u"rendering shading modeling reactions"
+    text = "rendering shading modeling reactions"
     ana = analysis.StemmingAnalyzer()
     schema = fields.Schema(text=fields.TEXT(analyzer=ana, spelling=True))
 
@@ -192,7 +216,7 @@ def test_correct_spell_field():
     schema = fields.Schema(text=fields.TEXT(analyzer=ana, spelling=True))
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(text=u"rendering shading modeling reactions")
+            w.add_document(text="rendering shading modeling reactions")
 
         with ix.searcher() as s:
             text = s.schema["text"]
@@ -206,7 +230,7 @@ def test_correct_spell_field():
             assert words == ["modeling", "reactions", "rendering", "shading"]
 
             qp = QueryParser("text", s.schema)
-            qtext = u"renderink"
+            qtext = "renderink"
             q = qp.parse(qtext, s.schema)
 
             r = s.search(q)
@@ -221,22 +245,28 @@ def test_correct_spell_field():
 
 
 def test_suggest_prefix():
-    domain = ("Shoot To Kill",
-              "Bloom, Split and Deviate",
-              "Rankle the Seas and the Skies",
-              "Lightning Flash Flame Shell",
-              "Flower Wind Rage and Flower God Roar, Heavenly Wind Rage and "
-              "Heavenly Demon Sneer",
-              "All Waves, Rise now and Become my Shield, Lightning, Strike "
-              "now and Become my Blade",
-              "Cry, Raise Your Head, Rain Without end",
-              "Sting All Enemies To Death",
-              "Reduce All Creation to Ash",
-              "Sit Upon the Frozen Heavens",
-              "Call forth the Twilight")
+    domain = (
+        "Shoot To Kill",
+        "Bloom, Split and Deviate",
+        "Rankle the Seas and the Skies",
+        "Lightning Flash Flame Shell",
+        "Flower Wind Rage and Flower God Roar, Heavenly Wind Rage and "
+        "Heavenly Demon Sneer",
+        "All Waves, Rise now and Become my Shield, Lightning, Strike "
+        "now and Become my Blade",
+        "Cry, Raise Your Head, Rain Without end",
+        "Sting All Enemies To Death",
+        "Reduce All Creation to Ash",
+        "Sit Upon the Frozen Heavens",
+        "Call forth the Twilight",
+    )
 
-    schema = fields.Schema(content=fields.TEXT(stored=True, ),
-                           quick=fields.NGRAM(maxsize=10, stored=True))
+    schema = fields.Schema(
+        content=fields.TEXT(
+            stored=True,
+        ),
+        quick=fields.NGRAM(maxsize=10, stored=True),
+    )
     with TempIndex(schema, "sugprefix") as ix:
         with ix.writer() as w:
             for item in domain:
@@ -244,8 +274,8 @@ def test_suggest_prefix():
                 w.add_document(content=content, quick=content)
 
         with ix.searcher() as s:
-            sugs = s.suggest("content", u"ra", maxdist=2, prefix=2)
-            assert sugs == ['rage', 'rain']
+            sugs = s.suggest("content", "ra", maxdist=2, prefix=2)
+            assert sugs == ["rage", "rain"]
 
             sugs = s.suggest("content", "ra", maxdist=2, prefix=1)
             assert sugs == ["rage", "rain", "roar"]
@@ -256,14 +286,13 @@ def test_prefix_address():
     schema = fields.Schema(f1=fieldtype, f2=fieldtype)
     with TempIndex(schema, "prefixaddr") as ix:
         with ix.writer() as w:
-            w.add_document(f1=u"aabc aawx aaqr aade",
-                           f2=u"aa12 aa34 aa56 aa78")
+            w.add_document(f1="aabc aawx aaqr aade", f2="aa12 aa34 aa56 aa78")
 
         with ix.searcher() as s:
-            sugs = s.suggest("f1", u"aa", maxdist=2, prefix=2)
+            sugs = s.suggest("f1", "aa", maxdist=2, prefix=2)
             assert sorted(sugs) == ["aabc", "aade", "aaqr", "aawx"]
 
-            sugs = s.suggest("f2", u"aa", maxdist=2, prefix=2)
+            sugs = s.suggest("f2", "aa", maxdist=2, prefix=2)
             assert sorted(sugs) == ["aa12", "aa34", "aa56", "aa78"]
 
 
@@ -273,14 +302,14 @@ def test_correct_correct():
     schema = fields.Schema(a=fields.TEXT())
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(a=u'dworska')
-            w.add_document(a=u'swojska')
+            w.add_document(a="dworska")
+            w.add_document(a="swojska")
 
         with ix.searcher() as s:
             s = ix.searcher()
-            qtext = u'dworska'
+            qtext = "dworska"
 
-            qp = qparser.QueryParser('a', ix.schema)
+            qp = qparser.QueryParser("a", ix.schema)
             q = qp.parse(qtext, ix.schema)
             c = s.correct_query(q, qtext)
 
@@ -291,13 +320,18 @@ def test_correct_correct():
 
 def test_very_long_words():
     import sys
+
     length = int(sys.getrecursionlimit() * 1.5)
 
     strings1 = [u(chr(i) * length) for i in range(65, 70)]
     strings2 = [u(chr(i) * length) for i in range(71, 75)]
 
     ana = analysis.StemmingAnalyzer()
-    schema = fields.Schema(text=fields.TEXT(analyzer=ana, ))
+    schema = fields.Schema(
+        text=fields.TEXT(
+            analyzer=ana,
+        )
+    )
     with TempIndex(schema) as ix:
         with ix.writer() as w:
             for string in strings1:

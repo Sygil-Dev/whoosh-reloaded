@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 
 from __future__ import with_statement
 import copy
@@ -9,29 +9,28 @@ import pytest
 from whoosh import analysis, fields, index, qparser, query, scoring
 from whoosh.codec.whoosh3 import W3Codec
 from whoosh.compat import b, u, text_type
-from whoosh.compat import xrange, permutations, izip_longest
+from whoosh.compat import range, permutations, izip_longest
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
 
 def make_index():
-    s = fields.Schema(key=fields.ID(stored=True),
-                      name=fields.TEXT,
-                      value=fields.TEXT)
+    s = fields.Schema(key=fields.ID(stored=True), name=fields.TEXT, value=fields.TEXT)
     st = RamStorage()
     ix = st.create_index(s)
 
     w = ix.writer()
-    w.add_document(key=u("A"), name=u("Yellow brown"),
-                   value=u("Blue red green render purple?"))
-    w.add_document(key=u("B"), name=u("Alpha beta"),
-                   value=u("Gamma delta epsilon omega."))
-    w.add_document(key=u("C"), name=u("One two"),
-                   value=u("Three rendered four five."))
-    w.add_document(key=u("D"), name=u("Quick went"),
-                   value=u("Every red town."))
-    w.add_document(key=u("E"), name=u("Yellow uptown"),
-                   value=u("Interest rendering outer photo!"))
+    w.add_document(
+        key=u("A"), name=u("Yellow brown"), value=u("Blue red green render purple?")
+    )
+    w.add_document(
+        key=u("B"), name=u("Alpha beta"), value=u("Gamma delta epsilon omega.")
+    )
+    w.add_document(key=u("C"), name=u("One two"), value=u("Three rendered four five."))
+    w.add_document(key=u("D"), name=u("Quick went"), value=u("Every red town."))
+    w.add_document(
+        key=u("E"), name=u("Yellow uptown"), value=u("Interest rendering outer photo!")
+    )
     w.commit()
 
     return ix
@@ -42,8 +41,7 @@ def _get_keys(stored_fields):
 
 
 def _docs(q, s):
-    return _get_keys([s.stored_fields(docnum) for docnum
-                           in q.docs(s)])
+    return _get_keys([s.stored_fields(docnum) for docnum in q.docs(s)])
 
 
 def _run_query(q, target):
@@ -74,29 +72,32 @@ def test_term():
 
 
 def test_require():
-    _run_query(query.Require(query.Term("value", u("red")),
-                             query.Term("name", u("yellow"))),
-               [u("A")])
+    _run_query(
+        query.Require(query.Term("value", u("red")), query.Term("name", u("yellow"))),
+        [u("A")],
+    )
 
 
 def test_and():
-    _run_query(query.And([query.Term("value", u("red")),
-                          query.Term("name", u("yellow"))]),
-               [u("A")])
+    _run_query(
+        query.And([query.Term("value", u("red")), query.Term("name", u("yellow"))]),
+        [u("A")],
+    )
     # Missing
-    _run_query(query.And([query.Term("value", u("ochre")),
-                          query.Term("name", u("glonk"))]),
-               [])
+    _run_query(
+        query.And([query.Term("value", u("ochre")), query.Term("name", u("glonk"))]), []
+    )
 
 
 def test_or():
-    _run_query(query.Or([query.Term("value", u("red")),
-                         query.Term("name", u("yellow"))]),
-               [u("A"), u("D"), u("E")])
+    _run_query(
+        query.Or([query.Term("value", u("red")), query.Term("name", u("yellow"))]),
+        [u("A"), u("D"), u("E")],
+    )
     # Missing
-    _run_query(query.Or([query.Term("value", u("ochre")),
-                         query.Term("name", u("glonk"))]),
-               [])
+    _run_query(
+        query.Or([query.Term("value", u("ochre")), query.Term("name", u("glonk"))]), []
+    )
     _run_query(query.Or([]), [])
 
 
@@ -111,7 +112,7 @@ def test_ors():
 
     with ix.searcher() as s:
         qs = [query.Term("text", word) for word in domain]
-        for i in xrange(1, len(domain)):
+        for i in range(1, len(domain)):
             q = query.Or(qs[:i])
             r1 = [(hit.docnum, hit.score) for hit in s.search(q, limit=None)]
 
@@ -124,22 +125,29 @@ def test_ors():
 
 
 def test_not():
-    _run_query(query.And([query.Or([query.Term("value", u("red")),
-                                    query.Term("name", u("yellow"))]),
-                          query.Not(query.Term("name", u("quick")))]),
-               [u("A"), u("E")])
+    _run_query(
+        query.And(
+            [
+                query.Or(
+                    [query.Term("value", u("red")), query.Term("name", u("yellow"))]
+                ),
+                query.Not(query.Term("name", u("quick"))),
+            ]
+        ),
+        [u("A"), u("E")],
+    )
 
 
 def test_topnot():
     _run_query(query.Not(query.Term("value", "red")), [u("B"), "C", "E"])
-    _run_query(query.Not(query.Term("name", "yellow")), [u("B"), u("C"),
-                                                         u("D")])
+    _run_query(query.Not(query.Term("name", "yellow")), [u("B"), u("C"), u("D")])
 
 
 def test_andnot():
-    _run_query(query.AndNot(query.Term("name", u("yellow")),
-                            query.Term("value", u("purple"))),
-               [u("E")])
+    _run_query(
+        query.AndNot(query.Term("name", u("yellow")), query.Term("value", u("purple"))),
+        [u("E")],
+    )
 
 
 def test_andnot2():
@@ -180,16 +188,18 @@ def test_andnot2():
 
 
 def test_variations():
-    _run_query(query.Variations("value", u("render")),
-               [u("A"), u("C"), u("E")])
+    _run_query(query.Variations("value", u("render")), [u("A"), u("C"), u("E")])
 
 
 def test_wildcard():
-    _run_query(query.Or([query.Wildcard('value', u('*red*')),
-                         query.Wildcard('name', u('*yellow*'))]),
-               [u("A"), u("C"), u("D"), u("E")])
+    _run_query(
+        query.Or(
+            [query.Wildcard("value", u("*red*")), query.Wildcard("name", u("*yellow*"))]
+        ),
+        [u("A"), u("C"), u("D"), u("E")],
+    )
     # Missing
-    _run_query(query.Wildcard('value', 'glonk*'), [])
+    _run_query(query.Wildcard("value", "glonk*"), [])
 
 
 def test_not2():
@@ -198,10 +208,8 @@ def test_not2():
     ix = storage.create_index(schema)
     writer = ix.writer()
     writer.add_document(name=u("a"), value=u("alfa bravo charlie delta echo"))
-    writer.add_document(name=u("b"),
-                        value=u("bravo charlie delta echo foxtrot"))
-    writer.add_document(name=u("c"),
-                        value=u("charlie delta echo foxtrot golf"))
+    writer.add_document(name=u("b"), value=u("bravo charlie delta echo foxtrot"))
+    writer.add_document(name=u("c"), value=u("charlie delta echo foxtrot golf"))
     writer.add_document(name=u("d"), value=u("delta echo golf hotel india"))
     writer.add_document(name=u("e"), value=u("echo golf hotel india juliet"))
     writer.commit()
@@ -219,6 +227,7 @@ def test_not2():
     with ix.searcher() as s:
         results = s.search(p.parse("echo NOT charlie"))
         assert sorted([d["name"] for d in results]) == ["d", "e"]
+
 
 #    def test_or_minmatch():
 #        schema = fields.Schema(k=fields.STORED, v=fields.TEXT)
@@ -264,8 +273,8 @@ def test_range():
         assert q[1].end == "foxtrot"
         assert not q[1].startexcl
         assert not q[1].endexcl
-        ids = sorted([d['id'] for d in s.search(q)])
-        assert ids == [u('A'), u('B'), u('C')]
+        ids = sorted([d["id"] for d in s.search(q)])
+        assert ids == [u("A"), u("B"), u("C")]
 
         q = qp.parse(u("foxtrot {echo TO hotel]"))
         assert q.__class__ == query.And
@@ -275,8 +284,8 @@ def test_range():
         assert q[1].end == "hotel"
         assert q[1].startexcl
         assert not q[1].endexcl
-        ids = sorted([d['id'] for d in s.search(q)])
-        assert ids == [u('B'), u('C'), u('D'), u('E')]
+        ids = sorted([d["id"] for d in s.search(q)])
+        assert ids == [u("B"), u("C"), u("D"), u("E")]
 
         q = qp.parse(u("{bravo TO delta}"))
         assert q.__class__ == query.TermRange
@@ -284,8 +293,8 @@ def test_range():
         assert q.end == "delta"
         assert q.startexcl
         assert q.endexcl
-        ids = sorted([d['id'] for d in s.search(q)])
-        assert ids == [u('A'), u('B'), u('C')]
+        ids = sorted([d["id"] for d in s.search(q)])
+        assert ids == [u("A"), u("B"), u("C")]
 
         # Shouldn't match anything
         q = qp.parse(u("[1 to 10]"))
@@ -303,9 +312,10 @@ def test_range_clusiveness():
     w.commit()
 
     with ix.searcher() as s:
+
         def check(startexcl, endexcl, string):
             q = query.TermRange("id", "b", "f", startexcl, endexcl)
-            r = "".join(sorted(d['id'] for d in s.search(q)))
+            r = "".join(sorted(d["id"] for d in s.search(q)))
             assert r == string
 
         check(False, False, "bcdef")
@@ -328,7 +338,7 @@ def test_open_ranges():
 
         def check(qstring, result):
             q = qp.parse(qstring)
-            r = "".join(sorted([d['id'] for d in s.search(q)]))
+            r = "".join(sorted([d["id"] for d in s.search(q)]))
             assert r == result
 
         check(u("[b TO]"), "bcdefg")
@@ -362,7 +372,7 @@ def test_open_numeric_ranges():
 
 def test_open_date_ranges():
     basedate = datetime(2011, 1, 24, 6, 25, 0, 0)
-    domain = [basedate + timedelta(days=n) for n in xrange(-20, 20)]
+    domain = [basedate + timedelta(days=n) for n in range(-20, 20)]
 
     schema = fields.Schema(date=fields.DATETIME(stored=True))
     ix = RamStorage().create_index(schema)
@@ -388,6 +398,7 @@ def test_open_date_ranges():
 
         # With date parser
         from whoosh.qparser.dateparse import DateParserPlugin
+
         qp.add_plugin(DateParserPlugin(basedate))
 
         q = qp.parse("[10 jan 2011 to]")
@@ -405,11 +416,13 @@ def test_open_date_ranges():
 
 def test_negated_unlimited_ranges():
     # Whoosh should treat u("[to]") as if it was "*"
-    schema = fields.Schema(id=fields.ID(stored=True), num=fields.NUMERIC,
-                           date=fields.DATETIME)
+    schema = fields.Schema(
+        id=fields.ID(stored=True), num=fields.NUMERIC, date=fields.DATETIME
+    )
     ix = RamStorage().create_index(schema)
     w = ix.writer()
     from string import ascii_letters
+
     domain = text_type(ascii_letters)
 
     dt = datetime.now()
@@ -523,9 +536,9 @@ def test_multireader():
     w.commit()
     assert len(ix._segments()) == 2
 
-    #r = ix.reader()
-    #assert r.__class__.__name__ == "MultiReader"
-    #pr = r.postings("content", u("bravo"))
+    # r = ix.reader()
+    # assert r.__class__.__name__ == "MultiReader"
+    # pr = r.postings("content", u("bravo"))
 
     with ix.searcher() as s:
         r = s.search(query.Term("content", u("bravo")))
@@ -538,22 +551,24 @@ def test_posting_phrase():
     storage = RamStorage()
     ix = storage.create_index(schema)
     writer = ix.writer()
-    writer.add_document(name=u("A"),
-                        value=u("Little Miss Muffet sat on a tuffet"))
+    writer.add_document(name=u("A"), value=u("Little Miss Muffet sat on a tuffet"))
     writer.add_document(name=u("B"), value=u("Miss Little Muffet tuffet"))
     writer.add_document(name=u("C"), value=u("Miss Little Muffet tuffet sat"))
-    writer.add_document(name=u("D"),
-                        value=u("Gibberish blonk falunk miss muffet sat " +
-                                "tuffet garbonzo"))
+    writer.add_document(
+        name=u("D"),
+        value=u("Gibberish blonk falunk miss muffet sat " + "tuffet garbonzo"),
+    )
     writer.add_document(name=u("E"), value=u("Blah blah blah pancakes"))
     writer.commit()
 
     with ix.searcher() as s:
-        def names(results):
-            return sorted([fields['name'] for fields in results])
 
-        q = query.Phrase("value", [u("little"), u("miss"), u("muffet"),
-                                   u("sat"), u("tuffet")])
+        def names(results):
+            return sorted([fields["name"] for fields in results])
+
+        q = query.Phrase(
+            "value", [u("little"), u("miss"), u("muffet"), u("sat"), u("tuffet")]
+        )
         m = q.matcher(s)
         assert m.__class__.__name__ == "SpanNear2Matcher"
 
@@ -561,8 +576,7 @@ def test_posting_phrase():
         assert names(r) == ["A"]
         assert len(r) == 1
 
-        q = query.Phrase("value", [u("miss"), u("muffet"), u("sat"),
-                                   u("tuffet")])
+        q = query.Phrase("value", [u("miss"), u("muffet"), u("sat"), u("tuffet")])
         assert names(s.search(q)) == ["A", "D"]
 
         q = query.Phrase("value", [u("falunk"), u("gibberish")])
@@ -586,14 +600,13 @@ def test_phrase_score():
     storage = RamStorage()
     ix = storage.create_index(schema)
     writer = ix.writer()
-    writer.add_document(name=u("A"),
-                        value=u("Little Miss Muffet sat on a tuffet"))
-    writer.add_document(name=u("D"),
-                        value=u("Gibberish blonk falunk miss muffet sat " +
-                                "tuffet garbonzo"))
+    writer.add_document(name=u("A"), value=u("Little Miss Muffet sat on a tuffet"))
+    writer.add_document(
+        name=u("D"),
+        value=u("Gibberish blonk falunk miss muffet sat " + "tuffet garbonzo"),
+    )
     writer.add_document(name=u("E"), value=u("Blah blah blah pancakes"))
-    writer.add_document(name=u("F"),
-                        value=u("Little miss muffet little miss muffet"))
+    writer.add_document(name=u("F"), value=u("Little miss muffet little miss muffet"))
     writer.commit()
 
     with ix.searcher() as s:
@@ -621,8 +634,8 @@ def test_stop_phrase():
         q = qp.parse(u("richard of york"))
         assert q.__unicode__() == "(title:richard AND title:york)"
         assert len(s.search(q)) == 1
-        #q = qp.parse(u("lily the pink"))
-        #assert len(s.search(q)), 1)
+        # q = qp.parse(u("lily the pink"))
+        # assert len(s.search(q)), 1)
         assert len(s.find("title", u("lily the pink"))) == 1
 
 
@@ -638,12 +651,13 @@ def test_phrase_order():
     writer.commit()
 
     with ix.searcher() as s:
+
         def result(q):
             r = s.search(q, limit=None, sortedby=None)
-            return sorted([d['text'] for d in r])
+            return sorted([d["text"] for d in r])
 
         q = query.Phrase("text", ["bay", "can", "day"])
-        assert result(q) == [u('ape bay can day'), u('bay can day ape')]
+        assert result(q) == [u("ape bay can day"), u("bay can day ape")]
 
 
 def test_phrase_sameword():
@@ -657,8 +671,7 @@ def test_phrase_sameword():
     writer.commit()
 
     with ix.searcher() as s:
-        r = s.search(query.Phrase("text", ["linda", "linda", "linda"]),
-                     limit=None)
+        r = s.search(query.Phrase("text", ["linda", "linda", "linda"]), limit=None)
         assert len(r) == 1
         assert r[0]["id"] == 1
 
@@ -685,24 +698,25 @@ def test_phrase_multi():
 
 
 def test_missing_field_scoring():
-    schema = fields.Schema(name=fields.TEXT(stored=True),
-                           hobbies=fields.TEXT(stored=True))
+    schema = fields.Schema(
+        name=fields.TEXT(stored=True), hobbies=fields.TEXT(stored=True)
+    )
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(name=u('Frank'), hobbies=u('baseball, basketball'))
+            w.add_document(name=u("Frank"), hobbies=u("baseball, basketball"))
 
         with ix.reader() as r:
             assert r.field_length("hobbies") == 2
             assert r.field_length("name") == 1
 
         with ix.writer() as w:
-            w.add_document(name=u('Jonny'))
+            w.add_document(name=u("Jonny"))
 
         with ix.searcher() as s:
             assert s.field_length("hobbies") == 2
             assert s.field_length("name") == 2
 
-            parser = qparser.MultifieldParser(['name', 'hobbies'], schema)
+            parser = qparser.MultifieldParser(["name", "hobbies"], schema)
             q = parser.parse(u("baseball"))
             result = s.search(q)
             assert len(result) == 1
@@ -715,14 +729,13 @@ def test_search_fieldname_underscores():
 
     w = ix.writer()
     w.add_document(my_name=u("Green"), my_value=u("It's not easy being green"))
-    w.add_document(my_name=u("Red"),
-                   my_value=u("Hopping mad like a playground ball"))
+    w.add_document(my_name=u("Red"), my_value=u("Hopping mad like a playground ball"))
     w.commit()
 
     qp = qparser.QueryParser("my_value", schema=s)
     with ix.searcher() as s:
         r = s.search(qp.parse(u("my_name:Green")))
-        assert r[0]['my_name'] == "Green"
+        assert r[0]["my_name"] == "Green"
 
 
 def test_short_prefix():
@@ -736,8 +749,7 @@ def test_short_prefix():
 def test_weighting():
     from whoosh.scoring import Weighting, BaseScorer
 
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           n_comments=fields.STORED)
+    schema = fields.Schema(id=fields.ID(stored=True), n_comments=fields.STORED)
     st = RamStorage()
     ix = st.create_index(schema)
 
@@ -771,13 +783,17 @@ def test_weighting():
 
 
 def test_dismax():
-    schema = fields.Schema(id=fields.STORED,
-                           f1=fields.TEXT, f2=fields.TEXT, f3=fields.TEXT)
+    schema = fields.Schema(
+        id=fields.STORED, f1=fields.TEXT, f2=fields.TEXT, f3=fields.TEXT
+    )
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(id=1, f1=u("alfa bravo charlie delta"),
-                   f2=u("alfa alfa alfa"),
-                   f3=u("alfa echo foxtrot hotel india"))
+    w.add_document(
+        id=1,
+        f1=u("alfa bravo charlie delta"),
+        f2=u("alfa alfa alfa"),
+        f3=u("alfa echo foxtrot hotel india"),
+    )
     w.commit()
 
     with ix.searcher(weighting=scoring.Frequency()) as s:
@@ -785,8 +801,11 @@ def test_dismax():
         assert list(s.documents(f2="alfa")) == [{"id": 1}]
         assert list(s.documents(f3="alfa")) == [{"id": 1}]
 
-        qs = [query.Term("f1", "alfa"), query.Term("f2", "alfa"),
-              query.Term("f3", "alfa")]
+        qs = [
+            query.Term("f1", "alfa"),
+            query.Term("f2", "alfa"),
+            query.Term("f3", "alfa"),
+        ]
         dm = query.DisjunctionMax(qs)
         r = s.search(dm)
         assert r.score(0) == 3.0
@@ -814,12 +833,11 @@ def test_deleted_wildcard():
 
     with ix.searcher() as s:
         r = s.search(query.Every("id"))
-        assert sorted([d['id'] for d in r]) == ["alfa", "charlie", "foxtrot"]
+        assert sorted([d["id"] for d in r]) == ["alfa", "charlie", "foxtrot"]
 
 
 def test_missing_wildcard():
-    schema = fields.Schema(id=fields.ID(stored=True), f1=fields.TEXT,
-                           f2=fields.TEXT)
+    schema = fields.Schema(id=fields.ID(stored=True), f1=fields.TEXT, f2=fields.TEXT)
     st = RamStorage()
     ix = st.create_index(schema)
 
@@ -833,21 +851,21 @@ def test_missing_wildcard():
 
     with ix.searcher() as s:
         r = s.search(query.Every("id"))
-        assert sorted([d['id'] for d in r]) == ["1", "2", "3", "4", "5"]
+        assert sorted([d["id"] for d in r]) == ["1", "2", "3", "4", "5"]
 
         r = s.search(query.Every("f1"))
-        assert sorted([d['id'] for d in r]) == ["1", "2", "3"]
+        assert sorted([d["id"] for d in r]) == ["1", "2", "3"]
 
         r = s.search(query.Every("f2"))
-        assert sorted([d['id'] for d in r]) == ["1", "3", "4"]
+        assert sorted([d["id"] for d in r]) == ["1", "3", "4"]
 
 
 def test_finalweighting():
     from whoosh.scoring import Frequency
 
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           summary=fields.TEXT,
-                           n_comments=fields.STORED)
+    schema = fields.Schema(
+        id=fields.ID(stored=True), summary=fields.TEXT, n_comments=fields.STORED
+    )
     st = RamStorage()
     ix = st.create_index(schema)
 
@@ -924,16 +942,20 @@ def test_ngram_phrase():
     schema = fields.Schema(text=f, path=fields.ID(stored=True))
     ix = RamStorage().create_index(schema)
     writer = ix.writer()
-    writer.add_document(text=u('\u9AD8\u6821\u307E\u3067\u306F\u6771\u4EAC'
-                               '\u3067\u3001\u5927\u5B66\u304B\u3089\u306F'
-                               '\u4EAC\u5927\u3067\u3059\u3002'),
-                        path=u('sample'))
+    writer.add_document(
+        text=u(
+            "\u9AD8\u6821\u307E\u3067\u306F\u6771\u4EAC"
+            "\u3067\u3001\u5927\u5B66\u304B\u3089\u306F"
+            "\u4EAC\u5927\u3067\u3059\u3002"
+        ),
+        path=u("sample"),
+    )
     writer.commit()
 
     with ix.searcher() as s:
         p = qparser.QueryParser("text", schema)
 
-        q = p.parse(u('\u6771\u4EAC\u5927\u5B66'))
+        q = p.parse(u("\u6771\u4EAC\u5927\u5B66"))
         assert len(s.search(q)) == 1
 
         q = p.parse(u('"\u6771\u4EAC\u5927\u5B66"'))
@@ -954,9 +976,13 @@ def test_ordered():
     writer.commit()
 
     with ix.searcher() as s:
-        q = query.Ordered([query.Term("f", u("alfa")),
-                           query.Term("f", u("charlie")),
-                           query.Term("f", u("echo"))])
+        q = query.Ordered(
+            [
+                query.Term("f", u("alfa")),
+                query.Term("f", u("charlie")),
+                query.Term("f", u("echo")),
+            ]
+        )
         r = s.search(q)
         for hit in r:
             ls = hit["f"].split()
@@ -980,16 +1006,13 @@ def test_otherwise():
     w.commit()
 
     with ix.searcher() as s:
-        q = query.Otherwise(query.Term("f", u("alfa")),
-                            query.Term("f", u("six")))
+        q = query.Otherwise(query.Term("f", u("alfa")), query.Term("f", u("six")))
         assert [d["id"] for d in s.search(q)] == [1, 2]
 
-        q = query.Otherwise(query.Term("f", u("tango")),
-                            query.Term("f", u("four")))
+        q = query.Otherwise(query.Term("f", u("tango")), query.Term("f", u("four")))
         assert [d["id"] for d in s.search(q)] == [2, 3]
 
-        q = query.Otherwise(query.Term("f", u("tango")),
-                            query.Term("f", u("nine")))
+        q = query.Otherwise(query.Term("f", u("tango")), query.Term("f", u("nine")))
         assert [d["id"] for d in s.search(q)] == []
 
 
@@ -1037,8 +1060,7 @@ def test_multireader_not():
     w.commit()
 
     with ix.searcher() as s:
-        q = query.And([query.Term("f", "delta"),
-                       query.Not(query.Term("f", "delta"))])
+        q = query.And([query.Term("f", "delta"), query.Not(query.Term("f", "delta"))])
         r = s.search(q)
         assert len(r) == 0
 
@@ -1058,15 +1080,15 @@ def test_multireader_not():
     assert len(ix._segments()) > 1
 
     with ix.searcher() as s:
-        q = query.And([query.Term("f", "delta"),
-                       query.Not(query.Term("f", "delta"))])
+        q = query.And([query.Term("f", "delta"), query.Not(query.Term("f", "delta"))])
         r = s.search(q)
         assert len(r) == 0
 
 
 def test_boost_phrase():
-    schema = fields.Schema(title=fields.TEXT(field_boost=5.0, stored=True),
-                           text=fields.TEXT)
+    schema = fields.Schema(
+        title=fields.TEXT(field_boost=5.0, stored=True), text=fields.TEXT
+    )
     ix = RamStorage().create_index(schema)
     domain = u("alfa bravo charlie delta").split()
     w = ix.writer()
@@ -1075,10 +1097,13 @@ def test_boost_phrase():
         w.add_document(title=t, text=t)
     w.commit()
 
-    q = query.Or([query.Term("title", u("alfa")),
-                  query.Term("title", u("bravo")),
-                  query.Phrase("text", [u("bravo"), u("charlie"), u("delta")])
-                  ])
+    q = query.Or(
+        [
+            query.Term("title", u("alfa")),
+            query.Term("title", u("bravo")),
+            query.Phrase("text", [u("bravo"), u("charlie"), u("delta")]),
+        ]
+    )
 
     def boost_phrases(q):
         if isinstance(q, query.Phrase):
@@ -1086,6 +1111,7 @@ def test_boost_phrase():
             return q
         else:
             return q.apply(boost_phrases)
+
     q = boost_phrases(q)
 
     with ix.searcher() as s:
@@ -1115,13 +1141,17 @@ def test_filter():
     w.commit(merge=False)
 
     with ix.searcher() as s:
-        fq = query.Or([query.Prefix("path", "/a"),
-                       query.Prefix("path", "/b")])
+        fq = query.Or([query.Prefix("path", "/a"), query.Prefix("path", "/b")])
         r = s.search(query.Term("text", "alfa"), filter=fq)
         assert [d["id"] for d in r] == [1, 4, 5]
 
         r = s.search(query.Term("text", "bravo"), filter=fq)
-        assert [d["id"] for d in r] == [1, 2, 5, 7, ]
+        assert [d["id"] for d in r] == [
+            1,
+            2,
+            5,
+            7,
+        ]
 
 
 def test_fieldboost():
@@ -1139,6 +1169,7 @@ def test_fieldboost():
 
     def field_booster(fieldname, factor=2.0):
         "Returns a function which will boost the given field in a query tree"
+
         def booster_fn(obj):
             if obj.is_leaf() and obj.field() == fieldname:
                 obj = copy.deepcopy(obj)
@@ -1146,11 +1177,11 @@ def test_fieldboost():
                 return obj
             else:
                 return obj
+
         return booster_fn
 
     with ix.searcher() as s:
-        q = query.Or([query.Term("a", u("alfa")),
-                      query.Term("b", u("alfa"))])
+        q = query.Or([query.Term("a", u("alfa")), query.Term("b", u("alfa"))])
         q = q.accept(field_booster("a", 100.0))
         assert text_type(q) == text_type("(a:alfa^100.0 OR b:alfa)")
         r = s.search(q)
@@ -1158,14 +1189,19 @@ def test_fieldboost():
 
 
 def test_andmaybe_quality():
-    schema = fields.Schema(id=fields.STORED, title=fields.TEXT(stored=True),
-                           year=fields.NUMERIC)
+    schema = fields.Schema(
+        id=fields.STORED, title=fields.TEXT(stored=True), year=fields.NUMERIC
+    )
     ix = RamStorage().create_index(schema)
 
-    domain = [(u('Alpha Bravo Charlie Delta'), 2000),
-              (u('Echo Bravo Foxtrot'), 2000), (u('Bravo Golf Hotel'), 2002),
-              (u('Bravo India'), 2002), (u('Juliet Kilo Bravo'), 2004),
-              (u('Lima Bravo Mike'), 2004)]
+    domain = [
+        (u("Alpha Bravo Charlie Delta"), 2000),
+        (u("Echo Bravo Foxtrot"), 2000),
+        (u("Bravo Golf Hotel"), 2002),
+        (u("Bravo India"), 2002),
+        (u("Juliet Kilo Bravo"), 2004),
+        (u("Lima Bravo Mike"), 2004),
+    ]
     w = ix.writer()
     for title, year in domain:
         w.add_document(title=title, year=year)
@@ -1232,6 +1268,7 @@ def test_scorer():
     w.add_document(key=u("alfa alfa alfa alfa alfa"))
     w.commit(merge=False)
 
+
 #    dw = scoring.DebugModel()
 #    s = ix.searcher(weighting=dw)
 #    r = s.search(query.Term("key", "alfa"))
@@ -1262,6 +1299,7 @@ def test_pos_scorer():
     def pos_score_fn(searcher, fieldname, text, matcher):
         poses = matcher.value_as("positions")
         return 1.0 / (poses[0] + 1)
+
     pos_weighting = scoring.FunctionWeighting(pos_score_fn)
 
     s = ix.searcher(weighting=pos_weighting)
@@ -1273,7 +1311,7 @@ def test_pos_scorer():
 #     schema = fields.Schema(id=fields.STORED, text=fields.TEXT)
 #     ix = RamStorage().create_index(schema)
 #     with ix.writer() as w:
-#         for i in xrange(200):
+#         for i in range(200):
 #             text = u("a%s" % i)
 #             w.add_document(id=i, text=text)
 #
@@ -1284,25 +1322,30 @@ def test_pos_scorer():
 #         m = q.matcher(s)
 #         assert m.supports("positions")
 #         items = list(m.items_as("positions"))
-#         assert [(i, [0]) for i in xrange(200)] == items
+#         assert [(i, [0]) for i in range(200)] == items
 
 
 def test_collapse():
     from whoosh import collectors
 
     # id, text, size, tag
-    domain = [("a", "blah blah blah", 5, "x"),
-              ("b", "blah", 3, "y"),
-              ("c", "blah blah blah blah", 2, "z"),
-              ("d", "blah blah", 4, "x"),
-              ("e", "bloop", 1, "-"),
-              ("f", "blah blah blah blah blah", 6, "x"),
-              ("g", "blah", 8, "w"),
-              ("h", "blah blah", 7, "=")]
+    domain = [
+        ("a", "blah blah blah", 5, "x"),
+        ("b", "blah", 3, "y"),
+        ("c", "blah blah blah blah", 2, "z"),
+        ("d", "blah blah", 4, "x"),
+        ("e", "bloop", 1, "-"),
+        ("f", "blah blah blah blah blah", 6, "x"),
+        ("g", "blah", 8, "w"),
+        ("h", "blah blah", 7, "="),
+    ]
 
-    schema = fields.Schema(id=fields.STORED, text=fields.TEXT,
-                           size=fields.NUMERIC,
-                           tag=fields.KEYWORD(sortable=True))
+    schema = fields.Schema(
+        id=fields.STORED,
+        text=fields.TEXT,
+        size=fields.NUMERIC,
+        tag=fields.KEYWORD(sortable=True),
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer(codec=W3Codec()) as w:
         for id, text, size, tag in domain:
@@ -1339,18 +1382,20 @@ def test_collapse_nocolumn():
     from whoosh import collectors
 
     # id, text, size, tag
-    domain = [("a", "blah blah blah", 5, "x"),
-              ("b", "blah", 3, "y"),
-              ("c", "blah blah blah blah", 2, "z"),
-              ("d", "blah blah", 4, "x"),
-              ("e", "bloop", 1, "-"),
-              ("f", "blah blah blah blah blah", 6, "x"),
-              ("g", "blah", 8, "w"),
-              ("h", "blah blah", 7, "=")]
+    domain = [
+        ("a", "blah blah blah", 5, "x"),
+        ("b", "blah", 3, "y"),
+        ("c", "blah blah blah blah", 2, "z"),
+        ("d", "blah blah", 4, "x"),
+        ("e", "bloop", 1, "-"),
+        ("f", "blah blah blah blah blah", 6, "x"),
+        ("g", "blah", 8, "w"),
+        ("h", "blah blah", 7, "="),
+    ]
 
-    schema = fields.Schema(id=fields.STORED, text=fields.TEXT,
-                           size=fields.NUMERIC,
-                           tag=fields.KEYWORD)
+    schema = fields.Schema(
+        id=fields.STORED, text=fields.TEXT, size=fields.NUMERIC, tag=fields.KEYWORD
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         for id, text, size, tag in domain:
@@ -1384,17 +1429,17 @@ def test_collapse_nocolumn():
 
 
 def test_collapse_length():
-    domain = u("alfa apple agnostic aplomb arc "
-               "bravo big braid beer "
-               "charlie crouch car "
-               "delta dog "
-               "echo "
-               "foxtrot fold flip "
-               "golf gym goop"
-               ).split()
+    domain = u(
+        "alfa apple agnostic aplomb arc "
+        "bravo big braid beer "
+        "charlie crouch car "
+        "delta dog "
+        "echo "
+        "foxtrot fold flip "
+        "golf gym goop"
+    ).split()
 
-    schema = fields.Schema(key=fields.ID(sortable=True),
-                           word=fields.ID(stored=True))
+    schema = fields.Schema(key=fields.ID(sortable=True), word=fields.ID(stored=True))
     ix = RamStorage().create_index(schema)
     with ix.writer(codec=W3Codec()) as w:
         for word in domain:
@@ -1420,17 +1465,17 @@ def test_collapse_length():
 
 
 def test_collapse_length_nocolumn():
-    domain = u("alfa apple agnostic aplomb arc "
-               "bravo big braid beer "
-               "charlie crouch car "
-               "delta dog "
-               "echo "
-               "foxtrot fold flip "
-               "golf gym goop"
-               ).split()
+    domain = u(
+        "alfa apple agnostic aplomb arc "
+        "bravo big braid beer "
+        "charlie crouch car "
+        "delta dog "
+        "echo "
+        "foxtrot fold flip "
+        "golf gym goop"
+    ).split()
 
-    schema = fields.Schema(key=fields.ID(),
-                           word=fields.ID(stored=True))
+    schema = fields.Schema(key=fields.ID(), word=fields.ID(stored=True))
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         for word in domain:
@@ -1458,10 +1503,12 @@ def test_collapse_length_nocolumn():
 def test_collapse_order():
     from whoosh import sorting
 
-    schema = fields.Schema(id=fields.STORED,
-                           price=fields.NUMERIC(sortable=True),
-                           rating=fields.NUMERIC(sortable=True),
-                           tag=fields.ID(sortable=True))
+    schema = fields.Schema(
+        id=fields.STORED,
+        price=fields.NUMERIC(sortable=True),
+        rating=fields.NUMERIC(sortable=True),
+        tag=fields.ID(sortable=True),
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer(codec=W3Codec()) as w:
         w.add_document(id="a", price=10, rating=1, tag=u("x"))
@@ -1478,6 +1525,7 @@ def test_collapse_order():
         w.add_document(id="l", price=70, rating=2)
 
     with ix.searcher() as s:
+
         def check(kwargs, target):
             r = s.search(query.Every(), limit=None, **kwargs)
             assert " ".join(hit["id"] for hit in r) == target
@@ -1488,17 +1536,18 @@ def test_collapse_order():
 
         check(dict(sortedby=price), "h b l c e g i k j d f a")
         check(dict(sortedby=price, collapse=tag), "h b l c e d")
-        check(dict(sortedby=price, collapse=tag, collapse_order=rating),
-              "h b l i k d")
+        check(dict(sortedby=price, collapse=tag, collapse_order=rating), "h b l i k d")
 
 
 def test_collapse_order_nocolumn():
     from whoosh import sorting
 
-    schema = fields.Schema(id=fields.STORED,
-                           price=fields.NUMERIC(),
-                           rating=fields.NUMERIC(),
-                           tag=fields.ID())
+    schema = fields.Schema(
+        id=fields.STORED,
+        price=fields.NUMERIC(),
+        rating=fields.NUMERIC(),
+        tag=fields.ID(),
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         w.add_document(id="a", price=10, rating=1, tag=u("x"))
@@ -1515,6 +1564,7 @@ def test_collapse_order_nocolumn():
         w.add_document(id="l", price=70, rating=2)
 
     with ix.searcher() as s:
+
         def check(kwargs, target):
             r = s.search(query.Every(), limit=None, **kwargs)
             assert " ".join(hit["id"] for hit in r) == target
@@ -1525,15 +1575,13 @@ def test_collapse_order_nocolumn():
 
         check(dict(sortedby=price), "h b l c e g i k j d f a")
         check(dict(sortedby=price, collapse=tag), "h b l c e d")
-        check(dict(sortedby=price, collapse=tag, collapse_order=rating),
-              "h b l i k d")
+        check(dict(sortedby=price, collapse=tag, collapse_order=rating), "h b l i k d")
 
 
 def test_coord():
     from whoosh.matching import CoordMatcher
 
-    schema = fields.Schema(id=fields.STORED, hits=fields.STORED,
-                           tags=fields.KEYWORD)
+    schema = fields.Schema(id=fields.STORED, hits=fields.STORED, tags=fields.KEYWORD)
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         w.add_document(id=0, hits=0, tags=u("blah blah blah blah"))
@@ -1577,9 +1625,16 @@ def test_groupedby_with_terms():
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
-        w.add_document(organism=u("mus"), content=u("IPFSTD1 IPFSTD_kdwq134 Kaminski-all Study00:00:00"))
-        w.add_document(organism=u("mus"), content=u("IPFSTD1 IPFSTD_kdwq134 Kaminski-all Study"))
-        w.add_document(organism=u("hs"), content=u("This is the first document we've added!"))
+        w.add_document(
+            organism=u("mus"),
+            content=u("IPFSTD1 IPFSTD_kdwq134 Kaminski-all Study00:00:00"),
+        )
+        w.add_document(
+            organism=u("mus"), content=u("IPFSTD1 IPFSTD_kdwq134 Kaminski-all Study")
+        )
+        w.add_document(
+            organism=u("hs"), content=u("This is the first document we've added!")
+        )
 
     with ix.searcher() as s:
         q = qparser.QueryParser("content", schema=ix.schema).parse(u("IPFSTD1"))
@@ -1587,7 +1642,7 @@ def test_groupedby_with_terms():
         assert len(r) == 2
         assert r.groups("organism") == {"mus": [1, 0]}
         assert r.has_matched_terms()
-        assert r.matched_terms() == set([('content', b('ipfstd1'))])
+        assert r.matched_terms() == set([("content", b("ipfstd1"))])
 
 
 def test_buffered_refresh():
@@ -1597,8 +1652,8 @@ def test_buffered_refresh():
     ix = RamStorage().create_index(schema)
 
     with writing.BufferedWriter(ix, period=1000) as writer:
-        writer.add_document(foo=u('1'))
-        writer.add_document(foo=u('2'))
+        writer.add_document(foo=u("1"))
+        writer.add_document(foo=u("2"))
 
         with writer.searcher() as searcher:
             assert searcher.doc_count() == 2
@@ -1650,8 +1705,7 @@ def test_terms_with_filter():
     with ix.searcher() as s:
         workingset = set([1, 2, 3])
         q = query.Term("text", u("foxtrot"))
-        r = s.search_page(q, pagenum=1, pagelen=5, terms=True,
-                          filter=workingset)
+        r = s.search_page(q, pagenum=1, pagelen=5, terms=True, filter=workingset)
 
         assert r.scored_length() == 2
         assert [hit.docnum for hit in r] == [2, 3]
@@ -1683,45 +1737,32 @@ def test_issue_334():
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
-
         with w.group():
-            w.add_document(kind=u('class'), name=u('Index'))
-            w.add_document(kind=u('method'), name=u('add document'),
-                           returns=u('void'))
-            w.add_document(kind=u('method'), name=u('add reader'),
-                           returns=u('void'))
-            w.add_document(kind=u('method'), name=u('close'),
-                           returns=u('void'))
+            w.add_document(kind=u("class"), name=u("Index"))
+            w.add_document(kind=u("method"), name=u("add document"), returns=u("void"))
+            w.add_document(kind=u("method"), name=u("add reader"), returns=u("void"))
+            w.add_document(kind=u("method"), name=u("close"), returns=u("void"))
         with w.group():
-            w.add_document(kind=u('class'), name=u('Accumulator'))
-            w.add_document(kind=u('method'), name=u('add'),
-                           returns=u('void'))
-            w.add_document(kind=u('method'), name=u('get result'),
-                           returns=u('number'))
+            w.add_document(kind=u("class"), name=u("Accumulator"))
+            w.add_document(kind=u("method"), name=u("add"), returns=u("void"))
+            w.add_document(kind=u("method"), name=u("get result"), returns=u("number"))
         with w.group():
-            w.add_document(kind=u('class'), name=u('Calculator'))
-            w.add_document(kind=u('method'), name=u('add'),
-                           returns=u('number'))
-            w.add_document(kind=u('method'), name=u('add all'),
-                           returns=u('number'))
-            w.add_document(kind=u('method'), name=u('add some'),
-                           returns=u('number'))
-            w.add_document(kind=u('method'), name=u('multiply'),
-                           returns=u('number'))
-            w.add_document(kind=u('method'), name=u('close'),
-                           returns=u('void'))
+            w.add_document(kind=u("class"), name=u("Calculator"))
+            w.add_document(kind=u("method"), name=u("add"), returns=u("number"))
+            w.add_document(kind=u("method"), name=u("add all"), returns=u("number"))
+            w.add_document(kind=u("method"), name=u("add some"), returns=u("number"))
+            w.add_document(kind=u("method"), name=u("multiply"), returns=u("number"))
+            w.add_document(kind=u("method"), name=u("close"), returns=u("void"))
         with w.group():
-            w.add_document(kind=u('class'), name=u('Deleter'))
-            w.add_document(kind=u('method'), name=u('add'),
-                           returns=u('void'))
-            w.add_document(kind=u('method'), name=u('delete'),
-                           returns=u('void'))
+            w.add_document(kind=u("class"), name=u("Deleter"))
+            w.add_document(kind=u("method"), name=u("add"), returns=u("void"))
+            w.add_document(kind=u("method"), name=u("delete"), returns=u("void"))
 
     with ix.searcher() as s:
-        pq = query.Term('kind', 'class')
-        cq = query.Term('name', 'Calculator')
+        pq = query.Term("kind", "class")
+        cq = query.Term("name", "Calculator")
 
-        q = query.NestedChildren(pq, cq) & query.Term('returns', 'void')
+        q = query.NestedChildren(pq, cq) & query.Term("returns", "void")
         r = s.search(q)
         assert len(r) == 1
         assert r[0]["name"] == u("close")
@@ -1730,8 +1771,9 @@ def test_issue_334():
 def test_find_decimals():
     from decimal import Decimal
 
-    schema = fields.Schema(name=fields.KEYWORD(stored=True),
-                           num=fields.NUMERIC(Decimal, decimal_places=5))
+    schema = fields.Schema(
+        name=fields.KEYWORD(stored=True), num=fields.NUMERIC(Decimal, decimal_places=5)
+    )
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
@@ -1753,7 +1795,7 @@ def test_find_decimals():
 
 
 def test_limit_scores():
-    domain = u"alfa bravo charlie delta echo foxtrot golf".split()
+    domain = "alfa bravo charlie delta echo foxtrot golf".split()
 
     schema = fields.Schema(desc=fields.TEXT, parent=fields.KEYWORD(stored=True))
     with TempIndex(schema) as ix:
@@ -1761,13 +1803,12 @@ def test_limit_scores():
             count = 0
             for words in permutations(domain, 4):
                 count += 1
-                w.add_document(desc=u" ".join(words), parent=text_type(count))
+                w.add_document(desc=" ".join(words), parent=text_type(count))
 
         with ix.searcher() as s:
-            q = query.And([
-                query.Term("desc", u"delta", boost=30.0),
-                query.Term("parent", u"545")
-            ])
+            q = query.And(
+                [query.Term("desc", "delta", boost=30.0), query.Term("parent", "545")]
+            )
             r = s.search(q, limit=500)
             assert r.scored_length() == 1
             limited_score = r[0].score
@@ -1790,36 +1831,36 @@ def test_function_weighting():
 
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(id="a", text=u"aa bb")
-            w.add_document(id="b", text=u"bb aa bb")
-            w.add_document(id="c", text=u"bb bb aa bb")
-            w.add_document(id="d", text=u"bb bb bb aa bb")
-            w.add_document(id="e", text=u"bb bb bb bb aa bb")
-            w.add_document(id="f", text=u"bb bb bb bb bb aa bb")
+            w.add_document(id="a", text="aa bb")
+            w.add_document(id="b", text="bb aa bb")
+            w.add_document(id="c", text="bb bb aa bb")
+            w.add_document(id="d", text="bb bb bb aa bb")
+            w.add_document(id="e", text="bb bb bb bb aa bb")
+            w.add_document(id="f", text="bb bb bb bb bb aa bb")
 
         with ix.writer() as w:
-            w.add_document(id="g", text=u"aa bb")
-            w.add_document(id="h", text=u"bb aa bb")
-            w.add_document(id="i", text=u"bb bb aa bb")
-            w.add_document(id="j", text=u"bb bb bb aa bb")
-            w.add_document(id="k", text=u"bb bb bb bb aa bb")
-            w.add_document(id="l", text=u"bb bb bb bb bb aa bb")
+            w.add_document(id="g", text="aa bb")
+            w.add_document(id="h", text="bb aa bb")
+            w.add_document(id="i", text="bb bb aa bb")
+            w.add_document(id="j", text="bb bb bb aa bb")
+            w.add_document(id="k", text="bb bb bb bb aa bb")
+            w.add_document(id="l", text="bb bb bb bb bb aa bb")
 
         with ix.writer() as w:
-            w.add_document(id="m", text=u"aa bb")
-            w.add_document(id="n", text=u"bb aa bb")
-            w.add_document(id="o", text=u"bb bb aa bb")
-            w.add_document(id="p", text=u"bb bb bb aa bb")
-            w.add_document(id="q", text=u"bb bb bb bb aa bb")
-            w.add_document(id="r", text=u"bb bb bb bb bb aa bb")
+            w.add_document(id="m", text="aa bb")
+            w.add_document(id="n", text="bb aa bb")
+            w.add_document(id="o", text="bb bb aa bb")
+            w.add_document(id="p", text="bb bb bb aa bb")
+            w.add_document(id="q", text="bb bb bb bb aa bb")
+            w.add_document(id="r", text="bb bb bb bb bb aa bb")
 
         with ix.writer() as w:
-            w.add_document(id="s", text=u"aa bb")
-            w.add_document(id="t", text=u"bb aa bb")
-            w.add_document(id="u", text=u"bb bb aa bb")
-            w.add_document(id="v", text=u"bb bb bb aa bb")
-            w.add_document(id="w", text=u"bb bb bb bb aa bb")
-            w.add_document(id="x", text=u"bb bb bb bb bb aa bb")
+            w.add_document(id="s", text="aa bb")
+            w.add_document(id="t", text="bb aa bb")
+            w.add_document(id="u", text="bb bb aa bb")
+            w.add_document(id="v", text="bb bb bb aa bb")
+            w.add_document(id="w", text="bb bb bb bb aa bb")
+            w.add_document(id="x", text="bb bb bb bb bb aa bb")
 
         with ix.searcher(weighting=pos_weighting) as s:
             q = query.Term("text", "aa")
@@ -1830,12 +1871,8 @@ def test_function_weighting():
             ids = "".join(([hit["id"] for hit in r]))
             assert ids == "agmsb"
 
-            q = query.Or([query.Term("text", "aa"), query.Term("text", "bb")],
-                         scale=2.0)
+            q = query.Or(
+                [query.Term("text", "aa"), query.Term("text", "bb")], scale=2.0
+            )
             m = q.matcher(s, s.context())
             assert not m.supports_block_quality()
-
-
-
-
-

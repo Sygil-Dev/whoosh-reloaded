@@ -25,7 +25,7 @@ def test_finnish():
 
 
 def test_spanish_spell_suffix():
-    word = 'tgue'
+    word = "tgue"
     s = SpanishStemmer()
     w = s.stem(word)
     assert w == "tgu"

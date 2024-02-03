@@ -3,7 +3,7 @@ import os.path
 from bisect import bisect_left
 
 from whoosh.compat import permutations
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.automata import fsa, glob, lev
 from whoosh.support.levenshtein import levenshtein
 
@@ -253,9 +253,9 @@ def test_concat():
 
 
 def test_choice():
-    n = fsa.choice_nfa(fsa.basic_nfa("a"),
-                       fsa.choice_nfa(fsa.basic_nfa("b"),
-                                      fsa.basic_nfa("c")))
+    n = fsa.choice_nfa(
+        fsa.basic_nfa("a"), fsa.choice_nfa(fsa.basic_nfa("b"), fsa.basic_nfa("c"))
+    )
     assert not n.accept("")
     assert n.accept("a")
     assert n.accept("b")
@@ -312,10 +312,7 @@ def test_regular():
 
     ex = fsa.concat_nfa(
         fsa.basic_nfa("a"),
-        fsa.concat_nfa(
-            fsa.optional_nfa(fsa.basic_nfa("b")),
-            fsa.basic_nfa("c")
-        )
+        fsa.concat_nfa(fsa.optional_nfa(fsa.basic_nfa("b")), fsa.basic_nfa("c")),
     )
 
     assert ex.accept("ac")
@@ -360,10 +357,8 @@ def test_strings_dfa():
 
     domain = "abcd"
     words = set()
-    for i in xrange(1, len(domain) + 1):
+    for i in range(1, len(domain) + 1):
         words.update("".join(p) for p in permutations(domain[:i]))
     words = sorted(words)
     dfa = fsa.strings_dfa(words)
     assert list(dfa.generate_all()) == words
-
-

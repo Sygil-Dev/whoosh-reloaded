@@ -37,8 +37,7 @@ default_pattern = rcompile(r"[\w\*]+(\.?[\w\*]+)*")
 
 
 class Tokenizer(Composable):
-    """Base class for Tokenizers.
-    """
+    """Base class for Tokenizers."""
 
     def __eq__(self, other):
         return other and self.__class__ is other.__class__
@@ -53,12 +52,20 @@ class IDTokenizer(Tokenizer):
     ["/a/b 123 alpha"]
     """
 
-    def __call__(self, value, positions=False, chars=False,
-                 keeporiginal=False, removestops=True,
-                 start_pos=0, start_char=0, mode='', **kwargs):
+    def __call__(
+        self,
+        value,
+        positions=False,
+        chars=False,
+        keeporiginal=False,
+        removestops=True,
+        start_pos=0,
+        start_char=0,
+        mode="",
+        **kwargs
+    ):
         assert isinstance(value, text_type), "%r is not unicode" % value
-        t = Token(positions, chars, removestops=removestops, mode=mode,
-                  **kwargs)
+        t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         t.text = value
         t.boost = 1.0
         if keeporiginal:
@@ -99,9 +106,19 @@ class RegexTokenizer(Tokenizer):
                 return True
         return False
 
-    def __call__(self, value, positions=False, chars=False, keeporiginal=False,
-                 removestops=True, start_pos=0, start_char=0, tokenize=True,
-                 mode='', **kwargs):
+    def __call__(
+        self,
+        value,
+        positions=False,
+        chars=False,
+        keeporiginal=False,
+        removestops=True,
+        start_pos=0,
+        start_char=0,
+        tokenize=True,
+        mode="",
+        **kwargs
+    ):
         """
         :param value: The unicode string to tokenize.
         :param positions: Whether to record token positions in the token.
@@ -117,8 +134,7 @@ class RegexTokenizer(Tokenizer):
 
         assert isinstance(value, text_type), "%s is not unicode" % repr(value)
 
-        t = Token(positions, chars, removestops=removestops, mode=mode,
-                  **kwargs)
+        t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
             t.original = t.text = value
             t.boost = 1.0
@@ -217,13 +233,25 @@ class CharsetTokenizer(Tokenizer):
         self.charmap = charmap
 
     def __eq__(self, other):
-        return (other
-                and self.__class__ is other.__class__
-                and self.charmap == other.charmap)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.charmap == other.charmap
+        )
 
-    def __call__(self, value, positions=False, chars=False, keeporiginal=False,
-                 removestops=True, start_pos=0, start_char=0, tokenize=True,
-                  mode='', **kwargs):
+    def __call__(
+        self,
+        value,
+        positions=False,
+        chars=False,
+        keeporiginal=False,
+        removestops=True,
+        start_pos=0,
+        start_char=0,
+        tokenize=True,
+        mode="",
+        **kwargs
+    ):
         """
         :param value: The unicode string to tokenize.
         :param positions: Whether to record token positions in the token.
@@ -239,8 +267,7 @@ class CharsetTokenizer(Tokenizer):
 
         assert isinstance(value, text_type), "%r is not unicode" % value
 
-        t = Token(positions, chars, removestops=removestops, mode=mode,
-                  **kwargs)
+        t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
             t.original = t.text = value
             t.boost = 1.0
@@ -326,13 +353,12 @@ class PathTokenizer(Tokenizer):
         self.expr = rcompile(expression)
 
     def __call__(self, value, positions=False, start_pos=0, **kwargs):
-         assert isinstance(value, text_type), "%r is not unicode" % value
-         token = Token(positions, **kwargs)
-         pos = start_pos
-         for match in self.expr.finditer(value):
-             token.text = value[:match.end()]
-             if positions:
-                 token.pos = pos
-                 pos += 1
-             yield token
-
+        assert isinstance(value, text_type), "%r is not unicode" % value
+        token = Token(positions, **kwargs)
+        pos = start_pos
+        for match in self.expr.finditer(value):
+            token.text = value[: match.end()]
+            if positions:
+                token.pos = pos
+                pos += 1
+            yield token

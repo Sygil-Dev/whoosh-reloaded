@@ -51,9 +51,9 @@ def parse_file(f):
             continue
 
         line = line[2:]
-        num = int(line[:line.find(",")])
+        num = int(line[: line.find(",")])
         qt = line.find("'")
-        line = line[qt + 1:]
+        line = line[qt + 1 :]
         qt = line.find("'")
         word = line[:qt].lower()
 

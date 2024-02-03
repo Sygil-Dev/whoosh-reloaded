@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 
 """
 This module contains quasi-phonetic encoders for words in different languages.
@@ -11,7 +11,7 @@ from whoosh.compat import iteritems
 # This soundex implementation is adapted from the recipe here:
 # http://code.activestate.com/recipes/52213/
 
-english_codes = '01230120022455012623010202'
+english_codes = "01230120022455012623010202"
 
 
 def soundex_en(word):
@@ -42,16 +42,17 @@ def soundex_en(word):
 # Ferreyra's version here:
 # http://www.javalobby.org/java/forums/t16936.html
 
-_esp_codes = (("\\Aw?[uh]?([aeiou])", ""),
-              ("c[eiéí]|z|ll|sh|ch|sch|cc|y[aeiouáéíóú]|ps|bs|x|j|g[eiéí]", "s"),
-              ("[aeiouhwáéíóúü]+", ""),
-              ("y", ""),
-              ("ñ|gn", "n"),
-              ("[dpc]t", "t"),
-              ("c[aouáóú]|ck|q", "k"),
-              ("v", "b"),
-              ("d$", "t"), # Change a trailing d to a t
-              )
+_esp_codes = (
+    ("\\Aw?[uh]?([aeiou])", ""),
+    ("c[eiéí]|z|ll|sh|ch|sch|cc|y[aeiouáéíóú]|ps|bs|x|j|g[eiéí]", "s"),
+    ("[aeiouhwáéíóúü]+", ""),
+    ("y", ""),
+    ("ñ|gn", "n"),
+    ("[dpc]t", "t"),
+    ("c[aouáóú]|ck|q", "k"),
+    ("v", "b"),
+    ("d$", "t"),  # Change a trailing d to a t
+)
 _esp_codes = tuple((re.compile(pat), repl) for pat, repl in _esp_codes)
 
 
@@ -87,14 +88,17 @@ def soundex_esp(word):
 
 # Create a dictionary mapping arabic characters to digits
 _arabic_codes = {}
-for chars, code in iteritems({'\u0627\u0623\u0625\u0622\u062d\u062e\u0647\u0639\u063a\u0634\u0648\u064a': "0",
-                    '\u0641\u0628': "1",
-                    '\u062c\u0632\u0633\u0635\u0638\u0642\u0643': "2",
-                    '\u062a\u062b\u062f\u0630\u0636\u0637': "3",
-                    '\u0644': "4",
-                    '\u0645\u0646': "5",
-                    '\u0631': "6",
-                    }):
+for chars, code in iteritems(
+    {
+        "\u0627\u0623\u0625\u0622\u062d\u062e\u0647\u0639\u063a\u0634\u0648\u064a": "0",
+        "\u0641\u0628": "1",
+        "\u062c\u0632\u0633\u0635\u0638\u0642\u0643": "2",
+        "\u062a\u062b\u062f\u0630\u0636\u0637": "3",
+        "\u0644": "4",
+        "\u0645\u0646": "5",
+        "\u0631": "6",
+    }
+):
     for char in chars:
         _arabic_codes[char] = code
 

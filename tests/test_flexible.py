@@ -49,9 +49,9 @@ def test_addfield_spelling():
 
 
 def test_removefield():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           content=fields.TEXT,
-                           city=fields.KEYWORD(stored=True))
+    schema = fields.Schema(
+        id=fields.ID(stored=True), content=fields.TEXT, city=fields.KEYWORD(stored=True)
+    )
     with TempIndex(schema, "removefield") as ix:
         w = ix.writer()
         w.add_document(id=u("b"), content=u("bravo"), city=u("baghdad"))
@@ -77,9 +77,9 @@ def test_removefield():
 
 
 def test_optimize_away():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           content=fields.TEXT,
-                           city=fields.KEYWORD(stored=True))
+    schema = fields.Schema(
+        id=fields.ID(stored=True), content=fields.TEXT, city=fields.KEYWORD(stored=True)
+    )
     with TempIndex(schema, "optimizeaway") as ix:
         w = ix.writer()
         w.add_document(id=u("b"), content=u("bravo"), city=u("baghdad"))

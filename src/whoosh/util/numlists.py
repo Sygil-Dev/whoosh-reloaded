@@ -1,6 +1,6 @@
 from array import array
 
-from whoosh.compat import xrange
+from whoosh.compat import range
 from whoosh.system import emptybytes
 from whoosh.system import pack_byte, unpack_byte
 from whoosh.system import pack_ushort_le, unpack_ushort_le
@@ -36,11 +36,11 @@ class GrowableArray(object):
         return iter(self.array)
 
     def _retype(self, maxnum):
-        if maxnum < 2 ** 16:
+        if maxnum < 2**16:
             newtype = "H"
-        elif maxnum < 2 ** 31:
+        elif maxnum < 2**31:
             newtype = "i"
-        elif maxnum < 2 ** 32:
+        elif maxnum < 2**32:
             newtype = "I"
         elif self._allow_longs:
             newtype = "q"
@@ -82,6 +82,7 @@ class GrowableArray(object):
 
 # Number list encoding base class
 
+
 class NumberEncoding(object):
     maxint = None
 
@@ -107,6 +108,7 @@ class NumberEncoding(object):
 
 # Fixed width encodings
 
+
 class FixedEncoding(NumberEncoding):
     _encode = None
     _decode = None
@@ -121,7 +123,7 @@ class FixedEncoding(NumberEncoding):
     def read_nums(self, f, n):
         _decode = self._decode
 
-        for _ in xrange(n):
+        for _ in range(n):
             yield _decode(f.read(self.size))
 
     def get(self, f, pos, i):
@@ -138,19 +140,20 @@ class ByteEncoding(FixedEncoding):
 
 class UShortEncoding(FixedEncoding):
     size = 2
-    maxint = 2 ** 16 - 1
+    maxint = 2**16 - 1
     _encode = pack_ushort_le
     _decode = unpack_ushort_le
 
 
 class UIntEncoding(FixedEncoding):
     size = 4
-    maxint = 2 ** 32 - 1
+    maxint = 2**32 - 1
     _encode = pack_uint_le
     _decode = unpack_uint_le
 
 
 # High-bit encoded variable-length integer
+
 
 class Varints(NumberEncoding):
     maxint = None
@@ -160,7 +163,7 @@ class Varints(NumberEncoding):
             f.write_varint(n)
 
     def read_nums(self, f, n):
-        for _ in xrange(n):
+        for _ in range(n):
             yield f.read_varint()
 
 
@@ -170,6 +173,7 @@ class Varints(NumberEncoding):
 # 1. http://www2008.org/papers/pdf/p387-zhangA.pdf
 # 2. http://www2009.org/proceedings/pdf/p401.pdf
 
+
 class Simple16(NumberEncoding):
     # The maximum possible integer value Simple16 can encode is < 2^28.
     # Therefore, in order to use Simple16, the application must have its own
@@ -178,28 +182,28 @@ class Simple16(NumberEncoding):
     # big numbers).
     _numsize = 16
     _bitsize = 28
-    maxint = 2 ** _bitsize - 1
+    maxint = 2**_bitsize - 1
 
     # Number of stored numbers per code
     _num = [28, 21, 21, 21, 14, 9, 8, 7, 6, 6, 5, 5, 4, 3, 2, 1]
     # Number of bits for each number per code
     _bits = [
-    (1,) * 28,
-    (2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-    (1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1),
-    (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2),
-    (2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
-    (4, 3, 3, 3, 3, 3, 3, 3, 3),
-    (3, 4, 4, 4, 4, 3, 3, 3),
-    (4, 4, 4, 4, 4, 4, 4),
-    (5, 5, 5, 5, 4, 4),
-    (4, 4, 5, 5, 5, 5),
-    (6, 6, 6, 5, 5),
-    (5, 5, 6, 6, 6),
-    (7, 7, 7, 7),
-    (10, 9, 9),
-    (14, 14),
-    (28,),
+        (1,) * 28,
+        (2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+        (1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1),
+        (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2),
+        (2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
+        (4, 3, 3, 3, 3, 3, 3, 3, 3),
+        (3, 4, 4, 4, 4, 3, 3, 3),
+        (4, 4, 4, 4, 4, 4, 4),
+        (5, 5, 5, 5, 4, 4),
+        (4, 4, 5, 5, 5, 5),
+        (6, 6, 6, 5, 5),
+        (5, 5, 6, 6, 6),
+        (7, 7, 7, 7),
+        (10, 9, 9),
+        (14, 14),
+        (28,),
     ]
 
     def write_nums(self, f, numbers):
@@ -217,7 +221,7 @@ class Simple16(NumberEncoding):
         _num = self._num
         _bits = self._bits
 
-        for key in xrange(_numsize):
+        for key in range(_numsize):
             value = key << _bitsize
             num = _num[key] if _num[key] < n else n
             bits = 0
@@ -253,9 +257,9 @@ class Simple16(NumberEncoding):
         key = value >> _bitsize
         num = _num[key] if _num[key] < n else n
         bits = 0
-        for j in xrange(num):
+        for j in range(num):
             v = value >> bits
-            yield v & (0xffffffff >> (32 - _bits[key][j]))
+            yield v & (0xFFFFFFFF >> (32 - _bits[key][j]))
             bits += _bits[key][j]
 
     def get(self, f, pos, i):
@@ -280,31 +284,280 @@ class Simple16(NumberEncoding):
 # byte, which encodes how many bytes each of the next four integers use
 # (stored in the byte as four 2-bit numbers)
 
+
 class GInts(NumberEncoding):
-    maxint = 2 ** 32 - 1
+    maxint = 2**32 - 1
 
     # Number of future bytes to expect after a "key" byte value of N -- used to
     # skip ahead from a key byte
-    _lens = array("B", [4, 5, 6, 7, 5, 6, 7, 8, 6, 7, 8, 9, 7, 8, 9, 10, 5, 6,
-    7, 8, 6, 7, 8, 9, 7, 8, 9, 10, 8, 9, 10, 11, 6, 7, 8, 9, 7, 8, 9, 10, 8, 9,
-    10, 11, 9, 10, 11, 12, 7, 8, 9, 10, 8, 9, 10, 11, 9, 10, 11, 12, 10, 11,
-    12, 13, 5, 6, 7, 8, 6, 7, 8, 9, 7, 8, 9, 10, 8, 9, 10, 11, 6, 7, 8, 9, 7,
-    8, 9, 10, 8, 9, 10, 11, 9, 10, 11, 12, 7, 8, 9, 10, 8, 9, 10, 11, 9, 10,
-    11, 12, 10, 11, 12, 13, 8, 9, 10, 11, 9, 10, 11, 12, 10, 11, 12, 13, 11,
-    12, 13, 14, 6, 7, 8, 9, 7, 8, 9, 10, 8, 9, 10, 11, 9, 10, 11, 12, 7, 8, 9,
-    10, 8, 9, 10, 11, 9, 10, 11, 12, 10, 11, 12, 13, 8, 9, 10, 11, 9, 10, 11,
-    12, 10, 11, 12, 13, 11, 12, 13, 14, 9, 10, 11, 12, 10, 11, 12, 13, 11, 12,
-    13, 14, 12, 13, 14, 15, 7, 8, 9, 10, 8, 9, 10, 11, 9, 10, 11, 12, 10, 11,
-    12, 13, 8, 9, 10, 11, 9, 10, 11, 12, 10, 11, 12, 13, 11, 12, 13, 14, 9, 10,
-    11, 12, 10, 11, 12, 13, 11, 12, 13, 14, 12, 13, 14, 15, 10, 11, 12, 13, 11,
-    12, 13, 14, 12, 13, 14, 15, 13, 14, 15, 16])
+    _lens = array(
+        "B",
+        [
+            4,
+            5,
+            6,
+            7,
+            5,
+            6,
+            7,
+            8,
+            6,
+            7,
+            8,
+            9,
+            7,
+            8,
+            9,
+            10,
+            5,
+            6,
+            7,
+            8,
+            6,
+            7,
+            8,
+            9,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            6,
+            7,
+            8,
+            9,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            5,
+            6,
+            7,
+            8,
+            6,
+            7,
+            8,
+            9,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            6,
+            7,
+            8,
+            9,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            11,
+            12,
+            13,
+            14,
+            6,
+            7,
+            8,
+            9,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            11,
+            12,
+            13,
+            14,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            11,
+            12,
+            13,
+            14,
+            12,
+            13,
+            14,
+            15,
+            7,
+            8,
+            9,
+            10,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            8,
+            9,
+            10,
+            11,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            11,
+            12,
+            13,
+            14,
+            9,
+            10,
+            11,
+            12,
+            10,
+            11,
+            12,
+            13,
+            11,
+            12,
+            13,
+            14,
+            12,
+            13,
+            14,
+            15,
+            10,
+            11,
+            12,
+            13,
+            11,
+            12,
+            13,
+            14,
+            12,
+            13,
+            14,
+            15,
+            13,
+            14,
+            15,
+            16,
+        ],
+    )
 
     def key_to_sizes(self, key):
         """Returns a list of the sizes of the next four numbers given a key
         byte.
         """
 
-        return [(key >> (i * 2) & 3) + 1 for i in xrange(4)]
+        return [(key >> (i * 2) & 3) + 1 for i in range(4)]
 
     def write_nums(self, f, numbers):
         buf = emptybytes
@@ -344,7 +597,7 @@ class GInts(NumberEncoding):
 
         count = 0
         key = None
-        for _ in xrange(n):
+        for _ in range(n):
             if count == 0:
                 key = f.read_byte()
             code = key >> (count * 2) & 3
@@ -358,6 +611,7 @@ class GInts(NumberEncoding):
                 yield f.read_uint_le()
 
             count = (count + 1) % 4
+
 
 #    def get(self, f, pos, i):
 #        f.seek(pos)

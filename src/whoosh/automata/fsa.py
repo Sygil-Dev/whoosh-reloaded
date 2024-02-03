@@ -5,13 +5,14 @@ import operator
 import sys
 from bisect import bisect_left
 
-from whoosh.compat import iteritems, next, text_type, unichr, xrange
+from whoosh.compat import iteritems, next, text_type, unichr, range
 
 
 unull = unichr(0)
 
 
 # Marker constants
+
 
 class Marker(object):
     def __init__(self, name):
@@ -26,6 +27,7 @@ ANY = Marker("ANY")
 
 
 # Base class
+
 
 class FSA(object):
     def __init__(self, initial):
@@ -108,6 +110,7 @@ class FSA(object):
 
 
 # Implementations
+
 
 class NFA(FSA):
     def __init__(self, initial):
@@ -271,7 +274,7 @@ class DFA(FSA):
             if not state:
                 break
         else:
-            stack.append((string[:i + 1], state, None))
+            stack.append((string[: i + 1], state, None))
 
         if self.is_final(state):
             # Word is already valid
@@ -292,7 +295,7 @@ class DFA(FSA):
 
     def find_next_edge(self, s, label, asbytes):
         if label is None:
-            label = b"\x00" if asbytes else u'\0'
+            label = b"\x00" if asbytes else "\0"
         else:
             label = (label + 1) if asbytes else unichr(ord(label) + 1)
         trans = self.transitions.get(s, {})
@@ -344,7 +347,7 @@ class DFA(FSA):
         parts = [final_states, reachable - final_states]
         while changed:
             changed = False
-            for i in xrange(len(parts)):
+            for i in range(len(parts)):
                 part = parts[i]
                 changed_part = False
                 for label in labels:
@@ -420,6 +423,7 @@ class DFA(FSA):
 
 # Useful functions
 
+
 def renumber_dfa(dfa, base=0):
     c = itertools.count(base)
     mapping = {}
@@ -492,6 +496,7 @@ def find_all_matches(dfa, lookup_func, first=unull):
 
 
 # Construction functions
+
 
 def reverse_nfa(n):
     s = object()
@@ -630,6 +635,7 @@ def optional_nfa(n):
 
 # Daciuk Mihov DFA construction algorithm
 
+
 class DMNode(object):
     def __init__(self, n):
         self.n = n
@@ -710,7 +716,3 @@ def add_suffix(dfa, nodes, last, downto, seen):
         # Add the node's transitions to the DFA
         for label, dest in iteritems(node.arcs):
             dfa.add_transition(this, label, dest)
-
-
-
-

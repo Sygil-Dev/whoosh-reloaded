@@ -2,7 +2,7 @@ from __future__ import with_statement
 import random
 
 from whoosh import fields, matching, scoring
-from whoosh.compat import u, xrange
+from whoosh.compat import u, range
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.numeric import length_to_byte, byte_to_length
 
@@ -15,7 +15,7 @@ def test_max_field_length():
     st = RamStorage()
     schema = fields.Schema(t=fields.TEXT)
     ix = st.create_index(schema)
-    for i in xrange(1, 200, 7):
+    for i in range(1, 200, 7):
         w = ix.writer()
         w.add_document(t=u(" ").join(["word"] * i))
         w.commit()
@@ -30,7 +30,7 @@ def test_minmax_field_length():
     ix = st.create_index(schema)
     least = 999999
     most = 0
-    for _ in xrange(1, 200, 7):
+    for _ in range(1, 200, 7):
         w = ix.writer()
         count = random.randint(1, 100)
         least = min(count, least)
@@ -157,12 +157,15 @@ def test_replacements():
     assert wm.boost == 2.0
     assert wm.child.__class__ == matching.IntersectionMatcher
 
-    ls1 = matching.ListMatcher([1, 2, 3], [0.1, 0.1, 0.1],
-                               scorer=scoring.WeightScorer(0.1))
-    ls2 = matching.ListMatcher([1, 2, 3], [0.2, 0.2, 0.2],
-                               scorer=scoring.WeightScorer(0.2))
-    ls3 = matching.ListMatcher([1, 2, 3], [0.3, 0.3, 0.3],
-                               scorer=scoring.WeightScorer(0.3))
+    ls1 = matching.ListMatcher(
+        [1, 2, 3], [0.1, 0.1, 0.1], scorer=scoring.WeightScorer(0.1)
+    )
+    ls2 = matching.ListMatcher(
+        [1, 2, 3], [0.2, 0.2, 0.2], scorer=scoring.WeightScorer(0.2)
+    )
+    ls3 = matching.ListMatcher(
+        [1, 2, 3], [0.3, 0.3, 0.3], scorer=scoring.WeightScorer(0.3)
+    )
     mm = matching.MultiMatcher([ls1, ls2, ls3], [0, 4, 8])
     mm = mm.replace(0.25)
     assert mm.current == 2

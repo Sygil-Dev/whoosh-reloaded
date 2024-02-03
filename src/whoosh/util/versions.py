@@ -99,7 +99,8 @@ class SimpleVersion(BaseVersion):
         999.999.999c999
     """
 
-    _version_exp = rcompile(r"""
+    _version_exp = rcompile(
+        r"""
     ^
     (?P<major>\d{1,4})
     (
@@ -113,15 +114,18 @@ class SimpleVersion(BaseVersion):
         )?
     )?
     $
-    """, verbose=True)
+    """,
+        verbose=True,
+    )
 
     # (groupid, method, skippable, default)
-    _parts = [("major", int),
-              ("minor", int),
-              ("release", int),
-              ("ex", str),
-              ("exnum", int),
-              ]
+    _parts = [
+        ("major", int),
+        ("minor", int),
+        ("release", int),
+        ("ex", str),
+        ("exnum", int),
+    ]
 
     _ex_bits = {"a": 0, "b": 1, "c": 2, "rc": 10, "z": 15}
     _bits_ex = dict((v, k) for k, v in _ex_bits.items())

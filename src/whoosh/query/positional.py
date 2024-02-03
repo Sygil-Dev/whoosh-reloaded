@@ -63,14 +63,20 @@ class Sequence(compound.CompoundQuery):
         self.ordered = ordered
 
     def __eq__(self, other):
-        return (other and type(self) is type(other)
-                and self.subqueries == other.subqueries
-                and self.boost == other.boost)
+        return (
+            other
+            and type(self) is type(other)
+            and self.subqueries == other.subqueries
+            and self.boost == other.boost
+        )
 
     def __repr__(self):
-        return "%s(%r, slop=%d, boost=%f)" % (self.__class__.__name__,
-                                              self.subqueries, self.slop,
-                                              self.boost)
+        return "%s(%r, slop=%d, boost=%f)" % (
+            self.__class__.__name__,
+            self.subqueries,
+            self.slop,
+            self.boost,
+        )
 
     def __hash__(self):
         h = hash(self.slop) ^ hash(self.boost)
@@ -81,8 +87,12 @@ class Sequence(compound.CompoundQuery):
     def normalize(self):
         # Because the subqueries are in sequence, we can't do the fancy merging
         # that CompoundQuery does
-        return self.__class__([q.normalize() for q in self.subqueries],
-                              self.slop, self.ordered, self.boost)
+        return self.__class__(
+            [q.normalize() for q in self.subqueries],
+            self.slop,
+            self.ordered,
+            self.boost,
+        )
 
     def _and_query(self):
         return compound.And(self.subqueries)
@@ -99,23 +109,27 @@ class Sequence(compound.CompoundQuery):
         # Tell the sub-queries this matcher will need the current match to get
         # spans
         context = context.set(needs_current=True)
-        m = self._tree_matcher(subs, SpanNear.SpanNearMatcher, searcher,
-                               context, None, slop=self.slop,
-                               ordered=self.ordered)
+        m = self._tree_matcher(
+            subs,
+            SpanNear.SpanNearMatcher,
+            searcher,
+            context,
+            None,
+            slop=self.slop,
+            ordered=self.ordered,
+        )
         return m
 
 
 class Ordered(Sequence):
-    """Matches documents containing a list of sub-queries in the given order.
-    """
+    """Matches documents containing a list of sub-queries in the given order."""
 
     JOINT = " BEFORE "
 
     def _matcher(self, subs, searcher, context):
         from whoosh.query.spans import SpanBefore
 
-        return self._tree_matcher(subs, SpanBefore._Matcher, searcher,
-                                  context, None)
+        return self._tree_matcher(subs, SpanBefore._Matcher, searcher, context, None)
 
 
 class Phrase(qcore.Query):
@@ -141,16 +155,23 @@ class Phrase(qcore.Query):
         self.char_ranges = char_ranges
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.fieldname == other.fieldname
-                and self.words == other.words
-                and self.slop == other.slop
-                and self.boost == other.boost)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.fieldname == other.fieldname
+            and self.words == other.words
+            and self.slop == other.slop
+            and self.boost == other.boost
+        )
 
     def __repr__(self):
-        return "%s(%r, %r, slop=%s, boost=%f)" % (self.__class__.__name__,
-                                                  self.fieldname, self.words,
-                                                  self.slop, self.boost)
+        return "%s(%r, %r, slop=%s, boost=%f)" % (
+            self.__class__.__name__,
+            self.fieldname,
+            self.words,
+            self.slop,
+            self.boost,
+        )
 
     def __unicode__(self):
         return u('%s:"%s"') % (self.fieldname, u(" ").join(self.words))
@@ -178,9 +199,14 @@ class Phrase(qcore.Query):
             if char_ranges:
                 startchar, endchar = char_ranges[i]
 
-            yield Token(fieldname=self.fieldname, text=word,
-                        boost=boost * self.boost, startchar=startchar,
-                        endchar=endchar, chars=True)
+            yield Token(
+                fieldname=self.fieldname,
+                text=word,
+                boost=boost * self.boost,
+                startchar=startchar,
+                endchar=endchar,
+                chars=True,
+            )
 
     def normalize(self):
         if not self.words:
@@ -192,8 +218,13 @@ class Phrase(qcore.Query):
             return t
 
         words = [w for w in self.words if w is not None]
-        return self.__class__(self.fieldname, words, slop=self.slop,
-                              boost=self.boost, char_ranges=self.char_ranges)
+        return self.__class__(
+            self.fieldname,
+            words,
+            slop=self.slop,
+            boost=self.boost,
+            char_ranges=self.char_ranges,
+        )
 
     def replace(self, fieldname, oldtext, newtext):
         q = copy.copy(self)
@@ -204,8 +235,7 @@ class Phrase(qcore.Query):
         return q
 
     def _and_query(self):
-        return compound.And([terms.Term(self.fieldname, word)
-                             for word in self.words])
+        return compound.And([terms.Term(self.fieldname, word) for word in self.words])
 
     def estimate_size(self, ixreader):
         return self._and_query().estimate_size(ixreader)
@@ -222,8 +252,9 @@ class Phrase(qcore.Query):
 
         field = searcher.schema[fieldname]
         if not field.format or not field.format.supports("positions"):
-            raise qcore.QueryError("Phrase search: %r field has no positions"
-                                   % self.fieldname)
+            raise qcore.QueryError(
+                "Phrase search: %r field has no positions" % self.fieldname
+            )
 
         terms = []
         # Build a list of Term queries from the words in the phrase

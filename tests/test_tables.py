@@ -1,12 +1,17 @@
 # encoding: utf-8
 
 from __future__ import with_statement
+
 import random
 
-from whoosh.compat import b, xrange, iteritems
+from whoosh.compat import b, iteritems, range
 from whoosh.filedb.filestore import RamStorage
-from whoosh.filedb.filetables import HashReader, HashWriter
-from whoosh.filedb.filetables import OrderedHashWriter, OrderedHashReader
+from whoosh.filedb.filetables import (
+    HashReader,
+    HashWriter,
+    OrderedHashReader,
+    OrderedHashWriter,
+)
 from whoosh.util.testing import TempStorage
 
 
@@ -51,11 +56,20 @@ def test_hash_extras():
 
 
 def test_hash_contents():
-    samp = [('alfa', 'bravo'), ('charlie', 'delta'), ('echo', 'foxtrot'),
-            ('golf', 'hotel'), ('india', 'juliet'), ('kilo', 'lima'),
-            ('mike', 'november'), ('oskar', 'papa'), ('quebec', 'romeo'),
-            ('sierra', 'tango'), ('ultra', 'victor'), ('whiskey', 'xray'),
-            ]
+    samp = [
+        ("alfa", "bravo"),
+        ("charlie", "delta"),
+        ("echo", "foxtrot"),
+        ("golf", "hotel"),
+        ("india", "juliet"),
+        ("kilo", "lima"),
+        ("mike", "november"),
+        ("oskar", "papa"),
+        ("quebec", "romeo"),
+        ("sierra", "tango"),
+        ("ultra", "victor"),
+        ("whiskey", "xray"),
+    ]
     # Convert to bytes
     samp = set((b(k), b(v)) for k, v in samp)
 
@@ -90,7 +104,7 @@ def test_random_hash():
         return b(s)
 
     with TempStorage("randomhash") as st:
-        samp = dict((randstring(), randstring()) for _ in xrange(times))
+        samp = dict((randstring(), randstring()) for _ in range(times))
 
         hw = HashWriter(st.create_file("test.hsh"))
         for k, v in iteritems(samp):
@@ -109,7 +123,7 @@ def test_random_access():
     times = 1000
     with TempStorage("orderedhash") as st:
         hw = HashWriter(st.create_file("test.hsh"))
-        hw.add_all((b("%08x" % x), b(str(x))) for x in xrange(times))
+        hw.add_all((b("%08x" % x), b(str(x))) for x in range(times))
         hw.close()
 
         keys = list(range(times))
@@ -121,8 +135,22 @@ def test_random_access():
 
 
 def test_ordered_closest():
-    keys = ['alfa', 'bravo', 'charlie', 'delta', 'echo', 'foxtrot', 'golf',
-            'hotel', 'india', 'juliet', 'kilo', 'lima', 'mike', 'november']
+    keys = [
+        "alfa",
+        "bravo",
+        "charlie",
+        "delta",
+        "echo",
+        "foxtrot",
+        "golf",
+        "hotel",
+        "india",
+        "juliet",
+        "kilo",
+        "lima",
+        "mike",
+        "november",
+    ]
     # Make into bytes for Python 3
     keys = [b(k) for k in keys]
     values = [str(len(k)).encode("ascii") for k in keys]
@@ -134,16 +162,16 @@ def test_ordered_closest():
 
         hr = OrderedHashReader.open(st, "test.hsh")
         ck = hr.closest_key
-        assert ck(b('')) == b('alfa')
-        assert ck(b(' ')) == b('alfa')
-        assert ck(b('alfa')) == b('alfa')
-        assert ck(b('bravot')) == b('charlie')
-        assert ck(b('charlie')) == b('charlie')
-        assert ck(b('kiloton')) == b('lima')
-        assert ck(b('oskar')) is None
+        assert ck(b("")) == b("alfa")
+        assert ck(b(" ")) == b("alfa")
+        assert ck(b("alfa")) == b("alfa")
+        assert ck(b("bravot")) == b("charlie")
+        assert ck(b("charlie")) == b("charlie")
+        assert ck(b("kiloton")) == b("lima")
+        assert ck(b("oskar")) is None
         assert list(hr.keys()) == keys
         assert list(hr.values()) == values
-        assert list(hr.keys_from(b('f'))) == keys[5:]
+        assert list(hr.keys_from(b("f"))) == keys[5:]
         hr.close()
 
 
@@ -176,8 +204,9 @@ def test_extras():
 
 
 def test_checksum_file():
-    from whoosh.filedb.structfile import ChecksumFile
     from zlib import crc32
+
+    from whoosh.filedb.structfile import ChecksumFile
 
     def wr(f):
         f.write(b("Testing"))
@@ -193,7 +222,7 @@ def test_checksum_file():
     f.close()
     # Checksum the contents
     f = st.open_file("control")
-    target = crc32(f.read()) & 0xffffffff
+    target = crc32(f.read()) & 0xFFFFFFFF
     f.close()
 
     # Write a file with checksumming

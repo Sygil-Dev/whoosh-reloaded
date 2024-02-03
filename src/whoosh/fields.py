@@ -35,7 +35,7 @@ from decimal import Decimal
 
 from whoosh import analysis, columns, formats
 from whoosh.compat import with_metaclass
-from whoosh.compat import itervalues, xrange
+from whoosh.compat import itervalues
 from whoosh.compat import bytes_type, string_type, text_type
 from whoosh.system import emptybytes
 from whoosh.system import pack_byte
@@ -47,6 +47,7 @@ from whoosh.util.times import datetime_to_long, long_to_datetime
 
 # Exceptions
 
+
 class FieldConfigurationError(Exception):
     pass
 
@@ -56,6 +57,7 @@ class UnknownFieldError(Exception):
 
 
 # Field Types
+
 
 class FieldType(object):
     """
@@ -105,9 +107,17 @@ class FieldType(object):
     sortable_typecode = None
     column_type = None
 
-    def __init__(self, format, analyzer, scorable=False,
-                 stored=False, unique=False, multitoken_query="default",
-                 sortable=False, vector=None):
+    def __init__(
+        self,
+        format,
+        analyzer,
+        scorable=False,
+        stored=False,
+        unique=False,
+        multitoken_query="default",
+        sortable=False,
+        vector=None,
+    ):
         self.format = format
         self.analyzer = analyzer
         self.scorable = scorable
@@ -124,20 +134,28 @@ class FieldType(object):
             self.vector = None
 
     def __repr__(self):
-        return ("%s(format=%r, scorable=%s, stored=%s, unique=%s)"
-                % (self.__class__.__name__, self.format, self.scorable,
-                   self.stored, self.unique))
+        return "%s(format=%r, scorable=%s, stored=%s, unique=%s)" % (
+            self.__class__.__name__,
+            self.format,
+            self.scorable,
+            self.stored,
+            self.unique,
+        )
 
     def __eq__(self, other):
-        return all((isinstance(other, FieldType),
-                    (self.format == other.format),
-                    (self.scorable == other.scorable),
-                    (self.stored == other.stored),
-                    (self.unique == other.unique),
-                    (self.column_type == other.column_type)))
+        return all(
+            (
+                isinstance(other, FieldType),
+                (self.format == other.format),
+                (self.scorable == other.scorable),
+                (self.stored == other.stored),
+                (self.unique == other.unique),
+                (self.column_type == other.column_type),
+            )
+        )
 
     def __ne__(self, other):
-        return not(self.__eq__(other))
+        return not (self.__eq__(other))
 
     # Text
 
@@ -150,8 +168,10 @@ class FieldType(object):
         """
 
         if not self.format:
-            raise Exception("%s field %r cannot index without a format"
-                            % (self.__class__.__name__, self))
+            raise Exception(
+                "%s field %r cannot index without a format"
+                % (self.__class__.__name__, self)
+            )
         if not isinstance(value, (text_type, list, tuple)):
             raise ValueError("%r is not unicode or sequence" % value)
         assert isinstance(self.format, formats.Format)
@@ -175,7 +195,7 @@ class FieldType(object):
             raise Exception("%s field has no analyzer" % self.__class__)
         return self.analyzer(value, **kwargs)
 
-    def process_text(self, qstring, mode='', **kwargs):
+    def process_text(self, qstring, mode="", **kwargs):
         """
         Analyzes the given string and returns an iterator of token texts.
 
@@ -265,8 +285,7 @@ class FieldType(object):
 
         raise NotImplementedError(self.__class__.__name__)
 
-    def parse_range(self, fieldname, start, end, startexcl, endexcl,
-                    boost=1.0):
+    def parse_range(self, fieldname, start, end, startexcl, endexcl, boost=1.0):
         """
         When ``self_parsing()`` returns True, the query parser will call
         this method to parse range query text. If this method returns None
@@ -310,8 +329,7 @@ class FieldType(object):
         if isinstance(value, (list, tuple)):
             words = value
         else:
-            words = [token.text for token
-                     in self.analyzer(value, no_morph=True)]
+            words = [token.text for token in self.analyzer(value, no_morph=True)]
 
         return iter(sorted(set(words)))
 
@@ -358,6 +376,7 @@ class FieldType(object):
 
 
 # Wrapper base class
+
 
 class FieldWrapper(FieldType):
     def __init__(self, subfield, prefix):
@@ -428,8 +447,7 @@ class FieldWrapper(FieldType):
         return self.subfield.parse_query(fieldname, qstring, boost)
 
     def parse_range(self, fieldname, start, end, startexcl, endexcl, boost=1.0):
-        self.subfield.parse_range(fieldname, start, end, startexcl, endexcl,
-                                  boost)
+        self.subfield.parse_range(fieldname, start, end, startexcl, endexcl, boost)
 
     # Utility
 
@@ -455,6 +473,7 @@ class FieldWrapper(FieldType):
 
 # Pre-configured field types
 
+
 class ID(FieldType):
     """
     Configured field type that indexes the entire value of the field as one
@@ -462,8 +481,9 @@ class ID(FieldType):
     of a file.
     """
 
-    def __init__(self, stored=False, unique=False, field_boost=1.0,
-                 sortable=False, analyzer=None):
+    def __init__(
+        self, stored=False, unique=False, field_boost=1.0, sortable=False, analyzer=None
+    ):
         """
         :param stored: Whether the value of this field is stored with the
             document.
@@ -483,8 +503,7 @@ class IDLIST(FieldType):
     and/or punctuation (or anything else, using the expression param).
     """
 
-    def __init__(self, stored=False, unique=False, expression=None,
-                 field_boost=1.0):
+    def __init__(self, stored=False, unique=False, expression=None, field_boost=1.0):
         """
         :param stored: Whether the value of this field is stored with the
             document.
@@ -535,9 +554,19 @@ class NUMERIC(FieldType):
 
     """
 
-    def __init__(self, numtype=int, bits=32, stored=False, unique=False,
-                 field_boost=1.0, decimal_places=0, shift_step=4, signed=True,
-                 sortable=False, default=None):
+    def __init__(
+        self,
+        numtype=int,
+        bits=32,
+        stored=False,
+        unique=False,
+        field_boost=1.0,
+        decimal_places=0,
+        shift_step=4,
+        signed=True,
+        sortable=False,
+        default=None,
+    ):
         """
         :param numtype: the type of numbers that can be stored in this field,
             either ``int``, ``float``. If you use ``Decimal``,
@@ -570,15 +599,18 @@ class NUMERIC(FieldType):
         if numtype is Decimal:
             numtype = int
             if not decimal_places:
-                raise TypeError("To store Decimal instances, you must set the "
-                                "decimal_places argument")
+                raise TypeError(
+                    "To store Decimal instances, you must set the "
+                    "decimal_places argument"
+                )
         elif numtype not in (int, float):
-            raise TypeError("Can't use %r as a type, use int or float"
-                            % numtype)
+            raise TypeError("Can't use %r as a type, use int or float" % numtype)
         # Sanity check
         if numtype is float and decimal_places:
-            raise Exception("A float type and decimal_places argument %r are "
-                            "incompatible" % decimal_places)
+            raise Exception(
+                "A float type and decimal_places argument %r are "
+                "incompatible" % decimal_places
+            )
 
         intsizes = [8, 16, 32, 64]
         intcodes = ["B", "H", "I", "Q"]
@@ -587,8 +619,7 @@ class NUMERIC(FieldType):
             bits = 64  # Floats are converted to 64 bit ints
         else:
             if bits not in intsizes:
-                raise Exception("Invalid bits %r, use 8, 16, 32, or 64"
-                                % bits)
+                raise Exception("Invalid bits %r, use 8, 16, 32, or 64" % bits)
         # Type code for the *sortable* representation
         self.sortable_typecode = intcodes[intsizes.index(bits)]
         self._struct = struct.Struct(">" + str(self.sortable_typecode))
@@ -612,8 +643,9 @@ class NUMERIC(FieldType):
             else:
                 default = NaN
         elif not self.is_valid(default):
-            raise Exception("The default %r is not a valid number for this "
-                            "field" % default)
+            raise Exception(
+                "The default %r is not a valid number for this " "field" % default
+            )
 
         self.default = default
         self.set_sortable(sortable)
@@ -637,13 +669,12 @@ class NUMERIC(FieldType):
 
         # Calculate the minimum and maximum possible values for error checking
         min_value = from_sortable(numtype, bits, signed, 0)
-        max_value = from_sortable(numtype, bits, signed, 2 ** bits - 1)
+        max_value = from_sortable(numtype, bits, signed, 2**bits - 1)
 
         return min_value, max_value
 
     def default_column(self):
-        return columns.NumericColumn(self.sortable_typecode,
-                                     default=self.default)
+        return columns.NumericColumn(self.sortable_typecode, default=self.default)
 
     def is_valid(self, x):
         try:
@@ -665,7 +696,7 @@ class NUMERIC(FieldType):
 
         # word, freq, weight, valuestring
         if self.shift_step:
-            for shift in xrange(0, self.bits, self.shift_step):
+            for shift in range(0, self.bits, self.shift_step):
                 yield (self.to_bytes(num, shift), 1, 1.0, emptybytes)
         else:
             yield (self.to_bytes(num), 1, 1.0, emptybytes)
@@ -676,20 +707,23 @@ class NUMERIC(FieldType):
 
         dc = self.decimal_places
         if dc and isinstance(x, (string_type, Decimal)):
-            x = Decimal(x) * (10 ** dc)
+            x = Decimal(x) * (10**dc)
         elif isinstance(x, Decimal):
-            raise TypeError("Can't index a Decimal object unless you specified "
-                            "decimal_places on the field")
+            raise TypeError(
+                "Can't index a Decimal object unless you specified "
+                "decimal_places on the field"
+            )
 
         try:
             x = self.numtype(x)
         except OverflowError:
-            raise ValueError("Value %r overflowed number type %r"
-                             % (x, self.numtype))
+            raise ValueError("Value %r overflowed number type %r" % (x, self.numtype))
 
         if x < self.min_value or x > self.max_value:
-            raise ValueError("Numeric field value %s out of range [%s, %s]"
-                             % (x, self.min_value, self.max_value))
+            raise ValueError(
+                "Numeric field value %s out of range [%s, %s]"
+                % (x, self.min_value, self.max_value)
+            )
         return x
 
     def unprepare_number(self, x):
@@ -753,23 +787,21 @@ class NUMERIC(FieldType):
         token = self.to_bytes(qstring)
         return query.Term(fieldname, token, boost=boost)
 
-    def parse_range(self, fieldname, start, end, startexcl, endexcl,
-                    boost=1.0):
+    def parse_range(self, fieldname, start, end, startexcl, endexcl, boost=1.0):
         from whoosh import query
         from whoosh.qparser.common import QueryParserError
 
         if start is not None:
             if not self.is_valid(start):
-                raise QueryParserError("Range start %r is not a valid number"
-                                       % start)
+                raise QueryParserError("Range start %r is not a valid number" % start)
             start = self.prepare_number(start)
         if end is not None:
             if not self.is_valid(end):
-                raise QueryParserError("Range end %r is not a valid number"
-                                       % end)
+                raise QueryParserError("Range end %r is not a valid number" % end)
             end = self.prepare_number(end)
-        return query.NumericRange(fieldname, start, end, startexcl, endexcl,
-                                  boost=boost)
+        return query.NumericRange(
+            fieldname, start, end, startexcl, endexcl, boost=boost
+        )
 
     def sortable_terms(self, ixreader, fieldname):
         zero = b"\x00"
@@ -806,9 +838,9 @@ class DATETIME(NUMERIC):
         :param unique: Whether the value of this field is unique per-document.
         """
 
-        super(DATETIME, self).__init__(int, 64, stored=stored,
-                                       unique=unique, shift_step=8,
-                                       sortable=sortable)
+        super(DATETIME, self).__init__(
+            int, 64, stored=stored, unique=unique, shift_step=8, sortable=sortable
+        )
 
     def prepare_datetime(self, x):
         from whoosh.util.times import floor
@@ -866,8 +898,7 @@ class DATETIME(NUMERIC):
         if len(qstring) == 20:
             microsecond = int(qstring[14:])
 
-        at = fix(adatetime(year, month, day, hour, minute, second,
-                           microsecond))
+        at = fix(adatetime(year, month, day, hour, minute, second, microsecond))
         if is_void(at):
             raise Exception("%r is not a parseable date" % qstring)
         return at
@@ -889,8 +920,7 @@ class DATETIME(NUMERIC):
         else:
             return query.Term(fieldname, at, boost=boost)
 
-    def parse_range(self, fieldname, start, end, startexcl, endexcl,
-                    boost=1.0):
+    def parse_range(self, fieldname, start, end, startexcl, endexcl, boost=1.0):
         from whoosh import query
 
         if start is None and end is None:
@@ -920,8 +950,8 @@ class BOOLEAN(FieldType):
     """
 
     bytestrings = (b"f", b"t")
-    trues = frozenset(u"t true yes 1".split())
-    falses = frozenset(u"f false no 0".split())
+    trues = frozenset("t true yes 1".split())
+    falses = frozenset("f false no 0".split())
 
     def __init__(self, stored=False, field_boost=1.0):
         """
@@ -1019,9 +1049,18 @@ class KEYWORD(FieldType):
     field) and to not make the field scorable.
     """
 
-    def __init__(self, stored=False, lowercase=False, commas=False,
-                 scorable=False, unique=False, field_boost=1.0, sortable=False,
-                 vector=None, analyzer=None):
+    def __init__(
+        self,
+        stored=False,
+        lowercase=False,
+        commas=False,
+        scorable=False,
+        unique=False,
+        field_boost=1.0,
+        sortable=False,
+        vector=None,
+        analyzer=None,
+    ):
         """
         :param stored: Whether to store the value of the field with the
             document.
@@ -1031,8 +1070,7 @@ class KEYWORD(FieldType):
         """
 
         if not analyzer:
-            analyzer = analysis.KeywordAnalyzer(lowercase=lowercase,
-                                                commas=commas)
+            analyzer = analysis.KeywordAnalyzer(lowercase=lowercase, commas=commas)
         self.analyzer = analyzer
 
         # Store field lengths and weights along with doc ID
@@ -1059,10 +1097,20 @@ class TEXT(FieldType):
     searching. This field type is always scorable.
     """
 
-    def __init__(self, analyzer=None, phrase=True, chars=False, stored=False,
-                 field_boost=1.0, multitoken_query="default", spelling=False,
-                 sortable=False, lang=None, vector=None,
-                 spelling_prefix="spell_"):
+    def __init__(
+        self,
+        analyzer=None,
+        phrase=True,
+        chars=False,
+        stored=False,
+        field_boost=1.0,
+        multitoken_query="default",
+        spelling=False,
+        sortable=False,
+        lang=None,
+        vector=None,
+        spelling_prefix="spell_",
+    ):
         """
         :param analyzer: The analysis.Analyzer to use to index the field
             contents. See the analysis module for more information. If you omit
@@ -1175,7 +1223,7 @@ class SpellField(FieldType):
         kwargs["nomorph"] = True
         return FieldType.tokenize(self, value, **kwargs)
 
-    def process_text(self, qstring, mode='', **kwargs):
+    def process_text(self, qstring, mode="", **kwargs):
         kwargs["nomorph"] = True
         return FieldType.process_text(self, qstring, mode=mode, **kwargs)
 
@@ -1192,8 +1240,16 @@ class NGRAM(FieldType):
 
     scorable = True
 
-    def __init__(self, minsize=2, maxsize=4, stored=False, field_boost=1.0,
-                 queryor=False, phrase=False, sortable=False):
+    def __init__(
+        self,
+        minsize=2,
+        maxsize=4,
+        stored=False,
+        field_boost=1.0,
+        queryor=False,
+        phrase=False,
+        sortable=False,
+    ):
         """
         :param minsize: The minimum length of the N-grams.
         :param maxsize: The maximum length of the N-grams.
@@ -1225,7 +1281,7 @@ class NGRAM(FieldType):
         from whoosh import query
 
         terms = []
-        for g in self.process_text(qstring, mode='query'):
+        for g in self.process_text(qstring, mode="query"):
             if g == "*":
                 terms.append(query.Wildcard(fieldname, g, boost=boost))
             else:
@@ -1243,8 +1299,17 @@ class NGRAMWORDS(NGRAM):
 
     scorable = True
 
-    def __init__(self, minsize=2, maxsize=4, stored=False, field_boost=1.0,
-                 tokenizer=None, at=None, queryor=False, sortable=False):
+    def __init__(
+        self,
+        minsize=2,
+        maxsize=4,
+        stored=False,
+        field_boost=1.0,
+        tokenizer=None,
+        at=None,
+        queryor=False,
+        sortable=False,
+    ):
         """
         :param minsize: The minimum length of the N-grams.
         :param maxsize: The maximum length of the N-grams.
@@ -1261,8 +1326,7 @@ class NGRAMWORDS(NGRAM):
             default is to combine N-grams with an And query.
         """
 
-        self.analyzer = analysis.NgramWordAnalyzer(minsize, maxsize, tokenizer,
-                                                   at=at)
+        self.analyzer = analysis.NgramWordAnalyzer(minsize, maxsize, tokenizer, at=at)
         self.format = formats.Frequency(field_boost=field_boost)
         self.stored = stored
         self.queryor = queryor
@@ -1271,11 +1335,11 @@ class NGRAMWORDS(NGRAM):
 
 # Other fields
 
+
 class ReverseField(FieldWrapper):
     def __init__(self, subfield, prefix="rev_"):
         FieldWrapper.__init__(self, subfield, prefix)
         self.analyzer = subfield.analyzer | analysis.ReverseTextFilter()
-        self.format = BasicFormat(lengths=False, weights=False)
 
         self.scorable = False
         self.set_sortable(False)
@@ -1289,6 +1353,7 @@ class ReverseField(FieldWrapper):
 
 
 # Schema class
+
 
 class MetaSchema(type):
     def __new__(cls, name, bases, attrs):
@@ -1356,11 +1421,12 @@ class Schema(object):
         return self.__class__(**self._fields)
 
     def __eq__(self, other):
-        return (other.__class__ is self.__class__
-                and list(self.items()) == list(other.items()))
+        return other.__class__ is self.__class__ and list(self.items()) == list(
+            other.items()
+        )
 
     def __ne__(self, other):
-        return not(self.__eq__(other))
+        return not (self.__eq__(other))
 
     def __repr__(self):
         return "<%s: %r>" % (self.__class__.__name__, self.names())
@@ -1439,8 +1505,9 @@ class Schema(object):
         fieldnames = set(self._fields.keys())
         if check_names is not None:
             check_names = set(check_names) - fieldnames
-            fieldnames.update(fieldname for fieldname in check_names
-                              if fieldname in self)
+            fieldnames.update(
+                fieldname for fieldname in check_names if fieldname in self
+            )
         return sorted(fieldnames)
 
     def clean(self):
@@ -1466,12 +1533,12 @@ class Schema(object):
                 fieldtype = fieldtype()
             except:
                 e = sys.exc_info()[1]
-                raise FieldConfigurationError("Error: %s instantiating field "
-                                              "%r: %r" % (e, name, fieldtype))
+                raise FieldConfigurationError(
+                    "Error: %s instantiating field " "%r: %r" % (e, name, fieldtype)
+                )
 
         if not isinstance(fieldtype, FieldType):
-                raise FieldConfigurationError("%r is not a FieldType object"
-                                              % fieldtype)
+            raise FieldConfigurationError("%r is not a FieldType object" % fieldtype)
 
         self._subfields[name] = sublist = []
         for prefix, subfield in fieldtype.subfields():
@@ -1597,8 +1664,7 @@ def merge_fielddict(d1, d2):
         field1 = d1.get(name)
         field2 = d2.get(name)
         if field1 and field2 and field1 != field2:
-            raise Exception("Inconsistent field %r: %r != %r"
-                            % (name, field1, field2))
+            raise Exception("Inconsistent field %r: %r != %r" % (name, field1, field2))
         out[name] = field1 or field2
     return out
 
@@ -1612,6 +1678,6 @@ def merge_schema(s1, s2):
 
 def merge_schemas(schemas):
     schema = schemas[0]
-    for i in xrange(1, len(schemas)):
+    for i in range(1, len(schemas)):
         schema = merge_schema(schema, schemas[i])
     return schema

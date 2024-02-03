@@ -99,8 +99,7 @@ class Not(qcore.Query):
         self.boost = boost
 
     def __eq__(self, other):
-        return other and self.__class__ is other.__class__ and\
-        self.query == other.query
+        return other and self.__class__ is other.__class__ and self.query == other.query
 
     def __repr__(self):
         return "%s(%s)" % (self.__class__.__name__, repr(self.query))
@@ -111,9 +110,7 @@ class Not(qcore.Query):
     __str__ = __unicode__
 
     def __hash__(self):
-        return (hash(self.__class__.__name__)
-                ^ hash(self.query)
-                ^ hash(self.boost))
+        return hash(self.__class__.__name__) ^ hash(self.query) ^ hash(self.boost)
 
     def is_leaf(self):
         return False
@@ -145,8 +142,9 @@ class Not(qcore.Query):
         # as And and Or do special handling of Not subqueries.
         reader = searcher.reader()
         child = self.query.matcher(searcher, searcher.boolean_context())
-        return matching.InverseMatcher(child, reader.doc_count_all(),
-                                       missing=reader.is_deleted)
+        return matching.InverseMatcher(
+            child, reader.doc_count_all(), missing=reader.is_deleted
+        )
 
 
 class ConstantScoreQuery(WrappingQuery):
@@ -161,8 +159,12 @@ class ConstantScoreQuery(WrappingQuery):
         self.score = score
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.child == other.child and self.score == other.score)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.child == other.child
+            and self.score == other.score
+        )
 
     def __hash__(self):
         return hash(self.child) ^ hash(self.score)
@@ -179,8 +181,7 @@ class ConstantScoreQuery(WrappingQuery):
             return m
         else:
             ids = array("I", m.all_ids())
-            return matching.ListMatcher(ids, all_weights=self.score,
-                                        term=m.term())
+            return matching.ListMatcher(ids, all_weights=self.score, term=m.term())
 
 
 class WeightingQuery(WrappingQuery):

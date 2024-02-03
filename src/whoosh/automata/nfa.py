@@ -30,7 +30,7 @@ from whoosh.automata.fst import Arc
 
 class Instruction(object):
     def __repr__(self):
-        return "%s()" % (self.__class__.__name__, )
+        return "%s()" % (self.__class__.__name__,)
 
 
 class Char(Instruction):
@@ -43,6 +43,7 @@ class Char(Instruction):
 
     def __repr__(self):
         return "Char(%r)" % self.c
+
 
 class Lit(Instruction):
     """
@@ -178,7 +179,7 @@ class ThreadList(object):
 
 
 class Thread(object):
-    def __init__(self, pc, address, sofar='', accept=False):
+    def __init__(self, pc, address, sofar="", accept=False):
         self.pc = pc
         self.address = address
         self.sofar = sofar
@@ -333,8 +334,8 @@ def regex_limit(graph, mode, program, address):
 # #    print len(x), x
 #
 #     with timing():
-#         print "lo=", regex_limit(gr, LO, program, gr.root("path"))
-#         print "hi=", regex_limit(gr, HI, program, gr.root("path"))
+#         print ("lo=", regex_limit(gr, LO, program, gr.root("path")))
+#         print ("hi=", regex_limit(gr, HI, program, gr.root("path")))
 #
 #
 #

@@ -32,8 +32,7 @@ class GermanStemmer(_StandardStemmer):
 
     __step1_suffixes = ("ern", "em", "er", "en", "es", "e", "s")
     __step2_suffixes = ("est", "en", "er", "st")
-    __step3_suffixes = ("isch", "lich", "heit", "keit",
-                          "end", "ung", "ig", "ik")
+    __step3_suffixes = ("isch", "lich", "heit", "keit", "end", "ung", "ig", "ik")
 
     def stem(self, word):
         """
@@ -54,10 +53,10 @@ class GermanStemmer(_StandardStemmer):
         for i in range(1, len(word) - 1):
             if word[i - 1] in self.__vowels and word[i + 1] in self.__vowels:
                 if word[i] == "u":
-                    word = "".join((word[:i], "U", word[i + 1:]))
+                    word = "".join((word[:i], "U", word[i + 1 :]))
 
                 elif word[i] == "y":
-                    word = "".join((word[:i], "Y", word[i + 1:]))
+                    word = "".join((word[:i], "Y", word[i + 1 :]))
 
         r1, r2 = self._r1r2_standard(word, self.__vowels)
 
@@ -65,20 +64,22 @@ class GermanStemmer(_StandardStemmer):
         # contains at least 3 letters.
         for i in range(1, len(word)):
             if word[i] not in self.__vowels and word[i - 1] in self.__vowels:
-                if len(word[:i + 1]) < 3 and len(word[:i + 1]) > 0:
+                if len(word[: i + 1]) < 3 and len(word[: i + 1]) > 0:
                     r1 = word[3:]
-                elif len(word[:i + 1]) == 0:
+                elif len(word[: i + 1]) == 0:
                     return word
                 break
 
         # STEP 1
         for suffix in self.__step1_suffixes:
             if r1.endswith(suffix):
-                if (suffix in ("en", "es", "e") and
-                    word[-len(suffix) - 4:-len(suffix)] == "niss"):
-                    word = word[:-len(suffix) - 1]
-                    r1 = r1[:-len(suffix) - 1]
-                    r2 = r2[:-len(suffix) - 1]
+                if (
+                    suffix in ("en", "es", "e")
+                    and word[-len(suffix) - 4 : -len(suffix)] == "niss"
+                ):
+                    word = word[: -len(suffix) - 1]
+                    r1 = r1[: -len(suffix) - 1]
+                    r2 = r2[: -len(suffix) - 1]
 
                 elif suffix == "s":
                     if word[-2] in self.__s_ending:
@@ -86,9 +87,9 @@ class GermanStemmer(_StandardStemmer):
                         r1 = r1[:-1]
                         r2 = r2[:-1]
                 else:
-                    word = word[:-len(suffix)]
-                    r1 = r1[:-len(suffix)]
-                    r2 = r2[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    r1 = r1[: -len(suffix)]
+                    r2 = r2[: -len(suffix)]
                 break
 
         # STEP 2
@@ -100,45 +101,55 @@ class GermanStemmer(_StandardStemmer):
                         r1 = r1[:-2]
                         r2 = r2[:-2]
                 else:
-                    word = word[:-len(suffix)]
-                    r1 = r1[:-len(suffix)]
-                    r2 = r2[:-len(suffix)]
+                    word = word[: -len(suffix)]
+                    r1 = r1[: -len(suffix)]
+                    r2 = r2[: -len(suffix)]
                 break
 
         # STEP 3: Derivational suffixes
         for suffix in self.__step3_suffixes:
             if r2.endswith(suffix):
                 if suffix in ("end", "ung"):
-                    if ("ig" in r2[-len(suffix) - 2:-len(suffix)] and
-                        "e" not in r2[-len(suffix) - 3:-len(suffix) - 2]):
-                        word = word[:-len(suffix) - 2]
+                    if (
+                        "ig" in r2[-len(suffix) - 2 : -len(suffix)]
+                        and "e" not in r2[-len(suffix) - 3 : -len(suffix) - 2]
+                    ):
+                        word = word[: -len(suffix) - 2]
                     else:
-                        word = word[:-len(suffix)]
+                        word = word[: -len(suffix)]
 
-                elif (suffix in ("ig", "ik", "isch") and
-                      "e" not in r2[-len(suffix) - 1:-len(suffix)]):
-                    word = word[:-len(suffix)]
+                elif (
+                    suffix in ("ig", "ik", "isch")
+                    and "e" not in r2[-len(suffix) - 1 : -len(suffix)]
+                ):
+                    word = word[: -len(suffix)]
 
                 elif suffix in ("lich", "heit"):
-                    if ("er" in r1[-len(suffix) - 2:-len(suffix)] or
-                        "en" in r1[-len(suffix) - 2:-len(suffix)]):
-                        word = word[:-len(suffix) - 2]
+                    if (
+                        "er" in r1[-len(suffix) - 2 : -len(suffix)]
+                        or "en" in r1[-len(suffix) - 2 : -len(suffix)]
+                    ):
+                        word = word[: -len(suffix) - 2]
                     else:
-                        word = word[:-len(suffix)]
+                        word = word[: -len(suffix)]
 
                 elif suffix == "keit":
-                    if "lich" in r2[-len(suffix) - 4:-len(suffix)]:
-                        word = word[:-len(suffix) - 4]
+                    if "lich" in r2[-len(suffix) - 4 : -len(suffix)]:
+                        word = word[: -len(suffix) - 4]
 
-                    elif "ig" in r2[-len(suffix) - 2:-len(suffix)]:
-                        word = word[:-len(suffix) - 2]
+                    elif "ig" in r2[-len(suffix) - 2 : -len(suffix)]:
+                        word = word[: -len(suffix) - 2]
                     else:
-                        word = word[:-len(suffix)]
+                        word = word[: -len(suffix)]
                 break
 
         # Umlaut accents are removed and
         # 'u' and 'y' are put back into lower case.
-        word = (word.replace(u("\xE4"), "a").replace(u("\xF6"), "o")
-                    .replace(u("\xFC"), "u").replace("U", "u")
-                    .replace("Y", "y"))
+        word = (
+            word.replace(u("\xE4"), "a")
+            .replace(u("\xF6"), "o")
+            .replace(u("\xFC"), "u")
+            .replace("U", "u")
+            .replace("Y", "y")
+        )
         return word

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import pytest
 
 from whoosh import fields, qparser, query
-from whoosh.compat import u, b, xrange
+from whoosh.compat import u, b, range
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util import times
 from whoosh.util.testing import TempIndex
@@ -40,9 +40,9 @@ def test_creation1():
 
 
 def test_creation2():
-    s = fields.Schema(a=fields.ID(stored=True),
-                      b=fields.ID,
-                      c=fields.KEYWORD(scorable=True))
+    s = fields.Schema(
+        a=fields.ID(stored=True), b=fields.ID, c=fields.KEYWORD(scorable=True)
+    )
 
     assert s.names() == ["a", "b", "c"]
     assert "a" in s
@@ -90,7 +90,7 @@ def test_badnames():
         s.add("a f", fields.ID)
 
 
-#def test_numeric_support():
+# def test_numeric_support():
 #    intf = fields.NUMERIC(int, shift_step=0)
 #    longf = fields.NUMERIC(int, bits=64, shift_step=0)
 #    floatf = fields.NUMERIC(float, shift_step=0)
@@ -130,28 +130,41 @@ def test_badnames():
 
 
 def test_index_numeric():
-    schema = fields.Schema(a=fields.NUMERIC(int, 32, signed=False),
-                           b=fields.NUMERIC(int, 32, signed=True))
+    schema = fields.Schema(
+        a=fields.NUMERIC(int, 32, signed=False), b=fields.NUMERIC(int, 32, signed=True)
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         w.add_document(a=1, b=1)
     with ix.searcher() as s:
-        assert list(s.lexicon("a")) == \
-                     [b('\x00\x00\x00\x00\x01'), b('\x04\x00\x00\x00\x00'),
-                      b('\x08\x00\x00\x00\x00'), b('\x0c\x00\x00\x00\x00'),
-                      b('\x10\x00\x00\x00\x00'), b('\x14\x00\x00\x00\x00'),
-                      b('\x18\x00\x00\x00\x00'), b('\x1c\x00\x00\x00\x00')]
-        assert list(s.lexicon("b")) == \
-                     [b('\x00\x80\x00\x00\x01'), b('\x04\x08\x00\x00\x00'),
-                      b('\x08\x00\x80\x00\x00'), b('\x0c\x00\x08\x00\x00'),
-                      b('\x10\x00\x00\x80\x00'), b('\x14\x00\x00\x08\x00'),
-                      b('\x18\x00\x00\x00\x80'), b('\x1c\x00\x00\x00\x08')]
+        assert list(s.lexicon("a")) == [
+            b("\x00\x00\x00\x00\x01"),
+            b("\x04\x00\x00\x00\x00"),
+            b("\x08\x00\x00\x00\x00"),
+            b("\x0c\x00\x00\x00\x00"),
+            b("\x10\x00\x00\x00\x00"),
+            b("\x14\x00\x00\x00\x00"),
+            b("\x18\x00\x00\x00\x00"),
+            b("\x1c\x00\x00\x00\x00"),
+        ]
+        assert list(s.lexicon("b")) == [
+            b("\x00\x80\x00\x00\x01"),
+            b("\x04\x08\x00\x00\x00"),
+            b("\x08\x00\x80\x00\x00"),
+            b("\x0c\x00\x08\x00\x00"),
+            b("\x10\x00\x00\x80\x00"),
+            b("\x14\x00\x00\x08\x00"),
+            b("\x18\x00\x00\x00\x80"),
+            b("\x1c\x00\x00\x00\x08"),
+        ]
 
 
 def test_numeric():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           integer=fields.NUMERIC(int),
-                           floating=fields.NUMERIC(float))
+    schema = fields.Schema(
+        id=fields.ID(stored=True),
+        integer=fields.NUMERIC(int),
+        floating=fields.NUMERIC(float),
+    )
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
@@ -239,7 +252,7 @@ def test_numeric_ranges():
     ix = RamStorage().create_index(schema)
     w = ix.writer()
 
-    for i in xrange(400):
+    for i in range(400):
         w.add_document(id=i, num=i)
     w.commit()
 
@@ -281,13 +294,12 @@ def test_numeric_ranges_unsigned():
 def test_decimal_ranges():
     from decimal import Decimal
 
-    schema = fields.Schema(id=fields.STORED,
-                           num=fields.NUMERIC(int, decimal_places=2))
+    schema = fields.Schema(id=fields.STORED, num=fields.NUMERIC(int, decimal_places=2))
     ix = RamStorage().create_index(schema)
     w = ix.writer()
     count = Decimal("0.0")
     inc = Decimal("0.2")
-    for _ in xrange(500):
+    for _ in range(500):
         w.add_document(id=str(count), num=count)
         count += inc
     w.commit()
@@ -325,20 +337,21 @@ def test_numeric_errors():
 
 
 def test_nontext_document():
-    schema = fields.Schema(id=fields.STORED, num=fields.NUMERIC,
-                           date=fields.DATETIME, even=fields.BOOLEAN)
+    schema = fields.Schema(
+        id=fields.STORED, num=fields.NUMERIC, date=fields.DATETIME, even=fields.BOOLEAN
+    )
     ix = RamStorage().create_index(schema)
 
     dt = datetime.now()
     w = ix.writer()
-    for i in xrange(50):
-        w.add_document(id=i, num=i, date=dt + timedelta(days=i),
-                       even=not(i % 2))
+    for i in range(50):
+        w.add_document(id=i, num=i, date=dt + timedelta(days=i), even=not (i % 2))
     w.commit()
 
     with ix.searcher() as s:
+
         def check(kwargs, target):
-            result = [d['id'] for d in s.documents(**kwargs)]
+            result = [d["id"] for d in s.documents(**kwargs)]
             assert result == target
 
         check({"num": 49}, [49])
@@ -347,13 +360,16 @@ def test_nontext_document():
 
 
 def test_nontext_update():
-    schema = fields.Schema(id=fields.STORED, num=fields.NUMERIC(unique=True),
-                           date=fields.DATETIME(unique=True))
+    schema = fields.Schema(
+        id=fields.STORED,
+        num=fields.NUMERIC(unique=True),
+        date=fields.DATETIME(unique=True),
+    )
     ix = RamStorage().create_index(schema)
 
     dt = datetime.now()
     w = ix.writer()
-    for i in xrange(10):
+    for i in range(10):
         w.add_document(id=i, num=i, date=dt + timedelta(days=i))
     w.commit()
 
@@ -374,10 +390,11 @@ def test_datetime():
     ix = st.create_index(schema)
 
     w = ix.writer()
-    for month in xrange(1, 12):
-        for day in xrange(1, 28):
-            w.add_document(id=u("%s-%s") % (month, day),
-                           date=datetime(2010, month, day, 14, 0, 0))
+    for month in range(1, 12):
+        for day in range(1, 28):
+            w.add_document(
+                id=u("%s-%s") % (month, day), date=datetime(2010, month, day, 14, 0, 0)
+            )
     w.commit()
 
     with ix.searcher() as s:
@@ -402,8 +419,7 @@ def test_datetime():
 
 
 def test_boolean():
-    schema = fields.Schema(id=fields.ID(stored=True),
-                           done=fields.BOOLEAN(stored=True))
+    schema = fields.Schema(id=fields.ID(stored=True), done=fields.BOOLEAN(stored=True))
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
@@ -439,19 +455,18 @@ def test_boolean():
 
 
 def test_boolean2():
-    schema = fields.Schema(t=fields.TEXT(stored=True),
-                           b=fields.BOOLEAN(stored=True))
+    schema = fields.Schema(t=fields.TEXT(stored=True), b=fields.BOOLEAN(stored=True))
     ix = RamStorage().create_index(schema)
     writer = ix.writer()
-    writer.add_document(t=u('some kind of text'), b=False)
-    writer.add_document(t=u('some other kind of text'), b=False)
-    writer.add_document(t=u('some more text'), b=False)
-    writer.add_document(t=u('some again'), b=True)
+    writer.add_document(t=u("some kind of text"), b=False)
+    writer.add_document(t=u("some other kind of text"), b=False)
+    writer.add_document(t=u("some more text"), b=False)
+    writer.add_document(t=u("some again"), b=True)
     writer.commit()
 
     with ix.searcher() as s:
-        qf = qparser.QueryParser('b', None).parse(u('f'))
-        qt = qparser.QueryParser('b', None).parse(u('t'))
+        qf = qparser.QueryParser("b", None).parse(u("f"))
+        qt = qparser.QueryParser("b", None).parse(u("t"))
         r = s.search(qf)
         assert len(r) == 3
 
@@ -460,9 +475,11 @@ def test_boolean2():
 
 
 def test_boolean3():
-    schema = fields.Schema(t=fields.TEXT(stored=True, field_boost=5),
-                           b=fields.BOOLEAN(stored=True),
-                           c=fields.TEXT)
+    schema = fields.Schema(
+        t=fields.TEXT(stored=True, field_boost=5),
+        b=fields.BOOLEAN(stored=True),
+        c=fields.TEXT,
+    )
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
@@ -514,7 +531,7 @@ def test_boolean_find_deleted():
     ix = RamStorage().create_index(schema)
     count = 0
     # Create multiple segments just in case
-    for _ in xrange(5):
+    for _ in range(5):
         w = ix.writer()
         for c in domain:
             w.add_document(i=count, b=(c == "1"))
@@ -527,7 +544,7 @@ def test_boolean_find_deleted():
     with ix.searcher() as s:
         # Double check that documents with b=True are all deleted
         reader = s.reader()
-        for docnum in xrange(s.doc_count_all()):
+        for docnum in range(s.doc_count_all()):
             b = s.stored_fields(docnum)["b"]
             assert b == reader.is_deleted(docnum)
 
@@ -558,15 +575,16 @@ def test_boolean_find_deleted():
 
 
 def test_boolean_multifield():
-    schema = fields.Schema(name=fields.TEXT(stored=True),
-                           bit=fields.BOOLEAN(stored=True))
+    schema = fields.Schema(
+        name=fields.TEXT(stored=True), bit=fields.BOOLEAN(stored=True)
+    )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(name=u('audi'), bit=True)
-        w.add_document(name=u('vw'), bit=False)
-        w.add_document(name=u('porsche'), bit=False)
-        w.add_document(name=u('ferrari'), bit=True)
-        w.add_document(name=u('citroen'), bit=False)
+        w.add_document(name=u("audi"), bit=True)
+        w.add_document(name=u("vw"), bit=False)
+        w.add_document(name=u("porsche"), bit=False)
+        w.add_document(name=u("ferrari"), bit=True)
+        w.add_document(name=u("citroen"), bit=False)
 
     with ix.searcher() as s:
         qp = qparser.MultifieldParser(["name", "bit"], schema)
@@ -582,16 +600,16 @@ def test_idlist():
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
-        w.add_document(paths=u('here there everywhere'))
-        w.add_document(paths=u('here'))
-        w.add_document(paths=u('there'))
+        w.add_document(paths=u("here there everywhere"))
+        w.add_document(paths=u("here"))
+        w.add_document(paths=u("there"))
 
     with ix.searcher() as s:
-        qp = qparser.QueryParser('paths', schema)
-        q = qp.parse(u('here'))
+        qp = qparser.QueryParser("paths", schema)
+        q = qp.parse(u("here"))
 
         r = s.search(q)
-        assert sorted(hit['paths'] for hit in r) == ['here', 'here there everywhere']
+        assert sorted(hit["paths"] for hit in r) == ["here", "here there everywhere"]
 
 
 def test_missing_field():
@@ -605,13 +623,15 @@ def test_missing_field():
 
 def test_token_boost():
     from whoosh.analysis import RegexTokenizer, DoubleMetaphoneFilter
+
     ana = RegexTokenizer() | DoubleMetaphoneFilter()
     field = fields.TEXT(analyzer=ana, phrase=False)
     results = sorted(field.index(u("spruce view")))
-    assert results == [(b('F'), 1, 1.0, b('\x00\x00\x00\x01')),
-                       (b('FF'), 1, 0.5, b('\x00\x00\x00\x01')),
-                       (b('SPRS'), 1, 1.0, b('\x00\x00\x00\x01')),
-                       ]
+    assert results == [
+        (b("F"), 1, 1.0, b("\x00\x00\x00\x01")),
+        (b("FF"), 1, 0.5, b("\x00\x00\x00\x01")),
+        (b("SPRS"), 1, 1.0, b("\x00\x00\x00\x01")),
+    ]
 
 
 def test_pickle_idlist():
@@ -629,25 +649,23 @@ def test_pickle_schema():
     from whoosh.support.charset import accent_map
     from whoosh.compat import dumps
 
-    freetext_analyzer = (
-        analysis.StemmingAnalyzer() |
-        analysis.CharsetFilter(accent_map)
-    )
+    freetext_analyzer = analysis.StemmingAnalyzer() | analysis.CharsetFilter(accent_map)
 
     schema = fields.Schema(
         path=fields.ID(stored=True, unique=True),
         file_mtime=fields.DATETIME(stored=True),
         name=fields.TEXT(stored=False, field_boost=2.0),
-        description=fields.TEXT(stored=False, field_boost=1.5,
-                                analyzer=freetext_analyzer),
-        content=fields.TEXT(analyzer=freetext_analyzer)
+        description=fields.TEXT(
+            stored=False, field_boost=1.5, analyzer=freetext_analyzer
+        ),
+        content=fields.TEXT(analyzer=freetext_analyzer),
     )
 
     # Try to make some sentences that will require stemming
     docs = [
-        u"The rain in spain falls mainly in the plain",
-        u"Plainly sitting on the plain",
-        u"Imagine a greatly improved sentence here"
+        "The rain in spain falls mainly in the plain",
+        "Plainly sitting on the plain",
+        "Imagine a greatly improved sentence here",
     ]
 
     with TempIndex(schema) as ix:
@@ -659,5 +677,3 @@ def test_pickle_schema():
 
         with ix.reader() as r:
             assert dumps(r.schema, 2)
-
-

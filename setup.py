@@ -3,7 +3,7 @@
 import os.path
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 
 try:
@@ -24,31 +24,34 @@ class PyTest(TestCommand):
     def run_tests(self):
         # import here, cause outside the eggs aren't loaded
         import pytest
+
         pytest.main(self.test_args)
 
 
 if __name__ == "__main__":
     setup(
-        name="Whoosh",
+        name="Whoosh-Reloaded",
         version=versionstring(),
-        package_dir={'': 'src'},
+        package_dir={"": "src"},
         packages=find_packages("src"),
-
         author="Matt Chaput",
         author_email="matt@whoosh.ca",
-
+        maintainer="Sygil-Dev",
         description="Fast, pure-Python full text indexing, search, and spell checking library.",
-        long_description=open("README.md").read(),
-
+        long_description=open("README.md", "r").read(),
+        long_description_content_type="text/markdown",
         license="Two-clause BSD license",
         keywords="index search text spell",
-        url="http://bitbucket.org/mchaput/whoosh",
-
+        url="https://github.com/Sygil-Dev/whoosh-reloaded",
         zip_safe=True,
-        install_requires=['cached-property', 'jieba'],
-        tests_require=['pytest', 'jieba'],
-        cmdclass={'test': PyTest},
-
+        install_requires=[
+            "cached-property",
+        ],
+        tests_require=[
+            "pytest",
+            "nose",
+        ],
+        cmdclass={"test": PyTest},
         classifiers=[
             "Programming Language :: Python :: 3",
             "Development Status :: 5 - Production/Stable",
@@ -56,11 +59,6 @@ if __name__ == "__main__":
             "License :: OSI Approved :: BSD License",
             "Natural Language :: English",
             "Operating System :: OS Independent",
-            "Programming Language :: Python :: 2.7",
-            "Programming Language :: Python :: 3.4",
-            "Programming Language :: Python :: 3.5",
-            "Programming Language :: Python :: 3.6",
-            "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",

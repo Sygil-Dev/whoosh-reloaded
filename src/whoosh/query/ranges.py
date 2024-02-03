@@ -36,33 +36,48 @@ class RangeMixin(object):
     # Contains methods shared by TermRange and NumericRange
 
     def __repr__(self):
-        return ('%s(%r, %r, %r, %s, %s, boost=%s, constantscore=%s)'
-                % (self.__class__.__name__, self.fieldname, self.start,
-                   self.end, self.startexcl, self.endexcl, self.boost,
-                   self.constantscore))
+        return "%s(%r, %r, %r, %s, %s, boost=%s, constantscore=%s)" % (
+            self.__class__.__name__,
+            self.fieldname,
+            self.start,
+            self.end,
+            self.startexcl,
+            self.endexcl,
+            self.boost,
+            self.constantscore,
+        )
 
     def __unicode__(self):
         startchar = "{" if self.startexcl else "["
         endchar = "}" if self.endexcl else "]"
-        start = '' if self.start is None else self.start
-        end = '' if self.end is None else self.end
-        return u("%s:%s%s TO %s%s") % (self.fieldname, startchar, start, end,
-                                     endchar)
+        start = "" if self.start is None else self.start
+        end = "" if self.end is None else self.end
+        return u("%s:%s%s TO %s%s") % (self.fieldname, startchar, start, end, endchar)
 
     __str__ = __unicode__
 
     def __eq__(self, other):
-        return (other and self.__class__ is other.__class__
-                and self.fieldname == other.fieldname
-                and self.start == other.start and self.end == other.end
-                and self.startexcl == other.startexcl
-                and self.endexcl == other.endexcl
-                and self.boost == other.boost
-                and self.constantscore == other.constantscore)
+        return (
+            other
+            and self.__class__ is other.__class__
+            and self.fieldname == other.fieldname
+            and self.start == other.start
+            and self.end == other.end
+            and self.startexcl == other.startexcl
+            and self.endexcl == other.endexcl
+            and self.boost == other.boost
+            and self.constantscore == other.constantscore
+        )
 
     def __hash__(self):
-        return (hash(self.fieldname) ^ hash(self.start) ^ hash(self.startexcl)
-                ^ hash(self.end) ^ hash(self.endexcl) ^ hash(self.boost))
+        return (
+            hash(self.fieldname)
+            ^ hash(self.start)
+            ^ hash(self.startexcl)
+            ^ hash(self.end)
+            ^ hash(self.endexcl)
+            ^ hash(self.boost)
+        )
 
     def is_range(self):
         return True
@@ -92,10 +107,12 @@ class RangeMixin(object):
         end1 = self._comparable_end()
         end2 = other._comparable_end()
 
-        return ((start1 >= start2 and start1 <= end2)
-                or (end1 >= start2 and end1 <= end2)
-                or (start2 >= start1 and start2 <= end1)
-                or (end2 >= start1 and end2 <= end1))
+        return (
+            (start1 >= start2 and start1 <= end2)
+            or (end1 >= start2 and end1 <= end2)
+            or (start2 >= start1 and start2 <= end1)
+            or (end2 >= start1 and end2 <= end1)
+        )
 
     def merge(self, other, intersect=True):
         assert self.fieldname == other.fieldname
@@ -126,9 +143,15 @@ class RangeMixin(object):
         boost = max(self.boost, other.boost)
         constantscore = self.constantscore or other.constantscore
 
-        return self.__class__(self.fieldname, startval, endval, startexcl,
-                              endexcl, boost=boost,
-                              constantscore=constantscore)
+        return self.__class__(
+            self.fieldname,
+            startval,
+            endval,
+            startexcl,
+            endexcl,
+            boost=boost,
+            constantscore=constantscore,
+        )
 
 
 class TermRange(RangeMixin, terms.MultiTerm):
@@ -139,8 +162,16 @@ class TermRange(RangeMixin, terms.MultiTerm):
     >>> TermRange("id", u"apple", u"pear")
     """
 
-    def __init__(self, fieldname, start, end, startexcl=False, endexcl=False,
-                 boost=1.0, constantscore=True):
+    def __init__(
+        self,
+        fieldname,
+        start,
+        end,
+        startexcl=False,
+        endexcl=False,
+        boost=1.0,
+        constantscore=True,
+    ):
         """
         :param fieldname: The name of the field to search.
         :param start: Match terms equal to or greater than this.
@@ -162,19 +193,25 @@ class TermRange(RangeMixin, terms.MultiTerm):
         self.constantscore = constantscore
 
     def normalize(self):
-        if self.start in ('', None) and self.end in (u('\uffff'), None):
+        if self.start in ("", None) and self.end in (u("\uffff"), None):
             from whoosh.query import Every
+
             return Every(self.fieldname, boost=self.boost)
         elif self.start == self.end:
             if self.startexcl or self.endexcl:
                 return qcore.NullQuery
             return terms.Term(self.fieldname, self.start, boost=self.boost)
         else:
-            return TermRange(self.fieldname, self.start, self.end,
-                             self.startexcl, self.endexcl,
-                             boost=self.boost)
+            return TermRange(
+                self.fieldname,
+                self.start,
+                self.end,
+                self.startexcl,
+                self.endexcl,
+                boost=self.boost,
+            )
 
-    #def replace(self, fieldname, oldtext, newtext):
+    # def replace(self, fieldname, oldtext, newtext):
     #    q = self.copy()
     #    if q.fieldname == fieldname:
     #        if q.start == oldtext:
@@ -226,8 +263,16 @@ class NumericRange(RangeMixin, qcore.Query):
     >>> nr = NumericRange("number", 10, 5925)
     """
 
-    def __init__(self, fieldname, start, end, startexcl=False, endexcl=False,
-                 boost=1.0, constantscore=True):
+    def __init__(
+        self,
+        fieldname,
+        start,
+        end,
+        startexcl=False,
+        endexcl=False,
+        boost=1.0,
+        constantscore=True,
+    ):
         """
         :param fieldname: The name of the field to search.
         :param start: Match terms equal to or greater than this number. This
@@ -274,8 +319,7 @@ class NumericRange(RangeMixin, qcore.Query):
 
         field = ixreader.schema[self.fieldname]
         if not isinstance(field, NUMERIC):
-            raise Exception("NumericRange: field %r is not numeric"
-                            % self.fieldname)
+            raise Exception("NumericRange: field %r is not numeric" % self.fieldname)
 
         start = self.start
         if start is not None:
@@ -287,9 +331,16 @@ class NumericRange(RangeMixin, qcore.Query):
         subqueries = []
         stb = field.sortable_to_bytes
         # Get the term ranges for the different resolutions
-        ranges = tiered_ranges(field.numtype, field.bits, field.signed,
-                               start, end, field.shift_step,
-                               self.startexcl, self.endexcl)
+        ranges = tiered_ranges(
+            field.numtype,
+            field.bits,
+            field.signed,
+            start,
+            end,
+            field.shift_step,
+            self.startexcl,
+            self.endexcl,
+        )
         for startnum, endnum, shift in ranges:
             if startnum == endnum:
                 subq = terms.Term(self.fieldname, stb(startnum, shift))
@@ -326,22 +377,39 @@ class DateRange(NumericRange):
     ...           datetime(2010, 11, 3, 17, 59))
     """
 
-    def __init__(self, fieldname, start, end, startexcl=False, endexcl=False,
-                 boost=1.0, constantscore=True):
+    def __init__(
+        self,
+        fieldname,
+        start,
+        end,
+        startexcl=False,
+        endexcl=False,
+        boost=1.0,
+        constantscore=True,
+    ):
         self.startdate = start
         self.enddate = end
         if start:
             start = datetime_to_long(start)
         if end:
             end = datetime_to_long(end)
-        super(DateRange, self).__init__(fieldname, start, end,
-                                        startexcl=startexcl, endexcl=endexcl,
-                                        boost=boost,
-                                        constantscore=constantscore)
+        super(DateRange, self).__init__(
+            fieldname,
+            start,
+            end,
+            startexcl=startexcl,
+            endexcl=endexcl,
+            boost=boost,
+            constantscore=constantscore,
+        )
 
     def __repr__(self):
-        return '%s(%r, %r, %r, %s, %s, boost=%s)' % (self.__class__.__name__,
-                                           self.fieldname,
-                                           self.startdate, self.enddate,
-                                           self.startexcl, self.endexcl,
-                                           self.boost)
+        return "%s(%r, %r, %r, %s, %s, boost=%s)" % (
+            self.__class__.__name__,
+            self.fieldname,
+            self.startdate,
+            self.enddate,
+            self.startexcl,
+            self.endexcl,
+            self.boost,
+        )

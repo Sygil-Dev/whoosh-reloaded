@@ -28,7 +28,7 @@
 from __future__ import with_statement
 from multiprocessing import Process, Queue, cpu_count
 
-from whoosh.compat import queue, xrange, pickle
+from whoosh.compat import queue, range, pickle
 from whoosh.codec import base
 from whoosh.writing import SegmentWriter
 from whoosh.externalsort import imerge
@@ -57,12 +57,12 @@ def finish_subsegment(writer, k=64):
 
 # Multiprocessing Writer
 
+
 class SubWriterTask(Process):
     # This is a Process object that takes "jobs" off a job Queue, processes
     # them, and when it's done, puts a summary of its work on a results Queue
 
-    def __init__(self, storage, indexname, jobqueue, resultqueue, kwargs,
-                 multisegment):
+    def __init__(self, storage, indexname, jobqueue, resultqueue, kwargs, multisegment):
         Process.__init__(self)
         self.storage = storage
         self.indexname = indexname
@@ -141,7 +141,7 @@ class SubWriterTask(Process):
 
         load = pickle.load
         with tempstorage.open_file(filename).raw_file() as f:
-            for _ in xrange(doc_count):
+            for _ in range(doc_count):
                 # Load the next pickled tuple from the file
                 code, args = load(f)
                 assert code == 0
@@ -154,8 +154,9 @@ class SubWriterTask(Process):
 
 
 class MpWriter(SegmentWriter):
-    def __init__(self, ix, procs=None, batchsize=100, subargs=None,
-                 multisegment=False, **kwargs):
+    def __init__(
+        self, ix, procs=None, batchsize=100, subargs=None, multisegment=False, **kwargs
+    ):
         # This is the "main" writer that will aggregate the results created by
         # the sub-tasks
         SegmentWriter.__init__(self, ix, **kwargs)
@@ -184,9 +185,14 @@ class MpWriter(SegmentWriter):
         self._added_sub = False
 
     def _new_task(self):
-        task = SubWriterTask(self.storage, self.indexname,
-                             self.jobqueue, self.resultqueue, self.subargs,
-                             self.multisegment)
+        task = SubWriterTask(
+            self.storage,
+            self.indexname,
+            self.jobqueue,
+            self.resultqueue,
+            self.subargs,
+            self.multisegment,
+        )
         self.tasks.append(task)
         task.start()
         return task
@@ -242,8 +248,10 @@ class MpWriter(SegmentWriter):
             return gen
         else:
             # Otherwise, add the offset to each docnum
-            return ((fname, text, docnum + offset, weight, value)
-                    for fname, text, docnum, weight, value in gen)
+            return (
+                (fname, text, docnum + offset, weight, value)
+                for fname, text, docnum, weight, value in gen
+            )
 
     def commit(self, mergetype=None, optimize=None, merge=None):
         if self._added_sub:
@@ -252,8 +260,9 @@ class MpWriter(SegmentWriter):
             self._commit(mergetype, optimize, merge)
         else:
             # Otherwise, just do a regular-old commit
-            SegmentWriter.commit(self, mergetype=mergetype, optimize=optimize,
-                                 merge=merge)
+            SegmentWriter.commit(
+                self, mergetype=mergetype, optimize=optimize, merge=merge
+            )
 
     def _commit(self, mergetype, optimize, merge):
         # Index the remaining documents in the doc buffer
@@ -348,8 +357,9 @@ class SerialMpWriter(MpWriter):
         self.procs = procs or cpu_count()
         self.batchsize = batchsize
         self.subargs = subargs if subargs else kwargs
-        self.tasks = [SegmentWriter(ix, _lk=False, **self.subargs)
-                      for _ in xrange(self.procs)]
+        self.tasks = [
+            SegmentWriter(ix, _lk=False, **self.subargs) for _ in range(self.procs)
+        ]
         self.pointer = 0
         self._added_sub = False
 
