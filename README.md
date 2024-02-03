@@ -1,6 +1,14 @@
-[![Build Status](https://travis-ci.org/Sygil-Dev/whoosh-reloaded.svg?branch=master)](https://travis-ci.org/Sygil-Dev/whoosh-reloaded)
+[![CodeFactor](https://www.codefactor.io/repository/github/sygil-dev/whoosh-reloaded/badge/main)](https://www.codefactor.io/repository/github/sygil-dev/whoosh-reloaded/overview/main)
+[![Documentation Status](https://readthedocs.org/projects/whoosh-reloaded/badge/?version=latest)](https://whoosh-reloaded.readthedocs.io/en/latest/?badge=latest)
+[![codecov](https://codecov.io/gh/Sygil-Dev/whoosh-reloaded/branch/master/graph/badge.svg)](https://codecov.io/gh/Sygil-Dev/whoosh-reloaded)
+[![PyPI version](https://badge.fury.io/py/Whoosh-Reloaded.svg)](https://badge.fury.io/py/Whoosh-Reloaded) [![Downloads](https://pepy.tech/badge/whoosh-reloaded)](https://pepy.tech/project/whoosh-reloaded) [![License](https://img.shields.io/pypi/l/Whoosh-Reloaded)](https://pypi.org/project/Whoosh-Reloaded/) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Whoosh-Reloaded)](https://pypi.org/project/Whoosh-Reloaded/) [![PyPI - Wheel](https://img.shields.io/pypi/wheel/Whoosh-Reloaded)](https://pypi.org/project/Whoosh-Reloaded/) [![PyPI - Format](https://img.shields.io/pypi/format/Whoosh-Reloaded)](https://pypi.org/project/Whoosh-Reloaded/) [![PyPI - Status](https://img.shields.io/pypi/status/Whoosh-Reloaded)](https://pypi.org/project/Whoosh-Reloaded/)
 
-This repository (whoosh-reloaded) is a fork and continuation of the Whoosh project. The original Whoosh project is no longer maintained. This fork is maintained by the Sygil-Dev Organization.
+--------------------------------------
+
+> **Notice:** This repository (**whoosh-reloaded**) is a fork and continuation of the Whoosh project. The original Whoosh project is no longer maintained. 
+
+
+>This fork **is actively maintained** by the Sygil-Dev Organization.
 
 --------------------------------------
 
@@ -76,3 +84,10 @@ Learning more
 * Read the old online documentation at https://whoosh-reloaded.readthedocs.org/en/latest/ (Search DOES NOT work).
 
 * File bug reports and issues at https://github.com/Sygil-Dev/whoosh-reloaded/issues
+
+
+Maintainers
+===========
+
+* [Sygil-Dev Organization](https://github.com/Sygil-Dev)
+* [ZeroCool940711](https://github.com/ZeroCool940711)
