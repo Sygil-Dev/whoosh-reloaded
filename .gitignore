@@ -9,3 +9,4 @@ eggs/
 *.egg
 *.egg-info/
 /test.py
+/.vscode/settings.json
