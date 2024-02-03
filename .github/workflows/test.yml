@@ -11,6 +11,7 @@ jobs:
     - run: pip install --user codespell[toml] ruff
     # TODO: Fix lint issues and remove `--exit-zero` from the line below.
     - run: ruff --exit-zero --output-format=github --target-version=py38 .
+    - run: ruff --exit-zero --output-format=github --select=ALL --target-version=py38 .
   test:
     runs-on: ubuntu-latest
     strategy:
