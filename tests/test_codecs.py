@@ -168,20 +168,23 @@ def test_termindex():
         assert ti.doc_frequency() == 1
 
 
+test123 = "Testing one two three"
+
+
 def test_docwriter_one():
     field = fields.TEXT(stored=True)
     st, codec, seg = _make_codec()
     dw = codec.per_document_writer(st, seg)
     dw.start_doc(0)
 
-    dw.add_field("text", field, "Testing one two three", 4)
+    dw.add_field("text", field, test123, 4)
     dw.finish_doc()
     dw.close()
     seg.set_doc_count(1)
 
     pdr = codec.per_document_reader(st, seg)
     assert pdr.doc_field_length(0, "text") == 4
-    assert pdr.stored_fields(0) == {"text": "Testing one two three"}
+    assert pdr.stored_fields(0) == {"text": test123}
 
 
 def test_docwriter_two():
@@ -190,7 +193,7 @@ def test_docwriter_two():
     dw = codec.per_document_writer(st, seg)
     dw.start_doc(0)
     dw.add_field("title", field, ("a", "b"), 2)
-    dw.add_field("text", field, "Testing one two three", 4)
+    dw.add_field("text", field, test123, 4)
     dw.finish_doc()
     dw.start_doc(1)
     dw.add_field("title", field, "The second document", 3)
@@ -523,6 +526,8 @@ def test_skip():
 #     cur = codec.graph_reader(st, seg).cursor("text")
 #     assert list(cur.flatten_strings()) == ["specials", "specifically"]
 
+cde = "charlie delta echo"
+
 
 def test_plaintext_codec():
     pytest.importorskip("ast")
@@ -546,9 +551,7 @@ def test_plaintext_codec():
         w.add_document(
             a=u("bravo charlie delta"), b=1000, c=200, d=u("rolling timing yelling")
         )
-        w.add_document(
-            a=u("charlie delta echo"), b=5.5, c=300, d=u("using opening pulling")
-        )
+        w.add_document(a=u(cde), b=5.5, c=300, d=u("using opening pulling"))
         w.add_document(
             a=u("delta echo foxtrot"), b=True, c=-100, d=u("aching selling dipping")
         )
@@ -559,7 +562,7 @@ def test_plaintext_codec():
     with ix.reader() as r:
         assert r.has_column("a")
         c = r.column_reader("a")
-        assert c[2] == u("charlie delta echo")
+        assert c[2] == u(cde)
 
     w = ix.writer(codec=PlainTextCodec())
     w.commit(optimize=True)
@@ -594,7 +597,7 @@ def test_plaintext_codec():
 
         assert reader.has_column("a")
         c = reader.column_reader("a")
-        assert c[2] == u("charlie delta echo")
+        assert c[2] == u(cde)
 
         assert reader.has_column("c")
         c = reader.column_reader("c")
@@ -602,7 +605,7 @@ def test_plaintext_codec():
 
         assert s.has_vector(2, "a")
         v = s.vector(2, "a")
-        assert " ".join(v.all_ids()) == "charlie delta echo"
+        assert " ".join(v.all_ids()) == cde
 
 
 def test_memory_codec():
@@ -625,9 +628,7 @@ def test_memory_codec():
         w.add_document(
             a=u("bravo charlie delta"), b=1000, c=200, d=u("rolling timing yelling")
         )
-        w.add_document(
-            a=u("charlie delta echo"), b=5.5, c=300, d=u("using opening pulling")
-        )
+        w.add_document(a=u(cde), b=5.5, c=300, d=u("using opening pulling"))
         w.add_document(
             a=u("delta echo foxtrot"), b=True, c=-100, d=u("aching selling dipping")
         )
@@ -657,7 +658,7 @@ def test_memory_codec():
 
     assert s.has_vector(2, "a")
     v = s.vector(2, "a")
-    assert " ".join(v.all_ids()) == "charlie delta echo"
+    assert " ".join(v.all_ids()) == cde
 
 
 def test_memory_multiwrite():
