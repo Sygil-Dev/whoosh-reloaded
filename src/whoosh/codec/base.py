@@ -77,6 +77,7 @@ class Codec(object):
     # Index readers
 
     def automata(self, storage, segment):
+        _ = storage, segment  # Unused arguments
         return Automata()
 
     @abstractmethod
@@ -157,9 +158,11 @@ class PerDocumentWriter(object):
         self.add_vector_items(fieldname, fieldobj, readitems())
 
     def finish_doc(self):
+        # This method is intentionally left empty.
         pass
 
     def close(self):
+        # This method is intentionally left empty.
         pass
 
 
@@ -261,6 +264,7 @@ class FieldWriter(object):
         raise NotImplementedError
 
     def finish_field(self):
+        # This method is intentionally left empty.
         pass
 
     def close(self):
@@ -280,6 +284,7 @@ class PostingsWriter(object):
         raise NotImplementedError
 
     def finish_postings(self):
+        # This method is intentionally left empty.
         pass
 
     @abstractmethod
@@ -352,6 +357,7 @@ class TermsReader(object):
         raise NotImplementedError
 
     def close(self):
+        # This method is intentionally left empty.
         pass
 
 
@@ -389,6 +395,7 @@ class Automata(object):
 
 class PerDocumentReader(object):
     def close(self):
+        # This method is intentionally left empty.
         pass
 
     @abstractmethod
@@ -433,6 +440,7 @@ class PerDocumentReader(object):
         return False
 
     def has_column(self, fieldname):
+        _ = fieldname  # Unused argument
         return False
 
     def list_columns(self):
@@ -445,6 +453,7 @@ class PerDocumentReader(object):
     # Bitmaps
 
     def field_docs(self, fieldname):
+        _ = fieldname  # Unused argument
         return None
 
     # Lengths
@@ -468,6 +477,7 @@ class PerDocumentReader(object):
     # Vectors
 
     def has_vector(self, docnum, fieldname):
+        _ = docnum, fieldname  # Unused arguments
         return False
 
     # Don't need to override this if has_vector() always returns False
