@@ -527,7 +527,7 @@ class SegmentWriter(IndexWriter):
         docbase=0,
         codec=None,
         compound=True,
-        **kwargs
+        **kwargs,
     ):
         # Lock the index
         self.writelock = None
@@ -813,7 +813,7 @@ class SegmentWriter(IndexWriter):
                 if column and customval is not None:
                     cv = field.to_column_value(customval)
                     perdocwriter.add_column_value(fieldname, column, cv)
-        except Exception as ex:
+        except ValueError as ex:
             perdocwriter.cancel_doc()
             raise ex
 

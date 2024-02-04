@@ -3089,7 +3089,7 @@ def traceParseAction(f):
         sys.stderr.write( ">>entering %s(line: '%s', %d, %s)\n" % (thisFunc,line(l,s),l,t) )
         try:
             ret = f(*paArgs)
-        except Exception as exc:
+        except ValueError as exc:
             sys.stderr.write( f"<<leaving {thisFunc} (exception: {exc})\n" )
             raise
         sys.stderr.write( f"<<leaving {thisFunc} (ret: {ret})\n" )

@@ -488,7 +488,7 @@ class W2Codec(base.Codec):
     def graph_reader(self, storage, segment):
         try:
             dawgfile = segment.open_file(storage, self.DAWG_EXT)
-        except Exception:
+        except ValueError:
             raise NoGraphError
         return GraphReader(dawgfile)
 
@@ -2083,7 +2083,7 @@ class OLD_NUMERIC(NUMERIC):
 
         try:
             text = self.to_text(qstring)
-        except Exception:
+        except ValueError:
             e = sys.exc_info()[1]
             return query.error_query(e)
 
@@ -2098,7 +2098,7 @@ class OLD_NUMERIC(NUMERIC):
                 start = self.from_text(self.to_text(start))
             if end is not None:
                 end = self.from_text(self.to_text(end))
-        except Exception:
+        except ValueError:
             e = sys.exc_info()[1]
             raise QueryParserError(e)
 
@@ -2133,7 +2133,7 @@ class OLD_DATETIME(OLD_NUMERIC):
                 x = datetime_to_long(x)
             elif not isinstance(x, integer_types):
                 raise TypeError()
-        except Exception:
+        except ValueError:
             raise ValueError(f"DATETIME.to_text can't convert from {x!r}")
 
         x = OLD_NUMERIC.to_text(self, x, shift=shift)

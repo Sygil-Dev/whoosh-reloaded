@@ -52,7 +52,7 @@ def test_all():
             try:
                 for word in domain:
                     s.search(query.Term("text", word))
-            except Exception:
+            except ValueError:
                 e = sys.exc_info()[1]
                 e.msg = f"Error searching with {wclass!r}: {e}"
                 raise
