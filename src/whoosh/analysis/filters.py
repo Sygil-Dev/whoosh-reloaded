@@ -114,7 +114,7 @@ class Filter(Composable):
         )
 
     def __ne__(self, other):
-        return not self == other
+        return self != other
 
     def __call__(self, tokens):
         raise NotImplementedError
@@ -181,8 +181,8 @@ class MultiFilter(Filter):
     def __call__(self, tokens):
         # Only selects on the first token
         t = next(tokens)
-        filter = self.filters.get(t.mode, self.default_filter)
-        return filter(chain([t], tokens))
+        selected_filter = self.filters.get(t.mode, self.default_filter)
+        return selected_filter(chain([t], tokens))
 
 
 class TeeFilter(Filter):
@@ -212,7 +212,7 @@ class TeeFilter(Filter):
 
     def __init__(self, *filters):
         if len(filters) < 2:
-            raise Exception("TeeFilter requires two or more filters")
+            raise ValueError("TeeFilter requires two or more filters")
         self.filters = filters
 
     def __eq__(self, other):
