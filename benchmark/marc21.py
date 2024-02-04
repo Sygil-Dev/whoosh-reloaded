@@ -27,7 +27,7 @@ def read_file(dbfile, tags=None):
         if not first5:
             return
         if len(first5) < 5:
-            raise Exception
+            raise ValueError("Invalid length")
         length = int(first5)
         chunk = dbfile.read(length - 5)
         yield parse_record(first5 + chunk, tags), pos
@@ -63,7 +63,7 @@ def parse_record(data, tags=None):
         start = dirstart + i * DIRECTORY_ENTRY_LEN
         end = start + DIRECTORY_ENTRY_LEN
         tag = data[start : start + 3]
-        if tags and not tag in tags:
+        if tags and tag not in tags:
             continue
 
         entry = data[start:end]
