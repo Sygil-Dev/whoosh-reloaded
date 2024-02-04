@@ -67,6 +67,7 @@ def groupmanager(writer):
 
 def NO_MERGE(writer, segments):
     """This policy does not merge any existing segments."""
+    _ = writer
     return segments
 
 
@@ -124,6 +125,7 @@ def CLEAR(writer, segments):
     """This policy DELETES all existing segments and only writes the new
     segment.
     """
+    _ = writer
 
     return []
 
@@ -157,7 +159,6 @@ class PostingPool(SortingPool):
         return self.tempstore.delete_file(path)
 
     def add(self, item):
-        # item = (fieldname, tbytes, docnum, weight, vbytes)
         assert isinstance(item[1], bytes_type), "tbytes=%r" % item[1]
         if item[4] is not None:
             assert isinstance(item[4], bytes_type), "vbytes=%r" % item[4]
@@ -786,7 +787,7 @@ class SegmentWriter(IndexWriter):
                     spellfield = field.spelling_fieldname(fieldname)
                     for word in field.spellable_words(value):
                         word = utf8encode(word)[0]
-                        # item = (fieldname, tbytes, docnum, weight, vbytes)
+
                         add_post((spellfield, word, 0, 1, vbytes))
 
                 vformat = field.vector
@@ -830,7 +831,7 @@ class SegmentWriter(IndexWriter):
 
     def per_document_reader(self):
         if not self.perdocwriter.is_closed:
-            raise Exception("Per-doc writer is still open")
+            raise RuntimeError("Per-doc writer is still open")
         return self.codec.per_document_reader(self.storage, self.get_segment())
 
     def searcher(self, **kwargs):
