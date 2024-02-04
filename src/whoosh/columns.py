@@ -908,12 +908,17 @@ class CompressedBlockColumn(Column):
             return "<CompressedBlock.Reader>"
 
         def _find_block(self, docnum):
-            # TODO: use binary search instead of linear
-            for i, b in enumerate(self._blocks):
-                if docnum < b[0]:
-                    return None
-                elif docnum <= b[1]:
-                    return i
+            # Use binary search instead of linear search
+            left = 0
+            right = len(self._blocks) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                if docnum < self._blocks[mid][0]:
+                    right = mid - 1
+                elif docnum <= self._blocks[mid][1]:
+                    return mid
+                else:
+                    left = mid + 1
             return None
 
         def _get_block(self, blocknum):
