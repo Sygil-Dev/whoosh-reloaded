@@ -88,7 +88,7 @@ class FnTagger(RegexTagger):
         self.memo = memo
 
     def __repr__(self):
-        return "<%s %r (%s)>" % (self.__class__.__name__, self.expr, self.memo)
+        return f"<{self.__class__.__name__} {self.expr!r} ({self.memo})>"
 
     def create(self, parser, match):
         return self.fn(**match.groupdict())

@@ -38,7 +38,7 @@ class WrappingMatcher(mcore.Matcher):
         self.boost = boost
 
     def __repr__(self):
-        return "%s(%r, boost=%s)" % (self.__class__.__name__, self.child, self.boost)
+        return f"{self.__class__.__name__}({self.child!r}, boost={self.boost})"
 
     def copy(self):
         kwargs = {}

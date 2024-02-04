@@ -664,7 +664,7 @@ class SegmentReader(IndexReader):
         return self._gen
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self._storage, self._segment)
+        return f"{self.__class__.__name__}({self._storage!r}, {self._segment!r})"
 
     def __contains__(self, term):
         if self.is_closed:
@@ -745,9 +745,9 @@ class SegmentReader(IndexReader):
         if self.is_closed:
             raise ReaderClosed
         if fieldname not in self.schema:
-            raise TermNotFound("No field %r" % fieldname)
+            raise TermNotFound(f"No field {fieldname!r}")
         if self.schema[fieldname].format is None:
-            raise TermNotFound("Field %r is not indexed" % fieldname)
+            raise TermNotFound(f"Field {fieldname!r} is not indexed")
 
     def indexed_field_names(self):
         return self._terms.indexed_field_names()
@@ -778,7 +778,7 @@ class SegmentReader(IndexReader):
         try:
             return self._terms.term_info(fieldname, text)
         except KeyError:
-            raise TermNotFound("%s:%r" % (fieldname, text))
+            raise TermNotFound(f"{fieldname}:{text!r}")
 
     def expand_prefix(self, fieldname, prefix):
         self._test_field(fieldname)
@@ -834,7 +834,7 @@ class SegmentReader(IndexReader):
         if self.is_closed:
             raise ReaderClosed
         if fieldname not in self.schema:
-            raise TermNotFound("No  field %r" % fieldname)
+            raise TermNotFound(f"No  field {fieldname!r}")
         text = self._text_to_bytes(fieldname, text)
         format_ = self.schema[fieldname].format
         matcher = self._terms.matcher(fieldname, text, format_, scorer=scorer)
@@ -847,10 +847,10 @@ class SegmentReader(IndexReader):
         if self.is_closed:
             raise ReaderClosed
         if fieldname not in self.schema:
-            raise TermNotFound("No  field %r" % fieldname)
+            raise TermNotFound(f"No  field {fieldname!r}")
         vformat = format_ or self.schema[fieldname].vector
         if not vformat:
-            raise Exception("No vectors are stored for field %r" % fieldname)
+            raise Exception(f"No vectors are stored for field {fieldname!r}")
         return self._perdoc.vector(docnum, fieldname, vformat)
 
     def cursor(self, fieldname):
@@ -884,7 +884,7 @@ class SegmentReader(IndexReader):
         fieldobj = self.schema[fieldname]
         column = column or fieldobj.column_type
         if not column:
-            raise Exception("No column for field %r in %r" % (fieldname, self))
+            raise Exception(f"No column for field {fieldname!r} in {self!r}")
 
         if self._perdoc.has_column(fieldname):
             creader = self._perdoc.column_reader(fieldname, column)
@@ -954,7 +954,7 @@ class EmptyReader(IndexReader):
         return False
 
     def stored_fields(self, docnum):
-        raise KeyError("No document number %s" % docnum)
+        raise KeyError(f"No document number {docnum}")
 
     def all_stored_fields(self):
         return iter([])
@@ -984,13 +984,13 @@ class EmptyReader(IndexReader):
         return default
 
     def postings(self, fieldname, text, scorer=None):
-        raise TermNotFound("%s:%r" % (fieldname, text))
+        raise TermNotFound(f"{fieldname}:{text!r}")
 
     def has_vector(self, docnum, fieldname):
         return False
 
     def vector(self, docnum, fieldname, format_=None):
-        raise KeyError("No document number %s" % docnum)
+        raise KeyError(f"No document number {docnum}")
 
     def most_frequent_terms(self, fieldname, number=5, prefix=""):
         return iter([])

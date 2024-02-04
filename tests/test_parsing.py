@@ -642,20 +642,20 @@ def test_numeric_range():
     teststart = 40
     testend = 100
 
-    q = qp.parse("[%s to *]" % teststart)
+    q = qp.parse(f"[{teststart} to *]")
     assert q == query.NullQuery
 
-    q = qp.parse("[%s to]" % teststart)
+    q = qp.parse(f"[{teststart} to]")
     assert q.__class__ == query.NumericRange
     assert q.start == teststart
     assert q.end is None
 
-    q = qp.parse("[to %s]" % testend)
+    q = qp.parse(f"[to {testend}]")
     assert q.__class__ == query.NumericRange
     assert q.start is None
     assert q.end == testend
 
-    q = qp.parse("[%s to %s]" % (teststart, testend))
+    q = qp.parse(f"[{teststart} to {testend}]")
     assert q.__class__ == query.NumericRange
     assert q.start == teststart
     assert q.end == testend

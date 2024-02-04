@@ -46,7 +46,7 @@ class Analyzer(Composable):
     """Abstract base class for analyzers."""
 
     def __repr__(self):
-        return "%s()" % self.__class__.__name__
+        return f"{self.__class__.__name__}()"
 
     def __eq__(self, other):
         return (

@@ -296,11 +296,7 @@ class NestedChildren(WrappingQuery):
             self._find_next_children()
 
         def __repr__(self):
-            return "%s(%r, %r)" % (
-                self.__class__.__name__,
-                self.parent_comb,
-                self.child,
-            )
+            return f"{self.__class__.__name__}({self.parent_comb!r}, {self.child!r})"
 
         def reset(self):
             self.child.reset()

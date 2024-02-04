@@ -84,7 +84,7 @@ class MemPerDocWriter(base.PerDocWriterWithColumns):
         return fieldname in self._colwriters
 
     def _create_column(self, fieldname, column):
-        colfile = self._storage.create_file("%s.c" % fieldname)
+        colfile = self._storage.create_file(f"{fieldname}.c")
         self._colwriters[fieldname] = (colfile, column.writer(colfile))
 
     def _get_column(self, fieldname):
@@ -146,11 +146,11 @@ class MemPerDocReader(base.PerDocumentReader):
         return True
 
     def has_column(self, fieldname):
-        filename = "%s.c" % fieldname
+        filename = f"{fieldname}.c"
         return self._storage.file_exists(filename)
 
     def column_reader(self, fieldname, column):
-        filename = "%s.c" % fieldname
+        filename = f"{fieldname}.c"
         colfile = self._storage.open_file(filename)
         length = self._storage.file_length(filename)
         return column.reader(colfile, 0, length, self._segment.doc_count_all())
@@ -272,7 +272,7 @@ class MemTermsReader(base.TermsReader):
 
     def terms_from(self, fieldname, prefix):
         if fieldname not in self._invindex:
-            raise TermNotFound("Unknown field %r" % (fieldname,))
+            raise TermNotFound(f"Unknown field {fieldname!r}")
         terms = sorted(self._invindex[fieldname])
         if not terms:
             return

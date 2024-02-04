@@ -55,7 +55,7 @@ class LineWriter(object):
                 v = bytes(v)
             if v is not None and not isinstance(v, _reprable):
                 raise TypeError(type(v))
-            self._dbfile.write(("\t%s=%r" % (k, v)).encode("latin1"))
+            self._dbfile.write(f"\t{k}={v!r}".encode("latin1"))
         self._dbfile.write(b("\n"))
 
 
@@ -368,7 +368,7 @@ class PlainTermsReader(base.TermsReader, LineReader):
     def _find_field(self, fieldname):
         self._find_root("TERMS")
         if self._find_line(1, "TERMFIELD", fn=fieldname) is None:
-            raise TermNotFound("No field %r" % fieldname)
+            raise TermNotFound(f"No field {fieldname!r}")
 
     def _iter_fields(self):
         self._find_root()

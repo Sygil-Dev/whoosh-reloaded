@@ -43,7 +43,7 @@ class BiMatcher(mcore.Matcher):
         self.b.reset()
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self.a, self.b)
+        return f"{self.__class__.__name__}({self.a!r}, {self.b!r})"
 
     def children(self):
         return [self.a, self.b]

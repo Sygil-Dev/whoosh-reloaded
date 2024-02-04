@@ -176,7 +176,7 @@ class Enron(Spec):
         d["filepos"] = self.filepos
         if self.options.storebody:
             mf = self.main_field
-            d["_stored_%s" % mf] = compress(d[mf], 9)
+            d[f"_stored_{mf}"] = compress(d[mf], 9)
 
     def process_result_whoosh(self, d):
         mf = self.main_field

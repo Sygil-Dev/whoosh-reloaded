@@ -78,7 +78,7 @@ class BitVector(object):
         return False
     
     def __repr__(self):
-        return "<BitVector %s>" % self.__str__()
+        return f"<BitVector {self.__str__()}>"
     
     def __len__(self):
         # This returns the count of "on" bits instead of the size to
@@ -160,7 +160,7 @@ class BitVector(object):
         """Turns the bit at the given position on."""
         
         if index >= self.size:
-            raise IndexError("Position %s greater than the size of the vector" % repr(index))
+            raise IndexError(f"Position {repr(index)} greater than the size of the vector")
         self.bits[index >> 3] |= 1 << (index & 7)
         self.bcount = None
     

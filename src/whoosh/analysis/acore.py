@@ -123,9 +123,9 @@ class Token(object):
         self.__dict__.update(kwargs)
 
     def __repr__(self):
-        parms = ", ".join("%s=%r" % (name, value)
+        parms = ", ".join(f"{name}={value!r}"
                           for name, value in iteritems(self.__dict__))
-        return "%s(%s)" % (self.__class__.__name__, parms)
+        return f"{self.__class__.__name__}({parms})"
 
     def copy(self):
         # This is faster than using the copy module
@@ -141,16 +141,16 @@ class Composable(object):
         from whoosh.analysis.analyzers import CompositeAnalyzer
 
         if not isinstance(other, Composable):
-            raise TypeError("%r is not composable with %r" % (self, other))
+            raise TypeError(f"{self!r} is not composable with {other!r}")
         return CompositeAnalyzer(self, other)
 
     def __repr__(self):
         attrs = ""
         if self.__dict__:
-            attrs = ", ".join("%s=%r" % (key, value)
+            attrs = ", ".join(f"{key}={value!r}"
                               for key, value
                               in iteritems(self.__dict__))
-        return self.__class__.__name__ + "(%s)" % attrs
+        return self.__class__.__name__ + f"({attrs})"
 
     def has_morph(self):
         return self.is_morph

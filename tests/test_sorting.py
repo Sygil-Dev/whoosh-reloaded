@@ -255,7 +255,7 @@ def test_query_facet_overlap():
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         for i, ltr in enumerate(domain):
-            v = "%s %s" % (ltr, domain[8 - i])
+            v = f"{ltr} {domain[8 - i]}"
             w.add_document(num=i, v=v)
 
     with ix.searcher() as s:

@@ -60,7 +60,7 @@ class PaiceHuskStemmer(object):
 
                 rules[lastchar].append((ending, intact, num, append, cont))
             else:
-                raise Exception("Bad rule: %r" % line)
+                raise Exception(f"Bad rule: {line!r}")
 
     def first_vowel(self, word):
         vp = min([p for p in [word.find(v) for v in "aeiou"]

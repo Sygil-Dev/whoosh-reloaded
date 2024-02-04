@@ -489,7 +489,7 @@ class RefBytesColumn(Column):
             else:
                 if ref > 65535:
                     warnings.warn(
-                        "RefBytesColumn dropped unique value %r" % v, UserWarning
+                        f"RefBytesColumn dropped unique value {v!r}", UserWarning
                     )
                     ref = 0
                 dbfile.write_ushort(ref)

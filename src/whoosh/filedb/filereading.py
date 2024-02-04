@@ -105,7 +105,7 @@ class SegmentReader(IndexReader):
         )
 
     def __repr__(self):
-        return "%s(%s)" % (self.__class__.__name__, self.segment)
+        return f"{self.__class__.__name__}({self.segment})"
 
     @protected
     def __contains__(self, term):
@@ -169,7 +169,7 @@ class SegmentReader(IndexReader):
         try:
             return self.termsindex[(fieldnum, text)]
         except KeyError:
-            raise TermNotFound("%s:%r" % (fieldnum, text))
+            raise TermNotFound(f"{fieldnum}:{text!r}")
 
     def doc_frequency(self, fieldid, text):
         try:
@@ -219,7 +219,7 @@ class SegmentReader(IndexReader):
         try:
             offset = self.termsindex[(fieldnum, text)][1]
         except KeyError:
-            raise TermNotFound("%s:%r" % (fieldid, text))
+            raise TermNotFound(f"{fieldid}:{text!r}")
 
         if self.segment.deleted and exclude_docs:
             exclude_docs = self.segment.deleted | exclude_docs
@@ -237,13 +237,13 @@ class SegmentReader(IndexReader):
         fieldnum = schema.to_number(fieldid)
         vformat = schema[fieldnum].vector
         if not vformat:
-            raise Exception("No vectors are stored for field %r" % fieldid)
+            raise Exception(f"No vectors are stored for field {fieldid!r}")
 
         self._open_vectors()
         offset = self.vectorindex.get((docnum, fieldnum))
         if offset is None:
             raise Exception(
-                "No vector found for document %s field %r" % (docnum, fieldid)
+                f"No vector found for document {docnum} field {fieldid!r}"
             )
 
         return FilePostingReader(self.vpostfile, offset, vformat, stringids=True)

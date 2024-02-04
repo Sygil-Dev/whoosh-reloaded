@@ -87,7 +87,7 @@ class SearchContext(object):
         self.limit = limit
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.__dict__)
+        return f"{self.__class__.__name__}({self.__dict__!r})"
 
     def set(self, **kwargs):
         ctx = copy.copy(self)
@@ -1020,11 +1020,7 @@ class Results(object):
         self._char_cache = {}
 
     def __repr__(self):
-        return "<Top %s Results for %r runtime=%s>" % (
-            len(self.top_n),
-            self.q,
-            self.runtime,
-        )
+        return f"<Top {len(self.top_n)} Results for {self.q!r} runtime={self.runtime}>"
 
     def __len__(self):
         """Returns the total number of documents that matched the query. Note
@@ -1054,7 +1050,7 @@ class Results(object):
         else:
             if n >= len(self.top_n):
                 raise IndexError(
-                    "results[%r]: Results only has %s hits" % (n, len(self.top_n))
+                    f"results[{n!r}]: Results only has {len(self.top_n)} hits"
                 )
             return Hit(self, self.top_n[n][1], n, self.top_n[n][0])
 
@@ -1147,7 +1143,7 @@ class Results(object):
             # for Python 3
             name = list(self._facetmaps.keys())[0]
         elif name not in self._facetmaps:
-            raise KeyError("%r not in facet names %r" % (name, self.facet_names()))
+            raise KeyError(f"{name!r} not in facet names {self.facet_names()!r}")
         return self._facetmaps[name].as_dict()
 
     def has_exact_length(self):
@@ -1563,7 +1559,7 @@ class Hit(object):
         )
 
     def __repr__(self):
-        return "<%s %r>" % (self.__class__.__name__, self.fields())
+        return f"<{self.__class__.__name__} {self.fields()!r}>"
 
     def __eq__(self, other):
         if isinstance(other, Hit):

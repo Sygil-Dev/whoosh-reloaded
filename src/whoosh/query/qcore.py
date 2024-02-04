@@ -611,7 +611,7 @@ class _NullQuery(Query):
         return self
 
     def __repr__(self):
-        return "<%s>" % (self.__class__.__name__)
+        return f"<{self.__class__.__name__}>"
 
     def __eq__(self, other):
         return isinstance(other, _NullQuery)
@@ -705,11 +705,7 @@ class Every(Query):
         self.boost = boost
 
     def __repr__(self):
-        return "%s(%r, boost=%s)" % (
-            self.__class__.__name__,
-            self.fieldname,
-            self.boost,
-        )
+        return f"{self.__class__.__name__}({self.fieldname!r}, boost={self.boost})"
 
     def __eq__(self, other):
         return (

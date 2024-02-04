@@ -153,7 +153,7 @@ class adatetime(object):
         return all(getattr(self, unit) == getattr(other, unit) for unit in self.units)
 
     def __repr__(self):
-        return "%s%r" % (self.__class__.__name__, self.tuple())
+        return f"{self.__class__.__name__}{self.tuple()!r}"
 
     def tuple(self):
         """Returns the attributes of the ``adatetime`` object as a tuple of
@@ -198,7 +198,7 @@ class adatetime(object):
             if key in self.units:
                 setattr(newadatetime, key, value)
             else:
-                raise KeyError("Unknown argument %r" % key)
+                raise KeyError(f"Unknown argument {key!r}")
         return newadatetime
 
     def floor(self):
@@ -313,9 +313,9 @@ class timespan(object):
         """
 
         if not isinstance(start, (datetime, adatetime)):
-            raise TimeError("%r is not a datetime object" % start)
+            raise TimeError(f"{start!r} is not a datetime object")
         if not isinstance(end, (datetime, adatetime)):
-            raise TimeError("%r is not a datetime object" % end)
+            raise TimeError(f"{end!r} is not a datetime object")
 
         self.start = copy.copy(start)
         self.end = copy.copy(end)
@@ -326,7 +326,7 @@ class timespan(object):
         return self.start == other.start and self.end == other.end
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self.start, self.end)
+        return f"{self.__class__.__name__}({self.start!r}, {self.end!r})"
 
     def disambiguated(self, basedate, debug=0):
         """Returns an unambiguous version of this object.

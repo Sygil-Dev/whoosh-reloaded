@@ -248,7 +248,7 @@ class HashReader(object):
         # Check format tag
         filemagic = dbfile.read(4)
         if filemagic != magic:
-            raise FileFormatError("Unknown file header %r" % filemagic)
+            raise FileFormatError(f"Unknown file header {filemagic!r}")
         # Read hash type
         self.hashtype = dbfile.read_byte()
         self.hashfn = _hash_functions[self.hashtype]
@@ -299,7 +299,7 @@ class HashReader(object):
 
     def close(self):
         if self.is_closed:
-            raise Exception("Tried to close %r twice" % self)
+            raise Exception(f"Tried to close {self!r} twice")
         self.dbfile.close()
         self.is_closed = True
 
@@ -390,7 +390,7 @@ class HashReader(object):
         """
 
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key!r} should be bytes")
         dbfile = self.dbfile
 
         # Hash the key
@@ -457,7 +457,7 @@ class OrderedHashWriter(HashWriter):
 
     def add(self, key, value):
         if key <= self.lastkey:
-            raise ValueError("Keys must increase: %r..%r" % (self.lastkey, key))
+            raise ValueError(f"Keys must increase: {self.lastkey!r}..{key!r}")
         self.index.append(self.dbfile.tell())
         HashWriter.add(self, key, value)
         self.lastkey = key
@@ -540,13 +540,13 @@ class OrderedHashReader(HashReader):
         elif indextype == "q":
             self._get_pos = dbfile.get_long
         else:
-            raise Exception("Unknown index type %r" % indextype)
+            raise Exception(f"Unknown index type {indextype!r}")
 
     def closest_key_pos(self, key):
         # Given a key, return the position of that key OR the next highest key
         # if the given key does not exist
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key!r} should be bytes")
 
         indexbase = self.indexbase
         indexsize = self.indexsize
@@ -596,7 +596,7 @@ class FieldedOrderedHashWriter(HashWriter):
 
     def add(self, key, value):
         if key <= self.lastkey:
-            raise ValueError("Keys must increase: %r..%r" % (self.lastkey, key))
+            raise ValueError(f"Keys must increase: {self.lastkey!r}..{key!r}")
         self.poses.append(self.dbfile.tell() - self.fieldstart)
         HashWriter.add(self, key, value)
         self.lastkey = key
@@ -676,7 +676,7 @@ class FieldedOrderedHashReader(HashReader):
         # Given a key, return the position of that key OR the next highest key
         # if the given key does not exist
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key!r} should be bytes")
 
         dbfile = self.dbfile
         key_at = self.key_at
@@ -693,7 +693,7 @@ class FieldedOrderedHashReader(HashReader):
         elif ixtype == "q":
             get_pos = dbfile.get_long
         else:
-            raise Exception("Unknown index type %r" % ixtype)
+            raise Exception(f"Unknown index type {ixtype!r}")
 
         # Do a binary search of the positions in the index array
         lo = 0

@@ -214,7 +214,7 @@ class SegmentWriter(SegmentDeletionMixin, IndexWriter):
         # Check if the caller gave us a bogus field
         for name in fieldnames:
             if name not in schema:
-                raise UnknownFieldError("There is no field named %r" % name)
+                raise UnknownFieldError(f"There is no field named {name!r}")
 
         storedvalues = {}
 
@@ -259,7 +259,7 @@ class SegmentWriter(SegmentDeletionMixin, IndexWriter):
 
         offset = vpostwriter.start(vformat)
         for text, valuestring in vlist:
-            assert isinstance(text, unicode), "%r is not unicode" % text
+            assert isinstance(text, unicode), f"{text!r} is not unicode"
             vpostwriter.write(text, valuestring)
         vpostwriter.finish()
 

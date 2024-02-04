@@ -406,7 +406,7 @@ class FileStorage(Storage):
         self.locks = {}
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.folder)
+        return f"{self.__class__.__name__}({self.folder!r})"
 
     def create(self):
         """Creates this storage object's directory path using ``os.makedirs`` if
@@ -446,7 +446,7 @@ class FileStorage(Storage):
 
         # Raise an exception if the given path is not a directory
         if not os.path.isdir(dirpath):
-            e = IOError("%r is not a directory" % dirpath)
+            e = IOError(f"{dirpath!r} is not a directory")
             e.errno = errno.ENOTDIR
             raise e
 
@@ -553,7 +553,7 @@ class FileStorage(Storage):
 
         if os.path.exists(self._fpath(newname)):
             if safe:
-                raise NameError("File %r exists" % newname)
+                raise NameError(f"File {newname!r} exists")
             else:
                 os.remove(self._fpath(newname))
         os.rename(self._fpath(oldname), self._fpath(newname))
@@ -562,7 +562,7 @@ class FileStorage(Storage):
         return FileLock(self._fpath(name))
 
     def temp_storage(self, name=None):
-        name = name or "%s.tmp" % random_name()
+        name = name or f"{random_name()}.tmp"
         path = os.path.join(self.folder, name)
         tempstore = FileStorage(path)
         return tempstore.create()
@@ -611,7 +611,7 @@ class RamStorage(Storage):
         if name not in self.files:
             raise NameError(name)
         if safe and newname in self.files:
-            raise NameError("File %r exists" % newname)
+            raise NameError(f"File {newname!r} exists")
 
         content = self.files[name]
         del self.files[name]
@@ -637,7 +637,7 @@ class RamStorage(Storage):
 
     def temp_storage(self, name=None):
         tdir = tempfile.gettempdir()
-        name = name or "%s.tmp" % random_name()
+        name = name or f"{random_name()}.tmp"
         path = os.path.join(tdir, name)
         tempstore = FileStorage(path)
         return tempstore.create()

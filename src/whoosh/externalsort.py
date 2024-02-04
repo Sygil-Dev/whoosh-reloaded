@@ -113,7 +113,7 @@ class SortingPool(object):
 
         self.tempdir = tempdir
         if maxsize < 1:
-            raise ValueError("maxsize=%s must be >= 1" % maxsize)
+            raise ValueError(f"maxsize={maxsize} must be >= 1")
         self.maxsize = maxsize
         self.prefix = prefix
         self.suffix = suffix
@@ -186,9 +186,9 @@ class SortingPool(object):
         # Reduce the number of runs to "target" by merging "k" runs at a time
 
         if k < 2:
-            raise ValueError("k=%s must be > 2" % k)
+            raise ValueError(f"k={k} must be > 2")
         if target < 1:
-            raise ValueError("target=%s must be >= 1" % target)
+            raise ValueError(f"target={target} must be >= 1")
         runs = self.runs
         while len(runs) > target:
             newpath, f = self._new_run()
@@ -207,7 +207,7 @@ class SortingPool(object):
         """
 
         if maxfiles < 2:
-            raise ValueError("maxfiles=%s must be >= 2" % maxfiles)
+            raise ValueError(f"maxfiles={maxfiles} must be >= 2")
 
         if not self.runs:
             # We never wrote a run to disk, so just sort the queue in memory

@@ -421,7 +421,7 @@ class ComboNode(Node):
         self.b = b
 
     def __repr__(self):
-        return "<%s %r %r>" % (self.__class__.__name__, self.a, self.b)
+        return f"<{self.__class__.__name__} {self.a!r} {self.b!r}>"
 
     def __contains__(self, key):
         return key in self.a or key in self.b
@@ -824,7 +824,7 @@ class UncompiledNode(object):
         self.inputcount = 0
 
     def __repr__(self):
-        return "<%r>" % ([(a.label, a.value) for a in self.arcs],)
+        return f"<{[(a.label, a.value) for a in self.arcs]!r}>"
 
     def digest(self):
         if self._digest is None:
@@ -855,7 +855,7 @@ class UncompiledNode(object):
 
     def replace_last(self, label, target, accept, acceptval=None):
         arc = self.arcs[-1]
-        assert arc.label == label, "%r != %r" % (arc.label, label)
+        assert arc.label == label, f"{arc.label!r} != {label!r}"
         arc.target = target
         arc.accept = accept
         arc.acceptval = acceptval
@@ -867,7 +867,7 @@ class UncompiledNode(object):
 
     def set_last_value(self, label, value):
         arc = self.arcs[-1]
-        assert arc.label == label, "%r->%r" % (arc.label, label)
+        assert arc.label == label, f"{arc.label!r}->{label!r}"
         arc.value = value
 
     def prepend_value(self, prefix):
@@ -1052,7 +1052,7 @@ class GraphWriter(object):
         """
 
         if not self._infield:
-            raise Exception("Inserted %r before starting a field" % key)
+            raise Exception(f"Inserted {key!r} before starting a field")
         self._inserted = True
         key = to_labels(key)  # Python 3 sucks
 
@@ -1060,9 +1060,9 @@ class GraphWriter(object):
         lastkey = self.lastkey
         nodes = self.nodes
         if len(key) < 1:
-            raise KeyError("Can't store a null key %r" % (key,))
+            raise KeyError(f"Can't store a null key {key!r}")
         if lastkey and lastkey > key:
-            raise KeyError("Keys out of order %r..%r" % (lastkey, key))
+            raise KeyError(f"Keys out of order {lastkey!r}..{key!r}")
 
         # Find the common prefix shared by this key and the previous one
         prefixlen = 0
@@ -1085,7 +1085,7 @@ class GraphWriter(object):
 
         if vtype:
             if value is not None and not vtype.is_valid(value):
-                raise ValueError("%r is not valid for %s" % (value, vtype))
+                raise ValueError(f"{value!r} is not valid for {vtype}")
 
             # Push value commonalities through the tree
             common = None
@@ -1109,7 +1109,7 @@ class GraphWriter(object):
             else:
                 nodes[prefixlen].set_last_value(key[prefixlen], value)
         elif value:
-            raise Exception("Value %r but no value type" % value)
+            raise Exception(f"Value {value!r} but no value type")
 
         self.lastkey = key
 
@@ -1447,7 +1447,7 @@ def to_labels(key):
     # I hate the Python 3 bytes object so friggin much
     if keytype is tuple or keytype is list:
         if not all(isinstance(e, bytes_type) for e in key):
-            raise TypeError("%r contains a non-bytestring" % key)
+            raise TypeError(f"{key!r} contains a non-bytestring")
         if keytype is list:
             key = tuple(key)
     elif isinstance(key, bytes_type):
@@ -1455,7 +1455,7 @@ def to_labels(key):
     elif isinstance(key, text_type):
         key = tuple(utf8encode(key[i : i + 1])[0] for i in range(len(key)))
     else:
-        raise TypeError("Don't know how to convert %r" % key)
+        raise TypeError(f"Don't know how to convert {key!r}")
     return key
 
 
@@ -1561,6 +1561,6 @@ def dump_graph(graph, address=None, tab=0, out=None):
         else:
             out.write(" " * 6)
         out.write("  " * tab)
-        out.write("%r %r %s %r\n" % (arc.label, arc.target, arc.accept, arc.value))
+        out.write(f"{arc.label!r} {arc.target!r} {arc.accept} {arc.value!r}\n")
         if arc.target is not None:
             dump_graph(graph, arc.target, tab + 1, out=out)

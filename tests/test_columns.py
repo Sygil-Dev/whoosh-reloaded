@@ -35,7 +35,7 @@ def test_pickleability():
             inst = coltype(*args)
         except TypeError:
             e = sys.exc_info()[1]
-            raise TypeError("Error instantiating %r: %s" % (coltype, e))
+            raise TypeError(f"Error instantiating {coltype!r}: {e}")
         _ = loads(dumps(inst, -1))
 
 

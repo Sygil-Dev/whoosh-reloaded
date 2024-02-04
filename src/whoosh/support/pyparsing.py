@@ -255,7 +255,7 @@ class RecursiveGrammarException(Exception):
         self.parseElementTrace = parseElementList
 
     def __str__( self ):
-        return "RecursiveGrammarException: %s" % self.parseElementTrace
+        return f"RecursiveGrammarException: {self.parseElementTrace}"
 
 class _ParseResultsWithOffset(object):
     def __init__(self,p1,p2):
@@ -438,7 +438,7 @@ class ParseResults(object):
         return self
 
     def __repr__( self ):
-        return "(%s, %s)" % ( repr( self.__toklist ), repr( self.__tokdict ) )
+        return f"({repr(self.__toklist)}, {repr(self.__tokdict)})"
 
     def __str__( self ):
         out = "["
@@ -581,7 +581,7 @@ class ParseResults(object):
         for k,v in keys:
             if out:
                 out.append('\n')
-            out.append( "%s%s- %s: " % (indent,('  '*depth), k) )
+            out.append( f"{indent}{'  ' * depth}- {k}: " )
             if isinstance(v,ParseResults):
                 if v.keys():
                     #~ out.append('\n')
@@ -1157,7 +1157,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return And( [ self, other ] )
@@ -1167,7 +1167,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return other + self
@@ -1177,7 +1177,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return And( [ self, And._ErrorStop(), other ] )
@@ -1187,7 +1187,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return other - self
@@ -1249,7 +1249,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return MatchFirst( [ self, other ] )
@@ -1259,7 +1259,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return other | self
@@ -1269,7 +1269,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return Or( [ self, other ] )
@@ -1279,7 +1279,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return other ^ self
@@ -1289,7 +1289,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return Each( [ self, other ] )
@@ -1299,7 +1299,7 @@ class ParserElement(object):
         if isinstance( other, basestring ):
             other = Literal( other )
         if not isinstance( other, ParserElement ):
-            warnings.warn("Cannot combine element of type %s with ParserElement" % type(other),
+            warnings.warn(f"Cannot combine element of type {type(other)} with ParserElement",
                     SyntaxWarning, stacklevel=2)
             return None
         return other & self
@@ -1495,7 +1495,7 @@ class Literal(Token):
             warnings.warn("null string passed to Literal; use Empty() instead",
                             SyntaxWarning, stacklevel=2)
             self.__class__ = Empty
-        self.name = '"%s"' % _ustr(self.match)
+        self.name = f'"{_ustr(self.match)}"'
         self.errmsg = "Expected " + self.name
         self.mayReturnEmpty = False
         #self.myException.msg = self.errmsg
@@ -1537,7 +1537,7 @@ class Keyword(Token):
         except IndexError:
             warnings.warn("null string passed to Keyword; use Empty() instead",
                             SyntaxWarning, stacklevel=2)
-        self.name = '"%s"' % self.match
+        self.name = f'"{self.match}"'
         self.errmsg = "Expected " + self.name
         self.mayReturnEmpty = False
         #self.myException.msg = self.errmsg
@@ -1586,7 +1586,7 @@ class CaselessLiteral(Literal):
         super(CaselessLiteral,self).__init__( matchString.upper() )
         # Preserve the defining literal.
         self.returnString = matchString
-        self.name = "'%s'" % self.returnString
+        self.name = f"'{self.returnString}'"
         self.errmsg = "Expected " + self.name
         #self.myException.msg = self.errmsg
 
@@ -1657,7 +1657,7 @@ class Word(Token):
 
         if ' ' not in self.initCharsOrig+self.bodyCharsOrig and (min==1 and max==0 and exact==0):
             if self.bodyCharsOrig == self.initCharsOrig:
-                self.reString = "[%s]+" % _escapeRegexRangeChars(self.initCharsOrig)
+                self.reString = f"[{_escapeRegexRangeChars(self.initCharsOrig)}]+"
             elif len(self.bodyCharsOrig) == 1:
                 self.reString = "%s[%s]*" % \
                                       (re.escape(self.initCharsOrig),
@@ -1734,9 +1734,9 @@ class Word(Token):
                     return s
 
             if ( self.initCharsOrig != self.bodyCharsOrig ):
-                self.strRepr = "W:(%s,%s)" % ( charsAsStr(self.initCharsOrig), charsAsStr(self.bodyCharsOrig) )
+                self.strRepr = f"W:({charsAsStr(self.initCharsOrig)},{charsAsStr(self.bodyCharsOrig)})"
             else:
-                self.strRepr = "W:(%s)" % charsAsStr(self.initCharsOrig)
+                self.strRepr = f"W:({charsAsStr(self.initCharsOrig)})"
 
         return self.strRepr
 
@@ -1760,7 +1760,7 @@ class Regex(Token):
             self.re = re.compile(self.pattern, self.flags)
             self.reString = self.pattern
         except sre_constants.error:
-            warnings.warn("invalid pattern (%s) passed to Regex" % pattern,
+            warnings.warn(f"invalid pattern ({pattern}) passed to Regex",
                 SyntaxWarning, stacklevel=2)
             raise
 
@@ -1793,7 +1793,7 @@ class Regex(Token):
             pass
 
         if self.strRepr is None:
-            self.strRepr = "Re:(%s)" % repr(self.pattern)
+            self.strRepr = f"Re:({repr(self.pattern)})"
 
         return self.strRepr
 
@@ -1865,7 +1865,7 @@ class QuotedString(Token):
             self.re = re.compile(self.pattern, self.flags)
             self.reString = self.pattern
         except sre_constants.error:
-            warnings.warn("invalid pattern (%s) passed to Regex" % self.pattern,
+            warnings.warn(f"invalid pattern ({self.pattern}) passed to Regex",
                 SyntaxWarning, stacklevel=2)
             raise
 
@@ -1909,7 +1909,7 @@ class QuotedString(Token):
             pass
 
         if self.strRepr is None:
-            self.strRepr = "quoted string, starting with %s ending with %s" % (self.quoteChar, self.endQuoteChar)
+            self.strRepr = f"quoted string, starting with {self.quoteChar} ending with {self.endQuoteChar}"
 
         return self.strRepr
 
@@ -1979,9 +1979,9 @@ class CharsNotIn(Token):
 
         if self.strRepr is None:
             if len(self.notChars) > 4:
-                self.strRepr = "!W:(%s...)" % self.notChars[:4]
+                self.strRepr = f"!W:({self.notChars[:4]}...)"
             else:
-                self.strRepr = "!W:(%s)" % self.notChars
+                self.strRepr = f"!W:({self.notChars})"
 
         return self.strRepr
 
@@ -2265,7 +2265,7 @@ class ParseExpression(ParserElement):
             pass
 
         if self.strRepr is None:
-            self.strRepr = "%s:(%s)" % ( self.__class__.__name__, _ustr(self.exprs) )
+            self.strRepr = f"{self.__class__.__name__}:({_ustr(self.exprs)})"
         return self.strRepr
 
     def streamline( self ):
@@ -2546,7 +2546,7 @@ class Each(ParseExpression):
 
         if tmpReqd:
             missing = ", ".join( [ _ustr(e) for e in tmpReqd ] )
-            raise ParseException(instring,loc,"Missing one or more required elements (%s)" % missing )
+            raise ParseException(instring,loc,f"Missing one or more required elements ({missing})" )
 
         # add any unmatched Optionals, in case they have default values defined
         matchOrder += list(e for e in self.exprs if isinstance(e,Optional) and e.expr in tmpOpt)
@@ -2652,7 +2652,7 @@ class ParseElementEnhance(ParserElement):
             pass
 
         if self.strRepr is None and self.expr is not None:
-            self.strRepr = "%s:(%s)" % ( self.__class__.__name__, _ustr(self.expr) )
+            self.strRepr = f"{self.__class__.__name__}:({_ustr(self.expr)})"
         return self.strRepr
 
 
@@ -3090,9 +3090,9 @@ def traceParseAction(f):
         try:
             ret = f(*paArgs)
         except Exception as exc:
-            sys.stderr.write( "<<leaving %s (exception: %s)\n" % (thisFunc,exc) )
+            sys.stderr.write( f"<<leaving {thisFunc} (exception: {exc})\n" )
             raise
-        sys.stderr.write( "<<leaving %s (ret: %s)\n" % (thisFunc,ret) )
+        sys.stderr.write( f"<<leaving {thisFunc} (ret: {ret})\n" )
         return ret
     try:
         z.__name__ = f.__name__
@@ -3244,7 +3244,7 @@ def oneOf( strs, caseless=False, useRegex=True ):
         #~ print (strs,"->", "|".join( [ _escapeRegexChars(sym) for sym in symbols] ))
         try:
             if len(symbols)==len("".join(symbols)):
-                return Regex( "[%s]" % "".join( [ _escapeRegexRangeChars(sym) for sym in symbols] ) )
+                return Regex( f"[{''.join([_escapeRegexRangeChars(sym) for sym in symbols])}]" )
             else:
                 return Regex( "|".join( [ re.escape(sym) for sym in symbols] ) )
         except:
@@ -3412,8 +3412,8 @@ def _makeTags(tagStr, xml):
                 Optional("/",default=[False]).setResultsName("empty").setParseAction(lambda s,l,t:t[0]=='/') + Suppress(">")
     closeTag = Combine(_L("</") + tagStr + ">")
 
-    openTag = openTag.setResultsName("start"+"".join(resname.replace(":"," ").title().split())).setName("<%s>" % tagStr)
-    closeTag = closeTag.setResultsName("end"+"".join(resname.replace(":"," ").title().split())).setName("</%s>" % tagStr)
+    openTag = openTag.setResultsName("start"+"".join(resname.replace(":"," ").title().split())).setName(f"<{tagStr}>")
+    closeTag = closeTag.setResultsName("end"+"".join(resname.replace(":"," ").title().split())).setName(f"</{tagStr}>")
 
     return openTag, closeTag
 

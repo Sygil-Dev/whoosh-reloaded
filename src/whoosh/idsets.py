@@ -561,7 +561,7 @@ class BitSet(BaseBitSet):
                 add(num)
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, list(self))
+        return f"{self.__class__.__name__}({list(self)!r})"
 
     def byte_count(self):
         return len(self.bits)
@@ -709,7 +709,7 @@ class SortedIntSet(DocIdSet):
         return len(self.data) * self.data.itemsize
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.data)
+        return f"{self.__class__.__name__}({self.data!r})"
 
     def __len__(self):
         return len(self.data)

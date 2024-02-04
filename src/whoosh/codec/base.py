@@ -195,10 +195,10 @@ class FieldWriter(object):
             # Check for out-of-order postings. This is convoluted because Python
             # 3 removed the ability to compare a string to None
             if lastfn is not None and fieldname < lastfn:
-                raise OutOfOrderError("Field %r .. %r" % (lastfn, fieldname))
+                raise OutOfOrderError(f"Field {lastfn!r} .. {fieldname!r}")
             if fieldname == lastfn and lasttext and btext < lasttext:
                 raise OutOfOrderError(
-                    "Term %s:%r .. %s:%r" % (lastfn, lasttext, fieldname, btext)
+                    f"Term {lastfn}:{lasttext!r} .. {fieldname}:{btext!r}"
                 )
 
             # If the fieldname of this posting is different from the last one,
@@ -528,7 +528,7 @@ class Segment(object):
         return random_name(size=size)
 
     def __repr__(self):
-        return "<%s %s>" % (self.__class__.__name__, self.segment_id())
+        return f"<{self.__class__.__name__} {self.segment_id()}>"
 
     def __eq__(self, other):
         return isinstance(other, type(self)) and self.segment_id() == other.segment_id()
@@ -547,7 +547,7 @@ class Segment(object):
             # Old segment class
             return self.name
         else:
-            return "%s_%s" % (self.index_name(), self.segid)
+            return f"{self.index_name()}_{self.segid}"
 
     def is_compound(self):
         if not hasattr(self, "compound"):
@@ -557,10 +557,10 @@ class Segment(object):
     # File convenience methods
 
     def make_filename(self, ext):
-        return "%s%s" % (self.segment_id(), ext)
+        return f"{self.segment_id()}{ext}"
 
     def list_files(self, storage):
-        prefix = "%s." % self.segment_id()
+        prefix = f"{self.segment_id()}."
         return [name for name in storage.list() if name.startswith(prefix)]
 
     def create_file(self, storage, ext, **kwargs):
@@ -786,7 +786,7 @@ class MultiPerDocumentReader(PerDocumentReader):
 
     def column_reader(self, fieldname, column):
         if not self.has_column(fieldname):
-            raise ValueError("No column %r" % (fieldname,))
+            raise ValueError(f"No column {fieldname!r}")
 
         default = column.default_value()
         colreaders = []

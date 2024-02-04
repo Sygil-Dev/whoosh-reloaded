@@ -204,7 +204,7 @@ class MpWriter(SegmentWriter):
         dump = pickle.dump
         length = len(docbuffer)
 
-        filename = "%s.doclist" % random_name()
+        filename = f"{random_name()}.doclist"
         with self.temp_storage().create_file(filename).raw_file() as f:
             for item in docbuffer:
                 dump(item, f, 2)

@@ -81,7 +81,7 @@ class NgramTokenizer(Tokenizer):
         mode="",
         **kwargs
     ):
-        assert isinstance(value, text_type), "%r is not unicode" % value
+        assert isinstance(value, text_type), f"{value!r} is not unicode"
 
         inlen = len(value)
         t = Token(positions, chars, removestops=removestops, mode=mode)

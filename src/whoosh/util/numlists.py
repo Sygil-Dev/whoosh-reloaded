@@ -27,7 +27,7 @@ class GrowableArray(object):
         self._allow_longs = allow_longs
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.array)
+        return f"{self.__class__.__name__}({self.array!r})"
 
     def __len__(self):
         return len(self.array)
@@ -45,7 +45,7 @@ class GrowableArray(object):
         elif self._allow_longs:
             newtype = "q"
         else:
-            raise OverflowError("%r is too big to fit in an array" % maxnum)
+            raise OverflowError(f"{maxnum!r} is too big to fit in an array")
 
         try:
             self.array = array(newtype, iter(self.array))

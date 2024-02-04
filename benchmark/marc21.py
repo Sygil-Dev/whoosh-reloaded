@@ -241,7 +241,7 @@ def search(qstring, ixdir, basedir, limit=None, optimize=True, scores=True):
             r = s.search(q, limit=limit, optimize=optimize)
             for hit in r:
                 print_record(hit.rank, basedir, hit["file"], hit["pos"])
-            print("Found %d records in %0.06f seconds" % (len(r), r.runtime))
+            print(f"Found {len(r)} records in {r.runtime:0.06f} seconds")
         else:
             t = now()
             for i, docnum in enumerate(s.docs_for_query(q)):

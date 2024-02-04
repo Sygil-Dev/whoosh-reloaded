@@ -76,7 +76,7 @@ class Module(object):
         pass
 
     def _process_result(self, d):
-        attrname = "process_result_%s" % self.options.lib
+        attrname = f"process_result_{self.options.lib}"
         if hasattr(self.bench.spec, attrname):
             method = getattr(self.bench.spec, attrname)
             self._process_result = method
@@ -134,7 +134,7 @@ class Spec(object):
 class WhooshModule(Module):
     def indexer(self, create=True):
         schema = self.bench.spec.whoosh_schema()
-        path = os.path.join(self.options.dir, "%s_whoosh" % self.options.indexname)
+        path = os.path.join(self.options.dir, f"{self.options.indexname}_whoosh")
 
         if not os.path.exists(path):
             os.mkdir(path)
@@ -169,7 +169,7 @@ class WhooshModule(Module):
         self.writer.commit(merge=merge, optimize=optimize)
 
     def searcher(self):
-        path = os.path.join(self.options.dir, "%s_whoosh" % self.options.indexname)
+        path = os.path.join(self.options.dir, f"{self.options.indexname}_whoosh")
         ix = index.open_dir(path)
         self.srch = ix.searcher(weighting=scoring.PL2())
         self.parser = qparser.QueryParser(self.bench.spec.main_field, schema=ix.schema)
@@ -194,7 +194,7 @@ class WhooshModule(Module):
 
 class XappyModule(Module):
     def indexer(self, **kwargs):
-        path = os.path.join(self.options.dir, "%s_xappy" % self.options.indexname)
+        path = os.path.join(self.options.dir, f"{self.options.indexname}_xappy")
         conn = self.bench.spec.xappy_connection(path)
         return conn
 
@@ -213,7 +213,7 @@ class XappyModule(Module):
         conn.flush()
 
     def searcher(self):
-        path = os.path.join(self.options.dir, "%s_xappy" % self.options.indexname)
+        path = os.path.join(self.options.dir, f"{self.options.indexname}_xappy")
         return xappy.SearchConnection(path)
 
     def query(self, conn):
@@ -237,7 +237,7 @@ class XappyModule(Module):
 
 class XapianModule(Module):
     def indexer(self, **kwargs):
-        path = os.path.join(self.options.dir, "%s_xapian" % self.options.indexname)
+        path = os.path.join(self.options.dir, f"{self.options.indexname}_xapian")
         self.database = xapian.WritableDatabase(path, xapian.DB_CREATE_OR_OPEN)
         self.ixer = xapian.TermGenerator()
 
@@ -255,7 +255,7 @@ class XapianModule(Module):
         self.database.flush()
 
     def searcher(self):
-        path = os.path.join(self.options.dir, "%s_xappy" % self.options.indexname)
+        path = os.path.join(self.options.dir, f"{self.options.indexname}_xappy")
         self.db = xapian.Database(path)
         self.enq = xapian.Enquire(self.db)
         self.qp = xapian.QueryParser()
@@ -325,7 +325,7 @@ class ZcatalogModule(Module):
         from zcatalog import catalog  # type: ignore # type: ignore @UnresolvedImport
         import transaction  # type: ignore # type: ignore @UnresolvedImport
 
-        dir = os.path.join(self.options.dir, "%s_zcatalog" % self.options.indexname)
+        dir = os.path.join(self.options.dir, f"{self.options.indexname}_zcatalog")
         if os.path.exists(dir):
             rmtree(dir)
         os.mkdir(dir)
@@ -364,7 +364,7 @@ class ZcatalogModule(Module):
         from ZODB.DB import DB  # type: ignore # type: ignore @UnresolvedImport
 
         path = os.path.join(
-            self.options.dir, "%s_zcatalog" % self.options.indexname, "index"
+            self.options.dir, f"{self.options.indexname}_zcatalog", "index"
         )
         storage = FileStorage(path)
         db = DB(storage)
@@ -395,7 +395,7 @@ class NucularModule(Module):
         import shutil
         from nucular import Nucular  # type: ignore # type: ignore @UnresolvedImport
 
-        dir = os.path.join(self.options.dir, "%s_nucular" % self.options.indexname)
+        dir = os.path.join(self.options.dir, f"{self.options.indexname}_nucular")
         if create:
             if os.path.exists(dir):
                 shutil.rmtree(dir)
@@ -426,7 +426,7 @@ class NucularModule(Module):
     def searcher(self):
         from nucular import Nucular  # type: ignore # type: ignore @UnresolvedImport
 
-        dir = os.path.join(self.options.dir, "%s_nucular" % self.options.indexname)
+        dir = os.path.join(self.options.dir, f"{self.options.indexname}_nucular")
         self.archive = Nucular.Nucular(dir)
 
     def query(self):
@@ -453,7 +453,7 @@ class Bench(object):
     }
 
     def index(self, lib):
-        print("Indexing with %s..." % lib)
+        print(f"Indexing with {lib}...")
 
         options = self.options
         every = None if options.every is None else int(options.every)
@@ -499,7 +499,7 @@ class Bench(object):
             "Total time to index %d documents: %0.3f secs (%0.3f minutes)"
             % (count, totaltime, totaltime / 60.0)
         )
-        print("Indexed %0.3f docs/s" % (count / totaltime))
+        print(f"Indexed {count / totaltime:0.3f} docs/s")
 
     def search(self, lib):
         lib.searcher()
@@ -519,7 +519,7 @@ class Bench(object):
         terms = [line.strip() for line in f]
         f.close()
 
-        print("Searching %d terms with %s" % (len(terms), lib))
+        print(f"Searching {len(terms)} terms with {lib}")
         lib.searcher()
         starttime = now()
         for r in lib.findterms(terms):
@@ -566,7 +566,7 @@ class Bench(object):
             dest="indexname",
             metavar="PREFIX",
             help="Index name prefix.",
-            default="%s_index" % name,
+            default=f"{name}_index",
         )
         p.add_option(
             "-U",
@@ -723,7 +723,7 @@ class Bench(object):
         self.args = args
 
         if options.lib not in self.libs:
-            raise Exception("Unknown library: %r" % options.lib)
+            raise Exception(f"Unknown library: {options.lib!r}")
         lib = self.libs[options.lib](self, options, args)
 
         self.spec = specclass(options, args)

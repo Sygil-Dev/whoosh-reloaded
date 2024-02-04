@@ -1297,7 +1297,7 @@ def charspec_to_int(string):
     elif len(string) == 1:
         return ord(string)
     else:
-        raise Exception("Can't convert charspec: %r" % string)
+        raise Exception(f"Can't convert charspec: {string!r}")
 
 
 def charset_table_to_dict(tablestring):
@@ -1378,5 +1378,5 @@ def charset_table_to_dict(tablestring):
                         pass
                 continue
 
-            raise Exception("Don't know what to do with %r" % item)
+            raise Exception(f"Don't know what to do with {item!r}")
     return dict(map)

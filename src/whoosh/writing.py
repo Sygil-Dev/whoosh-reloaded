@@ -148,7 +148,7 @@ class PostingPool(SortingPool):
         self.fieldnames = set()
 
     def _new_run(self):
-        path = "%s.run" % random_name()
+        path = f"{random_name()}.run"
         f = self.tempstore.create_file(path).raw_file()
         return path, f
 
@@ -159,9 +159,9 @@ class PostingPool(SortingPool):
         return self.tempstore.delete_file(path)
 
     def add(self, item):
-        assert isinstance(item[1], bytes_type), "tbytes=%r" % item[1]
+        assert isinstance(item[1], bytes_type), f"tbytes={item[1]!r}"
         if item[4] is not None:
-            assert isinstance(item[4], bytes_type), "vbytes=%r" % item[4]
+            assert isinstance(item[4], bytes_type), f"vbytes={item[4]!r}"
         self.fieldnames.add(item[0])
         size = (
             28
@@ -421,7 +421,7 @@ class IndexWriter(object):
             return default
 
     def _field_boost(self, fields, fieldname, default=1.0):
-        boostkw = "_%s_boost" % fieldname
+        boostkw = f"_{fieldname}_boost"
         if boostkw in fields:
             return float(fields[boostkw])
         else:
@@ -553,7 +553,7 @@ class SegmentWriter(IndexWriter):
         self._setup_doc_offsets()
 
         # Internals
-        self._tempstorage = self.storage.temp_storage("%s.tmp" % self.indexname)
+        self._tempstorage = self.storage.temp_storage(f"{self.indexname}.tmp")
         newsegment = codec.new_segment(self.storage, self.indexname)
         self.newsegment = newsegment
         self.compound = compound and newsegment.should_assemble()
@@ -575,7 +575,7 @@ class SegmentWriter(IndexWriter):
         # Origin bitbucket issue: https://bitbucket.org/mchaput/whoosh/issues/483
         # newsegment might not be set due to LockError
         # so use getattr to be safe
-        return "<%s %r>" % (self.__class__.__name__, getattr(self, "newsegment", None))
+        return f"<{self.__class__.__name__} {getattr(self, 'newsegment', None)!r}>"
 
     def _check_state(self):
         if self.is_closed:
@@ -643,7 +643,7 @@ class SegmentWriter(IndexWriter):
     def delete_document(self, docnum, delete=True):
         self._check_state()
         if docnum >= sum(seg.doc_count_all() for seg in self.segments):
-            raise IndexingError("No document ID %r in this index" % docnum)
+            raise IndexingError(f"No document ID {docnum!r} in this index")
         segment, segdocnum = self._segment_and_docnum(docnum)
         segment.delete_document(segdocnum, delete=delete)
 
@@ -743,7 +743,7 @@ class SegmentWriter(IndexWriter):
         # Check if the caller gave us a bogus field
         for name in fieldnames:
             if name not in schema:
-                raise UnknownFieldError("No field named %r in %s" % (name, schema))
+                raise UnknownFieldError(f"No field named {name!r} in {schema}")
 
     def add_document(self, **fields):
         self._check_state()
@@ -802,7 +802,7 @@ class SegmentWriter(IndexWriter):
                     perdocwriter.add_vector_items(fieldname, field, vitems)
 
                 # Allow a custom value for stored field/column
-                customval = fields.get("_stored_%s" % fieldname, value)
+                customval = fields.get(f"_stored_{fieldname}", value)
 
                 # Add the stored value and length for this field to the per-
                 # document writer
