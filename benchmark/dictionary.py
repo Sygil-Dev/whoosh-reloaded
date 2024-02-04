@@ -28,7 +28,7 @@ class VulgarTongue(Spec):
 
     def whoosh_schema(self):
         ana = analysis.StemmingAnalyzer()
-        # ana = analysis.StandardAnalyzer()
+
         schema = fields.Schema(
             head=fields.ID(stored=True), body=fields.TEXT(analyzer=ana, stored=True)
         )
