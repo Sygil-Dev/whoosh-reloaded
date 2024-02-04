@@ -657,7 +657,7 @@ class TOC(object):
         check_size("long", _LONG_SIZE)
         check_size("float", _FLOAT_SIZE)
 
-        if not stream.read_int() == -12345:
+        if stream.read_int() != -12345:
             raise IndexError("Number misread: byte order problem")
 
         version = stream.read_int()
