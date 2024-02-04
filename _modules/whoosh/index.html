@@ -508,9 +508,9 @@
         <span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">Storage</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">Storage</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> is not a Storage object&quot;</span> <span class="o">%</span> <span class="n">storage</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">storage</span><span class="si">!r}</span><span class="s2"> is not a Storage object&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;indexname </span><span class="si">%r</span><span class="s2"> is not a string&quot;</span> <span class="o">%</span> <span class="n">indexname</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;indexname </span><span class="si">{</span><span class="n">indexname</span><span class="si">!r}</span><span class="s2"> is not a string&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">schema</span><span class="p">:</span>
             <span class="n">schema</span> <span class="o">=</span> <span class="n">ensure_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
@@ -528,7 +528,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">indexname</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">indexname</span><span class="si">!r}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -697,15 +697,15 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_filename</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">indexname</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.toc&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">indexname</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">.toc&quot;</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_pattern</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">indexname</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^_</span><span class="si">%s</span><span class="s2">_([0-9]+).toc$&quot;</span> <span class="o">%</span> <span class="n">indexname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;^_</span><span class="si">{</span><span class="n">indexname</span><span class="si">}</span><span class="s2">_([0-9]+).toc$&quot;</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_segment_pattern</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">indexname</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">_[0-9a-z]+)[.][A-Za-z0-9_.]+&quot;</span> <span class="o">%</span> <span class="n">indexname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">indexname</span><span class="si">}</span><span class="s2">_[0-9a-z]+)[.][A-Za-z0-9_.]+&quot;</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_latest_generation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="p">):</span>
@@ -723,7 +723,7 @@
         <span class="n">schema</span> <span class="o">=</span> <span class="n">ensure_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
         <span class="c1"># Clear existing files</span>
-        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;_</span><span class="si">%s</span><span class="s2">_&quot;</span> <span class="o">%</span> <span class="n">indexname</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">indexname</span><span class="si">}</span><span class="s2">_&quot;</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">storage</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
                 <span class="n">storage</span><span class="o">.</span><span class="n">delete_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -738,7 +738,7 @@
             <span class="n">gen</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_latest_generation</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">indexname</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">gen</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">EmptyIndexError</span><span class="p">(</span>
-                    <span class="s2">&quot;Index </span><span class="si">%r</span><span class="s2"> does not exist in </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="n">storage</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;Index </span><span class="si">{</span><span class="n">indexname</span><span class="si">!r}</span><span class="s2"> does not exist in </span><span class="si">{</span><span class="n">storage</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
         <span class="c1"># Read the content of this index from the .toc file.</span>
@@ -757,7 +757,7 @@
         <span class="n">check_size</span><span class="p">(</span><span class="s2">&quot;long&quot;</span><span class="p">,</span> <span class="n">_LONG_SIZE</span><span class="p">)</span>
         <span class="n">check_size</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">_FLOAT_SIZE</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">12345</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">12345</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Number misread: byte order problem&quot;</span><span class="p">)</span>
 
         <span class="n">version</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read_int</span><span class="p">()</span>
@@ -768,7 +768,7 @@
                 <span class="n">loader</span> <span class="o">=</span> <span class="n">toc_loaders</span><span class="p">[</span><span class="n">version</span><span class="p">]</span>
                 <span class="n">schema</span><span class="p">,</span> <span class="n">segments</span> <span class="o">=</span> <span class="n">loader</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">IndexVersionError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t read format </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">IndexVersionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Can&#39;t read format </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># If the user supplied a schema object with the constructor, don&#39;t</span>
             <span class="c1"># load the pickled schema from the saved index.</span>
@@ -794,7 +794,7 @@
 
         <span class="c1"># Use a temporary file for atomic write.</span>
         <span class="n">tocfilename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">generation</span><span class="p">)</span>
-        <span class="n">tempfilename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tocfilename</span><span class="p">,</span> <span class="n">time</span><span class="p">())</span>
+        <span class="n">tempfilename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tocfilename</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">time</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">stream</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="n">tempfilename</span><span class="p">)</span>
 
         <span class="n">stream</span><span class="o">.</span><span class="n">write_varint</span><span class="p">(</span><span class="n">_INT_SIZE</span><span class="p">)</span>
@@ -815,10 +815,10 @@
                     <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">pickle</span><span class="o">.</span><span class="n">PicklingError</span><span class="p">:</span>
                     <span class="n">e</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="k">raise</span> <span class="n">pickle</span><span class="o">.</span><span class="n">PicklingError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span>
+                    <span class="k">raise</span> <span class="n">pickle</span><span class="o">.</span><span class="n">PicklingError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">field</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
                     <span class="n">e</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">=</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">field</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># Otherwise, re-raise the original exception</span>
             <span class="k">raise</span>
 

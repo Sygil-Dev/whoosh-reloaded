@@ -348,7 +348,7 @@
         <span class="c1"># Check format tag</span>
         <span class="n">filemagic</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">filemagic</span> <span class="o">!=</span> <span class="n">magic</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">FileFormatError</span><span class="p">(</span><span class="s2">&quot;Unknown file header </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filemagic</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FileFormatError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown file header </span><span class="si">{</span><span class="n">filemagic</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># Read hash type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hashtype</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">read_byte</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hashfn</span> <span class="o">=</span> <span class="n">_hash_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">hashtype</span><span class="p">]</span>
@@ -399,7 +399,7 @@
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Tried to close </span><span class="si">%r</span><span class="s2"> twice&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tried to close </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2"> twice&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -490,7 +490,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Key </span><span class="si">%r</span><span class="s2"> should be bytes&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> should be bytes&quot;</span><span class="p">)</span>
         <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
 
         <span class="c1"># Hash the key</span>
@@ -557,7 +557,7 @@
 
     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Keys must increase: </span><span class="si">%r</span><span class="s2">..</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Keys must increase: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="si">!r}</span><span class="s2">..</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">())</span>
         <span class="n">HashWriter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span> <span class="o">=</span> <span class="n">key</span>
@@ -640,13 +640,13 @@
         <span class="k">elif</span> <span class="n">indextype</span> <span class="o">==</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_long</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown index type </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">indextype</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown index type </span><span class="si">{</span><span class="n">indextype</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">closest_key_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="c1"># Given a key, return the position of that key OR the next highest key</span>
         <span class="c1"># if the given key does not exist</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Key </span><span class="si">%r</span><span class="s2"> should be bytes&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> should be bytes&quot;</span><span class="p">)</span>
 
         <span class="n">indexbase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexbase</span>
         <span class="n">indexsize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexsize</span>
@@ -696,7 +696,7 @@
 
     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Keys must increase: </span><span class="si">%r</span><span class="s2">..</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Keys must increase: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span><span class="si">!r}</span><span class="s2">..</span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">poses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldstart</span><span class="p">)</span>
         <span class="n">HashWriter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lastkey</span> <span class="o">=</span> <span class="n">key</span>
@@ -776,7 +776,7 @@
         <span class="c1"># Given a key, return the position of that key OR the next highest key</span>
         <span class="c1"># if the given key does not exist</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Key </span><span class="si">%r</span><span class="s2"> should be bytes&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> should be bytes&quot;</span><span class="p">)</span>
 
         <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
         <span class="n">key_at</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_at</span>
@@ -793,7 +793,7 @@
         <span class="k">elif</span> <span class="n">ixtype</span> <span class="o">==</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span>
             <span class="n">get_pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">get_long</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown index type </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ixtype</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown index type </span><span class="si">{</span><span class="n">ixtype</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Do a binary search of the positions in the index array</span>
         <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>

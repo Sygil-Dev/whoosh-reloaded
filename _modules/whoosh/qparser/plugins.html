@@ -238,7 +238,7 @@
         <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Prefix</span>
 
         <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%r</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">!r}</span><span class="s2">*&quot;</span>
 
     <span class="n">expr</span> <span class="o">=</span> <span class="s2">&quot;(?P&lt;text&gt;[^ </span><span class="se">\t\r\n</span><span class="s2">*]+)[*](?= |$|</span><span class="se">\\</span><span class="s2">))&quot;</span>
     <span class="n">nodetype</span> <span class="o">=</span> <span class="n">PrefixNode</span></div>
@@ -249,7 +249,7 @@
     <span class="c1"># \u061F = Arabic question mark</span>
     <span class="c1"># \u1367 = Ethiopic question mark</span>
     <span class="n">qmarks</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;?</span><span class="se">\u055E\u061F\u1367</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">expr</span> <span class="o">=</span> <span class="s2">&quot;(?P&lt;text&gt;[*</span><span class="si">%s</span><span class="s2">])&quot;</span> <span class="o">%</span> <span class="n">qmarks</span>
+    <span class="n">expr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(?P&lt;text&gt;[*</span><span class="si">{</span><span class="n">qmarks</span><span class="si">}</span><span class="s2">])&quot;</span>
 
     <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
         <span class="c1"># Run early, but definitely before multifield plugin</span>
@@ -293,7 +293,7 @@
         <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Wildcard</span>
 
         <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;Wild </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Wild </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">!r}</span><span class="s2">&quot;</span>
 
     <span class="n">nodetype</span> <span class="o">=</span> <span class="n">WildcardNode</span></div>
 
@@ -312,7 +312,7 @@
         <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Regex</span>
 
         <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;Regex </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Regex </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">!r}</span><span class="s2">&quot;</span>
 
     <span class="n">expr</span> <span class="o">=</span> <span class="s1">&#39;r&quot;(?P&lt;text&gt;[^&quot;]*)&quot;&#39;</span>
     <span class="n">nodetype</span> <span class="o">=</span> <span class="n">RegexNode</span></div>
@@ -333,7 +333,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
 
         <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;^ </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;^ </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
         <span class="c1"># Override create so we can grab group 0</span>
@@ -692,7 +692,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;#</span><span class="si">%s</span><span class="s2">&lt;</span><span class="si">%r</span><span class="s2">&gt;(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="si">!r}</span><span class="s2">&gt;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="si">!r}</span><span class="s2">)&quot;</span>
 
         <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
             <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">]</span>
@@ -791,7 +791,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">slop</span> <span class="o">=</span> <span class="n">slop</span>
 
         <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2">~</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slop</span><span class="p">)</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">!r}</span><span class="s2">~</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slop</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
@@ -1031,11 +1031,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">memo</span> <span class="o">=</span> <span class="n">memo</span>
 
         <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%r</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">memo</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">pattern</span><span class="si">!r}</span><span class="s2"> (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">memo</span><span class="si">}</span><span class="s2">)&gt;&quot;</span>
 
         <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optype</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouptype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">leftassoc</span><span class="p">)</span>
@@ -1211,7 +1207,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">rel</span> <span class="o">=</span> <span class="n">rel</span>
 
         <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">rel</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rel</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="n">expr</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;rel&gt;(&lt;=|&gt;=|&lt;|&gt;|=&lt;|=&gt;))&quot;</span>
     <span class="n">nodetype</span> <span class="o">=</span> <span class="n">GtLtNode</span>

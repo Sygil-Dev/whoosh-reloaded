@@ -177,6 +177,7 @@
     <span class="c1"># Index readers</span>
 
     <span class="k">def</span> <span class="nf">automata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">storage</span><span class="p">,</span> <span class="n">segment</span>  <span class="c1"># Unused arguments</span>
         <span class="k">return</span> <span class="n">Automata</span><span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
@@ -257,9 +258,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add_vector_items</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">fieldobj</span><span class="p">,</span> <span class="n">readitems</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">finish_doc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span></div>
 
 
@@ -292,10 +295,10 @@
             <span class="c1"># Check for out-of-order postings. This is convoluted because Python</span>
             <span class="c1"># 3 removed the ability to compare a string to None</span>
             <span class="k">if</span> <span class="n">lastfn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fieldname</span> <span class="o">&lt;</span> <span class="n">lastfn</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">OutOfOrderError</span><span class="p">(</span><span class="s2">&quot;Field </span><span class="si">%r</span><span class="s2"> .. </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lastfn</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">OutOfOrderError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field </span><span class="si">{</span><span class="n">lastfn</span><span class="si">!r}</span><span class="s2"> .. </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">fieldname</span> <span class="o">==</span> <span class="n">lastfn</span> <span class="ow">and</span> <span class="n">lasttext</span> <span class="ow">and</span> <span class="n">btext</span> <span class="o">&lt;</span> <span class="n">lasttext</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">OutOfOrderError</span><span class="p">(</span>
-                    <span class="s2">&quot;Term </span><span class="si">%s</span><span class="s2">:</span><span class="si">%r</span><span class="s2"> .. </span><span class="si">%s</span><span class="s2">:</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lastfn</span><span class="p">,</span> <span class="n">lasttext</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;Term </span><span class="si">{</span><span class="n">lastfn</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">lasttext</span><span class="si">!r}</span><span class="s2"> .. </span><span class="si">{</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">btext</span><span class="si">!r}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
             <span class="c1"># If the fieldname of this posting is different from the last one,</span>
@@ -361,6 +364,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">finish_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -380,6 +384,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">finish_postings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="PostingsWriter.written"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.PostingsWriter.written">[docs]</a>    <span class="nd">@abstractmethod</span>
@@ -452,6 +457,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span></div>
 
 
@@ -489,6 +495,7 @@
 
 <div class="viewcode-block" id="PerDocumentReader"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.PerDocumentReader">[docs]</a><span class="k">class</span> <span class="nc">PerDocumentReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span>
 
     <span class="nd">@abstractmethod</span>
@@ -533,6 +540,7 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">has_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">fieldname</span>  <span class="c1"># Unused argument</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">list_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -545,6 +553,7 @@
     <span class="c1"># Bitmaps</span>
 
     <span class="k">def</span> <span class="nf">field_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">fieldname</span>  <span class="c1"># Unused argument</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="c1"># Lengths</span>
@@ -568,6 +577,7 @@
     <span class="c1"># Vectors</span>
 
     <span class="k">def</span> <span class="nf">has_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docnum</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">docnum</span><span class="p">,</span> <span class="n">fieldname</span>  <span class="c1"># Unused arguments</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="c1"># Don&#39;t need to override this if has_vector() always returns False</span>
@@ -618,7 +628,7 @@
         <span class="k">return</span> <span class="n">random_name</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_id</span><span class="p">())</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">segment_id</span><span class="p">()</span>
@@ -637,7 +647,7 @@
             <span class="c1"># Old segment class</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index_name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">segid</span><span class="p">)</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index_name</span><span class="p">()</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">segid</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">def</span> <span class="nf">is_compound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;compound&quot;</span><span class="p">):</span>
@@ -647,10 +657,10 @@
     <span class="c1"># File convenience methods</span>
 
     <span class="k">def</span> <span class="nf">make_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_id</span><span class="p">(),</span> <span class="n">ext</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_id</span><span class="p">()</span><span class="si">}{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">def</span> <span class="nf">list_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage</span><span class="p">):</span>
-        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">segment_id</span><span class="p">()</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">segment_id</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">storage</span><span class="o">.</span><span class="n">list</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)]</span>
 
 <div class="viewcode-block" id="Segment.create_file"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.Segment.create_file">[docs]</a>    <span class="k">def</span> <span class="nf">create_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -876,7 +886,7 @@
 
     <span class="k">def</span> <span class="nf">column_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_column</span><span class="p">(</span><span class="n">fieldname</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No column </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fieldname</span><span class="p">,))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No column </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">default</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">default_value</span><span class="p">()</span>
         <span class="n">colreaders</span> <span class="o">=</span> <span class="p">[]</span>

@@ -146,7 +146,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for analyzers.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">()&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">()&quot;</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -159,6 +159,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span>
 
 
@@ -178,8 +179,7 @@
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Tokenizer</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">CompositionError</span><span class="p">(</span>
-                    <span class="s2">&quot;Only one tokenizer allowed at the start&quot;</span>
-                    <span class="s2">&quot; of the analyzer: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span>
+                    <span class="sa">f</span><span class="s2">&quot;Only one tokenizer allowed at the start of the analyzer: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -339,7 +339,6 @@
     <span class="n">expression</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span>
     <span class="n">stoplist</span><span class="o">=</span><span class="n">STOP_WORDS</span><span class="p">,</span>
     <span class="n">minsize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">gaps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">splitwords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">splitnums</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>

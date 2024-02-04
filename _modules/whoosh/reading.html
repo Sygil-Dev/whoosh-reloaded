@@ -764,7 +764,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gen</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_segment</span><span class="si">!r}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
@@ -845,9 +845,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ReaderClosed</span>
         <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="s2">&quot;No field </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No field </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span><span class="o">.</span><span class="n">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="s2">&quot;Field </span><span class="si">%r</span><span class="s2"> is not indexed&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2"> is not indexed&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">indexed_field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terms</span><span class="o">.</span><span class="n">indexed_field_names</span><span class="p">()</span>
@@ -878,7 +878,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terms</span><span class="o">.</span><span class="n">term_info</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">text</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">expand_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_test_field</span><span class="p">(</span><span class="n">fieldname</span><span class="p">)</span>
@@ -934,7 +934,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ReaderClosed</span>
         <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="s2">&quot;No  field </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No  field </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text_to_bytes</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
         <span class="n">format_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span><span class="o">.</span><span class="n">format</span>
         <span class="n">matcher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terms</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">format_</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="n">scorer</span><span class="p">)</span>
@@ -947,10 +947,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_closed</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ReaderClosed</span>
         <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="s2">&quot;No  field </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No  field </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">vformat</span> <span class="o">=</span> <span class="n">format_</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span><span class="o">.</span><span class="n">vector</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">vformat</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No vectors are stored for field </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No vectors are stored for field </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perdoc</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="n">docnum</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">vformat</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
@@ -984,7 +984,7 @@
         <span class="n">fieldobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
         <span class="n">column</span> <span class="o">=</span> <span class="n">column</span> <span class="ow">or</span> <span class="n">fieldobj</span><span class="o">.</span><span class="n">column_type</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">column</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No column for field </span><span class="si">%r</span><span class="s2"> in </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No column for field </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2"> in </span><span class="si">{</span><span class="bp">self</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perdoc</span><span class="o">.</span><span class="n">has_column</span><span class="p">(</span><span class="n">fieldname</span><span class="p">):</span>
             <span class="n">creader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perdoc</span><span class="o">.</span><span class="n">column_reader</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
@@ -1054,7 +1054,7 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">stored_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docnum</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No document number </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">docnum</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No document number </span><span class="si">{</span><span class="n">docnum</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">all_stored_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">([])</span>
@@ -1084,13 +1084,13 @@
         <span class="k">return</span> <span class="n">default</span>
 
     <span class="k">def</span> <span class="nf">postings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">TermNotFound</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">text</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">has_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docnum</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docnum</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;No document number </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">docnum</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No document number </span><span class="si">{</span><span class="n">docnum</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">most_frequent_terms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">([])</span>

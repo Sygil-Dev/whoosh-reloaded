@@ -205,6 +205,7 @@
 
 <div class="viewcode-block" id="Column.default_value"><a class="viewcode-back" href="../../api/columns.html#whoosh.columns.Column.default_value">[docs]</a>    <span class="k">def</span> <span class="nf">default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the default value for this column type.&quot;&quot;&quot;</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">reverse</span>  <span class="c1"># unused variable</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default</span></div>
 
@@ -232,6 +233,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docnum</span><span class="p">):</span>
+        <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span></div>
 
 
@@ -587,7 +589,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">ref</span> <span class="o">&gt;</span> <span class="mi">65535</span><span class="p">:</span>
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                        <span class="s2">&quot;RefBytesColumn dropped unique value </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">v</span><span class="p">,</span> <span class="ne">UserWarning</span>
+                        <span class="sa">f</span><span class="s2">&quot;RefBytesColumn dropped unique value </span><span class="si">{</span><span class="n">v</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span>
                     <span class="p">)</span>
                     <span class="n">ref</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">dbfile</span><span class="o">.</span><span class="n">write_ushort</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
@@ -1006,12 +1008,17 @@
             <span class="k">return</span> <span class="s2">&quot;&lt;CompressedBlock.Reader&gt;&quot;</span>
 
         <span class="k">def</span> <span class="nf">_find_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docnum</span><span class="p">):</span>
-            <span class="c1"># TODO: use binary search instead of linear</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">docnum</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                    <span class="k">return</span> <span class="kc">None</span>
-                <span class="k">elif</span> <span class="n">docnum</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                    <span class="k">return</span> <span class="n">i</span>
+            <span class="c1"># Use binary search instead of linear search</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">:</span>
+                <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+                <span class="k">if</span> <span class="n">docnum</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">[</span><span class="n">mid</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">docnum</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocks</span><span class="p">[</span><span class="n">mid</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">mid</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">def</span> <span class="nf">_get_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocknum</span><span class="p">):</span>

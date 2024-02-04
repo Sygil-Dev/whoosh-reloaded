@@ -302,7 +302,7 @@
             <span class="k">elif</span> <span class="n">spec</span> <span class="o">==</span> <span class="s2">&quot;or&quot;</span><span class="p">:</span>
                 <span class="n">qclass</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">Or</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">QueryParserError</span><span class="p">(</span><span class="s2">&quot;Unknown multitoken_query value </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">spec</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">QueryParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown multitoken_query value </span><span class="si">{</span><span class="n">spec</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">qclass</span><span class="p">([</span><span class="n">termclass</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="n">boost</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="QueryParser.term_query"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.QueryParser.term_query">[docs]</a>    <span class="k">def</span> <span class="nf">term_query</span><span class="p">(</span>
@@ -378,7 +378,7 @@
         <span class="c1"># Priorized list of taggers provided by the parser&#39;s plugins</span>
         <span class="n">taggers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taggers</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;Taggers: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">taggers</span><span class="p">)</span>
+            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Taggers: </span><span class="si">{</span><span class="n">taggers</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Define a function that will make a WordNode from the &quot;interstitial&quot;</span>
         <span class="c1"># text between matches</span>
@@ -402,11 +402,11 @@
                     <span class="k">if</span> <span class="n">prev</span> <span class="o">&lt;</span> <span class="n">pos</span><span class="p">:</span>
                         <span class="n">tween</span> <span class="o">=</span> <span class="n">inter</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-                            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;Tween: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tween</span><span class="p">)</span>
+                            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Tween: </span><span class="si">{</span><span class="n">tween</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tween</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-                        <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;Tagger: </span><span class="si">%r</span><span class="s2"> at </span><span class="si">%s</span><span class="s2">: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tagger</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+                        <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Tagger: </span><span class="si">{</span><span class="n">tagger</span><span class="si">!r}</span><span class="s2"> at </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">node</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                     <span class="n">prev</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">endchar</span>
                     <span class="k">break</span>
@@ -422,7 +422,7 @@
         <span class="c1"># Wrap the list of nodes in a group node</span>
         <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;Tagged group: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">group</span><span class="p">)</span>
+            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Tagged group: </span><span class="si">{</span><span class="n">group</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">group</span></div>
 
 <div class="viewcode-block" id="QueryParser.filterize"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.QueryParser.filterize">[docs]</a>    <span class="k">def</span> <span class="nf">filterize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -432,15 +432,15 @@
 
         <span class="c1"># Call each filter in the priorized list of plugin filters</span>
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;Pre-filtered group: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nodes</span><span class="p">)</span>
+            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Pre-filtered group: </span><span class="si">{</span><span class="n">nodes</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-                <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;..Applying: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">f</span><span class="p">)</span>
+                <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;..Applying: </span><span class="si">{</span><span class="n">f</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">nodes</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-                <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;..Result: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nodes</span><span class="p">)</span>
+                <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;..Result: </span><span class="si">{</span><span class="n">nodes</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">nodes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Filter </span><span class="si">%r</span><span class="s2"> did not return anything&quot;</span> <span class="o">%</span> <span class="n">f</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filter </span><span class="si">{</span><span class="n">f</span><span class="si">!r}</span><span class="s2"> did not return anything&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">nodes</span></div>
 
 <div class="viewcode-block" id="QueryParser.process"><a class="viewcode-back" href="../../../api/qparser.html#whoosh.qparser.QueryParser.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -471,18 +471,18 @@
 
         <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;Syntax tree: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nodes</span><span class="p">)</span>
+            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Syntax tree: </span><span class="si">{</span><span class="n">nodes</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">q</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">q</span><span class="p">:</span>
             <span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">NullQuery</span>
         <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;Pre-normalized query: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">q</span><span class="p">)</span>
+            <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Pre-normalized query: </span><span class="si">{</span><span class="n">q</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
             <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-                <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="s2">&quot;Normalized query: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">q</span><span class="p">)</span>
+                <span class="n">print_debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Normalized query: </span><span class="si">{</span><span class="n">q</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">q</span></div>
 
     <span class="k">def</span> <span class="nf">parse_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>

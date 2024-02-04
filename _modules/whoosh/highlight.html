@@ -1152,7 +1152,7 @@
 
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hitobj</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Field </span><span class="si">%r</span><span class="s2"> is not stored.&quot;</span> <span class="o">%</span> <span class="n">fieldname</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field </span><span class="si">{</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2"> is not stored.&quot;</span><span class="p">)</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">hitobj</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
 
         <span class="c1"># Get the terms searched for/matched in this field</span>
