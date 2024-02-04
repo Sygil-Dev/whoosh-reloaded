@@ -59,6 +59,7 @@ class Analyzer(Composable):
         raise NotImplementedError
 
     def clean(self):
+        # This method is intentionally left empty.
         pass
 
 
@@ -239,7 +240,7 @@ def FancyAnalyzer(
     expression=r"\s+",
     stoplist=STOP_WORDS,
     minsize=2,
-    maxsize=None,
+    # maxsize=None,
     gaps=True,
     splitwords=True,
     splitnums=True,
