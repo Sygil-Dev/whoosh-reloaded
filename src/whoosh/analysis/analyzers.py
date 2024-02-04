@@ -239,7 +239,6 @@ def FancyAnalyzer(
     expression=r"\s+",
     stoplist=STOP_WORDS,
     minsize=2,
-    # maxsize=None,
     gaps=True,
     splitwords=True,
     splitnums=True,
