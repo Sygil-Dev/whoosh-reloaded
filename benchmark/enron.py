@@ -87,7 +87,7 @@ class Enron(Spec):
         print("Caching messages in %s..." % cache)
 
         if not os.path.exists(archive):
-            raise Exception("Archive file %r does not exist" % archive)
+            raise FileNotFoundError(f"Archive file {archive} does not exist")
 
         t = now()
         f = open(cache, "wb")
@@ -118,7 +118,7 @@ class Enron(Spec):
 
     def documents(self):
         if not os.path.exists(self.cache_filename):
-            raise Exception("Message cache does not exist, use --setup")
+            raise FileNotFoundError("Message cache does not exist, use --setup")
 
         f = open(self.cache_filename, "rb")
         try:
