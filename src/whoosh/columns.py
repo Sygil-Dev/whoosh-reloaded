@@ -105,6 +105,7 @@ class Column(object):
 
     def default_value(self, reverse=False):
         """Returns the default value for this column type."""
+        _ = reverse  # unused variable
 
         return self._default
 
@@ -132,6 +133,7 @@ class ColumnWriter(object):
         raise NotImplementedError
 
     def finish(self, docnum):
+        # This method is intentionally left empty.
         pass
 
 
