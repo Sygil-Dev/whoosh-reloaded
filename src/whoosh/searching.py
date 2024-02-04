@@ -242,7 +242,9 @@ class Searcher(object):
         """
 
         if not self._ix:
-            raise Exception("No reference to index")
+            raise ValueError(
+                "No reference to index"
+            )  # Replace generic exception with ValueError
         return self._ix.latest_generation() == self.ixreader.generation()
 
     def refresh(self):
@@ -259,7 +261,7 @@ class Searcher(object):
         """
 
         if not self._ix:
-            raise Exception("No reference to index")
+            raise ValueError("No reference to index")
         if self._ix.latest_generation() == self.reader().generation():
             return self
 
@@ -474,7 +476,7 @@ class Searcher(object):
         elif isinstance(obj, query.Query):
             c = self._query_to_comb(obj)
         else:
-            raise Exception("Don't know what to do with filter object %r" % obj)
+            raise ValueError(f"Don't know what to do with filter object {obj}")
 
         return c
 
@@ -1609,19 +1611,7 @@ class Hit(object):
     def itervalues(self):
         return itervalues(self.fields())
 
-    def get(self, key, default=None):
-        return self.fields().get(key, default)
-
-    def __setitem__(self, key, value):
-        raise NotImplementedError("You cannot modify a search result")
-
-    def __delitem__(self, key, value):
-        raise NotImplementedError("You cannot modify a search result")
-
-    def clear(self):
-        raise NotImplementedError("You cannot modify a search result")
-
-    def update(self, dict=None, **kwargs):
+    def __delitem__(self, key):
         raise NotImplementedError("You cannot modify a search result")
 
 
