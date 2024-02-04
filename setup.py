@@ -45,11 +45,12 @@ if __name__ == "__main__":
         url="https://github.com/Sygil-Dev/whoosh-reloaded",
         zip_safe=True,
         install_requires=[
-            "cached-property",
+            "cached-property==1.5.2",
+            "loguru==0.7.2",
         ],
         tests_require=[
-            "pytest",
-            "nose",
+            "pytest==8.0.0",
+            "nose==1.3.7",
         ],
         cmdclass={"test": PyTest},
         classifiers=[
