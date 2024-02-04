@@ -352,7 +352,7 @@ class OrderedHashWriter(HashWriter):
 
     def add(self, key, value):
         if key <= self.lastkey:
-            raise ValueError("Keys must increase: %r..%r" % (self.lastkey, key))
+            raise ValueError(f"Keys must increase: {self.lastkey!r}..{key!r}")
         self.index.append(self.dbfile.tell())
         HashWriter.add(self, key, value)
         self.lastkey = key
@@ -488,7 +488,7 @@ class W2Codec(base.Codec):
     def graph_reader(self, storage, segment):
         try:
             dawgfile = segment.open_file(storage, self.DAWG_EXT)
-        except:
+        except Exception:
             raise NoGraphError
         return GraphReader(dawgfile)
 
@@ -674,11 +674,13 @@ class W2FieldWriter(base.FieldWriter):
 
     def start_term(self, text):
         if self.block is not None:
-            raise Exception("Called start_term in a block")
+            raise ValueError("Called start_term in a block")
         self.text = text
         self.terminfo = FileTermInfo()
         if self.spelling:
-            self.dawg.insert(text.decode("utf-8"))  # TODO: how to decode bytes?
+            self.dawg.insert(
+                text.decode()
+            )  # use text.decode() to convert bytes to string. Revert to text.decode("utf-8") if error occurs
         self._start_blocklist()
 
     def add(self, docnum, weight, valuestring, length):
@@ -694,7 +696,7 @@ class W2FieldWriter(base.FieldWriter):
     def finish_term(self):
         block = self.block
         if block is None:
-            raise Exception("Called finish_term when not in a block")
+            raise ValueError("Called finish_term when not in a block")
 
         terminfo = self.terminfo
         if self.blockcount < 1 and block and len(block) < self.inlinelimit:
@@ -975,7 +977,7 @@ class PostingIndexBase(HashReader):
         lo = 0
         hi = self.length
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key!r} should be bytes")
         while lo < hi:
             mid = (lo + hi) // 2
             midkey = key_at(dbfile.get_long(indexbase + mid * _LONG_SIZE))
@@ -1078,7 +1080,7 @@ class W2TermsReader(PostingIndexBase):
         try:
             terminfo = self[term]
         except KeyError:
-            raise TermNotFound("No term %s:%r" % (fieldname, text))
+            raise TermNotFound(f"No term {fieldname}:{text!r}")
 
         p = terminfo.postings
         if isinstance(p, integer_types):
@@ -1506,9 +1508,7 @@ class StoredFieldReader(object):
 
     def __getitem__(self, num):
         if num > self.length - 1:
-            raise IndexError(
-                "Tried to get document %s, file has %s" % (num, self.length)
-            )
+            raise IndexError(f"Tried to get document {num}, file has {self.length}")
 
         dbfile = self.dbfile
         start = self.directory_offset + num * stored_pointer_size
@@ -1516,8 +1516,7 @@ class StoredFieldReader(object):
         ptr = dbfile.read(stored_pointer_size)
         if len(ptr) != stored_pointer_size:
             raise Exception(
-                "Error reading %r @%s %s < %s"
-                % (dbfile, start, len(ptr), stored_pointer_size)
+                f"Error reading {dbfile!r} @{start} {len(ptr)} < {stored_pointer_size}"
             )
         position, length = unpack_stored_pointer(ptr)
         dbfile.seek(position)
@@ -2016,9 +2015,7 @@ class OLD_NUMERIC(NUMERIC):
                 "float and use the decimal_places argument"
             )
         else:
-            raise TypeError(
-                "%s field type can't store %r" % (self.__class__, self.type)
-            )
+            raise TypeError(f"{self.__class__} field type can't store {self.type!r}")
 
         self.stored = stored
         self.unique = unique
@@ -2137,7 +2134,7 @@ class OLD_DATETIME(OLD_NUMERIC):
             elif not isinstance(x, integer_types):
                 raise TypeError()
         except Exception:
-            raise ValueError("DATETIME.to_text can't convert from %r" % (x,))
+            raise ValueError(f"DATETIME.to_text can't convert from {x!r}")
 
         x = OLD_NUMERIC.to_text(self, x, shift=shift)
         return x
@@ -2170,7 +2167,7 @@ class OLD_DATETIME(OLD_NUMERIC):
 
         at = fix(adatetime(year, month, day, hour, minute, second, microsecond))
         if is_void(at):
-            raise Exception("%r is not a parseable date" % qstring)
+            raise Exception(f"{qstring!r} is not a parseable date")
         return at
 
     def parse_query(self, fieldname, qstring, boost=1.0):
