@@ -135,7 +135,7 @@ def uniform_title(d):
 
 
 subjectfields = (
-    "600 610 611 630 648 650 651 653 654 655 656 657 658 662 " "690 691 696 697 698 699"
+    "600 610 611 630 648 650 651 653 654 655 656 657 658 662 690 691 696 697 698 699"
 ).split()
 
 
@@ -191,7 +191,7 @@ def make_index(basedir, ixdir, procs=4, limitmb=128, multisegment=True, glob="*.
     mfields.update("100 110 111".split())  # Author
     mfields.add("245")  # Title
 
-    print("Indexing with %d processor(s) and %d MB per processor" % (procs, limitmb))
+    print(f"Indexing with {procs} processor(s) and {limitmb} MB per processor")
     c = 0
     t = now()
     ix = index.create_in(ixdir, schema)
@@ -302,7 +302,7 @@ if __name__ == "__main__":
         "-M",
         "--merge-segments",
         dest="multisegment",
-        help="If indexing with multiproc, merge the segments after" " indexing",
+        help="If indexing with multiproc, merge the segments after indexing",
         action="store_false",
         default=True,
     )

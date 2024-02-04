@@ -45,10 +45,10 @@ class Enron(Spec):
     # the messages in an easier-to-digest format
 
     def download_archive(self, archive):
-        print("Downloading Enron email archive to %r..." % archive)
+        print(f"Downloading Enron email archive to {archive}...")
         t = now()
         urlretrieve(self.enron_archive_url, archive)
-        print("Downloaded in ", now() - t, "seconds")
+        print(f"Downloaded in {now() - t} seconds")
 
     @staticmethod
     def get_texts(archive):
@@ -84,7 +84,7 @@ class Enron(Spec):
             yield d
 
     def cache_messages(self, archive, cache):
-        print("Caching messages in %s..." % cache)
+        print(f"Caching messages in {cache}...")
 
         if not os.path.exists(archive):
             raise FileNotFoundError(f"Archive file {archive} does not exist")
@@ -98,7 +98,7 @@ class Enron(Spec):
             if not c % 1000:
                 print(c)
         f.close()
-        print("Cached messages in ", now() - t, "seconds")
+        print(f"Cached messages in {now() - t} seconds")
 
     def setup(self):
         archive = os.path.abspath(

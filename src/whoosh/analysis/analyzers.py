@@ -79,8 +79,7 @@ class CompositeAnalyzer(Analyzer):
         for item in self.items[1:]:
             if isinstance(item, Tokenizer):
                 raise CompositionError(
-                    "Only one tokenizer allowed at the start"
-                    " of the analyzer: %r" % self.items
+                    f"Only one tokenizer allowed at the start of the analyzer: {self.items}"
                 )
 
     def __repr__(self):
