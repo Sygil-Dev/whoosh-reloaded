@@ -727,7 +727,7 @@ class W2FieldWriter(base.FieldWriter):
 
     def finish_field(self):
         if not self._infield:
-            raise Exception("Called finish_field before start_field")
+            raise ValueError("Called finish_field before start_field")
         self._infield = False
 
         if self._dawgfield:
@@ -860,8 +860,8 @@ class W2LeafMatcher(LeafMatcher):
         self.i = 0
 
     def _next_block(self, consume=True):
-        if not (self.currentblock < self.blockcount):
-            raise Exception("No next block")
+        if self.currentblock >= self.blockcount:
+            raise ValueError("No next block")
 
         self.currentblock += 1
         if self.currentblock == self.blockcount:
@@ -1515,8 +1515,8 @@ class StoredFieldReader(object):
         dbfile.seek(start)
         ptr = dbfile.read(stored_pointer_size)
         if len(ptr) != stored_pointer_size:
-            raise Exception(
-                f"Error reading {dbfile!r} @{start} {len(ptr)} < {stored_pointer_size}"
+            raise ValueError(
+                f"Error reading {dbfile} @{start} {len(ptr)} < {stored_pointer_size}"
             )
         position, length = unpack_stored_pointer(ptr)
         dbfile.seek(position)
