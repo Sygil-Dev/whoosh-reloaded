@@ -17,7 +17,7 @@
 
 --------------------------------------
 
-> **Notice:** This repository (**whoosh-reloaded**) is a fork and continuation of the Whoosh project. The original Whoosh project is no longer maintained. 
+> **Notice:** This repository (**whoosh-reloaded**) is a fork and continuation of the Whoosh project.
 
 
 >This fork **is actively maintained** by the Sygil-Dev Organization.
