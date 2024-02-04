@@ -16,7 +16,7 @@
 
 from collections import defaultdict
 from marshal import dumps
-from build.lib.whoosh.support import unicode
+from whoosh.support import unicode
 
 from whoosh.fields import UnknownFieldError
 from whoosh.filedb.fileindex import SegmentDeletionMixin, Segment, SegmentSet
@@ -44,6 +44,7 @@ from whoosh.writing import IndexWriter
 
 def NO_MERGE(ix, writer, segments):
     """This policy does not merge any existing segments."""
+    _ = ix, writer
     return segments
 
 
