@@ -68,16 +68,16 @@ _4GB = 4 * 1024 * 1024 * 1024
 def cdb_hash(key):
     h = 5381
     for c in key:
-        h = (h + (h << 5)) & 0xffffffff ^ ord(c)
+        h = (h + (h << 5)) & 0xFFFFFFFF ^ ord(c)
     return h
 
 
 def md5_hash(key):
-    return int(md5(key).hexdigest(), 16) & 0xffffffff
+    return int(md5(key).hexdigest(), 16) & 0xFFFFFFFF
 
 
 def crc_hash(key):
-    return crc32(key) & 0xffffffff
+    return crc32(key) & 0xFFFFFFFF
 
 
 hash_functions = (hash, cdb_hash, md5_hash, crc_hash)
@@ -99,6 +99,7 @@ unpack_pointer = _pointer_struct.unpack
 
 
 # Table classes
+
 
 class HashWriter(object):
     def __init__(self, dbfile, hashtype=2):
@@ -205,7 +206,7 @@ class HashReader(object):
         # Check magic tag
         magic = dbfile.read(4)
         if magic != b("HASH"):
-            raise Exception("Unknown file header %r" % magic)
+            raise ValueError(f"Unknown file header {magic}")
 
         self.hashtype = dbfile.read_byte()  # Hash function type
         self.hash_func = hash_functions[self.hashtype]
@@ -234,7 +235,7 @@ class HashReader(object):
 
     def close(self):
         if self.is_closed:
-            raise Exception("Tried to close %r twice" % self)
+            raise ValueError(f"Tried to close {self} twice")
         self.dbfile.close()
         self.is_closed = True
 
@@ -314,7 +315,7 @@ class HashReader(object):
     def ranges_for_key(self, key):
         read = self.read
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key} should be bytes")
         keyhash = self.hash_func(key)
         hpos, hslots = self._hashtable_info(keyhash)
         if not hslots:
@@ -351,8 +352,7 @@ class OrderedHashWriter(HashWriter):
 
     def add(self, key, value):
         if key <= self.lastkey:
-            raise ValueError("Keys must increase: %r..%r"
-                             % (self.lastkey, key))
+            raise ValueError("Keys must increase: %r..%r" % (self.lastkey, key))
         self.index.append(self.dbfile.tell())
         HashWriter.add(self, key, value)
         self.lastkey = key
@@ -392,7 +392,7 @@ class OrderedHashReader(HashReader):
         elif indextype == "q":
             self._ixpos = dbfile.get_long
         else:
-            raise Exception("Unknown index type %r" % indextype)
+            raise ValueError(f"Unknown index type {indextype}")
 
     def _closest_key(self, key):
         key_at = self._key_at
@@ -402,7 +402,7 @@ class OrderedHashReader(HashReader):
         lo = 0
         hi = self.indexlen
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key} should be bytes")
         while lo < hi:
             mid = (lo + hi) // 2
             midkey = key_at(ixpos(indexbase + mid * ixsize))
@@ -410,7 +410,7 @@ class OrderedHashReader(HashReader):
                 lo = mid + 1
             else:
                 hi = mid
-        #i = max(0, mid - 1)
+        # i = max(0, mid - 1)
         if lo == self.indexlen:
             return None
         return ixpos(indexbase + lo * ixsize)
@@ -422,7 +422,7 @@ class OrderedHashReader(HashReader):
         return self._key_at(pos)
 
     def _ranges_from(self, key):
-        #read = self.read
+        # read = self.read
         pos = self._closest_key(key)
         if pos is None:
             return
@@ -443,6 +443,7 @@ class OrderedHashReader(HashReader):
 
 # Standard codec top-level object
 
+
 class W2Codec(base.Codec):
     TERMS_EXT = ".trm"  # Term index
     POSTS_EXT = ".pst"  # Term postings
@@ -452,8 +453,7 @@ class W2Codec(base.Codec):
     VPOSTS_EXT = ".vps"  # Vector postings
     STORED_EXT = ".sto"  # Stored fields file
 
-    def __init__(self, blocklimit=128, compression=3, loadlengths=False,
-                 inlinelimit=1):
+    def __init__(self, blocklimit=128, compression=3, loadlengths=False, inlinelimit=1):
         self.blocklimit = blocklimit
         self.compression = compression
         self.loadlengths = loadlengths
@@ -461,14 +461,19 @@ class W2Codec(base.Codec):
 
     # Per-document value writer
     def per_document_writer(self, storage, segment):
-        return W2PerDocWriter(storage, segment, blocklimit=self.blocklimit,
-                              compression=self.compression)
+        return W2PerDocWriter(
+            storage, segment, blocklimit=self.blocklimit, compression=self.compression
+        )
 
     # Inverted index writer
     def field_writer(self, storage, segment):
-        return W2FieldWriter(storage, segment, blocklimit=self.blocklimit,
-                             compression=self.compression,
-                             inlinelimit=self.inlinelimit)
+        return W2FieldWriter(
+            storage,
+            segment,
+            blocklimit=self.blocklimit,
+            compression=self.compression,
+            inlinelimit=self.inlinelimit,
+        )
 
     # Readers
 
@@ -495,6 +500,7 @@ class W2Codec(base.Codec):
 
 # Per-document value writer
 
+
 class W2PerDocWriter(base.PerDocumentWriter):
     def __init__(self, storage, segment, blocklimit=128, compression=3):
         if not isinstance(blocklimit, int):
@@ -519,8 +525,7 @@ class W2PerDocWriter(base.PerDocumentWriter):
     def _make_vector_files(self):
         vifile = self.segment.create_file(self.storage, W2Codec.VECTOR_EXT)
         self.vindex = VectorWriter(vifile)
-        self.vpostfile = self.segment.create_file(self.storage,
-                                                  W2Codec.VPOSTS_EXT)
+        self.vpostfile = self.segment.create_file(self.storage, W2Codec.VPOSTS_EXT)
 
     def start_doc(self, docnum):
         self.docnum = docnum
@@ -594,9 +599,9 @@ class W2PerDocWriter(base.PerDocumentWriter):
 
 # Inverted index writer
 
+
 class W2FieldWriter(base.FieldWriter):
-    def __init__(self, storage, segment, blocklimit=128, compression=3,
-                 inlinelimit=1):
+    def __init__(self, storage, segment, blocklimit=128, compression=3, inlinelimit=1):
         assert isinstance(storage, Storage)
         assert isinstance(segment, base.Segment)
         assert isinstance(blocklimit, int)
@@ -737,9 +742,11 @@ class W2FieldWriter(base.FieldWriter):
 
 # Matcher
 
+
 class W2LeafMatcher(LeafMatcher):
-    def __init__(self, postfile, startoffset, fmt, scorer=None, term=None,
-                 stringids=False):
+    def __init__(
+        self, postfile, startoffset, fmt, scorer=None, term=None, stringids=False
+    ):
         self.postfile = postfile
         self.startoffset = startoffset
         self.format = fmt
@@ -841,8 +848,9 @@ class W2LeafMatcher(LeafMatcher):
     def _read_block(self, offset):
         pf = self.postfile
         pf.seek(offset)
-        return self.blockclass.from_file(pf, self.format.posting_size,
-                                         stringids=self.stringids)
+        return self.blockclass.from_file(
+            pf, self.format.posting_size, stringids=self.stringids
+        )
 
     def _consume_block(self):
         self.block.read_ids()
@@ -882,6 +890,7 @@ class W2LeafMatcher(LeafMatcher):
 # Tables
 
 # Writers
+
 
 class TermIndexWriter(HashWriter):
     def __init__(self, dbfile):
@@ -941,6 +950,7 @@ class VectorWriter(TermIndexWriter):
 
 # Readers
 
+
 class PostingIndexBase(HashReader):
     def __init__(self, dbfile, postfile):
         HashReader.__init__(self, dbfile)
@@ -973,7 +983,7 @@ class PostingIndexBase(HashReader):
                 lo = mid + 1
             else:
                 hi = mid
-        #i = max(0, mid - 1)
+        # i = max(0, mid - 1)
         if lo == self.length:
             return None
         return dbfile.get_long(indexbase + lo * _LONG_SIZE)
@@ -985,7 +995,7 @@ class PostingIndexBase(HashReader):
         return self._key_at(pos)
 
     def _ranges_from(self, key):
-        #read = self.read
+        # read = self.read
         pos = self._closest_key(key)
         if pos is None:
             return
@@ -1077,8 +1087,7 @@ class W2TermsReader(PostingIndexBase):
         else:
             # terminfo.postings is an inlined tuple of (ids, weights, values)
             docids, weights, values = p
-            pr = ListMatcher(docids, weights, values, format_, scorer=scorer,
-                             term=term)
+            pr = ListMatcher(docids, weights, values, format_, scorer=scorer, term=term)
         return pr
 
     def keycoder(self, key):
@@ -1209,6 +1218,7 @@ class W2PerDocReader(base.PerDocumentReader):
 
 # Single-byte field lengths implementations
 
+
 class ByteLengthsBase(object):
     magic = b("~LN1")
 
@@ -1229,7 +1239,7 @@ class ByteLengthsBase(object):
         fieldcount = dbfile.read_ushort()  # Number of fields
         # Read per-field info
         for i in range(fieldcount):
-            fieldname = dbfile.read_string().decode('utf-8')
+            fieldname = dbfile.read_string().decode("utf-8")
             self.totals[fieldname] = dbfile.read_long()
             self.minlens[fieldname] = byte_to_length(dbfile.read_byte())
             self.maxlens[fieldname] = byte_to_length(dbfile.read_byte())
@@ -1276,7 +1286,7 @@ class InMemoryLengths(ByteLengthsBase):
 
         # Write per-field info
         for fieldname in fieldnames:
-            dbfile.write_string(fieldname.encode('utf-8'))  # Fieldname
+            dbfile.write_string(fieldname.encode("utf-8"))  # Fieldname
             dbfile.write_long(self.field_length(fieldname))
             dbfile.write_byte(length_to_byte(self.min_field_length(fieldname)))
             dbfile.write_byte(length_to_byte(self.max_field_length(fieldname)))
@@ -1489,22 +1499,26 @@ class StoredFieldReader(object):
         dbfile.seek(self.basepos)
         for length in lengths:
             vlist = loads(dbfile.read(length) + b("."))
-            vdict = dict((names[i], vlist[i]) for i in range(len(vlist))
-                     if vlist[i] is not None)
+            vdict = dict(
+                (names[i], vlist[i]) for i in range(len(vlist)) if vlist[i] is not None
+            )
             yield vdict
 
     def __getitem__(self, num):
         if num > self.length - 1:
-            raise IndexError("Tried to get document %s, file has %s"
-                             % (num, self.length))
+            raise IndexError(
+                "Tried to get document %s, file has %s" % (num, self.length)
+            )
 
         dbfile = self.dbfile
         start = self.directory_offset + num * stored_pointer_size
         dbfile.seek(start)
         ptr = dbfile.read(stored_pointer_size)
         if len(ptr) != stored_pointer_size:
-            raise Exception("Error reading %r @%s %s < %s"
-                            % (dbfile, start, len(ptr), stored_pointer_size))
+            raise Exception(
+                "Error reading %r @%s %s < %s"
+                % (dbfile, start, len(ptr), stored_pointer_size)
+            )
         position, length = unpack_stored_pointer(ptr)
         dbfile.seek(position)
         vlist = loads(dbfile.read(length) + b("."))
@@ -1513,12 +1527,14 @@ class StoredFieldReader(object):
         # Recreate a dictionary by putting the field names and values back
         # together by position. We can't just use dict(zip(...)) because we
         # want to filter out the None values.
-        vdict = dict((names[i], vlist[i]) for i in range(len(vlist))
-                     if vlist[i] is not None)
+        vdict = dict(
+            (names[i], vlist[i]) for i in range(len(vlist)) if vlist[i] is not None
+        )
         return vdict
 
 
 # Segment object
+
 
 class W2Segment(base.Segment):
     def __init__(self, indexname, doccount=0, segid=None, deleted=None):
@@ -1581,11 +1597,21 @@ class W2Segment(base.Segment):
 
 # Posting blocks
 
+
 class W2Block(object):
     magic = b("Blk3")
 
-    infokeys = ("count", "maxid", "maxweight", "minlength", "maxlength",
-                "idcode", "compression", "idslen", "weightslen")
+    infokeys = (
+        "count",
+        "maxid",
+        "maxweight",
+        "minlength",
+        "maxlength",
+        "idcode",
+        "compression",
+        "idslen",
+        "weightslen",
+    )
 
     def __init__(self, postingsize, stringids=False):
         self.postingsize = postingsize
@@ -1646,14 +1672,23 @@ class W2Block(object):
         wtstring = minimize_weights(self.weights, compression)
         vstring = minimize_values(self.postingsize, self.values, compression)
 
-        info = (len(ids), ids[-1], self.maxweight,
-                length_to_byte(self.minlength), length_to_byte(self.maxlength),
-                idcode, compression, len(idstring), len(wtstring))
+        info = (
+            len(ids),
+            ids[-1],
+            self.maxweight,
+            length_to_byte(self.minlength),
+            length_to_byte(self.maxlength),
+            idcode,
+            compression,
+            len(idstring),
+            len(wtstring),
+        )
         infostring = dumps(info, -1)
 
         # Offset to next block
-        postfile.write_uint(len(infostring) + len(idstring) + len(wtstring)
-                            + len(vstring))
+        postfile.write_uint(
+            len(infostring) + len(idstring) + len(wtstring) + len(vstring)
+        )
         # Block contents
         postfile.write(infostring)
         postfile.write(idstring)
@@ -1681,8 +1716,7 @@ class W2Block(object):
         offset = self.dataoffset
         self.postfile.seek(offset)
         idstring = self.postfile.read(self.idslen)
-        ids = deminimize_ids(self.idcode, self.count, idstring,
-                             self.compression)
+        ids = deminimize_ids(self.idcode, self.count, idstring, self.compression)
         self.ids = ids
         return ids
 
@@ -1693,8 +1727,7 @@ class W2Block(object):
             offset = self.dataoffset + self.idslen
             self.postfile.seek(offset)
             wtstring = self.postfile.read(self.weightslen)
-            weights = deminimize_weights(self.count, wtstring,
-                                         self.compression)
+            weights = deminimize_weights(self.count, wtstring, self.compression)
         self.weights = weights
         return weights
 
@@ -1706,15 +1739,16 @@ class W2Block(object):
             offset = self.dataoffset + self.idslen + self.weightslen
             self.postfile.seek(offset)
             vstring = self.postfile.read(self.nextoffset - offset)
-            values = deminimize_values(postingsize, self.count, vstring,
-                                       self.compression)
+            values = deminimize_values(
+                postingsize, self.count, vstring, self.compression
+            )
         self.values = values
         return values
 
 
 # File TermInfo
 
-NO_ID = 0xffffffff
+NO_ID = 0xFFFFFFFF
 
 
 class FileTermInfo(TermInfo):
@@ -1756,8 +1790,9 @@ class FileTermInfo(TermInfo):
         xid = NO_ID if self._maxid is None else self._maxid
 
         # Pack the term info into bytes
-        st = self.struct.pack(self._weight, self._df, ml, xl, self._maxweight,
-                              0, mid, xid)
+        st = self.struct.pack(
+            self._weight, self._df, ml, xl, self._maxweight, 0, mid, xid
+        )
 
         if isinstance(self.postings, tuple):
             # Postings are inlined - dump them using the pickle protocol
@@ -1788,11 +1823,11 @@ class FileTermInfo(TermInfo):
         if hbyte < 2:
             st = cls.struct
             # Weight, Doc freq, min len, max len, max w, unused, min ID, max ID
-            w, df, ml, xl, xw, _, mid, xid = st.unpack(s[1:st.size + 1])
+            w, df, ml, xl, xw, _, mid, xid = st.unpack(s[1 : st.size + 1])
             mid = None if mid == NO_ID else mid
             xid = None if xid == NO_ID else xid
             # Postings
-            pstr = s[st.size + 1:]
+            pstr = s[st.size + 1 :]
             if hbyte == 0:
                 p = unpack_long(pstr)[0]
             else:
@@ -1844,11 +1879,12 @@ class FileTermInfo(TermInfo):
 
 # Utility functions
 
+
 def minimize_ids(arry, stringids, compression=0):
     amax = arry[-1]
 
     if stringids:
-        typecode = ''
+        typecode = ""
         string = dumps(arry)
     else:
         typecode = arry.typecode
@@ -1870,7 +1906,7 @@ def minimize_ids(arry, stringids, compression=0):
 def deminimize_ids(typecode, count, string, compression=0):
     if compression:
         string = zlib.decompress(string)
-    if typecode == '':
+    if typecode == "":
         return loads(string)
     else:
         arry = array(typecode)
@@ -1908,9 +1944,9 @@ def minimize_values(postingsize, values, compression=0):
     if postingsize < 0:
         string = dumps(values, -1)[2:]
     elif postingsize == 0:
-        string = b('')
+        string = b("")
     else:
-        string = b('').join(values)
+        string = b("").join(values)
     if string and compression:
         string = zlib.compress(string, compression)
     return string
@@ -1925,8 +1961,7 @@ def deminimize_values(postingsize, count, string, compression=0):
     elif postingsize == 0:
         return [None] * count
     else:
-        return [string[i:i + postingsize] for i
-                in range(0, len(string), postingsize)]
+        return [string[i : i + postingsize] for i in range(0, len(string), postingsize)]
 
 
 # Legacy field types
@@ -1936,14 +1971,29 @@ from whoosh.fields import NUMERIC
 
 
 class OLD_NUMERIC(NUMERIC):
-    NUMERIC_DEFAULTS = {"b": 2 ** 7 - 1, "B": 2 ** 8 - 1, "h": 2 ** 15 - 1,
-                    "H": 2 ** 16 - 1, "i": 2 ** 31 - 1, "I": 2 ** 32 - 1,
-                    "q": 2 ** 63 - 1, "Q": 2 ** 64 - 1, "f": NaN,
-                    "d": NaN,
-                    }
+    NUMERIC_DEFAULTS = {
+        "b": 2**7 - 1,
+        "B": 2**8 - 1,
+        "h": 2**15 - 1,
+        "H": 2**16 - 1,
+        "i": 2**31 - 1,
+        "I": 2**32 - 1,
+        "q": 2**63 - 1,
+        "Q": 2**64 - 1,
+        "f": NaN,
+        "d": NaN,
+    }
 
-    def __init__(self, type=int, stored=False, unique=False, field_boost=1.0,
-                 decimal_places=0, shift_step=4, signed=True):
+    def __init__(
+        self,
+        type=int,
+        stored=False,
+        unique=False,
+        field_boost=1.0,
+        decimal_places=0,
+        shift_step=4,
+        signed=True,
+    ):
         from whoosh import analysis, formats
 
         self.type = type
@@ -1961,11 +2011,14 @@ class OLD_NUMERIC(NUMERIC):
             self._from_text = self._text_to_float
             self.sortable_typecode = "f"
         elif self.type is Decimal:
-            raise TypeError("To store Decimal instances, set type to int or "
-                            "float and use the decimal_places argument")
+            raise TypeError(
+                "To store Decimal instances, set type to int or "
+                "float and use the decimal_places argument"
+            )
         else:
-            raise TypeError("%s field type can't store %r" % (self.__class__,
-                                                              self.type))
+            raise TypeError(
+                "%s field type can't store %r" % (self.__class__, self.type)
+            )
 
         self.stored = stored
         self.unique = unique
@@ -1986,7 +2039,7 @@ class OLD_NUMERIC(NUMERIC):
             return x
         if self.decimal_places:
             x = Decimal(x)
-            x *= 10 ** self.decimal_places
+            x *= 10**self.decimal_places
         x = self.type(x)
         return x
 
@@ -2039,8 +2092,7 @@ class OLD_NUMERIC(NUMERIC):
 
         return query.Term(fieldname, text, boost=boost)
 
-    def parse_range(self, fieldname, start, end, startexcl, endexcl,
-                    boost=1.0):
+    def parse_range(self, fieldname, start, end, startexcl, endexcl, boost=1.0):
         from whoosh import query
         from whoosh.qparser.common import QueryParserError
 
@@ -2053,8 +2105,9 @@ class OLD_NUMERIC(NUMERIC):
             e = sys.exc_info()[1]
             raise QueryParserError(e)
 
-        return query.NumericRange(fieldname, start, end, startexcl, endexcl,
-                                  boost=boost)
+        return query.NumericRange(
+            fieldname, start, end, startexcl, endexcl, boost=boost
+        )
 
     def sortable_terms(self, ixreader, fieldname):
         for btext in ixreader.lexicon(fieldname):
@@ -2066,8 +2119,9 @@ class OLD_NUMERIC(NUMERIC):
 
 class OLD_DATETIME(OLD_NUMERIC):
     def __init__(self, stored=False, unique=False):
-        OLD_NUMERIC.__init__(self, type=long_type, stored=stored,
-                             unique=unique, shift_step=8)
+        OLD_NUMERIC.__init__(
+            self, type=long_type, stored=stored, unique=unique, shift_step=8
+        )
 
     def to_text(self, x, shift=0):
         from datetime import datetime
@@ -2114,8 +2168,7 @@ class OLD_DATETIME(OLD_NUMERIC):
         if len(qstring) == 20:
             microsecond = int(qstring[14:])
 
-        at = fix(adatetime(year, month, day, hour, minute, second,
-                           microsecond))
+        at = fix(adatetime(year, month, day, hour, minute, second, microsecond))
         if is_void(at):
             raise Exception("%r is not a parseable date" % qstring)
         return at
@@ -2137,8 +2190,7 @@ class OLD_DATETIME(OLD_NUMERIC):
         else:
             return query.Term(fieldname, self.to_text(at), boost=boost)
 
-    def parse_range(self, fieldname, start, end, startexcl, endexcl,
-                    boost=1.0):
+    def parse_range(self, fieldname, start, end, startexcl, endexcl, boost=1.0):
         from whoosh import query
 
         if start is None and end is None:
@@ -2156,6 +2208,7 @@ class OLD_DATETIME(OLD_NUMERIC):
 
 
 # Functions for converting numbers to and from text
+
 
 def int_to_text(x, shift=0, signed=True):
     x = to_sortable(int, 32, signed, x)
@@ -2198,7 +2251,7 @@ from whoosh.support.base85 import to_base85, from_base85
 def sortable_int_to_text(x, shift=0):
     if shift:
         x >>= shift
-    #text = chr(shift) + u"%08x" % x
+    # text = chr(shift) + u"%08x" % x
     text = chr(shift) + to_base85(x, False)
     return text
 
@@ -2206,19 +2259,19 @@ def sortable_int_to_text(x, shift=0):
 def sortable_long_to_text(x, shift=0):
     if shift:
         x >>= shift
-    #text = chr(shift) + u"%016x" % x
-    #assert len(text) == 17
+    # text = chr(shift) + u"%016x" % x
+    # assert len(text) == 17
     text = chr(shift) + to_base85(x, True)
     return text
 
 
 def text_to_sortable_int(text):
-    #assert len(text) == 9
-    #return int(text[1:], 16)
+    # assert len(text) == 9
+    # return int(text[1:], 16)
     return from_base85(text[1:])
 
 
 def text_to_sortable_long(text):
-    #assert len(text) == 17
-    #return long(text[1:], 16)
+    # assert len(text) == 17
+    # return long(text[1:], 16)
     return from_base85(text[1:])

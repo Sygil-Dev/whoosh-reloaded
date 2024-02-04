@@ -33,6 +33,7 @@ from whoosh.codec import base
 from whoosh.matching import ListMatcher
 from whoosh.reading import TermInfo, TermNotFound
 
+
 if not PY3:
 
     class memoryview:
@@ -115,7 +116,7 @@ class LineReader(object):
         self._reset()
         c = self._find_line(0, command)
         if c is None:
-            raise Exception("No root section %r" % (command,))
+            raise ValueError(f"No root section {command}")
 
 
 # Codec class
@@ -163,6 +164,7 @@ class PlainPerDocWriter(base.PerDocumentWriter, LineWriter):
             self._print_line(3, "VPOST", t=text, w=weight, v=vbytes)
 
     def finish_doc(self):
+        # This method is intentionally left empty.
         pass
 
     def close(self):
@@ -232,14 +234,12 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
     def _column_values(self, fieldname):
         for i, docnum in enumerate(self._iter_docs()):
             if i != docnum:
-                raise Exception(
-                    "Missing column value for field %r doc %d?" % (fieldname, i)
-                )
+                raise ValueError(f"Missing column value for field {fieldname} doc {i}?")
 
             c = self._find_line(2, "COLVAL", fn=fieldname)
             if c is None:
-                raise Exception(
-                    "Missing column value for field %r doc %d?" % (fieldname, docnum)
+                raise ValueError(
+                    f"Missing column value for field {fieldname} doc {docnum}"
                 )
 
             yield c.get("v")
@@ -262,16 +262,15 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
         return max(self._iter_lengths(fieldname))
 
     def has_vector(self, docnum, fieldname):
-        if self._find_doc(docnum):
-            if self._find_line(2, "VECTOR"):
-                return True
+        if self._find_doc(docnum) and self._find_line(2, "VECTOR"):
+            return True
         return False
 
     def vector(self, docnum, fieldname, format_):
         if not self._find_doc(docnum):
-            raise Exception
+            raise ValueError("Document not found.")
         if not self._find_line(2, "VECTOR"):
-            raise Exception
+            raise ValueError("Vector not found.")
 
         ids = []
         weights = []
@@ -303,7 +302,7 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
 
     def stored_fields(self, docnum):
         if not self._find_doc(docnum):
-            raise Exception
+            raise ValueError("Document not found.")
         return self._read_stored_fields()
 
     def iter_docs(self):
