@@ -253,7 +253,7 @@ class Phrase(qcore.Query):
         field = searcher.schema[fieldname]
         if not field.format or not field.format.supports("positions"):
             raise qcore.QueryError(
-                "Phrase search: %r field has no positions" % self.fieldname
+                f"Phrase search: {self.fieldname!r} field has no positions"
             )
 
         terms = []

@@ -19,7 +19,7 @@ class Marker(object):
         self.name = name
 
     def __repr__(self):
-        return "<%s>" % self.name
+        return f"<{self.name}>"
 
 
 EPSILON = Marker("EPSILON")
@@ -636,7 +636,7 @@ class DMNode(object):
         self.final = False
 
     def __repr__(self):
-        return "<%s, %r>" % (self.n, self.tuple())
+        return f"<{self.n}, {self.tuple()!r}>"
 
     def __hash__(self):
         return hash(self.tuple())

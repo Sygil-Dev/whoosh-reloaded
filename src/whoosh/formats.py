@@ -71,7 +71,7 @@ class Format(object):
         )
 
     def __repr__(self):
-        return "%s(boost=%s)" % (self.__class__.__name__, self.field_boost)
+        return f"{self.__class__.__name__}(boost={self.field_boost})"
 
     def fixed_value_size(self):
         if self.posting_size < 0:

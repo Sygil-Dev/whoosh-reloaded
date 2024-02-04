@@ -218,7 +218,7 @@ class Correction(object):
             self.string = ""
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self.query, self.string)
+        return f"{self.__class__.__name__}({self.query!r}, {self.string!r})"
 
     def format_string(self, formatter):
         """

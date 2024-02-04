@@ -1052,7 +1052,7 @@ class Highlighter(object):
 
         if text is None:
             if fieldname not in hitobj:
-                raise KeyError("Field %r is not stored." % fieldname)
+                raise KeyError(f"Field {fieldname!r} is not stored.")
             text = hitobj[fieldname]
 
         # Get the terms searched for/matched in this field

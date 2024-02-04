@@ -122,7 +122,7 @@ def check_abstract_methods(base, subclass):
         if is_abstract_method(attr):
             oattr = getattr(subclass, attrname)
             if is_abstract_method(oattr):
-                raise Exception("%s.%s not overridden" % (subclass.__name__, attrname))
+                raise Exception(f"{subclass.__name__}.{attrname} not overridden")
 
 
 @contextmanager
@@ -130,4 +130,4 @@ def timing(name=None):
     t = now()
     yield
     t = now() - t
-    print("%s: %0.06f s" % (name or "", t))
+    print(f"{name or ''}: {t:0.06f} s")

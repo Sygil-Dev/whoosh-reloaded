@@ -59,10 +59,10 @@ class SyntaxNode(object):
     def __repr__(self):
         r = "<"
         if self.has_fieldname:
-            r += "%r:" % self.fieldname
+            r += f"{self.fieldname!r}:"
         r += self.r()
         if self.has_boost and self.boost != 1.0:
-            r += " ^%s" % self.boost
+            r += f" ^{self.boost}"
         r += ">"
         return r
 
@@ -72,7 +72,7 @@ class SyntaxNode(object):
         fieldname and boost where appropriate.
         """
 
-        return "%s %r" % (self.__class__.__name__, self.__dict__)
+        return f"{self.__class__.__name__} {self.__dict__!r}"
 
     def apply(self, fn):
         return self
@@ -178,7 +178,7 @@ class FieldnameNode(SyntaxNode):
         self.original = original
 
     def __repr__(self):
-        return "<%r:>" % self.fieldname
+        return f"<{self.fieldname!r}:>"
 
 
 class GroupNode(SyntaxNode):
@@ -208,10 +208,7 @@ class GroupNode(SyntaxNode):
         self.kwargs = kwargs
 
     def r(self):
-        return "%s %s" % (
-            self.__class__.__name__,
-            ", ".join(repr(n) for n in self.nodes),
-        )
+        return f"{self.__class__.__name__} {', '.join(repr(n) for n in self.nodes)}"
 
     @property
     def startchar(self):
@@ -383,7 +380,7 @@ class ErrorNode(SyntaxNode):
         self.node = node
 
     def r(self):
-        return "ERR %r %r" % (self.node, self.message)
+        return f"ERR {self.node!r} {self.message!r}"
 
     @property
     def startchar(self):
@@ -462,7 +459,7 @@ class RangeNode(SyntaxNode):
     def r(self):
         b1 = "{" if self.startexcl else "["
         b2 = "}" if self.endexcl else "]"
-        return "%s%r %r%s" % (b1, self.start, self.end, b2)
+        return f"{b1}{self.start!r} {self.end!r}{b2}"
 
     def query(self, parser):
         fieldname = self.fieldname or parser.fieldname
@@ -529,7 +526,7 @@ class TextNode(SyntaxNode):
         self.boost = 1.0
 
     def r(self):
-        return "%s %r" % (self.__class__.__name__, self.text)
+        return f"{self.__class__.__name__} {self.text!r}"
 
     def is_text(self):
         return True
@@ -584,7 +581,7 @@ class Operator(SyntaxNode):
         self.leftassoc = leftassoc
 
     def r(self):
-        return "OP %r" % self.text
+        return f"OP {self.text!r}"
 
     def replace_self(self, parser, group, position):
         """Called with the parser, a group, and the position at which the

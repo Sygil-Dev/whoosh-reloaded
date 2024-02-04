@@ -204,7 +204,7 @@ class MpWriter(SegmentWriter):
         dump = pickle.dump
         length = len(docbuffer)
 
-        filename = "%s.doclist" % random_name()
+        filename = f"{random_name()}.doclist"
         with self.temp_storage().create_file(filename).raw_file() as f:
             for item in docbuffer:
                 dump(item, f, 2)
@@ -227,7 +227,9 @@ class MpWriter(SegmentWriter):
 
     def end_group(self):
         if not self._grouping:
-            raise Exception("Unbalanced end_group")
+            raise ValueError(
+                "Unbalanced end_group"
+            )  # Replaced generic Exception with specific ValueError
         self._grouping -= 1
 
     def add_document(self, **fields):
@@ -311,6 +313,7 @@ class MpWriter(SegmentWriter):
         self._finish()
 
     def _merge_subsegments(self, results, mergetype):
+        _ = mergetype  # Unused variable
         schema = self.schema
         schemanames = set(schema.names())
         storage = self.storage

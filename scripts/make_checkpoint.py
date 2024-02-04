@@ -43,7 +43,7 @@ for segnum in range(3):
     with ix.writer() as w:
         for num in range(100):
             frac += 0.15
-            path = u("%s/%s" % (segnum, num))
+            path = u(f"{segnum}/{num}")
             title = " ".join(random.choice(words) for _ in range(100))
             dt = datetime(year=2000 + counter, month=(counter % 12) + 1, day=15)
 

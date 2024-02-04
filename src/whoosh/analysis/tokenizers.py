@@ -64,7 +64,7 @@ class IDTokenizer(Tokenizer):
         mode="",
         **kwargs
     ):
-        assert isinstance(value, text_type), "%r is not unicode" % value
+        assert isinstance(value, text_type), f"{value!r} is not unicode"
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         t.text = value
         t.boost = 1.0
@@ -132,7 +132,7 @@ class RegexTokenizer(Tokenizer):
         :param tokenize: if True, the text should be tokenized.
         """
 
-        assert isinstance(value, text_type), "%s is not unicode" % repr(value)
+        assert isinstance(value, text_type), f"{repr(value)} is not unicode"
 
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
@@ -265,7 +265,7 @@ class CharsetTokenizer(Tokenizer):
         :param tokenize: if True, the text should be tokenized.
         """
 
-        assert isinstance(value, text_type), "%r is not unicode" % value
+        assert isinstance(value, text_type), f"{value!r} is not unicode"
 
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
@@ -353,7 +353,7 @@ class PathTokenizer(Tokenizer):
         self.expr = rcompile(expression)
 
     def __call__(self, value, positions=False, start_pos=0, **kwargs):
-        assert isinstance(value, text_type), "%r is not unicode" % value
+        assert isinstance(value, text_type), f"{value!r} is not unicode"
         token = Token(positions, **kwargs)
         pos = start_pos
         for match in self.expr.finditer(value):

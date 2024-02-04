@@ -173,7 +173,7 @@ class FieldType(object):
                 % (self.__class__.__name__, self)
             )
         if not isinstance(value, (text_type, list, tuple)):
-            raise ValueError("%r is not unicode or sequence" % value)
+            raise ValueError(f"{value!r} is not unicode or sequence")
         assert isinstance(self.format, formats.Format)
 
         if "mode" not in kwargs:
@@ -192,7 +192,7 @@ class FieldType(object):
         """
 
         if not self.analyzer:
-            raise Exception("%s field has no analyzer" % self.__class__)
+            raise Exception(f"{self.__class__} field has no analyzer")
         return self.analyzer(value, **kwargs)
 
     def process_text(self, qstring, mode="", **kwargs):
@@ -205,7 +205,7 @@ class FieldType(object):
         """
 
         if not self.format:
-            raise Exception("%s field has no format" % self)
+            raise Exception(f"{self} field has no format")
         return (t.text for t in self.tokenize(qstring, mode=mode, **kwargs))
 
     # Conversion
@@ -604,7 +604,7 @@ class NUMERIC(FieldType):
                     "decimal_places argument"
                 )
         elif numtype not in (int, float):
-            raise TypeError("Can't use %r as a type, use int or float" % numtype)
+            raise TypeError(f"Can't use {numtype!r} as a type, use int or float")
         # Sanity check
         if numtype is float and decimal_places:
             raise Exception(
@@ -619,7 +619,7 @@ class NUMERIC(FieldType):
             bits = 64  # Floats are converted to 64 bit ints
         else:
             if bits not in intsizes:
-                raise Exception("Invalid bits %r, use 8, 16, 32, or 64" % bits)
+                raise Exception(f"Invalid bits {bits!r}, use 8, 16, 32, or 64")
         # Type code for the *sortable* representation
         self.sortable_typecode = intcodes[intsizes.index(bits)]
         self._struct = struct.Struct(">" + str(self.sortable_typecode))
@@ -644,7 +644,7 @@ class NUMERIC(FieldType):
                 default = NaN
         elif not self.is_valid(default):
             raise Exception(
-                "The default %r is not a valid number for this " "field" % default
+                f"The default {default!r} is not a valid number for this field"
             )
 
         self.default = default
@@ -717,7 +717,7 @@ class NUMERIC(FieldType):
         try:
             x = self.numtype(x)
         except OverflowError:
-            raise ValueError("Value %r overflowed number type %r" % (x, self.numtype))
+            raise ValueError(f"Value {x!r} overflowed number type {self.numtype!r}")
 
         if x < self.min_value or x > self.max_value:
             raise ValueError(
@@ -782,7 +782,7 @@ class NUMERIC(FieldType):
             return query.Every(fieldname, boost=boost)
 
         if not self.is_valid(qstring):
-            raise QueryParserError("%r is not a valid number" % qstring)
+            raise QueryParserError(f"{qstring!r} is not a valid number")
 
         token = self.to_bytes(qstring)
         return query.Term(fieldname, token, boost=boost)
@@ -793,11 +793,11 @@ class NUMERIC(FieldType):
 
         if start is not None:
             if not self.is_valid(start):
-                raise QueryParserError("Range start %r is not a valid number" % start)
+                raise QueryParserError(f"Range start {start!r} is not a valid number")
             start = self.prepare_number(start)
         if end is not None:
             if not self.is_valid(end):
-                raise QueryParserError("Range end %r is not a valid number" % end)
+                raise QueryParserError(f"Range end {end!r} is not a valid number")
             end = self.prepare_number(end)
         return query.NumericRange(
             fieldname, start, end, startexcl, endexcl, boost=boost
@@ -856,11 +856,11 @@ class DATETIME(NUMERIC):
         elif isinstance(x, bytes_type):
             return x
         else:
-            raise Exception("%r is not a datetime" % (x,))
+            raise Exception(f"{x!r} is not a datetime")
 
     def to_column_value(self, x):
         if isinstance(x, bytes_type):
-            raise Exception("%r is not a datetime" % (x,))
+            raise Exception(f"{x!r} is not a datetime")
         if isinstance(x, (list, tuple)):
             x = x[0]
         return self.prepare_datetime(x)
@@ -900,7 +900,7 @@ class DATETIME(NUMERIC):
 
         at = fix(adatetime(year, month, day, hour, minute, second, microsecond))
         if is_void(at):
-            raise Exception("%r is not a parseable date" % qstring)
+            raise Exception(f"{qstring!r} is not a parseable date")
         return at
 
     def parse_query(self, fieldname, qstring, boost=1.0):
@@ -1031,7 +1031,7 @@ class COLUMN(FieldType):
         if columnobj is None:
             columnobj = columns.VarBytesColumn()
         if not isinstance(columnobj, columns.Column):
-            raise TypeError("%r is not a column object" % (columnobj,))
+            raise TypeError(f"{columnobj!r} is not a column object")
         self.column_type = columnobj
 
     def to_bytes(self, v):
@@ -1429,7 +1429,7 @@ class Schema(object):
         return not (self.__eq__(other))
 
     def __repr__(self):
-        return "<%s: %r>" % (self.__class__.__name__, self.names())
+        return f"<{self.__class__.__name__}: {self.names()!r}>"
 
     def __iter__(self):
         """
@@ -1452,7 +1452,7 @@ class Schema(object):
             if expr.match(name):
                 return fieldtype
 
-        raise KeyError("No field named %r" % (name,))
+        raise KeyError(f"No field named {name!r}")
 
     def __len__(self):
         """
@@ -1534,11 +1534,11 @@ class Schema(object):
             except:
                 e = sys.exc_info()[1]
                 raise FieldConfigurationError(
-                    "Error: %s instantiating field " "%r: %r" % (e, name, fieldtype)
+                    f"Error: {e} instantiating field {name!r}: {fieldtype!r}"
                 )
 
         if not isinstance(fieldtype, FieldType):
-            raise FieldConfigurationError("%r is not a FieldType object" % fieldtype)
+            raise FieldConfigurationError(f"{fieldtype!r} is not a FieldType object")
 
         self._subfields[name] = sublist = []
         for prefix, subfield in fieldtype.subfields():
@@ -1551,7 +1551,7 @@ class Schema(object):
             elif " " in fname:
                 raise FieldConfigurationError("Names cannot contain spaces")
             elif fname in self._fields or (glob and fname in self._dyn_fields):
-                raise FieldConfigurationError("%r already in schema" % fname)
+                raise FieldConfigurationError(f"{fname!r} already in schema")
 
             # Add the field
             if glob:
@@ -1576,7 +1576,7 @@ class Schema(object):
             del self._dyn_fields[fieldname]
 
         else:
-            raise KeyError("No field named %r" % fieldname)
+            raise KeyError(f"No field named {fieldname!r}")
 
     def indexable_fields(self, fieldname):
         if fieldname in self._subfields:
@@ -1653,7 +1653,7 @@ def ensure_schema(schema):
     if isinstance(schema, type) and issubclass(schema, Schema):
         schema = schema.schema()
     if not isinstance(schema, Schema):
-        raise FieldConfigurationError("%r is not a Schema" % schema)
+        raise FieldConfigurationError(f"{schema!r} is not a Schema")
     return schema
 
 
@@ -1664,7 +1664,7 @@ def merge_fielddict(d1, d2):
         field1 = d1.get(name)
         field2 = d2.get(name)
         if field1 and field2 and field1 != field2:
-            raise Exception("Inconsistent field %r: %r != %r" % (name, field1, field2))
+            raise Exception(f"Inconsistent field {name!r}: {field1!r} != {field2!r}")
         out[name] = field1 or field2
     return out
 

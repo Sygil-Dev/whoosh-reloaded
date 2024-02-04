@@ -319,7 +319,7 @@ class NumericRange(RangeMixin, qcore.Query):
 
         field = ixreader.schema[self.fieldname]
         if not isinstance(field, NUMERIC):
-            raise Exception("NumericRange: field %r is not numeric" % self.fieldname)
+            raise Exception(f"NumericRange: field {self.fieldname!r} is not numeric")
 
         start = self.start
         if start is not None:

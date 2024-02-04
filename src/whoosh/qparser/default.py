@@ -202,7 +202,7 @@ class QueryParser(object):
             elif spec == "or":
                 qclass = query.Or
             else:
-                raise QueryParserError("Unknown multitoken_query value %r" % spec)
+                raise QueryParserError(f"Unknown multitoken_query value {spec!r}")
             return qclass([termclass(fieldname, t, boost=boost) for t in texts])
 
     def term_query(
@@ -278,7 +278,7 @@ class QueryParser(object):
         # Priorized list of taggers provided by the parser's plugins
         taggers = self.taggers()
         if debug:
-            print_debug(debug, "Taggers: %r" % taggers)
+            print_debug(debug, f"Taggers: {taggers!r}")
 
         # Define a function that will make a WordNode from the "interstitial"
         # text between matches
@@ -302,11 +302,11 @@ class QueryParser(object):
                     if prev < pos:
                         tween = inter(prev, pos)
                         if debug:
-                            print_debug(debug, "Tween: %r" % tween)
+                            print_debug(debug, f"Tween: {tween!r}")
                         stack.append(tween)
 
                     if debug:
-                        print_debug(debug, "Tagger: %r at %s: %r" % (tagger, pos, node))
+                        print_debug(debug, f"Tagger: {tagger!r} at {pos}: {node!r}")
                     stack.append(node)
                     prev = pos = node.endchar
                     break
@@ -322,7 +322,7 @@ class QueryParser(object):
         # Wrap the list of nodes in a group node
         group = self.group(stack)
         if debug:
-            print_debug(debug, "Tagged group: %r" % group)
+            print_debug(debug, f"Tagged group: {group!r}")
         return group
 
     def filterize(self, nodes, debug=False):
@@ -332,15 +332,15 @@ class QueryParser(object):
 
         # Call each filter in the priorized list of plugin filters
         if debug:
-            print_debug(debug, "Pre-filtered group: %r" % nodes)
+            print_debug(debug, f"Pre-filtered group: {nodes!r}")
         for f in self.filters():
             if debug:
-                print_debug(debug, "..Applying: %r" % f)
+                print_debug(debug, f"..Applying: {f!r}")
             nodes = f(self, nodes)
             if debug:
-                print_debug(debug, "..Result: %r" % nodes)
+                print_debug(debug, f"..Result: {nodes!r}")
             if nodes is None:
-                raise Exception("Filter %r did not return anything" % f)
+                raise Exception(f"Filter {f!r} did not return anything")
         return nodes
 
     def process(self, text, pos=0, debug=False):
@@ -371,18 +371,18 @@ class QueryParser(object):
 
         nodes = self.process(text, debug=debug)
         if debug:
-            print_debug(debug, "Syntax tree: %r" % nodes)
+            print_debug(debug, f"Syntax tree: {nodes!r}")
 
         q = nodes.query(self)
         if not q:
             q = query.NullQuery
         if debug:
-            print_debug(debug, "Pre-normalized query: %r" % q)
+            print_debug(debug, f"Pre-normalized query: {q!r}")
 
         if normalize:
             q = q.normalize()
             if debug:
-                print_debug(debug, "Normalized query: %r" % q)
+                print_debug(debug, f"Normalized query: {q!r}")
         return q
 
     def parse_(self, text, normalize=True):

@@ -156,14 +156,6 @@ def test_glob_range():
     assert not nfa.accept("acc")
 
 
-# def test_glob_negate_range():
-#     nfa = glob.glob_automaton("a[!ab]a")
-#     assert not nfa.accept("aaa")
-#     assert not nfa.accept("aba")
-#     assert nfa.accept("aca")
-#     assert not nfa.accept("bcb")
-
-
 class Skipper(object):
     def __init__(self, data):
         self.data = data

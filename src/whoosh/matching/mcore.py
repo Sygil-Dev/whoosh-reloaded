@@ -259,13 +259,13 @@ class Matcher(object):
         for example 'frequency' or 'characters'.
         """
 
-        raise NotImplementedError("supports not implemented in %s" % self.__class__)
+        raise NotImplementedError(f"supports not implemented in {self.__class__}")
 
     @abstractmethod
     def value_as(self, astype):
         """Returns the value(s) of the current posting as the given type."""
 
-        raise NotImplementedError("value_as not implemented in %s" % self.__class__)
+        raise NotImplementedError(f"value_as not implemented in {self.__class__}")
 
     def spans(self):
         """Returns a list of :class:`~whoosh.query.spans.Span` objects for the
@@ -441,7 +441,7 @@ class ListMatcher(Matcher):
         self._terminfo = terminfo
 
     def __repr__(self):
-        return "<%s>" % self.__class__.__name__
+        return f"<{self.__class__.__name__}>"
 
     def is_active(self):
         return self._i < len(self._ids)
@@ -586,7 +586,7 @@ class LeafMatcher(Matcher):
     #   self.format -- Format object for the posting values
 
     def __repr__(self):
-        return "%s(%r, %s)" % (self.__class__.__name__, self.term(), self.is_active())
+        return f"{self.__class__.__name__}({self.term()!r}, {self.is_active()})"
 
     def term(self):
         return self._term
@@ -614,7 +614,7 @@ class LeafMatcher(Matcher):
         elif self.supports("positions"):
             return [Span(pos) for pos in self.value_as("positions")]
         else:
-            raise Exception("Field does not support positions (%r)" % self.term())
+            raise Exception(f"Field does not support positions ({self.term()!r})")
 
     def supports_block_quality(self):
         return self.scorer and self.scorer.supports_block_quality()

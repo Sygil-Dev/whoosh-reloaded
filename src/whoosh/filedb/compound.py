@@ -88,7 +88,7 @@ class CompoundStorage(FileStorage):
                 self._file = None
 
     def __repr__(self):
-        return "<%s (%s)>" % (self.__class__.__name__, self._name)
+        return f"<{self.__class__.__name__} ({self._name})>"
 
     def close(self):
         if self.is_closed:
@@ -107,7 +107,7 @@ class CompoundStorage(FileStorage):
         try:
             fileinfo = self._dir[name]
         except KeyError:
-            raise NameError("Unknown file %r" % (name,))
+            raise NameError(f"Unknown file {name!r}")
         return fileinfo["offset"], fileinfo["length"]
 
     def open_file(self, name, *args, **kwargs):
@@ -251,7 +251,7 @@ class CompoundWriter(object):
     def __init__(self, tempstorage, buffersize=32 * 1024):
         assert isinstance(buffersize, int)
         self._tempstorage = tempstorage
-        self._tempname = "%s.ctmp" % random_name()
+        self._tempname = f"{random_name()}.ctmp"
         self._temp = tempstorage.create_file(self._tempname, mode="w+b")
         self._buffersize = buffersize
         self._streams = {}

@@ -501,7 +501,7 @@ class RangeFacet(QueryFacet):
 
     def _queries(self):
         if not self.gap:
-            raise Exception("No gap secified (%r)" % self.gap)
+            raise Exception(f"No gap secified ({self.gap!r})")
         if isinstance(self.gap, (list, tuple)):
             gaps = self.gap
             gapindex = 0
@@ -780,7 +780,7 @@ class MultiFacet(FacetType):
         self.maptype = maptype
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self.facets, self.maptype)
+        return f"{self.__class__.__name__}({self.facets!r}, {self.maptype!r})"
 
     @classmethod
     def from_sortedby(cls, sortedby):
@@ -800,7 +800,7 @@ class MultiFacet(FacetType):
         elif isinstance(item, string_type):
             self.add_field(item)
         else:
-            raise Exception("Don't know what to do with facet %r" % (item,))
+            raise Exception(f"Don't know what to do with facet {item!r}")
 
     def add_field(self, fieldname, reverse=False):
         self.facets.append(FieldFacet(fieldname, reverse=reverse))
@@ -819,7 +819,7 @@ class MultiFacet(FacetType):
     def add_facet(self, facet):
         if not isinstance(facet, FacetType):
             raise TypeError(
-                "%r is not a facet object, perhaps you meant " "add_field()" % (facet,)
+                f"{facet!r} is not a facet object, perhaps you meant add_field()"
             )
         self.facets.append(facet)
         return self
@@ -892,7 +892,7 @@ class Facets(object):
             for item in groupedby:
                 facets.add_facets(cls.from_groupedby(item))
         else:
-            raise Exception("Don't know what to do with groupedby=%r" % groupedby)
+            raise Exception(f"Don't know what to do with groupedby={groupedby!r}")
 
         return facets
 
@@ -931,7 +931,7 @@ class Facets(object):
         """Adds a :class:`FacetType` object under the given ``name``."""
 
         if not isinstance(facet, FacetType):
-            raise Exception("%r:%r is not a facet" % (name, facet))
+            raise Exception(f"{name!r}:{facet!r} is not a facet")
         self.facets[name] = facet
         return self
 
@@ -941,7 +941,7 @@ class Facets(object):
         """
 
         if not isinstance(facets, (dict, Facets)):
-            raise Exception("%r is not a Facets object or dict" % facets)
+            raise Exception(f"{facets!r} is not a Facets object or dict")
         for name, facet in facets.items():
             if replace or name not in self.facets:
                 self.facets[name] = facet
@@ -999,7 +999,7 @@ class OrderedList(FacetMap):
         self.dict = defaultdict(list)
 
     def __repr__(self):
-        return "<%s %r>" % (self.__class__.__name__, self.dict)
+        return f"<{self.__class__.__name__} {self.dict!r}>"
 
     def add(self, groupname, docid, sortkey):
         self.dict[groupname].append((sortkey, docid))
@@ -1025,7 +1025,7 @@ class UnorderedList(FacetMap):
         self.dict = defaultdict(list)
 
     def __repr__(self):
-        return "<%s %r>" % (self.__class__.__name__, self.dict)
+        return f"<{self.__class__.__name__} {self.dict!r}>"
 
     def add(self, groupname, docid, sortkey):
         self.dict[groupname].append(docid)
@@ -1045,7 +1045,7 @@ class Count(FacetMap):
         self.dict = defaultdict(int)
 
     def __repr__(self):
-        return "<%s %r>" % (self.__class__.__name__, self.dict)
+        return f"<{self.__class__.__name__} {self.dict!r}>"
 
     def add(self, groupname, docid, sortkey):
         self.dict[groupname] += 1
@@ -1067,7 +1067,7 @@ class Best(FacetMap):
         self.bestkeys = {}
 
     def __repr__(self):
-        return "<%s %r>" % (self.__class__.__name__, self.bestids)
+        return f"<{self.__class__.__name__} {self.bestids!r}>"
 
     def add(self, groupname, docid, sortkey):
         if groupname not in self.bestids or sortkey < self.bestkeys[groupname]:
@@ -1112,7 +1112,7 @@ def add_sortable(writer, fieldname, facet, column=None):
     if fieldname in schema:
         field = schema[fieldname]
         if field.column_type:
-            raise Exception("%r field is already sortable" % fieldname)
+            raise Exception(f"{fieldname!r} field is already sortable")
 
     if column:
         if fieldname not in schema:
@@ -1124,7 +1124,7 @@ def add_sortable(writer, fieldname, facet, column=None):
         if fieldname in schema:
             column = field.default_column()
         else:
-            raise Exception("Field %r does not exist" % fieldname)
+            raise Exception(f"Field {fieldname!r} does not exist")
 
     searcher = writer.searcher()
     catter = facet.categorizer(searcher)
@@ -1133,7 +1133,7 @@ def add_sortable(writer, fieldname, facet, column=None):
         reader = subsearcher.reader()
 
         if reader.has_column(fieldname):
-            raise Exception("%r field already has a column" % fieldname)
+            raise Exception(f"{fieldname!r} field already has a column")
 
         codec = reader.codec()
         segment = reader.segment()

@@ -127,7 +127,7 @@ def stemmer_for_language(lang):
     if tlc in snowball_classes:
         return snowball_classes[tlc]().stem
 
-    raise NoStemmer("No stemmer available for %r" % lang)
+    raise NoStemmer(f"No stemmer available for {lang!r}")
 
 
 def stopwords_for_language(lang):
@@ -137,4 +137,4 @@ def stopwords_for_language(lang):
     if tlc in stoplists:
         return stoplists[tlc]
 
-    raise NoStopWords("No stop-word list available for %r" % lang)
+    raise NoStopWords(f"No stop-word list available for {lang!r}")

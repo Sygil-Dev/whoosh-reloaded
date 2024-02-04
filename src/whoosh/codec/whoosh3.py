@@ -155,11 +155,11 @@ class W3Codec(base.Codec):
 
 
 def _vecfield(fieldname):
-    return "_%s_vec" % fieldname
+    return f"_{fieldname}_vec"
 
 
 def _lenfield(fieldname):
-    return "_%s_len" % fieldname
+    return f"_{fieldname}_len"
 
 
 # Per-doc information writer
@@ -171,7 +171,7 @@ class W3PerDocWriter(base.PerDocWriterWithColumns):
         self._storage = storage
         self._segment = segment
 
-        tempst = storage.temp_storage("%s.tmp" % segment.indexname)
+        tempst = storage.temp_storage(f"{segment.indexname}.tmp")
         self._cols = compound.CompoundWriter(tempst)
         self._colwriters = {}
         self._create_column("_stored", STORED_COLUMN)
@@ -196,7 +196,7 @@ class W3PerDocWriter(base.PerDocWriterWithColumns):
     def _create_column(self, fieldname, column):
         writers = self._colwriters
         if fieldname in writers:
-            raise Exception("Already added column %r" % fieldname)
+            raise Exception(f"Already added column {fieldname!r}")
 
         f = self._cols.create_file(fieldname)
         writers[fieldname] = column.writer(f)
@@ -215,7 +215,7 @@ class W3PerDocWriter(base.PerDocWriterWithColumns):
             raise Exception("Called start_doc when already in a doc")
         if docnum != self._doccount:
             raise Exception(
-                "Called start_doc(%r) was expecting %r" % (docnum, self._doccount)
+                f"Called start_doc({docnum!r}) was expecting {self._doccount!r}"
             )
 
         self._docnum = docnum
@@ -498,7 +498,7 @@ class W3PerDocReader(base.PerDocumentReader):
             self._prep_vectors()
         offset, length = self._vector_extent(docnum, fieldname)
         if not offset:
-            raise Exception("Field %r has no vector in docnum %s" % (fieldname, docnum))
+            raise Exception(f"Field {fieldname!r} has no vector in docnum {docnum}")
         m = W3LeafMatcher(self._vpostfile, offset, length, format_, byteids=True)
         return m
 
@@ -583,7 +583,7 @@ class W3TermsReader(base.TermsReader):
             self._fieldunmap[num] = fieldname
 
     def _keycoder(self, fieldname, tbytes):
-        assert isinstance(tbytes, bytes_type), "tbytes=%r" % tbytes
+        assert isinstance(tbytes, bytes_type), f"tbytes={tbytes!r}"
         fnum = self._fieldmap.get(fieldname, 65535)
         return pack_ushort(fnum) + tbytes
 
@@ -639,7 +639,7 @@ class W3TermsReader(base.TermsReader):
         try:
             return W3TermInfo.from_bytes(self._tindex[key])
         except KeyError:
-            raise TermNotFound("No term %s:%r" % (fieldname, tbytes))
+            raise TermNotFound(f"No term {fieldname}:{tbytes!r}")
 
     def frequency(self, fieldname, tbytes):
         datapos = self._range_for_key(fieldname, tbytes)[0]
@@ -713,11 +713,11 @@ class W3PostingsWriter(base.PostingsWriter):
 
         # Check types
         if self._byteids:
-            assert isinstance(id_, string_type), "id_=%r" % id_
+            assert isinstance(id_, string_type), f"id_={id_!r}"
         else:
-            assert isinstance(id_, integer_types), "id_=%r" % id_
-        assert isinstance(weight, (int, float)), "weight=%r" % weight
-        assert isinstance(vbytes, bytes_type), "vbytes=%r" % vbytes
+            assert isinstance(id_, integer_types), f"id_={id_!r}"
+        assert isinstance(weight, (int, float)), f"weight={weight!r}"
+        assert isinstance(vbytes, bytes_type), f"vbytes={vbytes!r}"
         assert length is None or isinstance(length, integer_types)
 
         self._ids.append(id_)
@@ -930,7 +930,7 @@ class W3LeafMatcher(LeafMatcher):
         postfile.seek(self._startoffset)
         magic = postfile.read(4)
         if magic != WHOOSH3_HEADER_MAGIC:
-            raise Exception("Block tag error %r" % magic)
+            raise Exception(f"Block tag error {magic!r}")
 
         # Remember the base offset (start of postings, after the header)
         self._baseoffset = postfile.tell()

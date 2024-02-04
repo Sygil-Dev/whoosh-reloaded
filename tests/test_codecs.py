@@ -24,9 +24,8 @@ class FakeLengths(object):
         self.lens = lens
 
     def doc_field_length(self, docnum, fieldname):
-        if fieldname in self.lens:
-            if docnum < len(self.lens[fieldname]):
-                return self.lens[fieldname][docnum]
+        if fieldname in self.lens and docnum < len(self.lens[fieldname]):
+            return self.lens[fieldname][docnum]
         return 1
 
 
@@ -65,9 +64,7 @@ def test_random_termkeys():
         return array_tobytes(a).decode("utf-16")
 
     domain = sorted(
-        set(
-            [(random_fieldname(), random_btext().encode("utf-8")) for _ in range(1000)]
-        )
+        set([(random_fieldname(), random_btext().encode("utf-8")) for _ in range(1000)])
     )
 
     st, codec, seg = _make_codec()
@@ -171,19 +168,23 @@ def test_termindex():
         assert ti.doc_frequency() == 1
 
 
+test123 = "Testing one two three"
+
+
 def test_docwriter_one():
     field = fields.TEXT(stored=True)
     st, codec, seg = _make_codec()
     dw = codec.per_document_writer(st, seg)
     dw.start_doc(0)
-    dw.add_field("text", field, "Testing one two three", 4)
+
+    dw.add_field("text", field, test123, 4)
     dw.finish_doc()
     dw.close()
     seg.set_doc_count(1)
 
     pdr = codec.per_document_reader(st, seg)
     assert pdr.doc_field_length(0, "text") == 4
-    assert pdr.stored_fields(0) == {"text": "Testing one two three"}
+    assert pdr.stored_fields(0) == {"text": test123}
 
 
 def test_docwriter_two():
@@ -192,7 +193,7 @@ def test_docwriter_two():
     dw = codec.per_document_writer(st, seg)
     dw.start_doc(0)
     dw.add_field("title", field, ("a", "b"), 2)
-    dw.add_field("text", field, "Testing one two three", 4)
+    dw.add_field("text", field, test123, 4)
     dw.finish_doc()
     dw.start_doc(1)
     dw.add_field("title", field, "The second document", 3)
@@ -296,6 +297,8 @@ def test_store_zero():
 
 
 def test_fieldwriter_single_term():
+    import math
+
     field = fields.TEXT()
     st, codec, seg = _make_codec()
 
@@ -310,16 +313,18 @@ def test_fieldwriter_single_term():
     tr = codec.terms_reader(st, seg)
     assert ("text", b("alfa")) in tr
     ti = tr.term_info("text", b("alfa"))
-    assert ti.weight() == 1.5
+    assert math.isclose(ti.weight(), 1.5)
     assert ti.doc_frequency() == 1
     assert ti.min_length() == 1
     assert ti.max_length() == 1
-    assert ti.max_weight() == 1.5
+    assert math.isclose(ti.max_weight(), 1.5)
     assert ti.min_id() == 0
     assert ti.max_id() == 0
 
 
 def test_fieldwriter_two_terms():
+    import math
+
     field = fields.TEXT()
     st, codec, seg = _make_codec()
 
@@ -338,21 +343,23 @@ def test_fieldwriter_two_terms():
 
     tr = codec.terms_reader(st, seg)
     assert ("text", b("alfa")) in tr
+
     ti = tr.term_info("text", b("alfa"))
-    assert ti.weight() == 3.0
+    assert math.isclose(ti.weight(), 3.0)
     assert ti.doc_frequency() == 2
     assert ti.min_length() == 1
     assert ti.max_length() == 2
-    assert ti.max_weight() == 2.0
+    assert math.isclose(ti.max_weight(), 2.0)
     assert ti.min_id() == 0
     assert ti.max_id() == 1
     assert ("text", b("bravo")) in tr
+
     ti = tr.term_info("text", b("bravo"))
-    assert ti.weight() == 5.0
+    assert math.isclose(ti.weight(), 5.0)
     assert ti.doc_frequency() == 2
     assert ti.min_length() == 2
     assert ti.max_length() == 3
-    assert ti.max_weight() == 3.0
+    assert math.isclose(ti.max_weight(), 3.0)
     assert ti.min_id() == 0
     assert ti.max_id() == 2
 
@@ -361,6 +368,8 @@ def test_fieldwriter_two_terms():
 
 
 def test_fieldwriter_multiblock():
+    import math
+
     field = fields.TEXT()
     st, codec, seg = _make_codec(blocklimit=2)
 
@@ -378,11 +387,11 @@ def test_fieldwriter_multiblock():
 
     tr = codec.terms_reader(st, seg)
     ti = tr.term_info("text", b("alfa"))
-    assert ti.weight() == 15.0
+    assert math.isclose(ti.weight(), 15.0)
     assert ti.doc_frequency() == 5
     assert ti.min_length() == 1
     assert ti.max_length() == 5
-    assert ti.max_weight() == 5.0
+    assert math.isclose(ti.max_weight(), 5.0)
     assert ti.min_id() == 0
     assert ti.max_id() == 4
 
@@ -517,6 +526,8 @@ def test_skip():
 #     cur = codec.graph_reader(st, seg).cursor("text")
 #     assert list(cur.flatten_strings()) == ["specials", "specifically"]
 
+cde = "charlie delta echo"
+
 
 def test_plaintext_codec():
     pytest.importorskip("ast")
@@ -540,9 +551,7 @@ def test_plaintext_codec():
         w.add_document(
             a=u("bravo charlie delta"), b=1000, c=200, d=u("rolling timing yelling")
         )
-        w.add_document(
-            a=u("charlie delta echo"), b=5.5, c=300, d=u("using opening pulling")
-        )
+        w.add_document(a=u(cde), b=5.5, c=300, d=u("using opening pulling"))
         w.add_document(
             a=u("delta echo foxtrot"), b=True, c=-100, d=u("aching selling dipping")
         )
@@ -553,7 +562,7 @@ def test_plaintext_codec():
     with ix.reader() as r:
         assert r.has_column("a")
         c = r.column_reader("a")
-        assert c[2] == u("charlie delta echo")
+        assert c[2] == u(cde)
 
     w = ix.writer(codec=PlainTextCodec())
     w.commit(optimize=True)
@@ -574,7 +583,7 @@ def test_plaintext_codec():
         storage = ix.storage
         for fname in storage.list():
             if fname.endswith(".dcs"):
-                f = storage.open_file(fname)
+                storage.open_file(fname)
                 # print(f.read().decode("utf8"))
 
         assert reader.doc_field_length(0, "a") == 3
@@ -588,7 +597,7 @@ def test_plaintext_codec():
 
         assert reader.has_column("a")
         c = reader.column_reader("a")
-        assert c[2] == u("charlie delta echo")
+        assert c[2] == u(cde)
 
         assert reader.has_column("c")
         c = reader.column_reader("c")
@@ -596,7 +605,7 @@ def test_plaintext_codec():
 
         assert s.has_vector(2, "a")
         v = s.vector(2, "a")
-        assert " ".join(v.all_ids()) == "charlie delta echo"
+        assert " ".join(v.all_ids()) == cde
 
 
 def test_memory_codec():
@@ -619,9 +628,7 @@ def test_memory_codec():
         w.add_document(
             a=u("bravo charlie delta"), b=1000, c=200, d=u("rolling timing yelling")
         )
-        w.add_document(
-            a=u("charlie delta echo"), b=5.5, c=300, d=u("using opening pulling")
-        )
+        w.add_document(a=u(cde), b=5.5, c=300, d=u("using opening pulling"))
         w.add_document(
             a=u("delta echo foxtrot"), b=True, c=-100, d=u("aching selling dipping")
         )
@@ -651,7 +658,7 @@ def test_memory_codec():
 
     assert s.has_vector(2, "a")
     v = s.vector(2, "a")
-    assert " ".join(v.all_ids()) == "charlie delta echo"
+    assert " ".join(v.all_ids()) == cde
 
 
 def test_memory_multiwrite():
@@ -678,3 +685,43 @@ def test_memory_multiwrite():
         " ".join(reader.field_terms("line"))
         == "alfa bravo charlie delta echo foxtrot india juliet"
     )
+
+
+# can add a new field to the schema before adding documents
+def test_add_new_field_to_schema():
+    from whoosh.fields import Schema, TEXT
+    from whoosh.codec.memory import MemoryCodec, MemWriter
+
+    codec = MemoryCodec()
+    schema = Schema(title=TEXT(stored=True), content=TEXT)
+    ix = codec.storage.create_index(schema)
+    writer = MemWriter(ix, _lk=False, codec=codec, docbase=0)
+
+    new_field = TEXT(stored=True)
+    writer.add_field("author", new_field)
+
+    assert "author" in writer.schema.names()
+    assert writer.schema["author"] == new_field
+
+
+# can add a reader to the index
+def test_add_reader_to_index():
+    from whoosh.fields import Schema, TEXT
+    from whoosh.codec.memory import MemoryCodec, MemWriter
+
+    # Define the schema for the index
+    schema = Schema(title=TEXT(stored=True), content=TEXT)
+
+    # Create a codec and an index
+    codec = MemoryCodec()
+    ix = codec.storage.create_index(schema)
+
+    # Create a writer for the index
+    writer = MemWriter(ix, _lk=False, codec=codec, docbase=0)
+
+    # Get a reader from the writer and add it to the index
+    reader = writer.reader()
+    writer.add_reader(reader)
+
+    # Assert that the reader was added to the index
+    assert writer._added == True

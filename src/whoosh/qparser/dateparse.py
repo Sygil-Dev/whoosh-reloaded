@@ -105,7 +105,7 @@ class MultiBase(ParserBase):
         self.name = name
 
     def __repr__(self):
-        return "%s<%s>%r" % (self.__class__.__name__, self.name or "", self.elements)
+        return f"{self.__class__.__name__}<{self.name or ''}>{self.elements!r}"
 
 
 class Sequence(MultiBase):
@@ -260,7 +260,7 @@ class Combo(Sequence):
         elif len(dates) == 2:
             return timespan(dates[0], dates[1])
         else:
-            raise DateParseError("Don't know what to do with %r" % (dates,))
+            raise DateParseError(f"Don't know what to do with {dates!r}")
 
 
 class Choice(MultiBase):
@@ -380,7 +380,7 @@ class Optional(ParserBase):
         self.element = self.to_parser(element)
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.element)
+        return f"{self.__class__.__name__}({self.element!r})"
 
     def parse(self, text, dt, pos=0, debug=-9999):
         try:
@@ -403,7 +403,7 @@ class ToEnd(ParserBase):
         self.element = element
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.element)
+        return f"{self.__class__.__name__}({self.element!r})"
 
     def parse(self, text, dt, pos=0, debug=-9999):
         try:
@@ -440,7 +440,7 @@ class Regex(ParserBase):
         self.modify = modify
 
     def __repr__(self):
-        return "<%r>" % (self.pattern,)
+        return f"<{self.pattern!r}>"
 
     def parse(self, text, dt, pos=0, debug=-9999):
         m = self.expr.match(text, pos)
@@ -490,7 +490,7 @@ class Month(Regex):
         self.exprs = [rcompile(pat, re.IGNORECASE) for pat in self.patterns]
 
         self.pattern = (
-            "(?P<month>" + "|".join("(%s)" % pat for pat in self.patterns) + ")"
+            "(?P<month>" + "|".join(f"({pat})" for pat in self.patterns) + ")"
         )
         self.expr = rcompile(self.pattern, re.IGNORECASE)
 
@@ -505,13 +505,13 @@ class Month(Regex):
 
 class PlusMinus(Regex):
     def __init__(self, years, months, weeks, days, hours, minutes, seconds):
-        rel_years = "((?P<years>[0-9]+) *(%s))?" % years
-        rel_months = "((?P<months>[0-9]+) *(%s))?" % months
-        rel_weeks = "((?P<weeks>[0-9]+) *(%s))?" % weeks
-        rel_days = "((?P<days>[0-9]+) *(%s))?" % days
-        rel_hours = "((?P<hours>[0-9]+) *(%s))?" % hours
-        rel_mins = "((?P<mins>[0-9]+) *(%s))?" % minutes
-        rel_secs = "((?P<secs>[0-9]+) *(%s))?" % seconds
+        rel_years = f"((?P<years>[0-9]+) *({years}))?"
+        rel_months = f"((?P<months>[0-9]+) *({months}))?"
+        rel_weeks = f"((?P<weeks>[0-9]+) *({weeks}))?"
+        rel_days = f"((?P<days>[0-9]+) *({days}))?"
+        rel_hours = f"((?P<hours>[0-9]+) *({hours}))?"
+        rel_mins = f"((?P<mins>[0-9]+) *({minutes}))?"
+        rel_secs = f"((?P<secs>[0-9]+) *({seconds}))?"
 
         self.pattern = "(?P<dir>[+-]) *%s *%s *%s *%s *%s *%s *%s(?=(\\W|$))" % (
             rel_years,
@@ -548,11 +548,7 @@ class Daynames(Regex):
         self.last_pattern = last
         self._dayname_exprs = tuple(rcompile(pat, re.IGNORECASE) for pat in daynames)
         dn_pattern = "|".join(daynames)
-        self.pattern = "(?P<dir>%s|%s) +(?P<day>%s)(?=(\\W|$))" % (
-            next,
-            last,
-            dn_pattern,
-        )
+        self.pattern = f"(?P<dir>{next}|{last}) +(?P<day>{dn_pattern})(?=(\\W|$))"
         self.expr = rcompile(self.pattern, re.IGNORECASE)
 
     def props_to_date(self, p, dt):
@@ -937,7 +933,7 @@ class DateTimeNode(syntax.SyntaxNode):
         elif isinstance(self.dt, timespan):
             return query.DateRange(fieldname, dt.start, dt.end, boost=self.boost)
         else:
-            raise Exception("Unknown time object: %r" % dt)
+            raise Exception(f"Unknown time object: {dt!r}")
 
 
 class DateRangeNode(syntax.SyntaxNode):
@@ -951,7 +947,7 @@ class DateRangeNode(syntax.SyntaxNode):
         self.boost = 1.0
 
     def r(self):
-        return "%r-%r" % (self.start, self.end)
+        return f"{self.start!r}-{self.end!r}"
 
     def query(self, parser):
         from whoosh import query

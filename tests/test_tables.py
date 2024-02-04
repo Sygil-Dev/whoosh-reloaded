@@ -123,14 +123,14 @@ def test_random_access():
     times = 1000
     with TempStorage("orderedhash") as st:
         hw = HashWriter(st.create_file("test.hsh"))
-        hw.add_all((b("%08x" % x), b(str(x))) for x in range(times))
+        hw.add_all((b(f"{x:08x}"), b(str(x))) for x in range(times))
         hw.close()
 
         keys = list(range(times))
         random.shuffle(keys)
         hr = HashReader.open(st, "test.hsh")
         for x in keys:
-            assert hr[b("%08x" % x)] == b(str(x))
+            assert hr[b(f"{x:08x}")] == b(str(x))
         hr.close()
 
 

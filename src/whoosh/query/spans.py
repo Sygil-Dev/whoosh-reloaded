@@ -279,7 +279,7 @@ class SpanQuery(Query):
         return self.q.matcher(s, context)
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.q)
+        return f"{self.__class__.__name__}({self.q!r})"
 
     def __eq__(self, other):
         return other and self.__class__ is other.__class__ and self.q == other.q

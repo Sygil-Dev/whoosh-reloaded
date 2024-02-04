@@ -46,7 +46,7 @@ class Analyzer(Composable):
     """Abstract base class for analyzers."""
 
     def __repr__(self):
-        return "%s()" % self.__class__.__name__
+        return f"{self.__class__.__name__}()"
 
     def __eq__(self, other):
         return (
@@ -59,6 +59,7 @@ class Analyzer(Composable):
         raise NotImplementedError
 
     def clean(self):
+        # This method is intentionally left empty.
         pass
 
 
@@ -78,8 +79,7 @@ class CompositeAnalyzer(Analyzer):
         for item in self.items[1:]:
             if isinstance(item, Tokenizer):
                 raise CompositionError(
-                    "Only one tokenizer allowed at the start"
-                    " of the analyzer: %r" % self.items
+                    f"Only one tokenizer allowed at the start of the analyzer: {self.items}"
                 )
 
     def __repr__(self):
@@ -239,7 +239,6 @@ def FancyAnalyzer(
     expression=r"\s+",
     stoplist=STOP_WORDS,
     minsize=2,
-    maxsize=None,
     gaps=True,
     splitwords=True,
     splitnums=True,
