@@ -1,10 +1,9 @@
-from __future__ import with_statement
 from datetime import datetime, timedelta
 
 import pytest
 
 from whoosh import fields, qparser, query
-from whoosh.compat import u, b, range
+from whoosh.compat import b, range, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util import times
 from whoosh.util.testing import TempIndex
@@ -622,7 +621,7 @@ def test_missing_field():
 
 
 def test_token_boost():
-    from whoosh.analysis import RegexTokenizer, DoubleMetaphoneFilter
+    from whoosh.analysis import DoubleMetaphoneFilter, RegexTokenizer
 
     ana = RegexTokenizer() | DoubleMetaphoneFilter()
     field = fields.TEXT(analyzer=ana, phrase=False)
@@ -646,8 +645,8 @@ def test_pickle_idlist():
 
 def test_pickle_schema():
     from whoosh import analysis
-    from whoosh.support.charset import accent_map
     from whoosh.compat import dumps
+    from whoosh.support.charset import accent_map
 
     freetext_analyzer = analysis.StemmingAnalyzer() | analysis.CharsetFilter(accent_map)
 
@@ -677,3 +676,35 @@ def test_pickle_schema():
 
         with ix.reader() as r:
             assert dumps(r.schema, 2)
+
+
+def test_valid_date_string():
+    """Can parse a valid date string and return a NumericRange query with the parsed date as the value"""
+    import datetime
+
+    from whoosh.fields import DATETIME, datetime_to_long
+    from whoosh.query import NumericRange
+
+    # Initialize the DATETIME field
+    field = DATETIME()
+
+    # Define a valid date string
+    date_string = "2022-01-01"
+
+    # Invoke the parse_query method with the valid date string
+    query = field.parse_query("date", date_string)
+
+    # Define the expected start and end dates
+    expected_start = datetime_to_long(datetime.datetime(2022, 1, 1))
+    expected_end = datetime_to_long(
+        datetime.datetime(2022, 1, 1)
+        + datetime.timedelta(days=1)
+        - datetime.timedelta(microseconds=1)
+    )
+
+    # Check that the query is a NumericRange query with the parsed date as the value
+    assert isinstance(query, NumericRange), "Query is not a NumericRange"
+    assert query.fieldname == "date", "Fieldname is not correct"
+    assert query.start == expected_start, "Start date is not correct"
+    assert query.end == expected_end, "End date is not correct"
+    assert query.boost == 1.0, "Boost value is not correct"
