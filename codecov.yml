@@ -3,6 +3,8 @@ codecov:
   notify:
     wait_for_ci: True
 
+
+
 coverage:
   precision: 2
   round: down
@@ -14,7 +16,7 @@ coverage:
       default:
         enabled: True
         target: 1
-        threshold: "0.1"
+        threshold: 0.1
     patch:
       default:
         enabled: on
@@ -26,3 +28,6 @@ ignore:
   - binder
   - .github
   - .git
+
+fixes:
+  - "/home/runner/work/whoosh-reloaded/whoosh-reloaded/::https://github.com/Sygil-Dev/whoosh-reloaded/"  # attemtp to fix the paths for the github actions.

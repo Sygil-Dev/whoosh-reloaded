@@ -31,15 +31,14 @@ jobs:
       run: |
         pip install pytest
         pip install pytest-cov
-        pytest --cov=./src --cov-report=xml
+        pytest --cov= --cov-report=xml
 
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v4.0.1
       with:
-        directory: ./src
+        directory: .
         env_vars: OS,PYTHON
         fail_ci_if_error: true
-        files: ./src/coverage.xml
+        files: ./coverage.xml
         handle_no_reports_found: true
         token: ${{ secrets.CODECOV_TOKEN }} # required
-        verbose: true # optional (default = false)
