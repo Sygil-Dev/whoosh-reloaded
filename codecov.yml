@@ -1,9 +1,7 @@
 codecov:
-  require_ci_to_pass: True
+  require_ci_to_pass: yes
   notify:
-    wait_for_ci: True
-
-
+    wait_for_ci: yes
 
 coverage:
   precision: 2
@@ -14,12 +12,12 @@ coverage:
     # Learn more at http://docs.codecov.io/docs/codecov-yaml
     project:
       default:
-        enabled: True
+        enabled: yes
         target: 1
         threshold: 0.1
     patch:
       default:
-        enabled: on
+        enabled: off
 
 ignore:
   - "**/*.ipynb"
@@ -28,6 +26,3 @@ ignore:
   - binder
   - .github
   - .git
-
-fixes:
-  - "/home/runner/work/whoosh-reloaded/whoosh-reloaded/::https://github.com/Sygil-Dev/whoosh-reloaded/"  # attemtp to fix the paths for the github actions.
