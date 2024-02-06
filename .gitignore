@@ -10,3 +10,4 @@ eggs/
 *.egg-info/
 /test.py
 /.vscode/settings.json
+/.coverage
