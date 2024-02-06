@@ -18,10 +18,7 @@ repos:
       - id: black
         language_version: python3.11
         exclude: ^notebooks
-  - repo: https://github.com/pycqa/isort
-    rev: '5.13.2'
-    hooks:
-      - id: isort
+
   - repo: https://github.com/asottile/pyupgrade
     rev: 'v3.15.0'
     hooks:
