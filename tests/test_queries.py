@@ -1,4 +1,3 @@
-from __future__ import with_statement
 import copy
 
 import pytest
@@ -7,29 +6,27 @@ from whoosh import fields, qparser, query
 from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.qparser import QueryParser
-from whoosh.query import And
-from whoosh.query import AndMaybe
-from whoosh.query import ConstantScoreQuery
-from whoosh.query import DateRange
-from whoosh.query import DisjunctionMax
-from whoosh.query import Every
-from whoosh.query import FuzzyTerm
-from whoosh.query import Not
-from whoosh.query import NullQuery
-from whoosh.query import NumericRange
-from whoosh.query import Or
-from whoosh.query import Phrase
-from whoosh.query import Prefix
-from whoosh.query import Require
-from whoosh.query import Term
-from whoosh.query import TermRange
-from whoosh.query import Variations
-from whoosh.query import Wildcard
-from whoosh.query.spans import SpanContains
-from whoosh.query.spans import SpanFirst
-from whoosh.query.spans import SpanNear
-from whoosh.query.spans import SpanNot
-from whoosh.query.spans import SpanOr
+from whoosh.query import (
+    And,
+    AndMaybe,
+    ConstantScoreQuery,
+    DateRange,
+    DisjunctionMax,
+    Every,
+    FuzzyTerm,
+    Not,
+    NullQuery,
+    NumericRange,
+    Or,
+    Phrase,
+    Prefix,
+    Require,
+    Term,
+    TermRange,
+    Variations,
+    Wildcard,
+)
+from whoosh.query.spans import SpanContains, SpanFirst, SpanNear, SpanNot, SpanOr
 from whoosh.util.testing import TempIndex
 
 
@@ -96,7 +93,7 @@ def test_wildcard_existing_terms():
 
     q = query.Variations("value", "render")
     ts = q.existing_terms(r, expand=False)
-    assert ts == set([("value", b("render"))])
+    assert ts == {("value", b("render"))}
     ts = q.existing_terms(r, expand=True)
     assert words(ts) == b("render rendering renders")
 
@@ -394,10 +391,10 @@ def test_query_copy_hash():
 def test_requires():
     a = Term("f", u("a"))
     b = Term("f", u("b"))
-    assert And([a, b]).requires() == set([a, b])
+    assert And([a, b]).requires() == {a, b}
     assert Or([a, b]).requires() == set()
-    assert AndMaybe(a, b).requires() == set([a])
-    assert a.requires() == set([a])
+    assert AndMaybe(a, b).requires() == {a}
+    assert a.requires() == {a}
 
 
 def test_highlight_daterange():
@@ -682,3 +679,209 @@ def test_andnot_reverse():
 
     assert len(names_fw) == len(names_rv) == 1
     assert names_fw == names_rv
+
+
+# NumericRange with valid fieldname, start, and end
+def test_valid_fieldname_start_end():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 10, 5925)
+    assert nr.fieldname == "number"
+    assert nr.start == 10
+    assert nr.end == 5925
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with valid fieldname, start, end, startexcl=True, and endexcl=True
+def test_valid_fieldname_start_end_startexcl_endexcl():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 10, 5925, startexcl=True, endexcl=True)
+    assert nr.fieldname == "number"
+    assert nr.start == 10
+    assert nr.end == 5925
+    assert nr.startexcl == True
+    assert nr.endexcl == True
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with valid fieldname, start, end, boost=2.0, and constantscore=False
+def test_valid_fieldname_start_end_boost_constantscore():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 10, 5925, boost=2.0, constantscore=False)
+    assert nr.fieldname == "number"
+    assert nr.start == 10
+    assert nr.end == 5925
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == 2.0
+    assert nr.constantscore == False
+
+
+# NumericRange with valid fieldname, start=None, and end=None
+def test_valid_fieldname_start_none_end_none():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 0, 0)
+    assert nr.fieldname == "number"
+    assert nr.start == 0
+    assert nr.end == 0
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with valid fieldname, start=0, and end=0
+def test_valid_fieldname_start_zero_end_zero():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 0, 0)
+    assert nr.fieldname == "number"
+    assert nr.start == 0
+    assert nr.end == 0
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with valid fieldname, start=-1, and end=1
+def test_valid_fieldname_start_minus_one_end_one():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", -1, 1)
+    assert nr.fieldname == "number"
+    assert nr.start == -1
+    assert nr.end == 1
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with valid fieldname, start=1, and end=-1
+def test_valid_fieldname_start_end():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("fieldname", 1, -1)
+    assert nr.fieldname == "fieldname"
+    assert nr.start == 1
+    assert nr.end == -1
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with valid fieldname, start=1.5, and end=2.5
+def test_valid_fieldname_start_end_float():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("fieldname", 1.5, 2.5)
+    assert nr.fieldname == "fieldname"
+    assert nr.start == 1.5
+    assert nr.end == 2.5
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with valid fieldname, start=1.5, and end=2.5, startexcl=True, and endexcl=True
+def test_valid_fieldname_start_end_excl():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("fieldname", 1.5, 2.5, startexcl=True, endexcl=True)
+    assert nr.fieldname == "fieldname"
+    assert nr.start == 1.5
+    assert nr.end == 2.5
+    assert nr.startexcl == True
+    assert nr.endexcl == True
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with valid fieldname, start=1.5, and end=2.5, boost=2.0, and constantscore=False
+def test_valid_fieldname_start_end_boost_constantscore():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("fieldname", 1.5, 2.5, boost=2.0, constantscore=False)
+    assert nr.fieldname == "fieldname"
+    assert nr.start == 1.5
+    assert nr.end == 2.5
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == 2.0
+    assert nr.constantscore == False
+
+
+# NumericRange with invalid boost
+def test_invalid_boost():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 10, 5925, boost="invalid")
+    assert nr.boost == "invalid"
+
+
+# NumericRange with valid start and invalid end
+
+
+# NumericRange with invalid startexcl and valid endexcl
+def test_invalid_startexcl_valid_endexcl():
+    """
+    Test that NumericRange works with invalid startexcl and valid endexcl.
+    """
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 10, 5925, startexcl=True, endexcl=False)
+
+    assert nr.fieldname == "number"
+    assert nr.start == 10
+    assert nr.end == 5925
+    assert nr.startexcl == True
+    assert nr.endexcl == False
+    assert nr.boost == 1.0
+    assert nr.constantscore == True
+
+
+# NumericRange with invalid constantscore
+def test_invalid_constantscore():
+    """
+    Test that NumericRange does not raise an exception when constantscore is set to False.
+    """
+    from whoosh.query.ranges import NumericRange
+
+    NumericRange("number", 10, 5925, constantscore=False)
+
+
+# NumericRange with valid startexcl and invalid endexcl
+def test_valid_startexcl_invalid_endexcl():
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 10, 5925, startexcl=True, endexcl=True)
+    assert nr.startexcl == True
+    assert nr.endexcl == True
+
+
+# NumbericRange with negative boost field
+def test_numeric_range_with_negative_boost():
+    """
+    Test that NumericRange works with a negative boost field.
+    """
+    from whoosh.query.ranges import NumericRange
+
+    nr = NumericRange("number", 10, 5925, boost=-1.0)
+
+    assert nr.fieldname == "number"
+    assert nr.start == 10
+    assert nr.end == 5925
+    assert nr.startexcl == False
+    assert nr.endexcl == False
+    assert nr.boost == -1.0
+    assert nr.constantscore == True
