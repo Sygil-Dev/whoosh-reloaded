@@ -125,18 +125,17 @@
 <span class="c1"># those of the authors and should not be interpreted as representing official</span>
 <span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">b</span><span class="p">,</span> <span class="n">u</span>
 <span class="kn">from</span> <span class="nn">whoosh.query</span> <span class="kn">import</span> <span class="n">qcore</span><span class="p">,</span> <span class="n">terms</span><span class="p">,</span> <span class="n">compound</span><span class="p">,</span> <span class="n">wrappers</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.times</span> <span class="kn">import</span> <span class="n">datetime_to_long</span>
 
 
-<span class="k">class</span> <span class="nc">RangeMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">RangeMixin</span><span class="p">:</span>
     <span class="c1"># Contains methods shared by TermRange and NumericRange</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, boost=</span><span class="si">%s</span><span class="s2">, constantscore=</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, boost=</span><span class="si">{}</span><span class="s2">, constantscore=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
@@ -355,15 +354,48 @@
 
 
 <div class="viewcode-block" id="NumericRange"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NumericRange">[docs]</a><span class="k">class</span> <span class="nc">NumericRange</span><span class="p">(</span><span class="n">RangeMixin</span><span class="p">,</span> <span class="n">qcore</span><span class="o">.</span><span class="n">Query</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A range query for NUMERIC fields. Takes advantage of tiered indexing</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A range query for NUMERIC fields. Takes advantage of tiered indexing</span>
 <span class="sd">    to speed up large ranges by matching at a high resolution at the edges of</span>
 <span class="sd">    the range and a low resolution in the middle.</span>
 
-<span class="sd">    &gt;&gt;&gt; # Match numbers from 10 to 5925 in the &quot;number&quot; field.</span>
-<span class="sd">    &gt;&gt;&gt; nr = NumericRange(&quot;number&quot;, 10, 5925)</span>
+<span class="sd">    Example Usage:</span>
+<span class="sd">        # Match numbers from 10 to 5925 in the &quot;number&quot; field.</span>
+<span class="sd">        nr = NumericRange(&quot;number&quot;, 10, 5925)</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        __init__(self, fieldname, start, end, startexcl=False, endexcl=False, boost=1.0, constantscore=True):</span>
+<span class="sd">            Initializes a NumericRange object with the specified parameters.</span>
+
+<span class="sd">        simplify(self, ixreader):</span>
+<span class="sd">            Simplifies the range query by compiling it and calling the simplify method on the compiled query.</span>
+
+<span class="sd">        estimate_size(self, ixreader):</span>
+<span class="sd">            Estimates the size of the range query by compiling it and calling the estimate_size method on the compiled query.</span>
+
+<span class="sd">        estimate_min_size(self, ixreader):</span>
+<span class="sd">            Estimates the minimum size of the range query by compiling it and calling the estimate_min_size method on the compiled query.</span>
+
+<span class="sd">        docs(self, searcher):</span>
+<span class="sd">            Retrieves the documents that match the range query by compiling it and calling the docs method on the compiled query.</span>
+
+<span class="sd">        _compile_query(self, ixreader):</span>
+<span class="sd">            Compiles the range query by preparing the start and end values, generating subqueries for different resolutions, and combining them into a single query.</span>
+
+<span class="sd">        matcher(self, searcher, context=None):</span>
+<span class="sd">            Retrieves the matcher for the range query by compiling it and calling the matcher method on the compiled query.</span>
+
+<span class="sd">    Fields:</span>
+<span class="sd">        fieldname: The name of the field to search.</span>
+<span class="sd">        start: Match terms equal to or greater than this number. This should be a number type, not a string.</span>
+<span class="sd">        end: Match terms equal to or less than this number. This should be a number type, not a string.</span>
+<span class="sd">        startexcl: If True, the range start is exclusive. If False, the range start is inclusive.</span>
+<span class="sd">        endexcl: If True, the range end is exclusive. If False, the range end is inclusive.</span>
+<span class="sd">        boost: Boost factor that should be applied to the raw score of results matched by this query.</span>
+<span class="sd">        constantscore: If True, the compiled query returns a constant score (the value of the boost keyword argument) instead of actually scoring the matched terms. This gives a nice speed boost and won&#39;t affect the results in most cases since numeric ranges will almost always be used as a filter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="NumericRange.__init__"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NumericRange.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fieldname</span><span class="p">,</span>
         <span class="n">start</span><span class="p">,</span>
@@ -398,28 +430,35 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">startexcl</span> <span class="o">=</span> <span class="n">startexcl</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">endexcl</span> <span class="o">=</span> <span class="n">endexcl</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span> <span class="o">=</span> <span class="n">constantscore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span> <span class="o">=</span> <span class="n">constantscore</span></div>
 
-    <span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+        <span class="c1"># NumericRange should raise an error if the start and end parameters are not numeric.</span>
+        <span class="c1"># Some of the old tests fail if this is enabled. We need to confirm if this is a bug or not.</span>
+        <span class="c1"># if not isinstance(self.start, (int, float)):</span>
+        <span class="c1">#     raise ValueError(&quot;NumericRange: start parameter must be numeric&quot;)</span>
+        <span class="c1"># if not isinstance(self.end, (int, float)):</span>
+        <span class="c1">#     raise ValueError(&quot;NumericRange: end parameter must be numeric&quot;)</span>
 
-    <span class="k">def</span> <span class="nf">estimate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+<div class="viewcode-block" id="NumericRange.simplify"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NumericRange.simplify">[docs]</a>    <span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">estimate_min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">estimate_min_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span>
+<div class="viewcode-block" id="NumericRange.estimate_size"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NumericRange.estimate_size">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">estimate_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">):</span>
+<div class="viewcode-block" id="NumericRange.estimate_min_size"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NumericRange.estimate_min_size">[docs]</a>    <span class="k">def</span> <span class="nf">estimate_min_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span><span class="o">.</span><span class="n">estimate_min_size</span><span class="p">(</span><span class="n">ixreader</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NumericRange.docs"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NumericRange.docs">[docs]</a>    <span class="k">def</span> <span class="nf">docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">):</span>
         <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">q</span><span class="o">.</span><span class="n">docs</span><span class="p">(</span><span class="n">searcher</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">q</span><span class="o">.</span><span class="n">docs</span><span class="p">(</span><span class="n">searcher</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_compile_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
+<div class="viewcode-block" id="NumericRange._compile_query"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NumericRange._compile_query">[docs]</a>    <span class="k">def</span> <span class="nf">_compile_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">NUMERIC</span>
         <span class="kn">from</span> <span class="nn">whoosh.util.numeric</span> <span class="kn">import</span> <span class="n">tiered_ranges</span>
 
         <span class="n">field</span> <span class="o">=</span> <span class="n">ixreader</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">NUMERIC</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumericRange: field </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="si">!r}</span><span class="s2"> is not numeric&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumericRange: field </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="si">}</span><span class="s2"> is not numeric&quot;</span><span class="p">)</span>
 
         <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
         <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -459,11 +498,11 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">constantscore</span><span class="p">:</span>
             <span class="n">q</span> <span class="o">=</span> <span class="n">wrappers</span><span class="o">.</span><span class="n">ConstantScoreQuery</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">q</span>
+        <span class="k">return</span> <span class="n">q</span></div>
 
-    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NumericRange.matcher"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NumericRange.matcher">[docs]</a>    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compile_query</span><span class="p">(</span><span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">q</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">q</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="DateRange"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.DateRange">[docs]</a><span class="k">class</span> <span class="nc">DateRange</span><span class="p">(</span><span class="n">NumericRange</span><span class="p">):</span>
@@ -493,7 +532,7 @@
             <span class="n">start</span> <span class="o">=</span> <span class="n">datetime_to_long</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">datetime_to_long</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">DateRange</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">fieldname</span><span class="p">,</span>
             <span class="n">start</span><span class="p">,</span>
             <span class="n">end</span><span class="p">,</span>
@@ -504,7 +543,7 @@
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, boost=</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, boost=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">startdate</span><span class="p">,</span>

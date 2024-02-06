@@ -757,10 +757,63 @@ results matched by this query.</p></li>
 <dd><p>A range query for NUMERIC fields. Takes advantage of tiered indexing
 to speed up large ranges by matching at a high resolution at the edges of
 the range and a low resolution in the middle.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Match numbers from 10 to 5925 in the &quot;number&quot; field.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">nr</span> <span class="o">=</span> <span class="n">NumericRange</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5925</span><span class="p">)</span>
-</pre></div>
-</div>
+<dl class="simple">
+<dt>Example Usage:</dt><dd><p># Match numbers from 10 to 5925 in the “number” field.
+nr = NumericRange(“number”, 10, 5925)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.NumericRange.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fieldname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startexcl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endexcl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constantscore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#NumericRange.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NumericRange.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a NumericRange object with the specified parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.NumericRange.simplify">
+<span class="sig-name descname"><span class="pre">simplify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#NumericRange.simplify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NumericRange.simplify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplifies the range query by compiling it and calling the simplify method on the compiled query.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.NumericRange.estimate_size">
+<span class="sig-name descname"><span class="pre">estimate_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#NumericRange.estimate_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NumericRange.estimate_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the size of the range query by compiling it and calling the estimate_size method on the compiled query.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.NumericRange.estimate_min_size">
+<span class="sig-name descname"><span class="pre">estimate_min_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#NumericRange.estimate_min_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NumericRange.estimate_min_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the minimum size of the range query by compiling it and calling the estimate_min_size method on the compiled query.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.NumericRange.docs">
+<span class="sig-name descname"><span class="pre">docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#NumericRange.docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NumericRange.docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the documents that match the range query by compiling it and calling the docs method on the compiled query.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.NumericRange._compile_query">
+<span class="sig-name descname"><span class="pre">_compile_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ixreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#NumericRange._compile_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NumericRange._compile_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compiles the range query by preparing the start and end values, generating subqueries for different resolutions, and combining them into a single query.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="whoosh.query.NumericRange.matcher">
+<span class="sig-name descname"><span class="pre">matcher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">searcher</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/whoosh/query/ranges.html#NumericRange.matcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#whoosh.query.NumericRange.matcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the matcher for the range query by compiling it and calling the matcher method on the compiled query.</p>
+</dd></dl>
+
+<dl class="simple">
+<dt>Fields:</dt><dd><p>fieldname: The name of the field to search.
+start: Match terms equal to or greater than this number. This should be a number type, not a string.
+end: Match terms equal to or less than this number. This should be a number type, not a string.
+startexcl: If True, the range start is exclusive. If False, the range start is inclusive.
+endexcl: If True, the range end is exclusive. If False, the range end is inclusive.
+boost: Boost factor that should be applied to the raw score of results matched by this query.
+constantscore: If True, the compiled query returns a constant score (the value of the boost keyword argument) instead of actually scoring the matched terms. This gives a nice speed boost and won’t affect the results in most cases since numeric ranges will almost always be used as a filter.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
