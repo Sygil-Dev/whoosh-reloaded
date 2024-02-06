@@ -35,7 +35,7 @@ works can be extended or replaced to meet your needs exactly.
 Some of Whoosh's features include:
 
 * Pythonic API.
-* Pure-Python. No compilation or binary packages needed, no mysterious crashes.
+* Pure-Python. No compilation or binary packages are needed, no mysterious crashes.
 * Fielded indexing and search.
 * Fast indexing and retrieval -- faster than any other pure-Python, scoring,
   full-text search solution I know of.
@@ -48,12 +48,12 @@ Whoosh might be useful in the following circumstances:
 
 * Anywhere a pure-Python solution is desirable to avoid having to build/compile
   native libraries (or force users to build/compile them).
-* As a research platform (at least for programmers that find Python easier to
-  read and work with than Java ;)
+* As a research platform (at least for programmers who find Python easier to
+  read and work with Java ;)
 * When an easy-to-use Pythonic interface is more important to you than raw
   speed. 
 
-Whoosh was created by Matt Chaput and is maintained currently by the Sygil-Dev Organization. It was originally created for use in the online help system of Side Effects Software's 3D animation software Houdini. Side Effects Software Inc. graciously agreed to open-source the code.
+Whoosh was created by Matt Chaput and is maintained currently by the Sygil-Dev Organization. It was created for use in the online help system of Side Effects Software's 3D animation software Houdini. Side Effects Software Inc. graciously agreed to open-source the code.
 
 This software is licensed under the terms of the simplified BSD (A.K.A. "two
 clause" or "FreeBSD") license. See LICENSE.txt for information.
@@ -64,15 +64,10 @@ Installing Whoosh
 If you have ``setuptools`` or ``pip`` installed, you can use ``easy_install``
 or ``pip`` to download and install Whoosh automatically::
 
-    # install the old version from Pypi
-    $ easy_install Whoosh
-    
-    or
-    
+    # install the old version from PyPI
     $ pip install Whoosh
     
-    
-    # Install the development version from Github.
+    # Install the development version from GitHub.
     $ pip install git+https://github.com/Sygil-Dev/whoosh-reloaded.git
 
 Getting the source.
