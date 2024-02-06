@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 'v4.5.0'
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-builtin-literals
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+  - repo: https://github.com/psf/black
+    rev: '24.1.1'
+    hooks:
+      - id: black
+        language_version: python3.11
+        exclude: ^notebooks
+  - repo: https://github.com/pycqa/isort
+    rev: '5.13.2'
+    hooks:
+      - id: isort
+  - repo: https://github.com/asottile/pyupgrade
+    rev: 'v3.15.0'
+    hooks:
+      - id: pyupgrade
+        args: [ --py38-plus ]
+  -   repo: https://github.com/ikamensh/flynt/
+      rev: '1.0.1'
+      hooks:
+      -   id: flynt

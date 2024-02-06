@@ -42,7 +42,7 @@ Some of Whoosh's features include:
 * Pluggable scoring algorithm (including BM25F), text analysis, storage,
   posting format, etc.
 * Powerful query language.
-* Pure Python spell-checker (as far as I know, the only one). 
+* Pure Python spell-checker (as far as I know, the only one).
 
 Whoosh might be useful in the following circumstances:
 
@@ -51,7 +51,7 @@ Whoosh might be useful in the following circumstances:
 * As a research platform (at least for programmers who find Python easier to
   read and work with Java ;)
 * When an easy-to-use Pythonic interface is more important to you than raw
-  speed. 
+  speed.
 
 Whoosh was created by Matt Chaput and is maintained currently by the Sygil-Dev Organization. It was created for use in the online help system of Side Effects Software's 3D animation software Houdini. Side Effects Software Inc. graciously agreed to open-source the code.
 
@@ -66,7 +66,7 @@ or ``pip`` to download and install Whoosh automatically::
 
     # install the old version from PyPI
     $ pip install Whoosh
-    
+
     # Install the development version from GitHub.
     $ pip install git+https://github.com/Sygil-Dev/whoosh-reloaded.git
 
@@ -77,14 +77,23 @@ You can check out the latest version of the source code on GitHub using git:
 
     $ git clone https://github.com/Sygil-Dev/whoosh-reloaded.git
 
+Contributing
+============
+We use pre-commit to format the code and run some checks before committing to avoid common mistakes. To install it, run the following commands:
+
+```bash
+$ pip install pre-commit
+$ pre-commit install
+```
+
 Learning more
 =============
 
 * Online Documentation:
-  
+
   *   [GitHub Pages](https://sygil-dev.github.io/whoosh-reloaded/)
-  
-  *   [Read the Docs](https://whoosh-reloaded.readthedocs.io/en/latest/) 
+
+  *   [Read the Docs](https://whoosh-reloaded.readthedocs.io/en/latest/)
 
 * Read the old online documentation at https://docs.red-dove.com/whoosh-reloaded/ (Search work properly).
 
@@ -98,3 +107,7 @@ Maintainers
 
 * [Sygil-Dev Organization](https://github.com/Sygil-Dev)
 * [ZeroCool940711](https://github.com/ZeroCool940711)
+
+Discord Server
+==============
+- [Sygil-Dev - Resources](https://discord.gg/H5mftKP5S9)

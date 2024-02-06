@@ -38,7 +38,7 @@ if __name__ == "__main__":
         author_email="matt@whoosh.ca",
         maintainer="Sygil-Dev",
         description="Fast, pure-Python full text indexing, search, and spell checking library.",
-        long_description=open("README.md", "r").read(),
+        long_description=open("README.md").read(),
         long_description_content_type="text/markdown",
         license="Two-clause BSD license",
         keywords="index search text spell",
@@ -51,6 +51,7 @@ if __name__ == "__main__":
         tests_require=[
             "pytest==8.0.0",
             "nose==1.3.7",
+            "pre-commit==3.6.0",
         ],
         cmdclass={"test": PyTest},
         classifiers=[
