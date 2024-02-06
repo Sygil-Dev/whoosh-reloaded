@@ -20,7 +20,7 @@
 > **Notice:** This repository (**whoosh-reloaded**) is a fork and continuation of the Whoosh project.
 
 
->This fork **is actively maintained** by the Sygil-Dev Organization.
+> This fork **is actively maintained** by the Sygil-Dev Organization.
 
 --------------------------------------
 
@@ -82,7 +82,7 @@ Learning more
 
 * Online Documentation:
   
-  *   [Github Pages](https://sygil-dev.github.io/whoosh-reloaded/)
+  *   [GitHub Pages](https://sygil-dev.github.io/whoosh-reloaded/)
   
   *   [Read the Docs](https://whoosh-reloaded.readthedocs.io/en/latest/) 
 
