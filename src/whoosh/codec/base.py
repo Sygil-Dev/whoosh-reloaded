@@ -33,11 +33,10 @@ from bisect import bisect_right
 
 from whoosh import columns
 from whoosh.automata import lev
-from whoosh.compat import abstractmethod, izip, unichr, range
+from whoosh.compat import abstractmethod, izip, range, unichr
 from whoosh.filedb.compound import CompoundStorage
 from whoosh.system import emptybytes
 from whoosh.util import random_name
-
 
 # Exceptions
 
@@ -49,7 +48,7 @@ class OutOfOrderError(Exception):
 # Base classes
 
 
-class Codec(object):
+class Codec:
     length_stats = True
 
     # Per document value writer
@@ -129,7 +128,7 @@ class WrappingCodec(Codec):
 # Writer classes
 
 
-class PerDocumentWriter(object):
+class PerDocumentWriter:
     @abstractmethod
     def start_doc(self, docnum):
         raise NotImplementedError
@@ -166,7 +165,7 @@ class PerDocumentWriter(object):
         pass
 
 
-class FieldWriter(object):
+class FieldWriter:
     def add_postings(self, schema, lengths, items):
         # This method translates a generator of (fieldname, btext, docnum, w, v)
         # postings into calls to start_field(), start_term(), add(),
@@ -274,7 +273,7 @@ class FieldWriter(object):
 # Postings
 
 
-class PostingsWriter(object):
+class PostingsWriter:
     @abstractmethod
     def start_postings(self, format_, terminfo):
         raise NotImplementedError
@@ -297,7 +296,7 @@ class PostingsWriter(object):
 # Reader classes
 
 
-class FieldCursor(object):
+class FieldCursor:
     def first(self):
         raise NotImplementedError
 
@@ -311,7 +310,7 @@ class FieldCursor(object):
         raise NotImplementedError
 
 
-class TermsReader(object):
+class TermsReader:
     @abstractmethod
     def __contains__(self, term):
         raise NotImplementedError
@@ -361,7 +360,7 @@ class TermsReader(object):
         pass
 
 
-class Automata(object):
+class Automata:
     @staticmethod
     def levenshtein_dfa(uterm, maxdist, prefix=0):
         return lev.levenshtein_automaton(uterm, maxdist, prefix).to_dfa()
@@ -393,7 +392,7 @@ class Automata(object):
 # Per-doc value reader
 
 
-class PerDocumentReader(object):
+class PerDocumentReader:
     def close(self):
         # This method is intentionally left empty.
         pass
@@ -498,7 +497,7 @@ class PerDocumentReader(object):
 # Segment base class
 
 
-class Segment(object):
+class Segment:
     """Do not instantiate this object directly. It is used by the Index object
     to hold information about a segment. A list of objects of this class are
     pickled as part of the TOC file.

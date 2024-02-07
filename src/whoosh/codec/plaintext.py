@@ -27,12 +27,20 @@
 
 from ast import literal_eval
 
-from whoosh.compat import b, bytes_type, text_type, integer_types, PY3
-from whoosh.compat import iteritems, dumps, loads, range
 from whoosh.codec import base
+from whoosh.compat import (
+    PY3,
+    b,
+    bytes_type,
+    dumps,
+    integer_types,
+    iteritems,
+    loads,
+    range,
+    text_type,
+)
 from whoosh.matching import ListMatcher
 from whoosh.reading import TermInfo, TermNotFound
-
 
 if not PY3:
 
@@ -46,7 +54,7 @@ _reprable = (bytes_type, text_type, integer_types, float)
 # Mixin classes for producing and consuming the simple text format
 
 
-class LineWriter(object):
+class LineWriter:
     def _print_line(self, indent, command, **kwargs):
         self._dbfile.write(b("  ") * indent)
         self._dbfile.write(command.encode("latin1"))
@@ -59,7 +67,7 @@ class LineWriter(object):
         self._dbfile.write(b("\n"))
 
 
-class LineReader(object):
+class LineReader:
     def __init__(self, dbfile):
         self._dbfile = dbfile
 
@@ -214,8 +222,7 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
 
     def _iter_docfields(self, fieldname):
         for _ in self._iter_docs():
-            for c in self._find_lines(2, "DOCFIELD", fn=fieldname):
-                yield c
+            yield from self._find_lines(2, "DOCFIELD", fn=fieldname)
 
     def _iter_lengths(self, fieldname):
         return (c.get("len", 0) for c in self._iter_docfields(fieldname))

@@ -25,14 +25,14 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import with_statement
+
 from multiprocessing import Process, Queue, cpu_count
 
-from whoosh.compat import queue, range, pickle
 from whoosh.codec import base
-from whoosh.writing import SegmentWriter
+from whoosh.compat import pickle, queue, range
 from whoosh.externalsort import imerge
 from whoosh.util import random_name
+from whoosh.writing import SegmentWriter
 
 
 def finish_subsegment(writer, k=64):

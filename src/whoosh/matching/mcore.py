@@ -51,9 +51,7 @@ method will return ``True``.
 
 from itertools import repeat
 
-from whoosh.compat import izip
-from whoosh.compat import abstractmethod
-
+from whoosh.compat import abstractmethod, izip
 
 # Exceptions
 
@@ -74,7 +72,7 @@ class NoQualityAvailable(Exception):
 # Classes
 
 
-class Matcher(object):
+class Matcher:
     """Base class for all matchers."""
 
     @abstractmethod
@@ -110,8 +108,7 @@ class Matcher(object):
             yield self
         else:
             for cm in self.children():
-                for m in cm.term_matchers():
-                    yield m
+                yield from cm.term_matchers()
 
     def matching_terms(self, id=None):
         """Returns an iterator of ``("fieldname", "termtext")`` tuples for the

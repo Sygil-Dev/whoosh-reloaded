@@ -91,4 +91,3 @@ Expansion models
 The ``ExpansionModel`` subclasses in the :mod:` whoosh.classify` module implement
 different weighting functions for key words. These models are translated into
 Python from original Java implementations in Terrier.
-

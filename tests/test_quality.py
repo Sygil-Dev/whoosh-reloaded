@@ -1,10 +1,9 @@
-from __future__ import with_statement
 import random
 
 from whoosh import fields, matching, scoring
-from whoosh.compat import u, range
+from whoosh.compat import range, u
 from whoosh.filedb.filestore import RamStorage
-from whoosh.util.numeric import length_to_byte, byte_to_length
+from whoosh.util.numeric import byte_to_length, length_to_byte
 
 
 def _discreet(length):

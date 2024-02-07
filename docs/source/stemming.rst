@@ -201,17 +201,3 @@ required by ``CharsetTokenizer`` and ``CharsetFilter``::
 
 (The Sphinx charset table format is described at
 http://www.sphinxsearch.com/docs/current.html#conf-charset-table )
-
-
-
-
-
-
-
-
-
-
-
-
-
-

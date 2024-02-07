@@ -1,13 +1,10 @@
-from __future__ import with_statement
-from datetime import datetime, timedelta
 import random
+from datetime import datetime, timedelta
 
-from whoosh import fields, query, sorting, columns
-from whoosh.compat import u
-from whoosh.compat import permutations, range
+from whoosh import columns, fields, query, sorting
+from whoosh.compat import permutations, range, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
-
 
 try:
     import multiprocessing
@@ -563,7 +560,7 @@ def test_multifacet():
         with ix.searcher() as s:
             facet = sorting.MultiFacet(["tag", "size"])
             r = s.search(query.Every(), groupedby={"tag/size": facet})
-            cats = r.groups(("tag/size"))
+            cats = r.groups("tag/size")
             assert cats == correct
 
 

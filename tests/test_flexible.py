@@ -1,7 +1,5 @@
-from __future__ import with_statement
-
 from whoosh import fields
-from whoosh.compat import u, b
+from whoosh.compat import b, u
 from whoosh.util.testing import TempIndex
 
 

@@ -1,12 +1,10 @@
-from __future__ import with_statement
 import random
 from collections import deque
 
 import pytest
-
 from whoosh import fields, query
-from whoosh.compat import u, izip, range, permutations, text_type
-from whoosh.util.numeric import length_to_byte, byte_to_length
+from whoosh.compat import izip, permutations, range, text_type, u
+from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempIndex
 
 

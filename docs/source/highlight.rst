@@ -405,15 +405,3 @@ an analyzer::
 ``order``
     An ordering function that determines the order of the "top" fragments in the
     output text.
-
-
-
-
-
-
-
-
-
-
-
-

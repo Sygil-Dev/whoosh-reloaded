@@ -27,7 +27,6 @@
 
 from whoosh.automata.fsa import ANY, EPSILON, NFA
 
-
 # Constants for glob
 _LIT = 0
 _STAR = 1

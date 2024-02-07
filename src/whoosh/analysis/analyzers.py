@@ -26,18 +26,18 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from whoosh.analysis.acore import Composable, CompositionError
-from whoosh.analysis.tokenizers import Tokenizer
-from whoosh.analysis.filters import LowercaseFilter
-from whoosh.analysis.filters import StopFilter, STOP_WORDS
-from whoosh.analysis.morph import StemFilter
+from whoosh.analysis.filters import STOP_WORDS, LowercaseFilter, StopFilter
 from whoosh.analysis.intraword import IntraWordFilter
-from whoosh.analysis.tokenizers import default_pattern
-from whoosh.analysis.tokenizers import CommaSeparatedTokenizer
-from whoosh.analysis.tokenizers import IDTokenizer
-from whoosh.analysis.tokenizers import RegexTokenizer
-from whoosh.analysis.tokenizers import SpaceSeparatedTokenizer
+from whoosh.analysis.morph import StemFilter
+from whoosh.analysis.tokenizers import (
+    CommaSeparatedTokenizer,
+    IDTokenizer,
+    RegexTokenizer,
+    SpaceSeparatedTokenizer,
+    Tokenizer,
+    default_pattern,
+)
 from whoosh.lang.porter import stem
-
 
 # Analyzers
 
@@ -83,7 +83,7 @@ class CompositeAnalyzer(Analyzer):
                 )
 
     def __repr__(self):
-        return "%s(%s)" % (
+        return "{}({})".format(
             self.__class__.__name__,
             ", ".join(repr(item) for item in self.items),
         )

@@ -76,7 +76,7 @@ else:
     import io
 
     BytesIO = io.BytesIO
-    callable = lambda o: isinstance(o, collections.Callable)
+    callable = lambda o: isinstance(o, collections.abc.Callable)
     exec_ = eval("exec")
     integer_types = (int,)
     iteritems = lambda o: o.items()
@@ -197,8 +197,7 @@ except ImportError:
             fillers = repeat(fillvalue)
             iters = [chain(it, sentinel(), fillers) for it in args]
             try:
-                for tup in izip(*iters):
-                    yield tup
+                yield from izip(*iters)
             except IndexError:
                 pass
 

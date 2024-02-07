@@ -1,12 +1,11 @@
-from __future__ import with_statement
-from random import randint, choice, sample
+from random import choice, randint, sample
 
 from whoosh import fields, matching, qparser, query
-from whoosh.compat import b, u, range, permutations
+from whoosh.compat import b, permutations, range, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.query import And, Term
-from whoosh.util import make_binary_tree
 from whoosh.scoring import WeightScorer
+from whoosh.util import make_binary_tree
 
 
 def _keys(searcher, docnums):

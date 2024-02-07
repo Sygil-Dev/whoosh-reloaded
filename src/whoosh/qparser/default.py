@@ -30,13 +30,12 @@ import sys
 from whoosh import query
 from whoosh.compat import text_type
 from whoosh.qparser import syntax
-from whoosh.qparser.common import print_debug, QueryParserError
-
+from whoosh.qparser.common import QueryParserError, print_debug
 
 # Query parser object
 
 
-class QueryParser(object):
+class QueryParser:
     """A hand-written query parser built on modular plug-ins. The default
     configuration implements a powerful fielded query language similar to
     Lucene's.

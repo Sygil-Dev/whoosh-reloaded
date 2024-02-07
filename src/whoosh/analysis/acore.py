@@ -27,8 +27,8 @@
 
 from whoosh.compat import iteritems
 
-
 # Exceptions
+
 
 class CompositionError(Exception):
     pass
@@ -36,14 +36,15 @@ class CompositionError(Exception):
 
 # Utility functions
 
+
 def unstopped(tokenstream):
-    """Removes tokens from a token stream where token.stopped = True.
-    """
+    """Removes tokens from a token stream where token.stopped = True."""
     return (t for t in tokenstream if not t.stopped)
 
 
-def entoken(textstream, positions=False, chars=False, start_pos=0,
-            start_char=0, **kwargs):
+def entoken(
+    textstream, positions=False, chars=False, start_pos=0, start_char=0, **kwargs
+):
     """Takes a sequence of unicode strings and yields a series of Token objects
     (actually the same Token object over and over, for performance reasons),
     with the attributes filled in with reasonable values (for example, if
@@ -72,7 +73,8 @@ def entoken(textstream, positions=False, chars=False, start_pos=0,
 
 # Token object
 
-class Token(object):
+
+class Token:
     """
     Represents a "token" (usually a word) extracted from the source text being
     indexed.
@@ -101,8 +103,9 @@ class Token(object):
     ...or, call token.copy() to get a copy of the token object.
     """
 
-    def __init__(self, positions=False, chars=False, removestops=True, mode='',
-                 **kwargs):
+    def __init__(
+        self, positions=False, chars=False, removestops=True, mode="", **kwargs
+    ):
         """
         :param positions: Whether tokens should have the token position in the
             'pos' attribute.
@@ -123,8 +126,9 @@ class Token(object):
         self.__dict__.update(kwargs)
 
     def __repr__(self):
-        parms = ", ".join(f"{name}={value!r}"
-                          for name, value in iteritems(self.__dict__))
+        parms = ", ".join(
+            f"{name}={value!r}" for name, value in iteritems(self.__dict__)
+        )
         return f"{self.__class__.__name__}({parms})"
 
     def copy(self):
@@ -134,7 +138,8 @@ class Token(object):
 
 # Composition support
 
-class Composable(object):
+
+class Composable:
     is_morph = False
 
     def __or__(self, other):
@@ -147,9 +152,9 @@ class Composable(object):
     def __repr__(self):
         attrs = ""
         if self.__dict__:
-            attrs = ", ".join(f"{key}={value!r}"
-                              for key, value
-                              in iteritems(self.__dict__))
+            attrs = ", ".join(
+                f"{key}={value!r}" for key, value in iteritems(self.__dict__)
+            )
         return self.__class__.__name__ + f"({attrs})"
 
     def has_morph(self):

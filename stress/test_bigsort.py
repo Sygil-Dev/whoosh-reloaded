@@ -1,8 +1,10 @@
-import os.path, random, shutil
+import os.path
+import random
+import shutil
 from datetime import datetime
 
 from whoosh import fields, index, query
-from whoosh.compat import text_type, range
+from whoosh.compat import range, text_type
 from whoosh.util import now
 
 

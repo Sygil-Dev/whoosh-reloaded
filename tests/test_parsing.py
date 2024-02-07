@@ -1,5 +1,5 @@
 from whoosh import analysis, fields, query
-from whoosh.compat import u, text_type
+from whoosh.compat import text_type, u
 from whoosh.qparser import default, plugins
 
 

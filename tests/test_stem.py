@@ -1,6 +1,6 @@
 from whoosh.lang.snowball.english import EnglishStemmer
-from whoosh.lang.snowball.french import FrenchStemmer
 from whoosh.lang.snowball.finnish import FinnishStemmer
+from whoosh.lang.snowball.french import FrenchStemmer
 from whoosh.lang.snowball.spanish import SpanishStemmer
 
 

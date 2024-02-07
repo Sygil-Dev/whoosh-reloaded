@@ -25,7 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
 
 from whoosh import matching
 from whoosh.compat import text_type, u
@@ -118,7 +117,7 @@ class CompoundQuery(qcore.Query):
         return 0
 
     def normalize(self):
-        from whoosh.query import Every, TermRange, NumericRange
+        from whoosh.query import Every, NumericRange, TermRange
 
         # Normalize subqueries and merge nested instances of this class
         subqueries = []

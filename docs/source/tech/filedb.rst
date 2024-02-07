@@ -26,4 +26,3 @@ The index directory will contain a set of files for each segment. A segment is l
 
 <segment_number>.fvz
     contains term vectors (forward indexes) for each document. This file is only created if at least one field in the schema stores term vectors. The size will vary based on the number of documents, field length, the formats used for each vector (e.g. storing term positions takes more space than storing frequency only), etc.
-

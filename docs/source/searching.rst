@@ -392,9 +392,3 @@ The ``Results`` object supports the following methods:
     Any result documents that also appear in 'results' are moved to the top
     of the list of result documents. Then any other documents in 'results' are
     added on to the list of result documents.
-
-
-
-
-
-

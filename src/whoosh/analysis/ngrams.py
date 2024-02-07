@@ -25,12 +25,10 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.compat import text_type
-from whoosh.compat import range
 from whoosh.analysis.acore import Token
 from whoosh.analysis.filters import Filter, LowercaseFilter
-from whoosh.analysis.tokenizers import Tokenizer, RegexTokenizer
-
+from whoosh.analysis.tokenizers import RegexTokenizer, Tokenizer
+from whoosh.compat import range, text_type
 
 # Tokenizer
 
@@ -79,7 +77,7 @@ class NgramTokenizer(Tokenizer):
         start_pos=0,
         start_char=0,
         mode="",
-        **kwargs
+        **kwargs,
     ):
         assert isinstance(value, text_type), f"{value!r} is not unicode"
 

@@ -1,9 +1,8 @@
-from __future__ import with_statement
 import inspect
 from datetime import datetime
 
 from whoosh import analysis, fields, formats, qparser, query
-from whoosh.compat import u, text_type, range
+from whoosh.compat import range, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.qparser import dateparse, default, plugins, syntax
 from whoosh.util.times import adatetime
@@ -506,7 +505,7 @@ def test_fuzzy_prefix():
         # Match -> fire is within 2 edits (transpose + delete) of first
         w.add_document(title=u("Fifth"), content=u("The fire is beautiful"))
 
-    from whoosh.qparser import QueryParser, FuzzyTermPlugin
+    from whoosh.qparser import FuzzyTermPlugin, QueryParser
 
     parser = QueryParser("content", ix.schema)
     parser.add_plugin(FuzzyTermPlugin())

@@ -1,11 +1,9 @@
-from __future__ import with_statement
-
 import random
 
 from whoosh import fields
 from whoosh.compat import range, text_type, u
-from whoosh.util.testing import TempIndex
 from whoosh.util import now
+from whoosh.util.testing import TempIndex
 
 
 def test_20000_single():

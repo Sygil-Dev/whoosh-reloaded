@@ -6,8 +6,8 @@ function::
 
 from collections import defaultdict
 
-
 # Conditions
+
 
 def A(base):
     # A   No restrictions on stem
@@ -159,14 +159,22 @@ def a(base):
     # a  Remove ending only after d, f, ph, th, l, er, or, es or t
     c = base[-1]
     l2 = base[-2:]
-    return (c == "d" or c == "f" or l2 == "ph" or l2 == "th" or c == "l"
-            or l2 == "er" or l2 == "or" or l2 == "es" or c == "t")
+    return (
+        c == "d"
+        or c == "f"
+        or l2 == "ph"
+        or l2 == "th"
+        or c == "l"
+        or l2 == "er"
+        or l2 == "or"
+        or l2 == "es"
+        or c == "t"
+    )
 
 
 def b(base):
     # b  Minimum stem length = 3 and do not remove ending after met or ryst
-    return len(base) > 2 and not (base.endswith("met")
-                                  or base.endswith("ryst"))
+    return len(base) > 2 and not (base.endswith("met") or base.endswith("ryst"))
 
 
 def c(base):
@@ -178,16 +186,12 @@ def c(base):
 
 m = [None] * 12
 
-m[11] = dict((
-        ("alistically", B),
-        ("arizability", A),
-        ("izationally", B)))
-m[10] = dict((
-        ("antialness", A),
-        ("arisations", A),
-        ("arizations", A),
-        ("entialness", A)))
-m[9] = dict((
+m[11] = dict((("alistically", B), ("arizability", A), ("izationally", B)))
+m[10] = dict(
+    (("antialness", A), ("arisations", A), ("arizations", A), ("entialness", A))
+)
+m[9] = dict(
+    (
         ("allically", C),
         ("antaneous", A),
         ("antiality", A),
@@ -204,8 +208,11 @@ m[9] = dict((
         ("istically", A),
         ("itousness", A),
         ("izability", A),
-        ("izational", A)))
-m[8] = dict((
+        ("izational", A),
+    )
+)
+m[8] = dict(
+    (
         ("ableness", A),
         ("arizable", A),
         ("entation", A),
@@ -218,8 +225,11 @@ m[8] = dict((
         ("ionalize", A),
         ("iousness", A),
         ("izations", A),
-        ("lessness", A)))
-m[7] = dict((
+        ("lessness", A),
+    )
+)
+m[7] = dict(
+    (
         ("ability", A),
         ("aically", A),
         ("alistic", B),
@@ -259,8 +269,11 @@ m[7] = dict((
         ("ization", F),
         ("izement", A),
         ("oidally", A),
-        ("ousness", A)))
-m[6] = dict((
+        ("ousness", A),
+    )
+)
+m[6] = dict(
+    (
         ("aceous", A),
         ("acious", B),
         ("action", G),
@@ -299,8 +312,11 @@ m[6] = dict((
         ("izable", E),
         ("lessly", A),
         ("nesses", A),
-        ("oidism", A)))
-m[5] = dict((
+        ("oidism", A),
+    )
+)
+m[5] = dict(
+    (
         ("acies", A),
         ("acity", A),
         ("aging", B),
@@ -367,8 +383,11 @@ m[5] = dict((
         ("oidal", A),
         ("oides", A),
         ("otide", A),
-        ("ously", A)))
-m[4] = dict((
+        ("ously", A),
+    )
+)
+m[4] = dict(
+    (
         ("able", A),
         ("ably", A),
         ("ages", B),
@@ -416,8 +435,11 @@ m[4] = dict((
         ("ward", A),
         ("wise", A),
         ("ying", B),
-        ("yish", A)))
-m[3] = dict((
+        ("yish", A),
+    )
+)
+m[3] = dict(
+    (
         ("acy", A),
         ("age", B),
         ("aic", A),
@@ -456,8 +478,11 @@ m[3] = dict((
         ("ize", F),
         ("oid", A),
         ("one", R),
-        ("ous", A)))
-m[2] = dict((
+        ("ous", A),
+    )
+)
+m[2] = dict(
+    (
         ("ae", A),
         ("al", b),
         ("ar", X),
@@ -475,14 +500,10 @@ m[2] = dict((
         ("us", V),
         ("yl", R),
         ("s'", A),
-        ("'s", A)))
-m[1] = dict((
-        ("a", A),
-        ("e", A),
-        ("i", A),
-        ("o", A),
-        ("s", W),
-        ("y", B)))
+        ("'s", A),
+    )
+)
+m[1] = dict((("a", A), ("e", A), ("i", A), ("o", A), ("s", W), ("y", B)))
 
 
 def remove_ending(word):
@@ -490,52 +511,54 @@ def remove_ending(word):
     el = 11
     while el > 0:
         if length - el > 1:
-            ending = word[length - el:]
+            ending = word[length - el :]
             cond = m[el].get(ending)
             if cond:
-                base = word[:length - el]
+                base = word[: length - el]
                 if cond(base):
                     return base
         el -= 1
     return word
 
 
-_endings = (("iev", "ief"),
-            ("uct", "uc"),
-            ("iev", "ief"),
-            ("uct", "uc"),
-            ("umpt", "um"),
-            ("rpt", "rb"),
-            ("urs", "ur"),
-            ("istr", "ister"),
-            ("metr", "meter"),
-            ("olv", "olut"),
-            ("ul", "l", "aoi"),
-            ("bex", "bic"),
-            ("dex", "dic"),
-            ("pex", "pic"),
-            ("tex", "tic"),
-            ("ax", "ac"),
-            ("ex", "ec"),
-            ("ix", "ic"),
-            ("lux", "luc"),
-            ("uad", "uas"),
-            ("vad", "vas"),
-            ("cid", "cis"),
-            ("lid", "lis"),
-            ("erid", "eris"),
-            ("pand", "pans"),
-            ("end", "ens", "s"),
-            ("ond", "ons"),
-            ("lud", "lus"),
-            ("rud", "rus"),
-            ("her", "hes", "pt"),
-            ("mit", "mis"),
-            ("ent", "ens", "m"),
-            ("ert", "ers"),
-            ("et", "es", "n"),
-            ("yt", "ys"),
-            ("yz", "ys"))
+_endings = (
+    ("iev", "ief"),
+    ("uct", "uc"),
+    ("iev", "ief"),
+    ("uct", "uc"),
+    ("umpt", "um"),
+    ("rpt", "rb"),
+    ("urs", "ur"),
+    ("istr", "ister"),
+    ("metr", "meter"),
+    ("olv", "olut"),
+    ("ul", "l", "aoi"),
+    ("bex", "bic"),
+    ("dex", "dic"),
+    ("pex", "pic"),
+    ("tex", "tic"),
+    ("ax", "ac"),
+    ("ex", "ec"),
+    ("ix", "ic"),
+    ("lux", "luc"),
+    ("uad", "uas"),
+    ("vad", "vas"),
+    ("cid", "cis"),
+    ("lid", "lis"),
+    ("erid", "eris"),
+    ("pand", "pans"),
+    ("end", "ens", "s"),
+    ("ond", "ons"),
+    ("lud", "lus"),
+    ("rud", "rus"),
+    ("her", "hes", "pt"),
+    ("mit", "mis"),
+    ("ent", "ens", "m"),
+    ("ert", "ers"),
+    ("et", "es", "n"),
+    ("yt", "ys"),
+    ("yz", "ys"),
+)
 
 
 # Hash the ending rules by the last letter of the target ending
@@ -559,12 +582,11 @@ def fix_ending(word):
                 if c in exceptafter:
                     return word
 
-            return word[:0 - len(target)] + newend
+            return word[: 0 - len(target)] + newend
 
     return word
 
 
 def stem(word):
-    """Returns the stemmed version of the argument string.
-    """
+    """Returns the stemmed version of the argument string."""
     return fix_ending(remove_ending(word))

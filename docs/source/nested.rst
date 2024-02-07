@@ -235,4 +235,3 @@ additional searches for each found document.
 
 Future versions of Whoosh may include "join" queries to make this process more
 efficient (or at least more automatic).
-

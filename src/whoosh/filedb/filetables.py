@@ -30,15 +30,15 @@ on-disk key-value database format. The current format is based heavily on
 D. J. Bernstein's CDB format (http://cr.yp.to/cdb.html).
 """
 
-import os, struct, sys
+import os
+import struct
+import sys
 from binascii import crc32
 from hashlib import md5  # type: ignore @UnresolvedImport
 
-from whoosh.compat import b, bytes_type
-from whoosh.compat import range
-from whoosh.util.numlists import GrowableArray
+from whoosh.compat import b, bytes_type, range
 from whoosh.system import _INT_SIZE, emptybytes
-
+from whoosh.util.numlists import GrowableArray
 
 # Exceptions
 
@@ -85,7 +85,7 @@ _directory_size = 256 * _dir_entry.size
 # Basic hash file
 
 
-class HashWriter(object):
+class HashWriter:
     """Implements a fast on-disk key-value store. This hash uses a two-level
     hashing scheme, where a key is hashed, the low eight bits of the hash value
     are used to index into one of 256 hash tables. This is basically the CDB
@@ -219,7 +219,7 @@ class HashWriter(object):
         return endpos
 
 
-class HashReader(object):
+class HashReader:
     """Reader for the fast on-disk key-value files created by
     :class:`HashWriter`.
     """
@@ -496,8 +496,7 @@ class OrderedHashReader(HashReader):
         if pos is None:
             return
 
-        for item in self._ranges(pos=pos):
-            yield item
+        yield from self._ranges(pos=pos)
 
     def keys_from(self, key):
         """Yields an ordered series of keys equal to or greater than the given
@@ -724,8 +723,7 @@ class FieldedOrderedHashReader(HashReader):
             return
 
         startpos, ixpos, ixsize, ixtype = self.fieldmap[fieldname]
-        for item in self._ranges(pos, ixpos):
-            yield item
+        yield from self._ranges(pos, ixpos)
 
     def terms_from(self, fieldname, btext):
         dbfile = self.dbfile

@@ -11,7 +11,6 @@ import struct
 
 from whoosh.compat import range
 
-
 # Instead of using the character set from the ascii85 algorithm, I put the
 # characters in order so that the encoded text sorts properly (my life would be
 # a lot easier if they had just done that from the start)

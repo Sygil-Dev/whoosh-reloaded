@@ -226,4 +226,3 @@ Is term X in document Y?
     # ...or the slower but easier way
     wordset = set(searcher.vector(500, "content").all_ids())
     return "wobble" in wordset
-

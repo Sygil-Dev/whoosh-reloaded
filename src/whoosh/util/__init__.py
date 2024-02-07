@@ -25,13 +25,14 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import with_statement
-import random, sys, time
+
+import random
+import sys
+import time
 from bisect import insort
 from functools import wraps
 
 from whoosh.compat import range
-
 
 # These must be valid separate characters in CASE-INSENSTIVE filenames
 IDCHARS = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -78,7 +79,7 @@ def make_binary_tree(fn, args, **kwargs):
     return fn(
         make_binary_tree(fn, args[:half], **kwargs),
         make_binary_tree(fn, args[half:], **kwargs),
-        **kwargs
+        **kwargs,
     )
 
 

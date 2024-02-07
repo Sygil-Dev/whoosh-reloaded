@@ -1,7 +1,4 @@
-from __future__ import with_statement
-
 import pytest
-
 from whoosh import collectors, fields, query, searching
 from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage

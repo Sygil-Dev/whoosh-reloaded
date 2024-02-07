@@ -34,18 +34,35 @@ from array import array
 from collections import defaultdict
 
 from whoosh import columns, formats
-from whoosh.compat import b, bytes_type, string_type, integer_types
-from whoosh.compat import dumps, loads, iteritems, range
 from whoosh.codec import base
+from whoosh.compat import (
+    b,
+    bytes_type,
+    dumps,
+    integer_types,
+    iteritems,
+    loads,
+    range,
+    string_type,
+)
 from whoosh.filedb import compound, filetables
-from whoosh.matching import ListMatcher, ReadTooFar, LeafMatcher
+from whoosh.matching import LeafMatcher, ListMatcher, ReadTooFar
 from whoosh.reading import TermInfo, TermNotFound
-from whoosh.system import emptybytes
-from whoosh.system import _SHORT_SIZE, _INT_SIZE, _LONG_SIZE, _FLOAT_SIZE
-from whoosh.system import pack_ushort, unpack_ushort
-from whoosh.system import pack_int, unpack_int, pack_long, unpack_long
-from whoosh.util.numlists import delta_encode, delta_decode
-from whoosh.util.numeric import length_to_byte, byte_to_length
+from whoosh.system import (
+    _FLOAT_SIZE,
+    _INT_SIZE,
+    _LONG_SIZE,
+    _SHORT_SIZE,
+    emptybytes,
+    pack_int,
+    pack_long,
+    pack_ushort,
+    unpack_int,
+    unpack_long,
+    unpack_ushort,
+)
+from whoosh.util.numeric import byte_to_length, length_to_byte
+from whoosh.util.numlists import delta_decode, delta_encode
 
 try:
     import zlib

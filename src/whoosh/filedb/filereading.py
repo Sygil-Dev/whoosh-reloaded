@@ -14,23 +14,22 @@
 # limitations under the License.
 # ===============================================================================
 
-from threading import Lock
 from marshal import loads
+from threading import Lock
 
 from whoosh.fields import FieldConfigurationError
+from whoosh.filedb import misc
 from whoosh.filedb.filepostings import FilePostingReader
 from whoosh.filedb.filetables import (
-    FileTableReader,
     FileListReader,
-    StructHashReader,
+    FileTableReader,
     LengthReader,
+    StructHashReader,
 )
-from whoosh.filedb import misc
 
 # from whoosh.postings import Exclude
 from whoosh.reading import IndexReader, TermNotFound
-from whoosh.util import protected, byte_to_length
-
+from whoosh.util import byte_to_length, protected
 
 # Reader class
 
@@ -67,7 +66,7 @@ class SegmentReader(IndexReader):
         # Field length file
         scorables = schema.scorable_fields()
         if scorables:
-            self.indices = dict((fieldnum, i) for i, fieldnum in enumerate(scorables))
+            self.indices = {fieldnum: i for i, fieldnum in enumerate(scorables)}
             lengthcount = segment.doc_count_all() * len(self.indices)
             flf = storage.open_file(segment.fieldlengths_filename)
             self.fieldlengths = flf.read_array("B", lengthcount)
@@ -242,8 +241,6 @@ class SegmentReader(IndexReader):
         self._open_vectors()
         offset = self.vectorindex.get((docnum, fieldnum))
         if offset is None:
-            raise Exception(
-                f"No vector found for document {docnum} field {fieldid!r}"
-            )
+            raise Exception(f"No vector found for document {docnum} field {fieldid!r}")
 
         return FilePostingReader(self.vpostfile, offset, vformat, stringids=True)

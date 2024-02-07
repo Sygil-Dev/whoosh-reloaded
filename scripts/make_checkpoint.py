@@ -3,13 +3,14 @@
 # Make a "checkpoint" index, capturing the index format created by a certain
 # version of Whoosh
 
-from __future__ import print_function, with_statement
-import os.path, random, sys
+
+import os.path
+import random
+import sys
 from datetime import datetime
 
 from whoosh import fields, index
-from whoosh.compat import u, range
-
+from whoosh.compat import range, u
 
 if len(sys.argv) < 2:
     print("USAGE: make_checkpoint.py <dir>")

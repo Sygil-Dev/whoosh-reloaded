@@ -1,10 +1,9 @@
-from __future__ import with_statement
 import inspect
-from random import choice, randint
 import sys
+from random import choice, randint
 
 from whoosh import fields, query, scoring
-from whoosh.compat import u, range, permutations
+from whoosh.compat import permutations, range, u
 from whoosh.filedb.filestore import RamStorage
 
 
@@ -24,9 +23,7 @@ def test_all():
     ix = storage.create_index(schema)
     w = ix.writer()
     for _ in range(100):
-        w.add_document(
-            text=u(" ").join(choice(domain) for _ in range(randint(10, 20)))
-        )
+        w.add_document(text=u(" ").join(choice(domain) for _ in range(randint(10, 20))))
     w.commit()
 
     # List ABCs that should not be tested

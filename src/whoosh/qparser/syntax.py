@@ -25,13 +25,14 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-import sys, weakref
+import sys
+import weakref
 
 from whoosh import query
-from whoosh.qparser.common import get_single_text, QueryParserError, attach
+from whoosh.qparser.common import QueryParserError, attach, get_single_text
 
 
-class SyntaxNode(object):
+class SyntaxNode:
     """Base class for nodes that make up the abstract syntax tree (AST) of a
     parsed user query string. The AST is an intermediate step, generated
     from the query string, then converted into a :class:`whoosh.query.Query`
@@ -227,7 +228,7 @@ class GroupNode(SyntaxNode):
             self.type,
             [fn(node) for node in self.nodes],
             boost=self.boost,
-            **self.kwargs
+            **self.kwargs,
         )
 
     def query(self, parser):
@@ -412,7 +413,7 @@ class OrGroup(GroupNode):
             def __init__(self, nodes=None, **kwargs):
                 if "scale" in kwargs:
                     del kwargs["scale"]
-                super(ScaledOrGroup, self).__init__(nodes=nodes, scale=scale, **kwargs)
+                super().__init__(nodes=nodes, scale=scale, **kwargs)
 
         return ScaledOrGroup
 

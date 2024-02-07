@@ -25,7 +25,8 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-import struct, sys
+import struct
+import sys
 from array import array
 from binascii import crc32
 from collections import defaultdict
@@ -38,27 +39,47 @@ try:
 except ImportError:
     zlib = None
 
-from whoosh.compat import b, PY3
-from whoosh.compat import loads, dumps
-from whoosh.compat import range, iteritems
-from whoosh.compat import bytes_type, text_type, string_type, integer_types
-from whoosh.compat import array_frombytes, array_tobytes
+from whoosh.automata.fst import GraphReader, GraphWriter
 from whoosh.codec import base
+from whoosh.compat import (
+    PY3,
+    array_frombytes,
+    array_tobytes,
+    b,
+    bytes_type,
+    dumps,
+    integer_types,
+    iteritems,
+    loads,
+    range,
+    string_type,
+    text_type,
+)
 from whoosh.filedb.filestore import Storage
-from whoosh.matching import ListMatcher, ReadTooFar, LeafMatcher
+from whoosh.matching import LeafMatcher, ListMatcher, ReadTooFar
 from whoosh.reading import NoGraphError, TermInfo, TermNotFound
-from whoosh.system import _INT_SIZE, _FLOAT_SIZE, _LONG_SIZE, IS_LITTLE
-from whoosh.system import emptybytes
-from whoosh.system import pack_byte
-from whoosh.system import pack_ushort, unpack_ushort, pack_long, unpack_long
-
-from whoosh.automata.fst import GraphWriter, GraphReader
-from whoosh.util.numeric import byte_to_length, length_to_byte
-from whoosh.util.numeric import to_sortable, from_sortable, NaN
+from whoosh.system import (
+    _FLOAT_SIZE,
+    _INT_SIZE,
+    _LONG_SIZE,
+    IS_LITTLE,
+    emptybytes,
+    pack_byte,
+    pack_long,
+    pack_ushort,
+    unpack_long,
+    unpack_ushort,
+)
+from whoosh.util.numeric import (
+    NaN,
+    byte_to_length,
+    from_sortable,
+    length_to_byte,
+    to_sortable,
+)
 from whoosh.util.numlists import GrowableArray
-from whoosh.util.text import utf8encode, utf8decode
+from whoosh.util.text import utf8decode, utf8encode
 from whoosh.util.times import datetime_to_long, long_to_datetime
-
 
 # Old hash file implementations
 
@@ -101,7 +122,7 @@ unpack_pointer = _pointer_struct.unpack
 # Table classes
 
 
-class HashWriter(object):
+class HashWriter:
     def __init__(self, dbfile, hashtype=2):
         self.dbfile = dbfile
         self.hashtype = hashtype
@@ -196,7 +217,7 @@ class HashWriter(object):
         self.dbfile.close()
 
 
-class HashReader(object):
+class HashReader:
     def __init__(self, dbfile, startoffset=0):
         self.dbfile = dbfile
         self.startoffset = startoffset
@@ -427,8 +448,7 @@ class OrderedHashReader(HashReader):
         if pos is None:
             return
 
-        for x in self._ranges(pos=pos):
-            yield x
+        yield from self._ranges(pos=pos)
 
     def items_from(self, key):
         read = self.read
@@ -792,8 +812,7 @@ class W2LeafMatcher(LeafMatcher):
             block = self._read_block(nextoffset)
             nextoffset = block.nextoffset
             ids = block.read_ids()
-            for id in ids:
-                yield id
+            yield from ids
 
     def next(self):
         if self.i == self.block.count - 1:
@@ -1002,8 +1021,7 @@ class PostingIndexBase(HashReader):
         if pos is None:
             return
 
-        for x in self._ranges(pos=pos):
-            yield x
+        yield from self._ranges(pos=pos)
 
     def __getitem__(self, key):
         k = self.keycoder(key)
@@ -1203,7 +1221,7 @@ class W2PerDocReader(base.PerDocumentReader):
         if self._vectors is None:
             try:
                 self._prep_vectors()
-            except (NameError, IOError):
+            except (NameError, OSError):
                 return False
         return (docnum, fieldname) in self._vectors
 
@@ -1221,7 +1239,7 @@ class W2PerDocReader(base.PerDocumentReader):
 # Single-byte field lengths implementations
 
 
-class ByteLengthsBase(object):
+class ByteLengthsBase:
     magic = b("~LN1")
 
     def __init__(self):
@@ -1414,7 +1432,7 @@ pack_stored_pointer = _stored_pointer_struct.pack
 unpack_stored_pointer = _stored_pointer_struct.unpack
 
 
-class StoredFieldWriter(object):
+class StoredFieldWriter:
     def __init__(self, dbfile):
         self.dbfile = dbfile
         self.length = 0
@@ -1463,7 +1481,7 @@ class StoredFieldWriter(object):
         f.close()
 
 
-class StoredFieldReader(object):
+class StoredFieldReader:
     def __init__(self, dbfile):
         self.dbfile = dbfile
 
@@ -1501,9 +1519,9 @@ class StoredFieldReader(object):
         dbfile.seek(self.basepos)
         for length in lengths:
             vlist = loads(dbfile.read(length) + b("."))
-            vdict = dict(
-                (names[i], vlist[i]) for i in range(len(vlist)) if vlist[i] is not None
-            )
+            vdict = {
+                names[i]: vlist[i] for i in range(len(vlist)) if vlist[i] is not None
+            }
             yield vdict
 
     def __getitem__(self, num):
@@ -1526,9 +1544,7 @@ class StoredFieldReader(object):
         # Recreate a dictionary by putting the field names and values back
         # together by position. We can't just use dict(zip(...)) because we
         # want to filter out the None values.
-        vdict = dict(
-            (names[i], vlist[i]) for i in range(len(vlist)) if vlist[i] is not None
-        )
+        vdict = {names[i]: vlist[i] for i in range(len(vlist)) if vlist[i] is not None}
         return vdict
 
 
@@ -1597,7 +1613,7 @@ class W2Segment(base.Segment):
 # Posting blocks
 
 
-class W2Block(object):
+class W2Block:
     magic = b("Blk3")
 
     infokeys = (
@@ -2122,6 +2138,7 @@ class OLD_DATETIME(OLD_NUMERIC):
 
     def to_text(self, x, shift=0):
         from datetime import datetime
+
         from whoosh.util.times import floor
 
         try:
@@ -2242,7 +2259,7 @@ def text_to_float(text, signed=True):
 
 # Functions for converting sortable representations to and from text.
 
-from whoosh.support.base85 import to_base85, from_base85
+from whoosh.support.base85 import from_base85, to_base85
 
 
 def sortable_int_to_text(x, shift=0):

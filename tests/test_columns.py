@@ -1,10 +1,20 @@
-from __future__ import with_statement
-import inspect, random, sys
+import inspect
+import random
+import sys
 
 from whoosh import columns, fields, query
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import b, u, BytesIO, bytes_type, text_type
-from whoosh.compat import izip, range, dumps, loads
+from whoosh.compat import (
+    BytesIO,
+    b,
+    bytes_type,
+    dumps,
+    izip,
+    loads,
+    range,
+    text_type,
+    u,
+)
 from whoosh.filedb import compound
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex, TempStorage
@@ -54,7 +64,7 @@ def test_multistream():
 
     st = RamStorage()
     msw = compound.CompoundWriter(st)
-    files = dict((name, msw.create_file(name)) for name in "abc")
+    files = {name: msw.create_file(name) for name in "abc"}
     for name, data in domain:
         files[name].write(b(data))
     f = st.create_file("test")
@@ -80,7 +90,7 @@ def test_random_multistream():
         value = randstring(2500)
         domain[name] = value
 
-    outfiles = dict((name, BytesIO(value)) for name, value in domain.items())
+    outfiles = {name: BytesIO(value) for name, value in domain.items()}
 
     with TempStorage() as st:
         msw = compound.CompoundWriter(st, buffersize=1024)

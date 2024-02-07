@@ -28,20 +28,18 @@
 """This module contains classes that allow reading from an index.
 """
 
-from math import log
 from bisect import bisect_right
-from heapq import heapify, heapreplace, heappop, nlargest
+from heapq import heapify, heappop, heapreplace, nlargest
+from math import log
 
 from cached_property import cached_property
 
 from whoosh import columns
-from whoosh.compat import abstractmethod
-from whoosh.compat import zip_, next, iteritems
+from whoosh.compat import abstractmethod, iteritems, next, zip_
 from whoosh.filedb.filestore import OverlayStorage
 from whoosh.matching import MultiMatcher
 from whoosh.support.levenshtein import distance
 from whoosh.system import emptybytes
-
 
 # Exceptions
 
@@ -61,7 +59,7 @@ class TermNotFound(Exception):
 # Term Info base class
 
 
-class TermInfo(object):
+class TermInfo:
     """Represents a set of statistics about a term. This object is returned by
     :meth:`IndexReader.term_info`. These statistics may be useful for
     optimizations and scoring algorithms.
@@ -145,7 +143,7 @@ class TermInfo(object):
 # Reader base class
 
 
-class IndexReader(object):
+class IndexReader:
     """Do not instantiate this object directly. Instead use Index.reader()."""
 
     def __enter__(self):
@@ -1224,8 +1222,7 @@ class MultiReader(IndexReader):
 
     def all_stored_fields(self):
         for reader in self.readers:
-            for result in reader.all_stored_fields():
-                yield result
+            yield from reader.all_stored_fields()
 
     def doc_count_all(self):
         return sum(dr.doc_count_all() for dr in self.readers)
@@ -1281,7 +1278,7 @@ def combine_terminfos(tis):
     return TermInfo(w, df, ml, xl, xw, mid, xid)
 
 
-class MultiCursor(object):
+class MultiCursor:
     def __init__(self, cursors):
         self._cursors = [c for c in cursors if c.is_valid()]
         self._low = []

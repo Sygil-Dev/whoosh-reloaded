@@ -48,7 +48,6 @@ The highlighting system has four main elements.
 See :doc:`/highlight` for more information.
 """
 
-from __future__ import division
 
 from collections import deque
 from heapq import nlargest
@@ -80,7 +79,7 @@ def mkfrag(text, tokens, startchar=None, endchar=None, charsbefore=0, charsafter
     return Fragment(text, tokens, startchar, endchar)
 
 
-class Fragment(object):
+class Fragment:
     """Represents a fragment (extract) from a hit document. This object is
     mainly used to keep track of the start and end points of the fragment and
     the "matched" character ranges inside; it does not contain the text of the
@@ -194,7 +193,7 @@ def set_matched_filter_phrases(tokens, text, terms, phrases):
     """
     Implementation note: Because the Token object follows a Singleton pattern,
     we can only read each one once. Because phrase matching requires rescanning,
-    we require a rendered token list (the text parameter) instead. The function must 
+    we require a rendered token list (the text parameter) instead. The function must
     still yield Token objects at the end, so the text list is used as a way to build a list
     of Token indices (the matches set). The yield loop at the end uses this
     to properly set .matched on the yielded Token objects.
@@ -241,9 +240,7 @@ def set_matched_filter_phrases(tokens, text, terms, phrases):
                             """
                             text_sub = text[
                                 current_word_index + 1 : current_word_index + 1 + slop
-                            ][
-                                ::-1
-                            ]  # Substring to scan (reversed)
+                            ][::-1]  # Substring to scan (reversed)
                             len_sub = len(text_sub)
                             next_word_index = (
                                 len_sub - text_sub.index(word) - 1
@@ -276,7 +273,7 @@ def set_matched_filter_phrases(tokens, text, terms, phrases):
 # Fragmenters
 
 
-class Fragmenter(object):
+class Fragmenter:
     def must_retokenize(self):
         """Returns True if this fragmenter requires retokenized text.
 
@@ -607,7 +604,7 @@ class PinpointFragmenter(Fragmenter):
 # Fragment scorers
 
 
-class FragmentScorer(object):
+class FragmentScorer:
     pass
 
 
@@ -664,7 +661,7 @@ def get_text(original, token, replace):
         return original[token.startchar : token.endchar]
 
 
-class Formatter(object):
+class Formatter:
     """Base class for formatters.
 
     For highlighters that return strings, it is usually only necessary to
@@ -864,8 +861,13 @@ class GenshiFormatter(Formatter):
         self.qname = qname
         self.between = between
 
-        from genshi.core import START, END, TEXT  # type: ignore @UnresolvedImport
-        from genshi.core import Attrs, Stream  # type: ignore @UnresolvedImport
+        from genshi.core import (  # type: ignore @UnresolvedImport  # type: ignore @UnresolvedImport
+            END,
+            START,
+            TEXT,
+            Attrs,
+            Stream,
+        )
 
         self.START, self.END, self.TEXT = START, END, TEXT
         self.Attrs, self.Stream = Attrs, Stream
@@ -956,7 +958,7 @@ def highlight(
     return formatter(text, fragments)
 
 
-class Highlighter(object):
+class Highlighter:
     def __init__(
         self,
         fragmenter=None,

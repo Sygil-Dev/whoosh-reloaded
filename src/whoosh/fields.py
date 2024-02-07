@@ -29,21 +29,20 @@
  Contains functions and classes related to fields.
 """
 
-import datetime, fnmatch, re, struct, sys
+import datetime
+import fnmatch
+import re
+import struct
+import sys
 from array import array
 from decimal import Decimal
 
 from whoosh import analysis, columns, formats
-from whoosh.compat import with_metaclass
-from whoosh.compat import itervalues
-from whoosh.compat import bytes_type, string_type, text_type
-from whoosh.system import emptybytes
-from whoosh.system import pack_byte
-from whoosh.util.numeric import to_sortable, from_sortable
-from whoosh.util.numeric import typecode_max, NaN
-from whoosh.util.text import utf8encode, utf8decode
+from whoosh.compat import bytes_type, itervalues, string_type, text_type, with_metaclass
+from whoosh.system import emptybytes, pack_byte
+from whoosh.util.numeric import NaN, from_sortable, to_sortable, typecode_max
+from whoosh.util.text import utf8decode, utf8encode
 from whoosh.util.times import datetime_to_long, long_to_datetime
-
 
 # Exceptions
 
@@ -59,7 +58,7 @@ class UnknownFieldError(Exception):
 # Field Types
 
 
-class FieldType(object):
+class FieldType:
     """
     Represents a field configuration.
 
@@ -134,7 +133,7 @@ class FieldType(object):
             self.vector = None
 
     def __repr__(self):
-        return "%s(format=%r, scorable=%s, stored=%s, unique=%s)" % (
+        return "{}(format={!r}, scorable={}, stored={}, unique={})".format(
             self.__class__.__name__,
             self.format,
             self.scorable,
@@ -690,8 +689,7 @@ class NUMERIC(FieldType):
         # If the user gave us a list of numbers, recurse on the list
         if isinstance(num, (list, tuple)):
             for n in num:
-                for item in self.index(n):
-                    yield item
+                yield from self.index(n)
             return
 
         # word, freq, weight, valuestring
@@ -838,7 +836,7 @@ class DATETIME(NUMERIC):
         :param unique: Whether the value of this field is unique per-document.
         """
 
-        super(DATETIME, self).__init__(
+        super().__init__(
             int, 64, stored=stored, unique=unique, shift_step=8, sortable=sortable
         )
 
@@ -1357,7 +1355,7 @@ class ReverseField(FieldWrapper):
 
 class MetaSchema(type):
     def __new__(cls, name, bases, attrs):
-        super_new = super(MetaSchema, cls).__new__
+        super_new = super().__new__
         if not any(b for b in bases if isinstance(b, MetaSchema)):
             # If this isn't a subclass of MetaSchema, don't do anything special
             return super_new(cls, name, bases, attrs)
@@ -1381,7 +1379,7 @@ class MetaSchema(type):
         return Schema(**self._clsfields)
 
 
-class Schema(object):
+class Schema:
     """
     Represents the collection of fields in an index. Maps field names to
     FieldType objects which define the behavior of each field.

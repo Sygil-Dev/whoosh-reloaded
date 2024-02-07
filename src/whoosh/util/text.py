@@ -25,10 +25,10 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-import codecs, re
+import codecs
+import re
 
-from whoosh.compat import string_type, u, byte
-
+from whoosh.compat import byte, string_type, u
 
 # Note: these functions return a tuple of (text, length), so when you call
 # them, you have to add [0] on the end, e.g. str = utf8encode(unicode)[0]

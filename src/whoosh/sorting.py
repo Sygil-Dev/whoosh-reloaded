@@ -28,14 +28,12 @@
 from array import array
 from collections import defaultdict
 
-from whoosh.compat import string_type
-from whoosh.compat import iteritems, izip, range
-
+from whoosh.compat import iteritems, izip, range, string_type
 
 # Faceting objects
 
 
-class FacetType(object):
+class FacetType:
     """Base class for "facets", aspects that can be sorted/faceted."""
 
     maptype = None
@@ -65,7 +63,7 @@ class FacetType(object):
         return "facet"
 
 
-class Categorizer(object):
+class Categorizer:
     """Base class for categorizer objects which compute a key value for a
     document based on certain criteria, for use in sorting/faceting.
 
@@ -224,7 +222,7 @@ class ColumnCategorizer(Categorizer):
         self._creader = None
 
     def __repr__(self):
-        return "%s(%r, %r, reverse=%r)" % (
+        return "{}({!r}, {!r}, reverse={!r})".format(
             self.__class__.__name__,
             self._fieldobj,
             self._fieldname,
@@ -857,7 +855,7 @@ class MultiFacet(FacetType):
             )
 
 
-class Facets(object):
+class Facets:
     """Maps facet names to :class:`FacetType` objects, for creating multiple
     groupings of documents.
 
@@ -951,7 +949,7 @@ class Facets(object):
 # Objects for holding facet groups
 
 
-class FacetMap(object):
+class FacetMap:
     """Base class for objects holding the results of grouping search results by
     a Facet. Use an object's ``as_dict()`` method to access the results.
 

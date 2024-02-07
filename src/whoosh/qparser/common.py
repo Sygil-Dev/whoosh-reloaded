@@ -35,13 +35,12 @@ import sys
 
 class QueryParserError(Exception):
     def __init__(self, cause, msg=None):
-        super(QueryParserError, self).__init__(str(cause))
+        super().__init__(str(cause))
         self.cause = cause
 
 
 def get_single_text(field, text, **kwargs):
-    """Returns the first token from an analyzer's output.
-    """
+    """Returns the first token from an analyzer's output."""
 
     for t in field.process_text(text, mode="query", **kwargs):
         return t

@@ -1,12 +1,9 @@
-from __future__ import print_function
-
 import itertools
 import operator
 import sys
 from bisect import bisect_left
 
-from whoosh.compat import iteritems, next, text_type, unichr, range
-
+from whoosh.compat import iteritems, next, range, text_type, unichr
 
 unull = unichr(0)
 
@@ -14,7 +11,7 @@ unull = unichr(0)
 # Marker constants
 
 
-class Marker(object):
+class Marker:
     def __init__(self, name):
         self.name = name
 
@@ -29,7 +26,7 @@ ANY = Marker("ANY")
 # Base class
 
 
-class FSA(object):
+class FSA:
     def __init__(self, initial):
         self.initial = initial
         self.transitions = {}
@@ -68,8 +65,7 @@ class FSA(object):
             yield sofar
         for label in sorted(self.get_labels(state)):
             newstate = self.next_state(state, label)
-            for string in self.generate_all(newstate, sofar + label):
-                yield string
+            yield from self.generate_all(newstate, sofar + label)
 
     def start(self):
         return self.initial
@@ -129,7 +125,7 @@ class NFA(FSA):
                 end = "||" if self.is_final(dests) else ""
 
     def start(self):
-        return frozenset(self._expand(set([self.initial])))
+        return frozenset(self._expand({self.initial}))
 
     def add_transition(self, src, label, dest):
         self.transitions.setdefault(src, {}).setdefault(label, set()).add(dest)
@@ -384,7 +380,7 @@ class DFA(FSA):
         assert new_initial is not None
 
         # Apply mapping to existing transitions
-        new_finals = set(mapping[s] for s in final_states)
+        new_finals = {mapping[s] for s in final_states}
         for state, d in iteritems(new_trans):
             trans = transitions[state]
             for label, dest in iteritems(trans):
@@ -629,7 +625,7 @@ def optional_nfa(n):
 # Daciuk Mihov DFA construction algorithm
 
 
-class DMNode(object):
+class DMNode:
     def __init__(self, n):
         self.n = n
         self.arcs = {}

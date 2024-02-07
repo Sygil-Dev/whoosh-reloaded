@@ -2,9 +2,8 @@ import gzip
 import os.path
 from bisect import bisect_left
 
-from whoosh.compat import permutations
-from whoosh.compat import range
 from whoosh.automata import fsa, glob, lev
+from whoosh.compat import permutations, range
 from whoosh.support.levenshtein import levenshtein
 
 
@@ -156,7 +155,7 @@ def test_glob_range():
     assert not nfa.accept("acc")
 
 
-class Skipper(object):
+class Skipper:
     def __init__(self, data):
         self.data = data
         self.i = 0

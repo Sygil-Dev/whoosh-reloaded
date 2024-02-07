@@ -29,13 +29,12 @@
 This module implements a general external merge sort for Python objects.
 """
 
-from __future__ import with_statement
 
-import os, tempfile
+import os
+import tempfile
 from heapq import heapify, heappop, heapreplace
 
 from whoosh.compat import dump, load
-
 
 ## Python 3.2 had a bug that make marshal.load unusable
 # if (hasattr(platform, "python_implementation")
@@ -84,7 +83,7 @@ except ImportError:
                 return
 
 
-class SortingPool(object):
+class SortingPool:
     """This object implements a general K-way external merge sort for Python
     objects.
 
@@ -148,8 +147,7 @@ class SortingPool(object):
 
     def _merge_runs(self, paths):
         iters = [self._read_run(path) for path in paths]
-        for item in imerge(iters):
-            yield item
+        yield from imerge(iters)
 
     def add(self, item):
         """Adds `item` to the pool to be sorted."""

@@ -25,10 +25,9 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.compat import u, text_type
 from whoosh.analysis.acore import Composable, Token
+from whoosh.compat import text_type, u
 from whoosh.util.text import rcompile
-
 
 default_pattern = rcompile(r"[\w\*]+(\.?[\w\*]+)*")
 
@@ -62,7 +61,7 @@ class IDTokenizer(Tokenizer):
         start_pos=0,
         start_char=0,
         mode="",
-        **kwargs
+        **kwargs,
     ):
         assert isinstance(value, text_type), f"{value!r} is not unicode"
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
@@ -117,7 +116,7 @@ class RegexTokenizer(Tokenizer):
         start_char=0,
         tokenize=True,
         mode="",
-        **kwargs
+        **kwargs,
     ):
         """
         :param value: The unicode string to tokenize.
@@ -250,7 +249,7 @@ class CharsetTokenizer(Tokenizer):
         start_char=0,
         tokenize=True,
         mode="",
-        **kwargs
+        **kwargs,
     ):
         """
         :param value: The unicode string to tokenize.

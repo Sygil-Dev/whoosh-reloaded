@@ -1,7 +1,3 @@
-# encoding: utf-8
-
-from __future__ import with_statement
-
 import random
 
 from whoosh.compat import b, iteritems, range
@@ -71,7 +67,7 @@ def test_hash_contents():
         ("whiskey", "xray"),
     ]
     # Convert to bytes
-    samp = set((b(k), b(v)) for k, v in samp)
+    samp = {(b(k), b(v)) for k, v in samp}
 
     with TempStorage("hashcontents") as st:
         hw = HashWriter(st.create_file("test.hsh"))
@@ -85,8 +81,8 @@ def test_hash_contents():
         for key, value in probes:
             assert hr[key] == value
 
-        assert set(hr.keys()) == set([k for k, v in samp])
-        assert set(hr.values()) == set([v for k, v in samp])
+        assert set(hr.keys()) == {k for k, v in samp}
+        assert set(hr.values()) == {v for k, v in samp}
         assert set(hr.items()) == samp
 
         hr.close()
@@ -104,7 +100,7 @@ def test_random_hash():
         return b(s)
 
     with TempStorage("randomhash") as st:
-        samp = dict((randstring(), randstring()) for _ in range(times))
+        samp = {randstring(): randstring() for _ in range(times)}
 
         hw = HashWriter(st.create_file("test.hsh"))
         for k, v in iteritems(samp):

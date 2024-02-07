@@ -26,5 +26,3 @@ Exceptions
 ==========
 
 .. autoexception:: IndexingError
-
-

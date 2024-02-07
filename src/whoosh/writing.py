@@ -25,8 +25,9 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import with_statement
-import threading, time
+
+import threading
+import time
 from bisect import bisect_right
 from contextlib import contextmanager
 
@@ -38,7 +39,6 @@ from whoosh.index import LockError
 from whoosh.util import fib, random_name
 from whoosh.util.filelock import try_for
 from whoosh.util.text import utf8encode
-
 
 # Exceptions
 
@@ -193,7 +193,7 @@ class PostingPool(SortingPool):
 # Writer base class
 
 
-class IndexWriter(object):
+class IndexWriter:
     """High-level object for writing to an index.
 
     To get a writer for a particular index, call
@@ -624,13 +624,13 @@ class SegmentWriter(IndexWriter):
         self._check_state()
         if self._added:
             raise Exception("Can't modify schema after adding data to writer")
-        super(SegmentWriter, self).add_field(fieldname, fieldspec, **kwargs)
+        super().add_field(fieldname, fieldspec, **kwargs)
 
     def remove_field(self, fieldname):
         self._check_state()
         if self._added:
             raise Exception("Can't modify schema after adding data to writer")
-        super(SegmentWriter, self).remove_field(fieldname)
+        super().remove_field(fieldname)
 
     def has_deletions(self):
         """
@@ -709,7 +709,7 @@ class SegmentWriter(IndexWriter):
 
             pdw.start_doc(self.docnum)
             # Set disjunction includes dynamic fields (can be different for each document)
-            for fieldname in fieldnames | set(s for s in stored if s in self.schema):
+            for fieldname in fieldnames | {s for s in stored if s in self.schema}:
                 fieldobj = schema[fieldname]
                 length = reader.doc_field_length(docnum, fieldname)
                 pdw.add_field(fieldname, fieldobj, stored.get(fieldname), length)
@@ -730,9 +730,9 @@ class SegmentWriter(IndexWriter):
     def add_reader(self, reader):
         self._check_state()
         basedoc = self.docnum
-        ndxnames = set(
+        ndxnames = {
             fname for fname in reader.indexed_field_names() if fname in self.schema
-        )
+        }
         fieldnames = set(self.schema.names()) | ndxnames
 
         docmap = self.write_per_doc(fieldnames, reader)
@@ -839,10 +839,10 @@ class SegmentWriter(IndexWriter):
         # We have a write lock, nothing is changing. Only cache if kwargs is emtpy
         # and the SegmentWriter is still open.
         if kwargs or self.is_closed:
-            return super(SegmentWriter, self).searcher(**kwargs)
+            return super().searcher(**kwargs)
 
         if self._searcher is None:
-            s = super(SegmentWriter, self).searcher()
+            s = super().searcher()
             self._searcher = s
             s._orig_close = s.close  # called in _finish()
             s.close = lambda: None

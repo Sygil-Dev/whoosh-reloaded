@@ -185,7 +185,7 @@ replace the default English tokens with your own regular expressions.
 
 The :class:` whoosh.qparser.OperatorsPlugin` implements the ability to use AND,
 OR, NOT, ANDNOT, and ANDMAYBE clauses in queries. You can instantiate a new
-``OperatorsPlugin`` and use the ``And``, ``Or``, ``Not``, ``AndNot``, and 
+``OperatorsPlugin`` and use the ``And``, ``Or``, ``Not``, ``AndNot``, and
 ``AndMaybe`` keyword arguments to change the token patterns::
 
     # Use Spanish equivalents instead of AND and OR
@@ -430,8 +430,3 @@ use the ``clean`` keyword argument::
 
 Operators earlier in the list bind more closely than operators later in the
 list.
-
-
-
-
-

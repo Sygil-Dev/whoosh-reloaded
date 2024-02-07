@@ -33,17 +33,22 @@ occurance of a term.
 
 from collections import defaultdict
 
-from whoosh.analysis import unstopped, entoken
-from whoosh.compat import iteritems, dumps, loads, b
-from whoosh.system import emptybytes
-from whoosh.system import _INT_SIZE, _FLOAT_SIZE
-from whoosh.system import pack_uint, unpack_uint, pack_float, unpack_float
-
+from whoosh.analysis import entoken, unstopped
+from whoosh.compat import b, dumps, iteritems, loads
+from whoosh.system import (
+    _FLOAT_SIZE,
+    _INT_SIZE,
+    emptybytes,
+    pack_float,
+    pack_uint,
+    unpack_float,
+    unpack_uint,
+)
 
 # Format base class
 
 
-class Format(object):
+class Format:
     """Abstract base class representing a storage format for a field or vector.
     Format objects are responsible for writing and reading the low-level
     representation of a field. It controls what kind/level of information to
@@ -147,7 +152,7 @@ class Existence(Format):
 
     def word_values(self, value, analyzer, **kwargs):
         fb = self.field_boost
-        wordset = set(t.text for t in tokens(value, analyzer, kwargs))
+        wordset = {t.text for t in tokens(value, analyzer, kwargs)}
         return ((w, 1, fb, emptybytes) for w in wordset)
 
     def encode(self, value):

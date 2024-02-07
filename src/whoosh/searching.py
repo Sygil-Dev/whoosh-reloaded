@@ -29,14 +29,13 @@
 """
 
 
-from __future__ import division
 import copy
 import weakref
 from math import ceil
 
 from whoosh import classify, highlight, query, scoring
-from whoosh.compat import iteritems, itervalues, iterkeys, range
-from whoosh.idsets import DocIdSet, BitSet
+from whoosh.compat import iteritems, iterkeys, itervalues, range
+from whoosh.idsets import BitSet, DocIdSet
 from whoosh.reading import TermNotFound
 
 
@@ -62,7 +61,7 @@ class TimeLimit(Exception):
 # Context class
 
 
-class SearchContext(object):
+class SearchContext:
     """A container for information about the current search that may be used
     by the collector or the query objects to change how they operate.
     """
@@ -98,7 +97,7 @@ class SearchContext(object):
 # Searcher class
 
 
-class Searcher(object):
+class Searcher:
     """Wraps an :class:`~whoosh.reading.IndexReader` object and provides
     methods for searching the index.
     """
@@ -614,7 +613,7 @@ class Searcher(object):
             [query.Term(fieldname, word, boost=weight) for word, weight in kts]
         )
 
-        return self.search(q, limit=top, filter=filter, mask=set([docnum]))
+        return self.search(q, limit=top, filter=filter, mask={docnum})
 
     def search_page(self, query, pagenum, pagelen=10, **kwargs):
         """This method is Like the :meth:`Searcher.search` method, but returns
@@ -979,7 +978,7 @@ class Searcher(object):
         return sqc.correct_query(q, qstring)
 
 
-class Results(object):
+class Results:
     """This object is returned by a Searcher. This object represents the
     results of a search query. You can mostly use it as if it was a list of
     dictionaries, where each dictionary is the stored fields of the document at
@@ -1398,7 +1397,7 @@ class Results(object):
         self.top_n = arein + notin + other
 
 
-class Hit(object):
+class Hit:
     """Represents a single search result ("hit") in a Results object.
 
     This object acts like a dictionary of the matching document's stored
@@ -1611,7 +1610,7 @@ class Hit(object):
         raise NotImplementedError("You cannot modify a search result")
 
 
-class ResultsPage(object):
+class ResultsPage:
     """Represents a single page out of a longer list of results, as returned
     by :func:`whoosh.searching.Searcher.search_page`. Supports a subset of the
     interface of the :class:`~whoosh.searching.Results` object, namely getting

@@ -198,7 +198,7 @@ def write_postings(schema, termtable, postwriter, postiter):
         )
 
 
-class LengthSpool(object):
+class LengthSpool:
     def __init__(self, filename):
         self.filename = filename
         self.file = None
@@ -224,7 +224,7 @@ class LengthSpool(object):
         f.close()
 
 
-class PoolBase(object):
+class PoolBase:
     def __init__(self, dir):
         self._dir = dir
         self._fieldlength_totals = defaultdict(int)

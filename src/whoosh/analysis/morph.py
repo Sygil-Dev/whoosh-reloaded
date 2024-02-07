@@ -92,7 +92,7 @@ class StemFilter(Filter):
     def __getstate__(self):
         # Can't pickle a dynamic function, so we have to remove the _stem
         # attribute from the state
-        return dict([(k, self.__dict__[k]) for k in self.__dict__ if k != "_stem"])
+        return {k: self.__dict__[k] for k in self.__dict__ if k != "_stem"}
 
     def __setstate__(self, state):
         # Check for old instances of StemFilter class, which didn't have a
@@ -197,7 +197,7 @@ class PyStemmerFilter(StemFilter):
     def __getstate__(self):
         # Can't pickle a dynamic function, so we have to remove the _stem
         # attribute from the state
-        return dict([(k, self.__dict__[k]) for k in self.__dict__ if k != "_stem"])
+        return {k: self.__dict__[k] for k in self.__dict__ if k != "_stem"}
 
     def __setstate__(self, state):
         # Check for old instances of StemFilter class, which didn't have a

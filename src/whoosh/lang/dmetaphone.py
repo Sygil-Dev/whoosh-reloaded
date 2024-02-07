@@ -1,5 +1,3 @@
-# coding= utf-8
-
 # This script implements the Double Metaphone algorythm (c) 1998, 1999 by
 # Lawrence Philips. It was translated to Python from the C source written by
 # Kevin Atkinson (http://aspell.net/metaphone/) By Andrew Collins - January 12,

@@ -1,10 +1,11 @@
-from __future__ import with_statement, print_function
-import fnmatch, logging, os.path, re
+import fnmatch
+import logging
+import os.path
+import re
 
 from whoosh import analysis, fields, index, qparser, query, scoring
 from whoosh.compat import range
 from whoosh.util import now
-
 
 log = logging.getLogger(__name__)
 

@@ -39,18 +39,33 @@ use in (at least) spell checking.
 """
 
 
-import sys, copy
+import copy
+import sys
 from array import array
 from hashlib import sha1  # type: ignore @UnresolvedImport
 
-from whoosh.compat import b, u, BytesIO
-from whoosh.compat import range, iteritems, iterkeys, izip, array_tobytes
-from whoosh.compat import bytes_type, text_type
+from whoosh.compat import (
+    BytesIO,
+    array_tobytes,
+    b,
+    bytes_type,
+    iteritems,
+    iterkeys,
+    izip,
+    range,
+    text_type,
+    u,
+)
 from whoosh.filedb.structfile import StructFile
-from whoosh.system import _INT_SIZE
-from whoosh.system import pack_byte, pack_int, pack_uint, pack_long
-from whoosh.system import emptybytes
-from whoosh.util.text import utf8encode, utf8decode
+from whoosh.system import (
+    _INT_SIZE,
+    emptybytes,
+    pack_byte,
+    pack_int,
+    pack_long,
+    pack_uint,
+)
+from whoosh.util.text import utf8decode, utf8encode
 from whoosh.util.varints import varint
 
 
@@ -73,7 +88,7 @@ MULTIBYTE_LABEL = 32
 # FST Value types
 
 
-class Values(object):
+class Values:
     """Base for classes the describe how to encode and decode FST values."""
 
     @staticmethod
@@ -349,7 +364,7 @@ class IntListValues(SequenceValues):
 # Node-like interface wrappers
 
 
-class Node(object):
+class Node:
     """A slow but easier-to-use wrapper for FSA/DAWGs. Translates the low-level
     arc-based interface of GraphReader into Node objects with methods to follow
     edges.
@@ -376,10 +391,10 @@ class Node(object):
         if self.address is None:
             d = {}
         else:
-            d = dict(
-                (arc.label, Node(owner, arc.target, arc.accept))
+            d = {
+                arc.label: Node(owner, arc.target, arc.accept)
                 for arc in self.owner.iter_arcs(self.address)
-            )
+            }
         self._edges = d
 
     def keys(self):
@@ -402,8 +417,7 @@ class Node(object):
             yield sofar
         for key in sorted(self):
             node = self.edge(key)
-            for result in node.flatten(sofar + key):
-                yield result
+            yield from node.flatten(sofar + key)
 
     def flatten_strings(self):
         return (utf8decode(k)[0] for k in self.flatten())
@@ -461,7 +475,7 @@ class IntersectionNode(ComboNode):
 # Cursor
 
 
-class BaseCursor(object):
+class BaseCursor:
     """Base class for a cursor-type object for navigating an FST/word graph,
     represented by a :class:`GraphReader` object.
 
@@ -510,8 +524,7 @@ class BaseCursor(object):
         key in the graph.
         """
 
-        for label in self.prefix():
-            yield label
+        yield from self.prefix()
         c = self.copy()
         while not c.stopped():
             c.follow()
@@ -699,8 +712,7 @@ class Cursor(BaseCursor):
         if not self.stack:
             raise InactiveCursor
 
-        for label in self.prefix():
-            yield label
+        yield from self.prefix()
         arc = copy.copy(self.stack[-1])
         graph = self.graph
         while not arc.accept and arc.target is not None:
@@ -806,7 +818,7 @@ class Cursor(BaseCursor):
         return i
 
 
-class UncompiledNode(object):
+class UncompiledNode:
     # Represents an "in-memory" node used by the GraphWriter before it is
     # written to disk.
 
@@ -878,7 +890,7 @@ class UncompiledNode(object):
             self.value = add(prefix, self.value)
 
 
-class Arc(object):
+class Arc:
     """
     Represents a directed arc between two nodes in an FSA/FST graph.
 
@@ -918,11 +930,11 @@ class Arc(object):
         self.endpos = endpos
 
     def __repr__(self):
-        return "<%r-%s %s%s>" % (
+        return "<{!r}-{} {}{}>".format(
             self.label,
             self.target,
             "." if self.accept else "",
-            (" %r" % self.value) if self.value else "",
+            f" {self.value!r}" if self.value else "",
         )
 
     def __eq__(self, other):
@@ -953,7 +965,7 @@ class Arc(object):
 # Graph writer
 
 
-class GraphWriter(object):
+class GraphWriter:
     """Writes an FSA/FST graph to disk.
 
     Call ``insert(key)`` to insert keys into the graph. You must
@@ -1232,7 +1244,7 @@ class GraphWriter(object):
 # Graph reader
 
 
-class BaseGraphReader(object):
+class BaseGraphReader:
     def cursor(self, rootname=None):
         return Cursor(self, self.root(rootname))
 
@@ -1265,7 +1277,7 @@ class BaseGraphReader(object):
         return list(arc.copy() for arc in self.iter_arcs(address))
 
     def arc_dict(self, address):
-        return dict((arc.label, arc.copy()) for arc in self.iter_arcs(address))
+        return {arc.label: arc.copy() for arc in self.iter_arcs(address)}
 
     def find_path(self, path, arc=None, address=None):
         path = to_labels(path)

@@ -15,12 +15,12 @@
 # ===============================================================================
 
 import os
+import pickle
 import re
 from bisect import bisect_right
 from threading import Lock
 from time import time
 
-import pickle
 from whoosh import __version__
 from whoosh.fields import Schema
 from whoosh.index import (
@@ -28,9 +28,9 @@ from whoosh.index import (
     EmptyIndexError,
     Index,
     IndexVersionError,
+    LockError,
     OutOfDateError,
 )
-from whoosh.index import LockError
 from whoosh.support.bitvector import BitVector
 from whoosh.system import _FLOAT_SIZE, _INT_SIZE
 
@@ -42,7 +42,7 @@ _INDEX_VERSION = -105
 # well as Index for convenience, so they're broken out here.
 
 
-class SegmentDeletionMixin(object):
+class SegmentDeletionMixin:
     """Mix-in for classes that support deleting documents from self.segments."""
 
     def delete_document(self, docnum, delete=True):
@@ -272,7 +272,7 @@ class FileIndex(SegmentDeletionMixin, Index):
         # probably be deleted eventually by a later call to clean_files.
 
         storage = self.storage
-        current_segment_names = set(s.name for s in self.segments)
+        current_segment_names = {s.name for s in self.segments}
 
         tocpattern = _toc_pattern(self.indexname)
         segpattern = _segment_pattern(self.indexname)
@@ -317,7 +317,7 @@ class FileIndex(SegmentDeletionMixin, Index):
 # SegmentSet object
 
 
-class SegmentSet(object):
+class SegmentSet:
     """This class is never instantiated by the user. It is used by the Index
     object to keep track of the segments in the index.
     """
@@ -450,7 +450,7 @@ class SegmentSet(object):
             return MultiReader(readers, schema)
 
 
-class Segment(object):
+class Segment:
     """Do not instantiate this object directly. It is used by the Index object
     to hold information about a segment. A list of objects of this class are
     pickled as part of the TOC file.

@@ -767,5 +767,3 @@ Expert: writing your own facet
 ==============================
 
 TBD.
-
-

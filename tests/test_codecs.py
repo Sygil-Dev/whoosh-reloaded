@@ -1,13 +1,10 @@
-from __future__ import with_statement
 import random
 from array import array
 
 import pytest
-
 from whoosh import analysis, fields, formats, query
-from whoosh.compat import u, b, text_type
-from whoosh.compat import array_tobytes, range
 from whoosh.codec import default_codec
+from whoosh.compat import array_tobytes, b, range, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempStorage
 
@@ -19,7 +16,7 @@ def _make_codec(**kwargs):
     return st, codec, seg
 
 
-class FakeLengths(object):
+class FakeLengths:
     def __init__(self, **lens):
         self.lens = lens
 
@@ -64,7 +61,7 @@ def test_random_termkeys():
         return array_tobytes(a).decode("utf-16")
 
     domain = sorted(
-        set([(random_fieldname(), random_btext().encode("utf-8")) for _ in range(1000)])
+        {(random_fieldname(), random_btext().encode("utf-8")) for _ in range(1000)}
     )
 
     st, codec, seg = _make_codec()
@@ -689,8 +686,8 @@ def test_memory_multiwrite():
 
 # can add a new field to the schema before adding documents
 def test_add_new_field_to_schema():
-    from whoosh.fields import Schema, TEXT
     from whoosh.codec.memory import MemoryCodec, MemWriter
+    from whoosh.fields import TEXT, Schema
 
     codec = MemoryCodec()
     schema = Schema(title=TEXT(stored=True), content=TEXT)
@@ -706,8 +703,8 @@ def test_add_new_field_to_schema():
 
 # can add a reader to the index
 def test_add_reader_to_index():
-    from whoosh.fields import Schema, TEXT
     from whoosh.codec.memory import MemoryCodec, MemWriter
+    from whoosh.fields import TEXT, Schema
 
     # Define the schema for the index
     schema = Schema(title=TEXT(stored=True), content=TEXT)

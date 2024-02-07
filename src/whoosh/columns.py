@@ -46,8 +46,9 @@ provides two important methods: ``writer()`` to return a ``ColumnWriter`` object
 and ``reader()`` to return a ``ColumnReader`` object.
 """
 
-from __future__ import division, with_statement
-import struct, warnings
+
+import struct
+import warnings
 from array import array
 from bisect import bisect_right
 
@@ -56,21 +57,18 @@ try:
 except ImportError:
     zlib = None
 
-from whoosh.compat import b, bytes_type, BytesIO
-from whoosh.compat import array_tobytes, range
-from whoosh.compat import dumps, loads
+from whoosh.compat import BytesIO, array_tobytes, b, bytes_type, dumps, loads, range
 from whoosh.filedb.structfile import StructFile
 from whoosh.idsets import BitSet, OnDiskBitSet
 from whoosh.system import emptybytes
 from whoosh.util.numeric import typecode_max, typecode_min
 from whoosh.util.numlists import GrowableArray
-from whoosh.util.varints import varint, read_varint
-
+from whoosh.util.varints import read_varint, varint
 
 # Base classes
 
 
-class Column(object):
+class Column:
     """Represents a "column" of rows mapping docnums to document values.
 
     The interface requires that you store the start offset of the column, the
@@ -117,7 +115,7 @@ class Column(object):
         return False
 
 
-class ColumnWriter(object):
+class ColumnWriter:
     def __init__(self, dbfile):
         self._dbfile = dbfile
         self._count = 0
@@ -137,7 +135,7 @@ class ColumnWriter(object):
         pass
 
 
-class ColumnReader(object):
+class ColumnReader:
     def __init__(self, dbfile, basepos, length, doccount):
         self._dbfile = dbfile
         self._basepos = basepos
@@ -243,7 +241,7 @@ class VarBytesColumn(Column):
             # ...but if we wrote offsets, make the last byte "X" so we know
             if write_offsets:
                 dbfile.write(offsets.typecode.encode("ascii"))
-                dbfile.write("X".encode("ascii"))
+                dbfile.write(b"X")
 
     class Reader(ColumnReader):
         def __init__(self, dbfile, basepos, length, doccount):
@@ -1072,8 +1070,7 @@ class MultiColumnReader(ColumnReader):
 
     def __iter__(self):
         for r in self._readers:
-            for v in r:
-                yield v
+            yield from r
 
 
 class TranslatingColumnReader(ColumnReader):

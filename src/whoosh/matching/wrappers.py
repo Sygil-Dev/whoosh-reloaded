@@ -25,7 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
 
 from whoosh.matching import mcore
 
@@ -130,7 +129,7 @@ class MultiMatcher(mcore.Matcher):
         self._next_matcher()
 
     def __repr__(self):
-        return "%s(%r, %r, current=%s)" % (
+        return "{}({!r}, {!r}, current={})".format(
             self.__class__.__name__,
             self.matchers,
             self.offsets,
@@ -268,14 +267,14 @@ class FilterMatcher(WrappingMatcher):
             the wrapped matcher that are **not in** the set are used.
         """
 
-        super(FilterMatcher, self).__init__(child)
+        super().__init__(child)
         self._ids = ids
         self._exclude = exclude
         self.boost = boost
         self._find_next()
 
     def __repr__(self):
-        return "%s(%r, %r, %r, boost=%s)" % (
+        return "{}({!r}, {!r}, {!r}, boost={})".format(
             self.__class__.__name__,
             self.child,
             self._ids,
@@ -339,7 +338,7 @@ class InverseMatcher(WrappingMatcher):
     """
 
     def __init__(self, child, limit, missing=None, weight=1.0, id=0):
-        super(InverseMatcher, self).__init__(child)
+        super().__init__(child)
         self.limit = limit
         self._weight = weight
         self.missing = missing or (lambda id: False)

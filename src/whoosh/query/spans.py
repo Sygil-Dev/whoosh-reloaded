@@ -43,15 +43,14 @@ For example, to find documents containing "whoosh" at most 5 positions before
 
 """
 
-from whoosh.matching import mcore, wrappers, binary
-from whoosh.query import Query, And, AndMaybe, Or, Term
+from whoosh.matching import binary, mcore, wrappers
+from whoosh.query import And, AndMaybe, Or, Query, Term
 from whoosh.util import make_binary_tree
-
 
 # Span class
 
 
-class Span(object):
+class Span:
     __slots__ = ("start", "end", "startchar", "endchar", "boost")
 
     def __init__(self, start, end=None, startchar=None, endchar=None, boost=1.0):
@@ -199,7 +198,7 @@ class SpanWrappingMatcher(wrappers.WrappingMatcher):
     """
 
     def __init__(self, child):
-        super(SpanWrappingMatcher, self).__init__(child)
+        super().__init__(child)
         self._spans = None
         if self.is_active():
             self._find_next()
@@ -339,7 +338,7 @@ class SpanFirst(WrappingSpan):
     class SpanFirstMatcher(SpanWrappingMatcher):
         def __init__(self, child, limit=0):
             self.limit = limit
-            super(SpanFirst.SpanFirstMatcher, self).__init__(child)
+            super().__init__(child)
 
         def copy(self):
             return self.__class__(self.child.copy(), limit=self.limit)
@@ -480,7 +479,7 @@ class SpanNear(SpanQuery):
             self.ordered = ordered
             self.mindist = mindist
             isect = binary.IntersectionMatcher(a, b)
-            super(SpanNear.SpanNearMatcher, self).__init__(isect)
+            super().__init__(isect)
 
         def copy(self):
             return self.__class__(
@@ -633,7 +632,7 @@ class SpanNear2(SpanQuery):
             self.ordered = ordered
             self.mindist = mindist
             isect = make_binary_tree(binary.IntersectionMatcher, ms)
-            super(SpanNear2.SpanNear2Matcher, self).__init__(isect)
+            super().__init__(isect)
 
         def copy(self):
             return self.__class__(
@@ -727,7 +726,7 @@ class SpanOr(SpanQuery):
             self.a = a
             self.b = b
             um = binary.UnionMatcher(a, b)
-            super(SpanOr.SpanOrMatcher, self).__init__(um)
+            super().__init__(um)
 
         def _get_spans(self):
             a_active = self.a.is_active()
@@ -798,7 +797,7 @@ class SpanNot(SpanBiQuery):
             self.a = a
             self.b = b
             amm = binary.AndMaybeMatcher(a, b)
-            super(SpanNot._Matcher, self).__init__(amm)
+            super().__init__(amm)
 
         def _get_spans(self):
             if self.a.id() == self.b.id():
@@ -847,7 +846,7 @@ class SpanContains(SpanBiQuery):
             self.a = a
             self.b = b
             im = binary.IntersectionMatcher(a, b)
-            super(SpanContains._Matcher, self).__init__(im)
+            super().__init__(im)
 
         def _get_spans(self):
             spans = []
@@ -893,7 +892,7 @@ class SpanBefore(SpanBiQuery):
             self.a = a
             self.b = b
             im = binary.IntersectionMatcher(a, b)
-            super(SpanBefore._Matcher, self).__init__(im)
+            super().__init__(im)
 
         def _get_spans(self):
             bminstart = min(bspan.start for bspan in self.b.spans())
@@ -923,7 +922,7 @@ class SpanCondition(SpanBiQuery):
         def __init__(self, a, b):
             self.a = a
             im = binary.IntersectionMatcher(a, b)
-            super(SpanCondition._Matcher, self).__init__(im)
+            super().__init__(im)
 
         def _get_spans(self):
             return self.a.spans()
