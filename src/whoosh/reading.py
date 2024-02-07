@@ -59,7 +59,7 @@ class TermNotFound(Exception):
 # Term Info base class
 
 
-class TermInfo(object):
+class TermInfo:
     """Represents a set of statistics about a term. This object is returned by
     :meth:`IndexReader.term_info`. These statistics may be useful for
     optimizations and scoring algorithms.
@@ -143,7 +143,7 @@ class TermInfo(object):
 # Reader base class
 
 
-class IndexReader(object):
+class IndexReader:
     """Do not instantiate this object directly. Instead use Index.reader()."""
 
     def __enter__(self):
@@ -1222,8 +1222,7 @@ class MultiReader(IndexReader):
 
     def all_stored_fields(self):
         for reader in self.readers:
-            for result in reader.all_stored_fields():
-                yield result
+            yield from reader.all_stored_fields()
 
     def doc_count_all(self):
         return sum(dr.doc_count_all() for dr in self.readers)
@@ -1279,7 +1278,7 @@ def combine_terminfos(tis):
     return TermInfo(w, df, ml, xl, xw, mid, xid)
 
 
-class MultiCursor(object):
+class MultiCursor:
     def __init__(self, cursors):
         self._cursors = [c for c in cursors if c.is_valid()]
         self._low = []

@@ -92,7 +92,7 @@ def long_to_datetime(x):
 # Ambiguous datetime object
 
 
-class adatetime(object):
+class adatetime:
     """An "ambiguous" datetime object. This object acts like a
     ``datetime.datetime`` object but can have any of its attributes set to
     None, meaning unspecified.
@@ -301,7 +301,7 @@ class adatetime(object):
 # Time span class
 
 
-class timespan(object):
+class timespan:
     """A span of time between two ``datetime`` or ``adatetime`` objects."""
 
     def __init__(self, start, end):

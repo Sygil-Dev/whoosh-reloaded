@@ -3,7 +3,6 @@
 # Make a "checkpoint" index, capturing the index format created by a certain
 # version of Whoosh
 
-from __future__ import print_function, with_statement
 
 import os.path
 import random

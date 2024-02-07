@@ -1,7 +1,3 @@
-# encoding: utf-8
-
-from __future__ import with_statement
-
 import copy
 from datetime import datetime, timedelta
 
@@ -1641,7 +1637,7 @@ def test_groupedby_with_terms():
         assert len(r) == 2
         assert r.groups("organism") == {"mus": [1, 0]}
         assert r.has_matched_terms()
-        assert r.matched_terms() == set([("content", b("ipfstd1"))])
+        assert r.matched_terms() == {("content", b("ipfstd1"))}
 
 
 def test_buffered_refresh():
@@ -1702,7 +1698,7 @@ def test_terms_with_filter():
         w.add_document(text=u("hotel alfa bravo charlie"))
 
     with ix.searcher() as s:
-        workingset = set([1, 2, 3])
+        workingset = {1, 2, 3}
         q = query.Term("text", u("foxtrot"))
         r = s.search_page(q, pagenum=1, pagelen=5, terms=True, filter=workingset)
 
@@ -1867,7 +1863,7 @@ def test_function_weighting():
             assert not m.supports_block_quality()
 
             r = s.search(q, limit=5)
-            ids = "".join(([hit["id"] for hit in r]))
+            ids = "".join([hit["id"] for hit in r])
             assert ids == "agmsb"
 
             q = query.Or(

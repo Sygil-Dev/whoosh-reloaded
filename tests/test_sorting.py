@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 import random
 from datetime import datetime, timedelta
 
@@ -562,7 +560,7 @@ def test_multifacet():
         with ix.searcher() as s:
             facet = sorting.MultiFacet(["tag", "size"])
             r = s.search(query.Every(), groupedby={"tag/size": facet})
-            cats = r.groups(("tag/size"))
+            cats = r.groups("tag/size")
             assert cats == correct
 
 

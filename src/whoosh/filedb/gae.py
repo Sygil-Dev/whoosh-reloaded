@@ -37,7 +37,7 @@ class DatastoreFile(db.Model):
     mtime = db.IntegerProperty(default=0)
 
     def __init__(self, *args, **kwargs):
-        super(DatastoreFile, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.data = BytesIO()
 
     @classmethod
@@ -78,7 +78,7 @@ class DatastoreFile(db.Model):
         return self.data.getvalue()
 
 
-class MemcacheLock(object):
+class MemcacheLock:
     def __init__(self, name):
         self.name = name
 

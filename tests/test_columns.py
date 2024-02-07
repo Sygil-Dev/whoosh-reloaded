@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 import inspect
 import random
 import sys
@@ -66,7 +64,7 @@ def test_multistream():
 
     st = RamStorage()
     msw = compound.CompoundWriter(st)
-    files = dict((name, msw.create_file(name)) for name in "abc")
+    files = {name: msw.create_file(name) for name in "abc"}
     for name, data in domain:
         files[name].write(b(data))
     f = st.create_file("test")
@@ -92,7 +90,7 @@ def test_random_multistream():
         value = randstring(2500)
         domain[name] = value
 
-    outfiles = dict((name, BytesIO(value)) for name, value in domain.items())
+    outfiles = {name: BytesIO(value) for name, value in domain.items()}
 
     with TempStorage() as st:
         msw = compound.CompoundWriter(st, buffersize=1024)

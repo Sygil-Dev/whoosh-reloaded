@@ -1,7 +1,7 @@
 from whoosh.compat import u
 
 
-class HungarianStemmer(object):
+class HungarianStemmer:
 
     """
     The Hungarian Snowball stemmer.

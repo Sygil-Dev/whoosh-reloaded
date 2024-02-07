@@ -11,7 +11,7 @@ from whoosh.system import _LONG_SIZE
 _bitsperlong = _LONG_SIZE * 8
 
 
-class BitStreamReader(object):
+class BitStreamReader:
     def __init__(self, source):
         self._totalbits = len(source) * _bitsperlong
         self._position = 0

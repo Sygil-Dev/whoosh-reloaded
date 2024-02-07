@@ -72,7 +72,7 @@ class NoQualityAvailable(Exception):
 # Classes
 
 
-class Matcher(object):
+class Matcher:
     """Base class for all matchers."""
 
     @abstractmethod
@@ -108,8 +108,7 @@ class Matcher(object):
             yield self
         else:
             for cm in self.children():
-                for m in cm.term_matchers():
-                    yield m
+                yield from cm.term_matchers()
 
     def matching_terms(self, id=None):
         """Returns an iterator of ``("fieldname", "termtext")`` tuples for the

@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 from whoosh import analysis, classify, fields, formats, query, reading
 from whoosh.compat import text_type, u
 from whoosh.filedb.filestore import RamStorage
@@ -58,9 +56,11 @@ def test_add_text(model=classify.Bo1Model):
     with ix.reader() as r:
         exp = classify.Expander(r, "content", model=model)
         exp.add_text(text)
-        assert set([t[0] for t in exp.expanded_terms(3)]) == set(
-            ["particles", "velocity", "field"]
-        )
+        assert {t[0] for t in exp.expanded_terms(3)} == {
+            "particles",
+            "velocity",
+            "field",
+        }
         exp = classify.Expander(r, "extra", model=model)
         exp.add_text(text)
         assert exp.expanded_terms(3) == []
@@ -80,7 +80,7 @@ def test_keyterms_from_text(model=classify.Bo2Model):
     ix = create_index()
     with ix.searcher() as s:
         keys = list(s.key_terms_from_text("content", text, model=model))
-        assert set([t[0] for t in keys]) == set(["particles", "velocity", "field"])
+        assert {t[0] for t in keys} == {"particles", "velocity", "field"}
         keys = list(s.key_terms_from_text("extra", text, model=model))
         assert keys == []
 

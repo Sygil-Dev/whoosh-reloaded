@@ -59,7 +59,7 @@ def print_debug(level, msg, *args):
 # Parser element objects
 
 
-class Props(object):
+class Props:
     """A dumb little object that just puts copies a dictionary into attibutes
     so I can use dot syntax instead of square bracket string item lookup and
     save a little bit of typing. Used by :class:`Regex`.
@@ -75,7 +75,7 @@ class Props(object):
         return self.__dict__.get(key, default)
 
 
-class ParserBase(object):
+class ParserBase:
     """Base class for date parser elements."""
 
     def to_parser(self, e):
@@ -127,7 +127,7 @@ class Sequence(MultiBase):
             sequence matches like ``a[b[c]]``.
         """
 
-        super(Sequence, self).__init__(elements, name)
+        super().__init__(elements, name)
         self.sep_pattern = sep
         if sep:
             self.sep_expr = rcompile(sep, re.IGNORECASE)
@@ -210,7 +210,7 @@ class Combo(Sequence):
         :param name: a name for this element (for debugging purposes only).
         """
 
-        super(Combo, self).__init__(elements, sep=sep, name=name)
+        super().__init__(elements, sep=sep, name=name)
         self.fn = fn
         self.min = min
         self.max = max
@@ -316,7 +316,7 @@ class Bag(MultiBase):
         :param name: a name for this element (for debugging purposes only).
         """
 
-        super(Bag, self).__init__(elements, name)
+        super().__init__(elements, name)
         self.sep_expr = rcompile(sep, re.IGNORECASE)
         self.onceper = onceper
         self.requireall = requireall
@@ -518,7 +518,7 @@ class PlusMinus(Regex):
         rel_mins = f"((?P<mins>[0-9]+) *({minutes}))?"
         rel_secs = f"((?P<secs>[0-9]+) *({seconds}))?"
 
-        self.pattern = "(?P<dir>[+-]) *%s *%s *%s *%s *%s *%s *%s(?=(\\W|$))" % (
+        self.pattern = "(?P<dir>[+-]) *{} *{} *{} *{} *{} *{} *{}(?=(\\W|$))".format(
             rel_years,
             rel_months,
             rel_weeks,
@@ -601,7 +601,7 @@ class Time12(Regex):
 # Top-level parser classes
 
 
-class DateParser(object):
+class DateParser:
     """Base class for locale-specific parser classes."""
 
     day = Regex(

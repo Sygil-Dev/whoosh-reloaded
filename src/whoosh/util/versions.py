@@ -28,7 +28,7 @@
 from whoosh.util.text import rcompile
 
 
-class BaseVersion(object):
+class BaseVersion:
     @classmethod
     def parse(cls, text):
         obj = cls()
@@ -128,7 +128,7 @@ class SimpleVersion(BaseVersion):
     ]
 
     _ex_bits = {"a": 0, "b": 1, "c": 2, "rc": 10, "z": 15}
-    _bits_ex = dict((v, k) for k, v in _ex_bits.items())
+    _bits_ex = {v: k for k, v in _ex_bits.items()}
 
     __slots__ = ("major", "minor", "release", "ex", "exnum")
 

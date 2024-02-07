@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 from random import randint, shuffle
 
 from nose.tools import assert_equal  # type: ignore @UnresolvedImport
@@ -15,7 +13,7 @@ def test_bigtable():
             return "".join(chr(randint(1, 255)) for _ in range(randint(min, max)))
 
         count = 100000
-        samp = dict((randstring(1, 50), randstring(1, 50)) for _ in range(count))
+        samp = {randstring(1, 50): randstring(1, 50) for _ in range(count)}
 
         fhw = HashWriter(st.create_file("big.hsh"))
         fhw.add_all(iteritems(samp))

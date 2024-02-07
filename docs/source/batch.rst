@@ -106,9 +106,3 @@ So, while ``multisegment=True`` is much faster than a normal writer, you should
 only use it for large batch indexing jobs (or perhaps only for indexing from
 scratch). It should not be the only method you use for indexing, because
 otherwise the number of segments will tend to increase forever!
-
-
-
-
-
-

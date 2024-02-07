@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 from random import choice, randint, sample
 
 from whoosh import fields, matching, qparser, query

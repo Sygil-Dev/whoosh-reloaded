@@ -269,7 +269,7 @@ BYTE_COUNTS = array(
 )
 
 
-class BitVector(object):
+class BitVector:
     """
     Implements a memory-efficient array of bits.
 
@@ -432,7 +432,7 @@ class BitVector(object):
         return BitVector(self.size, bits=self.bits)
 
 
-class BitSet(object):
+class BitSet:
     """A set-like object for holding positive integers. It is dynamically
     backed by either a set or BitVector depending on how many numbers are in
     the set.

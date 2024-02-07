@@ -26,7 +26,7 @@ def delta_decode(nums):
         yield base
 
 
-class GrowableArray(object):
+class GrowableArray:
     def __init__(self, inittype="B", allow_longs=True):
         self.array = array(inittype)
         self._allow_longs = allow_longs
@@ -88,7 +88,7 @@ class GrowableArray(object):
 # Number list encoding base class
 
 
-class NumberEncoding(object):
+class NumberEncoding:
     maxint = None
 
     def write_nums(self, f, numbers):

@@ -25,7 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
 
 from whoosh import matching
 from whoosh.compat import text_type, u

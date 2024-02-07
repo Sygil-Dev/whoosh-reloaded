@@ -34,7 +34,7 @@ class BiMatcher(mcore.Matcher):
     """
 
     def __init__(self, a, b):
-        super(BiMatcher, self).__init__()
+        super().__init__()
         self.a = a
         self.b = b
 
@@ -307,7 +307,7 @@ class DisjunctionMaxMatcher(UnionMatcher):
     # inheritance.
 
     def __init__(self, a, b, tiebreak=0.0):
-        super(DisjunctionMaxMatcher, self).__init__(a, b)
+        super().__init__(a, b)
         self.tiebreak = tiebreak
 
     def copy(self):
@@ -406,7 +406,7 @@ class IntersectionMatcher(AdditiveBiMatcher):
     """Matches the intersection (AND) of the postings in the two sub-matchers."""
 
     def __init__(self, a, b):
-        super(IntersectionMatcher, self).__init__(a, b)
+        super().__init__(a, b)
         self._find_first()
 
     def reset(self):
@@ -562,7 +562,7 @@ class AndNotMatcher(BiMatcher):
     """
 
     def __init__(self, a, b):
-        super(AndNotMatcher, self).__init__(a, b)
+        super().__init__(a, b)
         self._find_first()
 
     def reset(self):

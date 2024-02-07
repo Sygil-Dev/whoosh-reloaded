@@ -25,7 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
 
 import copy
 
@@ -166,7 +165,7 @@ class Phrase(qcore.Query):
         )
 
     def __repr__(self):
-        return "%s(%r, %r, slop=%s, boost=%f)" % (
+        return "{}({!r}, {!r}, slop={}, boost={:f})".format(
             self.__class__.__name__,
             self.fieldname,
             self.words,

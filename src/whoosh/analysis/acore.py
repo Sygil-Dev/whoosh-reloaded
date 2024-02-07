@@ -74,7 +74,7 @@ def entoken(
 # Token object
 
 
-class Token(object):
+class Token:
     """
     Represents a "token" (usually a word) extracted from the source text being
     indexed.
@@ -139,7 +139,7 @@ class Token(object):
 # Composition support
 
 
-class Composable(object):
+class Composable:
     is_morph = False
 
     def __or__(self, other):

@@ -25,7 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
 
 import copy
 from array import array
@@ -82,7 +81,7 @@ def token_lists(q, phrases=True):
 # Utility classes
 
 
-class Lowest(object):
+class Lowest:
     """A value that is always compares lower than any other object except
     itself.
     """
@@ -111,7 +110,7 @@ class Lowest(object):
         return self.__eq__(other) or self.__gt__(other)
 
 
-class Highest(object):
+class Highest:
     """A value that is always compares higher than any other object except
     itself.
     """
@@ -147,7 +146,7 @@ Highest = Highest()
 # Base classes
 
 
-class Query(object):
+class Query:
     """Abstract base class for all queries.
 
     Note that this base class implements __or__, __and__, and __sub__ to allow
@@ -409,8 +408,7 @@ class Query(object):
             yield self
         else:
             for q in self.children():
-                for qq in q.leaves():
-                    yield qq
+                yield from q.leaves()
 
     def iter_all_terms(self, phrases=True):
         """Returns an iterator of (fieldname, text) pairs for all terms in
@@ -435,8 +433,7 @@ class Query(object):
 
         for q in self.leaves():
             if q.has_terms():
-                for t in q.terms(phrases=phrases):
-                    yield t
+                yield from q.terms(phrases=phrases)
 
     def all_tokens(self, boost=1.0):
         """Returns an iterator of :class:`analysis.Token` objects corresponding
@@ -448,13 +445,11 @@ class Query(object):
         """
 
         if self.is_leaf():
-            for token in self.tokens(boost):
-                yield token
+            yield from self.tokens(boost)
         else:
             boost *= self.boost if hasattr(self, "boost") else 1.0
             for child in self.children():
-                for token in child.all_tokens(boost):
-                    yield token
+                yield from child.all_tokens(boost)
 
     def tokens(self, boost=1.0, exreader=None):
         """Yields zero or more :class:`analysis.Token` objects corresponding to
@@ -495,7 +490,7 @@ class Query(object):
 
         # Subclasses should implement the _add_required_to(qset) method
 
-        return set([self])
+        return {self}
 
     def field(self):
         """Returns the field this query matches in, or None if this query does

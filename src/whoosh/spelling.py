@@ -38,7 +38,7 @@ from whoosh.compat import iteritems, range
 # Corrector objects
 
 
-class Corrector(object):
+class Corrector:
     """
     Base class for spelling correction objects. Concrete sub-classes should
     implement the ``_suggestions`` method.
@@ -136,7 +136,7 @@ class ListCorrector(Corrector):
                     seen.add(sug)
                     yield (0 - mxd), sug
 
-    class Skipper(object):
+    class Skipper:
         def __init__(self, data):
             self.data = data
             self.i = 0
@@ -176,7 +176,7 @@ class MultiCorrector(Corrector):
 # Query correction
 
 
-class Correction(object):
+class Correction:
     """
     Represents the corrected version of a user query string. Has the
     following attributes:
@@ -241,7 +241,7 @@ class Correction(object):
 # QueryCorrector objects
 
 
-class QueryCorrector(object):
+class QueryCorrector:
     """
     Base class for objects that correct words in a user query.
     """

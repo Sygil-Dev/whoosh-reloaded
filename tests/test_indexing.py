@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 import random
 from collections import defaultdict
 from datetime import datetime

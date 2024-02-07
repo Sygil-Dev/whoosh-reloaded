@@ -155,7 +155,7 @@ def test_glob_range():
     assert not nfa.accept("acc")
 
 
-class Skipper(object):
+class Skipper:
     def __init__(self, data):
         self.data = data
         self.i = 0

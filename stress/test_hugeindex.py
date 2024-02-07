@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 import struct
 
 from nose.tools import assert_equal  # type: ignore @UnresolvedImport

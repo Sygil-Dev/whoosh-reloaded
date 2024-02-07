@@ -58,7 +58,7 @@ class UnknownFieldError(Exception):
 # Field Types
 
 
-class FieldType(object):
+class FieldType:
     """
     Represents a field configuration.
 
@@ -133,7 +133,7 @@ class FieldType(object):
             self.vector = None
 
     def __repr__(self):
-        return "%s(format=%r, scorable=%s, stored=%s, unique=%s)" % (
+        return "{}(format={!r}, scorable={}, stored={}, unique={})".format(
             self.__class__.__name__,
             self.format,
             self.scorable,
@@ -689,8 +689,7 @@ class NUMERIC(FieldType):
         # If the user gave us a list of numbers, recurse on the list
         if isinstance(num, (list, tuple)):
             for n in num:
-                for item in self.index(n):
-                    yield item
+                yield from self.index(n)
             return
 
         # word, freq, weight, valuestring
@@ -837,7 +836,7 @@ class DATETIME(NUMERIC):
         :param unique: Whether the value of this field is unique per-document.
         """
 
-        super(DATETIME, self).__init__(
+        super().__init__(
             int, 64, stored=stored, unique=unique, shift_step=8, sortable=sortable
         )
 
@@ -1356,7 +1355,7 @@ class ReverseField(FieldWrapper):
 
 class MetaSchema(type):
     def __new__(cls, name, bases, attrs):
-        super_new = super(MetaSchema, cls).__new__
+        super_new = super().__new__
         if not any(b for b in bases if isinstance(b, MetaSchema)):
             # If this isn't a subclass of MetaSchema, don't do anything special
             return super_new(cls, name, bases, attrs)
@@ -1380,7 +1379,7 @@ class MetaSchema(type):
         return Schema(**self._clsfields)
 
 
-class Schema(object):
+class Schema:
     """
     Represents the collection of fields in an index. Maps field names to
     FieldType objects which define the behavior of each field.

@@ -35,7 +35,7 @@ from whoosh.filedb.filestore import FileStorage
 from whoosh.util import now, random_name
 
 
-class TempDir(object):
+class TempDir:
     def __init__(
         self,
         basename="",

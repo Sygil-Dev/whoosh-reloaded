@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 from whoosh.compat import b
 from whoosh.filedb.compound import CompoundStorage
 from whoosh.filedb.filestore import RamStorage

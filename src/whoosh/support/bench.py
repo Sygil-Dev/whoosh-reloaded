@@ -25,7 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
 
 import os.path
 from optparse import OptionParser
@@ -58,7 +57,7 @@ except ImportError:
     pass
 
 
-class Module(object):
+class Module:
     def __init__(self, bench, options, args):
         self.bench = bench
         self.options = options
@@ -103,7 +102,7 @@ class Module(object):
             yield self._process_result(hit)
 
 
-class Spec(object):
+class Spec:
     headline_field = "title"
     main_field = "body"
 
@@ -448,7 +447,7 @@ class NucularModule(Module):
             yield q.resultDictionaries()
 
 
-class Bench(object):
+class Bench:
     libs = {
         "whoosh": WhooshModule,
         "xappy": XappyModule,

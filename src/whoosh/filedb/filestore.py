@@ -25,7 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import with_statement
 
 import errno
 import os
@@ -53,7 +52,7 @@ class ReadOnlyError(StorageError):
 # Base class
 
 
-class Storage(object):
+class Storage:
     """Abstract base class for storage objects.
 
     A storage object is a virtual flat filesystem, allowing the creation and
@@ -466,7 +465,7 @@ class FileStorage(Storage):
         try:
             # Try to remove the directory
             os.rmdir(self.folder)
-        except IOError:
+        except OSError:
             e = sys.exc_info()[1]
             if e.errno == errno.ENOENT:
                 pass
@@ -530,7 +529,7 @@ class FileStorage(Storage):
     def list(self):
         try:
             files = os.listdir(self.folder)
-        except IOError:
+        except OSError:
             files = []
 
         return files

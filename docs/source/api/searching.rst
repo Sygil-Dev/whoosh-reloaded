@@ -30,4 +30,3 @@ Exceptions
 
 .. autoexception:: NoTermsException
 .. autoexception:: TimeLimit
-

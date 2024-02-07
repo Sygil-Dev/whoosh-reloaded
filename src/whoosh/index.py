@@ -29,7 +29,6 @@
 an index.
 """
 
-from __future__ import division
 
 import os.path
 import re
@@ -217,7 +216,7 @@ def version(storage, indexname=None):
 # Index base class
 
 
-class Index(object):
+class Index:
     """Represents an indexed collection of documents."""
 
     def close(self):
@@ -377,7 +376,7 @@ def clean_files(storage, indexname, gen, segments):
     # open, they may not be deleted immediately (i.e. on Windows) but will
     # probably be deleted eventually by a later call to clean_files.
 
-    current_segment_names = set(s.segment_id() for s in segments)
+    current_segment_names = {s.segment_id() for s in segments}
     tocpattern = TOC._pattern(indexname)
     segpattern = TOC._segment_pattern(indexname)
 
@@ -516,9 +515,7 @@ class FileIndex(Index):
             if reuse:
                 # Put all atomic readers in a dictionary
                 readers = [r for r, _ in reuse.leaf_readers()]
-                reusable = dict(
-                    (r.segment(), r) for r in readers if r.segment() is not None
-                )
+                reusable = {r.segment(): r for r in readers if r.segment() is not None}
 
             # Make a function to open readers, which reuses reusable readers.
             # It removes any readers it reuses from the "reusable" dictionary,
@@ -561,7 +558,7 @@ class FileIndex(Index):
                     info.generation,
                     reuse=reuse,
                 )
-            except IOError:
+            except OSError:
                 # Presume that we got a "file not found error" because a writer
                 # deleted one of the files just as we were trying to open it,
                 # and so retry a few times before actually raising the
@@ -576,7 +573,7 @@ class FileIndex(Index):
 # TOC class
 
 
-class TOC(object):
+class TOC:
     """Object representing the state of the index after a commit. Essentially
     a container for the index's schema and the list of segment objects.
     """

@@ -69,6 +69,3 @@ returns it.)
 Calling ``Searcher.refresh()`` is more efficient that closing the searcher and
 opening a new one, since it will re-use any underlying readers and caches that
 haven't changed.
-
-
-

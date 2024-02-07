@@ -35,7 +35,7 @@ from whoosh.qparser.taggers import FnTagger, RegexTagger
 from whoosh.util.text import rcompile
 
 
-class Plugin(object):
+class Plugin:
     """Base class for parser plugins."""
 
     def taggers(self, parser):
@@ -80,7 +80,7 @@ class TaggingPlugin(RegexTagger):
     def create(self, parser, match):
         # Groupdict keys can be unicode sometimes apparently? Convert them to
         # str for use as keyword arguments. This should be Py3-safe.
-        kwargs = dict((str(k), v) for k, v in iteritems(match.groupdict()))
+        kwargs = {str(k): v for k, v in iteritems(match.groupdict())}
         return self.nodetype(**kwargs)
 
 
@@ -1282,7 +1282,7 @@ class CopyFieldPlugin(Plugin):
         self.group = group
         if mirror:
             # Add in reversed mappings
-            map.update(dict((v, k) for k, v in iteritems(map)))
+            map.update({v: k for k, v in iteritems(map)})
 
     def filters(self, parser):
         # Run after the fieldname filter (100) but before multifield (110)

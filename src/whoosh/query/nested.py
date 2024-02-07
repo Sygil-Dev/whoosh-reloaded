@@ -128,8 +128,7 @@ class NestedParent(WrappingQuery):
             docnum = m.id()
             parentdoc = bits.before(docnum + 1)
             nextparent = bits.after(docnum) or maxdoc
-            for i in range(parentdoc, nextparent):
-                yield i
+            yield from range(parentdoc, nextparent)
             m.skip_to(nextparent)
 
     class NestedParentMatcher(matching.Matcher):

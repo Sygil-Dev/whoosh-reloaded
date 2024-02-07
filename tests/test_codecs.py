@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 import random
 from array import array
 
@@ -18,7 +16,7 @@ def _make_codec(**kwargs):
     return st, codec, seg
 
 
-class FakeLengths(object):
+class FakeLengths:
     def __init__(self, **lens):
         self.lens = lens
 
@@ -63,7 +61,7 @@ def test_random_termkeys():
         return array_tobytes(a).decode("utf-16")
 
     domain = sorted(
-        set([(random_fieldname(), random_btext().encode("utf-8")) for _ in range(1000)])
+        {(random_fieldname(), random_btext().encode("utf-8")) for _ in range(1000)}
     )
 
     st, codec, seg = _make_codec()

@@ -75,4 +75,4 @@ unpack_uint_le = _uint_le_struct.unpack
 if sys.version_info[0] < 3:
     emptybytes = ""
 else:
-    emptybytes = "".encode("latin-1")
+    emptybytes = b""

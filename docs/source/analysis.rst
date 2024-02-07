@@ -324,6 +324,3 @@ change it. ;) Nothing requires that an Analyzer be implemented by calling a
 tokenizer and filters. Tokenizers and filters are simply a convenient way to
 structure the code. You're free to write an analyzer any way you want, as long
 as it implements ``__call__``.
-
-
-

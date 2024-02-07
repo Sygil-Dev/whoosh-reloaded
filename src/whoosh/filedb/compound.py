@@ -73,7 +73,7 @@ class CompoundStorage(FileStorage):
             try:
                 fileno = self._file.fileno()
                 self._source = mmap.mmap(fileno, 0, access=mmap.ACCESS_READ)
-            except (mmap.error, OSError):
+            except OSError:
                 e = sys.exc_info()[1]
                 # If we got an error because there wasn't enough memory to
                 # open the map, ignore it and fall through, we'll just use the
@@ -185,7 +185,7 @@ class CompoundStorage(FileStorage):
         dbfile.close()
 
 
-class SubFile(object):
+class SubFile:
     def __init__(self, parentfile, offset, length, name=None):
         self._file = parentfile
         self._offset = offset
@@ -247,7 +247,7 @@ class SubFile(object):
         return self._pos
 
 
-class CompoundWriter(object):
+class CompoundWriter:
     def __init__(self, tempstorage, buffersize=32 * 1024):
         assert isinstance(buffersize, int)
         self._tempstorage = tempstorage
@@ -298,7 +298,7 @@ class CompoundWriter(object):
                 f.write(block)
             f.close()
 
-    class SubStream(object):
+    class SubStream:
         def __init__(self, dbfile, buffersize):
             self._dbfile = dbfile
             self._buffersize = buffersize

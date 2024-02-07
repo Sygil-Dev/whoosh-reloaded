@@ -46,4 +46,3 @@ Experimental columns
 ====================
 
 .. autoclass:: ClampedNumericColumn
-

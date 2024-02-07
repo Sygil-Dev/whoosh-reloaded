@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from whoosh.automata.fsa import ANY, EPSILON, NFA
 from whoosh.compat import range
 

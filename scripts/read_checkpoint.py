@@ -2,7 +2,6 @@
 
 # Read a "checkpoint" index, to check backwards compatibility
 
-from __future__ import print_function, with_statement
 
 import sys
 

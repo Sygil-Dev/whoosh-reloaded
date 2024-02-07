@@ -28,5 +28,3 @@ Classes
 
 .. autoclass:: Segment
    :members:
-
-

@@ -13,7 +13,7 @@ on:
     types: [published]
 
   workflow_dispatch: # This line allows manual triggering
-  
+
   #push:
   #  branches:
   #    - master

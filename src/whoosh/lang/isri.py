@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Natural Language Toolkit: The ISRI Arabic Stemmer
 #
@@ -34,12 +33,11 @@ discarded because it increases the word ambiguities and changes the original
 root.
 """
 
-from __future__ import unicode_literals
 
 import re
 
 
-class ISRIStemmer(object):
+class ISRIStemmer:
     """
     ISRI Arabic stemmer based on algorithm: Arabic Stemming without a root dictionary.
     Information Science Research Institute. University of Nevada, Las Vegas, USA.

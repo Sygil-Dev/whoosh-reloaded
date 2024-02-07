@@ -13,7 +13,7 @@ import datetime
 __all__ = ["relativedelta", "MO", "TU", "WE", "TH", "FR", "SA", "SU"]
 
 
-class weekday(object):
+class weekday:
     __slots__ = ["weekday", "n"]
 
     def __init__(self, weekday, n=None):

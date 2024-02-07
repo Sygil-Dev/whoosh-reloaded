@@ -61,7 +61,7 @@ from whoosh.system import (
 )
 from whoosh.util.varints import decode_signed_varint, read_varint, signed_varint, varint
 
-_SIZEMAP = dict((typecode, calcsize(typecode)) for typecode in "bBiIhHqQf")
+_SIZEMAP = {typecode: calcsize(typecode) for typecode in "bBiIhHqQf"}
 _ORDERMAP = {"little": "<", "big": ">"}
 
 _types = (("sbyte", "b"), ("ushort", "H"), ("int", "i"), ("long", "q"), ("float", "f"))
@@ -70,7 +70,7 @@ _types = (("sbyte", "b"), ("ushort", "H"), ("int", "i"), ("long", "q"), ("float"
 # Main function
 
 
-class StructFile(object):
+class StructFile:
     """Returns a "structured file" object that wraps the given file object and
     provides numerous additional methods for writing structured data, such as
     "write_varint" and "write_long".

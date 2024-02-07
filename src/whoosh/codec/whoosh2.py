@@ -122,7 +122,7 @@ unpack_pointer = _pointer_struct.unpack
 # Table classes
 
 
-class HashWriter(object):
+class HashWriter:
     def __init__(self, dbfile, hashtype=2):
         self.dbfile = dbfile
         self.hashtype = hashtype
@@ -217,7 +217,7 @@ class HashWriter(object):
         self.dbfile.close()
 
 
-class HashReader(object):
+class HashReader:
     def __init__(self, dbfile, startoffset=0):
         self.dbfile = dbfile
         self.startoffset = startoffset
@@ -448,8 +448,7 @@ class OrderedHashReader(HashReader):
         if pos is None:
             return
 
-        for x in self._ranges(pos=pos):
-            yield x
+        yield from self._ranges(pos=pos)
 
     def items_from(self, key):
         read = self.read
@@ -813,8 +812,7 @@ class W2LeafMatcher(LeafMatcher):
             block = self._read_block(nextoffset)
             nextoffset = block.nextoffset
             ids = block.read_ids()
-            for id in ids:
-                yield id
+            yield from ids
 
     def next(self):
         if self.i == self.block.count - 1:
@@ -1023,8 +1021,7 @@ class PostingIndexBase(HashReader):
         if pos is None:
             return
 
-        for x in self._ranges(pos=pos):
-            yield x
+        yield from self._ranges(pos=pos)
 
     def __getitem__(self, key):
         k = self.keycoder(key)
@@ -1224,7 +1221,7 @@ class W2PerDocReader(base.PerDocumentReader):
         if self._vectors is None:
             try:
                 self._prep_vectors()
-            except (NameError, IOError):
+            except (NameError, OSError):
                 return False
         return (docnum, fieldname) in self._vectors
 
@@ -1242,7 +1239,7 @@ class W2PerDocReader(base.PerDocumentReader):
 # Single-byte field lengths implementations
 
 
-class ByteLengthsBase(object):
+class ByteLengthsBase:
     magic = b("~LN1")
 
     def __init__(self):
@@ -1435,7 +1432,7 @@ pack_stored_pointer = _stored_pointer_struct.pack
 unpack_stored_pointer = _stored_pointer_struct.unpack
 
 
-class StoredFieldWriter(object):
+class StoredFieldWriter:
     def __init__(self, dbfile):
         self.dbfile = dbfile
         self.length = 0
@@ -1484,7 +1481,7 @@ class StoredFieldWriter(object):
         f.close()
 
 
-class StoredFieldReader(object):
+class StoredFieldReader:
     def __init__(self, dbfile):
         self.dbfile = dbfile
 
@@ -1522,9 +1519,9 @@ class StoredFieldReader(object):
         dbfile.seek(self.basepos)
         for length in lengths:
             vlist = loads(dbfile.read(length) + b("."))
-            vdict = dict(
-                (names[i], vlist[i]) for i in range(len(vlist)) if vlist[i] is not None
-            )
+            vdict = {
+                names[i]: vlist[i] for i in range(len(vlist)) if vlist[i] is not None
+            }
             yield vdict
 
     def __getitem__(self, num):
@@ -1547,9 +1544,7 @@ class StoredFieldReader(object):
         # Recreate a dictionary by putting the field names and values back
         # together by position. We can't just use dict(zip(...)) because we
         # want to filter out the None values.
-        vdict = dict(
-            (names[i], vlist[i]) for i in range(len(vlist)) if vlist[i] is not None
-        )
+        vdict = {names[i]: vlist[i] for i in range(len(vlist)) if vlist[i] is not None}
         return vdict
 
 
@@ -1618,7 +1613,7 @@ class W2Segment(base.Segment):
 # Posting blocks
 
 
-class W2Block(object):
+class W2Block:
     magic = b("Blk3")
 
     infokeys = (

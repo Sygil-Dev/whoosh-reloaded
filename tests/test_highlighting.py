@@ -1,7 +1,3 @@
-# coding: utf-8
-
-from __future__ import with_statement
-
 import pytest
 
 # from jieba.analyse import ChineseAnalyzer

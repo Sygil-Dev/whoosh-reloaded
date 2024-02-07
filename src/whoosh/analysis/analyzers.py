@@ -83,7 +83,7 @@ class CompositeAnalyzer(Analyzer):
                 )
 
     def __repr__(self):
-        return "%s(%s)" % (
+        return "{}({})".format(
             self.__class__.__name__,
             ", ".join(repr(item) for item in self.items),
         )

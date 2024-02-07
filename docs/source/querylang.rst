@@ -186,6 +186,3 @@ in single quotes::
     path:'MacHD:My Documents'
     'term with spaces'
     title:'function()'
-
-
-

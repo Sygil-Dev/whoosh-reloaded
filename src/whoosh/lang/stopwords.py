@@ -1,7 +1,3 @@
-# coding=utf-8
-
-from __future__ import unicode_literals
-
 # Stopwords Corpus
 #
 # This module contains lists of stop words for several languages.  These

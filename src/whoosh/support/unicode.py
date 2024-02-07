@@ -216,7 +216,7 @@ _ends = []
 _names = []
 
 
-class blocks(object):
+class blocks:
     pass
 
 

@@ -100,7 +100,7 @@ def ilen(iterator):
 # Base class
 
 
-class Collector(object):
+class Collector:
     """Base class for collectors."""
 
     def prepare(self, top_searcher, q, context):

@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 from whoosh import analysis, fields, formats
 from whoosh.compat import permutations, range, u
 from whoosh.filedb.filestore import RamStorage

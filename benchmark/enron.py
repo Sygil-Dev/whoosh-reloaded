@@ -1,5 +1,3 @@
-from __future__ import division
-
 import os.path
 import tarfile
 from email import message_from_string

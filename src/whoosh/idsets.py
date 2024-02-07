@@ -273,7 +273,7 @@ _1SPERBYTE = array(
 )
 
 
-class DocIdSet(object):
+class DocIdSet:
     """Base class for a set of positive integers, implementing a subset of the
     built-in ``set`` type's interface with extra docid-related methods.
 
@@ -765,10 +765,10 @@ class SortedIntSet(DocIdSet):
         self.data = array(self.typecode, (num for num in self if num not in other))
 
     def intersection(self, other):
-        return SortedIntSet((num for num in self if num in other))
+        return SortedIntSet(num for num in self if num in other)
 
     def difference(self, other):
-        return SortedIntSet((num for num in self if num not in other))
+        return SortedIntSet(num for num in self if num not in other)
 
     def first(self):
         return self.data[0]

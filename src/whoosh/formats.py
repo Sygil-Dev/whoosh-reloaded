@@ -48,7 +48,7 @@ from whoosh.system import (
 # Format base class
 
 
-class Format(object):
+class Format:
     """Abstract base class representing a storage format for a field or vector.
     Format objects are responsible for writing and reading the low-level
     representation of a field. It controls what kind/level of information to
@@ -152,7 +152,7 @@ class Existence(Format):
 
     def word_values(self, value, analyzer, **kwargs):
         fb = self.field_boost
-        wordset = set(t.text for t in tokens(value, analyzer, kwargs))
+        wordset = {t.text for t in tokens(value, analyzer, kwargs)}
         return ((w, 1, fb, emptybytes) for w in wordset)
 
     def encode(self, value):

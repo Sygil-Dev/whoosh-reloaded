@@ -29,7 +29,6 @@
 documents.
 """
 
-from __future__ import division
 
 import random
 from collections import defaultdict
@@ -40,7 +39,7 @@ from whoosh.compat import iteritems, range
 # Expansion models
 
 
-class ExpansionModel(object):
+class ExpansionModel:
     def __init__(self, doc_count, field_length):
         self.N = doc_count
         self.collection_total = field_length
@@ -99,7 +98,7 @@ class KLModel(ExpansionModel):
             )
 
 
-class Expander(object):
+class Expander:
     """Uses an ExpansionModel to expand the set of query terms based on the top
     N result documents.
     """

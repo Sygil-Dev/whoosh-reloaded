@@ -4,4 +4,3 @@
 
 .. automodule:: whoosh.util
     :members:
-

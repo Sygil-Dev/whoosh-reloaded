@@ -58,7 +58,7 @@ def try_for(fn, timeout=5.0, delay=0.1):
     return v
 
 
-class LockBase(object):
+class LockBase:
     """Base class for file locks."""
 
     def __init__(self, filename):
@@ -103,7 +103,7 @@ class FcntlLock(LockBase):
             fcntl.flock(self.fd, mode)
             self.locked = True
             return True
-        except IOError:
+        except OSError:
             e = sys.exc_info()[1]
             if e.errno not in (errno.EAGAIN, errno.EACCES):
                 raise
@@ -137,7 +137,7 @@ class MsvcrtLock(LockBase):
         try:
             msvcrt.locking(self.fd, mode, 1)
             return True
-        except IOError:
+        except OSError:
             e = sys.exc_info()[1]
             if e.errno not in (errno.EAGAIN, errno.EACCES, errno.EDEADLK):
                 raise

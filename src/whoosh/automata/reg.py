@@ -37,7 +37,7 @@ def parse(pattern):
     ops = []
 
 
-class RegexBuilder(object):
+class RegexBuilder:
     def __init__(self):
         self.statenum = 1
 

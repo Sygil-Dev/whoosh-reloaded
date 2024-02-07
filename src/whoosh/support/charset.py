@@ -1,5 +1,3 @@
-# coding=utf-8
-
 """This module contains tools for working with Sphinx charset table files. These files
 are useful for doing case and accent folding.
 See :class:`whoosh.analysis.CharsetTokenizer` and :class:`whoosh.analysis.CharsetFilter`.
@@ -732,7 +730,7 @@ accent_map = {
 
 # The unicode.translate() method actually requires a dictionary mapping
 # character *numbers* to characters, for some reason.
-accent_map = dict((ord(k), v) for k, v in iteritems(accent_map))
+accent_map = {ord(k): v for k, v in iteritems(accent_map)}
 
 
 # This Sphinx charset table taken from http://speeple.com/unicode-maps.txt

@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 from whoosh import analysis, fields
 from whoosh.codec import default_codec
 from whoosh.compat import u
