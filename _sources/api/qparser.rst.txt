@@ -88,10 +88,3 @@ Operators
 .. autoclass:: PrefixOperator
 .. autoclass:: PostfixOperator
 .. autoclass:: InfixOperator
-
-
-
-
-
-
-

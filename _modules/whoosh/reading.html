@@ -128,20 +128,18 @@
 <span class="sd">&quot;&quot;&quot;This module contains classes that allow reading from an index.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log</span>
 <span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">bisect_right</span>
-<span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">heapify</span><span class="p">,</span> <span class="n">heapreplace</span><span class="p">,</span> <span class="n">heappop</span><span class="p">,</span> <span class="n">nlargest</span>
+<span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">heapify</span><span class="p">,</span> <span class="n">heappop</span><span class="p">,</span> <span class="n">heapreplace</span><span class="p">,</span> <span class="n">nlargest</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log</span>
 
 <span class="kn">from</span> <span class="nn">cached_property</span> <span class="kn">import</span> <span class="n">cached_property</span>
 
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">columns</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">zip_</span><span class="p">,</span> <span class="nb">next</span><span class="p">,</span> <span class="n">iteritems</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">iteritems</span><span class="p">,</span> <span class="nb">next</span><span class="p">,</span> <span class="n">zip_</span>
 <span class="kn">from</span> <span class="nn">whoosh.filedb.filestore</span> <span class="kn">import</span> <span class="n">OverlayStorage</span>
 <span class="kn">from</span> <span class="nn">whoosh.matching</span> <span class="kn">import</span> <span class="n">MultiMatcher</span>
 <span class="kn">from</span> <span class="nn">whoosh.support.levenshtein</span> <span class="kn">import</span> <span class="n">distance</span>
 <span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">emptybytes</span>
-
 
 <span class="c1"># Exceptions</span>
 
@@ -161,7 +159,7 @@
 <span class="c1"># Term Info base class</span>
 
 
-<div class="viewcode-block" id="TermInfo"><a class="viewcode-back" href="../../api/reading.html#whoosh.reading.TermInfo">[docs]</a><span class="k">class</span> <span class="nc">TermInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TermInfo"><a class="viewcode-back" href="../../api/reading.html#whoosh.reading.TermInfo">[docs]</a><span class="k">class</span> <span class="nc">TermInfo</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a set of statistics about a term. This object is returned by</span>
 <span class="sd">    :meth:`IndexReader.term_info`. These statistics may be useful for</span>
 <span class="sd">    optimizations and scoring algorithms.</span>
@@ -245,7 +243,7 @@
 <span class="c1"># Reader base class</span>
 
 
-<div class="viewcode-block" id="IndexReader"><a class="viewcode-back" href="../../api/reading.html#whoosh.reading.IndexReader">[docs]</a><span class="k">class</span> <span class="nc">IndexReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="IndexReader"><a class="viewcode-back" href="../../api/reading.html#whoosh.reading.IndexReader">[docs]</a><span class="k">class</span> <span class="nc">IndexReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Do not instantiate this object directly. Instead use Index.reader().&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1324,8 +1322,7 @@
 
     <span class="k">def</span> <span class="nf">all_stored_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">reader</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">all_stored_fields</span><span class="p">():</span>
-                <span class="k">yield</span> <span class="n">result</span>
+            <span class="k">yield from</span> <span class="n">reader</span><span class="o">.</span><span class="n">all_stored_fields</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">doc_count_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dr</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span> <span class="k">for</span> <span class="n">dr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">)</span>
@@ -1381,7 +1378,7 @@
     <span class="k">return</span> <span class="n">TermInfo</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">ml</span><span class="p">,</span> <span class="n">xl</span><span class="p">,</span> <span class="n">xw</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">xid</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">MultiCursor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiCursor</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cursors</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cursors</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cursors</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_low</span> <span class="o">=</span> <span class="p">[]</span>

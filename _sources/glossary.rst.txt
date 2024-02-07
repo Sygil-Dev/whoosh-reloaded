@@ -62,4 +62,3 @@ Glossary
     Term vector
         A *forward index* for a certain field in a certain document. You can specify
         in the Schema that a given field should store term vectors.
-

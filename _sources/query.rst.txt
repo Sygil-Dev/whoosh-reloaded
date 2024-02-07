@@ -7,4 +7,3 @@ The classes in the :mod:` whoosh.query` module implement *queries* you can run a
 TBD.
 
 See :doc:`searching` for how to search the index using query objects.
-

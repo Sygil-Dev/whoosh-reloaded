@@ -151,9 +151,7 @@
 
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">izip</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
-
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">izip</span>
 
 <span class="c1"># Exceptions</span>
 
@@ -174,7 +172,7 @@
 <span class="c1"># Classes</span>
 
 
-<div class="viewcode-block" id="Matcher"><a class="viewcode-back" href="../../../api/matching.html#whoosh.matching.Matcher">[docs]</a><span class="k">class</span> <span class="nc">Matcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Matcher"><a class="viewcode-back" href="../../../api/matching.html#whoosh.matching.Matcher">[docs]</a><span class="k">class</span> <span class="nc">Matcher</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all matchers.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Matcher.is_active"><a class="viewcode-back" href="../../../api/matching.html#whoosh.matching.Matcher.is_active">[docs]</a>    <span class="nd">@abstractmethod</span>
@@ -210,8 +208,7 @@
             <span class="k">yield</span> <span class="bp">self</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">cm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
-                <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">cm</span><span class="o">.</span><span class="n">term_matchers</span><span class="p">():</span>
-                    <span class="k">yield</span> <span class="n">m</span></div>
+                <span class="k">yield from</span> <span class="n">cm</span><span class="o">.</span><span class="n">term_matchers</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Matcher.matching_terms"><a class="viewcode-back" href="../../../api/matching.html#whoosh.matching.Matcher.matching_terms">[docs]</a>    <span class="k">def</span> <span class="nf">matching_terms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an iterator of ``(&quot;fieldname&quot;, &quot;termtext&quot;)`` tuples for the</span>

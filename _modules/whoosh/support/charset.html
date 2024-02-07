@@ -98,17 +98,15 @@
            <div itemprop="articleBody">
              
   <h1>Source code for whoosh.support.charset</h1><div class="highlight"><pre>
-<span></span><span class="c1"># coding=utf-8</span>
-
-<span class="sd">&quot;&quot;&quot;This module contains tools for working with Sphinx charset table files. These files</span>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains tools for working with Sphinx charset table files. These files</span>
 <span class="sd">are useful for doing case and accent folding.</span>
 <span class="sd">See :class:`whoosh.analysis.CharsetTokenizer` and :class:`whoosh.analysis.CharsetFilter`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">izip</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">unichr</span><span class="p">,</span> <span class="nb">range</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">izip</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">unichr</span>
 
 <span class="c1"># This is a straightforward accent-folding charset taken from Carlos Bueno&#39;s</span>
 <span class="c1"># article &quot;Accent Folding for Auto-Complete&quot;, for use with CharsetFilter.</span>
@@ -832,7 +830,7 @@
 
 <span class="c1"># The unicode.translate() method actually requires a dictionary mapping</span>
 <span class="c1"># character *numbers* to characters, for some reason.</span>
-<span class="n">accent_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">ord</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">accent_map</span><span class="p">))</span>
+<span class="n">accent_map</span> <span class="o">=</span> <span class="p">{</span><span class="nb">ord</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">accent_map</span><span class="p">)}</span>
 
 
 <span class="c1"># This Sphinx charset table taken from http://speeple.com/unicode-maps.txt</span>

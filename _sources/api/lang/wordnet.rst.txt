@@ -17,4 +17,3 @@ Low-level functions
 .. autofunction:: parse_file
 .. autofunction:: synonyms
 .. autofunction:: make_index
-

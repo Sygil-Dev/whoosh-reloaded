@@ -108,7 +108,7 @@
 
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="nb">range</span><span class="p">,</span> <span class="n">iteritems</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="nb">range</span>
 
 <span class="c1"># Rule exceptions</span>
 
@@ -711,7 +711,7 @@
     <span class="c1"># Words ending in S</span>
     <span class="c1"># (e.g., happiness, business)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](iness)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](iness)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;y,ies,ier,iers,iest,ied,ying,yings,ily,inesses,iment,iments,iless,iful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., baseless, shoeless)</span>
@@ -721,7 +721,7 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., gutless, hatless, spotless)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">][bdgklmnprt]?(less)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">][bdgklmnprt]?(less)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;,s,&amp;er,&amp;ers,&amp;est,&amp;ed,&amp;ing,&amp;ings,ly,ness,nesses,ment,ments,ful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., thoughtless, worthless)</span>
@@ -761,12 +761,12 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenizes) // adds British variations</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](izes)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](izes)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ize,izes,izer,izers,ized,izing,izings,ization,izations,ise,iser,isers,ised,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenises) // British variant  // ~expertise</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ises)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ises)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ize,izes,izer,izers,ized,izing,izings,ization,izations,ise,iser,isers,ised,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., aches, arches)</span>
@@ -788,15 +788,15 @@
     <span class="c1"># (e.g., judgments, abridgments)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*dg(ments)&quot;</span> <span class="o">%</span> <span class="n">vowels</span><span class="p">,</span> <span class="s2">&quot;ment,*ments&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., merriments, embodiments) -iment in turn will generate y and *y (redo y)</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">]iment(s)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">]iment(s)&quot;</span><span class="p">,</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., atonements, entrapments)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*ment(s)&quot;</span> <span class="o">%</span> <span class="n">vowels</span><span class="p">,</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., viewers, meters, traders, transfers)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*er(s)&quot;</span> <span class="o">%</span> <span class="n">vowels</span><span class="p">,</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., unflags) polysyllables</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">][bdglmnprt](s)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">][bdglmnprt](s)&quot;</span><span class="p">,</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., frogs) monosyllables</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">][bdglmnprt](s)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][bdglmnprt](s)&quot;</span><span class="p">,</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., killings, muggings)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*ing(s)&quot;</span> <span class="o">%</span> <span class="n">vowels</span><span class="p">,</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., hulls, tolls)</span>
@@ -804,16 +804,16 @@
     <span class="c1"># e.g., boas, polkas, spas) don&#39;t generate latin endings</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;a(s)&quot;</span><span class="p">,</span> <span class="s2">&quot;,er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., beads, toads)</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">].*(s)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">].*(s)&quot;</span><span class="p">,</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., boas, zoos)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](s)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">](s)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;,er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., ss, sss, ssss) no vowel (vowel case is already handled above)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;ss()&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., cds, lcds, m-16s) no vowel (can be a plural noun, but not verb)</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">1234567890](s)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">1234567890](s)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
     <span class="c1"># Words ending in E</span>
     <span class="c1"># (e.g., apple, so it doesn&#39;t include apply)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;appl(e)&quot;</span><span class="p">,</span> <span class="s2">&quot;es,er,ers,est,ed,ing,ings,ely,eness,enesses,ement,ements,eless,eful&quot;</span><span class="p">),</span>
@@ -824,7 +824,7 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., able, abominable, fungible, table, enable, idle, subtle)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">]l(e)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">]l(e)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;es,er,ers,est,ed,ing,ings,y,ely,eness,enesses,ement,ements,eless,eful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., bookie, magpie, vie)</span>
@@ -846,17 +846,17 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenize) // adds British variations</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ize)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ize)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;izes,izer,izers,ized,izing,izings,ization,izations,ise,ises,iser,isers,ised,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenise) // British variant  // ~expertise</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ise)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ise)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ize,izes,izer,izers,ized,izing,izings,ization,izations,ises,iser,isers,ised,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., tree, agree, rage, horse, hoarse)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](e)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](e)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;es,er,ers,est,ed,ing,ings,eing,eings,ely,eness,enesses,ement,ements,eless,eful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># Words ending in -ED</span>
@@ -874,7 +874,7 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., controlled, fulfilled, rebelled)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">].*l(led)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">].*l(led)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;,s,er,ers,est,ing,ings,ly,ness,nesses,ment,ments,less,ful,&amp;,&amp;s,&amp;er,&amp;ers,&amp;est,&amp;ing,&amp;ings,&amp;y,&amp;ness,&amp;nesses,&amp;ment,&amp;ments,&amp;ful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., pulled, filled, fulled)</span>
@@ -894,12 +894,12 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenize) // adds British variations</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ized)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ized)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;izes,izer,izers,ize,izing,izings,ization,izations,ise,ises,iser,isers,ised,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenise) // British variant  // ~expertise</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ized)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ized)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ize,izes,izer,izers,ized,izing,izings,ization,izations,ises,iser,isers,ise,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., spoiled, tooled, tracked, roasted, atoned, abridged)</span>
@@ -919,7 +919,7 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., acidifier, saltier)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ier)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ier)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;y,ie,ies,iest,ied,ying,yings,ily,yly,iness,yness,inesses,ynesses,yment,yments,yless,yful,iment,iments,iless,iful,iers,iered,iering,ierings,ierly,ierness,iernesses,ierment,ierments,ierless,ierful,ierer,ierers,ierest&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., puller, filler, fuller)</span>
@@ -934,17 +934,17 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., bigger, trekker, hitter)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">](?P&lt;er1&gt;[bdgkmnprt])((?P=er1)er)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">](?P&lt;er1&gt;[bdgkmnprt])((?P=er1)er)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;s,&amp;est,&amp;ed,&amp;ing,&amp;ings,ly,ness,nesses,ment,ments,less,ful,&amp;ers,&amp;ered,&amp;ering,&amp;erings,&amp;erly,&amp;erness,&amp;ernesses,&amp;erments,&amp;erless,&amp;erful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenize) // adds British variations</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](izer)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](izer)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;izes,ize,izers,ized,izing,izings,ization,izations,ise,ises,iser,isers,ised,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenise) // British variant  // ~expertise</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](iser)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](iser)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ize,izes,izer,izers,ized,izing,izings,ization,izations,ises,ise,isers,ised,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., actioner, atoner, icer, trader, accruer, churchgoer, prefer)</span>
@@ -970,7 +970,7 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., biggest)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">](?P&lt;est1&gt;[bdglmnprst])((?P=est1)est)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">](?P&lt;est1&gt;[bdglmnprst])((?P=est1)est)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;,s,&amp;er,&amp;ers,&amp;ed,&amp;ing,&amp;ings,ly,ness,nesses,ment,ments,less,ful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., basest, archest, rashest)</span>
@@ -992,7 +992,7 @@
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;est&quot;</span><span class="p">,</span> <span class="s2">&quot;s,er,ers,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful&quot;</span><span class="p">),</span>
     <span class="c1"># Words ending in -FUL</span>
     <span class="c1"># (e.g., beautiful, plentiful)</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](iful)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span> <span class="s2">&quot;ifully,ifulness,*y&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](iful)&quot;</span><span class="p">,</span> <span class="s2">&quot;ifully,ifulness,*y&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., hopeful, sorrowful)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*(ful)&quot;</span> <span class="o">%</span> <span class="n">vowels</span><span class="p">,</span> <span class="s2">&quot;fully,fulness,,*&quot;</span><span class="p">),</span>
     <span class="c1"># Words ending in -ICAL</span>
@@ -1017,7 +1017,7 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., hugging, trekking)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">](?P&lt;ing1&gt;[bdgklmnprt])((?P=ing1)ing)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">](?P&lt;ing1&gt;[bdgklmnprt])((?P=ing1)ing)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;,s,&amp;er,&amp;ers,&amp;est,&amp;ed,&amp;ings,ly,ness,nesses,ment,ments,less,ful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., freeing, agreeing)</span>
@@ -1037,22 +1037,22 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., editing, crediting, expediting, siting, exciting)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">][eio]t(ing)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][eio]t(ing)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;,*,*e,ings,inger,ingers,ingest,inged,inging,ingings,ingly,ingness,ingnesses,ingment,ingments,ingless,ingful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., robing, siding, doling, translating, flaking)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">][bdgklmt](ing)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">][bdgklmt](ing)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;*e,ings,inger,ingers,ingest,inged,ingly,ingness,ingnesses,ingment,ingments,ingless,ingful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenize) // adds British variations</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](izing)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](izing)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;izes,izer,izers,ized,ize,izings,ization,izations,ise,ises,iser,isers,ised,ising,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., tokenise) // British variant  // ~expertise</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ising)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ising)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ize,izes,izer,izers,ized,izing,izings,ization,izations,ises,iser,isers,ised,ise,isings,isation,isations&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., icing, aging, achieving, amazing, housing)</span>
@@ -1072,7 +1072,7 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., farming, harping, interesting, bedspring, redwing)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">][bdfjkmnpqrtwxz](ing)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][bdfjkmnpqrtwxz](ing)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;,*,ings,inger,ingers,ingest,inged,inging,ingings,ingly,ingness,ingnesses,ingment,ingments,ingless,ingful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., spoiling, reviling, autoing, egging, hanging, hingeing)</span>
@@ -1098,9 +1098,9 @@
     <span class="c1"># (e.g., judgment, abridgment)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*dg(ment)&quot;</span> <span class="o">%</span> <span class="n">vowels</span><span class="p">,</span> <span class="s2">&quot;*e&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., merriment, embodiment)</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](iment)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span> <span class="s2">&quot;*y&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](iment)&quot;</span><span class="p">,</span> <span class="s2">&quot;*y&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., atonement, entrapment)</span>
-    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ment)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ment)&quot;</span><span class="p">,</span> <span class="s2">&quot;,*&quot;</span><span class="p">),</span>
     <span class="c1"># Words ending in -O</span>
     <span class="c1"># (e.g., taboo, rodeo)</span>
     <span class="p">(</span>
@@ -1126,7 +1126,7 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., happily, dizzily)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](ily)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](ily)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;y,ies,ier,iers,iest,ied,ying,yings,yness,iness,ynesses,inesses,iment,iments,iless,iful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., peaceful+ly)</span>
@@ -1164,24 +1164,24 @@
     <span class="p">),</span>
     <span class="c1"># (e.g., unflag, open, besot)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">][bdglmnprt]()&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">][bdglmnprt]()&quot;</span><span class="p">,</span>
         <span class="s2">&quot;s,er,ers,est,ed,ing,ings,&amp;er,&amp;ers,&amp;est,&amp;ed,&amp;ing,&amp;ings,ly,ness,nesses,ment,ments,less,ful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., bed, cop)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">][bdglmnprt]()&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">][bdglmnprt]()&quot;</span><span class="p">,</span>
         <span class="s2">&quot;s,&amp;er,&amp;ers,&amp;est,&amp;ed,&amp;ing,&amp;ings,ly,ness,nesses,ment,ments,less,ful&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., schemata, automata)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">][</span><span class="si">%s</span><span class="s2">]ma(ta)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">,</span> <span class="n">vowels</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">][</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">]ma(ta)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;,s,tas,tum,tums,ton,tons,tic,tical&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., chordata, data, errata, sonata, toccata)</span>
     <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*t(a)&quot;</span> <span class="o">%</span> <span class="n">vowels</span><span class="p">,</span> <span class="s2">&quot;as,ae,um,ums,on,ons,ic,ical&quot;</span><span class="p">),</span>
     <span class="c1"># (e.g., polka, spa, schema, ova, polyhedra)</span>
     <span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">].*[</span><span class="si">%s</span><span class="s2">](a)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vowels</span><span class="p">,</span> <span class="n">cons</span><span class="p">),</span>
+        <span class="sa">rf</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">vowels</span><span class="si">}</span><span class="s2">].*[</span><span class="si">{</span><span class="n">cons</span><span class="si">}</span><span class="s2">](a)&quot;</span><span class="p">,</span>
         <span class="s2">&quot;as,aed,aing,ae,ata,um,ums,on,ons,al,atic,atical&quot;</span><span class="p">,</span>
     <span class="p">),</span>
     <span class="c1"># (e.g., full)</span>
@@ -1202,9 +1202,7 @@
 <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span> <span class="o">//</span> <span class="n">_partition_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="n">_partition_size</span>
     <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">_partition_size</span>
-    <span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;(?P&lt;_g</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)$&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rules</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
-    <span class="p">)</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(?P&lt;_g</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)$&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rules</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]))</span>
     <span class="n">_partitions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">))</span>
 
 
@@ -1237,7 +1235,7 @@
             <span class="n">ending</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">root</span> <span class="o">=</span> <span class="n">word</span><span class="p">[:</span> <span class="mi">0</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">ending</span><span class="p">)]</span> <span class="k">if</span> <span class="n">ending</span> <span class="k">else</span> <span class="n">word</span>
 
-            <span class="n">out</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">word</span><span class="p">,))</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">}</span>
             <span class="n">results</span> <span class="o">=</span> <span class="n">rules</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">_partition_size</span> <span class="o">+</span> <span class="n">num</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&amp;&quot;</span><span class="p">):</span>

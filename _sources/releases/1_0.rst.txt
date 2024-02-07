@@ -479,4 +479,3 @@ Misc
   previous versions.
 
 * Unit tests should no longer leave directories and files behind.
-

@@ -7,4 +7,3 @@
 .. autofunction:: relative
 
 .. autofunction:: distance
-

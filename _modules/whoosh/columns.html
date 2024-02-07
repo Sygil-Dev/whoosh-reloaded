@@ -146,8 +146,9 @@
 <span class="sd">and ``reader()`` to return a ``ColumnReader`` object.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">with_statement</span>
-<span class="kn">import</span> <span class="nn">struct</span><span class="o">,</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
 <span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">bisect_right</span>
 
@@ -156,21 +157,18 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">zlib</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">b</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">,</span> <span class="n">BytesIO</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">array_tobytes</span><span class="p">,</span> <span class="nb">range</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">BytesIO</span><span class="p">,</span> <span class="n">array_tobytes</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">,</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="nb">range</span>
 <span class="kn">from</span> <span class="nn">whoosh.filedb.structfile</span> <span class="kn">import</span> <span class="n">StructFile</span>
 <span class="kn">from</span> <span class="nn">whoosh.idsets</span> <span class="kn">import</span> <span class="n">BitSet</span><span class="p">,</span> <span class="n">OnDiskBitSet</span>
 <span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">emptybytes</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.numeric</span> <span class="kn">import</span> <span class="n">typecode_max</span><span class="p">,</span> <span class="n">typecode_min</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.numlists</span> <span class="kn">import</span> <span class="n">GrowableArray</span>
-<span class="kn">from</span> <span class="nn">whoosh.util.varints</span> <span class="kn">import</span> <span class="n">varint</span><span class="p">,</span> <span class="n">read_varint</span>
-
+<span class="kn">from</span> <span class="nn">whoosh.util.varints</span> <span class="kn">import</span> <span class="n">read_varint</span><span class="p">,</span> <span class="n">varint</span>
 
 <span class="c1"># Base classes</span>
 
 
-<div class="viewcode-block" id="Column"><a class="viewcode-back" href="../../api/columns.html#whoosh.columns.Column">[docs]</a><span class="k">class</span> <span class="nc">Column</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Column"><a class="viewcode-back" href="../../api/columns.html#whoosh.columns.Column">[docs]</a><span class="k">class</span> <span class="nc">Column</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a &quot;column&quot; of rows mapping docnums to document values.</span>
 
 <span class="sd">    The interface requires that you store the start offset of the column, the</span>
@@ -217,7 +215,7 @@
         <span class="k">return</span> <span class="kc">False</span></div></div>
 
 
-<div class="viewcode-block" id="ColumnWriter"><a class="viewcode-back" href="../../api/columns.html#whoosh.columns.ColumnWriter">[docs]</a><span class="k">class</span> <span class="nc">ColumnWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ColumnWriter"><a class="viewcode-back" href="../../api/columns.html#whoosh.columns.ColumnWriter">[docs]</a><span class="k">class</span> <span class="nc">ColumnWriter</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dbfile</span> <span class="o">=</span> <span class="n">dbfile</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_count</span> <span class="o">=</span> <span class="mi">0</span>
@@ -237,7 +235,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ColumnReader"><a class="viewcode-back" href="../../api/columns.html#whoosh.columns.ColumnReader">[docs]</a><span class="k">class</span> <span class="nc">ColumnReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ColumnReader"><a class="viewcode-back" href="../../api/columns.html#whoosh.columns.ColumnReader">[docs]</a><span class="k">class</span> <span class="nc">ColumnReader</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">basepos</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">doccount</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dbfile</span> <span class="o">=</span> <span class="n">dbfile</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_basepos</span> <span class="o">=</span> <span class="n">basepos</span>
@@ -343,7 +341,7 @@
             <span class="c1"># ...but if we wrote offsets, make the last byte &quot;X&quot; so we know</span>
             <span class="k">if</span> <span class="n">write_offsets</span><span class="p">:</span>
                 <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">offsets</span><span class="o">.</span><span class="n">typecode</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
-                <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
+                <span class="n">dbfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
 
     <span class="k">class</span> <span class="nc">Reader</span><span class="p">(</span><span class="n">ColumnReader</span><span class="p">):</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">basepos</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">doccount</span><span class="p">):</span>
@@ -1172,8 +1170,7 @@
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_readers</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">v</span>
+            <span class="k">yield from</span> <span class="n">r</span>
 
 
 <span class="k">class</span> <span class="nc">TranslatingColumnReader</span><span class="p">(</span><span class="n">ColumnReader</span><span class="p">):</span>

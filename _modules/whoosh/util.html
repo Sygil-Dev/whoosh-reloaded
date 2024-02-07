@@ -125,13 +125,14 @@
 <span class="c1"># those of the authors and should not be interpreted as representing official</span>
 <span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">with_statement</span>
-<span class="kn">import</span> <span class="nn">random</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">insort</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
 <span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="nb">range</span>
-
 
 <span class="c1"># These must be valid separate characters in CASE-INSENSTIVE filenames</span>
 <span class="n">IDCHARS</span> <span class="o">=</span> <span class="s2">&quot;0123456789abcdefghijklmnopqrstuvwxyz&quot;</span>
@@ -178,7 +179,7 @@
     <span class="k">return</span> <span class="n">fn</span><span class="p">(</span>
         <span class="n">make_binary_tree</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">[:</span><span class="n">half</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
         <span class="n">make_binary_tree</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="n">half</span><span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
-        <span class="o">**</span><span class="n">kwargs</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 

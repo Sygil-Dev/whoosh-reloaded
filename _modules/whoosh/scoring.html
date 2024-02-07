@@ -129,16 +129,15 @@
 <span class="sd">This module contains classes for scoring (and sorting) search results.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">pi</span>
 
 <span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span>
 
-
 <span class="c1"># Base classes</span>
 
 
-<div class="viewcode-block" id="WeightingModel"><a class="viewcode-back" href="../../api/scoring.html#whoosh.scoring.WeightingModel">[docs]</a><span class="k">class</span> <span class="nc">WeightingModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="WeightingModel"><a class="viewcode-back" href="../../api/scoring.html#whoosh.scoring.WeightingModel">[docs]</a><span class="k">class</span> <span class="nc">WeightingModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for scoring models. A WeightingModel object provides</span>
 <span class="sd">    a method, ``scorer``, which returns an instance of</span>
 <span class="sd">    :class:`whoosh.scoring.Scorer`.</span>
@@ -185,7 +184,7 @@
         <span class="k">return</span> <span class="n">score</span></div></div>
 
 
-<div class="viewcode-block" id="BaseScorer"><a class="viewcode-back" href="../../api/scoring.html#whoosh.scoring.BaseScorer">[docs]</a><span class="k">class</span> <span class="nc">BaseScorer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseScorer"><a class="viewcode-back" href="../../api/scoring.html#whoosh.scoring.BaseScorer">[docs]</a><span class="k">class</span> <span class="nc">BaseScorer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for &quot;scorer&quot; implementations. A scorer provides a method for</span>
 <span class="sd">    scoring a document, and sometimes methods for rating the &quot;quality&quot; of a</span>
 <span class="sd">    document and a matcher&#39;s current &quot;block&quot;, to implement quality-based</span>

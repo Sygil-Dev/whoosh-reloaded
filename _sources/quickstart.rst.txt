@@ -241,4 +241,3 @@ Whoosh includes extra features for dealing with search results, such as
 * Paginating the results (e.g. "Showing results 1-20, page 1 of 4").
 
 See :doc:`searching` for more information.
-

@@ -109,7 +109,6 @@
 <span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">izip</span><span class="p">,</span> <span class="n">izip_longest</span><span class="p">,</span> <span class="nb">next</span><span class="p">,</span> <span class="nb">range</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.numeric</span> <span class="kn">import</span> <span class="n">bytes_for_bits</span>
 
-
 <span class="c1"># Number of &#39;1&#39; bits in each byte (0-255)</span>
 <span class="n">_1SPERBYTE</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
     <span class="s2">&quot;B&quot;</span><span class="p">,</span>
@@ -374,7 +373,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="DocIdSet"><a class="viewcode-back" href="../../api/idsets.html#whoosh.idsets.DocIdSet">[docs]</a><span class="k">class</span> <span class="nc">DocIdSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DocIdSet"><a class="viewcode-back" href="../../api/idsets.html#whoosh.idsets.DocIdSet">[docs]</a><span class="k">class</span> <span class="nc">DocIdSet</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for a set of positive integers, implementing a subset of the</span>
 <span class="sd">    built-in ``set`` type&#39;s interface with extra docid-related methods.</span>
 
@@ -866,10 +865,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">typecode</span><span class="p">,</span> <span class="p">(</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">num</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">other</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">SortedIntSet</span><span class="p">((</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">other</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">SortedIntSet</span><span class="p">(</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">other</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">difference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">SortedIntSet</span><span class="p">((</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">num</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">other</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">SortedIntSet</span><span class="p">(</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="bp">self</span> <span class="k">if</span> <span class="n">num</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">other</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>

@@ -8,4 +8,3 @@ Release notes
     2_0
     1_0
     0_3
-

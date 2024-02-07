@@ -44,5 +44,3 @@ FacetType objects
 .. autoclass:: UnorderedList
 .. autoclass:: Count
 .. autoclass:: Best
-
-

@@ -20,5 +20,3 @@ Formats
 .. autoclass:: Characters
 .. autoclass:: PositionBoosts
 .. autoclass:: CharacterBoosts
-
-

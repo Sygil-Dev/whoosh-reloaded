@@ -148,7 +148,6 @@
 <span class="sd">See :doc:`/highlight` for more information.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
 <span class="kn">from</span> <span class="nn">heapq</span> <span class="kn">import</span> <span class="n">nlargest</span>
@@ -180,7 +179,7 @@
     <span class="k">return</span> <span class="n">Fragment</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">startchar</span><span class="p">,</span> <span class="n">endchar</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Fragment"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragment">[docs]</a><span class="k">class</span> <span class="nc">Fragment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Fragment"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragment">[docs]</a><span class="k">class</span> <span class="nc">Fragment</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a fragment (extract) from a hit document. This object is</span>
 <span class="sd">    mainly used to keep track of the start and end points of the fragment and</span>
 <span class="sd">    the &quot;matched&quot; character ranges inside; it does not contain the text of the</span>
@@ -294,7 +293,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implementation note: Because the Token object follows a Singleton pattern,</span>
 <span class="sd">    we can only read each one once. Because phrase matching requires rescanning,</span>
-<span class="sd">    we require a rendered token list (the text parameter) instead. The function must </span>
+<span class="sd">    we require a rendered token list (the text parameter) instead. The function must</span>
 <span class="sd">    still yield Token objects at the end, so the text list is used as a way to build a list</span>
 <span class="sd">    of Token indices (the matches set). The yield loop at the end uses this</span>
 <span class="sd">    to properly set .matched on the yielded Token objects.</span>
@@ -341,9 +340,7 @@
 <span class="sd">                            &quot;&quot;&quot;</span>
                             <span class="n">text_sub</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span>
                                 <span class="n">current_word_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">current_word_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">slop</span>
-                            <span class="p">][</span>
-                                <span class="p">::</span><span class="o">-</span><span class="mi">1</span>
-                            <span class="p">]</span>  <span class="c1"># Substring to scan (reversed)</span>
+                            <span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Substring to scan (reversed)</span>
                             <span class="n">len_sub</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text_sub</span><span class="p">)</span>
                             <span class="n">next_word_index</span> <span class="o">=</span> <span class="p">(</span>
                                 <span class="n">len_sub</span> <span class="o">-</span> <span class="n">text_sub</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
@@ -376,7 +373,7 @@
 <span class="c1"># Fragmenters</span>
 
 
-<div class="viewcode-block" id="Fragmenter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragmenter">[docs]</a><span class="k">class</span> <span class="nc">Fragmenter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Fragmenter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragmenter">[docs]</a><span class="k">class</span> <span class="nc">Fragmenter</span><span class="p">:</span>
 <div class="viewcode-block" id="Fragmenter.must_retokenize"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Fragmenter.must_retokenize">[docs]</a>    <span class="k">def</span> <span class="nf">must_retokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this fragmenter requires retokenized text.</span>
 
@@ -707,7 +704,7 @@
 <span class="c1"># Fragment scorers</span>
 
 
-<div class="viewcode-block" id="FragmentScorer"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.FragmentScorer">[docs]</a><span class="k">class</span> <span class="nc">FragmentScorer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="FragmentScorer"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.FragmentScorer">[docs]</a><span class="k">class</span> <span class="nc">FragmentScorer</span><span class="p">:</span>
     <span class="k">pass</span></div>
 
 
@@ -764,7 +761,7 @@
         <span class="k">return</span> <span class="n">original</span><span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">startchar</span> <span class="p">:</span> <span class="n">token</span><span class="o">.</span><span class="n">endchar</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">Formatter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Formatter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for formatters.</span>
 
 <span class="sd">    For highlighters that return strings, it is usually only necessary to</span>
@@ -964,8 +961,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">qname</span> <span class="o">=</span> <span class="n">qname</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">between</span> <span class="o">=</span> <span class="n">between</span>
 
-        <span class="kn">from</span> <span class="nn">genshi.core</span> <span class="kn">import</span> <span class="n">START</span><span class="p">,</span> <span class="n">END</span><span class="p">,</span> <span class="n">TEXT</span>  <span class="c1"># type: ignore @UnresolvedImport</span>
-        <span class="kn">from</span> <span class="nn">genshi.core</span> <span class="kn">import</span> <span class="n">Attrs</span><span class="p">,</span> <span class="n">Stream</span>  <span class="c1"># type: ignore @UnresolvedImport</span>
+        <span class="kn">from</span> <span class="nn">genshi.core</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore @UnresolvedImport  # type: ignore @UnresolvedImport</span>
+            <span class="n">END</span><span class="p">,</span>
+            <span class="n">START</span><span class="p">,</span>
+            <span class="n">TEXT</span><span class="p">,</span>
+            <span class="n">Attrs</span><span class="p">,</span>
+            <span class="n">Stream</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">START</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">TEXT</span> <span class="o">=</span> <span class="n">START</span><span class="p">,</span> <span class="n">END</span><span class="p">,</span> <span class="n">TEXT</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Attrs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Stream</span> <span class="o">=</span> <span class="n">Attrs</span><span class="p">,</span> <span class="n">Stream</span>
@@ -1056,7 +1058,7 @@
     <span class="k">return</span> <span class="n">formatter</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fragments</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Highlighter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Highlighter">[docs]</a><span class="k">class</span> <span class="nc">Highlighter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Highlighter"><a class="viewcode-back" href="../../api/highlight.html#whoosh.highlight.Highlighter">[docs]</a><span class="k">class</span> <span class="nc">Highlighter</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fragmenter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>

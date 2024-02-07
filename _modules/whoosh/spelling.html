@@ -135,11 +135,10 @@
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">highlight</span>
 <span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="nb">range</span>
 
-
 <span class="c1"># Corrector objects</span>
 
 
-<div class="viewcode-block" id="Corrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.Corrector">[docs]</a><span class="k">class</span> <span class="nc">Corrector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Corrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.Corrector">[docs]</a><span class="k">class</span> <span class="nc">Corrector</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for spelling correction objects. Concrete sub-classes should</span>
 <span class="sd">    implement the ``_suggestions`` method.</span>
@@ -225,8 +224,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">wordlist</span> <span class="o">=</span> <span class="n">wordlist</span>
 
     <span class="k">def</span> <span class="nf">_suggestions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">whoosh.automata.lev</span> <span class="kn">import</span> <span class="n">levenshtein_automaton</span>
         <span class="kn">from</span> <span class="nn">whoosh.automata.fsa</span> <span class="kn">import</span> <span class="n">find_all_matches</span>
+        <span class="kn">from</span> <span class="nn">whoosh.automata.lev</span> <span class="kn">import</span> <span class="n">levenshtein_automaton</span>
 
         <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">mxd</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxdist</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
@@ -237,7 +236,7 @@
                     <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sug</span><span class="p">)</span>
                     <span class="k">yield</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="n">mxd</span><span class="p">),</span> <span class="n">sug</span>
 
-    <span class="k">class</span> <span class="nc">Skipper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Skipper</span><span class="p">:</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -277,7 +276,7 @@
 <span class="c1"># Query correction</span>
 
 
-<div class="viewcode-block" id="Correction"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.Correction">[docs]</a><span class="k">class</span> <span class="nc">Correction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Correction"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.Correction">[docs]</a><span class="k">class</span> <span class="nc">Correction</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents the corrected version of a user query string. Has the</span>
 <span class="sd">    following attributes:</span>
@@ -342,7 +341,7 @@
 <span class="c1"># QueryCorrector objects</span>
 
 
-<div class="viewcode-block" id="QueryCorrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.QueryCorrector">[docs]</a><span class="k">class</span> <span class="nc">QueryCorrector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="QueryCorrector"><a class="viewcode-back" href="../../api/spelling.html#whoosh.spelling.QueryCorrector">[docs]</a><span class="k">class</span> <span class="nc">QueryCorrector</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for objects that correct words in a user query.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

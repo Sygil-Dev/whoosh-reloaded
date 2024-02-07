@@ -126,18 +126,18 @@
 <span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
 
 <span class="kn">from</span> <span class="nn">whoosh.analysis.acore</span> <span class="kn">import</span> <span class="n">Composable</span><span class="p">,</span> <span class="n">CompositionError</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.filters</span> <span class="kn">import</span> <span class="n">LowercaseFilter</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.filters</span> <span class="kn">import</span> <span class="n">StopFilter</span><span class="p">,</span> <span class="n">STOP_WORDS</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.morph</span> <span class="kn">import</span> <span class="n">StemFilter</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.filters</span> <span class="kn">import</span> <span class="n">STOP_WORDS</span><span class="p">,</span> <span class="n">LowercaseFilter</span><span class="p">,</span> <span class="n">StopFilter</span>
 <span class="kn">from</span> <span class="nn">whoosh.analysis.intraword</span> <span class="kn">import</span> <span class="n">IntraWordFilter</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">default_pattern</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">CommaSeparatedTokenizer</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">IDTokenizer</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">RegexTokenizer</span>
-<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="n">SpaceSeparatedTokenizer</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.morph</span> <span class="kn">import</span> <span class="n">StemFilter</span>
+<span class="kn">from</span> <span class="nn">whoosh.analysis.tokenizers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CommaSeparatedTokenizer</span><span class="p">,</span>
+    <span class="n">IDTokenizer</span><span class="p">,</span>
+    <span class="n">RegexTokenizer</span><span class="p">,</span>
+    <span class="n">SpaceSeparatedTokenizer</span><span class="p">,</span>
+    <span class="n">Tokenizer</span><span class="p">,</span>
+    <span class="n">default_pattern</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">whoosh.lang.porter</span> <span class="kn">import</span> <span class="n">stem</span>
-
 
 <span class="c1"># Analyzers</span>
 
@@ -183,7 +183,7 @@
                 <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">),</span>
         <span class="p">)</span>

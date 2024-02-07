@@ -27,5 +27,3 @@ QueryCorrector objects
 .. autoclass:: SimpleQueryCorrector
 
 .. autoclass:: Correction
-
-

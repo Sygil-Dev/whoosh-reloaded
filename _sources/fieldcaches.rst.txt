@@ -44,9 +44,3 @@ Then you can pass an instance of your policy object to the ``set_caching_policy`
 method::
 
     searcher.set_caching_policy(MyPolicy())
-
-
-
-
-
-

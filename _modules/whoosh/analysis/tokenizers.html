@@ -125,10 +125,9 @@
 <span class="c1"># those of the authors and should not be interpreted as representing official</span>
 <span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">u</span><span class="p">,</span> <span class="n">text_type</span>
 <span class="kn">from</span> <span class="nn">whoosh.analysis.acore</span> <span class="kn">import</span> <span class="n">Composable</span><span class="p">,</span> <span class="n">Token</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">text_type</span><span class="p">,</span> <span class="n">u</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.text</span> <span class="kn">import</span> <span class="n">rcompile</span>
-
 
 <span class="n">default_pattern</span> <span class="o">=</span> <span class="n">rcompile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\w\*]+(\.?[\w\*]+)*&quot;</span><span class="p">)</span>
 
@@ -162,7 +161,7 @@
         <span class="n">start_pos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">start_char</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">text_type</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> is not unicode&quot;</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">removestops</span><span class="o">=</span><span class="n">removestops</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -217,7 +216,7 @@
         <span class="n">start_char</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">tokenize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param value: The unicode string to tokenize.</span>
@@ -350,7 +349,7 @@
         <span class="n">start_char</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">tokenize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param value: The unicode string to tokenize.</span>

@@ -40,8 +40,3 @@ Wrappers
 .. autoclass:: TimeLimitCollector
 
 .. autoclass:: TermsCollector
-
-
-
-
-

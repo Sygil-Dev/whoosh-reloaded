@@ -130,15 +130,15 @@
 <span class="sd">D. J. Bernstein&#39;s CDB format (http://cr.yp.to/cdb.html).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">struct</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">binascii</span> <span class="kn">import</span> <span class="n">crc32</span>
 <span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">md5</span>  <span class="c1"># type: ignore @UnresolvedImport</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">b</span><span class="p">,</span> <span class="n">bytes_type</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="nb">range</span>
-<span class="kn">from</span> <span class="nn">whoosh.util.numlists</span> <span class="kn">import</span> <span class="n">GrowableArray</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">b</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">,</span> <span class="nb">range</span>
 <span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">_INT_SIZE</span><span class="p">,</span> <span class="n">emptybytes</span>
-
+<span class="kn">from</span> <span class="nn">whoosh.util.numlists</span> <span class="kn">import</span> <span class="n">GrowableArray</span>
 
 <span class="c1"># Exceptions</span>
 
@@ -185,7 +185,7 @@
 <span class="c1"># Basic hash file</span>
 
 
-<div class="viewcode-block" id="HashWriter"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh.filedb.filetables.HashWriter">[docs]</a><span class="k">class</span> <span class="nc">HashWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="HashWriter"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh.filedb.filetables.HashWriter">[docs]</a><span class="k">class</span> <span class="nc">HashWriter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a fast on-disk key-value store. This hash uses a two-level</span>
 <span class="sd">    hashing scheme, where a key is hashed, the low eight bits of the hash value</span>
 <span class="sd">    are used to index into one of 256 hash tables. This is basically the CDB</span>
@@ -319,7 +319,7 @@
         <span class="k">return</span> <span class="n">endpos</span></div>
 
 
-<div class="viewcode-block" id="HashReader"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh.filedb.filetables.HashReader">[docs]</a><span class="k">class</span> <span class="nc">HashReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="HashReader"><a class="viewcode-back" href="../../../api/filedb/filetables.html#whoosh.filedb.filetables.HashReader">[docs]</a><span class="k">class</span> <span class="nc">HashReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reader for the fast on-disk key-value files created by</span>
 <span class="sd">    :class:`HashWriter`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -596,8 +596,7 @@
         <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="n">item</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">keys_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Yields an ordered series of keys equal to or greater than the given</span>
@@ -824,8 +823,7 @@
             <span class="k">return</span>
 
         <span class="n">startpos</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">,</span> <span class="n">ixsize</span><span class="p">,</span> <span class="n">ixtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="n">item</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">ixpos</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">terms_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">):</span>
         <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>

@@ -125,8 +125,11 @@
 <span class="c1"># those of the authors and should not be interpreted as representing official</span>
 <span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">with_statement</span>
-<span class="kn">import</span> <span class="nn">errno</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">tempfile</span>
+
+<span class="kn">import</span> <span class="nn">errno</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
 
 <span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">BytesIO</span><span class="p">,</span> <span class="n">memoryview_</span>
@@ -134,7 +137,6 @@
 <span class="kn">from</span> <span class="nn">whoosh.index</span> <span class="kn">import</span> <span class="n">_DEF_INDEX_NAME</span><span class="p">,</span> <span class="n">EmptyIndexError</span>
 <span class="kn">from</span> <span class="nn">whoosh.util</span> <span class="kn">import</span> <span class="n">random_name</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.filelock</span> <span class="kn">import</span> <span class="n">FileLock</span>
-
 
 <span class="c1"># Exceptions</span>
 
@@ -150,7 +152,7 @@
 <span class="c1"># Base class</span>
 
 
-<div class="viewcode-block" id="Storage"><a class="viewcode-back" href="../../../api/filedb/filestore.html#whoosh.filedb.filestore.Storage">[docs]</a><span class="k">class</span> <span class="nc">Storage</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Storage"><a class="viewcode-back" href="../../../api/filedb/filestore.html#whoosh.filedb.filestore.Storage">[docs]</a><span class="k">class</span> <span class="nc">Storage</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for storage objects.</span>
 
 <span class="sd">    A storage object is a virtual flat filesystem, allowing the creation and</span>
@@ -563,7 +565,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Try to remove the directory</span>
             <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
             <span class="n">e</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span> <span class="o">==</span> <span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">:</span>
                 <span class="k">pass</span>
@@ -627,7 +629,7 @@
     <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
             <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">return</span> <span class="n">files</span>

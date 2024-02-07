@@ -133,11 +133,10 @@
 
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">columns</span>
 <span class="kn">from</span> <span class="nn">whoosh.automata</span> <span class="kn">import</span> <span class="n">lev</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">izip</span><span class="p">,</span> <span class="n">unichr</span><span class="p">,</span> <span class="nb">range</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">izip</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">unichr</span>
 <span class="kn">from</span> <span class="nn">whoosh.filedb.compound</span> <span class="kn">import</span> <span class="n">CompoundStorage</span>
 <span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">emptybytes</span>
 <span class="kn">from</span> <span class="nn">whoosh.util</span> <span class="kn">import</span> <span class="n">random_name</span>
-
 
 <span class="c1"># Exceptions</span>
 
@@ -149,7 +148,7 @@
 <span class="c1"># Base classes</span>
 
 
-<div class="viewcode-block" id="Codec"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.Codec">[docs]</a><span class="k">class</span> <span class="nc">Codec</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Codec"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.Codec">[docs]</a><span class="k">class</span> <span class="nc">Codec</span><span class="p">:</span>
     <span class="n">length_stats</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="c1"># Per document value writer</span>
@@ -229,7 +228,7 @@
 <span class="c1"># Writer classes</span>
 
 
-<div class="viewcode-block" id="PerDocumentWriter"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.PerDocumentWriter">[docs]</a><span class="k">class</span> <span class="nc">PerDocumentWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="PerDocumentWriter"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.PerDocumentWriter">[docs]</a><span class="k">class</span> <span class="nc">PerDocumentWriter</span><span class="p">:</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">start_doc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docnum</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -266,7 +265,7 @@
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="FieldWriter"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.FieldWriter">[docs]</a><span class="k">class</span> <span class="nc">FieldWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="FieldWriter"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.FieldWriter">[docs]</a><span class="k">class</span> <span class="nc">FieldWriter</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">add_postings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">lengths</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
         <span class="c1"># This method translates a generator of (fieldname, btext, docnum, w, v)</span>
         <span class="c1"># postings into calls to start_field(), start_term(), add(),</span>
@@ -374,7 +373,7 @@
 <span class="c1"># Postings</span>
 
 
-<div class="viewcode-block" id="PostingsWriter"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.PostingsWriter">[docs]</a><span class="k">class</span> <span class="nc">PostingsWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="PostingsWriter"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.PostingsWriter">[docs]</a><span class="k">class</span> <span class="nc">PostingsWriter</span><span class="p">:</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">start_postings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_</span><span class="p">,</span> <span class="n">terminfo</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -397,7 +396,7 @@
 <span class="c1"># Reader classes</span>
 
 
-<span class="k">class</span> <span class="nc">FieldCursor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FieldCursor</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">first</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
@@ -411,7 +410,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 
-<div class="viewcode-block" id="TermsReader"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.TermsReader">[docs]</a><span class="k">class</span> <span class="nc">TermsReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TermsReader"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.TermsReader">[docs]</a><span class="k">class</span> <span class="nc">TermsReader</span><span class="p">:</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
@@ -461,7 +460,7 @@
         <span class="k">pass</span></div>
 
 
-<span class="k">class</span> <span class="nc">Automata</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">Automata</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">levenshtein_dfa</span><span class="p">(</span><span class="n">uterm</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">lev</span><span class="o">.</span><span class="n">levenshtein_automaton</span><span class="p">(</span><span class="n">uterm</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span><span class="o">.</span><span class="n">to_dfa</span><span class="p">()</span>
@@ -493,7 +492,7 @@
 <span class="c1"># Per-doc value reader</span>
 
 
-<div class="viewcode-block" id="PerDocumentReader"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.PerDocumentReader">[docs]</a><span class="k">class</span> <span class="nc">PerDocumentReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="PerDocumentReader"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.PerDocumentReader">[docs]</a><span class="k">class</span> <span class="nc">PerDocumentReader</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># This method is intentionally left empty.</span>
         <span class="k">pass</span>
@@ -598,7 +597,7 @@
 <span class="c1"># Segment base class</span>
 
 
-<div class="viewcode-block" id="Segment"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.Segment">[docs]</a><span class="k">class</span> <span class="nc">Segment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Segment"><a class="viewcode-back" href="../../../api/codec/base.html#whoosh.codec.base.Segment">[docs]</a><span class="k">class</span> <span class="nc">Segment</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Do not instantiate this object directly. It is used by the Index object</span>
 <span class="sd">    to hold information about a segment. A list of objects of this class are</span>
 <span class="sd">    pickled as part of the TOC file.</span>

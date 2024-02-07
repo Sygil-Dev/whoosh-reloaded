@@ -128,14 +128,12 @@
 <span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">string_type</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">izip</span><span class="p">,</span> <span class="nb">range</span>
-
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">izip</span><span class="p">,</span> <span class="nb">range</span><span class="p">,</span> <span class="n">string_type</span>
 
 <span class="c1"># Faceting objects</span>
 
 
-<div class="viewcode-block" id="FacetType"><a class="viewcode-back" href="../../api/sorting.html#whoosh.sorting.FacetType">[docs]</a><span class="k">class</span> <span class="nc">FacetType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="FacetType"><a class="viewcode-back" href="../../api/sorting.html#whoosh.sorting.FacetType">[docs]</a><span class="k">class</span> <span class="nc">FacetType</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for &quot;facets&quot;, aspects that can be sorted/faceted.&quot;&quot;&quot;</span>
 
     <span class="n">maptype</span> <span class="o">=</span> <span class="kc">None</span>
@@ -165,7 +163,7 @@
         <span class="k">return</span> <span class="s2">&quot;facet&quot;</span></div>
 
 
-<div class="viewcode-block" id="Categorizer"><a class="viewcode-back" href="../../api/sorting.html#whoosh.sorting.Categorizer">[docs]</a><span class="k">class</span> <span class="nc">Categorizer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Categorizer"><a class="viewcode-back" href="../../api/sorting.html#whoosh.sorting.Categorizer">[docs]</a><span class="k">class</span> <span class="nc">Categorizer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for categorizer objects which compute a key value for a</span>
 <span class="sd">    document based on certain criteria, for use in sorting/faceting.</span>
 
@@ -324,7 +322,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_creader</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">, </span><span class="si">%r</span><span class="s2">, reverse=</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{!r}</span><span class="s2">, </span><span class="si">{!r}</span><span class="s2">, reverse=</span><span class="si">{!r}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fieldobj</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fieldname</span><span class="p">,</span>
@@ -957,7 +955,7 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Facets"><a class="viewcode-back" href="../../api/sorting.html#whoosh.sorting.Facets">[docs]</a><span class="k">class</span> <span class="nc">Facets</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Facets"><a class="viewcode-back" href="../../api/sorting.html#whoosh.sorting.Facets">[docs]</a><span class="k">class</span> <span class="nc">Facets</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps facet names to :class:`FacetType` objects, for creating multiple</span>
 <span class="sd">    groupings of documents.</span>
 
@@ -1051,7 +1049,7 @@
 <span class="c1"># Objects for holding facet groups</span>
 
 
-<div class="viewcode-block" id="FacetMap"><a class="viewcode-back" href="../../api/sorting.html#whoosh.sorting.FacetMap">[docs]</a><span class="k">class</span> <span class="nc">FacetMap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="FacetMap"><a class="viewcode-back" href="../../api/sorting.html#whoosh.sorting.FacetMap">[docs]</a><span class="k">class</span> <span class="nc">FacetMap</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for objects holding the results of grouping search results by</span>
 <span class="sd">    a Facet. Use an object&#39;s ``as_dict()`` method to access the results.</span>
 
