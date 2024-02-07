@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>whoosh.query.nested &mdash; Whoosh-Reloaded 2.7.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Whoosh-Reloaded
+          </a>
+              <div class="version">
+                2.7
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction to Whoosh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../schema.html">Designing a schema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indexing.html">How to index documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../searching.html">How to search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Parsing user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../querylang.html">The default query language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dates.html">Indexing and parsing dates/times</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../query.html">Query objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">About analyzers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stemming.html">Stemming, variations, and accent folding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ngrams.html">Indexing and searching N-grams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../facets.html">Sorting and faceting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../highlight.html">How to create highlighted search result excerpts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../keywords.html">Query expansion and Key word extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spelling.html">“Did you mean… ?” Correcting errors in user queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fieldcaches.html">Field caches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../batch.html">Tips for speeding up batch indexing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../threads.html">Concurrency, locking, and versioning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nested.html">Indexing and searching document hierarchies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../recipes.html">Whoosh recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/api.html">Whoosh API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tech/index.html">Technical notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Whoosh-Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">whoosh.query.nested</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for whoosh.query.nested</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2012 Matt Chaput. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without</span>
+<span class="c1"># modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#    1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#</span>
+<span class="c1">#    2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="c1">#       notice, this list of conditions and the following disclaimer in the</span>
+<span class="c1">#       documentation and/or other materials provided with the distribution.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS&#39;&#39; AND ANY EXPRESS OR</span>
+<span class="c1"># IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF</span>
+<span class="c1"># MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO</span>
+<span class="c1"># EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,</span>
+<span class="c1"># INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,</span>
+<span class="c1"># OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,</span>
+<span class="c1"># EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">#</span>
+<span class="c1"># The views and conclusions contained in the software and documentation are</span>
+<span class="c1"># those of the authors and should not be interpreted as representing official</span>
+<span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
+
+<span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">matching</span>
+<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="nb">range</span>
+<span class="kn">from</span> <span class="nn">whoosh.query</span> <span class="kn">import</span> <span class="n">qcore</span>
+<span class="kn">from</span> <span class="nn">whoosh.query.wrappers</span> <span class="kn">import</span> <span class="n">WrappingQuery</span>
+
+
+<div class="viewcode-block" id="NestedParent"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NestedParent">[docs]</a><span class="k">class</span> <span class="nc">NestedParent</span><span class="p">(</span><span class="n">WrappingQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A query that allows you to search for &quot;nested&quot; documents, where you can</span>
+<span class="sd">    index (possibly multiple levels of) &quot;parent&quot; and &quot;child&quot; documents using</span>
+<span class="sd">    the :meth:`~whoosh.writing.IndexWriter.group` and/or</span>
+<span class="sd">    :meth:`~whoosh.writing.IndexWriter.start_group` methods of a</span>
+<span class="sd">    :class:`whoosh.writing.IndexWriter` to indicate that hierarchically related</span>
+<span class="sd">    documents should be kept together::</span>
+
+<span class="sd">        schema = fields.Schema(type=fields.ID, text=fields.TEXT(stored=True))</span>
+
+<span class="sd">        with ix.writer() as w:</span>
+<span class="sd">            # Say we&#39;re indexing chapters (type=chap) and each chapter has a</span>
+<span class="sd">            # number of paragraphs (type=p)</span>
+<span class="sd">            with w.group():</span>
+<span class="sd">                w.add_document(type=&quot;chap&quot;, text=&quot;Chapter 1&quot;)</span>
+<span class="sd">                w.add_document(type=&quot;p&quot;, text=&quot;Able baker&quot;)</span>
+<span class="sd">                w.add_document(type=&quot;p&quot;, text=&quot;Bright morning&quot;)</span>
+<span class="sd">            with w.group():</span>
+<span class="sd">                w.add_document(type=&quot;chap&quot;, text=&quot;Chapter 2&quot;)</span>
+<span class="sd">                w.add_document(type=&quot;p&quot;, text=&quot;Car trip&quot;)</span>
+<span class="sd">                w.add_document(type=&quot;p&quot;, text=&quot;Dog eared&quot;)</span>
+<span class="sd">                w.add_document(type=&quot;p&quot;, text=&quot;Every day&quot;)</span>
+<span class="sd">            with w.group():</span>
+<span class="sd">                w.add_document(type=&quot;chap&quot;, text=&quot;Chapter 3&quot;)</span>
+<span class="sd">                w.add_document(type=&quot;p&quot;, text=&quot;Fine day&quot;)</span>
+
+<span class="sd">    The ``NestedParent`` query wraps two sub-queries: the &quot;parent query&quot;</span>
+<span class="sd">    matches a class of &quot;parent documents&quot;. The &quot;sub query&quot; matches nested</span>
+<span class="sd">    documents you want to find. For each &quot;sub document&quot; the &quot;sub query&quot; finds,</span>
+<span class="sd">    this query acts as if it found the corresponding &quot;parent document&quot;.</span>
+
+<span class="sd">    &gt;&gt;&gt; with ix.searcher() as s:</span>
+<span class="sd">    ...   r = s.search(query.Term(&quot;text&quot;, &quot;day&quot;))</span>
+<span class="sd">    ...   for hit in r:</span>
+<span class="sd">    ...     print(hit[&quot;text&quot;])</span>
+<span class="sd">    ...</span>
+<span class="sd">    Chapter 2</span>
+<span class="sd">    Chapter 3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">subq</span><span class="p">,</span> <span class="n">per_parent_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">score_fn</span><span class="o">=</span><span class="nb">sum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param parents: a query, DocIdSet object, or Results object</span>
+<span class="sd">            representing the documents you want to use as the &quot;parent&quot;</span>
+<span class="sd">            documents. Where the sub-query matches, the corresponding document</span>
+<span class="sd">            in these results will be returned as the match.</span>
+<span class="sd">        :param subq: a query matching the information you want to find.</span>
+<span class="sd">        :param per_parent_limit: a maximum number of &quot;sub documents&quot; to search</span>
+<span class="sd">            per parent. The default is None, meaning no limit.</span>
+<span class="sd">        :param score_fn: a function to use to combine the scores of matching</span>
+<span class="sd">            sub-documents to calculate the score returned for the parent</span>
+<span class="sd">            document. The default is ``sum``, that is, add up the scores of the</span>
+<span class="sd">            sub-documents.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents</span> <span class="o">=</span> <span class="n">parents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">subq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">per_parent_limit</span> <span class="o">=</span> <span class="n">per_parent_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score_fn</span> <span class="o">=</span> <span class="n">score_fn</span>
+
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">qcore</span><span class="o">.</span><span class="n">Query</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span> <span class="ow">or</span> <span class="n">q</span> <span class="ow">is</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qcore</span><span class="o">.</span><span class="n">NullQuery</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">requires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">requires</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">bits</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">_filter_to_comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parents</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bits</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matching</span><span class="o">.</span><span class="n">NullMatcher</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">matching</span><span class="o">.</span><span class="n">NullMatcher</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NestedParentMatcher</span><span class="p">(</span>
+            <span class="n">bits</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_parent_limit</span><span class="p">,</span> <span class="n">searcher</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_fn</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">deletion_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">):</span>
+        <span class="n">bits</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">_filter_to_comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parents</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bits</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">searcher</span><span class="o">.</span><span class="n">boolean_context</span><span class="p">())</span>
+        <span class="n">maxdoc</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">m</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="n">docnum</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+            <span class="n">parentdoc</span> <span class="o">=</span> <span class="n">bits</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">docnum</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">nextparent</span> <span class="o">=</span> <span class="n">bits</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">docnum</span><span class="p">)</span> <span class="ow">or</span> <span class="n">maxdoc</span>
+            <span class="k">yield from</span> <span class="nb">range</span><span class="p">(</span><span class="n">parentdoc</span><span class="p">,</span> <span class="n">nextparent</span><span class="p">)</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">skip_to</span><span class="p">(</span><span class="n">nextparent</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">NestedParentMatcher</span><span class="p">(</span><span class="n">matching</span><span class="o">.</span><span class="n">Matcher</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comb</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">per_parent_limit</span><span class="p">,</span> <span class="n">maxdoc</span><span class="p">,</span> <span class="n">score_fn</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comb</span> <span class="o">=</span> <span class="n">comb</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">child</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">per_parent_limit</span> <span class="o">=</span> <span class="n">per_parent_limit</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxdoc</span> <span class="o">=</span> <span class="n">maxdoc</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">score_fn</span> <span class="o">=</span> <span class="n">score_fn</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextdoc</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_gather</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">is_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextdoc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="k">def</span> <span class="nf">supports_block_quality</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">def</span> <span class="nf">_gather</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="c1"># This is where the magic happens ;)</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+            <span class="n">pplimit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">per_parent_limit</span>
+
+            <span class="c1"># The next document returned by this matcher is the parent of the</span>
+            <span class="c1"># child&#39;s current document. We don&#39;t have to worry about whether</span>
+            <span class="c1"># the parent is deleted, because the query that gave us the parents</span>
+            <span class="c1"># wouldn&#39;t return deleted documents.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextdoc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comb</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="c1"># The next parent after the child matcher&#39;s current document</span>
+            <span class="n">nextparent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comb</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">id</span><span class="p">())</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxdoc</span>
+
+            <span class="c1"># Sum the scores of all matching documents under the parent</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">while</span> <span class="n">child</span><span class="o">.</span><span class="n">is_active</span><span class="p">()</span> <span class="ow">and</span> <span class="n">child</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">nextparent</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pplimit</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">pplimit</span><span class="p">:</span>
+                    <span class="n">child</span><span class="o">.</span><span class="n">skip_to</span><span class="p">(</span><span class="n">nextparent</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+                <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">score</span><span class="p">())</span>
+                <span class="n">child</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_fn</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span> <span class="k">if</span> <span class="n">scores</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextscore</span> <span class="o">=</span> <span class="n">score</span>
+
+        <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextdoc</span>
+
+        <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextscore</span>
+
+        <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gather</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_gather</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextdoc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">matching</span><span class="o">.</span><span class="n">ReadTooFar</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_nextdoc</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">def</span> <span class="nf">skip_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">skip_to</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gather</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">spans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="NestedChildren"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.NestedChildren">[docs]</a><span class="k">class</span> <span class="nc">NestedChildren</span><span class="p">(</span><span class="n">WrappingQuery</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is the reverse of a :class:`NestedParent` query: instead of taking</span>
+<span class="sd">    a query that matches children but returns the parent, this query matches</span>
+<span class="sd">    parents but returns the children.</span>
+
+<span class="sd">    This is useful, for example, to search for an album title and return the</span>
+<span class="sd">    songs in the album::</span>
+
+<span class="sd">        schema = fields.Schema(type=fields.ID(stored=True),</span>
+<span class="sd">                               album_name=fields.TEXT(stored=True),</span>
+<span class="sd">                               track_num=fields.NUMERIC(stored=True),</span>
+<span class="sd">                               track_name=fields.TEXT(stored=True),</span>
+<span class="sd">                               lyrics=fields.TEXT)</span>
+<span class="sd">        ix = RamStorage().create_index(schema)</span>
+
+<span class="sd">        # Indexing</span>
+<span class="sd">        with ix.writer() as w:</span>
+<span class="sd">            # For each album, index a &quot;group&quot; of a parent &quot;album&quot; document and</span>
+<span class="sd">            # multiple child &quot;track&quot; documents.</span>
+<span class="sd">            with w.group():</span>
+<span class="sd">                w.add_document(type=&quot;album&quot;,</span>
+<span class="sd">                               artist=&quot;The Cure&quot;, album_name=&quot;Disintegration&quot;)</span>
+<span class="sd">                w.add_document(type=&quot;track&quot;, track_num=1,</span>
+<span class="sd">                               track_name=&quot;Plainsong&quot;)</span>
+<span class="sd">                w.add_document(type=&quot;track&quot;, track_num=2,</span>
+<span class="sd">                               track_name=&quot;Pictures of You&quot;)</span>
+<span class="sd">                # ...</span>
+<span class="sd">            # ...</span>
+
+
+<span class="sd">        # Find songs where the song name has &quot;heaven&quot; in the title and the</span>
+<span class="sd">        # album the song is on has &quot;hell&quot; in the title</span>
+<span class="sd">        qp = QueryParser(&quot;lyrics&quot;, ix.schema)</span>
+<span class="sd">        with ix.searcher() as s:</span>
+<span class="sd">            # A query that matches all parents</span>
+<span class="sd">            all_albums = qp.parse(&quot;type:album&quot;)</span>
+
+<span class="sd">            # A query that matches the parents we want</span>
+<span class="sd">            albums_with_hell = qp.parse(&quot;album_name:hell&quot;)</span>
+
+<span class="sd">            # A query that matches the desired albums but returns the tracks</span>
+<span class="sd">            songs_on_hell_albums = NestedChildren(all_albums, albums_with_hell)</span>
+
+<span class="sd">            # A query that matches tracks with heaven in the title</span>
+<span class="sd">            songs_with_heaven = qp.parse(&quot;track_name:heaven&quot;)</span>
+
+<span class="sd">            # A query that finds tracks with heaven in the title on albums</span>
+<span class="sd">            # with hell in the title</span>
+<span class="sd">            q = query.And([songs_on_hell_albums, songs_with_heaven])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">subq</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents</span> <span class="o">=</span> <span class="n">parents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">subq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+
+    <span class="k">def</span> <span class="nf">matcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">bits</span> <span class="o">=</span> <span class="n">searcher</span><span class="o">.</span><span class="n">_filter_to_comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parents</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bits</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matching</span><span class="o">.</span><span class="n">NullMatcher</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">matcher</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">matching</span><span class="o">.</span><span class="n">NullMatcher</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NestedChildMatcher</span><span class="p">(</span>
+            <span class="n">bits</span><span class="p">,</span>
+            <span class="n">m</span><span class="p">,</span>
+            <span class="n">searcher</span><span class="o">.</span><span class="n">doc_count_all</span><span class="p">(),</span>
+            <span class="n">searcher</span><span class="o">.</span><span class="n">reader</span><span class="p">()</span><span class="o">.</span><span class="n">is_deleted</span><span class="p">,</span>
+            <span class="n">boost</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">NestedChildMatcher</span><span class="p">(</span><span class="n">matching</span><span class="o">.</span><span class="n">WrappingMatcher</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">parent_comb</span><span class="p">,</span> <span class="n">wanted_parent_matcher</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">is_deleted</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent_comb</span> <span class="o">=</span> <span class="n">parent_comb</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child</span> <span class="o">=</span> <span class="n">wanted_parent_matcher</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="n">limit</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_deleted</span> <span class="o">=</span> <span class="n">is_deleted</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">=</span> <span class="n">boost</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_find_next_children</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">parent_comb</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+
+        <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_find_next_children</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">is_active</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span>
+
+        <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minquality</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="k">def</span> <span class="nf">_find_next_children</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="c1"># &quot;comb&quot; contains the doc IDs of all parent documents</span>
+            <span class="n">comb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_comb</span>
+            <span class="c1"># &quot;m&quot; is the matcher for &quot;wanted&quot; parents</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+            <span class="c1"># Last doc ID + 1</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span>
+            <span class="c1"># A function that returns True if a doc ID is deleted</span>
+            <span class="n">is_deleted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_deleted</span>
+            <span class="n">nextchild</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span>
+            <span class="n">nextparent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span>
+
+            <span class="k">while</span> <span class="n">m</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+                <span class="c1"># Move the &quot;child id&quot; to the document after the current match</span>
+                <span class="n">nextchild</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="c1"># Move the parent matcher to the next match</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+
+                <span class="c1"># Find the next parent document (matching or not) after this</span>
+                <span class="n">nextparent</span> <span class="o">=</span> <span class="n">comb</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">nextchild</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">nextparent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">nextparent</span> <span class="o">=</span> <span class="n">limit</span>
+
+                <span class="c1"># Skip any deleted child documents</span>
+                <span class="k">while</span> <span class="n">is_deleted</span><span class="p">(</span><span class="n">nextchild</span><span class="p">):</span>
+                    <span class="n">nextchild</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># If skipping deleted documents put us to or past the next</span>
+                <span class="c1"># parent doc, go again</span>
+                <span class="k">if</span> <span class="n">nextchild</span> <span class="o">&gt;=</span> <span class="n">nextparent</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Otherwise, we&#39;re done</span>
+                    <span class="k">break</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span> <span class="o">=</span> <span class="n">nextchild</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span> <span class="o">=</span> <span class="n">nextparent</span>
+
+        <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span>
+
+        <span class="k">def</span> <span class="nf">all_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">is_deleted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_deleted</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span>
+            <span class="n">nextparent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span>
+
+            <span class="c1"># Go to the next document</span>
+            <span class="n">nextchild</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span>
+            <span class="n">nextchild</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Skip over any deleted child documents</span>
+            <span class="k">while</span> <span class="n">nextchild</span> <span class="o">&lt;</span> <span class="n">nextparent</span> <span class="ow">and</span> <span class="n">is_deleted</span><span class="p">(</span><span class="n">nextchild</span><span class="p">):</span>
+                <span class="n">nextchild</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span> <span class="o">=</span> <span class="n">nextchild</span>
+            <span class="c1"># If we&#39;re at or past the next parent doc, go to the next set of</span>
+            <span class="c1"># children</span>
+            <span class="k">if</span> <span class="n">nextchild</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">elif</span> <span class="n">nextchild</span> <span class="o">&gt;=</span> <span class="n">nextparent</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_find_next_children</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">skip_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docid</span><span class="p">):</span>
+            <span class="n">comb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_comb</span>
+            <span class="n">wanted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span>
+
+            <span class="c1"># self._nextchild is the &quot;current&quot; matching child ID</span>
+            <span class="k">if</span> <span class="n">docid</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="c1"># self._nextparent is the next parent ID (matching or not)</span>
+            <span class="k">if</span> <span class="n">docid</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span><span class="p">:</span>
+                <span class="c1"># Just iterate</span>
+                <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_active</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">docid</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">wanted</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+                <span class="c1"># Find the parent before the target ID</span>
+                <span class="n">pid</span> <span class="o">=</span> <span class="n">comb</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">docid</span><span class="p">)</span>
+                <span class="c1"># Skip the parent matcher to that ID</span>
+                <span class="n">wanted</span><span class="o">.</span><span class="n">skip_to</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span>
+                <span class="c1"># If that made the matcher inactive, then we&#39;re done</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">wanted</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Reestablish for the next child after the next matching</span>
+                    <span class="c1"># parent</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_find_next_children</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_nextchild</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nextparent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span>
+
+        <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+
+        <span class="k">def</span> <span class="nf">spans</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2007-2012 Matt Chaput.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

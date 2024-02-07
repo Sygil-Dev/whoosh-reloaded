@@ -115,7 +115,7 @@ search blog entries.</p>
 <section id="a-quick-introduction">
 <h2>A quick introduction<a class="headerlink" href="#a-quick-introduction" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.index</span> <span class="kn">import</span> <span class="n">create_in</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">Schema</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">,</span> <span class="n">ID</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">path</span><span class="o">=</span><span class="n">ID</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">content</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ix</span> <span class="o">=</span> <span class="n">create_in</span><span class="p">(</span><span class="s2">&quot;indexdir&quot;</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">ix</span><span class="o">.</span><span class="n">writer</span><span class="p">()</span>
@@ -277,7 +277,7 @@ query objects directly or use a query parser to parse a query string.</p>
 “bear” in the “content” field:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Construct query objects directly</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.query</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">whoosh.query</span> <span class="kn">import</span> <span class="n">And</span><span class="p">,</span> <span class="n">Term</span>
 <span class="n">myquery</span> <span class="o">=</span> <span class="n">And</span><span class="p">([</span><span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="sa">u</span><span class="s2">&quot;apple&quot;</span><span class="p">),</span> <span class="n">Term</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;bear&quot;</span><span class="p">)])</span>
 </pre></div>
 </div>

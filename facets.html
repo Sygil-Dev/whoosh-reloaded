@@ -293,7 +293,7 @@ information.</p>
 values in the field’s column as sorting keys for the documents.</p>
 <p>Normally search results are sorted by descending relevance score. You can tell
 Whoosh to use a different ordering by passing the <code class="docutils literal notranslate"><span class="pre">sortedby</span></code> keyword argument
-to the <code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code> method:</p>
+to the <a class="reference internal" href="api/searching.html#whoosh.searching.Searcher.search" title="whoosh.searching.Searcher.search"><code class="xref py py-meth docutils literal notranslate"><span class="pre">search()</span></code></a> method:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">fields</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">qparser</span>
 
 <span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
@@ -368,7 +368,7 @@ is more efficient than reversing each individual facet.</p>
 </section>
 <section id="accessing-column-values">
 <h3>Accessing column values<a class="headerlink" href="#accessing-column-values" title="Permalink to this heading">¶</a></h3>
-<p>Per-document column values are available in <code class="xref py py-class docutils literal notranslate"><span class="pre">Hit</span></code>
+<p>Per-document column values are available in <a class="reference internal" href="api/searching.html#whoosh.searching.Hit" title="whoosh.searching.Hit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hit</span></code></a>
 objects just like stored field values:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">TEXT</span><span class="p">(</span><span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                        <span class="n">price</span><span class="o">=</span><span class="n">fields</span><span class="o">.</span><span class="n">NUMERIC</span><span class="p">(</span><span class="n">sortable</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>

@@ -100,7 +100,8 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
@@ -124,9 +125,23 @@
  | <a href="#W"><strong>W</strong></a>
  
 </div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/query.html#whoosh.query.NumericRange.__init__">__init__() (whoosh.query.NumericRange method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/query.html#whoosh.query.NumericRange._compile_query">_compile_query() (whoosh.query.NumericRange method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/query.html#whoosh.query.Query.accept">accept() (whoosh.query.Query method)</a>
+</li>
       <li><a href="api/fields.html#whoosh.fields.Schema.add">add() (whoosh.fields.Schema method)</a>
 
       <ul>
@@ -159,10 +174,12 @@
         <li><a href="api/writing.html#whoosh.writing.IndexWriter.add_field">(whoosh.writing.IndexWriter method)</a>
 </li>
       </ul></li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.add_plugin">add_plugin() (whoosh.qparser.QueryParser method)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.add_plugins">add_plugins() (whoosh.qparser.QueryParser method)</a>
+</li>
       <li><a href="api/sorting.html#whoosh.sorting.Facets.add_query">add_query() (whoosh.sorting.Facets method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/matching.html#whoosh.matching.AdditiveBiMatcher">AdditiveBiMatcher (class in whoosh.matching)</a>
 </li>
       <li><a href="api/idsets.html#whoosh.idsets.DocIdSet.after">after() (whoosh.idsets.DocIdSet method)</a>
@@ -175,19 +192,47 @@
         <li><a href="api/reading.html#whoosh.reading.IndexReader.all_doc_ids">(whoosh.reading.IndexReader method)</a>
 </li>
       </ul></li>
-      <li><a href="api/matching.html#whoosh.matching.Matcher.all_ids">all_ids() (whoosh.matching.Matcher method)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.all_ids">all_ids() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.all_ids">(whoosh.collectors.WrappingCollector method)</a>
 </li>
+        <li><a href="api/matching.html#whoosh.matching.Matcher.all_ids">(whoosh.matching.Matcher method)</a>
+</li>
+      </ul></li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.all_items">all_items() (whoosh.matching.Matcher method)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.all_stored_fields">all_stored_fields() (whoosh.reading.IndexReader method)</a>
 </li>
-      <li><a href="api/reading.html#whoosh.reading.IndexReader.all_terms">all_terms() (whoosh.reading.IndexReader method)</a>
+      <li><a href="api/query.html#whoosh.query.Query.all_terms">all_terms() (whoosh.query.Query method)</a>
+
+      <ul>
+        <li><a href="api/reading.html#whoosh.reading.IndexReader.all_terms">(whoosh.reading.IndexReader method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/query.html#whoosh.query.Query.all_tokens">all_tokens() (whoosh.query.Query method)</a>
 </li>
       <li><a href="glossary.html#term-Analysis"><strong>Analysis</strong></a>
 </li>
+      <li><a href="api/query.html#whoosh.query.And">And (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.AndGroup">AndGroup (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.AndMaybe">AndMaybe (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.AndMaybeGroup">AndMaybeGroup (class in whoosh.qparser)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.AndMaybeMatcher">AndMaybeMatcher (class in whoosh.matching)</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.AndNot">AndNot (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.AndNotGroup">AndNotGroup (class in whoosh.qparser)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.AndNotMatcher">AndNotMatcher (class in whoosh.matching)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.apply">apply() (whoosh.query.Query method)</a>
 </li>
       <li><a href="api/sorting.html#whoosh.sorting.FacetMap.as_dict">as_dict() (whoosh.sorting.FacetMap method)</a>
 </li>
@@ -211,12 +256,14 @@
 </li>
       <li><a href="api/matching.html#whoosh.matching.BiMatcher">BiMatcher (class in whoosh.matching)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.BinaryGroup">BinaryGroup (class in whoosh.qparser)</a>
+</li>
       <li><a href="api/columns.html#whoosh.columns.BitColumn">BitColumn (class in whoosh.columns)</a>
+</li>
+      <li><a href="api/idsets.html#whoosh.idsets.BitSet">BitSet (class in whoosh.idsets)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/idsets.html#whoosh.idsets.BitSet">BitSet (class in whoosh.idsets)</a>
-</li>
       <li><a href="api/analysis.html#whoosh.analysis.BiWordFilter">BiWordFilter (class in whoosh.analysis)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.block_quality">block_quality() (whoosh.matching.Matcher method)</a>
@@ -228,6 +275,10 @@
       <li><a href="api/scoring.html#whoosh.scoring.BM25F">BM25F (class in whoosh.scoring)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.BOOLEAN">BOOLEAN (class in whoosh.fields)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.boolean_context">boolean_context() (whoosh.searching.Searcher method)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.BoostPlugin">BoostPlugin (class in whoosh.qparser)</a>
 </li>
       <li><a href="api/writing.html#whoosh.writing.BufferedWriter">BufferedWriter (class in whoosh.writing)</a>
 </li>
@@ -262,7 +313,11 @@
       <li><a href="api/filedb/structfile.html#whoosh.filedb.structfile.ChecksumFile">ChecksumFile (class in whoosh.filedb.structfile)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.children">children() (whoosh.matching.Matcher method)</a>
+
+      <ul>
+        <li><a href="api/query.html#whoosh.query.Query.children">(whoosh.query.Query method)</a>
 </li>
+      </ul></li>
       <li><a href="api/columns.html#whoosh.columns.ClampedNumericColumn">ClampedNumericColumn (class in whoosh.columns)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.clean">clean() (whoosh.fields.FieldType method)</a>
@@ -280,6 +335,26 @@
       <li><a href="api/codec/base.html#whoosh.codec.base.Codec">Codec (class in whoosh.codec.base)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.codec">codec() (whoosh.reading.IndexReader method)</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.CollapseCollector">CollapseCollector (class in whoosh.collectors)</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.collect">collect() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.ScoredCollector.collect">(whoosh.collectors.ScoredCollector method)</a>
+</li>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.collect">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.collect_matches">collect_matches() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.collect_matches">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector">Collector (class in whoosh.collectors)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.collector">collector() (whoosh.searching.Searcher method)</a>
 </li>
       <li><a href="api/columns.html#whoosh.columns.Column">Column (class in whoosh.columns)</a>
 </li>
@@ -301,11 +376,19 @@
         <li><a href="api/writing.html#whoosh.writing.IndexWriter.commit">(whoosh.writing.IndexWriter method)</a>
 </li>
       </ul></li>
+      <li><a href="api/query.html#whoosh.query.CompoundQuery">CompoundQuery (class in whoosh.query)</a>
+</li>
       <li><a href="api/analysis.html#whoosh.analysis.CompoundWordFilter">CompoundWordFilter (class in whoosh.analysis)</a>
 </li>
       <li><a href="api/columns.html#whoosh.columns.CompressedBytesColumn">CompressedBytesColumn (class in whoosh.columns)</a>
 </li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.computes_count">computes_count() (whoosh.collectors.Collector method)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.ConstantScoreMatcher">ConstantScoreMatcher (class in whoosh.matching)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.ConstantScoreQuery">ConstantScoreQuery (class in whoosh.query)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.context">context() (whoosh.searching.Searcher method)</a>
 </li>
       <li><a href="api/highlight.html#whoosh.highlight.ContextFragmenter">ContextFragmenter (class in whoosh.highlight)</a>
 </li>
@@ -314,15 +397,25 @@
       <ul>
         <li><a href="api/matching.html#whoosh.matching.Matcher.copy">(whoosh.matching.Matcher method)</a>
 </li>
+        <li><a href="api/query.html#whoosh.query.Query.copy">(whoosh.query.Query method)</a>
+</li>
+        <li><a href="api/searching.html#whoosh.searching.Results.copy">(whoosh.searching.Results method)</a>
+</li>
       </ul></li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.copy_storage">copy_storage() (in module whoosh.filedb.filestore)</a>
 </li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.copy_to_ram">copy_to_ram() (in module whoosh.filedb.filestore)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.CopyFieldPlugin">CopyFieldPlugin (class in whoosh.qparser)</a>
+</li>
       <li><a href="glossary.html#term-Corpus"><strong>Corpus</strong></a>
 </li>
-      <li><a href="api/spelling.html#whoosh.spelling.QueryCorrector.correct_query">correct_query() (whoosh.spelling.QueryCorrector method)</a>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.correct_query">correct_query() (whoosh.searching.Searcher method)</a>
+
+      <ul>
+        <li><a href="api/spelling.html#whoosh.spelling.QueryCorrector.correct_query">(whoosh.spelling.QueryCorrector method)</a>
 </li>
+      </ul></li>
       <li><a href="api/spelling.html#whoosh.spelling.Correction">Correction (class in whoosh.spelling)</a>
 </li>
       <li><a href="api/spelling.html#whoosh.spelling.Corrector">Corrector (class in whoosh.spelling)</a>
@@ -331,6 +424,12 @@
 </li>
       <li><a href="api/sorting.html#whoosh.sorting.Count">Count (class in whoosh.sorting)</a>
 </li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.count">count() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.count">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.Storage.create">create() (whoosh.filedb.filestore.Storage method)</a>
 </li>
       <li><a href="api/codec/base.html#whoosh.codec.base.Segment.create_file">create_file() (whoosh.codec.base.Segment method)</a>
@@ -349,6 +448,8 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/query.html#whoosh.query.DateRange">DateRange (class in whoosh.query)</a>
+</li>
       <li><a href="api/sorting.html#whoosh.sorting.DateRangeFacet">DateRangeFacet (class in whoosh.sorting)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.DATETIME">DATETIME (class in whoosh.fields)</a>
@@ -358,6 +459,8 @@
       <li><a href="api/formats.html#whoosh.formats.Format.decoder">decoder() (whoosh.formats.Format method)</a>
 </li>
       <li><a href="api/support/charset.html#whoosh.support.charset.default_charset">default_charset (in module whoosh.support.charset)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.default_set">default_set() (whoosh.qparser.QueryParser method)</a>
 </li>
       <li><a href="api/columns.html#whoosh.columns.Column.default_value">default_value() (whoosh.columns.Column method)</a>
 </li>
@@ -383,16 +486,24 @@
 </li>
       <li><a href="api/codec/base.html#whoosh.codec.base.Segment.deleted_count">deleted_count() (whoosh.codec.base.Segment method)</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.Query.deletion_docs">deletion_docs() (whoosh.query.Query method)</a>
+</li>
       <li><a href="api/analysis.html#whoosh.analysis.DelimitedAttributeFilter">DelimitedAttributeFilter (class in whoosh.analysis)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/matching.html#whoosh.matching.Matcher.depth">depth() (whoosh.matching.Matcher method)</a>
 </li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.Storage.destroy">destroy() (whoosh.filedb.filestore.Storage method)</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.DisjunctionMax">DisjunctionMax (class in whoosh.query)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.DisjunctionMaxMatcher">DisjunctionMaxMatcher (class in whoosh.matching)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.DisMaxGroup">DisMaxGroup (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.DisMaxParser">DisMaxParser() (in module whoosh.qparser)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/support/levenshtein.html#whoosh.support.levenshtein.distance">distance() (in module whoosh.support.levenshtein)</a>
 </li>
       <li><a href="api/codec/base.html#whoosh.codec.base.Segment.doc_count">doc_count() (whoosh.codec.base.Segment method)</a>
@@ -402,6 +513,8 @@
 </li>
         <li><a href="api/reading.html#whoosh.reading.IndexReader.doc_count">(whoosh.reading.IndexReader method)</a>
 </li>
+        <li><a href="api/searching.html#whoosh.searching.Searcher.doc_count">(whoosh.searching.Searcher method)</a>
+</li>
       </ul></li>
       <li><a href="api/codec/base.html#whoosh.codec.base.Segment.doc_count_all">doc_count_all() (whoosh.codec.base.Segment method)</a>
 
@@ -409,6 +522,8 @@
         <li><a href="api/index.html#whoosh.index.Index.doc_count_all">(whoosh.index.Index method)</a>
 </li>
         <li><a href="api/reading.html#whoosh.reading.IndexReader.doc_count_all">(whoosh.reading.IndexReader method)</a>
+</li>
+        <li><a href="api/searching.html#whoosh.searching.Searcher.doc_count_all">(whoosh.searching.Searcher method)</a>
 </li>
       </ul></li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.doc_field_length">doc_field_length() (whoosh.reading.IndexReader method)</a>
@@ -421,7 +536,31 @@
       </ul></li>
       <li><a href="api/idsets.html#whoosh.idsets.DocIdSet">DocIdSet (class in whoosh.idsets)</a>
 </li>
+      <li><a href="api/searching.html#whoosh.searching.Results.docnum">docnum() (whoosh.searching.Results method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.ResultsPage.docnum">(whoosh.searching.ResultsPage method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/query.html#whoosh.query.NumericRange.docs">docs() (whoosh.query.NumericRange method)</a>
+
+      <ul>
+        <li><a href="api/query.html#whoosh.query.Query.docs">(whoosh.query.Query method)</a>
+</li>
+        <li><a href="api/searching.html#whoosh.searching.Results.docs">(whoosh.searching.Results method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.docs_for_query">docs_for_query() (whoosh.searching.Searcher method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.document">document() (whoosh.searching.Searcher method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.document_number">document_number() (whoosh.searching.Searcher method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.document_numbers">document_numbers() (whoosh.searching.Searcher method)</a>
+</li>
       <li><a href="glossary.html#term-Documents"><strong>Documents</strong></a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.documents">documents() (whoosh.searching.Searcher method)</a>
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.DoubleMetaphoneFilter">DoubleMetaphoneFilter (class in whoosh.analysis)</a>
 </li>
@@ -435,15 +574,43 @@
 </li>
       <li><a href="api/writing.html#whoosh.writing.IndexWriter.end_group">end_group() (whoosh.writing.IndexWriter method)</a>
 </li>
-      <li><a href="api/formats.html#whoosh.formats.Existence">Existence (class in whoosh.formats)</a>
+      <li><a href="api/qparser.html#whoosh.qparser.ErrorNode">ErrorNode (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.NumericRange.estimate_min_size">estimate_min_size() (whoosh.query.NumericRange method)</a>
+
+      <ul>
+        <li><a href="api/query.html#whoosh.query.Query.estimate_min_size">(whoosh.query.Query method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/query.html#whoosh.query.NumericRange.estimate_size">estimate_size() (whoosh.query.NumericRange method)</a>
+
+      <ul>
+        <li><a href="api/query.html#whoosh.query.Query.estimate_size">(whoosh.query.Query method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/searching.html#whoosh.searching.Results.estimated_length">estimated_length() (whoosh.searching.Results method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Results.estimated_min_length">estimated_min_length() (whoosh.searching.Results method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/query.html#whoosh.query.Every">Every (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.EveryPlugin">EveryPlugin (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/formats.html#whoosh.formats.Existence">Existence (class in whoosh.formats)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.existing_terms">existing_terms() (whoosh.query.Query method)</a>
+</li>
       <li><a href="api/index.html#whoosh.index.exists">exists() (in module whoosh.index)</a>
 </li>
       <li><a href="api/index.html#whoosh.index.exists_in">exists_in() (in module whoosh.index)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.expand_prefix">expand_prefix() (whoosh.reading.IndexReader method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.ExpandingTerm">ExpandingTerm (class in whoosh.query)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Results.extend">extend() (whoosh.searching.Results method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -451,6 +618,10 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/searching.html#whoosh.searching.Results.facet_names">facet_names() (whoosh.searching.Results method)</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.FacetCollector">FacetCollector (class in whoosh.collectors)</a>
+</li>
       <li><a href="api/sorting.html#whoosh.sorting.FacetMap">FacetMap (class in whoosh.sorting)</a>
 </li>
       <li><a href="api/sorting.html#whoosh.sorting.Facets">Facets (class in whoosh.sorting)</a>
@@ -461,6 +632,8 @@
 </li>
       <li><a href="api/util.html#whoosh.util.fib">fib() (in module whoosh.util)</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.Query.field">field() (whoosh.query.Query method)</a>
+</li>
       <li><a href="api/index.html#whoosh.index.Index.field_length">field_length() (whoosh.index.Index method)</a>
 
       <ul>
@@ -469,11 +642,23 @@
       </ul></li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.field_terms">field_terms() (whoosh.reading.IndexReader method)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.FieldAliasPlugin">FieldAliasPlugin (class in whoosh.qparser)</a>
+</li>
       <li><a href="api/fields.html#whoosh.fields.FieldConfigurationError">FieldConfigurationError</a>
 </li>
       <li><a href="api/sorting.html#whoosh.sorting.FieldFacet">FieldFacet (class in whoosh.sorting)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.FieldnameNode">FieldnameNode (class in whoosh.qparser)</a>
+</li>
       <li><a href="glossary.html#term-Fields"><strong>Fields</strong></a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Hit.fields">fields() (whoosh.searching.Hit method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.Results.fields">(whoosh.searching.Results method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qparser.html#whoosh.qparser.FieldsPlugin">FieldsPlugin (class in whoosh.qparser)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.FieldType">FieldType (class in whoosh.fields)</a>
 </li>
@@ -489,12 +674,30 @@
 </li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.FileStorage">FileStorage (class in whoosh.filedb.filestore)</a>
 </li>
-      <li><a href="api/matching.html#whoosh.matching.FilterMatcher">FilterMatcher (class in whoosh.matching)</a>
+      <li><a href="api/searching.html#whoosh.searching.Results.filter">filter() (whoosh.searching.Results method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/collectors.html#whoosh.collectors.FilterCollector">FilterCollector (class in whoosh.collectors)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.filterize">filterize() (whoosh.qparser.QueryParser method)</a>
+</li>
+      <li><a href="api/matching.html#whoosh.matching.FilterMatcher">FilterMatcher (class in whoosh.matching)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.Plugin.filters">filters() (whoosh.qparser.Plugin method)</a>
+
+      <ul>
+        <li><a href="api/qparser.html#whoosh.qparser.QueryParser.filters">(whoosh.qparser.QueryParser method)</a>
+</li>
+      </ul></li>
       <li><a href="api/scoring.html#whoosh.scoring.WeightingModel.final">final() (whoosh.scoring.WeightingModel method)</a>
 </li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.finish">finish() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.finish">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
       <li><a href="api/idsets.html#whoosh.idsets.DocIdSet.first">first() (whoosh.idsets.DocIdSet method)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.first_id">first_id() (whoosh.reading.IndexReader method)</a>
@@ -535,6 +738,8 @@
 </li>
       <li><a href="api/scoring.html#whoosh.scoring.FunctionWeighting">FunctionWeighting (class in whoosh.scoring)</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.FuzzyTerm">FuzzyTerm (class in whoosh.query)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -543,11 +748,21 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.generation">generation() (whoosh.reading.IndexReader method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/highlight.html#whoosh.highlight.GenshiFormatter">GenshiFormatter (class in whoosh.highlight)</a>
 </li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.get_parent">get_parent() (whoosh.searching.Searcher method)</a>
+</li>
       <li><a href="api/writing.html#whoosh.writing.IndexWriter.group">group() (whoosh.writing.IndexWriter method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qparser.html#whoosh.qparser.GroupNode">GroupNode (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.GroupPlugin">GroupPlugin (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Results.groups">groups() (whoosh.searching.Results method)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.GtLtPlugin">GtLtPlugin (class in whoosh.qparser)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -561,17 +776,27 @@
         <li><a href="api/reading.html#whoosh.reading.IndexReader.has_deletions">(whoosh.reading.IndexReader method)</a>
 </li>
       </ul></li>
-      <li><a href="api/reading.html#whoosh.reading.IndexReader.has_vector">has_vector() (whoosh.reading.IndexReader method)</a>
+      <li><a href="api/searching.html#whoosh.searching.Results.has_exact_length">has_exact_length() (whoosh.searching.Results method)</a>
 </li>
-      <li><a href="api/filedb/filetables.html#whoosh.filedb.filetables.HashReader">HashReader (class in whoosh.filedb.filetables)</a>
+      <li><a href="api/searching.html#whoosh.searching.Results.has_matched_terms">has_matched_terms() (whoosh.searching.Results method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.has_terms">has_terms() (whoosh.query.Query method)</a>
+</li>
+      <li><a href="api/reading.html#whoosh.reading.IndexReader.has_vector">has_vector() (whoosh.reading.IndexReader method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/filedb/filetables.html#whoosh.filedb.filetables.HashReader">HashReader (class in whoosh.filedb.filetables)</a>
+</li>
       <li><a href="api/filedb/filetables.html#whoosh.filedb.filetables.HashWriter">HashWriter (class in whoosh.filedb.filetables)</a>
 </li>
       <li><a href="api/highlight.html#whoosh.highlight.highlight">highlight() (in module whoosh.highlight)</a>
 </li>
       <li><a href="api/highlight.html#whoosh.highlight.Highlighter">Highlighter (class in whoosh.highlight)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Hit.highlights">highlights() (whoosh.searching.Hit method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Hit">Hit (class in whoosh.searching)</a>
 </li>
       <li><a href="api/highlight.html#whoosh.highlight.HtmlFormatter">HtmlFormatter (class in whoosh.highlight)</a>
 </li>
@@ -588,7 +813,11 @@
       <li><a href="api/analysis.html#whoosh.analysis.IDAnalyzer">IDAnalyzer() (in module whoosh.analysis)</a>
 </li>
       <li><a href="api/scoring.html#whoosh.scoring.WeightingModel.idf">idf() (whoosh.scoring.WeightingModel method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.Searcher.idf">(whoosh.searching.Searcher method)</a>
 </li>
+      </ul></li>
       <li><a href="api/fields.html#whoosh.fields.IDLIST">IDLIST (class in whoosh.fields)</a>
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.IDTokenizer">IDTokenizer (class in whoosh.analysis)</a>
@@ -613,12 +842,14 @@
 </li>
       <li><a href="api/writing.html#whoosh.writing.IndexWriter">IndexWriter (class in whoosh.writing)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qparser.html#whoosh.qparser.InfixOperator">InfixOperator (class in whoosh.qparser)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.IntersectionMatcher">IntersectionMatcher (class in whoosh.matching)</a>
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.IntraWordFilter">IntraWordFilter (class in whoosh.analysis)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/matching.html#whoosh.matching.InverseMatcher">InverseMatcher (class in whoosh.matching)</a>
 </li>
       <li><a href="api/idsets.html#whoosh.idsets.DocIdSet.invert_update">invert_update() (whoosh.idsets.DocIdSet method)</a>
@@ -632,14 +863,30 @@
 </li>
       </ul></li>
       <li><a href="api/index.html#whoosh.index.Index.is_empty">is_empty() (whoosh.index.Index method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.Results.is_empty">(whoosh.searching.Results method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/searching.html#whoosh.searching.ResultsPage.is_last_page">is_last_page() (whoosh.searching.ResultsPage method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.is_leaf">is_leaf() (whoosh.query.Query method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.is_range">is_range() (whoosh.query.Query method)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.SyntaxNode.is_ws">is_ws() (whoosh.qparser.SyntaxNode method)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.Schema.items">items() (whoosh.fields.Schema method)</a>
 
       <ul>
+        <li><a href="api/searching.html#whoosh.searching.Results.items">(whoosh.searching.Results method)</a>
+</li>
         <li><a href="api/sorting.html#whoosh.sorting.Facets.items">(whoosh.sorting.Facets method)</a>
 </li>
       </ul></li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.items_as">items_as() (whoosh.matching.Matcher method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.iter_all_terms">iter_all_terms() (whoosh.query.Query method)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.iter_docs">iter_docs() (whoosh.reading.IndexReader method)</a>
 </li>
@@ -659,10 +906,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/sorting.html#whoosh.sorting.Categorizer.key_for">key_for() (whoosh.sorting.Categorizer method)</a>
 </li>
-      <li><a href="api/sorting.html#whoosh.sorting.Categorizer.key_to_name">key_to_name() (whoosh.sorting.Categorizer method)</a>
+      <li><a href="api/searching.html#whoosh.searching.Results.key_terms">key_terms() (whoosh.searching.Results method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.Searcher.key_terms">(whoosh.searching.Searcher method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.key_terms_from_text">key_terms_from_text() (whoosh.searching.Searcher method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/sorting.html#whoosh.sorting.Categorizer.key_to_name">key_to_name() (whoosh.sorting.Categorizer method)</a>
+</li>
       <li><a href="api/sorting.html#whoosh.sorting.Categorizer.keys_for">keys_for() (whoosh.sorting.Categorizer method)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.KEYWORD">KEYWORD (class in whoosh.fields)</a>
@@ -685,10 +940,12 @@
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.leaf_readers">leaf_readers() (whoosh.reading.IndexReader method)</a>
 </li>
-      <li><a href="api/reading.html#whoosh.reading.IndexReader.lexicon">lexicon() (whoosh.reading.IndexReader method)</a>
+      <li><a href="api/query.html#whoosh.query.Query.leaves">leaves() (whoosh.query.Query method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/reading.html#whoosh.reading.IndexReader.lexicon">lexicon() (whoosh.reading.IndexReader method)</a>
+</li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.Storage.list">list() (whoosh.filedb.filestore.Storage method)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.ListMatcher">ListMatcher (class in whoosh.matching)</a>
@@ -713,8 +970,30 @@
 </li>
       <li><a href="api/util.html#whoosh.util.make_weighted_tree">make_weighted_tree() (in module whoosh.util)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.MarkerNode">MarkerNode (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Hit.matched_terms">matched_terms() (whoosh.searching.Hit method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.Results.matched_terms">(whoosh.searching.Results method)</a>
+</li>
+      </ul></li>
       <li><a href="api/matching.html#whoosh.matching.Matcher">Matcher (class in whoosh.matching)</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.NumericRange.matcher">matcher() (whoosh.query.NumericRange method)</a>
+
+      <ul>
+        <li><a href="api/query.html#whoosh.query.Query.matcher">(whoosh.query.Query method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.matches">matches() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.ScoredCollector.matches">(whoosh.collectors.ScoredCollector method)</a>
+</li>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.matches">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.matching_terms">matching_terms() (whoosh.matching.Matcher method)</a>
 </li>
       <li><a href="api/index.html#whoosh.index.Index.max_field_length">max_field_length() (whoosh.index.Index method)</a>
@@ -735,6 +1014,8 @@
       </ul></li>
       <li><a href="api/reading.html#whoosh.reading.TermInfo.max_weight">max_weight() (whoosh.reading.TermInfo method)</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.Span.merge">merge() (whoosh.query.Span class method)</a>
+</li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.min_field_length">min_field_length() (whoosh.reading.IndexReader method)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.TermInfo.min_id">min_id() (whoosh.reading.TermInfo method)</a>
@@ -748,6 +1029,8 @@
         <li><a href="api/analysis.html#module-whoosh.analysis">whoosh.analysis</a>
 </li>
         <li><a href="api/codec/base.html#module-whoosh.codec.base">whoosh.codec.base</a>
+</li>
+        <li><a href="api/collectors.html#module-whoosh.collectors">whoosh.collectors</a>
 </li>
         <li><a href="api/columns.html#module-whoosh.columns">whoosh.columns</a>
 </li>
@@ -775,9 +1058,15 @@
 </li>
         <li><a href="api/matching.html#module-whoosh.matching">whoosh.matching</a>
 </li>
+        <li><a href="api/qparser.html#module-whoosh.qparser">whoosh.qparser</a>
+</li>
+        <li><a href="api/query.html#module-whoosh.query">whoosh.query</a>
+</li>
         <li><a href="api/reading.html#module-whoosh.reading">whoosh.reading</a>
 </li>
         <li><a href="api/scoring.html#module-whoosh.scoring">whoosh.scoring</a>
+</li>
+        <li><a href="api/searching.html#module-whoosh.searching">whoosh.searching</a>
 </li>
         <li><a href="api/sorting.html#module-whoosh.sorting">whoosh.sorting</a>
 </li>
@@ -794,6 +1083,10 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.more_like">more_like() (whoosh.searching.Searcher method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Hit.more_like_this">more_like_this() (whoosh.searching.Hit method)</a>
+</li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.most_distinctive_terms">most_distinctive_terms() (whoosh.reading.IndexReader method)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.most_frequent_terms">most_frequent_terms() (whoosh.reading.IndexReader method)</a>
@@ -802,6 +1095,10 @@
 </li>
       <li><a href="api/sorting.html#whoosh.sorting.MultiFacet">MultiFacet (class in whoosh.sorting)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.MultifieldParser">MultifieldParser() (in module whoosh.qparser)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.MultifieldPlugin">MultifieldPlugin (class in whoosh.qparser)</a>
+</li>
       <li><a href="api/analysis.html#whoosh.analysis.MultiFilter">MultiFilter (class in whoosh.analysis)</a>
 </li>
       <li><a href="api/idsets.html#whoosh.idsets.MultiIdSet">MultiIdSet (class in whoosh.idsets)</a>
@@ -809,6 +1106,10 @@
       <li><a href="api/matching.html#whoosh.matching.MultiMatcher">MultiMatcher (class in whoosh.matching)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.MultiReader">MultiReader (class in whoosh.reading)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.MultiTerm">MultiTerm (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.multitoken_query">multitoken_query() (whoosh.qparser.QueryParser method)</a>
 </li>
       <li><a href="api/scoring.html#whoosh.scoring.MultiWeighting">MultiWeighting (class in whoosh.scoring)</a>
 </li>
@@ -826,6 +1127,10 @@
         <li><a href="api/sorting.html#whoosh.sorting.Facets.names">(whoosh.sorting.Facets method)</a>
 </li>
       </ul></li>
+      <li><a href="api/query.html#whoosh.query.NestedChildren">NestedChildren (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.NestedParent">NestedParent (class in whoosh.query)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.next">next() (whoosh.matching.Matcher method)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.NGRAM">NGRAM (class in whoosh.fields)</a>
@@ -834,21 +1139,33 @@
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.NgramFilter">NgramFilter (class in whoosh.analysis)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/analysis.html#whoosh.analysis.NgramTokenizer">NgramTokenizer (class in whoosh.analysis)</a>
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.NgramWordAnalyzer">NgramWordAnalyzer() (in module whoosh.analysis)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/fields.html#whoosh.fields.NGRAMWORDS">NGRAMWORDS (class in whoosh.fields)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.NoQualityAvailable">NoQualityAvailable</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.Query.normalize">normalize() (whoosh.query.Query method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Not">Not (class in whoosh.query)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.NoTermsException">NoTermsException</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.NotGroup">NotGroup (class in whoosh.qparser)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.NullMatcher">NullMatcher (in module whoosh.matching)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.NullQuery">NullQuery (in module whoosh.query)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.NUMERIC">NUMERIC (class in whoosh.fields)</a>
 </li>
       <li><a href="api/columns.html#whoosh.columns.NumericColumn">NumericColumn (class in whoosh.columns)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.NumericRange">NumericRange (class in whoosh.query)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -870,6 +1187,10 @@
       </ul></li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.Storage.open_index">open_index() (whoosh.filedb.filestore.Storage method)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.Operator">Operator (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.OperatorsPlugin">OperatorsPlugin (class in whoosh.qparser)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.Storage.optimize">optimize() (whoosh.filedb.filestore.Storage method)</a>
@@ -878,11 +1199,17 @@
         <li><a href="api/index.html#whoosh.index.Index.optimize">(whoosh.index.Index method)</a>
 </li>
       </ul></li>
+      <li><a href="api/query.html#whoosh.query.Or">Or (class in whoosh.query)</a>
+</li>
       <li><a href="api/filedb/filetables.html#whoosh.filedb.filetables.OrderedHashReader">OrderedHashReader (class in whoosh.filedb.filetables)</a>
 </li>
       <li><a href="api/filedb/filetables.html#whoosh.filedb.filetables.OrderedHashWriter">OrderedHashWriter (class in whoosh.filedb.filetables)</a>
 </li>
       <li><a href="api/sorting.html#whoosh.sorting.OrderedList">OrderedList (class in whoosh.sorting)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.OrGroup">OrGroup (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Otherwise">Otherwise (class in whoosh.query)</a>
 </li>
       <li><a href="api/index.html#whoosh.index.OutOfDateError">OutOfDateError</a>
 </li>
@@ -892,6 +1219,8 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.parse">parse() (whoosh.qparser.QueryParser method)</a>
+</li>
       <li><a href="api/lang/wordnet.html#whoosh.lang.wordnet.parse_file">parse_file() (in module whoosh.lang.wordnet)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.parse_query">parse_query() (whoosh.fields.FieldType method)</a>
@@ -906,21 +1235,53 @@
 </li>
       <li><a href="api/codec/base.html#whoosh.codec.base.PerDocumentWriter">PerDocumentWriter (class in whoosh.codec.base)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/query.html#whoosh.query.Phrase">Phrase (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.PhrasePlugin">PhrasePlugin (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.phrases">phrases() (whoosh.query.Query method)</a>
+</li>
       <li><a href="api/columns.html#whoosh.columns.PickleColumn">PickleColumn (class in whoosh.columns)</a>
 </li>
       <li><a href="api/highlight.html#whoosh.highlight.PinpointFragmenter">PinpointFragmenter (class in whoosh.highlight)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.Plugin">Plugin (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.PlusMinusPlugin">PlusMinusPlugin (class in whoosh.qparser)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/formats.html#whoosh.formats.PositionBoosts">PositionBoosts (class in whoosh.formats)</a>
 </li>
       <li><a href="api/formats.html#whoosh.formats.Positions">Positions (class in whoosh.formats)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.PostfixOperator">PostfixOperator (class in whoosh.qparser)</a>
+</li>
       <li><a href="glossary.html#term-Postings"><strong>Postings</strong></a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.postings">postings() (whoosh.reading.IndexReader method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.Searcher.postings">(whoosh.searching.Searcher method)</a>
 </li>
+      </ul></li>
       <li><a href="api/codec/base.html#whoosh.codec.base.PostingsWriter">PostingsWriter (class in whoosh.codec.base)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Prefix">Prefix (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.PrefixOperator">PrefixOperator (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.PrefixPlugin">PrefixPlugin (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.prepare">prepare() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.ScoredCollector.prepare">(whoosh.collectors.ScoredCollector method)</a>
+</li>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.prepare">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.process">process() (whoosh.qparser.QueryParser method)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.process_text">process_text() (whoosh.fields.FieldType method)</a>
 </li>
@@ -930,11 +1291,19 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/query.html#whoosh.query.Query">Query (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.SyntaxNode.query">query() (whoosh.qparser.SyntaxNode method)</a>
+</li>
       <li><a href="api/spelling.html#whoosh.spelling.QueryCorrector">QueryCorrector (class in whoosh.spelling)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/query.html#whoosh.query.QueryError">QueryError</a>
+</li>
       <li><a href="api/sorting.html#whoosh.sorting.QueryFacet">QueryFacet (class in whoosh.sorting)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser">QueryParser (class in whoosh.qparser)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -942,9 +1311,13 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qparser.html#whoosh.qparser.SyntaxNode.r">r() (whoosh.qparser.SyntaxNode method)</a>
+</li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.RamStorage">RamStorage (class in whoosh.filedb.filestore)</a>
 </li>
       <li><a href="api/sorting.html#whoosh.sorting.RangeFacet">RangeFacet (class in whoosh.sorting)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.RangePlugin">RangePlugin (class in whoosh.qparser)</a>
 </li>
       <li><a href="api/filedb/filetables.html#whoosh.filedb.filetables.HashReader.ranges_for_key">ranges_for_key() (whoosh.filedb.filetables.HashReader method)</a>
 </li>
@@ -963,6 +1336,8 @@
       <ul>
         <li><a href="api/index.html#whoosh.index.Index.reader">(whoosh.index.Index method)</a>
 </li>
+        <li><a href="api/searching.html#whoosh.searching.Searcher.reader">(whoosh.searching.Searcher method)</a>
+</li>
         <li><a href="api/writing.html#whoosh.writing.AsyncWriter.reader">(whoosh.writing.AsyncWriter method)</a>
 </li>
         <li><a href="api/writing.html#whoosh.writing.BufferedWriter.reader">(whoosh.writing.BufferedWriter method)</a>
@@ -976,18 +1351,32 @@
 </li>
       <li><a href="api/matching.html#whoosh.matching.ReadTooFar">ReadTooFar</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/columns.html#whoosh.columns.RefBytesColumn">RefBytesColumn (class in whoosh.columns)</a>
 </li>
       <li><a href="api/index.html#whoosh.index.Index.refresh">refresh() (whoosh.index.Index method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.Searcher.refresh">(whoosh.searching.Searcher method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/query.html#whoosh.query.Regex">Regex (class in whoosh.query)</a>
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.RegexAnalyzer">RegexAnalyzer() (in module whoosh.analysis)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.RegexPlugin">RegexPlugin (class in whoosh.qparser)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/analysis.html#whoosh.analysis.RegexTokenizer">RegexTokenizer (class in whoosh.analysis)</a>
 </li>
       <li><a href="api/support/levenshtein.html#whoosh.support.levenshtein.relative">relative() (in module whoosh.support.levenshtein)</a>
 </li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.remove">remove() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.remove">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
       <li><a href="api/index.html#whoosh.index.Index.remove_field">remove_field() (whoosh.index.Index method)</a>
 
       <ul>
@@ -996,13 +1385,39 @@
         <li><a href="api/writing.html#whoosh.writing.IndexWriter.remove_field">(whoosh.writing.IndexWriter method)</a>
 </li>
       </ul></li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.remove_plugin">remove_plugin() (whoosh.qparser.QueryParser method)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.remove_plugin_class">remove_plugin_class() (whoosh.qparser.QueryParser method)</a>
+</li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.Storage.rename_file">rename_file() (whoosh.filedb.filestore.Storage method)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.replace">replace() (whoosh.matching.Matcher method)</a>
+
+      <ul>
+        <li><a href="api/query.html#whoosh.query.Query.replace">(whoosh.query.Query method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.replace_plugin">replace_plugin() (whoosh.qparser.QueryParser method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Require">Require (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.RequireGroup">RequireGroup (class in whoosh.qparser)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.RequireMatcher">RequireMatcher (class in whoosh.matching)</a>
 </li>
+      <li><a href="api/query.html#whoosh.query.Query.requires">requires() (whoosh.query.Query method)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.reset">reset() (whoosh.matching.Matcher method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Results">Results (class in whoosh.searching)</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.results">results() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.results">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/searching.html#whoosh.searching.ResultsPage">ResultsPage (class in whoosh.searching)</a>
 </li>
       <li><a href="glossary.html#term-Reverse-index"><strong>Reverse index</strong></a>
 </li>
@@ -1033,10 +1448,26 @@
       <ul>
         <li><a href="api/scoring.html#whoosh.scoring.BaseScorer.score">(whoosh.scoring.BaseScorer method)</a>
 </li>
+        <li><a href="api/searching.html#whoosh.searching.Results.score">(whoosh.searching.Results method)</a>
+</li>
+        <li><a href="api/searching.html#whoosh.searching.ResultsPage.score">(whoosh.searching.ResultsPage method)</a>
+</li>
       </ul></li>
+      <li><a href="api/searching.html#whoosh.searching.Results.scored_length">scored_length() (whoosh.searching.Results method)</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.ScoredCollector">ScoredCollector (class in whoosh.collectors)</a>
+</li>
       <li><a href="api/sorting.html#whoosh.sorting.ScoreFacet">ScoreFacet (class in whoosh.sorting)</a>
 </li>
       <li><a href="api/scoring.html#whoosh.scoring.WeightingModel.scorer">scorer() (whoosh.scoring.WeightingModel method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.search">search() (whoosh.searching.Searcher method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.search_page">search_page() (whoosh.searching.Searcher method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.search_with_collector">search_with_collector() (whoosh.searching.Searcher method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Searcher">Searcher (class in whoosh.searching)</a>
 </li>
       <li><a href="api/index.html#whoosh.index.Index.searcher">searcher() (whoosh.index.Index method)</a>
 </li>
@@ -1052,23 +1483,77 @@
 </li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.separate_spelling">separate_spelling() (whoosh.fields.FieldType method)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.SyntaxNode.set_boost">set_boost() (whoosh.qparser.SyntaxNode method)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.SyntaxNode.set_fieldname">set_fieldname() (whoosh.qparser.SyntaxNode method)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.SyntaxNode.set_range">set_range() (whoosh.qparser.SyntaxNode method)</a>
+</li>
       <li><a href="api/sorting.html#whoosh.sorting.Categorizer.set_searcher">set_searcher() (whoosh.sorting.Categorizer method)</a>
 </li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.set_subsearcher">set_subsearcher() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.set_subsearcher">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
       <li><a href="api/analysis.html#whoosh.analysis.ShingleFilter">ShingleFilter (class in whoosh.analysis)</a>
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.SimpleAnalyzer">SimpleAnalyzer() (in module whoosh.analysis)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.SimpleParser">SimpleParser() (in module whoosh.qparser)</a>
+</li>
       <li><a href="api/spelling.html#whoosh.spelling.SimpleQueryCorrector">SimpleQueryCorrector (class in whoosh.spelling)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.NumericRange.simplify">simplify() (whoosh.query.NumericRange method)</a>
+
+      <ul>
+        <li><a href="api/query.html#whoosh.query.Query.simplify">(whoosh.query.Query method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qparser.html#whoosh.qparser.SingleQuotePlugin">SingleQuotePlugin (class in whoosh.qparser)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.skip_to">skip_to() (whoosh.matching.Matcher method)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.skip_to_quality">skip_to_quality() (whoosh.matching.Matcher method)</a>
 </li>
+      <li><a href="api/collectors.html#whoosh.collectors.Collector.sort_key">sort_key() (whoosh.collectors.Collector method)</a>
+
+      <ul>
+        <li><a href="api/collectors.html#whoosh.collectors.ScoredCollector.sort_key">(whoosh.collectors.ScoredCollector method)</a>
+</li>
+        <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector.sort_key">(whoosh.collectors.WrappingCollector method)</a>
+</li>
+      </ul></li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.sortable_terms">sortable_terms() (whoosh.fields.FieldType method)</a>
 </li>
       <li><a href="api/idsets.html#whoosh.idsets.SortedIntSet">SortedIntSet (class in whoosh.idsets)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/collectors.html#whoosh.collectors.SortingCollector">SortingCollector (class in whoosh.collectors)</a>
+</li>
       <li><a href="api/analysis.html#whoosh.analysis.SpaceSeparatedTokenizer">SpaceSeparatedTokenizer() (in module whoosh.analysis)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Span">Span (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanBefore">SpanBefore (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanCondition">SpanCondition (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanContains">SpanContains (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanFirst">SpanFirst (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanNear">SpanNear (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanNear2">SpanNear2 (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanNot">SpanNot (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanOr">SpanOr (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.SpanQuery">SpanQuery (class in whoosh.query)</a>
 </li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.spans">spans() (whoosh.matching.Matcher method)</a>
 </li>
@@ -1076,8 +1561,6 @@
 </li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.spelling_fieldname">spelling_fieldname() (whoosh.fields.FieldType method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/analysis.html#whoosh.analysis.StandardAnalyzer">StandardAnalyzer() (in module whoosh.analysis)</a>
 </li>
       <li><a href="api/writing.html#whoosh.writing.IndexWriter.start_group">start_group() (whoosh.writing.IndexWriter method)</a>
@@ -1114,8 +1597,12 @@
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.SubstitutionFilter">SubstitutionFilter (class in whoosh.analysis)</a>
 </li>
-      <li><a href="api/spelling.html#whoosh.spelling.Corrector.suggest">suggest() (whoosh.spelling.Corrector method)</a>
+      <li><a href="api/searching.html#whoosh.searching.Searcher.suggest">suggest() (whoosh.searching.Searcher method)</a>
+
+      <ul>
+        <li><a href="api/spelling.html#whoosh.spelling.Corrector.suggest">(whoosh.spelling.Corrector method)</a>
 </li>
+      </ul></li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.supports">supports() (whoosh.fields.FieldType method)</a>
 
       <ul>
@@ -1138,15 +1625,27 @@
         <li><a href="api/lang/wordnet.html#whoosh.lang.wordnet.Thesaurus.synonyms">(whoosh.lang.wordnet.Thesaurus method)</a>
 </li>
       </ul></li>
+      <li><a href="api/qparser.html#whoosh.qparser.SyntaxNode">SyntaxNode (class in whoosh.qparser)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.tag">tag() (whoosh.qparser.QueryParser method)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.Plugin.taggers">taggers() (whoosh.qparser.Plugin method)</a>
+
+      <ul>
+        <li><a href="api/qparser.html#whoosh.qparser.QueryParser.taggers">(whoosh.qparser.QueryParser method)</a>
+</li>
+      </ul></li>
       <li><a href="api/analysis.html#whoosh.analysis.TeeFilter">TeeFilter (class in whoosh.analysis)</a>
 </li>
       <li><a href="api/filedb/filestore.html#whoosh.filedb.filestore.Storage.temp_storage">temp_storage() (whoosh.filedb.filestore.Storage method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Term">Term (class in whoosh.query)</a>
 </li>
       <li><a href="glossary.html#term-Term-vector"><strong>Term vector</strong></a>
 </li>
@@ -1156,9 +1655,15 @@
 </li>
       <li><a href="api/matching.html#whoosh.matching.Matcher.term_matchers">term_matchers() (whoosh.matching.Matcher method)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.QueryParser.term_query">term_query() (whoosh.qparser.QueryParser method)</a>
+</li>
       <li><a href="api/reading.html#whoosh.reading.TermInfo">TermInfo (class in whoosh.reading)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.TermNotFound">TermNotFound</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.TermRange">TermRange (class in whoosh.query)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.terms">terms() (whoosh.query.Query method)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.terms_from">terms_from() (whoosh.reading.IndexReader method)</a>
 </li>
@@ -1166,13 +1671,21 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.terms_within">terms_within() (whoosh.reading.IndexReader method)</a>
 </li>
+      <li><a href="api/collectors.html#whoosh.collectors.TermsCollector">TermsCollector (class in whoosh.collectors)</a>
+</li>
       <li><a href="api/codec/base.html#whoosh.codec.base.TermsReader">TermsReader (class in whoosh.codec.base)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.TEXT">TEXT (class in whoosh.fields)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.TextNode">TextNode (class in whoosh.qparser)</a>
+</li>
       <li><a href="api/scoring.html#whoosh.scoring.TF_IDF">TF_IDF (class in whoosh.scoring)</a>
 </li>
       <li><a href="api/lang/wordnet.html#whoosh.lang.wordnet.Thesaurus">Thesaurus (class in whoosh.lang.wordnet)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.TimeLimit">TimeLimit</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.TimeLimitCollector">TimeLimitCollector (class in whoosh.collectors)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.to_bytes">to_bytes() (whoosh.fields.FieldType method)</a>
 </li>
@@ -1183,6 +1696,10 @@
       <li><a href="api/analysis.html#whoosh.analysis.Token">Token (class in whoosh.analysis)</a>
 </li>
       <li><a href="api/fields.html#whoosh.fields.FieldType.tokenize">tokenize() (whoosh.fields.FieldType method)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.tokens">tokens() (whoosh.query.Query method)</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.TopCollector">TopCollector (class in whoosh.collectors)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1196,14 +1713,20 @@
 </li>
       <li><a href="api/fields.html#whoosh.fields.UnknownFieldError">UnknownFieldError</a>
 </li>
+      <li><a href="api/collectors.html#whoosh.collectors.UnlimitedCollector">UnlimitedCollector (class in whoosh.collectors)</a>
+</li>
       <li><a href="api/sorting.html#whoosh.sorting.UnorderedList">UnorderedList (class in whoosh.sorting)</a>
 </li>
       <li><a href="api/analysis.html#whoosh.analysis.unstopped">unstopped() (in module whoosh.analysis)</a>
 </li>
+      <li><a href="api/index.html#whoosh.index.Index.up_to_date">up_to_date() (whoosh.index.Index method)</a>
+
+      <ul>
+        <li><a href="api/searching.html#whoosh.searching.Searcher.up_to_date">(whoosh.searching.Searcher method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/index.html#whoosh.index.Index.up_to_date">up_to_date() (whoosh.index.Index method)</a>
-</li>
       <li><a href="api/writing.html#whoosh.writing.AsyncWriter.update_document">update_document() (whoosh.writing.AsyncWriter method)</a>
 
       <ul>
@@ -1212,6 +1735,10 @@
         <li><a href="api/writing.html#whoosh.writing.IndexWriter.update_document">(whoosh.writing.IndexWriter method)</a>
 </li>
       </ul></li>
+      <li><a href="api/searching.html#whoosh.searching.Results.upgrade">upgrade() (whoosh.searching.Results method)</a>
+</li>
+      <li><a href="api/searching.html#whoosh.searching.Results.upgrade_and_extend">upgrade_and_extend() (whoosh.searching.Results method)</a>
+</li>
       <li><a href="api/highlight.html#whoosh.highlight.UppercaseFormatter">UppercaseFormatter (class in whoosh.highlight)</a>
 </li>
   </ul></td>
@@ -1226,10 +1753,12 @@
 </li>
       <li><a href="api/columns.html#whoosh.columns.VarBytesColumn">VarBytesColumn (class in whoosh.columns)</a>
 </li>
-      <li><a href="api/lang/morph_en.html#whoosh.lang.morph_en.variations">variations() (in module whoosh.lang.morph_en)</a>
+      <li><a href="api/query.html#whoosh.query.Variations">Variations (class in whoosh.query)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/lang/morph_en.html#whoosh.lang.morph_en.variations">variations() (in module whoosh.lang.morph_en)</a>
+</li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.vector">vector() (whoosh.reading.IndexReader method)</a>
 </li>
       <li><a href="api/reading.html#whoosh.reading.IndexReader.vector_as">vector_as() (whoosh.reading.IndexReader method)</a>
@@ -1270,6 +1799,13 @@
 
       <ul>
         <li><a href="api/codec/base.html#module-whoosh.codec.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    whoosh.collectors
+
+      <ul>
+        <li><a href="api/collectors.html#module-whoosh.collectors">module</a>
 </li>
       </ul></li>
       <li>
@@ -1349,8 +1885,6 @@
         <li><a href="api/lang/porter.html#module-whoosh.lang.porter">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     whoosh.lang.wordnet
 
@@ -1365,6 +1899,22 @@
         <li><a href="api/matching.html#module-whoosh.matching">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    whoosh.qparser
+
+      <ul>
+        <li><a href="api/qparser.html#module-whoosh.qparser">module</a>
+</li>
+      </ul></li>
+      <li>
+    whoosh.query
+
+      <ul>
+        <li><a href="api/query.html#module-whoosh.query">module</a>
+</li>
+      </ul></li>
       <li>
     whoosh.reading
 
@@ -1377,6 +1927,13 @@
 
       <ul>
         <li><a href="api/scoring.html#module-whoosh.scoring">module</a>
+</li>
+      </ul></li>
+      <li>
+    whoosh.searching
+
+      <ul>
+        <li><a href="api/searching.html#module-whoosh.searching">module</a>
 </li>
       </ul></li>
       <li>
@@ -1421,9 +1978,21 @@
         <li><a href="api/writing.html#module-whoosh.writing">module</a>
 </li>
       </ul></li>
+      <li><a href="api/query.html#whoosh.query.Wildcard">Wildcard (class in whoosh.query)</a>
+</li>
+      <li><a href="api/qparser.html#whoosh.qparser.WildcardPlugin">WildcardPlugin (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.Query.with_boost">with_boost() (whoosh.query.Query method)</a>
+</li>
       <li><a href="api/formats.html#whoosh.formats.Format.word_values">word_values() (whoosh.formats.Format method)</a>
 </li>
+      <li><a href="api/qparser.html#whoosh.qparser.WordNode">WordNode (class in whoosh.qparser)</a>
+</li>
+      <li><a href="api/collectors.html#whoosh.collectors.WrappingCollector">WrappingCollector (class in whoosh.collectors)</a>
+</li>
       <li><a href="api/matching.html#whoosh.matching.WrappingMatcher">WrappingMatcher (class in whoosh.matching)</a>
+</li>
+      <li><a href="api/query.html#whoosh.query.WrappingQuery">WrappingQuery (class in whoosh.query)</a>
 </li>
       <li><a href="api/filedb/structfile.html#whoosh.filedb.structfile.StructFile.write_byte">write_byte() (whoosh.filedb.structfile.StructFile method)</a>
 </li>

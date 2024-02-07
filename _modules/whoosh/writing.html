@@ -460,7 +460,7 @@
 
 <span class="sd">            from datetime import datetime, timedelta</span>
 <span class="sd">            from whoosh import index</span>
-<span class="sd">            from whoosh.fields import *</span>
+<span class="sd">            from whoosh.fields import Schema, DATETIME, NUMERIC, TEXT</span>
 
 <span class="sd">            schema = Schema(date=DATETIME, size=NUMERIC(float), content=TEXT)</span>
 <span class="sd">            myindex = index.create_in(&quot;indexdir&quot;, schema)</span>

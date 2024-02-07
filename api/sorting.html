@@ -189,7 +189,7 @@ you need global document ID references.</p>
 document based on certain criteria, for use in sorting/faceting.</p>
 <p>Categorizers are created by FacetType objects through the
 <a class="reference internal" href="#whoosh.sorting.FacetType.categorizer" title="whoosh.sorting.FacetType.categorizer"><code class="xref py py-meth docutils literal notranslate"><span class="pre">FacetType.categorizer()</span></code></a> method. The
-<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code> object passed to the <code class="docutils literal notranslate"><span class="pre">categorizer</span></code>
+<a class="reference internal" href="searching.html#whoosh.searching.Searcher" title="whoosh.searching.Searcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.searching.Searcher</span></code></a> object passed to the <code class="docutils literal notranslate"><span class="pre">categorizer</span></code>
 method may be a composite searcher (that is, wrapping a multi-reader), but
 categorizers are always run <strong>per-segment</strong>, with segment-relative document
 numbers.</p>
@@ -302,7 +302,7 @@ in multiple groups when they have multiple terms in the field.</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>querydict</strong> – a dictionary mapping keys to
-<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code> objects.</p></li>
+<a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> objects.</p></li>
 <li><p><strong>other</strong> – the key to use for documents that don’t match any of the
 queries.</p></li>
 </ul>
@@ -347,8 +347,8 @@ after <code class="docutils literal notranslate"><span class="pre">end</span></c
 <dd><p>Sorts/facets based on date ranges. This is the same as RangeFacet
 except you are expected to use <code class="docutils literal notranslate"><span class="pre">daterange</span></code> objects as the start and end
 of the range, and <code class="docutils literal notranslate"><span class="pre">timedelta</span></code> or <code class="docutils literal notranslate"><span class="pre">relativedelta</span></code> objects as the gap(s),
-and it generates <code class="xref py py-class docutils literal notranslate"><span class="pre">DateRange</span></code> queries instead of
-<code class="xref py py-class docutils literal notranslate"><span class="pre">TermRange</span></code> queries.</p>
+and it generates <a class="reference internal" href="query.html#whoosh.query.DateRange" title="whoosh.query.DateRange"><code class="xref py py-class docutils literal notranslate"><span class="pre">DateRange</span></code></a> queries instead of
+<a class="reference internal" href="query.html#whoosh.query.TermRange" title="whoosh.query.TermRange"><code class="xref py py-class docutils literal notranslate"><span class="pre">TermRange</span></code></a> queries.</p>
 <p>For example, to facet a “birthday” range into 5 year buckets:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">whoosh.support.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
@@ -513,7 +513,7 @@ is automatically used as the facet name).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – a name for the facet.</p></li>
 <li><p><strong>querydict</strong> – a dictionary mapping keys to
-<code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code> objects.</p></li>
+<a class="reference internal" href="query.html#whoosh.query.Query" title="whoosh.query.Query"><code class="xref py py-class docutils literal notranslate"><span class="pre">whoosh.query.Query</span></code></a> objects.</p></li>
 </ul>
 </dd>
 </dl>
