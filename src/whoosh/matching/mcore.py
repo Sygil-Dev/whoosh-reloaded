@@ -51,9 +51,7 @@ method will return ``True``.
 
 from itertools import repeat
 
-from whoosh.compat import izip
-from whoosh.compat import abstractmethod
-
+from whoosh.compat import abstractmethod, izip
 
 # Exceptions
 

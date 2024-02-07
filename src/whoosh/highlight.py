@@ -241,9 +241,7 @@ def set_matched_filter_phrases(tokens, text, terms, phrases):
                             """
                             text_sub = text[
                                 current_word_index + 1 : current_word_index + 1 + slop
-                            ][
-                                ::-1
-                            ]  # Substring to scan (reversed)
+                            ][::-1]  # Substring to scan (reversed)
                             len_sub = len(text_sub)
                             next_word_index = (
                                 len_sub - text_sub.index(word) - 1
@@ -864,8 +862,13 @@ class GenshiFormatter(Formatter):
         self.qname = qname
         self.between = between
 
-        from genshi.core import START, END, TEXT  # type: ignore @UnresolvedImport
-        from genshi.core import Attrs, Stream  # type: ignore @UnresolvedImport
+        from genshi.core import (  # type: ignore @UnresolvedImport  # type: ignore @UnresolvedImport
+            END,
+            START,
+            TEXT,
+            Attrs,
+            Stream,
+        )
 
         self.START, self.END, self.TEXT = START, END, TEXT
         self.Attrs, self.Stream = Attrs, Stream

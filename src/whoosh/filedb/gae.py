@@ -23,9 +23,9 @@ from google.appengine.api import memcache  # type: ignore @UnresolvedImport
 from google.appengine.ext import db  # type: ignore @UnresolvedImport
 
 from whoosh.compat import BytesIO
-from whoosh.index import TOC, FileIndex, _DEF_INDEX_NAME
 from whoosh.filedb.filestore import ReadOnlyError, Storage
 from whoosh.filedb.structfile import StructFile
+from whoosh.index import _DEF_INDEX_NAME, TOC, FileIndex
 
 
 class DatastoreFile(db.Model):

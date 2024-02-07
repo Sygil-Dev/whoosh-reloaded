@@ -1,15 +1,14 @@
 # encoding: utf-8
 
 from __future__ import with_statement
+
 import copy
 from datetime import datetime, timedelta
 
 import pytest
-
 from whoosh import analysis, fields, index, qparser, query, scoring
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import b, u, text_type
-from whoosh.compat import range, permutations, izip_longest
+from whoosh.compat import b, izip_longest, permutations, range, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
@@ -747,7 +746,7 @@ def test_short_prefix():
 
 
 def test_weighting():
-    from whoosh.scoring import Weighting, BaseScorer
+    from whoosh.scoring import BaseScorer, Weighting
 
     schema = fields.Schema(id=fields.ID(stored=True), n_comments=fields.STORED)
     st = RamStorage()

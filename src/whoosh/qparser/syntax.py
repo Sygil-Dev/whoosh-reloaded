@@ -25,10 +25,11 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-import sys, weakref
+import sys
+import weakref
 
 from whoosh import query
-from whoosh.qparser.common import get_single_text, QueryParserError, attach
+from whoosh.qparser.common import QueryParserError, attach, get_single_text
 
 
 class SyntaxNode(object):
@@ -227,7 +228,7 @@ class GroupNode(SyntaxNode):
             self.type,
             [fn(node) for node in self.nodes],
             boost=self.boost,
-            **self.kwargs
+            **self.kwargs,
         )
 
     def query(self, parser):

@@ -28,20 +28,18 @@
 """This module contains classes that allow reading from an index.
 """
 
-from math import log
 from bisect import bisect_right
-from heapq import heapify, heapreplace, heappop, nlargest
+from heapq import heapify, heappop, heapreplace, nlargest
+from math import log
 
 from cached_property import cached_property
 
 from whoosh import columns
-from whoosh.compat import abstractmethod
-from whoosh.compat import zip_, next, iteritems
+from whoosh.compat import abstractmethod, iteritems, next, zip_
 from whoosh.filedb.filestore import OverlayStorage
 from whoosh.matching import MultiMatcher
 from whoosh.support.levenshtein import distance
 from whoosh.system import emptybytes
-
 
 # Exceptions
 

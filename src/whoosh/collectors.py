@@ -87,7 +87,6 @@ from whoosh.compat import abstractmethod, iteritems, itervalues, range
 from whoosh.searching import Results, TimeLimit
 from whoosh.util import now
 
-
 # Functions
 
 

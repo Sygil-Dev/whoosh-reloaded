@@ -3,11 +3,11 @@
 # Read a "checkpoint" index, to check backwards compatibility
 
 from __future__ import print_function, with_statement
+
 import sys
 
 from whoosh import index, query
 from whoosh.compat import u
-
 
 if len(sys.argv) < 2:
     print("USAGE: read_checkpoint.py <dir>")

@@ -59,8 +59,7 @@ def try_for(fn, timeout=5.0, delay=0.1):
 
 
 class LockBase(object):
-    """Base class for file locks.
-    """
+    """Base class for file locks."""
 
     def __init__(self, filename):
         self.fd = None
@@ -88,8 +87,7 @@ class LockBase(object):
 
 
 class FcntlLock(LockBase):
-    """File lock based on UNIX-only fcntl module.
-    """
+    """File lock based on UNIX-only fcntl module."""
 
     def acquire(self, blocking=False):
         import fcntl  # type: ignore @UnresolvedImport
@@ -118,14 +116,14 @@ class FcntlLock(LockBase):
             raise Exception("Lock was not acquired")
 
         import fcntl  # type: ignore @UnresolvedImport
+
         fcntl.flock(self.fd, fcntl.LOCK_UN)
         os.close(self.fd)
         self.fd = None
 
 
 class MsvcrtLock(LockBase):
-    """File lock based on Windows-only msvcrt module.
-    """
+    """File lock based on Windows-only msvcrt module."""
 
     def acquire(self, blocking=False):
         import msvcrt  # type: ignore @UnresolvedImport

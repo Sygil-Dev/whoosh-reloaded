@@ -35,11 +35,12 @@ root.
 """
 
 from __future__ import unicode_literals
+
 import re
 
 
 class ISRIStemmer(object):
-    '''
+    """
     ISRI Arabic stemmer based on algorithm: Arabic Stemming without a root dictionary.
     Information Science Research Institute. University of Nevada, Las Vegas, USA.
 
@@ -51,93 +52,136 @@ class ISRIStemmer(object):
     The ISRI Stemmer requires that all tokens have Unicode string types.
     If you use Python IDLE on Arabic Windows you have to decode text first
     using Arabic '1256' coding.
-    '''
+    """
 
     def __init__(self):
-        self.stm = 'defult none'
+        self.stm = "defult none"
 
-        self.p3 = ['\u0643\u0627\u0644', '\u0628\u0627\u0644',
-                   '\u0648\u0644\u0644', '\u0648\u0627\u0644']    # length three prefixes
-        self.p2 = ['\u0627\u0644', '\u0644\u0644']    # length two prefixes
-        self.p1 = ['\u0644', '\u0628', '\u0641', '\u0633', '\u0648',
-                   '\u064a', '\u062a', '\u0646', '\u0627']   # length one prefixes
+        self.p3 = [
+            "\u0643\u0627\u0644",
+            "\u0628\u0627\u0644",
+            "\u0648\u0644\u0644",
+            "\u0648\u0627\u0644",
+        ]  # length three prefixes
+        self.p2 = ["\u0627\u0644", "\u0644\u0644"]  # length two prefixes
+        self.p1 = [
+            "\u0644",
+            "\u0628",
+            "\u0641",
+            "\u0633",
+            "\u0648",
+            "\u064a",
+            "\u062a",
+            "\u0646",
+            "\u0627",
+        ]  # length one prefixes
 
-        self.s3 = ['\u062a\u0645\u0644', '\u0647\u0645\u0644',
-                    '\u062a\u0627\u0646', '\u062a\u064a\u0646',
-                    '\u0643\u0645\u0644']  # length three suffixes
-        self.s2 = ['\u0648\u0646', '\u0627\u062a', '\u0627\u0646',
-                   '\u064a\u0646', '\u062a\u0646', '\u0643\u0645',
-                   '\u0647\u0646', '\u0646\u0627', '\u064a\u0627',
-                   '\u0647\u0627', '\u062a\u0645', '\u0643\u0646',
-                   '\u0646\u064a', '\u0648\u0627', '\u0645\u0627',
-                   '\u0647\u0645']   # length two suffixes
-        self.s1 = ['\u0629', '\u0647', '\u064a', '\u0643', '\u062a',
-                   '\u0627', '\u0646']   # length one suffixes
+        self.s3 = [
+            "\u062a\u0645\u0644",
+            "\u0647\u0645\u0644",
+            "\u062a\u0627\u0646",
+            "\u062a\u064a\u0646",
+            "\u0643\u0645\u0644",
+        ]  # length three suffixes
+        self.s2 = [
+            "\u0648\u0646",
+            "\u0627\u062a",
+            "\u0627\u0646",
+            "\u064a\u0646",
+            "\u062a\u0646",
+            "\u0643\u0645",
+            "\u0647\u0646",
+            "\u0646\u0627",
+            "\u064a\u0627",
+            "\u0647\u0627",
+            "\u062a\u0645",
+            "\u0643\u0646",
+            "\u0646\u064a",
+            "\u0648\u0627",
+            "\u0645\u0627",
+            "\u0647\u0645",
+        ]  # length two suffixes
+        self.s1 = [
+            "\u0629",
+            "\u0647",
+            "\u064a",
+            "\u0643",
+            "\u062a",
+            "\u0627",
+            "\u0646",
+        ]  # length one suffixes
 
-        self.pr4 = {0: ['\u0645'], 1:['\u0627'],
-                    2: ['\u0627', '\u0648', '\u064A'], 3:['\u0629']}   # groups of length four patterns
-        self.pr53 = {0: ['\u0627', '\u062a'],
-                     1: ['\u0627', '\u064a', '\u0648'],
-                     2: ['\u0627', '\u062a', '\u0645'],
-                     3: ['\u0645', '\u064a', '\u062a'],
-                     4: ['\u0645', '\u062a'],
-                     5: ['\u0627', '\u0648'],
-                     6: ['\u0627', '\u0645']}   # Groups of length five patterns and length three roots
+        self.pr4 = {
+            0: ["\u0645"],
+            1: ["\u0627"],
+            2: ["\u0627", "\u0648", "\u064A"],
+            3: ["\u0629"],
+        }  # groups of length four patterns
+        self.pr53 = {
+            0: ["\u0627", "\u062a"],
+            1: ["\u0627", "\u064a", "\u0648"],
+            2: ["\u0627", "\u062a", "\u0645"],
+            3: ["\u0645", "\u064a", "\u062a"],
+            4: ["\u0645", "\u062a"],
+            5: ["\u0627", "\u0648"],
+            6: ["\u0627", "\u0645"],
+        }  # Groups of length five patterns and length three roots
 
-        self.re_short_vowels = re.compile('[\u064B-\u0652]')
-        self.re_hamza = re.compile('[\u0621\u0624\u0626]')
-        self.re_intial_hamza = re.compile('^[\u0622\u0623\u0625]')
+        self.re_short_vowels = re.compile("[\u064B-\u0652]")
+        self.re_hamza = re.compile("[\u0621\u0624\u0626]")
+        self.re_intial_hamza = re.compile("^[\u0622\u0623\u0625]")
 
-        self.stop_words = ['\u064a\u0643\u0648\u0646',
-                           '\u0648\u0644\u064a\u0633',
-                           '\u0648\u0643\u0627\u0646',
-                           '\u0643\u0630\u0644\u0643',
-                           '\u0627\u0644\u062a\u064a',
-                           '\u0648\u0628\u064a\u0646',
-                           '\u0639\u0644\u064a\u0647\u0627',
-                           '\u0645\u0633\u0627\u0621',
-                           '\u0627\u0644\u0630\u064a',
-                           '\u0648\u0643\u0627\u0646\u062a',
-                           '\u0648\u0644\u0643\u0646',
-                           '\u0648\u0627\u0644\u062a\u064a',
-                           '\u062a\u0643\u0648\u0646',
-                           '\u0627\u0644\u064a\u0648\u0645',
-                           '\u0627\u0644\u0644\u0630\u064a\u0646',
-                           '\u0639\u0644\u064a\u0647',
-                           '\u0643\u0627\u0646\u062a',
-                           '\u0644\u0630\u0644\u0643',
-                           '\u0623\u0645\u0627\u0645',
-                           '\u0647\u0646\u0627\u0643',
-                           '\u0645\u0646\u0647\u0627',
-                           '\u0645\u0627\u0632\u0627\u0644',
-                           '\u0644\u0627\u0632\u0627\u0644',
-                           '\u0644\u0627\u064a\u0632\u0627\u0644',
-                           '\u0645\u0627\u064a\u0632\u0627\u0644',
-                           '\u0627\u0635\u0628\u062d',
-                           '\u0623\u0635\u0628\u062d',
-                           '\u0623\u0645\u0633\u0649',
-                           '\u0627\u0645\u0633\u0649',
-                           '\u0623\u0636\u062d\u0649',
-                           '\u0627\u0636\u062d\u0649',
-                           '\u0645\u0627\u0628\u0631\u062d',
-                           '\u0645\u0627\u0641\u062a\u0626',
-                           '\u0645\u0627\u0627\u0646\u0641\u0643',
-                           '\u0644\u0627\u0633\u064a\u0645\u0627',
-                           '\u0648\u0644\u0627\u064a\u0632\u0627\u0644',
-                           '\u0627\u0644\u062d\u0627\u0644\u064a',
-                           '\u0627\u0644\u064a\u0647\u0627',
-                           '\u0627\u0644\u0630\u064a\u0646',
-                           '\u0641\u0627\u0646\u0647',
-                           '\u0648\u0627\u0644\u0630\u064a',
-                           '\u0648\u0647\u0630\u0627',
-                           '\u0644\u0647\u0630\u0627',
-                           '\u0641\u0643\u0627\u0646',
-                           '\u0633\u062a\u0643\u0648\u0646',
-                           '\u0627\u0644\u064a\u0647',
-                           '\u064a\u0645\u0643\u0646',
-                           '\u0628\u0647\u0630\u0627',
-                           '\u0627\u0644\u0630\u0649']
-
+        self.stop_words = [
+            "\u064a\u0643\u0648\u0646",
+            "\u0648\u0644\u064a\u0633",
+            "\u0648\u0643\u0627\u0646",
+            "\u0643\u0630\u0644\u0643",
+            "\u0627\u0644\u062a\u064a",
+            "\u0648\u0628\u064a\u0646",
+            "\u0639\u0644\u064a\u0647\u0627",
+            "\u0645\u0633\u0627\u0621",
+            "\u0627\u0644\u0630\u064a",
+            "\u0648\u0643\u0627\u0646\u062a",
+            "\u0648\u0644\u0643\u0646",
+            "\u0648\u0627\u0644\u062a\u064a",
+            "\u062a\u0643\u0648\u0646",
+            "\u0627\u0644\u064a\u0648\u0645",
+            "\u0627\u0644\u0644\u0630\u064a\u0646",
+            "\u0639\u0644\u064a\u0647",
+            "\u0643\u0627\u0646\u062a",
+            "\u0644\u0630\u0644\u0643",
+            "\u0623\u0645\u0627\u0645",
+            "\u0647\u0646\u0627\u0643",
+            "\u0645\u0646\u0647\u0627",
+            "\u0645\u0627\u0632\u0627\u0644",
+            "\u0644\u0627\u0632\u0627\u0644",
+            "\u0644\u0627\u064a\u0632\u0627\u0644",
+            "\u0645\u0627\u064a\u0632\u0627\u0644",
+            "\u0627\u0635\u0628\u062d",
+            "\u0623\u0635\u0628\u062d",
+            "\u0623\u0645\u0633\u0649",
+            "\u0627\u0645\u0633\u0649",
+            "\u0623\u0636\u062d\u0649",
+            "\u0627\u0636\u062d\u0649",
+            "\u0645\u0627\u0628\u0631\u062d",
+            "\u0645\u0627\u0641\u062a\u0626",
+            "\u0645\u0627\u0627\u0646\u0641\u0643",
+            "\u0644\u0627\u0633\u064a\u0645\u0627",
+            "\u0648\u0644\u0627\u064a\u0632\u0627\u0644",
+            "\u0627\u0644\u062d\u0627\u0644\u064a",
+            "\u0627\u0644\u064a\u0647\u0627",
+            "\u0627\u0644\u0630\u064a\u0646",
+            "\u0641\u0627\u0646\u0647",
+            "\u0648\u0627\u0644\u0630\u064a",
+            "\u0648\u0647\u0630\u0627",
+            "\u0644\u0647\u0630\u0627",
+            "\u0641\u0643\u0627\u0646",
+            "\u0633\u062a\u0643\u0648\u0646",
+            "\u0627\u0644\u064a\u0647",
+            "\u064a\u0645\u0643\u0646",
+            "\u0628\u0647\u0630\u0627",
+            "\u0627\u0644\u0630\u0649",
+        ]
 
     def stem(self, token):
         """
@@ -145,26 +189,28 @@ class ISRIStemmer(object):
         """
 
         self.stm = token
-        self.norm(1)       #  remove diacritics which representing Arabic short vowels
-        if self.stm in self.stop_words: return self.stm     # exclude stop words from being processed
-        self.pre32()        # remove length three and length two prefixes in this order
-        self.suf32()        # remove length three and length two suffixes in this order
-        self.waw()          # remove connective ‘و’ if it precedes a word beginning with ‘و’
-        self.norm(2)       # normalize initial hamza to bare alif
-        if len(self.stm) <= 3: return self.stm     # return stem if less than or equal to three
+        self.norm(1)  #  remove diacritics which representing Arabic short vowels
+        if self.stm in self.stop_words:
+            return self.stm  # exclude stop words from being processed
+        self.pre32()  # remove length three and length two prefixes in this order
+        self.suf32()  # remove length three and length two suffixes in this order
+        self.waw()  # remove connective ‘و’ if it precedes a word beginning with ‘و’
+        self.norm(2)  # normalize initial hamza to bare alif
+        if len(self.stm) <= 3:
+            return self.stm  # return stem if less than or equal to three
 
-        if len(self.stm) == 4:       # length 4 word
+        if len(self.stm) == 4:  # length 4 word
             self.pro_w4()
             return self.stm
-        elif len(self.stm) == 5:     # length 5 word
+        elif len(self.stm) == 5:  # length 5 word
             self.pro_w53()
             self.end_w5()
             return self.stm
-        elif len(self.stm) == 6:     # length 6 word
+        elif len(self.stm) == 6:  # length 6 word
             self.pro_w6()
             self.end_w6()
             return self.stm
-        elif len(self.stm) == 7:     # length 7 word
+        elif len(self.stm) == 7:  # length 7 word
             self.suf1()
             if len(self.stm) == 7:
                 self.pre1()
@@ -172,7 +218,7 @@ class ISRIStemmer(object):
                 self.pro_w6()
                 self.end_w6()
                 return self.stm
-        return self.stm              # if word length >7 , then no stemming
+        return self.stm  # if word length >7 , then no stemming
 
     def norm(self, num):
         """
@@ -184,14 +230,14 @@ class ISRIStemmer(object):
         self.k = num
 
         if self.k == 1:
-            self.stm = self.re_short_vowels.sub('', self.stm)
+            self.stm = self.re_short_vowels.sub("", self.stm)
             return self.stm
         elif self.k == 2:
-            self.stm = self.re_intial_hamza.sub('\u0627', self.stm)
+            self.stm = self.re_intial_hamza.sub("\u0627", self.stm)
             return self.stm
         elif self.k == 3:
-            self.stm = self.re_short_vowels.sub('', self.stm)
-            self.stm = self.re_intial_hamza.sub('\u0627', self.stm)
+            self.stm = self.re_short_vowels.sub("", self.stm)
+            self.stm = self.re_intial_hamza.sub("\u0627", self.stm)
             return self.stm
 
     def pre32(self):
@@ -220,95 +266,108 @@ class ISRIStemmer(object):
                             self.stm = self.stm[:-2]
                             return self.stm
 
-
     def waw(self):
-        """remove connective ‘و’ if it precedes a word beginning with ‘و’ """
-        if (len(self.stm) >= 4) & (self.stm[:2] == '\u0648\u0648'):
+        """remove connective ‘و’ if it precedes a word beginning with ‘و’"""
+        if (len(self.stm) >= 4) & (self.stm[:2] == "\u0648\u0648"):
             self.stm = self.stm[1:]
             return self.stm
 
     def pro_w4(self):
         """process length four patterns and extract length three roots"""
-        if self.stm[0] in self.pr4[0]:      #  مفعل
+        if self.stm[0] in self.pr4[0]:  #  مفعل
             self.stm = self.stm[1:]
             return self.stm
-        elif self.stm[1] in self.pr4[1]:      #   فاعل
+        elif self.stm[1] in self.pr4[1]:  #   فاعل
             self.stm = self.stm[0] + self.stm[2:]
             return self.stm
-        elif self.stm[2] in self.pr4[2]:     #    فعال   -   فعول    - فعيل
+        elif self.stm[2] in self.pr4[2]:  #    فعال   -   فعول    - فعيل
             self.stm = self.stm[:2] + self.stm[3]
             return self.stm
-        elif self.stm[3] in self.pr4[3]:      #     فعلة
+        elif self.stm[3] in self.pr4[3]:  #     فعلة
             self.stm = self.stm[:-1]
             return self.stm
         else:
-            self.suf1()   # do - normalize short sufix
+            self.suf1()  # do - normalize short sufix
             if len(self.stm) == 4:
-                self.pre1()    # do - normalize short prefix
+                self.pre1()  # do - normalize short prefix
             return self.stm
 
     def pro_w53(self):
         """process length five patterns and extract length three roots"""
-        if ((self.stm[2] in self.pr53[0]) & (self.stm[0] == '\u0627')):    #  افتعل   -  افاعل
+        if (self.stm[2] in self.pr53[0]) & (
+            self.stm[0] == "\u0627"
+        ):  #  افتعل   -  افاعل
             self.stm = self.stm[1] + self.stm[3:]
             return self.stm
-        elif ((self.stm[3] in self.pr53[1]) & (self.stm[0] == '\u0645')):     # مفعول  -   مفعال  -   مفعيل
+        elif (self.stm[3] in self.pr53[1]) & (
+            self.stm[0] == "\u0645"
+        ):  # مفعول  -   مفعال  -   مفعيل
             self.stm = self.stm[1:3] + self.stm[4]
             return self.stm
-        elif ((self.stm[0] in self.pr53[2]) & (self.stm[4] == '\u0629')):      #  مفعلة  -    تفعلة   -  افعلة
+        elif (self.stm[0] in self.pr53[2]) & (
+            self.stm[4] == "\u0629"
+        ):  #  مفعلة  -    تفعلة   -  افعلة
             self.stm = self.stm[1:4]
             return self.stm
-        elif ((self.stm[0] in self.pr53[3]) & (self.stm[2] == '\u062a')):        #  مفتعل  -    يفتعل   -  تفتعل
+        elif (self.stm[0] in self.pr53[3]) & (
+            self.stm[2] == "\u062a"
+        ):  #  مفتعل  -    يفتعل   -  تفتعل
             self.stm = self.stm[1] + self.stm[3:]
             return self.stm
-        elif ((self.stm[0] in self.pr53[4]) & (self.stm[2] == '\u0627')):      #مفاعل  -  تفاعل
+        elif (self.stm[0] in self.pr53[4]) & (
+            self.stm[2] == "\u0627"
+        ):  # مفاعل  -  تفاعل
             self.stm = self.stm[1] + self.stm[3:]
             return self.stm
-        elif ((self.stm[2] in self.pr53[5]) & (self.stm[4] == '\u0629')):    #     فعولة  -   فعالة
+        elif (self.stm[2] in self.pr53[5]) & (
+            self.stm[4] == "\u0629"
+        ):  #     فعولة  -   فعالة
             self.stm = self.stm[:2] + self.stm[3]
             return self.stm
-        elif ((self.stm[0] in self.pr53[6]) & (self.stm[1] == '\u0646')):     #     انفعل   -   منفعل
+        elif (self.stm[0] in self.pr53[6]) & (
+            self.stm[1] == "\u0646"
+        ):  #     انفعل   -   منفعل
             self.stm = self.stm[2:]
             return self.stm
-        elif ((self.stm[3] == '\u0627') & (self.stm[0] == '\u0627')):     #   افعال
+        elif (self.stm[3] == "\u0627") & (self.stm[0] == "\u0627"):  #   افعال
             self.stm = self.stm[1:3] + self.stm[4]
             return self.stm
-        elif ((self.stm[4] == '\u0646') & (self.stm[3] == '\u0627')):      #   فعلان
+        elif (self.stm[4] == "\u0646") & (self.stm[3] == "\u0627"):  #   فعلان
             self.stm = self.stm[:3]
             return self.stm
-        elif ((self.stm[3] == '\u064a') & (self.stm[0] == '\u062a')):        #    تفعيل
+        elif (self.stm[3] == "\u064a") & (self.stm[0] == "\u062a"):  #    تفعيل
             self.stm = self.stm[1:3] + self.stm[4]
             return self.stm
-        elif ((self.stm[3] == '\u0648') & (self.stm[1] == '\u0627')):       #     فاعول
+        elif (self.stm[3] == "\u0648") & (self.stm[1] == "\u0627"):  #     فاعول
             self.stm = self.stm[0] + self.stm[2] + self.stm[4]
             return self.stm
-        elif ((self.stm[2] == '\u0627') & (self.stm[1] == '\u0648')):             #     فواعل
+        elif (self.stm[2] == "\u0627") & (self.stm[1] == "\u0648"):  #     فواعل
             self.stm = self.stm[0] + self.stm[3:]
             return self.stm
-        elif ((self.stm[3] == '\u0626') & (self.stm[2] == '\u0627')):     #  فعائل
+        elif (self.stm[3] == "\u0626") & (self.stm[2] == "\u0627"):  #  فعائل
             self.stm = self.stm[:2] + self.stm[4]
             return self.stm
-        elif ((self.stm[4] == '\u0629') & (self.stm[1] == '\u0627')):           #   فاعلة
+        elif (self.stm[4] == "\u0629") & (self.stm[1] == "\u0627"):  #   فاعلة
             self.stm = self.stm[0] + self.stm[2:4]
             return self.stm
-        elif ((self.stm[4] == '\u064a') & (self.stm[2] == '\u0627')):     # فعالي
+        elif (self.stm[4] == "\u064a") & (self.stm[2] == "\u0627"):  # فعالي
             self.stm = self.stm[:2] + self.stm[3]
             return self.stm
         else:
-            self.suf1()   # do - normalize short sufix
+            self.suf1()  # do - normalize short sufix
             if len(self.stm) == 5:
-                self.pre1()   # do - normalize short prefix
+                self.pre1()  # do - normalize short prefix
             return self.stm
 
     def pro_w54(self):
         """process length five patterns and extract length four roots"""
-        if (self.stm[0] in self.pr53[2]):       #تفعلل - افعلل - مفعلل
+        if self.stm[0] in self.pr53[2]:  # تفعلل - افعلل - مفعلل
             self.stm = self.stm[1:]
             return self.stm
-        elif (self.stm[4] == '\u0629'):      # فعللة
+        elif self.stm[4] == "\u0629":  # فعللة
             self.stm = self.stm[:4]
             return self.stm
-        elif (self.stm[2] == '\u0627'):     # فعالل
+        elif self.stm[2] == "\u0627":  # فعالل
             self.stm = self.stm[:2] + self.stm[3:]
             return self.stm
 
@@ -325,33 +384,51 @@ class ISRIStemmer(object):
 
     def pro_w6(self):
         """process length six patterns and extract length three roots"""
-        if ((self.stm.startswith('\u0627\u0633\u062a')) or (self.stm.startswith('\u0645\u0633\u062a'))):   #   مستفعل   -    استفعل
+        if (self.stm.startswith("\u0627\u0633\u062a")) or (
+            self.stm.startswith("\u0645\u0633\u062a")
+        ):  #   مستفعل   -    استفعل
             self.stm = self.stm[3:]
             return self.stm
-        elif (self.stm[0] == '\u0645' and self.stm[3] == '\u0627' and self.stm[5] == '\u0629'):      #     مفعالة
+        elif (
+            self.stm[0] == "\u0645"
+            and self.stm[3] == "\u0627"
+            and self.stm[5] == "\u0629"
+        ):  #     مفعالة
             self.stm = self.stm[1:3] + self.stm[4]
             return self.stm
-        elif (self.stm[0] == '\u0627' and self.stm[2] == '\u062a' and self.stm[4] == '\u0627'):      #     افتعال
+        elif (
+            self.stm[0] == "\u0627"
+            and self.stm[2] == "\u062a"
+            and self.stm[4] == "\u0627"
+        ):  #     افتعال
             self.stm = self.stm[1] + self.stm[3] + self.stm[5]
             return self.stm
-        elif (self.stm[0] == '\u0627' and self.stm[3] == '\u0648' and self.stm[2] == self.stm[4]):      #    افعوعل
+        elif (
+            self.stm[0] == "\u0627"
+            and self.stm[3] == "\u0648"
+            and self.stm[2] == self.stm[4]
+        ):  #    افعوعل
             self.stm = self.stm[1] + self.stm[4:]
             return self.stm
-        elif (self.stm[0] == '\u062a' and self.stm[2] == '\u0627' and self.stm[4] == '\u064a'):      #     تفاعيل    new pattern
+        elif (
+            self.stm[0] == "\u062a"
+            and self.stm[2] == "\u0627"
+            and self.stm[4] == "\u064a"
+        ):  #     تفاعيل    new pattern
             self.stm = self.stm[1] + self.stm[3] + self.stm[5]
             return self.stm
         else:
-            self.suf1()    # do - normalize short sufix
+            self.suf1()  # do - normalize short sufix
             if len(self.stm) == 6:
-                self.pre1()    # do - normalize short prefix
+                self.pre1()  # do - normalize short prefix
             return self.stm
 
     def pro_w64(self):
         """process length six patterns and extract length four roots"""
-        if (self.stm[0] and self.stm[4]) == '\u0627':      #  افعلال
+        if (self.stm[0] and self.stm[4]) == "\u0627":  #  افعلال
             self.stm = self.stm[1:4] + self.stm[5]
             return self.stm
-        elif (self.stm.startswith('\u0645\u062a')):     #   متفعلل
+        elif self.stm.startswith("\u0645\u062a"):  #   متفعلل
             self.stm = self.stm[2:]
             return self.stm
 
@@ -363,7 +440,7 @@ class ISRIStemmer(object):
             self.pro_w53()
             self.end_w5()
             return self.stm
-        elif len (self.stm) == 6:
+        elif len(self.stm) == 6:
             self.pro_w64()
             return self.stm
 

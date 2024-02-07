@@ -25,7 +25,8 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-import struct, sys
+import struct
+import sys
 from array import array
 from binascii import crc32
 from collections import defaultdict
@@ -38,27 +39,47 @@ try:
 except ImportError:
     zlib = None
 
-from whoosh.compat import b, PY3
-from whoosh.compat import loads, dumps
-from whoosh.compat import range, iteritems
-from whoosh.compat import bytes_type, text_type, string_type, integer_types
-from whoosh.compat import array_frombytes, array_tobytes
+from whoosh.automata.fst import GraphReader, GraphWriter
 from whoosh.codec import base
+from whoosh.compat import (
+    PY3,
+    array_frombytes,
+    array_tobytes,
+    b,
+    bytes_type,
+    dumps,
+    integer_types,
+    iteritems,
+    loads,
+    range,
+    string_type,
+    text_type,
+)
 from whoosh.filedb.filestore import Storage
-from whoosh.matching import ListMatcher, ReadTooFar, LeafMatcher
+from whoosh.matching import LeafMatcher, ListMatcher, ReadTooFar
 from whoosh.reading import NoGraphError, TermInfo, TermNotFound
-from whoosh.system import _INT_SIZE, _FLOAT_SIZE, _LONG_SIZE, IS_LITTLE
-from whoosh.system import emptybytes
-from whoosh.system import pack_byte
-from whoosh.system import pack_ushort, unpack_ushort, pack_long, unpack_long
-
-from whoosh.automata.fst import GraphWriter, GraphReader
-from whoosh.util.numeric import byte_to_length, length_to_byte
-from whoosh.util.numeric import to_sortable, from_sortable, NaN
+from whoosh.system import (
+    _FLOAT_SIZE,
+    _INT_SIZE,
+    _LONG_SIZE,
+    IS_LITTLE,
+    emptybytes,
+    pack_byte,
+    pack_long,
+    pack_ushort,
+    unpack_long,
+    unpack_ushort,
+)
+from whoosh.util.numeric import (
+    NaN,
+    byte_to_length,
+    from_sortable,
+    length_to_byte,
+    to_sortable,
+)
 from whoosh.util.numlists import GrowableArray
-from whoosh.util.text import utf8encode, utf8decode
+from whoosh.util.text import utf8decode, utf8encode
 from whoosh.util.times import datetime_to_long, long_to_datetime
-
 
 # Old hash file implementations
 
@@ -2122,6 +2143,7 @@ class OLD_DATETIME(OLD_NUMERIC):
 
     def to_text(self, x, shift=0):
         from datetime import datetime
+
         from whoosh.util.times import floor
 
         try:
@@ -2242,7 +2264,7 @@ def text_to_float(text, signed=True):
 
 # Functions for converting sortable representations to and from text.
 
-from whoosh.support.base85 import to_base85, from_base85
+from whoosh.support.base85 import from_base85, to_base85
 
 
 def sortable_int_to_text(x, shift=0):

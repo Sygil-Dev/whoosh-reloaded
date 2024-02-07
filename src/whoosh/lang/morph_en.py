@@ -8,7 +8,7 @@ class of Sun's `Minion search engine <https://minion.dev.java.net/>`_.
 
 import re
 
-from whoosh.compat import range, iteritems
+from whoosh.compat import iteritems, range
 
 # Rule exceptions
 
@@ -1102,9 +1102,7 @@ _partitions = []
 for p in range(0, len(rules) // _partition_size + 1):
     start = p * _partition_size
     end = (p + 1) * _partition_size
-    pattern = "|".join(
-        f"(?P<_g{i}>{r[0]})$" for i, r in enumerate(rules[start:end])
-    )
+    pattern = "|".join(f"(?P<_g{i}>{r[0]})$" for i, r in enumerate(rules[start:end]))
     _partitions.append(re.compile(pattern))
 
 

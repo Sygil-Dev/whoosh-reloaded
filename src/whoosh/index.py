@@ -34,13 +34,13 @@ from __future__ import division
 import os.path
 import re
 import sys
-from time import time, sleep
+from time import sleep, time
 
 from whoosh import __version__
 from whoosh.compat import pickle, string_type
 from whoosh.fields import ensure_schema
 from whoosh.legacy import toc_loaders
-from whoosh.system import _INT_SIZE, _FLOAT_SIZE, _LONG_SIZE
+from whoosh.system import _FLOAT_SIZE, _INT_SIZE, _LONG_SIZE
 
 _DEF_INDEX_NAME = "MAIN"
 _CURRENT_TOC_VERSION = -111
@@ -498,7 +498,7 @@ class FileIndex(Index):
     def _reader(cls, storage, schema, segments, generation, reuse=None):
         # Returns a reader for the given segments, possibly reusing already
         # opened readers
-        from whoosh.reading import SegmentReader, MultiReader, EmptyReader
+        from whoosh.reading import EmptyReader, MultiReader, SegmentReader
 
         if reuse:
             # Merge segments with reuse segments

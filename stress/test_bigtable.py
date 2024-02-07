@@ -3,9 +3,8 @@ from __future__ import with_statement
 from random import randint, shuffle
 
 from nose.tools import assert_equal  # type: ignore @UnresolvedImport
-
-from whoosh.compat import range, iteritems
-from whoosh.filedb.filetables import HashWriter, HashReader
+from whoosh.compat import iteritems, range
+from whoosh.filedb.filetables import HashReader, HashWriter
 from whoosh.util.testing import TempStorage
 
 

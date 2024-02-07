@@ -1,7 +1,6 @@
 import copy
 
 import pytest
-
 from whoosh import fields, qparser, query
 from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage

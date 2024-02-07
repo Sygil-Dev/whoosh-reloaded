@@ -1,10 +1,22 @@
 from __future__ import with_statement
-import inspect, random, sys
+
+import inspect
+import random
+import sys
 
 from whoosh import columns, fields, query
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import b, u, BytesIO, bytes_type, text_type
-from whoosh.compat import izip, range, dumps, loads
+from whoosh.compat import (
+    BytesIO,
+    b,
+    bytes_type,
+    dumps,
+    izip,
+    loads,
+    range,
+    text_type,
+    u,
+)
 from whoosh.filedb import compound
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex, TempStorage

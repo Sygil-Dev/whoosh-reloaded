@@ -30,12 +30,12 @@ documents.
 """
 
 from __future__ import division
+
 import random
 from collections import defaultdict
 from math import log
 
-from whoosh.compat import range, iteritems
-
+from whoosh.compat import iteritems, range
 
 # Expansion models
 

@@ -26,12 +26,13 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from __future__ import division
+
 import os.path
 from optparse import OptionParser
 from shutil import rmtree
 
 from whoosh import index, qparser, query, scoring
-from whoosh.util import now, find_object
+from whoosh.util import find_object, now
 
 try:
     import xappy  # type: ignore
@@ -320,10 +321,12 @@ class SolrModule(Module):
 
 class ZcatalogModule(Module):
     def indexer(self, **kwargs):
-        from ZODB.FileStorage import FileStorage  # type: ignore # type: ignore @UnresolvedImport
-        from ZODB.DB import DB  # type: ignore # type: ignore @UnresolvedImport
-        from zcatalog import catalog  # type: ignore # type: ignore @UnresolvedImport
         import transaction  # type: ignore # type: ignore @UnresolvedImport
+        from zcatalog import catalog  # type: ignore # type: ignore @UnresolvedImport
+        from ZODB.DB import DB  # type: ignore # type: ignore @UnresolvedImport
+        from ZODB.FileStorage import (
+            FileStorage,  # type: ignore # type: ignore @UnresolvedImport
+        )
 
         dir = os.path.join(self.options.dir, f"{self.options.indexname}_zcatalog")
         if os.path.exists(dir):
@@ -360,8 +363,10 @@ class ZcatalogModule(Module):
         del self.zcatalog_count
 
     def searcher(self):
-        from ZODB.FileStorage import FileStorage  # type: ignore # type: ignore @UnresolvedImport
         from ZODB.DB import DB  # type: ignore # type: ignore @UnresolvedImport
+        from ZODB.FileStorage import (
+            FileStorage,  # type: ignore # type: ignore @UnresolvedImport
+        )
 
         path = os.path.join(
             self.options.dir, f"{self.options.indexname}_zcatalog", "index"
@@ -393,6 +398,7 @@ class ZcatalogModule(Module):
 class NucularModule(Module):
     def indexer(self, create=True):
         import shutil
+
         from nucular import Nucular  # type: ignore # type: ignore @UnresolvedImport
 
         dir = os.path.join(self.options.dir, f"{self.options.indexname}_nucular")

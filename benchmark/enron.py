@@ -1,5 +1,7 @@
 from __future__ import division
-import os.path, tarfile
+
+import os.path
+import tarfile
 from email import message_from_string
 from marshal import dump, load
 from zlib import compress, decompress
@@ -10,10 +12,9 @@ except ImportError:
     pass
 
 from whoosh import analysis, fields
-from whoosh.compat import urlretrieve, next
+from whoosh.compat import next, urlretrieve
 from whoosh.support.bench import Bench, Spec
 from whoosh.util import now
-
 
 # Benchmark class
 

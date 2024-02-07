@@ -39,18 +39,33 @@ use in (at least) spell checking.
 """
 
 
-import sys, copy
+import copy
+import sys
 from array import array
 from hashlib import sha1  # type: ignore @UnresolvedImport
 
-from whoosh.compat import b, u, BytesIO
-from whoosh.compat import range, iteritems, iterkeys, izip, array_tobytes
-from whoosh.compat import bytes_type, text_type
+from whoosh.compat import (
+    BytesIO,
+    array_tobytes,
+    b,
+    bytes_type,
+    iteritems,
+    iterkeys,
+    izip,
+    range,
+    text_type,
+    u,
+)
 from whoosh.filedb.structfile import StructFile
-from whoosh.system import _INT_SIZE
-from whoosh.system import pack_byte, pack_int, pack_uint, pack_long
-from whoosh.system import emptybytes
-from whoosh.util.text import utf8encode, utf8decode
+from whoosh.system import (
+    _INT_SIZE,
+    emptybytes,
+    pack_byte,
+    pack_int,
+    pack_long,
+    pack_uint,
+)
+from whoosh.util.text import utf8decode, utf8encode
 from whoosh.util.varints import varint
 
 

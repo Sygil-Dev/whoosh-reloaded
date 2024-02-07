@@ -3,7 +3,6 @@ from bisect import bisect_right
 
 from whoosh.compat import text_type, u
 
-
 # http://unicode.org/Public/UNIDATA/Blocks.txt
 _blockdata = """
 # Blocks-5.1.0.txt

@@ -1,9 +1,12 @@
 from __future__ import with_statement
-import os, threading, time
+
+import os
+import threading
+import time
 
 from whoosh.compat import u
 from whoosh.util.filelock import try_for
-from whoosh.util.numeric import length_to_byte, byte_to_length
+from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempStorage
 
 
@@ -16,7 +19,9 @@ def test_now():
 
 
 def test_storage_creation():
-    import tempfile, uuid
+    import tempfile
+    import uuid
+
     from whoosh import fields
     from whoosh.filedb.filestore import FileStorage
 

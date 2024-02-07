@@ -33,11 +33,10 @@ from bisect import bisect_right
 
 from whoosh import columns
 from whoosh.automata import lev
-from whoosh.compat import abstractmethod, izip, unichr, range
+from whoosh.compat import abstractmethod, izip, range, unichr
 from whoosh.filedb.compound import CompoundStorage
 from whoosh.system import emptybytes
 from whoosh.util import random_name
-
 
 # Exceptions
 

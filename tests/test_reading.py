@@ -1,13 +1,15 @@
 # coding=utf-8
 from __future__ import with_statement
-import random, threading, time
+
+import random
+import threading
+import time
 
 import pytest
 from whoosh import fields, formats, reading
-
-from whoosh.compat import b, u, range
-from whoosh.reading import SegmentReader
+from whoosh.compat import b, range, u
 from whoosh.filedb.filestore import RamStorage
+from whoosh.reading import SegmentReader
 from whoosh.util.testing import TempIndex
 
 

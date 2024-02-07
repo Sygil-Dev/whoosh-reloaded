@@ -30,13 +30,14 @@
 
 
 from __future__ import division
+
 import copy
 import weakref
 from math import ceil
 
 from whoosh import classify, highlight, query, scoring
-from whoosh.compat import iteritems, itervalues, iterkeys, range
-from whoosh.idsets import DocIdSet, BitSet
+from whoosh.compat import iteritems, iterkeys, itervalues, range
+from whoosh.idsets import BitSet, DocIdSet
 from whoosh.reading import TermNotFound
 
 

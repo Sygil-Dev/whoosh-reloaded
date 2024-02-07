@@ -5,8 +5,7 @@ from __future__ import with_statement
 import pytest
 
 # from jieba.analyse import ChineseAnalyzer
-
-from whoosh import analysis, highlight, fields, qparser, query
+from whoosh import analysis, fields, highlight, qparser, query
 from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex

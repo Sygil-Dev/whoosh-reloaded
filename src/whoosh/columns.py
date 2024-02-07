@@ -47,7 +47,9 @@ and ``reader()`` to return a ``ColumnReader`` object.
 """
 
 from __future__ import division, with_statement
-import struct, warnings
+
+import struct
+import warnings
 from array import array
 from bisect import bisect_right
 
@@ -56,16 +58,13 @@ try:
 except ImportError:
     zlib = None
 
-from whoosh.compat import b, bytes_type, BytesIO
-from whoosh.compat import array_tobytes, range
-from whoosh.compat import dumps, loads
+from whoosh.compat import BytesIO, array_tobytes, b, bytes_type, dumps, loads, range
 from whoosh.filedb.structfile import StructFile
 from whoosh.idsets import BitSet, OnDiskBitSet
 from whoosh.system import emptybytes
 from whoosh.util.numeric import typecode_max, typecode_min
 from whoosh.util.numlists import GrowableArray
-from whoosh.util.varints import varint, read_varint
-
+from whoosh.util.varints import read_varint, varint
 
 # Base classes
 

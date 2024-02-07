@@ -12,38 +12,38 @@ import re
 # Suffix replacement lists
 
 _step2list = {
-              "ational": "ate",
-              "tional": "tion",
-              "enci": "ence",
-              "anci": "ance",
-              "izer": "ize",
-              "bli": "ble",
-              "alli": "al",
-              "entli": "ent",
-              "eli": "e",
-              "ousli": "ous",
-              "ization": "ize",
-              "ation": "ate",
-              "ator": "ate",
-              "alism": "al",
-              "iveness": "ive",
-              "fulness": "ful",
-              "ousness": "ous",
-              "aliti": "al",
-              "iviti": "ive",
-              "biliti": "ble",
-              "logi": "log",
-              }
+    "ational": "ate",
+    "tional": "tion",
+    "enci": "ence",
+    "anci": "ance",
+    "izer": "ize",
+    "bli": "ble",
+    "alli": "al",
+    "entli": "ent",
+    "eli": "e",
+    "ousli": "ous",
+    "ization": "ize",
+    "ation": "ate",
+    "ator": "ate",
+    "alism": "al",
+    "iveness": "ive",
+    "fulness": "ful",
+    "ousness": "ous",
+    "aliti": "al",
+    "iviti": "ive",
+    "biliti": "ble",
+    "logi": "log",
+}
 
 _step3list = {
-              "icate": "ic",
-              "ative": "",
-              "alize": "al",
-              "iciti": "ic",
-              "ical": "ic",
-              "ful": "",
-              "ness": "",
-              }
+    "icate": "ic",
+    "ative": "",
+    "alize": "al",
+    "iciti": "ic",
+    "ical": "ic",
+    "ful": "",
+    "ness": "",
+}
 
 
 _cons = "[^aeiou]"
@@ -54,9 +54,13 @@ _vowel_seq = "[aeiou]+"
 # m > 0
 _mgr0 = re.compile("^(" + _cons_seq + ")?" + _vowel_seq + _cons_seq)
 # m == 0
-_meq1 = re.compile("^(" + _cons_seq + ")?" + _vowel_seq + _cons_seq + "(" + _vowel_seq + ")?$")
+_meq1 = re.compile(
+    "^(" + _cons_seq + ")?" + _vowel_seq + _cons_seq + "(" + _vowel_seq + ")?$"
+)
 # m > 1
-_mgr1 = re.compile("^(" + _cons_seq + ")?" + _vowel_seq + _cons_seq + _vowel_seq + _cons_seq)
+_mgr1 = re.compile(
+    "^(" + _cons_seq + ")?" + _vowel_seq + _cons_seq + _vowel_seq + _cons_seq
+)
 # vowel in stem
 _s_v = re.compile("^(" + _cons_seq + ")?" + _vowel)
 # ???
@@ -67,14 +71,19 @@ _c_v = re.compile("^" + _cons_seq + _vowel + "[^aeiouwxy]$")
 _ed_ing = re.compile("^(.*)(ed|ing)$")
 _at_bl_iz = re.compile("(at|bl|iz)$")
 _step1b = re.compile("([^aeiouylsz])\\1$")
-_step2 = re.compile("^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|biliti|logi)$")
+_step2 = re.compile(
+    "^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|biliti|logi)$"
+)
 _step3 = re.compile("^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$")
-_step4_1 = re.compile("^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$")
+_step4_1 = re.compile(
+    "^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$"
+)
 _step4_2 = re.compile("^(.+?)(s|t)(ion)$")
 _step5 = re.compile("^(.+?)e$")
 
 
 # Stemming function
+
 
 def stem(w):
     """Uses the Porter stemming algorithm to remove suffixes from English

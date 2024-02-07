@@ -30,15 +30,15 @@ on-disk key-value database format. The current format is based heavily on
 D. J. Bernstein's CDB format (http://cr.yp.to/cdb.html).
 """
 
-import os, struct, sys
+import os
+import struct
+import sys
 from binascii import crc32
 from hashlib import md5  # type: ignore @UnresolvedImport
 
-from whoosh.compat import b, bytes_type
-from whoosh.compat import range
-from whoosh.util.numlists import GrowableArray
+from whoosh.compat import b, bytes_type, range
 from whoosh.system import _INT_SIZE, emptybytes
-
+from whoosh.util.numlists import GrowableArray
 
 # Exceptions
 

@@ -27,12 +27,20 @@
 
 from ast import literal_eval
 
-from whoosh.compat import b, bytes_type, text_type, integer_types, PY3
-from whoosh.compat import iteritems, dumps, loads, range
 from whoosh.codec import base
+from whoosh.compat import (
+    PY3,
+    b,
+    bytes_type,
+    dumps,
+    integer_types,
+    iteritems,
+    loads,
+    range,
+    text_type,
+)
 from whoosh.matching import ListMatcher
 from whoosh.reading import TermInfo, TermNotFound
-
 
 if not PY3:
 

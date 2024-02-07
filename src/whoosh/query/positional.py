@@ -26,12 +26,13 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from __future__ import division
+
 import copy
 
 from whoosh import matching
 from whoosh.analysis import Token
 from whoosh.compat import u
-from whoosh.query import qcore, terms, compound
+from whoosh.query import compound, qcore, terms
 
 
 class Sequence(compound.CompoundQuery):
@@ -244,7 +245,7 @@ class Phrase(qcore.Query):
         return self._and_query().estimate_min_size(ixreader)
 
     def matcher(self, searcher, context=None):
-        from whoosh.query import Term, SpanNear2
+        from whoosh.query import SpanNear2, Term
 
         fieldname = self.fieldname
         if fieldname not in searcher.schema:

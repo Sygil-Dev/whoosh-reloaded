@@ -29,7 +29,6 @@ from array import array
 
 from whoosh.compat import array_tobytes, range
 
-
 # Varint cache
 
 # Build a cache of the varint byte sequences for the first N integers, so we

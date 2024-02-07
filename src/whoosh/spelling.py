@@ -35,7 +35,6 @@ from heapq import heappush, heapreplace
 from whoosh import highlight
 from whoosh.compat import iteritems, range
 
-
 # Corrector objects
 
 
@@ -125,8 +124,8 @@ class ListCorrector(Corrector):
         self.wordlist = wordlist
 
     def _suggestions(self, text, maxdist, prefix):
-        from whoosh.automata.lev import levenshtein_automaton
         from whoosh.automata.fsa import find_all_matches
+        from whoosh.automata.lev import levenshtein_automaton
 
         seen = set()
         for mxd in range(1, maxdist + 1):

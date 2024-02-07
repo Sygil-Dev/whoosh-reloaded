@@ -118,7 +118,7 @@ class CompoundQuery(qcore.Query):
         return 0
 
     def normalize(self):
-        from whoosh.query import Every, TermRange, NumericRange
+        from whoosh.query import Every, NumericRange, TermRange
 
         # Normalize subqueries and merge nested instances of this class
         subqueries = []

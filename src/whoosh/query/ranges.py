@@ -27,7 +27,7 @@
 
 
 from whoosh.compat import b, u
-from whoosh.query import qcore, terms, compound, wrappers
+from whoosh.query import compound, qcore, terms, wrappers
 from whoosh.util.times import datetime_to_long
 
 

@@ -26,7 +26,11 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from __future__ import with_statement
-import errno, os, sys, tempfile
+
+import errno
+import os
+import sys
+import tempfile
 from threading import Lock
 
 from whoosh.compat import BytesIO, memoryview_
@@ -34,7 +38,6 @@ from whoosh.filedb.structfile import BufferFile, StructFile
 from whoosh.index import _DEF_INDEX_NAME, EmptyIndexError
 from whoosh.util import random_name
 from whoosh.util.filelock import FileLock
-
 
 # Exceptions
 

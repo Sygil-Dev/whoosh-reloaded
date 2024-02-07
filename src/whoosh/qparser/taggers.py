@@ -27,7 +27,6 @@
 
 from whoosh.util.text import rcompile
 
-
 # Tagger objects
 
 

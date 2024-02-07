@@ -27,7 +27,6 @@
 
 from whoosh.automata.fsa import ANY, EPSILON, NFA
 
-
 # Operator precedence
 CHOICE = ("|",)
 ops = ()

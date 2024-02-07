@@ -3,10 +3,8 @@
 from __future__ import with_statement
 
 import pytest
-
 from whoosh import analysis, fields, qparser
-from whoosh.compat import b, u, unichr
-from whoosh.compat import dumps
+from whoosh.compat import b, dumps, u, unichr
 from whoosh.filedb.filestore import RamStorage
 
 
@@ -256,7 +254,7 @@ def test_shingles():
 
 
 def test_unicode_blocks():
-    from whoosh.support.unicode import blocks, blockname, blocknum
+    from whoosh.support.unicode import blockname, blocknum, blocks
 
     assert blockname(u("a")) == "Basic Latin"
     assert blockname(unichr(0x0B80)) == "Tamil"

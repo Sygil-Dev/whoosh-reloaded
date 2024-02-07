@@ -35,7 +35,7 @@ http://wordnetcode.princeton.edu/3.0/WNprolog-3.0.tar.gz
 from collections import defaultdict
 
 from whoosh.compat import iterkeys, text_type
-from whoosh.fields import Schema, ID, STORED
+from whoosh.fields import ID, STORED, Schema
 
 
 def parse_file(f):

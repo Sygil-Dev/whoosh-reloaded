@@ -5,10 +5,10 @@ are useful for doing case and accent folding.
 See :class:`whoosh.analysis.CharsetTokenizer` and :class:`whoosh.analysis.CharsetFilter`.
 """
 
-from collections import defaultdict
 import re
+from collections import defaultdict
 
-from whoosh.compat import izip, u, iteritems, unichr, range
+from whoosh.compat import iteritems, izip, range, u, unichr
 
 # This is a straightforward accent-folding charset taken from Carlos Bueno's
 # article "Accent Folding for Auto-Complete", for use with CharsetFilter.

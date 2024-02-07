@@ -29,10 +29,9 @@
 
 from itertools import chain
 
-from whoosh.compat import next
 from whoosh.analysis.acore import Composable
+from whoosh.compat import next
 from whoosh.util.text import rcompile
-
 
 # Default list of stop words (words so common it's usually wasteful to index
 # them). This list is used by the StopFilter class, which allows you to supply

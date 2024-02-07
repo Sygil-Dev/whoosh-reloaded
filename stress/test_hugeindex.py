@@ -1,8 +1,8 @@
 from __future__ import with_statement
+
 import struct
 
 from nose.tools import assert_equal  # type: ignore @UnresolvedImport
-
 from whoosh import formats
 from whoosh.compat import range
 from whoosh.filedb.filepostings import FilePostingReader, FilePostingWriter

@@ -33,10 +33,10 @@ class _ScandinavianStemmer(object):
         r1 = ""
         for i in range(1, len(word)):
             if word[i] not in vowels and word[i - 1] in vowels:
-                if len(word[:i + 1]) < 3 and len(word[:i + 1]) > 0:
+                if len(word[: i + 1]) < 3 and len(word[: i + 1]) > 0:
                     r1 = word[3:]
-                elif len(word[:i + 1]) >= 3:
-                    r1 = word[i + 1:]
+                elif len(word[: i + 1]) >= 3:
+                    r1 = word[i + 1 :]
                 else:
                     return word
                 break
@@ -82,12 +82,12 @@ class _StandardStemmer(object):
         r2 = ""
         for i in range(1, len(word)):
             if word[i] not in vowels and word[i - 1] in vowels:
-                r1 = word[i + 1:]
+                r1 = word[i + 1 :]
                 break
 
         for i in range(1, len(r1)):
             if r1[i] not in vowels and r1[i - 1] in vowels:
-                r2 = r1[i + 1:]
+                r2 = r1[i + 1 :]
                 break
 
         return (r1, r2)
@@ -119,13 +119,13 @@ class _StandardStemmer(object):
             if word[1] not in vowels:
                 for i in range(2, len(word)):
                     if word[i] in vowels:
-                        rv = word[i + 1:]
+                        rv = word[i + 1 :]
                         break
 
             elif word[:2] in vowels:
                 for i in range(2, len(word)):
                     if word[i] not in vowels:
-                        rv = word[i + 1:]
+                        rv = word[i + 1 :]
                         break
             else:
                 rv = word[3:]

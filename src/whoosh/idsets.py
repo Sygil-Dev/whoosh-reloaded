@@ -9,7 +9,6 @@ from bisect import bisect_left, bisect_right
 from whoosh.compat import izip, izip_longest, next, range
 from whoosh.util.numeric import bytes_for_bits
 
-
 # Number of '1' bits in each byte (0-255)
 _1SPERBYTE = array(
     "B",

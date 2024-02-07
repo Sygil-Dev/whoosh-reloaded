@@ -1,13 +1,12 @@
 from __future__ import with_statement
+
 import random
 from array import array
 
 import pytest
-
 from whoosh import analysis, fields, formats, query
-from whoosh.compat import u, b, text_type
-from whoosh.compat import array_tobytes, range
 from whoosh.codec import default_codec
+from whoosh.compat import array_tobytes, b, range, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempStorage
 
@@ -689,8 +688,8 @@ def test_memory_multiwrite():
 
 # can add a new field to the schema before adding documents
 def test_add_new_field_to_schema():
-    from whoosh.fields import Schema, TEXT
     from whoosh.codec.memory import MemoryCodec, MemWriter
+    from whoosh.fields import TEXT, Schema
 
     codec = MemoryCodec()
     schema = Schema(title=TEXT(stored=True), content=TEXT)
@@ -706,8 +705,8 @@ def test_add_new_field_to_schema():
 
 # can add a reader to the index
 def test_add_reader_to_index():
-    from whoosh.fields import Schema, TEXT
     from whoosh.codec.memory import MemoryCodec, MemWriter
+    from whoosh.fields import TEXT, Schema
 
     # Define the schema for the index
     schema = Schema(title=TEXT(stored=True), content=TEXT)

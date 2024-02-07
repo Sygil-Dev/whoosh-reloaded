@@ -1,10 +1,12 @@
 from __future__ import with_statement
-import random, time, threading
+
+import random
+import threading
+import time
 
 import pytest
-
 from whoosh import analysis, fields, query, writing
-from whoosh.compat import b, u, range, text_type
+from whoosh.compat import b, range, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 

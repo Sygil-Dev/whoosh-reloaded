@@ -15,12 +15,12 @@
 # ===============================================================================
 
 import os
+import pickle
 import re
 from bisect import bisect_right
 from threading import Lock
 from time import time
 
-import pickle
 from whoosh import __version__
 from whoosh.fields import Schema
 from whoosh.index import (
@@ -28,9 +28,9 @@ from whoosh.index import (
     EmptyIndexError,
     Index,
     IndexVersionError,
+    LockError,
     OutOfDateError,
 )
-from whoosh.index import LockError
 from whoosh.support.bitvector import BitVector
 from whoosh.system import _FLOAT_SIZE, _INT_SIZE
 

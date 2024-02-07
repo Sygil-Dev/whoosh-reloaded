@@ -28,9 +28,8 @@
 import re
 from collections import deque
 
-from whoosh.compat import u, text_type
-from whoosh.compat import range
 from whoosh.analysis.filters import Filter
+from whoosh.compat import range, text_type, u
 
 
 class CompoundWordFilter(Filter):

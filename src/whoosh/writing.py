@@ -26,7 +26,9 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from __future__ import with_statement
-import threading, time
+
+import threading
+import time
 from bisect import bisect_right
 from contextlib import contextmanager
 
@@ -38,7 +40,6 @@ from whoosh.index import LockError
 from whoosh.util import fib, random_name
 from whoosh.util.filelock import try_for
 from whoosh.util.text import utf8encode
-
 
 # Exceptions
 

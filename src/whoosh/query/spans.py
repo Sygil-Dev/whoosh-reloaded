@@ -43,10 +43,9 @@ For example, to find documents containing "whoosh" at most 5 positions before
 
 """
 
-from whoosh.matching import mcore, wrappers, binary
-from whoosh.query import Query, And, AndMaybe, Or, Term
+from whoosh.matching import binary, mcore, wrappers
+from whoosh.query import And, AndMaybe, Or, Query, Term
 from whoosh.util import make_binary_tree
-
 
 # Span class
 

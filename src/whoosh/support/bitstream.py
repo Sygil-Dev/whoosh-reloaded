@@ -8,7 +8,6 @@ from array import array
 
 from whoosh.system import _LONG_SIZE
 
-
 _bitsperlong = _LONG_SIZE * 8
 
 

@@ -26,6 +26,7 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from __future__ import division
+
 import copy
 import fnmatch
 import re

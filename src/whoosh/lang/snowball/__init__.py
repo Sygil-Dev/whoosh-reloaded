@@ -54,21 +54,21 @@ from .russian import RussianStemmer
 from .spanish import SpanishStemmer
 from .swedish import SwedishStemmer
 
-
 # Map two-letter codes to stemming classes
 
-classes = {"da": DanishStemmer,
-           "nl": DutchStemmer,
-           "en": EnglishStemmer,
-           "fi": FinnishStemmer,
-           "fr": FrenchStemmer,
-           "de": GermanStemmer,
-           "hu": HungarianStemmer,
-           "it": ItalianStemmer,
-           "no": NorwegianStemmer,
-           "pt": PortugueseStemmer,
-           "ro": RomanianStemmer,
-           "ru": RussianStemmer,
-           "es": SpanishStemmer,
-           "sv": SwedishStemmer,
-           }
+classes = {
+    "da": DanishStemmer,
+    "nl": DutchStemmer,
+    "en": EnglishStemmer,
+    "fi": FinnishStemmer,
+    "fr": FrenchStemmer,
+    "de": GermanStemmer,
+    "hu": HungarianStemmer,
+    "it": ItalianStemmer,
+    "no": NorwegianStemmer,
+    "pt": PortugueseStemmer,
+    "ro": RomanianStemmer,
+    "ru": RussianStemmer,
+    "es": SpanishStemmer,
+    "sv": SwedishStemmer,
+}

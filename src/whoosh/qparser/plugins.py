@@ -28,11 +28,10 @@
 import copy
 
 from whoosh import query
-from whoosh.compat import u
-from whoosh.compat import iteritems, range
+from whoosh.compat import iteritems, range, u
 from whoosh.qparser import syntax
 from whoosh.qparser.common import attach
-from whoosh.qparser.taggers import RegexTagger, FnTagger
+from whoosh.qparser.taggers import FnTagger, RegexTagger
 from whoosh.util.text import rcompile
 
 

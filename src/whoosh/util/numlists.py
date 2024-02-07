@@ -1,10 +1,15 @@
 from array import array
 
 from whoosh.compat import range
-from whoosh.system import emptybytes
-from whoosh.system import pack_byte, unpack_byte
-from whoosh.system import pack_ushort_le, unpack_ushort_le
-from whoosh.system import pack_uint_le, unpack_uint_le
+from whoosh.system import (
+    emptybytes,
+    pack_byte,
+    pack_uint_le,
+    pack_ushort_le,
+    unpack_byte,
+    unpack_uint_le,
+    unpack_ushort_le,
+)
 
 
 def delta_encode(nums):

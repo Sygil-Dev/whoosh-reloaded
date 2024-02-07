@@ -1,16 +1,16 @@
 from __future__ import with_statement
+
 import random
 from collections import defaultdict
 from datetime import datetime
 
 import pytest
-
-from whoosh import analysis, fields, index, qparser, query, __version__
-from whoosh.compat import b, u, range, text_type, permutations
+from whoosh import __version__, analysis, fields, index, qparser, query
+from whoosh.compat import b, permutations, range, text_type, u
 from whoosh.filedb.filestore import RamStorage
-from whoosh.writing import IndexingError
-from whoosh.util.numeric import length_to_byte, byte_to_length
+from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempIndex, TempStorage
+from whoosh.writing import IndexingError
 
 
 def test_creation():
@@ -474,7 +474,7 @@ def test_noscorables1():
         u("kilo"),
         u("lima"),
     ]
-    from random import choice, sample, randint
+    from random import choice, randint, sample
 
     times = 1000
 

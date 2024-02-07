@@ -29,21 +29,20 @@
  Contains functions and classes related to fields.
 """
 
-import datetime, fnmatch, re, struct, sys
+import datetime
+import fnmatch
+import re
+import struct
+import sys
 from array import array
 from decimal import Decimal
 
 from whoosh import analysis, columns, formats
-from whoosh.compat import with_metaclass
-from whoosh.compat import itervalues
-from whoosh.compat import bytes_type, string_type, text_type
-from whoosh.system import emptybytes
-from whoosh.system import pack_byte
-from whoosh.util.numeric import to_sortable, from_sortable
-from whoosh.util.numeric import typecode_max, NaN
-from whoosh.util.text import utf8encode, utf8decode
+from whoosh.compat import bytes_type, itervalues, string_type, text_type, with_metaclass
+from whoosh.system import emptybytes, pack_byte
+from whoosh.util.numeric import NaN, from_sortable, to_sortable, typecode_max
+from whoosh.util.text import utf8decode, utf8encode
 from whoosh.util.times import datetime_to_long, long_to_datetime
-
 
 # Exceptions
 
