@@ -25,6 +25,59 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.qparser.default import *
-from whoosh.qparser.plugins import *
-from whoosh.qparser.syntax import *
+from whoosh.qparser.default import (
+    DisMaxParser,
+    MultifieldParser,
+    QueryParser,
+    SimpleParser,
+)
+from whoosh.qparser.plugins import (
+    BoostPlugin,
+    CopyFieldPlugin,
+    EveryPlugin,
+    FieldAliasPlugin,
+    FieldsPlugin,
+    FunctionPlugin,
+    FuzzyTermPlugin,
+    GroupPlugin,
+    GtLtPlugin,
+    MultifieldPlugin,
+    OperatorsPlugin,
+    PhrasePlugin,
+    Plugin,
+    PlusMinusPlugin,
+    PrefixPlugin,
+    PseudoFieldPlugin,
+    RangePlugin,
+    RegexPlugin,
+    RegexTagger,
+    SequencePlugin,
+    SingleQuotePlugin,
+    TaggingPlugin,
+    WhitespacePlugin,
+    WildcardPlugin,
+)
+from whoosh.qparser.syntax import (
+    AndGroup,
+    AndMaybeGroup,
+    AndNotGroup,
+    BinaryGroup,
+    DisMaxGroup,
+    ErrorNode,
+    FieldnameNode,
+    GroupNode,
+    InfixOperator,
+    MarkerNode,
+    NotGroup,
+    Operator,
+    OrderedGroup,
+    OrGroup,
+    PostfixOperator,
+    PrefixOperator,
+    RequireGroup,
+    SyntaxNode,
+    TextNode,
+    Whitespace,
+    WordNode,
+    Wrapper,
+)

@@ -1,4 +1,12 @@
-from whoosh.qparser.dateparse import *
+from datetime import datetime, timedelta
+
+from whoosh.qparser.dateparse import (
+    English,
+    adatetime,
+    relative_days,
+    relativedelta,
+    timespan,
+)
 
 basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)
 english = English()

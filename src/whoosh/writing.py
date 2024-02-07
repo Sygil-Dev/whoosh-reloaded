@@ -360,7 +360,7 @@ class IndexWriter:
 
             from datetime import datetime, timedelta
             from whoosh import index
-            from whoosh.fields import *
+            from whoosh.fields import Schema, DATETIME, NUMERIC, TEXT
 
             schema = Schema(date=DATETIME, size=NUMERIC(float), content=TEXT)
             myindex = index.create_in("indexdir", schema)

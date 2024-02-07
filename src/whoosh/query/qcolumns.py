@@ -26,7 +26,7 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from whoosh.matching import ConstantScoreMatcher, NullMatcher, ReadTooFar
-from whoosh.query import Query
+from whoosh.query.qcore import Query
 
 
 class ColumnQuery(Query):
