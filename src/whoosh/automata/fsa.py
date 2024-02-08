@@ -122,7 +122,7 @@ class NFA(FSA):
             xs = self.transitions[src]
             for label in xs:
                 dests = xs[label]
-                end = "||" if self.is_final(dests) else ""
+                _ = "||" if self.is_final(dests) else ""
 
     def start(self):
         return frozenset(self._expand({self.initial}))
@@ -230,7 +230,7 @@ class DFA(FSA):
             xs = self.transitions[src]
             for label in sorted(xs):
                 dest = xs[label]
-                end = "||" if self.is_final(dest) else ""
+                _ = "||" if self.is_final(dest) else ""
 
     def start(self):
         return self.initial
@@ -446,7 +446,7 @@ def u_to_utf8(dfa, base=0):
             if label is EPSILON:
                 continue
             elif label is ANY:
-                raise Exception
+                raise ValueError
             else:
                 assert isinstance(label, text_type)
                 label8 = label.encode("utf8")
@@ -652,9 +652,9 @@ def strings_dfa(strings):
 
     for string in strings:
         if string <= last:
-            raise Exception("Strings must be in order")
+            raise ValueError("Strings must be in order")
         if not string:
-            raise Exception("Can't add empty string")
+            raise ValueError("Can't add empty string")
 
         # Find the common prefix with the previous string
         i = 0
