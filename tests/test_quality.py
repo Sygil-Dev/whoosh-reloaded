@@ -1,7 +1,7 @@
 import random
 
 from whoosh import fields, matching, scoring
-from whoosh.compat import range, u
+from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.numeric import byte_to_length, length_to_byte
 

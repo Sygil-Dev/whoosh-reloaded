@@ -29,7 +29,7 @@
 from multiprocessing import Process, Queue, cpu_count
 
 from whoosh.codec import base
-from whoosh.compat import pickle, queue, range
+from whoosh.compat import pickle, queue
 from whoosh.externalsort import imerge
 from whoosh.util import random_name
 from whoosh.writing import SegmentWriter

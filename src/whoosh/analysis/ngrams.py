@@ -28,7 +28,7 @@
 from whoosh.analysis.acore import Token
 from whoosh.analysis.filters import Filter, LowercaseFilter
 from whoosh.analysis.tokenizers import RegexTokenizer, Tokenizer
-from whoosh.compat import range, text_type
+from whoosh.compat import text_type
 
 # Tokenizer
 

@@ -3,7 +3,7 @@ import os.path
 from bisect import bisect_left
 
 from whoosh.automata import fsa, glob, lev
-from whoosh.compat import permutations, range
+from whoosh.compat import permutations
 from whoosh.support.levenshtein import levenshtein
 
 

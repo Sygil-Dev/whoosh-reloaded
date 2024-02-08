@@ -1,6 +1,6 @@
 import random
 
-from whoosh.compat import b, iteritems, range
+from whoosh.compat import b, iteritems
 from whoosh.filedb.filestore import RamStorage
 from whoosh.filedb.filetables import (
     HashReader,

@@ -8,7 +8,7 @@ class of Sun's `Minion search engine <https://minion.dev.java.net/>`_.
 
 import re
 
-from whoosh.compat import iteritems, range
+from whoosh.compat import iteritems
 
 # Rule exceptions
 

@@ -34,7 +34,7 @@ import random
 from collections import defaultdict
 from math import log
 
-from whoosh.compat import iteritems, range
+from whoosh.compat import iteritems
 
 # Expansion models
 

@@ -4,7 +4,7 @@ import shutil
 from datetime import datetime
 
 from whoosh import fields, index, query
-from whoosh.compat import range, text_type
+from whoosh.compat import text_type
 from whoosh.util import now
 
 

@@ -2,7 +2,7 @@ import random
 from datetime import datetime, timedelta
 
 from whoosh import columns, fields, query, sorting
-from whoosh.compat import permutations, range, u
+from whoosh.compat import permutations, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 

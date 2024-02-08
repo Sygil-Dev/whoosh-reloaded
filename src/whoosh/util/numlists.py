@@ -1,6 +1,5 @@
 from array import array
 
-from whoosh.compat import range
 from whoosh.system import (
     emptybytes,
     pack_byte,

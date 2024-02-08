@@ -33,7 +33,7 @@ from bisect import bisect_left
 from heapq import heappush, heapreplace
 
 from whoosh import highlight
-from whoosh.compat import iteritems, range
+from whoosh.compat import iteritems
 
 # Corrector objects
 

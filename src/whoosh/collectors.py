@@ -83,7 +83,7 @@ from collections import defaultdict
 from heapq import heapify, heappush, heapreplace
 
 from whoosh import sorting
-from whoosh.compat import abstractmethod, iteritems, itervalues, range
+from whoosh.compat import abstractmethod, iteritems, itervalues
 from whoosh.searching import Results, TimeLimit
 from whoosh.util import now
 

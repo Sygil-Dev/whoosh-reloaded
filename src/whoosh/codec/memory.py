@@ -30,7 +30,6 @@ from bisect import bisect_left
 from threading import Lock
 
 from whoosh.codec import base
-from whoosh.compat import range
 from whoosh.matching import ListMatcher
 from whoosh.reading import SegmentReader, TermInfo, TermNotFound
 from whoosh.writing import SegmentWriter
