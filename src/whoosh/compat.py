@@ -105,7 +105,7 @@ else:
         return s
 
     def with_metaclass(meta, base=object):
-        ns = dict(base=base, meta=meta)
+        ns = {"base": base, "meta": meta}
         exec_(
             """class _WhooshBase(base, metaclass=meta):
     pass""",

@@ -66,7 +66,7 @@ class StemFilter(Filter):
     stemmers in that library.
     """
 
-    __inittypes__ = dict(stemfn=object, ignore=list)
+    __inittypes__ = {"stemfn": object, "ignore": list}
 
     is_morph = True
 

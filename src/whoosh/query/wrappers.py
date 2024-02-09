@@ -84,7 +84,7 @@ class Not(qcore.Query):
     >>> Term("content", u"render") - Term("content", u"texture")
     """
 
-    __inittypes__ = dict(query=qcore.Query)
+    __inittypes__ = {"query": qcore.Query}
 
     def __init__(self, query, boost=1.0):
         """

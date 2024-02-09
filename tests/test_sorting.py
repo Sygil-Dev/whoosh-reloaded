@@ -1104,10 +1104,7 @@ def test_compound_sort():
         ]
 
         r = s.search(q, sortedby=sortedby)
-        output = []
-        for hit in r:
-            output.append(" ".join((hit["a"], hit["b"], hit["c"])))
-
+        output = [" ".join((hit["a"], hit["b"], hit["c"])) for hit in r]
         assert output == [
             "alfa charlie charlie",
             "alfa charlie india",

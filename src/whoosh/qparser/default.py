@@ -164,7 +164,7 @@ class QueryParser:
             # Call either .taggers() or .filters() on the plugin
             method = getattr(plugin, methodname)
             for item in method(self):
-                items_and_priorities.append(item)
+                items_and_priorities.append(item)  # noqa: PERF402
         # Sort the list by priority (lower priority runs first)
         items_and_priorities.sort(key=lambda x: x[1])
         # Return the sorted list without the priorities

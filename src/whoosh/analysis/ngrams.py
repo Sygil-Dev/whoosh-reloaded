@@ -49,7 +49,7 @@ class NgramTokenizer(Tokenizer):
     could combine a RegexTokenizer with NgramFilter instead.
     """
 
-    __inittypes__ = dict(minsize=int, maxsize=int)
+    __inittypes__ = {"minsize": int, "maxsize": int}
 
     def __init__(self, minsize, maxsize=None):
         """
@@ -135,7 +135,7 @@ class NgramFilter(Filter):
     ["hell", "ello", "ther", "here"]
     """
 
-    __inittypes__ = dict(minsize=int, maxsize=int)
+    __inittypes__ = {"minsize": int, "maxsize": int}
 
     def __init__(self, minsize, maxsize=None, at=None):
         """

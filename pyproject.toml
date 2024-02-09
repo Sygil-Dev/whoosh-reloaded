@@ -6,8 +6,10 @@ select = [
   "AIR",    # Airflow
   "ASYNC",  # flake8-async
   "BLE",    # flake8-blind-except
+  "C4",     # flake8-comprehensions
   "C90",    # McCabe cyclomatic complexity
   "DJ",     # flake8-django
+  "DTZ",    # flake8-datetimez
   "EXE",    # flake8-executable
   "F",      # Pyflakes
   "FA",     # flake8-future-annotations
@@ -17,6 +19,7 @@ select = [
   "INT",    # flake8-gettext
   "LOG",    # flake8-logging
   "NPY",    # NumPy-specific rules
+  "PERF",   # Perflint
   "PLC",    # Pylint conventions
   "PLE",    # Pylint errors
   "PLR091", # Pylint Refactor just for max-args, max-branches, etc.
@@ -33,11 +36,9 @@ select = [
   # "ANN",  # flake8-annotations
   # "ARG",  # flake8-unused-arguments
   # "B",    # flake8-bugbear
-  # "C4",   # flake8-comprehensions
   # "COM",  # flake8-commas
   # "CPY",  # flake8-copyright
   # "D",    # pydocstyle
-  # "DTZ",  # flake8-datetimez
   # "E",    # pycodestyle
   # "EM",   # flake8-errmsg
   # "ERA",  # eradicate
@@ -49,7 +50,6 @@ select = [
   # "ISC",  # flake8-implicit-str-concat
   # "N",    # pep8-naming
   # "PD",   # pandas-vet
-  # "PERF", # Perflint
   # "PGH",  # pygrep-hooks
   # "PIE",  # flake8-pie
   # "PL",   # Pylint
@@ -71,6 +71,7 @@ ignore = [
   "F401",
   "F811",
   "F841",
+  "PERF203",
   "UP031",
 ]
 

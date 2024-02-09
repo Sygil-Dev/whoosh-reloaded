@@ -46,10 +46,7 @@ def _varint(i):
 
 
 _varint_cache_size = 512
-_varint_cache = []
-for i in range(0, _varint_cache_size):
-    _varint_cache.append(_varint(i))
-_varint_cache = tuple(_varint_cache)
+_varint_cache = tuple([_varint(i) for i in range(_varint_cache_size)])
 
 
 def varint(i):

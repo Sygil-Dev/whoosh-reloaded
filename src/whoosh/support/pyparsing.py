@@ -455,13 +455,13 @@ class ParseResults:
 
     def __setitem__(self, k, v):
         if isinstance(v, _ParseResultsWithOffset):
-            self.__tokdict[k] = self.__tokdict.get(k, list()) + [v]
+            self.__tokdict[k] = self.__tokdict.get(k, []) + [v]
             sub = v[0]
         elif isinstance(k, int):
             self.__toklist[k] = v
             sub = v
         else:
-            self.__tokdict[k] = self.__tokdict.get(k, list()) + [
+            self.__tokdict[k] = self.__tokdict.get(k, []) + [
                 _ParseResultsWithOffset(v, 0)
             ]
             sub = v
@@ -2940,9 +2940,9 @@ class Each(ParseExpression):
             )
 
         # add any unmatched Optionals, in case they have default values defined
-        matchOrder += list(
+        matchOrder += [
             e for e in self.exprs if isinstance(e, Optional) and e.expr in tmpOpt
-        )
+        ]
 
         resultlist = []
         for e in matchOrder:
@@ -3982,7 +3982,7 @@ def withAttribute(*args, **attrDict):
         attrs = args[:]
     else:
         attrs = attrDict.items()
-    attrs = [(k, v) for k, v in attrs]
+    attrs = list(attrs)
 
     def pa(s, l, tokens):
         for attrName, attrValue in attrs:
