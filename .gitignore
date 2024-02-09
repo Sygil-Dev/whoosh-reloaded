@@ -16,3 +16,4 @@ eggs/
 *.coverage.DESKTOP-*
 /coverage.xml
 /lcov.info
+/.codiumai.local.toml
