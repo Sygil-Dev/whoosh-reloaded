@@ -1,6 +1,6 @@
-from .bases import _StandardStemmer
-
 from whoosh.compat import u
+
+from .bases import _StandardStemmer
 
 
 class GermanStemmer(_StandardStemmer):

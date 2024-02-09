@@ -26,18 +26,18 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from whoosh.analysis.acore import Composable, CompositionError
-from whoosh.analysis.tokenizers import Tokenizer
-from whoosh.analysis.filters import LowercaseFilter
-from whoosh.analysis.filters import StopFilter, STOP_WORDS
-from whoosh.analysis.morph import StemFilter
+from whoosh.analysis.filters import STOP_WORDS, LowercaseFilter, StopFilter
 from whoosh.analysis.intraword import IntraWordFilter
-from whoosh.analysis.tokenizers import default_pattern
-from whoosh.analysis.tokenizers import CommaSeparatedTokenizer
-from whoosh.analysis.tokenizers import IDTokenizer
-from whoosh.analysis.tokenizers import RegexTokenizer
-from whoosh.analysis.tokenizers import SpaceSeparatedTokenizer
+from whoosh.analysis.morph import StemFilter
+from whoosh.analysis.tokenizers import (
+    CommaSeparatedTokenizer,
+    IDTokenizer,
+    RegexTokenizer,
+    SpaceSeparatedTokenizer,
+    Tokenizer,
+    default_pattern,
+)
 from whoosh.lang.porter import stem
-
 
 # Analyzers
 
@@ -46,7 +46,7 @@ class Analyzer(Composable):
     """Abstract base class for analyzers."""
 
     def __repr__(self):
-        return "%s()" % self.__class__.__name__
+        return f"{self.__class__.__name__}()"
 
     def __eq__(self, other):
         return (
@@ -59,6 +59,7 @@ class Analyzer(Composable):
         raise NotImplementedError
 
     def clean(self):
+        # This method is intentionally left empty.
         pass
 
 
@@ -78,12 +79,11 @@ class CompositeAnalyzer(Analyzer):
         for item in self.items[1:]:
             if isinstance(item, Tokenizer):
                 raise CompositionError(
-                    "Only one tokenizer allowed at the start"
-                    " of the analyzer: %r" % self.items
+                    f"Only one tokenizer allowed at the start of the analyzer: {self.items}"
                 )
 
     def __repr__(self):
-        return "%s(%s)" % (
+        return "{}({})".format(
             self.__class__.__name__,
             ", ".join(repr(item) for item in self.items),
         )
@@ -239,7 +239,6 @@ def FancyAnalyzer(
     expression=r"\s+",
     stoplist=STOP_WORDS,
     minsize=2,
-    maxsize=None,
     gaps=True,
     splitwords=True,
     splitnums=True,

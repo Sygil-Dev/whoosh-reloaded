@@ -1,4 +1,5 @@
-import os.path, gzip
+import gzip
+import os
 
 from whoosh import analysis, fields
 from whoosh.support.bench import Bench, Spec
@@ -28,7 +29,7 @@ class VulgarTongue(Spec):
 
     def whoosh_schema(self):
         ana = analysis.StemmingAnalyzer()
-        # ana = analysis.StandardAnalyzer()
+
         schema = fields.Schema(
             head=fields.ID(stored=True), body=fields.TEXT(analyzer=ana, stored=True)
         )

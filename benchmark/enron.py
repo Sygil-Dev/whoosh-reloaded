@@ -1,5 +1,5 @@
-from __future__ import division
-import os.path, tarfile
+import os.path
+import tarfile
 from email import message_from_string
 from marshal import dump, load
 from zlib import compress, decompress
@@ -10,10 +10,9 @@ except ImportError:
     pass
 
 from whoosh import analysis, fields
-from whoosh.compat import urlretrieve, next
+from whoosh.compat import next, urlretrieve
 from whoosh.support.bench import Bench, Spec
 from whoosh.util import now
-
 
 # Benchmark class
 
@@ -45,10 +44,10 @@ class Enron(Spec):
     # the messages in an easier-to-digest format
 
     def download_archive(self, archive):
-        print("Downloading Enron email archive to %r..." % archive)
+        print(f"Downloading Enron email archive to {archive}...")
         t = now()
         urlretrieve(self.enron_archive_url, archive)
-        print("Downloaded in ", now() - t, "seconds")
+        print(f"Downloaded in {now() - t} seconds")
 
     @staticmethod
     def get_texts(archive):
@@ -84,10 +83,10 @@ class Enron(Spec):
             yield d
 
     def cache_messages(self, archive, cache):
-        print("Caching messages in %s..." % cache)
+        print(f"Caching messages in {cache}...")
 
         if not os.path.exists(archive):
-            raise Exception("Archive file %r does not exist" % archive)
+            raise FileNotFoundError(f"Archive file {archive} does not exist")
 
         t = now()
         f = open(cache, "wb")
@@ -98,7 +97,7 @@ class Enron(Spec):
             if not c % 1000:
                 print(c)
         f.close()
-        print("Cached messages in ", now() - t, "seconds")
+        print(f"Cached messages in {now() - t} seconds")
 
     def setup(self):
         archive = os.path.abspath(
@@ -118,7 +117,7 @@ class Enron(Spec):
 
     def documents(self):
         if not os.path.exists(self.cache_filename):
-            raise Exception("Message cache does not exist, use --setup")
+            raise FileNotFoundError("Message cache does not exist, use --setup")
 
         f = open(self.cache_filename, "rb")
         try:
@@ -176,7 +175,7 @@ class Enron(Spec):
         d["filepos"] = self.filepos
         if self.options.storebody:
             mf = self.main_field
-            d["_stored_%s" % mf] = compress(d[mf], 9)
+            d[f"_stored_{mf}"] = compress(d[mf], 9)
 
     def process_result_whoosh(self, d):
         mf = self.main_field

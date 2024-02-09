@@ -17,15 +17,15 @@
 import types
 from array import array
 from struct import Struct
-from whoosh.support import unicode
 
-from whoosh.writing import PostingWriter
 from whoosh.matching import Matcher, ReadTooFar
-from whoosh.system import _INT_SIZE, _FLOAT_SIZE
-from whoosh.util import utf8encode, utf8decode, length_to_byte, byte_to_length
+from whoosh.support import unicode
+from whoosh.system import _FLOAT_SIZE, _INT_SIZE
+from whoosh.util import byte_to_length, length_to_byte, utf8decode, utf8encode
+from whoosh.writing import PostingWriter
 
 
-class BlockInfo(object):
+class BlockInfo:
     __slots__ = (
         "nextoffset",
         "postcount",
@@ -318,8 +318,7 @@ class FilePostingReader(Matcher):
             blockinfo = self._read_blockinfo(nextoffset)
             nextoffset = blockinfo.nextoffset
             ids, __ = self._read_ids(blockinfo.dataoffset, blockinfo.postcount)
-            for id in ids:
-                yield id
+            yield from ids
 
     def next(self):
         if self.i == self.blockinfo.postcount - 1:

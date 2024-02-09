@@ -3,13 +3,14 @@
 # Make a "checkpoint" index, capturing the index format created by a certain
 # version of Whoosh
 
-from __future__ import print_function, with_statement
-import os.path, random, sys
-from datetime import datetime
+
+import os.path
+import random
+import sys
+from datetime import datetime, timezone
 
 from whoosh import fields, index
-from whoosh.compat import u, range
-
+from whoosh.compat import u
 
 if len(sys.argv) < 2:
     print("USAGE: make_checkpoint.py <dir>")
@@ -43,9 +44,14 @@ for segnum in range(3):
     with ix.writer() as w:
         for num in range(100):
             frac += 0.15
-            path = u("%s/%s" % (segnum, num))
+            path = u(f"{segnum}/{num}")
             title = " ".join(random.choice(words) for _ in range(100))
-            dt = datetime(year=2000 + counter, month=(counter % 12) + 1, day=15)
+            dt = datetime(
+                year=2000 + counter,
+                month=(counter % 12) + 1,
+                day=15,
+                tzinfo=timezone.utc,
+            )
 
             w.add_document(
                 path=path,

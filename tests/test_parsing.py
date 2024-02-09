@@ -1,5 +1,5 @@
 from whoosh import analysis, fields, query
-from whoosh.compat import u, text_type
+from whoosh.compat import text_type, u
 from whoosh.qparser import default, plugins
 
 
@@ -642,20 +642,20 @@ def test_numeric_range():
     teststart = 40
     testend = 100
 
-    q = qp.parse("[%s to *]" % teststart)
+    q = qp.parse(f"[{teststart} to *]")
     assert q == query.NullQuery
 
-    q = qp.parse("[%s to]" % teststart)
+    q = qp.parse(f"[{teststart} to]")
     assert q.__class__ == query.NumericRange
     assert q.start == teststart
     assert q.end is None
 
-    q = qp.parse("[to %s]" % testend)
+    q = qp.parse(f"[to {testend}]")
     assert q.__class__ == query.NumericRange
     assert q.start is None
     assert q.end == testend
 
-    q = qp.parse("[%s to %s]" % (teststart, testend))
+    q = qp.parse(f"[{teststart} to {testend}]")
     assert q.__class__ == query.NumericRange
     assert q.start == teststart
     assert q.end == testend
@@ -1106,10 +1106,10 @@ def test_quoted_prefix():
     expr = r"(^|(?<=[ (]))(?P<text>\w+|[*]):"
     qp.replace_plugin(plugins.FieldsPlugin(expr))
 
-    q = qp.parse(u("foo url:http://apple.com:8080/bar* baz"))
+    q = qp.parse(u("foo url:https://apple.com:8080/bar* baz"))
     assert isinstance(q, query.And)
     assert q[0] == query.Term("f", "foo")
-    assert q[1] == query.Prefix("url", "http://apple.com:8080/bar")
+    assert q[1] == query.Prefix("url", "https://apple.com:8080/bar")
     assert q[2] == query.Term("f", "baz")
     assert len(q) == 3
 
@@ -1123,4 +1123,4 @@ def test_multitoken_with_factory():
     qp = default.QueryParser("title", schema, group=og)
 
     querystring = "get my name/address"
-    userquery = qp.parse(querystring)
+    _ = qp.parse(querystring)

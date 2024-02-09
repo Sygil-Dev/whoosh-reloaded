@@ -1,9 +1,8 @@
-from __future__ import with_statement
 import inspect
-from datetime import datetime
+from datetime import datetime, timezone
 
 from whoosh import analysis, fields, formats, qparser, query
-from whoosh.compat import u, text_type, range
+from whoosh.compat import text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.qparser import dateparse, default, plugins, syntax
 from whoosh.util.times import adatetime
@@ -39,7 +38,7 @@ def test_combos():
         try:
             pis[i] = plugin(*init_args.get(plugin, ()))
         except TypeError:
-            raise TypeError("Error instantiating %s" % plugin)
+            raise TypeError(f"Error instantiating {plugin}")
 
     count = 0
     for i, first in enumerate(pis):
@@ -70,7 +69,7 @@ def test_dateparser():
     def cb(arg):
         errs.append(arg)
 
-    basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)
+    basedate = datetime(2010, 9, 20, 15, 16, 6, 454000, tzinfo=timezone.utc)
     qp.add_plugin(dateparse.DateParserPlugin(basedate, callback=cb))
 
     q = qp.parse(u("hello date:'last tuesday'"))
@@ -119,7 +118,7 @@ def test_dateparser():
 def test_date_range():
     schema = fields.Schema(text=fields.TEXT, date=fields.DATETIME)
     qp = qparser.QueryParser("text", schema)
-    basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)
+    basedate = datetime(2010, 9, 20, 15, 16, 6, 454000, tzinfo=timezone.utc)
     qp.add_plugin(dateparse.DateParserPlugin(basedate))
 
     q = qp.parse(u("date:['30 march' to 'next wednesday']"))
@@ -156,7 +155,7 @@ def test_date_range():
 def test_daterange_multi():
     schema = fields.Schema(text=fields.TEXT, start=fields.DATETIME, end=fields.DATETIME)
     qp = qparser.QueryParser("text", schema)
-    basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)
+    basedate = datetime(2010, 9, 20, 15, 16, 6, 454000, tzinfo=timezone.utc)
     qp.add_plugin(dateparse.DateParserPlugin(basedate))
 
     q = qp.parse("start:[2008 to] AND end:[2011 to 2011]")
@@ -178,7 +177,11 @@ def test_daterange_empty_field():
     writer.commit()
 
     with ix.searcher() as s:
-        q = query.DateRange("test", datetime.fromtimestamp(86400), datetime.today())
+        q = query.DateRange(
+            "test",
+            datetime.fromtimestamp(86400, tz=timezone.utc),
+            datetime.now(tz=timezone.utc),
+        )
         r = s.search(q)
         assert len(r) == 0
 
@@ -187,7 +190,7 @@ def test_free_dates():
     a = analysis.StandardAnalyzer(stoplist=None)
     schema = fields.Schema(text=fields.TEXT(analyzer=a), date=fields.DATETIME)
     qp = qparser.QueryParser("text", schema)
-    basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)
+    basedate = datetime(2010, 9, 20, 15, 16, 6, 454000, tzinfo=timezone.utc)
     qp.add_plugin(dateparse.DateParserPlugin(basedate, free=True))
 
     q = qp.parse(u("hello date:last tuesday"))
@@ -367,7 +370,9 @@ def test_gtlt():
     assert len(q) == 3
     assert q[0] == query.Term("a", "hello")
     # As of this writing, date ranges don't support startexcl/endexcl
-    assert q[1] == query.DateRange("e", datetime(2001, 3, 29, 0, 0), None)
+    assert q[1] == query.DateRange(
+        "e", datetime(2001, 3, 29, 0, 0, tzinfo=timezone.utc), None
+    )
     assert q[2] == query.Term("a", "there")
 
     q = qp.parse(u("a:> alfa c:<= bravo"))
@@ -506,7 +511,7 @@ def test_fuzzy_prefix():
         # Match -> fire is within 2 edits (transpose + delete) of first
         w.add_document(title=u("Fifth"), content=u("The fire is beautiful"))
 
-    from whoosh.qparser import QueryParser, FuzzyTermPlugin
+    from whoosh.qparser import FuzzyTermPlugin, QueryParser
 
     parser = QueryParser("content", ix.schema)
     parser.add_plugin(FuzzyTermPlugin())

@@ -1,4 +1,5 @@
-import gzip, os.path
+import gzip
+import os.path
 
 from whoosh import analysis, fields, index, qparser, query
 from whoosh.support.bench import Bench, Spec

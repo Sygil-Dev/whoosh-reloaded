@@ -1,10 +1,14 @@
 from array import array
 
-from whoosh.compat import range
-from whoosh.system import emptybytes
-from whoosh.system import pack_byte, unpack_byte
-from whoosh.system import pack_ushort_le, unpack_ushort_le
-from whoosh.system import pack_uint_le, unpack_uint_le
+from whoosh.system import (
+    emptybytes,
+    pack_byte,
+    pack_uint_le,
+    pack_ushort_le,
+    unpack_byte,
+    unpack_uint_le,
+    unpack_ushort_le,
+)
 
 
 def delta_encode(nums):
@@ -21,13 +25,13 @@ def delta_decode(nums):
         yield base
 
 
-class GrowableArray(object):
+class GrowableArray:
     def __init__(self, inittype="B", allow_longs=True):
         self.array = array(inittype)
         self._allow_longs = allow_longs
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.array)
+        return f"{self.__class__.__name__}({self.array!r})"
 
     def __len__(self):
         return len(self.array)
@@ -45,7 +49,7 @@ class GrowableArray(object):
         elif self._allow_longs:
             newtype = "q"
         else:
-            raise OverflowError("%r is too big to fit in an array" % maxnum)
+            raise OverflowError(f"{maxnum!r} is too big to fit in an array")
 
         try:
             self.array = array(newtype, iter(self.array))
@@ -83,7 +87,7 @@ class GrowableArray(object):
 # Number list encoding base class
 
 
-class NumberEncoding(object):
+class NumberEncoding:
     maxint = None
 
     def write_nums(self, f, numbers):

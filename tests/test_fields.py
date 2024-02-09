@@ -1,10 +1,8 @@
-from __future__ import with_statement
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
-
 from whoosh import fields, qparser, query
-from whoosh.compat import u, b, range
+from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util import times
 from whoosh.util.testing import TempIndex
@@ -342,7 +340,7 @@ def test_nontext_document():
     )
     ix = RamStorage().create_index(schema)
 
-    dt = datetime.now()
+    dt = datetime.now(tz=timezone.utc)
     w = ix.writer()
     for i in range(50):
         w.add_document(id=i, num=i, date=dt + timedelta(days=i), even=not (i % 2))
@@ -367,7 +365,7 @@ def test_nontext_update():
     )
     ix = RamStorage().create_index(schema)
 
-    dt = datetime.now()
+    dt = datetime.now(tz=timezone.utc)
     w = ix.writer()
     for i in range(10):
         w.add_document(id=i, num=i, date=dt + timedelta(days=i))
@@ -393,7 +391,8 @@ def test_datetime():
     for month in range(1, 12):
         for day in range(1, 28):
             w.add_document(
-                id=u("%s-%s") % (month, day), date=datetime(2010, month, day, 14, 0, 0)
+                id=u("%s-%s") % (month, day),
+                date=datetime(2010, month, day, 14, 0, 0, tzinfo=timezone.utc),
             )
     w.commit()
 
@@ -411,8 +410,8 @@ def test_datetime():
         assert len(r) == 27
 
         q = qp.parse(u("date:[2010-05 to 2010-08]"))
-        startdt = datetime(2010, 5, 1, 0, 0, 0, 0)
-        enddt = datetime(2010, 8, 31, 23, 59, 59, 999999)
+        startdt = datetime(2010, 5, 1, 0, 0, 0, 0, tzinfo=timezone.utc)
+        enddt = datetime(2010, 8, 31, 23, 59, 59, 999999, tzinfo=timezone.utc)
         assert q.__class__ is query.NumericRange
         assert q.start == times.datetime_to_long(startdt)
         assert q.end == times.datetime_to_long(enddt)
@@ -622,7 +621,7 @@ def test_missing_field():
 
 
 def test_token_boost():
-    from whoosh.analysis import RegexTokenizer, DoubleMetaphoneFilter
+    from whoosh.analysis import DoubleMetaphoneFilter, RegexTokenizer
 
     ana = RegexTokenizer() | DoubleMetaphoneFilter()
     field = fields.TEXT(analyzer=ana, phrase=False)
@@ -646,8 +645,8 @@ def test_pickle_idlist():
 
 def test_pickle_schema():
     from whoosh import analysis
-    from whoosh.support.charset import accent_map
     from whoosh.compat import dumps
+    from whoosh.support.charset import accent_map
 
     freetext_analyzer = analysis.StemmingAnalyzer() | analysis.CharsetFilter(accent_map)
 
@@ -677,3 +676,37 @@ def test_pickle_schema():
 
         with ix.reader() as r:
             assert dumps(r.schema, 2)
+
+
+def test_valid_date_string():
+    """Can parse a valid date string and return a NumericRange query with the parsed date as the value"""
+    import datetime
+
+    from whoosh.fields import DATETIME, datetime_to_long
+    from whoosh.query import NumericRange
+
+    # Initialize the DATETIME field
+    field = DATETIME()
+
+    # Define a valid date string
+    date_string = "2022-01-01"
+
+    # Invoke the parse_query method with the valid date string
+    query = field.parse_query("date", date_string)
+
+    # Define the expected start and end dates
+    expected_start = datetime_to_long(
+        datetime.datetime(2022, 1, 1, tzinfo=timezone.utc)
+    )
+    expected_end = datetime_to_long(
+        datetime.datetime(2022, 1, 1, tzinfo=timezone.utc)
+        + datetime.timedelta(days=1)
+        - datetime.timedelta(microseconds=1)
+    )
+
+    # Check that the query is a NumericRange query with the parsed date as the value
+    assert isinstance(query, NumericRange), "Query is not a NumericRange"
+    assert query.fieldname == "date", "Fieldname is not correct"
+    assert query.start == expected_start, "Start date is not correct"
+    assert query.end == expected_end, "End date is not correct"
+    assert query.boost == 1.0, "Boost value is not correct"

@@ -6,9 +6,8 @@ import operator
 from array import array
 from bisect import bisect_left, bisect_right
 
-from whoosh.compat import izip, izip_longest, next, range
+from whoosh.compat import izip, izip_longest, next
 from whoosh.util.numeric import bytes_for_bits
-
 
 # Number of '1' bits in each byte (0-255)
 _1SPERBYTE = array(
@@ -274,7 +273,7 @@ _1SPERBYTE = array(
 )
 
 
-class DocIdSet(object):
+class DocIdSet:
     """Base class for a set of positive integers, implementing a subset of the
     built-in ``set`` type's interface with extra docid-related methods.
 
@@ -561,7 +560,7 @@ class BitSet(BaseBitSet):
                 add(num)
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, list(self))
+        return f"{self.__class__.__name__}({list(self)!r})"
 
     def byte_count(self):
         return len(self.bits)
@@ -709,7 +708,7 @@ class SortedIntSet(DocIdSet):
         return len(self.data) * self.data.itemsize
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.data)
+        return f"{self.__class__.__name__}({self.data!r})"
 
     def __len__(self):
         return len(self.data)
@@ -766,10 +765,10 @@ class SortedIntSet(DocIdSet):
         self.data = array(self.typecode, (num for num in self if num not in other))
 
     def intersection(self, other):
-        return SortedIntSet((num for num in self if num in other))
+        return SortedIntSet(num for num in self if num in other)
 
     def difference(self, other):
-        return SortedIntSet((num for num in self if num not in other))
+        return SortedIntSet(num for num in self if num not in other)
 
     def first(self):
         return self.data[0]

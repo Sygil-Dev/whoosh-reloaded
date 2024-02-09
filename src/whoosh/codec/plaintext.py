@@ -27,9 +27,18 @@
 
 from ast import literal_eval
 
-from whoosh.compat import b, bytes_type, text_type, integer_types, PY3
-from whoosh.compat import iteritems, dumps, loads, range
 from whoosh.codec import base
+from whoosh.compat import (
+    PY3,
+    b,
+    bytes_type,
+    dumps,
+    integer_types,
+    iteritems,
+    loads,
+    range,
+    text_type,
+)
 from whoosh.matching import ListMatcher
 from whoosh.reading import TermInfo, TermNotFound
 
@@ -45,7 +54,7 @@ _reprable = (bytes_type, text_type, integer_types, float)
 # Mixin classes for producing and consuming the simple text format
 
 
-class LineWriter(object):
+class LineWriter:
     def _print_line(self, indent, command, **kwargs):
         self._dbfile.write(b("  ") * indent)
         self._dbfile.write(command.encode("latin1"))
@@ -54,11 +63,11 @@ class LineWriter(object):
                 v = bytes(v)
             if v is not None and not isinstance(v, _reprable):
                 raise TypeError(type(v))
-            self._dbfile.write(("\t%s=%r" % (k, v)).encode("latin1"))
+            self._dbfile.write(f"\t{k}={v!r}".encode("latin1"))
         self._dbfile.write(b("\n"))
 
 
-class LineReader(object):
+class LineReader:
     def __init__(self, dbfile):
         self._dbfile = dbfile
 
@@ -115,7 +124,7 @@ class LineReader(object):
         self._reset()
         c = self._find_line(0, command)
         if c is None:
-            raise Exception("No root section %r" % (command,))
+            raise ValueError(f"No root section {command}")
 
 
 # Codec class
@@ -163,6 +172,7 @@ class PlainPerDocWriter(base.PerDocumentWriter, LineWriter):
             self._print_line(3, "VPOST", t=text, w=weight, v=vbytes)
 
     def finish_doc(self):
+        # This method is intentionally left empty.
         pass
 
     def close(self):
@@ -212,8 +222,7 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
 
     def _iter_docfields(self, fieldname):
         for _ in self._iter_docs():
-            for c in self._find_lines(2, "DOCFIELD", fn=fieldname):
-                yield c
+            yield from self._find_lines(2, "DOCFIELD", fn=fieldname)
 
     def _iter_lengths(self, fieldname):
         return (c.get("len", 0) for c in self._iter_docfields(fieldname))
@@ -232,14 +241,12 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
     def _column_values(self, fieldname):
         for i, docnum in enumerate(self._iter_docs()):
             if i != docnum:
-                raise Exception(
-                    "Missing column value for field %r doc %d?" % (fieldname, i)
-                )
+                raise ValueError(f"Missing column value for field {fieldname} doc {i}?")
 
             c = self._find_line(2, "COLVAL", fn=fieldname)
             if c is None:
-                raise Exception(
-                    "Missing column value for field %r doc %d?" % (fieldname, docnum)
+                raise ValueError(
+                    f"Missing column value for field {fieldname} doc {docnum}"
                 )
 
             yield c.get("v")
@@ -262,16 +269,15 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
         return max(self._iter_lengths(fieldname))
 
     def has_vector(self, docnum, fieldname):
-        if self._find_doc(docnum):
-            if self._find_line(2, "VECTOR"):
-                return True
+        if self._find_doc(docnum) and self._find_line(2, "VECTOR"):
+            return True
         return False
 
     def vector(self, docnum, fieldname, format_):
         if not self._find_doc(docnum):
-            raise Exception
+            raise ValueError("Document not found.")
         if not self._find_line(2, "VECTOR"):
-            raise Exception
+            raise ValueError("Vector not found.")
 
         ids = []
         weights = []
@@ -303,7 +309,7 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
 
     def stored_fields(self, docnum):
         if not self._find_doc(docnum):
-            raise Exception
+            raise ValueError("Document not found.")
         return self._read_stored_fields()
 
     def iter_docs(self):
@@ -369,7 +375,7 @@ class PlainTermsReader(base.TermsReader, LineReader):
     def _find_field(self, fieldname):
         self._find_root("TERMS")
         if self._find_line(1, "TERMFIELD", fn=fieldname) is None:
-            raise TermNotFound("No field %r" % fieldname)
+            raise TermNotFound(f"No field {fieldname!r}")
 
     def _iter_fields(self):
         self._find_root()

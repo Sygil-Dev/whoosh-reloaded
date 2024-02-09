@@ -25,7 +25,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
+
 import copy
 import fnmatch
 import re
@@ -61,9 +61,9 @@ class Term(qcore.Query):
         )
 
     def __repr__(self):
-        r = "%s(%r, %r" % (self.__class__.__name__, self.fieldname, self.text)
+        r = f"{self.__class__.__name__}({self.fieldname!r}, {self.text!r}"
         if self.boost != 1.0:
-            r += ", boost=%s" % self.boost
+            r += f", boost={self.boost}"
         r += ")"
         return r
 
@@ -266,9 +266,9 @@ class PatternQuery(MultiTerm):
         )
 
     def __repr__(self):
-        r = "%s(%r, %r" % (self.__class__.__name__, self.fieldname, self.text)
+        r = f"{self.__class__.__name__}({self.fieldname!r}, {self.text!r}"
         if self.boost != 1:
-            r += ", boost=%s" % self.boost
+            r += f", boost={self.boost}"
         r += ")"
         return r
 
@@ -318,7 +318,7 @@ class Prefix(PatternQuery):
     """
 
     def __unicode__(self):
-        return "%s:%s*" % (self.fieldname, self.text)
+        return f"{self.fieldname}:{self.text}*"
 
     __str__ = __unicode__
 
@@ -345,7 +345,7 @@ class Wildcard(PatternQuery):
     SPECIAL_CHARS = frozenset("*?[")
 
     def __unicode__(self):
-        return "%s:%s" % (self.fieldname, self.text)
+        return f"{self.fieldname}:{self.text}"
 
     __str__ = __unicode__
 
@@ -391,7 +391,7 @@ class Regex(PatternQuery):
     SPECIAL_CHARS = frozenset("{}()[].?*+^$\\")
 
     def __unicode__(self):
-        return '%s:r"%s"' % (self.fieldname, self.text)
+        return f'{self.fieldname}:r"{self.text}"'
 
     __str__ = __unicode__
 
@@ -537,9 +537,9 @@ class Variations(ExpandingTerm):
         self.boost = boost
 
     def __repr__(self):
-        r = "%s(%r, %r" % (self.__class__.__name__, self.fieldname, self.text)
+        r = f"{self.__class__.__name__}({self.fieldname!r}, {self.text!r}"
         if self.boost != 1:
-            r += ", boost=%s" % self.boost
+            r += f", boost={self.boost}"
         r += ")"
         return r
 

@@ -25,17 +25,31 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-import math, struct
+import math
+import struct
 from array import array
 from bisect import bisect_left
 from struct import pack, unpack
 
 from whoosh.compat import b, long_type
-from whoosh.system import pack_byte, unpack_byte, pack_ushort, unpack_ushort
-from whoosh.system import pack_int, unpack_int, pack_uint, unpack_uint
-from whoosh.system import pack_long, unpack_long, pack_ulong, unpack_ulong
-from whoosh.system import pack_float, unpack_float, pack_double, unpack_double
-
+from whoosh.system import (
+    pack_byte,
+    pack_double,
+    pack_float,
+    pack_int,
+    pack_long,
+    pack_uint,
+    pack_ulong,
+    pack_ushort,
+    unpack_byte,
+    unpack_double,
+    unpack_float,
+    unpack_int,
+    unpack_long,
+    unpack_uint,
+    unpack_ulong,
+    unpack_ushort,
+)
 
 NaN = struct.unpack("<d", b("\xff\xff\xff\xff\xff\xff\xff\xff"))[0]
 

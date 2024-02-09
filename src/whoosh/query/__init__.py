@@ -25,12 +25,62 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.query.qcore import *
-from whoosh.query.terms import *
-from whoosh.query.compound import *
-from whoosh.query.positional import *
-from whoosh.query.ranges import *
-from whoosh.query.wrappers import *
-from whoosh.query.nested import *
-from whoosh.query.qcolumns import *
-from whoosh.query.spans import *
+
+from whoosh.query.compound import (
+    And,
+    AndMaybe,
+    AndNot,
+    BinaryQuery,
+    BooleanQuery,
+    CompoundQuery,
+    DefaultOr,
+    DisjunctionMax,
+    Or,
+    Otherwise,
+    PreloadedOr,
+    Require,
+    SplitOr,
+)
+from whoosh.query.nested import NestedChildren, NestedParent
+from whoosh.query.positional import Ordered, Phrase, Sequence
+from whoosh.query.qcolumns import ColumnMatcher, ColumnQuery
+from whoosh.query.qcore import (
+    Every,
+    Highest,
+    Lowest,
+    NullQuery,
+    Query,
+    QueryError,
+    _NullQuery,
+    error_query,
+    token_lists,
+)
+from whoosh.query.ranges import DateRange, NumericRange, RangeMixin, TermRange
+from whoosh.query.spans import (
+    Span,
+    SpanBefore,
+    SpanBiMatcher,
+    SpanBiQuery,
+    SpanCondition,
+    SpanContains,
+    SpanFirst,
+    SpanNear,
+    SpanNear2,
+    SpanNot,
+    SpanOr,
+    SpanQuery,
+    SpanWrappingMatcher,
+    WrappingSpan,
+)
+from whoosh.query.terms import (
+    ExpandingTerm,
+    FuzzyTerm,
+    MultiTerm,
+    PatternQuery,
+    Prefix,
+    Regex,
+    Term,
+    Variations,
+    Wildcard,
+)
+from whoosh.query.wrappers import ConstantScoreQuery, Not, WeightingQuery, WrappingQuery

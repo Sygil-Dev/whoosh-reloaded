@@ -27,7 +27,7 @@
 
 import calendar
 import copy
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from whoosh.compat import iteritems
 
@@ -92,7 +92,7 @@ def long_to_datetime(x):
 # Ambiguous datetime object
 
 
-class adatetime(object):
+class adatetime:
     """An "ambiguous" datetime object. This object acts like a
     ``datetime.datetime`` object but can have any of its attributes set to
     None, meaning unspecified.
@@ -153,7 +153,7 @@ class adatetime(object):
         return all(getattr(self, unit) == getattr(other, unit) for unit in self.units)
 
     def __repr__(self):
-        return "%s%r" % (self.__class__.__name__, self.tuple())
+        return f"{self.__class__.__name__}{self.tuple()!r}"
 
     def tuple(self):
         """Returns the attributes of the ``adatetime`` object as a tuple of
@@ -171,7 +171,7 @@ class adatetime(object):
         )
 
     def date(self):
-        return date(self.year, self.month, self.day)
+        return date(self.year, self.month, self.day, tzinfo=timezone.utc)
 
     def copy(self):
         return adatetime(
@@ -198,7 +198,7 @@ class adatetime(object):
             if key in self.units:
                 setattr(newadatetime, key, value)
             else:
-                raise KeyError("Unknown argument %r" % key)
+                raise KeyError(f"Unknown argument {key!r}")
         return newadatetime
 
     def floor(self):
@@ -237,7 +237,7 @@ class adatetime(object):
             s = 0
         if ms is None:
             ms = 0
-        return datetime(y, m, d, h, mn, s, ms)
+        return datetime(y, m, d, h, mn, s, ms, tzinfo=timezone.utc)
 
     def ceil(self):
         """Returns a ``datetime`` version of this object with all unspecified
@@ -275,7 +275,7 @@ class adatetime(object):
             s = 59
         if ms is None:
             ms = 999999
-        return datetime(y, m, d, h, mn, s, ms)
+        return datetime(y, m, d, h, mn, s, ms, tzinfo=timezone.utc)
 
     def disambiguated(self, basedate):
         """Returns either a ``datetime`` or unambiguous ``timespan`` version
@@ -301,7 +301,7 @@ class adatetime(object):
 # Time span class
 
 
-class timespan(object):
+class timespan:
     """A span of time between two ``datetime`` or ``adatetime`` objects."""
 
     def __init__(self, start, end):
@@ -313,9 +313,9 @@ class timespan(object):
         """
 
         if not isinstance(start, (datetime, adatetime)):
-            raise TimeError("%r is not a datetime object" % start)
+            raise TimeError(f"{start!r} is not a datetime object")
         if not isinstance(end, (datetime, adatetime)):
-            raise TimeError("%r is not a datetime object" % end)
+            raise TimeError(f"{end!r} is not a datetime object")
 
         self.start = copy.copy(start)
         self.end = copy.copy(end)
@@ -326,7 +326,7 @@ class timespan(object):
         return self.start == other.start and self.end == other.end
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self.start, self.end)
+        return f"{self.__class__.__name__}({self.start!r}, {self.end!r})"
 
     def disambiguated(self, basedate, debug=0):
         """Returns an unambiguous version of this object.
@@ -514,4 +514,5 @@ def fix(at):
         minute=at.minute,
         second=at.second,
         microsecond=at.microsecond,
+        tzinfo=timezone.utc,
     )

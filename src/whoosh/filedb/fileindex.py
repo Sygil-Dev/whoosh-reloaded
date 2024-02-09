@@ -15,12 +15,12 @@
 # ===============================================================================
 
 import os
+import pickle
 import re
 from bisect import bisect_right
 from threading import Lock
 from time import time
 
-import pickle
 from whoosh import __version__
 from whoosh.fields import Schema
 from whoosh.index import (
@@ -28,9 +28,9 @@ from whoosh.index import (
     EmptyIndexError,
     Index,
     IndexVersionError,
+    LockError,
     OutOfDateError,
 )
-from whoosh.index import LockError
 from whoosh.support.bitvector import BitVector
 from whoosh.system import _FLOAT_SIZE, _INT_SIZE
 
@@ -42,7 +42,7 @@ _INDEX_VERSION = -105
 # well as Index for convenience, so they're broken out here.
 
 
-class SegmentDeletionMixin(object):
+class SegmentDeletionMixin:
     """Mix-in for classes that support deleting documents from self.segments."""
 
     def delete_document(self, docnum, delete=True):
@@ -72,7 +72,7 @@ class FileIndex(SegmentDeletionMixin, Index):
         self.indexname = indexname
 
         if schema is not None and not isinstance(schema, Schema):
-            raise ValueError("%r is not a Schema object" % schema)
+            raise ValueError(f"{schema!r} is not a Schema object")
 
         self.generation = self.latest_generation()
 
@@ -86,7 +86,7 @@ class FileIndex(SegmentDeletionMixin, Index):
             self.segments = SegmentSet()
 
             # Clear existing files
-            prefix = "_%s_" % self.indexname
+            prefix = f"_{self.indexname}_"
             for filename in self.storage:
                 if filename.startswith(prefix):
                     storage.delete_file(filename)
@@ -96,7 +96,7 @@ class FileIndex(SegmentDeletionMixin, Index):
             self._read(schema)
         else:
             raise EmptyIndexError(
-                "No index named %r in storage %r" % (indexname, storage)
+                f"No index named {indexname!r} in storage {storage!r}"
             )
 
         # Open a reader for this index. This is used by the
@@ -107,7 +107,7 @@ class FileIndex(SegmentDeletionMixin, Index):
         self.segment_num_lock = None
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self.storage, self.indexname)
+        return f"{self.__class__.__name__}({self.storage!r}, {self.indexname!r})"
 
     def _acquire_readlocks(self):
         self._readlocks = [
@@ -151,7 +151,7 @@ class FileIndex(SegmentDeletionMixin, Index):
 
         # Use a temporary file for atomic write.
         tocfilename = self._toc_filename()
-        tempfilename = "%s.%s" % (tocfilename, time())
+        tempfilename = f"{tocfilename}.{time()}"
         stream = self.storage.create_file(tempfilename)
 
         stream.write_varint(_INT_SIZE)
@@ -185,7 +185,7 @@ class FileIndex(SegmentDeletionMixin, Index):
 
         version = stream.read_int()
         if version != _INDEX_VERSION:
-            raise IndexVersionError("Can't read format %s" % version, version)
+            raise IndexVersionError(f"Can't read format {version}", version)
         self.version = version
         self.release = (
             stream.read_varint(),
@@ -215,7 +215,7 @@ class FileIndex(SegmentDeletionMixin, Index):
         if self.segment_num_lock.acquire():
             try:
                 self.segment_counter += 1
-                return "_%s_%s" % (self.indexname, self.segment_counter)
+                return f"_{self.indexname}_{self.segment_counter}"
             finally:
                 self.segment_num_lock.release()
         else:
@@ -224,7 +224,7 @@ class FileIndex(SegmentDeletionMixin, Index):
     def _toc_filename(self):
         # Returns the computed filename of the TOC for this index name and
         # generation.
-        return "_%s_%s.toc" % (self.indexname, self.generation)
+        return f"_{self.indexname}_{self.generation}.toc"
 
     def last_modified(self):
         return self.storage.file_modified(self._toc_filename())
@@ -272,7 +272,7 @@ class FileIndex(SegmentDeletionMixin, Index):
         # probably be deleted eventually by a later call to clean_files.
 
         storage = self.storage
-        current_segment_names = set(s.name for s in self.segments)
+        current_segment_names = {s.name for s in self.segments}
 
         tocpattern = _toc_pattern(self.indexname)
         segpattern = _segment_pattern(self.indexname)
@@ -317,7 +317,7 @@ class FileIndex(SegmentDeletionMixin, Index):
 # SegmentSet object
 
 
-class SegmentSet(object):
+class SegmentSet:
     """This class is never instantiated by the user. It is used by the Index
     object to keep track of the segments in the index.
     """
@@ -450,7 +450,7 @@ class SegmentSet(object):
             return MultiReader(readers, schema)
 
 
-class Segment(object):
+class Segment:
     """Do not instantiate this object directly. It is used by the Index object
     to hold information about a segment. A list of objects of this class are
     pickled as part of the TOC file.
@@ -496,12 +496,12 @@ class Segment(object):
 
         self._filenames = set()
         for attr, ext in self.EXTENSIONS.iteritems():
-            fname = "%s.%s" % (self.name, ext)
+            fname = f"{self.name}.{ext}"
             setattr(self, attr + "_filename", fname)
             self._filenames.add(fname)
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.name)
+        return f"{self.__class__.__name__}({self.name!r})"
 
     def copy(self):
         if self.deleted:
@@ -575,13 +575,13 @@ class Segment(object):
                 self.deleted = set()
             elif docnum in self.deleted:
                 raise KeyError(
-                    "Document %s in segment %r is already deleted" % (docnum, self.name)
+                    f"Document {docnum} in segment {self.name!r} is already deleted"
                 )
 
             self.deleted.add(docnum)
         else:
             if self.deleted is None or docnum not in self.deleted:
-                raise KeyError("Document %s is not deleted" % docnum)
+                raise KeyError(f"Document {docnum} is not deleted")
 
             self.deleted.clear(docnum)
 
@@ -601,7 +601,7 @@ def _toc_pattern(indexname):
     name is the name of the index.
     """
 
-    return re.compile("_%s_([0-9]+).toc" % indexname)
+    return re.compile(f"_{indexname}_([0-9]+).toc")
 
 
 def _segment_pattern(indexname):
@@ -609,4 +609,4 @@ def _segment_pattern(indexname):
     name is the name of the index.
     """
 
-    return re.compile("(_%s_[0-9]+).(%s)" % (indexname, Segment.EXTENSIONS.values()))
+    return re.compile(f"(_{indexname}_[0-9]+).({Segment.EXTENSIONS.values()})")

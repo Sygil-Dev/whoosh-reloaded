@@ -196,7 +196,3 @@ Limitations
 
 * ``DATETIME`` fields do not currently support open-ended ranges. You can
   simulate an open ended range by using an endpoint far in the past or future.
-
-
-
-

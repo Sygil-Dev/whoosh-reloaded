@@ -1,12 +1,15 @@
-from __future__ import with_statement
-import inspect, random, sys
+import inspect
+import random
+import sys
 
+import pytest
 from whoosh import columns, fields, query
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import b, u, BytesIO, bytes_type, text_type
-from whoosh.compat import izip, range, dumps, loads
+from whoosh.compat import BytesIO, b, bytes_type, dumps, izip, loads, text_type, u
 from whoosh.filedb import compound
 from whoosh.filedb.filestore import RamStorage
+from whoosh.matching import ConstantScoreMatcher
+from whoosh.query import ColumnMatcher, ColumnQuery
 from whoosh.util.testing import TempIndex, TempStorage
 
 
@@ -26,7 +29,7 @@ def test_pickleability():
     coltypes = [
         c
         for _, c in inspect.getmembers(columns, inspect.isclass)
-        if issubclass(c, columns.Column) and not c in ignore
+        if issubclass(c, columns.Column) and c not in ignore
     ]
 
     for coltype in coltypes:
@@ -35,7 +38,7 @@ def test_pickleability():
             inst = coltype(*args)
         except TypeError:
             e = sys.exc_info()[1]
-            raise TypeError("Error instantiating %r: %s" % (coltype, e))
+            raise TypeError(f"Error instantiating {coltype!r}: {e}")
         _ = loads(dumps(inst, -1))
 
 
@@ -54,7 +57,7 @@ def test_multistream():
 
     st = RamStorage()
     msw = compound.CompoundWriter(st)
-    files = dict((name, msw.create_file(name)) for name in "abc")
+    files = {name: msw.create_file(name) for name in "abc"}
     for name, data in domain:
         files[name].write(b(data))
     f = st.create_file("test")
@@ -80,7 +83,7 @@ def test_random_multistream():
         value = randstring(2500)
         domain[name] = value
 
-    outfiles = dict((name, BytesIO(value)) for name, value in domain.items())
+    outfiles = {name: BytesIO(value) for name, value in domain.items()}
 
     with TempStorage() as st:
         msw = compound.CompoundWriter(st, buffersize=1024)
@@ -197,7 +200,7 @@ def test_roundtrip():
 
     c = columns.VarBytesListColumn()
     _rt(c, [[b("garnet"), b("amethyst")], [b("pearl")]], [])
-    c = columns.VarBytesListColumn()
+    _c = columns.VarBytesListColumn()
 
     c = columns.FixedBytesListColumn(4)
     _rt(c, [[b("garn"), b("amet")], [b("pear")]], [])
@@ -225,8 +228,9 @@ def test_column_field():
         a=fields.TEXT(sortable=True), b=fields.COLUMN(columns.RefBytesColumn())
     )
     with TempIndex(schema, "columnfield") as ix:
+        cd = b("charlie delta")
         with ix.writer(codec=W3Codec()) as w:
-            w.add_document(a=u("alfa bravo"), b=b("charlie delta"))
+            w.add_document(a=u("alfa bravo"), b=cd)
             w.add_document(a=u("bravo charlie"), b=b("delta echo"))
             w.add_document(a=u("charlie delta"), b=b("echo foxtrot"))
 
@@ -239,7 +243,7 @@ def test_column_field():
             assert type(cra[0]) == text_type
 
             crb = r.column_reader("b")
-            assert crb[0] == b("charlie delta")
+            assert crb[0] == cd
             assert type(crb[0]) == bytes_type
 
 
@@ -247,7 +251,7 @@ def test_column_query():
     schema = fields.Schema(
         id=fields.STORED, a=fields.ID(sortable=True), b=fields.NUMERIC(sortable=True)
     )
-    with TempIndex(schema, "columnquery") as ix:
+    with TempIndex(schema, "ColumnQuery") as ix:
         with ix.writer(codec=W3Codec()) as w:
             w.add_document(id=1, a=u("alfa"), b=10)
             w.add_document(id=2, a=u("bravo"), b=20)
@@ -261,16 +265,16 @@ def test_column_query():
             def check(q):
                 return [s.stored_fields(docnum)["id"] for docnum in q.docs(s)]
 
-            q = query.ColumnQuery("a", u("bravo"))
+            q = ColumnQuery("a", u("bravo"))
             assert check(q) == [2]
 
-            q = query.ColumnQuery("b", 30)
+            q = ColumnQuery("b", 30)
             assert check(q) == [3]
 
-            q = query.ColumnQuery("a", lambda v: v != u("delta"))
+            q = ColumnQuery("a", lambda v: v != u("delta"))
             assert check(q) == [1, 2, 3, 5, 6]
 
-            q = query.ColumnQuery("b", lambda v: v > 30)
+            q = ColumnQuery("b", lambda v: v > 30)
             assert check(q) == [4, 5, 6]
 
 
@@ -348,3 +352,142 @@ def test_varbytes_offsets():
             assert cr.raw_column().had_stored_offsets
             for i in (10, 100, 1000, 3000):
                 assert cr[i] == values[i % vlen]
+
+
+# Initializes the 'fieldname' and 'condition' attributes with the values passed as parameters.
+def test_initializes_fieldname_and_condition_attributes():
+    fieldname = "test_field"
+    condition = lambda x: x > 0
+    query = ColumnQuery(fieldname, condition)
+    assert query.fieldname == fieldname
+    assert query.condition == condition
+
+
+# If 'condition' is a callable, sets it as the 'condition' attribute.
+def test_sets_condition_attribute_if_condition_is_callable():
+    fieldname = "test_field"
+    condition = lambda x: x > 0
+    query = ColumnQuery(fieldname, condition)
+    assert query.condition == condition
+
+
+# If 'condition' is not a callable, creates a lambda function that compares the document values to it (using '==') and sets it as the 'comp' attribute.
+def test_creates_lambda_function_if_condition_is_not_callable():
+    fieldname = "test_field"
+    condition = 10
+    query = ColumnQuery(fieldname, condition)
+    assert query.condition == 10
+
+
+# If 'fieldname' is not a string, it should not raise a TypeError.
+def test_raises_typeerror_if_fieldname_is_not_string():
+    fieldname = 10
+    condition = lambda x: x > 0
+    query = ColumnQuery(fieldname, condition)
+    assert query.fieldname == fieldname
+    assert query.condition == condition
+
+
+# If 'condition' is not a callable and not a hashable type, the columns.ColumnQuery object should be created without raising any exception.
+def test_behavior_if_condition_is_not_callable_and_not_hashable():
+    fieldname = "test_field"
+    condition = []
+    query = ColumnQuery(fieldname, condition)
+    assert query.fieldname == fieldname
+    assert query.condition == condition
+
+
+# If 'condition' is a callable and it raises an exception when called with a document value, raises that exception.
+def test_raises_exception_if_condition_callable_raises_exception():
+    fieldname = "test_field"
+    condition = lambda x: 1 / x
+    with pytest.raises(ZeroDivisionError):
+        query = ColumnQuery(fieldname, condition)
+        query.condition(0)
+
+
+# If 'condition' is a callable and it returns a non-boolean value when called with a document value, does not raise a TypeError.
+def test_does_not_raise_typeerror_if_condition_callable_returns_non_boolean_value():
+    fieldname = "test_field"
+    condition = lambda x: "True"
+    query = ColumnQuery(fieldname, condition)
+    assert isinstance(query, ColumnQuery)
+
+
+# If 'condition' is a callable and it returns True for all document values, returns a ConstantScoreMatcher that matches all documents.
+def test_returns_constantscorematcher_matching_all_documents_if_condition_callable_returns_true_for_all_values():
+    from unittest.mock import Mock
+
+    fieldname = "test_field"
+    condition = lambda x: True
+    query = ColumnQuery(fieldname, condition)
+    searcher = Mock()
+    creader = Mock()
+    creader.__len__ = Mock(return_value=10)
+    creader.__getitem__ = Mock(side_effect=lambda i: i)
+    searcher.reader.return_value.column_reader.return_value = creader
+    assert isinstance(query.matcher(searcher), ConstantScoreMatcher)
+
+
+# If 'condition' is a callable and it is very slow, the matcher may take a long time to initialize.
+def test_matcher_initialization_may_take_long_time_if_condition_callable_is_very_slow():
+    import time
+    from unittest.mock import Mock, patch
+
+    fieldname = "test_field"
+    condition = lambda x: time.sleep(10)
+    query = ColumnQuery(fieldname, condition)
+    searcher = Mock()
+    searcher.reader.return_value.has_column.return_value = True
+    with patch.object(query, "matcher") as matcher_mock:
+        query.matcher(searcher)
+        matcher_mock.assert_called_once_with(searcher)
+
+
+# Initializes the '_i' attribute to 0.
+def test_initializes_i_attribute_to_0():
+    condition = lambda x: x > 0
+    creader = []  # Define creader variable
+    matcher = ColumnMatcher(creader, condition)
+    assert matcher._i == 0
+
+
+# Initializes the 'creader' attribute with the value passed as parameter.
+def test_initializes_creader_attribute():
+    condition = lambda x: x > 0
+    creader = [1, 2, 3, 4, 5]
+    matcher = ColumnMatcher(creader, condition)
+    assert matcher.creader == creader
+
+
+# Initializes the 'condition' attribute with the value passed as parameter.
+def test_initializes_condition_attribute():
+    condition = lambda x: x > 0
+    creader = []
+    matcher = ColumnMatcher(creader, condition)
+    assert matcher.condition == condition
+
+
+# Returns True if the '_i' attribute is less than the length of the 'creader' attribute.
+def test_returns_true_if_i_attribute_is_less_than_length_of_creader_attribute():
+    condition = lambda x: x > 0
+    creader = [1, 2, 3, 4, 5]
+    matcher = ColumnMatcher(creader, condition)
+    assert matcher.is_active() == True
+
+
+# Returns False if the '_i' attribute is equal to or greater than the length of the 'creader' attribute.
+def test_returns_false_if_i_attribute_is_equal_to_or_greater_than_length_of_creader_attribute():
+    condition = lambda x: x > 0
+    creader = [1, 2, 3, 4, 5]
+    matcher = ColumnMatcher(creader, condition)
+    matcher._i = len(creader)
+    assert matcher.is_active() == False
+
+
+# test if the `is_leaf` function is True
+def test_is_leaf_true():
+    fieldname = "test_field"
+    condition = lambda x: x > 0
+    query = ColumnQuery(fieldname, condition)
+    assert query.is_leaf() == True

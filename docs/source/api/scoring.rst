@@ -36,7 +36,3 @@ Scoring utility classes
 .. autoclass:: MultiWeighting
 
 .. autoclass:: ReverseWeighting
-
-
-
-

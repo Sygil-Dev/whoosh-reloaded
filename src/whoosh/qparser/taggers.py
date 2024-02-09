@@ -27,11 +27,10 @@
 
 from whoosh.util.text import rcompile
 
-
 # Tagger objects
 
 
-class Tagger(object):
+class Tagger:
     """Base class for taggers, objects which match syntax in the query string
     and translate it into a :class:`whoosh.qparser.syntax.SyntaxNode` object.
     """
@@ -88,7 +87,7 @@ class FnTagger(RegexTagger):
         self.memo = memo
 
     def __repr__(self):
-        return "<%s %r (%s)>" % (self.__class__.__name__, self.expr, self.memo)
+        return f"<{self.__class__.__name__} {self.expr!r} ({self.memo})>"
 
     def create(self, parser, match):
         return self.fn(**match.groupdict())

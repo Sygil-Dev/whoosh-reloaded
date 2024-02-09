@@ -25,13 +25,12 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import with_statement
+
 import functools
 from heapq import nsmallest
 from operator import itemgetter
 
 from whoosh.compat import iteritems
-
 
 try:
     from collections import Counter

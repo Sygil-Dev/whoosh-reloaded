@@ -29,24 +29,39 @@ from array import array
 from copy import copy
 from struct import calcsize
 
-from whoosh.compat import BytesIO, bytes_type
+from whoosh.compat import BytesIO, array_frombytes, array_tobytes, bytes_type
 from whoosh.compat import dump as dump_pickle
 from whoosh.compat import load as load_pickle
-from whoosh.compat import array_frombytes, array_tobytes
-from whoosh.system import _INT_SIZE, _SHORT_SIZE, _FLOAT_SIZE, _LONG_SIZE
-from whoosh.system import IS_LITTLE
-from whoosh.system import pack_byte, unpack_byte, pack_sbyte, unpack_sbyte
-from whoosh.system import pack_ushort, unpack_ushort
-from whoosh.system import pack_ushort_le, unpack_ushort_le
-from whoosh.system import pack_int, unpack_int, pack_uint, unpack_uint
-from whoosh.system import pack_uint_le, unpack_uint_le
-from whoosh.system import pack_long, unpack_long, pack_ulong, unpack_ulong
-from whoosh.system import pack_float, unpack_float
-from whoosh.util.varints import varint, read_varint
-from whoosh.util.varints import signed_varint, decode_signed_varint
+from whoosh.system import (
+    _FLOAT_SIZE,
+    _INT_SIZE,
+    _LONG_SIZE,
+    _SHORT_SIZE,
+    IS_LITTLE,
+    pack_byte,
+    pack_float,
+    pack_int,
+    pack_long,
+    pack_sbyte,
+    pack_uint,
+    pack_uint_le,
+    pack_ulong,
+    pack_ushort,
+    pack_ushort_le,
+    unpack_byte,
+    unpack_float,
+    unpack_int,
+    unpack_long,
+    unpack_sbyte,
+    unpack_uint,
+    unpack_uint_le,
+    unpack_ulong,
+    unpack_ushort,
+    unpack_ushort_le,
+)
+from whoosh.util.varints import decode_signed_varint, read_varint, signed_varint, varint
 
-
-_SIZEMAP = dict((typecode, calcsize(typecode)) for typecode in "bBiIhHqQf")
+_SIZEMAP = {typecode: calcsize(typecode) for typecode in "bBiIhHqQf"}
 _ORDERMAP = {"little": "<", "big": ">"}
 
 _types = (("sbyte", "b"), ("ushort", "H"), ("int", "i"), ("long", "q"), ("float", "f"))
@@ -55,7 +70,7 @@ _types = (("sbyte", "b"), ("ushort", "H"), ("int", "i"), ("long", "q"), ("float"
 # Main function
 
 
-class StructFile(object):
+class StructFile:
     """Returns a "structured file" object that wraps the given file object and
     provides numerous additional methods for writing structured data, such as
     "write_varint" and "write_long".
@@ -72,7 +87,7 @@ class StructFile(object):
             self.fileno = fileobj.fileno
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self._name)
+        return f"{self.__class__.__name__}({self._name!r})"
 
     def __str__(self):
         return self._name

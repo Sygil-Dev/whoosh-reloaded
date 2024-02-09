@@ -1,6 +1,3 @@
-# encoding: utf-8
-from __future__ import with_statement
-
 from whoosh import fields, formats
 from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage

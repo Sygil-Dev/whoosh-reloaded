@@ -23,9 +23,9 @@ from google.appengine.api import memcache  # type: ignore @UnresolvedImport
 from google.appengine.ext import db  # type: ignore @UnresolvedImport
 
 from whoosh.compat import BytesIO
-from whoosh.index import TOC, FileIndex, _DEF_INDEX_NAME
 from whoosh.filedb.filestore import ReadOnlyError, Storage
 from whoosh.filedb.structfile import StructFile
+from whoosh.index import _DEF_INDEX_NAME, TOC, FileIndex
 
 
 class DatastoreFile(db.Model):
@@ -37,7 +37,7 @@ class DatastoreFile(db.Model):
     mtime = db.IntegerProperty(default=0)
 
     def __init__(self, *args, **kwargs):
-        super(DatastoreFile, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.data = BytesIO()
 
     @classmethod
@@ -78,7 +78,7 @@ class DatastoreFile(db.Model):
         return self.data.getvalue()
 
 
-class MemcacheLock(object):
+class MemcacheLock:
     def __init__(self, name):
         self.name = name
 

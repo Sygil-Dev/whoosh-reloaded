@@ -18,17 +18,19 @@ import re
 from collections import defaultdict
 
 
-class PaiceHuskStemmer(object):
-    """Implements the Paice-Husk stemming algorithm.
-    """
+class PaiceHuskStemmer:
+    """Implements the Paice-Husk stemming algorithm."""
 
-    rule_expr = re.compile(r"""
+    rule_expr = re.compile(
+        r"""
     ^(?P<ending>\w+)
     (?P<intact>[*]?)
     (?P<num>\d+)
     (?P<append>\w*)
     (?P<cont>[.>])
-    """, re.UNICODE | re.VERBOSE)
+    """,
+        re.UNICODE | re.VERBOSE,
+    )
 
     stem_expr = re.compile(r"^\w+", re.UNICODE)
 
@@ -60,26 +62,33 @@ class PaiceHuskStemmer(object):
 
                 rules[lastchar].append((ending, intact, num, append, cont))
             else:
-                raise Exception("Bad rule: %r" % line)
+                raise Exception(f"Bad rule: {line!r}")
 
     def first_vowel(self, word):
-        vp = min([p for p in [word.find(v) for v in "aeiou"]
-                  if p > -1])
+        vp = min([p for p in [word.find(v) for v in "aeiou"] if p > -1])
         yp = word.find("y")
         if yp > 0 and yp < vp:
             return yp
         return vp
 
     def strip_prefix(self, word):
-        for prefix in ("kilo", "micro", "milli", "intra", "ultra", "mega",
-                       "nano", "pico", "pseudo"):
+        for prefix in (
+            "kilo",
+            "micro",
+            "milli",
+            "intra",
+            "ultra",
+            "mega",
+            "nano",
+            "pico",
+            "pseudo",
+        ):
             if word.startswith(prefix):
-                return word[len(prefix):]
+                return word[len(prefix) :]
         return word
 
     def stem(self, word):
-        """Returns a stemmed version of the argument string.
-        """
+        """Returns a stemmed version of the argument string."""
 
         rules = self.rules
         match = self.stem_expr.match(word)
@@ -102,20 +111,20 @@ class PaiceHuskStemmer(object):
                         continue
                     newlen = len(stem) - num + len(append)
 
-                    if ((pfv == 0 and newlen < 2)
-                        or (pfv > 0 and newlen < 3)):
+                    if (pfv == 0 and newlen < 2) or (pfv > 0 and newlen < 3):
                         # If word starts with vowel, minimum stem length is 2.
                         # If word starts with consonant, minimum stem length is
                         # 3.
-                            continue
+                        continue
 
                     is_intact = False
-                    stem = stem[:0 - num] + append
+                    stem = stem[: 0 - num] + append
 
                     continuing = cont
                     break
 
         return stem
+
 
 # The default rules for the Paice-Husk stemming algorithm
 

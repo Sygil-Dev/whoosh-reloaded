@@ -1,10 +1,6 @@
-# encoding: utf-8
-
-from __future__ import with_statement
-
 import random
 
-from whoosh.compat import b, iteritems, range
+from whoosh.compat import b, iteritems
 from whoosh.filedb.filestore import RamStorage
 from whoosh.filedb.filetables import (
     HashReader,
@@ -71,7 +67,7 @@ def test_hash_contents():
         ("whiskey", "xray"),
     ]
     # Convert to bytes
-    samp = set((b(k), b(v)) for k, v in samp)
+    samp = {(b(k), b(v)) for k, v in samp}
 
     with TempStorage("hashcontents") as st:
         hw = HashWriter(st.create_file("test.hsh"))
@@ -85,8 +81,8 @@ def test_hash_contents():
         for key, value in probes:
             assert hr[key] == value
 
-        assert set(hr.keys()) == set([k for k, v in samp])
-        assert set(hr.values()) == set([v for k, v in samp])
+        assert set(hr.keys()) == {k for k, v in samp}
+        assert set(hr.values()) == {v for k, v in samp}
         assert set(hr.items()) == samp
 
         hr.close()
@@ -104,7 +100,7 @@ def test_random_hash():
         return b(s)
 
     with TempStorage("randomhash") as st:
-        samp = dict((randstring(), randstring()) for _ in range(times))
+        samp = {randstring(): randstring() for _ in range(times)}
 
         hw = HashWriter(st.create_file("test.hsh"))
         for k, v in iteritems(samp):
@@ -123,14 +119,14 @@ def test_random_access():
     times = 1000
     with TempStorage("orderedhash") as st:
         hw = HashWriter(st.create_file("test.hsh"))
-        hw.add_all((b("%08x" % x), b(str(x))) for x in range(times))
+        hw.add_all((b(f"{x:08x}"), b(str(x))) for x in range(times))
         hw.close()
 
         keys = list(range(times))
         random.shuffle(keys)
         hr = HashReader.open(st, "test.hsh")
         for x in keys:
-            assert hr[b("%08x" % x)] == b(str(x))
+            assert hr[b(f"{x:08x}")] == b(str(x))
         hr.close()
 
 

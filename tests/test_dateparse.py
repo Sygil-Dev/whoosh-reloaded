@@ -1,7 +1,14 @@
-from whoosh.qparser.dateparse import *
+from datetime import datetime, timedelta, timezone
 
+from whoosh.qparser.dateparse import (
+    English,
+    adatetime,
+    relative_days,
+    relativedelta,
+    timespan,
+)
 
-basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)
+basedate = datetime(2010, 9, 20, 15, 16, 6, 454000, tzinfo=timezone.utc)
 english = English()
 
 
@@ -10,7 +17,7 @@ def assert_adatetime(at, **kwargs):
     for key in adatetime.units:
         val = getattr(at, key)
         target = kwargs.get(key)
-        assert val == target, "at.%s=%r not %r in %r" % (key, val, target, at)
+        assert val == target, f"at.{key}={val!r} not {target!r} in {at!r}"
 
 
 def assert_timespan(ts, sargs, eargs):
@@ -24,8 +31,8 @@ def assert_unamb(ts, **kwargs):
 def assert_unamb_span(ts, sargs, eargs):
     startdt = adatetime(**sargs).floor()
     enddt = adatetime(**eargs).ceil()
-    assert ts.start == startdt, "start %s != %s" % (ts.start, startdt)
-    assert ts.end == enddt, "end %s != %s" % (ts.end, enddt)
+    assert ts.start == startdt, f"start {ts.start} != {startdt}"
+    assert ts.end == enddt, f"end {ts.end} != {enddt}"
 
 
 def assert_datespan(ts, startdate, enddate):

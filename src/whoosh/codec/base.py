@@ -33,11 +33,10 @@ from bisect import bisect_right
 
 from whoosh import columns
 from whoosh.automata import lev
-from whoosh.compat import abstractmethod, izip, unichr, range
+from whoosh.compat import abstractmethod, izip, unichr
 from whoosh.filedb.compound import CompoundStorage
 from whoosh.system import emptybytes
 from whoosh.util import random_name
-
 
 # Exceptions
 
@@ -49,7 +48,7 @@ class OutOfOrderError(Exception):
 # Base classes
 
 
-class Codec(object):
+class Codec:
     length_stats = True
 
     # Per document value writer
@@ -77,6 +76,7 @@ class Codec(object):
     # Index readers
 
     def automata(self, storage, segment):
+        _ = storage, segment  # Unused arguments
         return Automata()
 
     @abstractmethod
@@ -128,7 +128,7 @@ class WrappingCodec(Codec):
 # Writer classes
 
 
-class PerDocumentWriter(object):
+class PerDocumentWriter:
     @abstractmethod
     def start_doc(self, docnum):
         raise NotImplementedError
@@ -157,13 +157,15 @@ class PerDocumentWriter(object):
         self.add_vector_items(fieldname, fieldobj, readitems())
 
     def finish_doc(self):
+        # This method is intentionally left empty.
         pass
 
     def close(self):
+        # This method is intentionally left empty.
         pass
 
 
-class FieldWriter(object):
+class FieldWriter:
     def add_postings(self, schema, lengths, items):
         # This method translates a generator of (fieldname, btext, docnum, w, v)
         # postings into calls to start_field(), start_term(), add(),
@@ -192,10 +194,10 @@ class FieldWriter(object):
             # Check for out-of-order postings. This is convoluted because Python
             # 3 removed the ability to compare a string to None
             if lastfn is not None and fieldname < lastfn:
-                raise OutOfOrderError("Field %r .. %r" % (lastfn, fieldname))
+                raise OutOfOrderError(f"Field {lastfn!r} .. {fieldname!r}")
             if fieldname == lastfn and lasttext and btext < lasttext:
                 raise OutOfOrderError(
-                    "Term %s:%r .. %s:%r" % (lastfn, lasttext, fieldname, btext)
+                    f"Term {lastfn}:{lasttext!r} .. {fieldname}:{btext!r}"
                 )
 
             # If the fieldname of this posting is different from the last one,
@@ -261,6 +263,7 @@ class FieldWriter(object):
         raise NotImplementedError
 
     def finish_field(self):
+        # This method is intentionally left empty.
         pass
 
     def close(self):
@@ -270,7 +273,7 @@ class FieldWriter(object):
 # Postings
 
 
-class PostingsWriter(object):
+class PostingsWriter:
     @abstractmethod
     def start_postings(self, format_, terminfo):
         raise NotImplementedError
@@ -280,6 +283,7 @@ class PostingsWriter(object):
         raise NotImplementedError
 
     def finish_postings(self):
+        # This method is intentionally left empty.
         pass
 
     @abstractmethod
@@ -292,7 +296,7 @@ class PostingsWriter(object):
 # Reader classes
 
 
-class FieldCursor(object):
+class FieldCursor:
     def first(self):
         raise NotImplementedError
 
@@ -306,7 +310,7 @@ class FieldCursor(object):
         raise NotImplementedError
 
 
-class TermsReader(object):
+class TermsReader:
     @abstractmethod
     def __contains__(self, term):
         raise NotImplementedError
@@ -352,10 +356,11 @@ class TermsReader(object):
         raise NotImplementedError
 
     def close(self):
+        # This method is intentionally left empty.
         pass
 
 
-class Automata(object):
+class Automata:
     @staticmethod
     def levenshtein_dfa(uterm, maxdist, prefix=0):
         return lev.levenshtein_automaton(uterm, maxdist, prefix).to_dfa()
@@ -387,8 +392,9 @@ class Automata(object):
 # Per-doc value reader
 
 
-class PerDocumentReader(object):
+class PerDocumentReader:
     def close(self):
+        # This method is intentionally left empty.
         pass
 
     @abstractmethod
@@ -433,6 +439,7 @@ class PerDocumentReader(object):
         return False
 
     def has_column(self, fieldname):
+        _ = fieldname  # Unused argument
         return False
 
     def list_columns(self):
@@ -445,6 +452,7 @@ class PerDocumentReader(object):
     # Bitmaps
 
     def field_docs(self, fieldname):
+        _ = fieldname  # Unused argument
         return None
 
     # Lengths
@@ -468,6 +476,7 @@ class PerDocumentReader(object):
     # Vectors
 
     def has_vector(self, docnum, fieldname):
+        _ = docnum, fieldname  # Unused arguments
         return False
 
     # Don't need to override this if has_vector() always returns False
@@ -488,7 +497,7 @@ class PerDocumentReader(object):
 # Segment base class
 
 
-class Segment(object):
+class Segment:
     """Do not instantiate this object directly. It is used by the Index object
     to hold information about a segment. A list of objects of this class are
     pickled as part of the TOC file.
@@ -518,7 +527,7 @@ class Segment(object):
         return random_name(size=size)
 
     def __repr__(self):
-        return "<%s %s>" % (self.__class__.__name__, self.segment_id())
+        return f"<{self.__class__.__name__} {self.segment_id()}>"
 
     def __eq__(self, other):
         return isinstance(other, type(self)) and self.segment_id() == other.segment_id()
@@ -537,7 +546,7 @@ class Segment(object):
             # Old segment class
             return self.name
         else:
-            return "%s_%s" % (self.index_name(), self.segid)
+            return f"{self.index_name()}_{self.segid}"
 
     def is_compound(self):
         if not hasattr(self, "compound"):
@@ -547,10 +556,10 @@ class Segment(object):
     # File convenience methods
 
     def make_filename(self, ext):
-        return "%s%s" % (self.segment_id(), ext)
+        return f"{self.segment_id()}{ext}"
 
     def list_files(self, storage):
-        prefix = "%s." % self.segment_id()
+        prefix = f"{self.segment_id()}."
         return [name for name in storage.list() if name.startswith(prefix)]
 
     def create_file(self, storage, ext, **kwargs):
@@ -776,7 +785,7 @@ class MultiPerDocumentReader(PerDocumentReader):
 
     def column_reader(self, fieldname, column):
         if not self.has_column(fieldname):
-            raise ValueError("No column %r" % (fieldname,))
+            raise ValueError(f"No column {fieldname!r}")
 
         default = column.default_value()
         colreaders = []

@@ -1,16 +1,14 @@
-from __future__ import with_statement
 import random
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
-
-from whoosh import analysis, fields, index, qparser, query, __version__
-from whoosh.compat import b, u, range, text_type, permutations
+from whoosh import __version__, analysis, fields, index, qparser, query
+from whoosh.compat import b, permutations, text_type, u
 from whoosh.filedb.filestore import RamStorage
-from whoosh.writing import IndexingError
-from whoosh.util.numeric import length_to_byte, byte_to_length
+from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempIndex, TempStorage
+from whoosh.writing import IndexingError
 
 
 def test_creation():
@@ -474,7 +472,7 @@ def test_noscorables1():
         u("kilo"),
         u("lima"),
     ]
-    from random import choice, sample, randint
+    from random import choice, randint, sample
 
     times = 1000
 
@@ -631,15 +629,20 @@ def test_multivalue():
     )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(id=1, date=datetime(2001, 1, 1), num=5)
+        w.add_document(id=1, date=datetime(2001, 1, 1, tzinfo=timezone.utc), num=5)
         w.add_document(
-            id=2, date=[datetime(2002, 2, 2), datetime(2003, 3, 3)], num=[1, 2, 3, 12]
+            id=2,
+            date=[
+                datetime(2002, 2, 2, tzinfo=timezone.utc),
+                datetime(2003, 3, 3, tzinfo=timezone.utc),
+            ],
+            num=[1, 2, 3, 12],
         )
         w.add_document(txt=u("a b c").split())
 
     with ix.reader() as r:
         assert ("num", 3) in r
-        assert ("date", datetime(2003, 3, 3)) in r
+        assert ("date", datetime(2003, 3, 3, tzinfo=timezone.utc)) in r
         assert " ".join(r.field_terms("txt")) == "a b c"
 
 

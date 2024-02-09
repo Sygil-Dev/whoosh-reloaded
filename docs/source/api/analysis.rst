@@ -59,4 +59,3 @@ Token classes and functions
 
 .. autoclass:: Token
 .. autofunction:: unstopped
-

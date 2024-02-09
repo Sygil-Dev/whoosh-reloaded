@@ -25,18 +25,17 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
 
 from whoosh.compat import b, u
-from whoosh.query import qcore, terms, compound, wrappers
+from whoosh.query import compound, qcore, terms, wrappers
 from whoosh.util.times import datetime_to_long
 
 
-class RangeMixin(object):
+class RangeMixin:
     # Contains methods shared by TermRange and NumericRange
 
     def __repr__(self):
-        return "%s(%r, %r, %r, %s, %s, boost=%s, constantscore=%s)" % (
+        return "{}({!r}, {!r}, {!r}, {}, {}, boost={}, constantscore={})".format(
             self.__class__.__name__,
             self.fieldname,
             self.start,
@@ -255,12 +254,45 @@ class TermRange(RangeMixin, terms.MultiTerm):
 
 
 class NumericRange(RangeMixin, qcore.Query):
-    """A range query for NUMERIC fields. Takes advantage of tiered indexing
+    """
+    A range query for NUMERIC fields. Takes advantage of tiered indexing
     to speed up large ranges by matching at a high resolution at the edges of
     the range and a low resolution in the middle.
 
-    >>> # Match numbers from 10 to 5925 in the "number" field.
-    >>> nr = NumericRange("number", 10, 5925)
+    Example Usage:
+        # Match numbers from 10 to 5925 in the "number" field.
+        nr = NumericRange("number", 10, 5925)
+
+    Methods:
+        __init__(self, fieldname, start, end, startexcl=False, endexcl=False, boost=1.0, constantscore=True):
+            Initializes a NumericRange object with the specified parameters.
+
+        simplify(self, ixreader):
+            Simplifies the range query by compiling it and calling the simplify method on the compiled query.
+
+        estimate_size(self, ixreader):
+            Estimates the size of the range query by compiling it and calling the estimate_size method on the compiled query.
+
+        estimate_min_size(self, ixreader):
+            Estimates the minimum size of the range query by compiling it and calling the estimate_min_size method on the compiled query.
+
+        docs(self, searcher):
+            Retrieves the documents that match the range query by compiling it and calling the docs method on the compiled query.
+
+        _compile_query(self, ixreader):
+            Compiles the range query by preparing the start and end values, generating subqueries for different resolutions, and combining them into a single query.
+
+        matcher(self, searcher, context=None):
+            Retrieves the matcher for the range query by compiling it and calling the matcher method on the compiled query.
+
+    Fields:
+        fieldname: The name of the field to search.
+        start: Match terms equal to or greater than this number. This should be a number type, not a string.
+        end: Match terms equal to or less than this number. This should be a number type, not a string.
+        startexcl: If True, the range start is exclusive. If False, the range start is inclusive.
+        endexcl: If True, the range end is exclusive. If False, the range end is inclusive.
+        boost: Boost factor that should be applied to the raw score of results matched by this query.
+        constantscore: If True, the compiled query returns a constant score (the value of the boost keyword argument) instead of actually scoring the matched terms. This gives a nice speed boost and won't affect the results in most cases since numeric ranges will almost always be used as a filter.
     """
 
     def __init__(
@@ -300,6 +332,13 @@ class NumericRange(RangeMixin, qcore.Query):
         self.boost = boost
         self.constantscore = constantscore
 
+        # NumericRange should raise an error if the start and end parameters are not numeric.
+        # Some of the old tests fail if this is enabled. We need to confirm if this is a bug or not.
+        # if not isinstance(self.start, (int, float)):
+        #     raise ValueError("NumericRange: start parameter must be numeric")
+        # if not isinstance(self.end, (int, float)):
+        #     raise ValueError("NumericRange: end parameter must be numeric")
+
     def simplify(self, ixreader):
         return self._compile_query(ixreader).simplify(ixreader)
 
@@ -319,7 +358,7 @@ class NumericRange(RangeMixin, qcore.Query):
 
         field = ixreader.schema[self.fieldname]
         if not isinstance(field, NUMERIC):
-            raise Exception("NumericRange: field %r is not numeric" % self.fieldname)
+            raise ValueError(f"NumericRange: field {self.fieldname} is not numeric")
 
         start = self.start
         if start is not None:
@@ -393,7 +432,7 @@ class DateRange(NumericRange):
             start = datetime_to_long(start)
         if end:
             end = datetime_to_long(end)
-        super(DateRange, self).__init__(
+        super().__init__(
             fieldname,
             start,
             end,
@@ -404,7 +443,7 @@ class DateRange(NumericRange):
         )
 
     def __repr__(self):
-        return "%s(%r, %r, %r, %s, %s, boost=%s)" % (
+        return "{}({!r}, {!r}, {!r}, {}, {}, boost={})".format(
             self.__class__.__name__,
             self.fieldname,
             self.startdate,

@@ -25,8 +25,11 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import with_statement
-import errno, os, sys, tempfile
+
+import errno
+import os
+import sys
+import tempfile
 from threading import Lock
 
 from whoosh.compat import BytesIO, memoryview_
@@ -34,7 +37,6 @@ from whoosh.filedb.structfile import BufferFile, StructFile
 from whoosh.index import _DEF_INDEX_NAME, EmptyIndexError
 from whoosh.util import random_name
 from whoosh.util.filelock import FileLock
-
 
 # Exceptions
 
@@ -50,7 +52,7 @@ class ReadOnlyError(StorageError):
 # Base class
 
 
-class Storage(object):
+class Storage:
     """Abstract base class for storage objects.
 
     A storage object is a virtual flat filesystem, allowing the creation and
@@ -406,7 +408,7 @@ class FileStorage(Storage):
         self.locks = {}
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.folder)
+        return f"{self.__class__.__name__}({self.folder!r})"
 
     def create(self):
         """Creates this storage object's directory path using ``os.makedirs`` if
@@ -446,7 +448,7 @@ class FileStorage(Storage):
 
         # Raise an exception if the given path is not a directory
         if not os.path.isdir(dirpath):
-            e = IOError("%r is not a directory" % dirpath)
+            e = IOError(f"{dirpath!r} is not a directory")
             e.errno = errno.ENOTDIR
             raise e
 
@@ -463,7 +465,7 @@ class FileStorage(Storage):
         try:
             # Try to remove the directory
             os.rmdir(self.folder)
-        except IOError:
+        except OSError:
             e = sys.exc_info()[1]
             if e.errno == errno.ENOENT:
                 pass
@@ -527,7 +529,7 @@ class FileStorage(Storage):
     def list(self):
         try:
             files = os.listdir(self.folder)
-        except IOError:
+        except OSError:
             files = []
 
         return files
@@ -553,7 +555,7 @@ class FileStorage(Storage):
 
         if os.path.exists(self._fpath(newname)):
             if safe:
-                raise NameError("File %r exists" % newname)
+                raise NameError(f"File {newname!r} exists")
             else:
                 os.remove(self._fpath(newname))
         os.rename(self._fpath(oldname), self._fpath(newname))
@@ -562,7 +564,7 @@ class FileStorage(Storage):
         return FileLock(self._fpath(name))
 
     def temp_storage(self, name=None):
-        name = name or "%s.tmp" % random_name()
+        name = name or f"{random_name()}.tmp"
         path = os.path.join(self.folder, name)
         tempstore = FileStorage(path)
         return tempstore.create()
@@ -611,7 +613,7 @@ class RamStorage(Storage):
         if name not in self.files:
             raise NameError(name)
         if safe and newname in self.files:
-            raise NameError("File %r exists" % newname)
+            raise NameError(f"File {newname!r} exists")
 
         content = self.files[name]
         del self.files[name]
@@ -637,7 +639,7 @@ class RamStorage(Storage):
 
     def temp_storage(self, name=None):
         tdir = tempfile.gettempdir()
-        name = name or "%s.tmp" % random_name()
+        name = name or f"{random_name()}.tmp"
         path = os.path.join(tdir, name)
         tempstore = FileStorage(path)
         return tempstore.create()

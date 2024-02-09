@@ -25,11 +25,10 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import with_statement
+
 from bisect import bisect_left
 from threading import Lock
 
-from whoosh.compat import range
 from whoosh.codec import base
 from whoosh.matching import ListMatcher
 from whoosh.reading import SegmentReader, TermInfo, TermNotFound
@@ -37,7 +36,7 @@ from whoosh.writing import SegmentWriter
 
 
 class MemWriter(SegmentWriter):
-    def commit(self):
+    def commit(self, mergetype=None, optimize=False, merge=True):
         self._finalize_segment()
 
 
@@ -83,7 +82,7 @@ class MemPerDocWriter(base.PerDocWriterWithColumns):
         return fieldname in self._colwriters
 
     def _create_column(self, fieldname, column):
-        colfile = self._storage.create_file("%s.c" % fieldname)
+        colfile = self._storage.create_file(f"{fieldname}.c")
         self._colwriters[fieldname] = (colfile, column.writer(colfile))
 
     def _get_column(self, fieldname):
@@ -145,11 +144,11 @@ class MemPerDocReader(base.PerDocumentReader):
         return True
 
     def has_column(self, fieldname):
-        filename = "%s.c" % fieldname
+        filename = f"{fieldname}.c"
         return self._storage.file_exists(filename)
 
     def column_reader(self, fieldname, column):
-        filename = "%s.c" % fieldname
+        filename = f"{fieldname}.c"
         colfile = self._storage.open_file(filename)
         length = self._storage.file_length(filename)
         return column.reader(colfile, 0, length, self._segment.doc_count_all())
@@ -189,6 +188,7 @@ class MemPerDocReader(base.PerDocumentReader):
         return self._segment._stored[docnum]
 
     def close(self):
+        # This method is intentionally left empty.
         pass
 
 
@@ -202,7 +202,9 @@ class MemFieldWriter(base.FieldWriter):
 
     def start_field(self, fieldname, fieldobj):
         if self._fieldname is not None:
-            raise Exception("Called start_field in a field")
+            raise ValueError(
+                "Called start_field in a field"
+            )  # Replaced generic Exception with ValueError
 
         with self._segment._lock:
             invindex = self._segment._invindex
@@ -214,7 +216,7 @@ class MemFieldWriter(base.FieldWriter):
 
     def start_term(self, btext):
         if self._btext is not None:
-            raise Exception("Called start_term in a term")
+            raise ValueError("Called start_term in a term")
         fieldname = self._fieldname
 
         fielddict = self._segment._invindex[fieldname]
@@ -236,7 +238,7 @@ class MemFieldWriter(base.FieldWriter):
 
     def finish_term(self):
         if self._btext is None:
-            raise Exception("Called finish_term outside a term")
+            raise ValueError("Called finish_term outside a term")
 
         self._postings = None
         self._btext = None
@@ -244,7 +246,7 @@ class MemFieldWriter(base.FieldWriter):
 
     def finish_field(self):
         if self._fieldname is None:
-            raise Exception("Called finish_field outside a field")
+            raise ValueError("Called finish_field outside a field")
         self._fieldname = None
         self._fieldobj = None
 
@@ -268,7 +270,7 @@ class MemTermsReader(base.TermsReader):
 
     def terms_from(self, fieldname, prefix):
         if fieldname not in self._invindex:
-            raise TermNotFound("Unknown field %r" % (fieldname,))
+            raise TermNotFound(f"Unknown field {fieldname!r}")
         terms = sorted(self._invindex[fieldname])
         if not terms:
             return
@@ -288,6 +290,7 @@ class MemTermsReader(base.TermsReader):
         return self._invindex.keys()
 
     def close(self):
+        # This method is intentionally left empty.
         pass
 
 
@@ -317,7 +320,7 @@ class MemSegment(base.Segment):
 
     def delete_document(self, docnum, delete=True):
         if not delete:
-            raise Exception("MemoryCodec can't undelete")
+            raise ValueError("MemoryCodec can't undelete")
         with self._lock:
             del self._stored[docnum]
             del self._lengths[docnum]

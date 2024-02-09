@@ -1,10 +1,9 @@
-from __future__ import with_statement
 import inspect
-from random import choice, randint
 import sys
+from random import choice, randint
 
 from whoosh import fields, query, scoring
-from whoosh.compat import u, range, permutations
+from whoosh.compat import permutations, u
 from whoosh.filedb.filestore import RamStorage
 
 
@@ -24,9 +23,7 @@ def test_all():
     ix = storage.create_index(schema)
     w = ix.writer()
     for _ in range(100):
-        w.add_document(
-            text=u(" ").join(choice(domain) for _ in range(randint(10, 20)))
-        )
+        w.add_document(text=u(" ").join(choice(domain) for _ in range(randint(10, 20))))
     w.commit()
 
     # List ABCs that should not be tested
@@ -46,15 +43,15 @@ def test_all():
                 weighting = wclass()
         except TypeError:
             e = sys.exc_info()[1]
-            raise TypeError("Error instantiating %r: %s" % (wclass, e))
+            raise TypeError(f"Error instantiating {wclass!r}: {e}")
 
         with ix.searcher(weighting=weighting) as s:
             try:
                 for word in domain:
                     s.search(query.Term("text", word))
-            except Exception:
+            except ValueError:
                 e = sys.exc_info()[1]
-                e.msg = "Error searching with %r: %s" % (wclass, e)
+                e.msg = f"Error searching with {wclass!r}: {e}"
                 raise
 
 

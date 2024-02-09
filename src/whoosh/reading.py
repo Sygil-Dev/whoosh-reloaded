@@ -28,20 +28,18 @@
 """This module contains classes that allow reading from an index.
 """
 
-from math import log
 from bisect import bisect_right
-from heapq import heapify, heapreplace, heappop, nlargest
+from heapq import heapify, heappop, heapreplace, nlargest
+from math import log
 
 from cached_property import cached_property
 
 from whoosh import columns
-from whoosh.compat import abstractmethod
-from whoosh.compat import zip_, next, iteritems
+from whoosh.compat import abstractmethod, iteritems, next, zip_
 from whoosh.filedb.filestore import OverlayStorage
 from whoosh.matching import MultiMatcher
 from whoosh.support.levenshtein import distance
 from whoosh.system import emptybytes
-
 
 # Exceptions
 
@@ -61,7 +59,7 @@ class TermNotFound(Exception):
 # Term Info base class
 
 
-class TermInfo(object):
+class TermInfo:
     """Represents a set of statistics about a term. This object is returned by
     :meth:`IndexReader.term_info`. These statistics may be useful for
     optimizations and scoring algorithms.
@@ -145,7 +143,7 @@ class TermInfo(object):
 # Reader base class
 
 
-class IndexReader(object):
+class IndexReader:
     """Do not instantiate this object directly. Instead use Index.reader()."""
 
     def __enter__(self):
@@ -664,7 +662,7 @@ class SegmentReader(IndexReader):
         return self._gen
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self._storage, self._segment)
+        return f"{self.__class__.__name__}({self._storage!r}, {self._segment!r})"
 
     def __contains__(self, term):
         if self.is_closed:
@@ -745,9 +743,9 @@ class SegmentReader(IndexReader):
         if self.is_closed:
             raise ReaderClosed
         if fieldname not in self.schema:
-            raise TermNotFound("No field %r" % fieldname)
+            raise TermNotFound(f"No field {fieldname!r}")
         if self.schema[fieldname].format is None:
-            raise TermNotFound("Field %r is not indexed" % fieldname)
+            raise TermNotFound(f"Field {fieldname!r} is not indexed")
 
     def indexed_field_names(self):
         return self._terms.indexed_field_names()
@@ -778,7 +776,7 @@ class SegmentReader(IndexReader):
         try:
             return self._terms.term_info(fieldname, text)
         except KeyError:
-            raise TermNotFound("%s:%r" % (fieldname, text))
+            raise TermNotFound(f"{fieldname}:{text!r}")
 
     def expand_prefix(self, fieldname, prefix):
         self._test_field(fieldname)
@@ -834,7 +832,7 @@ class SegmentReader(IndexReader):
         if self.is_closed:
             raise ReaderClosed
         if fieldname not in self.schema:
-            raise TermNotFound("No  field %r" % fieldname)
+            raise TermNotFound(f"No  field {fieldname!r}")
         text = self._text_to_bytes(fieldname, text)
         format_ = self.schema[fieldname].format
         matcher = self._terms.matcher(fieldname, text, format_, scorer=scorer)
@@ -847,10 +845,10 @@ class SegmentReader(IndexReader):
         if self.is_closed:
             raise ReaderClosed
         if fieldname not in self.schema:
-            raise TermNotFound("No  field %r" % fieldname)
+            raise TermNotFound(f"No  field {fieldname!r}")
         vformat = format_ or self.schema[fieldname].vector
         if not vformat:
-            raise Exception("No vectors are stored for field %r" % fieldname)
+            raise Exception(f"No vectors are stored for field {fieldname!r}")
         return self._perdoc.vector(docnum, fieldname, vformat)
 
     def cursor(self, fieldname):
@@ -884,7 +882,7 @@ class SegmentReader(IndexReader):
         fieldobj = self.schema[fieldname]
         column = column or fieldobj.column_type
         if not column:
-            raise Exception("No column for field %r in %r" % (fieldname, self))
+            raise Exception(f"No column for field {fieldname!r} in {self!r}")
 
         if self._perdoc.has_column(fieldname):
             creader = self._perdoc.column_reader(fieldname, column)
@@ -954,7 +952,7 @@ class EmptyReader(IndexReader):
         return False
 
     def stored_fields(self, docnum):
-        raise KeyError("No document number %s" % docnum)
+        raise KeyError(f"No document number {docnum}")
 
     def all_stored_fields(self):
         return iter([])
@@ -984,13 +982,13 @@ class EmptyReader(IndexReader):
         return default
 
     def postings(self, fieldname, text, scorer=None):
-        raise TermNotFound("%s:%r" % (fieldname, text))
+        raise TermNotFound(f"{fieldname}:{text!r}")
 
     def has_vector(self, docnum, fieldname):
         return False
 
     def vector(self, docnum, fieldname, format_=None):
-        raise KeyError("No document number %s" % docnum)
+        raise KeyError(f"No document number {docnum}")
 
     def most_frequent_terms(self, fieldname, number=5, prefix=""):
         return iter([])
@@ -1224,8 +1222,7 @@ class MultiReader(IndexReader):
 
     def all_stored_fields(self):
         for reader in self.readers:
-            for result in reader.all_stored_fields():
-                yield result
+            yield from reader.all_stored_fields()
 
     def doc_count_all(self):
         return sum(dr.doc_count_all() for dr in self.readers)
@@ -1281,7 +1278,7 @@ def combine_terminfos(tis):
     return TermInfo(w, df, ml, xl, xw, mid, xid)
 
 
-class MultiCursor(object):
+class MultiCursor:
     def __init__(self, cursors):
         self._cursors = [c for c in cursors if c.is_valid()]
         self._low = []

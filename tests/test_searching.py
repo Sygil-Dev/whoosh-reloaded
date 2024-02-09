@@ -1,15 +1,10 @@
-# encoding: utf-8
-
-from __future__ import with_statement
 import copy
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
-
 from whoosh import analysis, fields, index, qparser, query, scoring
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import b, u, text_type
-from whoosh.compat import range, permutations, izip_longest
+from whoosh.compat import b, izip_longest, permutations, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
@@ -371,7 +366,7 @@ def test_open_numeric_ranges():
 
 
 def test_open_date_ranges():
-    basedate = datetime(2011, 1, 24, 6, 25, 0, 0)
+    basedate = datetime(2011, 1, 24, 6, 25, 0, 0, tzinfo=timezone.utc)
     domain = [basedate + timedelta(days=n) for n in range(-20, 20)]
 
     schema = fields.Schema(date=fields.DATETIME(stored=True))
@@ -387,13 +382,17 @@ def test_open_date_ranges():
         q = qp.parse("[2011-01-10 to]")
         r = [hit["date"] for hit in s.search(q, limit=None)]
         assert len(r) > 0
-        target = [d for d in domain if d >= datetime(2011, 1, 10, 6, 25)]
+        target = [
+            d for d in domain if d >= datetime(2011, 1, 10, 6, 25, tzinfo=timezone.utc)
+        ]
         assert r == target
 
         q = qp.parse("[to 2011-01-30]")
         r = [hit["date"] for hit in s.search(q, limit=None)]
         assert len(r) > 0
-        target = [d for d in domain if d <= datetime(2011, 1, 30, 6, 25)]
+        target = [
+            d for d in domain if d <= datetime(2011, 1, 30, 6, 25, tzinfo=timezone.utc)
+        ]
         assert r == target
 
         # With date parser
@@ -404,13 +403,17 @@ def test_open_date_ranges():
         q = qp.parse("[10 jan 2011 to]")
         r = [hit["date"] for hit in s.search(q, limit=None)]
         assert len(r) > 0
-        target = [d for d in domain if d >= datetime(2011, 1, 10, 6, 25)]
+        target = [
+            d for d in domain if d >= datetime(2011, 1, 10, 6, 25, tzinfo=timezone.utc)
+        ]
         assert r == target
 
         q = qp.parse("[to 30 jan 2011]")
         r = [hit["date"] for hit in s.search(q, limit=None)]
         assert len(r) > 0
-        target = [d for d in domain if d <= datetime(2011, 1, 30, 6, 25)]
+        target = [
+            d for d in domain if d <= datetime(2011, 1, 30, 6, 25, tzinfo=timezone.utc)
+        ]
         assert r == target
 
 
@@ -425,7 +428,7 @@ def test_negated_unlimited_ranges():
 
     domain = text_type(ascii_letters)
 
-    dt = datetime.now()
+    dt = datetime.now(tz=timezone.utc)
     for i, letter in enumerate(domain):
         w.add_document(id=letter, num=i, date=dt + timedelta(days=i))
     w.commit()
@@ -747,7 +750,7 @@ def test_short_prefix():
 
 
 def test_weighting():
-    from whoosh.scoring import Weighting, BaseScorer
+    from whoosh.scoring import BaseScorer, Weighting
 
     schema = fields.Schema(id=fields.ID(stored=True), n_comments=fields.STORED)
     st = RamStorage()
@@ -1642,7 +1645,7 @@ def test_groupedby_with_terms():
         assert len(r) == 2
         assert r.groups("organism") == {"mus": [1, 0]}
         assert r.has_matched_terms()
-        assert r.matched_terms() == set([("content", b("ipfstd1"))])
+        assert r.matched_terms() == {("content", b("ipfstd1"))}
 
 
 def test_buffered_refresh():
@@ -1703,7 +1706,7 @@ def test_terms_with_filter():
         w.add_document(text=u("hotel alfa bravo charlie"))
 
     with ix.searcher() as s:
-        workingset = set([1, 2, 3])
+        workingset = {1, 2, 3}
         q = query.Term("text", u("foxtrot"))
         r = s.search_page(q, pagenum=1, pagelen=5, terms=True, filter=workingset)
 
@@ -1868,7 +1871,7 @@ def test_function_weighting():
             assert not m.supports_block_quality()
 
             r = s.search(q, limit=5)
-            ids = "".join(([hit["id"] for hit in r]))
+            ids = "".join([hit["id"] for hit in r])
             assert ids == "agmsb"
 
             q = query.Or(

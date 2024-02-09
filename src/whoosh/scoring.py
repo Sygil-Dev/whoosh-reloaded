@@ -29,16 +29,15 @@
 This module contains classes for scoring (and sorting) search results.
 """
 
-from __future__ import division
+
 from math import log, pi
 
 from whoosh.compat import iteritems
 
-
 # Base classes
 
 
-class WeightingModel(object):
+class WeightingModel:
     """Abstract base class for scoring models. A WeightingModel object provides
     a method, ``scorer``, which returns an instance of
     :class:`whoosh.scoring.Scorer`.
@@ -85,7 +84,7 @@ class WeightingModel(object):
         return score
 
 
-class BaseScorer(object):
+class BaseScorer:
     """Base class for "scorer" implementations. A scorer provides a method for
     scoring a document, and sometimes methods for rating the "quality" of a
     document and a matcher's current "block", to implement quality-based

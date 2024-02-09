@@ -26,7 +26,6 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from whoosh import matching
-from whoosh.compat import range
 from whoosh.query import qcore
 from whoosh.query.wrappers import WrappingQuery
 
@@ -128,8 +127,7 @@ class NestedParent(WrappingQuery):
             docnum = m.id()
             parentdoc = bits.before(docnum + 1)
             nextparent = bits.after(docnum) or maxdoc
-            for i in range(parentdoc, nextparent):
-                yield i
+            yield from range(parentdoc, nextparent)
             m.skip_to(nextparent)
 
     class NestedParentMatcher(matching.Matcher):
@@ -296,11 +294,7 @@ class NestedChildren(WrappingQuery):
             self._find_next_children()
 
         def __repr__(self):
-            return "%s(%r, %r)" % (
-                self.__class__.__name__,
-                self.parent_comb,
-                self.child,
-            )
+            return f"{self.__class__.__name__}({self.parent_comb!r}, {self.child!r})"
 
         def reset(self):
             self.child.reset()

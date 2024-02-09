@@ -328,6 +328,3 @@ Compatibility
   now yield :class:` whoosh.reading.TermInfo` objects.
 
 * The arguments to :class:` whoosh.query.FuzzyTerm` changed.
-
-
-

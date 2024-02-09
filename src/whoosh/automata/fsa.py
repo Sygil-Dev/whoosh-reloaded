@@ -1,12 +1,9 @@
-from __future__ import print_function
-
 import itertools
 import operator
 import sys
 from bisect import bisect_left
 
-from whoosh.compat import iteritems, next, text_type, unichr, range
-
+from whoosh.compat import iteritems, next, text_type, unichr
 
 unull = unichr(0)
 
@@ -14,12 +11,12 @@ unull = unichr(0)
 # Marker constants
 
 
-class Marker(object):
+class Marker:
     def __init__(self, name):
         self.name = name
 
     def __repr__(self):
-        return "<%s>" % self.name
+        return f"<{self.name}>"
 
 
 EPSILON = Marker("EPSILON")
@@ -29,7 +26,7 @@ ANY = Marker("ANY")
 # Base class
 
 
-class FSA(object):
+class FSA:
     def __init__(self, initial):
         self.initial = initial
         self.transitions = {}
@@ -68,8 +65,7 @@ class FSA(object):
             yield sofar
         for label in sorted(self.get_labels(state)):
             newstate = self.next_state(state, label)
-            for string in self.generate_all(newstate, sofar + label):
-                yield string
+            yield from self.generate_all(newstate, sofar + label)
 
     def start(self):
         return self.initial
@@ -126,10 +122,10 @@ class NFA(FSA):
             xs = self.transitions[src]
             for label in xs:
                 dests = xs[label]
-                end = "||" if self.is_final(dests) else ""
+                _ = "||" if self.is_final(dests) else ""
 
     def start(self):
-        return frozenset(self._expand(set([self.initial])))
+        return frozenset(self._expand({self.initial}))
 
     def add_transition(self, src, label, dest):
         self.transitions.setdefault(src, {}).setdefault(label, set()).add(dest)
@@ -241,7 +237,7 @@ class DFA(FSA):
             xs = self.transitions[src]
             for label in sorted(xs):
                 dest = xs[label]
-                end = "||" if self.is_final(dest) else ""
+                _ = "||" if self.is_final(dest) else ""
 
     def start(self):
         return self.initial
@@ -391,7 +387,7 @@ class DFA(FSA):
         assert new_initial is not None
 
         # Apply mapping to existing transitions
-        new_finals = set(mapping[s] for s in final_states)
+        new_finals = {mapping[s] for s in final_states}
         for state, d in iteritems(new_trans):
             trans = transitions[state]
             for label, dest in iteritems(trans):
@@ -457,7 +453,7 @@ def u_to_utf8(dfa, base=0):
             if label is EPSILON:
                 continue
             elif label is ANY:
-                raise Exception
+                raise ValueError
             else:
                 assert isinstance(label, text_type)
                 label8 = label.encode("utf8")
@@ -636,14 +632,14 @@ def optional_nfa(n):
 # Daciuk Mihov DFA construction algorithm
 
 
-class DMNode(object):
+class DMNode:
     def __init__(self, n):
         self.n = n
         self.arcs = {}
         self.final = False
 
     def __repr__(self):
-        return "<%s, %r>" % (self.n, self.tuple())
+        return f"<{self.n}, {self.tuple()!r}>"
 
     def __hash__(self):
         return hash(self.tuple())
@@ -663,9 +659,9 @@ def strings_dfa(strings):
 
     for string in strings:
         if string <= last:
-            raise Exception("Strings must be in order")
+            raise ValueError("Strings must be in order")
         if not string:
-            raise Exception("Can't add empty string")
+            raise ValueError("Can't add empty string")
 
         # Find the common prefix with the previous string
         i = 0

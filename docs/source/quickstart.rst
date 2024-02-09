@@ -14,7 +14,7 @@ A quick introduction
 ::
 
     >>> from whoosh.index import create_in
-    >>> from whoosh.fields import *
+    >>> from whoosh.fields import Schema, TEXT, ID
     >>> schema = Schema(title=TEXT(stored=True), path=ID(stored=True), content=TEXT)
     >>> ix = create_in("indexdir", schema)
     >>> writer = ix.writer()
@@ -194,7 +194,7 @@ For example, this query would match documents that contain both "apple" and
 
     # Construct query objects directly
 
-    from whoosh.query import *
+    from whoosh.query import And, Term
     myquery = And([Term("content", u"apple"), Term("content", "bear")])
 
 To parse a query string, you can use the default query parser in the ``qparser``
@@ -241,4 +241,3 @@ Whoosh includes extra features for dealing with search results, such as
 * Paginating the results (e.g. "Showing results 1-20, page 1 of 4").
 
 See :doc:`searching` for more information.
-

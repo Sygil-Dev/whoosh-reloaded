@@ -27,16 +27,21 @@
 
 import re
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-from whoosh.compat import string_type, iteritems
+from whoosh.compat import iteritems, string_type
 from whoosh.qparser import plugins, syntax
 from whoosh.qparser.taggers import Tagger
 from whoosh.support.relativedelta import relativedelta
 from whoosh.util.text import rcompile
-from whoosh.util.times import adatetime, timespan
-from whoosh.util.times import fill_in, is_void, relative_days
-from whoosh.util.times import TimeError
+from whoosh.util.times import (
+    TimeError,
+    adatetime,
+    fill_in,
+    is_void,
+    relative_days,
+    timespan,
+)
 
 
 class DateParseError(Exception):
@@ -54,7 +59,7 @@ def print_debug(level, msg, *args):
 # Parser element objects
 
 
-class Props(object):
+class Props:
     """A dumb little object that just puts copies a dictionary into attibutes
     so I can use dot syntax instead of square bracket string item lookup and
     save a little bit of typing. Used by :class:`Regex`.
@@ -70,7 +75,7 @@ class Props(object):
         return self.__dict__.get(key, default)
 
 
-class ParserBase(object):
+class ParserBase:
     """Base class for date parser elements."""
 
     def to_parser(self, e):
@@ -84,7 +89,7 @@ class ParserBase(object):
 
     def date_from(self, text, dt=None, pos=0, debug=-9999):
         if dt is None:
-            dt = datetime.now()
+            dt = datetime.now(tz=timezone.utc)
 
         d, pos = self.parse(text, dt, pos, debug + 1)
         return d
@@ -105,7 +110,7 @@ class MultiBase(ParserBase):
         self.name = name
 
     def __repr__(self):
-        return "%s<%s>%r" % (self.__class__.__name__, self.name or "", self.elements)
+        return f"{self.__class__.__name__}<{self.name or ''}>{self.elements!r}"
 
 
 class Sequence(MultiBase):
@@ -122,7 +127,7 @@ class Sequence(MultiBase):
             sequence matches like ``a[b[c]]``.
         """
 
-        super(Sequence, self).__init__(elements, name)
+        super().__init__(elements, name)
         self.sep_pattern = sep
         if sep:
             self.sep_expr = rcompile(sep, re.IGNORECASE)
@@ -205,7 +210,7 @@ class Combo(Sequence):
         :param name: a name for this element (for debugging purposes only).
         """
 
-        super(Combo, self).__init__(elements, sep=sep, name=name)
+        super().__init__(elements, sep=sep, name=name)
         self.fn = fn
         self.min = min
         self.max = max
@@ -260,7 +265,7 @@ class Combo(Sequence):
         elif len(dates) == 2:
             return timespan(dates[0], dates[1])
         else:
-            raise DateParseError("Don't know what to do with %r" % (dates,))
+            raise DateParseError(f"Don't know what to do with {dates!r}")
 
 
 class Choice(MultiBase):
@@ -311,7 +316,7 @@ class Bag(MultiBase):
         :param name: a name for this element (for debugging purposes only).
         """
 
-        super(Bag, self).__init__(elements, name)
+        super().__init__(elements, name)
         self.sep_expr = rcompile(sep, re.IGNORECASE)
         self.onceper = onceper
         self.requireall = requireall
@@ -380,7 +385,7 @@ class Optional(ParserBase):
         self.element = self.to_parser(element)
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.element)
+        return f"{self.__class__.__name__}({self.element!r})"
 
     def parse(self, text, dt, pos=0, debug=-9999):
         try:
@@ -403,7 +408,7 @@ class ToEnd(ParserBase):
         self.element = element
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.element)
+        return f"{self.__class__.__name__}({self.element!r})"
 
     def parse(self, text, dt, pos=0, debug=-9999):
         try:
@@ -440,7 +445,7 @@ class Regex(ParserBase):
         self.modify = modify
 
     def __repr__(self):
-        return "<%r>" % (self.pattern,)
+        return f"<{self.pattern!r}>"
 
     def parse(self, text, dt, pos=0, debug=-9999):
         m = self.expr.match(text, pos)
@@ -490,7 +495,7 @@ class Month(Regex):
         self.exprs = [rcompile(pat, re.IGNORECASE) for pat in self.patterns]
 
         self.pattern = (
-            "(?P<month>" + "|".join("(%s)" % pat for pat in self.patterns) + ")"
+            "(?P<month>" + "|".join(f"({pat})" for pat in self.patterns) + ")"
         )
         self.expr = rcompile(self.pattern, re.IGNORECASE)
 
@@ -505,15 +510,15 @@ class Month(Regex):
 
 class PlusMinus(Regex):
     def __init__(self, years, months, weeks, days, hours, minutes, seconds):
-        rel_years = "((?P<years>[0-9]+) *(%s))?" % years
-        rel_months = "((?P<months>[0-9]+) *(%s))?" % months
-        rel_weeks = "((?P<weeks>[0-9]+) *(%s))?" % weeks
-        rel_days = "((?P<days>[0-9]+) *(%s))?" % days
-        rel_hours = "((?P<hours>[0-9]+) *(%s))?" % hours
-        rel_mins = "((?P<mins>[0-9]+) *(%s))?" % minutes
-        rel_secs = "((?P<secs>[0-9]+) *(%s))?" % seconds
+        rel_years = f"((?P<years>[0-9]+) *({years}))?"
+        rel_months = f"((?P<months>[0-9]+) *({months}))?"
+        rel_weeks = f"((?P<weeks>[0-9]+) *({weeks}))?"
+        rel_days = f"((?P<days>[0-9]+) *({days}))?"
+        rel_hours = f"((?P<hours>[0-9]+) *({hours}))?"
+        rel_mins = f"((?P<mins>[0-9]+) *({minutes}))?"
+        rel_secs = f"((?P<secs>[0-9]+) *({seconds}))?"
 
-        self.pattern = "(?P<dir>[+-]) *%s *%s *%s *%s *%s *%s *%s(?=(\\W|$))" % (
+        self.pattern = "(?P<dir>[+-]) *{} *{} *{} *{} *{} *{} *{}(?=(\\W|$))".format(
             rel_years,
             rel_months,
             rel_weeks,
@@ -548,11 +553,7 @@ class Daynames(Regex):
         self.last_pattern = last
         self._dayname_exprs = tuple(rcompile(pat, re.IGNORECASE) for pat in daynames)
         dn_pattern = "|".join(daynames)
-        self.pattern = "(?P<dir>%s|%s) +(?P<day>%s)(?=(\\W|$))" % (
-            next,
-            last,
-            dn_pattern,
-        )
+        self.pattern = f"(?P<dir>{next}|{last}) +(?P<day>{dn_pattern})(?=(\\W|$))"
         self.expr = rcompile(self.pattern, re.IGNORECASE)
 
     def props_to_date(self, p, dt):
@@ -600,7 +601,7 @@ class Time12(Regex):
 # Top-level parser classes
 
 
-class DateParser(object):
+class DateParser:
     """Base class for locale-specific parser classes."""
 
     day = Regex(
@@ -660,7 +661,7 @@ class DateParser(object):
 
     def date_from(self, text, basedate=None, pos=0, debug=-9999, toend=True):
         if basedate is None:
-            basedate = datetime.utcnow()
+            basedate = datetime.now(tz=timezone.utc)
 
         parser = self.get_parser()
         if toend:
@@ -937,7 +938,7 @@ class DateTimeNode(syntax.SyntaxNode):
         elif isinstance(self.dt, timespan):
             return query.DateRange(fieldname, dt.start, dt.end, boost=self.boost)
         else:
-            raise Exception("Unknown time object: %r" % dt)
+            raise Exception(f"Unknown time object: {dt!r}")
 
 
 class DateRangeNode(syntax.SyntaxNode):
@@ -951,7 +952,7 @@ class DateRangeNode(syntax.SyntaxNode):
         self.boost = 1.0
 
     def r(self):
-        return "%r-%r" % (self.start, self.end)
+        return f"{self.start!r}-{self.end!r}"
 
     def query(self, parser):
         from whoosh import query

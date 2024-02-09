@@ -1,12 +1,9 @@
-from __future__ import with_statement
-
 import pytest
-
 from whoosh import analysis, fields, formats, highlight, qparser, query
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import u, range, text_type, permutations
+from whoosh.compat import permutations, text_type, u
 from whoosh.filedb.filestore import RamStorage
-from whoosh.util.testing import TempStorage, TempIndex
+from whoosh.util.testing import TempIndex, TempStorage
 
 
 def test_score_retrieval():
@@ -215,8 +212,8 @@ def test_extend_filtered():
     hits = lambda result: [hit["id"] for hit in result]
 
     with ix.searcher() as s:
-        r1 = s.search(query.Term("text", u("alfa")), filter=set([1, 4]))
-        assert r1.allowed == set([1, 4])
+        r1 = s.search(query.Term("text", u("alfa")), filter={1, 4})
+        assert r1.allowed == {1, 4}
         assert len(r1.top_n) == 0
 
         r2 = s.search(query.Term("text", u("bravo")))
@@ -224,7 +221,7 @@ def test_extend_filtered():
         assert hits(r2) == [1, 2, 4]
 
         r3 = r1.copy()
-        assert r3.allowed == set([1, 4])
+        assert r3.allowed == {1, 4}
         assert len(r3.top_n) == 0
         r3.extend(r2)
         assert len(r3.top_n) == 3

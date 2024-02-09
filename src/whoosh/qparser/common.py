@@ -35,13 +35,12 @@ import sys
 
 class QueryParserError(Exception):
     def __init__(self, cause, msg=None):
-        super(QueryParserError, self).__init__(str(cause))
+        super().__init__(str(cause))
         self.cause = cause
 
 
 def get_single_text(field, text, **kwargs):
-    """Returns the first token from an analyzer's output.
-    """
+    """Returns the first token from an analyzer's output."""
 
     for t in field.process_text(text, mode="query", **kwargs):
         return t
@@ -53,11 +52,10 @@ def attach(q, stxnode):
             q.startchar = stxnode.startchar
             q.endchar = stxnode.endchar
         except AttributeError:
-            raise AttributeError("Can't set attribute on %s"
-                                 % q.__class__.__name__)
+            raise AttributeError(f"Can't set attribute on {q.__class__.__name__}")
     return q
 
 
 def print_debug(level, msg, out=sys.stderr):
     if level:
-        out.write("%s%s\n" % (" " * (level - 1), msg))
+        out.write(f"{' ' * (level - 1)}{msg}\n")

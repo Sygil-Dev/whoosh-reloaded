@@ -39,18 +39,33 @@ use in (at least) spell checking.
 """
 
 
-import sys, copy
+import copy
+import sys
 from array import array
 from hashlib import sha1  # type: ignore @UnresolvedImport
 
-from whoosh.compat import b, u, BytesIO
-from whoosh.compat import range, iteritems, iterkeys, izip, array_tobytes
-from whoosh.compat import bytes_type, text_type
+from whoosh.compat import (
+    BytesIO,
+    array_tobytes,
+    b,
+    bytes_type,
+    iteritems,
+    iterkeys,
+    izip,
+    range,
+    text_type,
+    u,
+)
 from whoosh.filedb.structfile import StructFile
-from whoosh.system import _INT_SIZE
-from whoosh.system import pack_byte, pack_int, pack_uint, pack_long
-from whoosh.system import emptybytes
-from whoosh.util.text import utf8encode, utf8decode
+from whoosh.system import (
+    _INT_SIZE,
+    emptybytes,
+    pack_byte,
+    pack_int,
+    pack_long,
+    pack_uint,
+)
+from whoosh.util.text import utf8decode, utf8encode
 from whoosh.util.varints import varint
 
 
@@ -73,7 +88,7 @@ MULTIBYTE_LABEL = 32
 # FST Value types
 
 
-class Values(object):
+class Values:
     """Base for classes the describe how to encode and decode FST values."""
 
     @staticmethod
@@ -292,7 +307,7 @@ class ArrayValues(SequenceValues):
     def read(self, dbfile):
         typecode = u(dbfile.read(1))
         length = dbfile.read_int()
-        return dbfile.read_array(self.typecode, length)
+        return dbfile.read_array(typecode, length)
 
     def skip(self, dbfile):
         length = dbfile.read_int()
@@ -349,7 +364,7 @@ class IntListValues(SequenceValues):
 # Node-like interface wrappers
 
 
-class Node(object):
+class Node:
     """A slow but easier-to-use wrapper for FSA/DAWGs. Translates the low-level
     arc-based interface of GraphReader into Node objects with methods to follow
     edges.
@@ -376,10 +391,10 @@ class Node(object):
         if self.address is None:
             d = {}
         else:
-            d = dict(
-                (arc.label, Node(owner, arc.target, arc.accept))
+            d = {
+                arc.label: Node(owner, arc.target, arc.accept)
                 for arc in self.owner.iter_arcs(self.address)
-            )
+            }
         self._edges = d
 
     def keys(self):
@@ -402,8 +417,7 @@ class Node(object):
             yield sofar
         for key in sorted(self):
             node = self.edge(key)
-            for result in node.flatten(sofar + key):
-                yield result
+            yield from node.flatten(sofar + key)
 
     def flatten_strings(self):
         return (utf8decode(k)[0] for k in self.flatten())
@@ -421,7 +435,7 @@ class ComboNode(Node):
         self.b = b
 
     def __repr__(self):
-        return "<%s %r %r>" % (self.__class__.__name__, self.a, self.b)
+        return f"<{self.__class__.__name__} {self.a!r} {self.b!r}>"
 
     def __contains__(self, key):
         return key in self.a or key in self.b
@@ -461,7 +475,7 @@ class IntersectionNode(ComboNode):
 # Cursor
 
 
-class BaseCursor(object):
+class BaseCursor:
     """Base class for a cursor-type object for navigating an FST/word graph,
     represented by a :class:`GraphReader` object.
 
@@ -510,8 +524,7 @@ class BaseCursor(object):
         key in the graph.
         """
 
-        for label in self.prefix():
-            yield label
+        yield from self.prefix()
         c = self.copy()
         while not c.stopped():
             c.follow()
@@ -699,8 +712,7 @@ class Cursor(BaseCursor):
         if not self.stack:
             raise InactiveCursor
 
-        for label in self.prefix():
-            yield label
+        yield from self.prefix()
         arc = copy.copy(self.stack[-1])
         graph = self.graph
         while not arc.accept and arc.target is not None:
@@ -806,7 +818,7 @@ class Cursor(BaseCursor):
         return i
 
 
-class UncompiledNode(object):
+class UncompiledNode:
     # Represents an "in-memory" node used by the GraphWriter before it is
     # written to disk.
 
@@ -824,7 +836,7 @@ class UncompiledNode(object):
         self.inputcount = 0
 
     def __repr__(self):
-        return "<%r>" % ([(a.label, a.value) for a in self.arcs],)
+        return f"<{[(a.label, a.value) for a in self.arcs]!r}>"
 
     def digest(self):
         if self._digest is None:
@@ -855,7 +867,7 @@ class UncompiledNode(object):
 
     def replace_last(self, label, target, accept, acceptval=None):
         arc = self.arcs[-1]
-        assert arc.label == label, "%r != %r" % (arc.label, label)
+        assert arc.label == label, f"{arc.label!r} != {label!r}"
         arc.target = target
         arc.accept = accept
         arc.acceptval = acceptval
@@ -867,7 +879,7 @@ class UncompiledNode(object):
 
     def set_last_value(self, label, value):
         arc = self.arcs[-1]
-        assert arc.label == label, "%r->%r" % (arc.label, label)
+        assert arc.label == label, f"{arc.label!r}->{label!r}"
         arc.value = value
 
     def prepend_value(self, prefix):
@@ -878,7 +890,7 @@ class UncompiledNode(object):
             self.value = add(prefix, self.value)
 
 
-class Arc(object):
+class Arc:
     """
     Represents a directed arc between two nodes in an FSA/FST graph.
 
@@ -918,11 +930,11 @@ class Arc(object):
         self.endpos = endpos
 
     def __repr__(self):
-        return "<%r-%s %s%s>" % (
+        return "<{!r}-{} {}{}>".format(
             self.label,
             self.target,
             "." if self.accept else "",
-            (" %r" % self.value) if self.value else "",
+            f" {self.value!r}" if self.value else "",
         )
 
     def __eq__(self, other):
@@ -953,7 +965,7 @@ class Arc(object):
 # Graph writer
 
 
-class GraphWriter(object):
+class GraphWriter:
     """Writes an FSA/FST graph to disk.
 
     Call ``insert(key)`` to insert keys into the graph. You must
@@ -1052,7 +1064,7 @@ class GraphWriter(object):
         """
 
         if not self._infield:
-            raise Exception("Inserted %r before starting a field" % key)
+            raise Exception(f"Inserted {key!r} before starting a field")
         self._inserted = True
         key = to_labels(key)  # Python 3 sucks
 
@@ -1060,9 +1072,9 @@ class GraphWriter(object):
         lastkey = self.lastkey
         nodes = self.nodes
         if len(key) < 1:
-            raise KeyError("Can't store a null key %r" % (key,))
+            raise KeyError(f"Can't store a null key {key!r}")
         if lastkey and lastkey > key:
-            raise KeyError("Keys out of order %r..%r" % (lastkey, key))
+            raise KeyError(f"Keys out of order {lastkey!r}..{key!r}")
 
         # Find the common prefix shared by this key and the previous one
         prefixlen = 0
@@ -1085,7 +1097,7 @@ class GraphWriter(object):
 
         if vtype:
             if value is not None and not vtype.is_valid(value):
-                raise ValueError("%r is not valid for %s" % (value, vtype))
+                raise ValueError(f"{value!r} is not valid for {vtype}")
 
             # Push value commonalities through the tree
             common = None
@@ -1109,7 +1121,7 @@ class GraphWriter(object):
             else:
                 nodes[prefixlen].set_last_value(key[prefixlen], value)
         elif value:
-            raise Exception("Value %r but no value type" % value)
+            raise Exception(f"Value {value!r} but no value type")
 
         self.lastkey = key
 
@@ -1232,7 +1244,7 @@ class GraphWriter(object):
 # Graph reader
 
 
-class BaseGraphReader(object):
+class BaseGraphReader:
     def cursor(self, rootname=None):
         return Cursor(self, self.root(rootname))
 
@@ -1265,7 +1277,7 @@ class BaseGraphReader(object):
         return list(arc.copy() for arc in self.iter_arcs(address))
 
     def arc_dict(self, address):
-        return dict((arc.label, arc.copy()) for arc in self.iter_arcs(address))
+        return {arc.label: arc.copy() for arc in self.iter_arcs(address)}
 
     def find_path(self, path, arc=None, address=None):
         path = to_labels(path)
@@ -1447,7 +1459,7 @@ def to_labels(key):
     # I hate the Python 3 bytes object so friggin much
     if keytype is tuple or keytype is list:
         if not all(isinstance(e, bytes_type) for e in key):
-            raise TypeError("%r contains a non-bytestring" % key)
+            raise TypeError(f"{key!r} contains a non-bytestring")
         if keytype is list:
             key = tuple(key)
     elif isinstance(key, bytes_type):
@@ -1455,7 +1467,7 @@ def to_labels(key):
     elif isinstance(key, text_type):
         key = tuple(utf8encode(key[i : i + 1])[0] for i in range(len(key)))
     else:
-        raise TypeError("Don't know how to convert %r" % key)
+        raise TypeError(f"Don't know how to convert {key!r}")
     return key
 
 
@@ -1561,6 +1573,6 @@ def dump_graph(graph, address=None, tab=0, out=None):
         else:
             out.write(" " * 6)
         out.write("  " * tab)
-        out.write("%r %r %s %r\n" % (arc.label, arc.target, arc.accept, arc.value))
+        out.write(f"{arc.label!r} {arc.target!r} {arc.accept} {arc.value!r}\n")
         if arc.target is not None:
             dump_graph(graph, arc.target, tab + 1, out=out)

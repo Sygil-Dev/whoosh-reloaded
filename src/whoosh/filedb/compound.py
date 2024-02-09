@@ -28,8 +28,8 @@
 import errno
 import os
 import sys
-from threading import Lock
 from shutil import copyfileobj
+from threading import Lock
 
 try:
     import mmap
@@ -37,8 +37,8 @@ except ImportError:
     mmap = None
 
 from whoosh.compat import BytesIO, memoryview_
-from whoosh.filedb.structfile import BufferFile, StructFile
 from whoosh.filedb.filestore import FileStorage, StorageError
+from whoosh.filedb.structfile import BufferFile, StructFile
 from whoosh.system import emptybytes
 from whoosh.util import random_name
 
@@ -73,7 +73,7 @@ class CompoundStorage(FileStorage):
             try:
                 fileno = self._file.fileno()
                 self._source = mmap.mmap(fileno, 0, access=mmap.ACCESS_READ)
-            except (mmap.error, OSError):
+            except OSError:
                 e = sys.exc_info()[1]
                 # If we got an error because there wasn't enough memory to
                 # open the map, ignore it and fall through, we'll just use the
@@ -88,7 +88,7 @@ class CompoundStorage(FileStorage):
                 self._file = None
 
     def __repr__(self):
-        return "<%s (%s)>" % (self.__class__.__name__, self._name)
+        return f"<{self.__class__.__name__} ({self._name})>"
 
     def close(self):
         if self.is_closed:
@@ -107,7 +107,7 @@ class CompoundStorage(FileStorage):
         try:
             fileinfo = self._dir[name]
         except KeyError:
-            raise NameError("Unknown file %r" % (name,))
+            raise NameError(f"Unknown file {name!r}")
         return fileinfo["offset"], fileinfo["length"]
 
     def open_file(self, name, *args, **kwargs):
@@ -185,7 +185,7 @@ class CompoundStorage(FileStorage):
         dbfile.close()
 
 
-class SubFile(object):
+class SubFile:
     def __init__(self, parentfile, offset, length, name=None):
         self._file = parentfile
         self._offset = offset
@@ -247,11 +247,11 @@ class SubFile(object):
         return self._pos
 
 
-class CompoundWriter(object):
+class CompoundWriter:
     def __init__(self, tempstorage, buffersize=32 * 1024):
         assert isinstance(buffersize, int)
         self._tempstorage = tempstorage
-        self._tempname = "%s.ctmp" % random_name()
+        self._tempname = f"{random_name()}.ctmp"
         self._temp = tempstorage.create_file(self._tempname, mode="w+b")
         self._buffersize = buffersize
         self._streams = {}
@@ -298,7 +298,7 @@ class CompoundWriter(object):
                 f.write(block)
             f.close()
 
-    class SubStream(object):
+    class SubStream:
         def __init__(self, dbfile, buffersize):
             self._dbfile = dbfile
             self._buffersize = buffersize

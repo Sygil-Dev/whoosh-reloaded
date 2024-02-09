@@ -25,7 +25,38 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.matching.mcore import *
-from whoosh.matching.binary import *
-from whoosh.matching.wrappers import *
-from whoosh.matching.combo import *
+from whoosh.matching.binary import (
+    AdditiveBiMatcher,
+    AndMaybeMatcher,
+    AndNotMatcher,
+    BiMatcher,
+    DisjunctionMaxMatcher,
+    IntersectionMatcher,
+    UnionMatcher,
+)
+from whoosh.matching.combo import (
+    ArrayUnionMatcher,
+    CombinationMatcher,
+    PreloadedUnionMatcher,
+)
+from whoosh.matching.mcore import (
+    ConstantScoreMatcher,
+    LeafMatcher,
+    ListMatcher,
+    Matcher,
+    NoQualityAvailable,
+    NullMatcher,
+    NullMatcherClass,
+    ReadTooFar,
+)
+from whoosh.matching.wrappers import (
+    ConstantScoreWrapperMatcher,
+    CoordMatcher,
+    ExcludeMatcher,
+    FilterMatcher,
+    InverseMatcher,
+    MultiMatcher,
+    RequireMatcher,
+    SingleTermMatcher,
+    WrappingMatcher,
+)

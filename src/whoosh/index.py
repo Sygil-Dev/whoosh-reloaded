@@ -29,18 +29,17 @@
 an index.
 """
 
-from __future__ import division
 
 import os.path
 import re
 import sys
-from time import time, sleep
+from time import sleep, time
 
 from whoosh import __version__
 from whoosh.compat import pickle, string_type
 from whoosh.fields import ensure_schema
 from whoosh.legacy import toc_loaders
-from whoosh.system import _INT_SIZE, _FLOAT_SIZE, _LONG_SIZE
+from whoosh.system import _FLOAT_SIZE, _INT_SIZE, _LONG_SIZE
 
 _DEF_INDEX_NAME = "MAIN"
 _CURRENT_TOC_VERSION = -111
@@ -217,7 +216,7 @@ def version(storage, indexname=None):
 # Index base class
 
 
-class Index(object):
+class Index:
     """Represents an indexed collection of documents."""
 
     def close(self):
@@ -377,7 +376,7 @@ def clean_files(storage, indexname, gen, segments):
     # open, they may not be deleted immediately (i.e. on Windows) but will
     # probably be deleted eventually by a later call to clean_files.
 
-    current_segment_names = set(s.segment_id() for s in segments)
+    current_segment_names = {s.segment_id() for s in segments}
     tocpattern = TOC._pattern(indexname)
     segpattern = TOC._segment_pattern(indexname)
 
@@ -408,9 +407,9 @@ class FileIndex(Index):
         from whoosh.filedb.filestore import Storage
 
         if not isinstance(storage, Storage):
-            raise ValueError("%r is not a Storage object" % storage)
+            raise ValueError(f"{storage!r} is not a Storage object")
         if not isinstance(indexname, string_type):
-            raise ValueError("indexname %r is not a string" % indexname)
+            raise ValueError(f"indexname {indexname!r} is not a string")
 
         if schema:
             schema = ensure_schema(schema)
@@ -428,7 +427,7 @@ class FileIndex(Index):
         return cls(storage, schema, indexname)
 
     def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__, self.storage, self.indexname)
+        return f"{self.__class__.__name__}({self.storage!r}, {self.indexname!r})"
 
     def close(self):
         pass
@@ -498,7 +497,7 @@ class FileIndex(Index):
     def _reader(cls, storage, schema, segments, generation, reuse=None):
         # Returns a reader for the given segments, possibly reusing already
         # opened readers
-        from whoosh.reading import SegmentReader, MultiReader, EmptyReader
+        from whoosh.reading import EmptyReader, MultiReader, SegmentReader
 
         if reuse:
             # Merge segments with reuse segments
@@ -516,9 +515,7 @@ class FileIndex(Index):
             if reuse:
                 # Put all atomic readers in a dictionary
                 readers = [r for r, _ in reuse.leaf_readers()]
-                reusable = dict(
-                    (r.segment(), r) for r in readers if r.segment() is not None
-                )
+                reusable = {r.segment(): r for r in readers if r.segment() is not None}
 
             # Make a function to open readers, which reuses reusable readers.
             # It removes any readers it reuses from the "reusable" dictionary,
@@ -561,7 +558,7 @@ class FileIndex(Index):
                     info.generation,
                     reuse=reuse,
                 )
-            except IOError:
+            except OSError:
                 # Presume that we got a "file not found error" because a writer
                 # deleted one of the files just as we were trying to open it,
                 # and so retry a few times before actually raising the
@@ -576,7 +573,7 @@ class FileIndex(Index):
 # TOC class
 
 
-class TOC(object):
+class TOC:
     """Object representing the state of the index after a commit. Essentially
     a container for the index's schema and the list of segment objects.
     """
@@ -597,15 +594,15 @@ class TOC(object):
 
     @classmethod
     def _filename(cls, indexname, gen):
-        return "_%s_%s.toc" % (indexname, gen)
+        return f"_{indexname}_{gen}.toc"
 
     @classmethod
     def _pattern(cls, indexname):
-        return re.compile("^_%s_([0-9]+).toc$" % indexname)
+        return re.compile(f"^_{indexname}_([0-9]+).toc$")
 
     @classmethod
     def _segment_pattern(cls, indexname):
-        return re.compile("(%s_[0-9a-z]+)[.][A-Za-z0-9_.]+" % indexname)
+        return re.compile(f"({indexname}_[0-9a-z]+)[.][A-Za-z0-9_.]+")
 
     @classmethod
     def _latest_generation(cls, storage, indexname):
@@ -623,7 +620,7 @@ class TOC(object):
         schema = ensure_schema(schema)
 
         # Clear existing files
-        prefix = "_%s_" % indexname
+        prefix = f"_{indexname}_"
         for filename in storage:
             if filename.startswith(prefix):
                 storage.delete_file(filename)
@@ -638,7 +635,7 @@ class TOC(object):
             gen = cls._latest_generation(storage, indexname)
             if gen < 0:
                 raise EmptyIndexError(
-                    "Index %r does not exist in %r" % (indexname, storage)
+                    f"Index {indexname!r} does not exist in {storage!r}"
                 )
 
         # Read the content of this index from the .toc file.
@@ -657,7 +654,7 @@ class TOC(object):
         check_size("long", _LONG_SIZE)
         check_size("float", _FLOAT_SIZE)
 
-        if not stream.read_int() == -12345:
+        if stream.read_int() != -12345:
             raise IndexError("Number misread: byte order problem")
 
         version = stream.read_int()
@@ -668,7 +665,7 @@ class TOC(object):
                 loader = toc_loaders[version]
                 schema, segments = loader(stream, gen, schema, version)
             else:
-                raise IndexVersionError("Can't read format %s" % version, version)
+                raise IndexVersionError(f"Can't read format {version}", version)
         else:
             # If the user supplied a schema object with the constructor, don't
             # load the pickled schema from the saved index.
@@ -694,7 +691,7 @@ class TOC(object):
 
         # Use a temporary file for atomic write.
         tocfilename = self._filename(indexname, self.generation)
-        tempfilename = "%s.%s" % (tocfilename, time())
+        tempfilename = f"{tocfilename}.{time()}"
         stream = storage.create_file(tempfilename)
 
         stream.write_varint(_INT_SIZE)
@@ -715,10 +712,10 @@ class TOC(object):
                     pickle.dumps(field)
                 except pickle.PicklingError:
                     e = sys.exc_info()[1]
-                    raise pickle.PicklingError("%s %s=%r" % (e, fieldname, field))
+                    raise pickle.PicklingError(f"{e} {fieldname}={field!r}")
                 except TypeError:
                     e = sys.exc_info()[1]
-                    raise TypeError("%s %s=%r" % (e, fieldname, field))
+                    raise TypeError(f"{e} {fieldname}={field!r}")
             # Otherwise, re-raise the original exception
             raise
 

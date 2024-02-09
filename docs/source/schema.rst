@@ -371,7 +371,3 @@ If you set ``FieldType.vector`` to a ``Format`` object, the indexing code will u
 ``Format`` object to store information about the terms in each document. Currently
 by default Whoosh does not make use of term vectors at all, but they are
 available to expert users who want to implement their own field types.
-
-
-
-

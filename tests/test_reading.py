@@ -1,13 +1,12 @@
-# coding=utf-8
-from __future__ import with_statement
-import random, threading, time
+import random
+import threading
+import time
 
 import pytest
 from whoosh import fields, formats, reading
-
-from whoosh.compat import b, u, range
-from whoosh.reading import SegmentReader
+from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage
+from whoosh.reading import SegmentReader
 from whoosh.util.testing import TempIndex
 
 
@@ -124,20 +123,18 @@ def test_term_inspection():
             a_exp = list(r.expand_prefix("content", "a"))
             assert a_exp == [b("aa"), b("ab"), b("ax")]
 
-            assert set(r.all_terms()) == set(
-                [
-                    ("content", b("aa")),
-                    ("content", b("ab")),
-                    ("content", b("ax")),
-                    ("content", b("bb")),
-                    ("content", b("cc")),
-                    ("content", b("dd")),
-                    ("content", b("ee")),
-                    ("title", b("document")),
-                    ("title", b("my")),
-                    ("title", b("other")),
-                ]
-            )
+            assert set(r.all_terms()) == {
+                ("content", b("aa")),
+                ("content", b("ab")),
+                ("content", b("ax")),
+                ("content", b("bb")),
+                ("content", b("cc")),
+                ("content", b("dd")),
+                ("content", b("ee")),
+                ("title", b("document")),
+                ("title", b("my")),
+                ("title", b("other")),
+            }
 
             # (text, doc_freq, index_freq)
             cstats = _fstats(r.iter_field("content"))
@@ -495,8 +492,8 @@ def test_cursor():
 
 
 def _check_inspection_results(ix):
-    AE = "aé".encode("utf-8")
-    AU = "aú".encode("utf-8")
+    AE = "aé".encode()
+    AU = "aú".encode()
 
     with ix.reader() as r:
         cterms = " ".join(r.field_terms("content"))
@@ -506,20 +503,18 @@ def _check_inspection_results(ix):
         assert a_exp == [b("aa"), AE, AU]
 
         tset = set(r.all_terms())
-        assert tset == set(
-            [
-                ("content", b("aa")),
-                ("content", AE),
-                ("content", AU),
-                ("content", b("bb")),
-                ("content", b("cc")),
-                ("content", b("dd")),
-                ("content", b("ee")),
-                ("title", b("document")),
-                ("title", b("my")),
-                ("title", b("other")),
-            ]
-        )
+        assert tset == {
+            ("content", b("aa")),
+            ("content", AE),
+            ("content", AU),
+            ("content", b("bb")),
+            ("content", b("cc")),
+            ("content", b("dd")),
+            ("content", b("ee")),
+            ("title", b("document")),
+            ("title", b("my")),
+            ("title", b("other")),
+        }
 
         # (text, doc_freq, index_freq)
         assert _fstats(r.iter_field("content")) == [

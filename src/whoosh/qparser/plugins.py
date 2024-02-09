@@ -28,15 +28,14 @@
 import copy
 
 from whoosh import query
-from whoosh.compat import u
-from whoosh.compat import iteritems, range
+from whoosh.compat import iteritems, u
 from whoosh.qparser import syntax
 from whoosh.qparser.common import attach
-from whoosh.qparser.taggers import RegexTagger, FnTagger
+from whoosh.qparser.taggers import FnTagger, RegexTagger
 from whoosh.util.text import rcompile
 
 
-class Plugin(object):
+class Plugin:
     """Base class for parser plugins."""
 
     def taggers(self, parser):
@@ -81,7 +80,7 @@ class TaggingPlugin(RegexTagger):
     def create(self, parser, match):
         # Groupdict keys can be unicode sometimes apparently? Convert them to
         # str for use as keyword arguments. This should be Py3-safe.
-        kwargs = dict((str(k), v) for k, v in iteritems(match.groupdict()))
+        kwargs = {str(k): v for k, v in iteritems(match.groupdict())}
         return self.nodetype(**kwargs)
 
 
@@ -138,7 +137,7 @@ class PrefixPlugin(TaggingPlugin):
         qclass = query.Prefix
 
         def r(self):
-            return "%r*" % self.text
+            return f"{self.text!r}*"
 
     expr = "(?P<text>[^ \t\r\n*]+)[*](?= |$|\\))"
     nodetype = PrefixNode
@@ -149,7 +148,7 @@ class WildcardPlugin(TaggingPlugin):
     # \u061F = Arabic question mark
     # \u1367 = Ethiopic question mark
     qmarks = u("?\u055E\u061F\u1367")
-    expr = "(?P<text>[*%s])" % qmarks
+    expr = f"(?P<text>[*{qmarks}])"
 
     def filters(self, parser):
         # Run early, but definitely before multifield plugin
@@ -193,7 +192,7 @@ class WildcardPlugin(TaggingPlugin):
         qclass = query.Wildcard
 
         def r(self):
-            return "Wild %r" % self.text
+            return f"Wild {self.text!r}"
 
     nodetype = WildcardNode
 
@@ -212,7 +211,7 @@ class RegexPlugin(TaggingPlugin):
         qclass = query.Regex
 
         def r(self):
-            return "Regex %r" % self.text
+            return f"Regex {self.text!r}"
 
     expr = 'r"(?P<text>[^"]*)"'
     nodetype = RegexNode
@@ -233,7 +232,7 @@ class BoostPlugin(TaggingPlugin):
             self.boost = boost
 
         def r(self):
-            return "^ %s" % self.boost
+            return f"^ {self.boost}"
 
     def create(self, parser, match):
         # Override create so we can grab group 0
@@ -592,7 +591,7 @@ class FunctionPlugin(TaggingPlugin):
             self.boost = None
 
         def __repr__(self):
-            return "#%s<%r>(%r)" % (self.name, self.args, self.nodes)
+            return f"#{self.name}<{self.args!r}>({self.nodes!r})"
 
         def query(self, parser):
             qs = [n.query(parser) for n in self.nodes]
@@ -691,7 +690,7 @@ class PhrasePlugin(Plugin):
             self.slop = slop
 
         def r(self):
-            return "%s %r~%s" % (self.__class__.__name__, self.text, self.slop)
+            return f"{self.__class__.__name__} {self.text!r}~{self.slop}"
 
         def apply(self, fn):
             return self.__class__(
@@ -931,11 +930,7 @@ class OperatorsPlugin(Plugin):
             self.memo = memo
 
         def __repr__(self):
-            return "<%s %r (%s)>" % (
-                self.__class__.__name__,
-                self.expr.pattern,
-                self.memo,
-            )
+            return f"<{self.__class__.__name__} {self.expr.pattern!r} ({self.memo})>"
 
         def create(self, parser, match):
             return self.optype(match.group(0), self.grouptype, self.leftassoc)
@@ -1111,7 +1106,7 @@ class GtLtPlugin(TaggingPlugin):
             self.rel = rel
 
         def __repr__(self):
-            return "(%s)" % self.rel
+            return f"({self.rel})"
 
     expr = r"(?P<rel>(<=|>=|<|>|=<|=>))"
     nodetype = GtLtNode
@@ -1287,7 +1282,7 @@ class CopyFieldPlugin(Plugin):
         self.group = group
         if mirror:
             # Add in reversed mappings
-            map.update(dict((v, k) for k, v in iteritems(map)))
+            map.update({v: k for k, v in iteritems(map)})
 
     def filters(self, parser):
         # Run after the fieldname filter (100) but before multifield (110)

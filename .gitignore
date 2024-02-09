@@ -10,3 +10,10 @@ eggs/
 *.egg-info/
 /test.py
 /.vscode/settings.json
+/.coverage
+/whoosh-reloaded.code-workspace
+/.vscode/launch.json
+*.coverage.DESKTOP-*
+/coverage.xml
+/lcov.info
+/.codiumai.local.toml

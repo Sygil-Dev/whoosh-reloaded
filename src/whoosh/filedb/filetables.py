@@ -30,15 +30,15 @@ on-disk key-value database format. The current format is based heavily on
 D. J. Bernstein's CDB format (http://cr.yp.to/cdb.html).
 """
 
-import os, struct, sys
+import os
+import struct
+import sys
 from binascii import crc32
 from hashlib import md5  # type: ignore @UnresolvedImport
 
 from whoosh.compat import b, bytes_type
-from whoosh.compat import range
-from whoosh.util.numlists import GrowableArray
 from whoosh.system import _INT_SIZE, emptybytes
-
+from whoosh.util.numlists import GrowableArray
 
 # Exceptions
 
@@ -85,7 +85,7 @@ _directory_size = 256 * _dir_entry.size
 # Basic hash file
 
 
-class HashWriter(object):
+class HashWriter:
     """Implements a fast on-disk key-value store. This hash uses a two-level
     hashing scheme, where a key is hashed, the low eight bits of the hash value
     are used to index into one of 256 hash tables. This is basically the CDB
@@ -219,7 +219,7 @@ class HashWriter(object):
         return endpos
 
 
-class HashReader(object):
+class HashReader:
     """Reader for the fast on-disk key-value files created by
     :class:`HashWriter`.
     """
@@ -248,7 +248,7 @@ class HashReader(object):
         # Check format tag
         filemagic = dbfile.read(4)
         if filemagic != magic:
-            raise FileFormatError("Unknown file header %r" % filemagic)
+            raise FileFormatError(f"Unknown file header {filemagic!r}")
         # Read hash type
         self.hashtype = dbfile.read_byte()
         self.hashfn = _hash_functions[self.hashtype]
@@ -299,7 +299,7 @@ class HashReader(object):
 
     def close(self):
         if self.is_closed:
-            raise Exception("Tried to close %r twice" % self)
+            raise Exception(f"Tried to close {self!r} twice")
         self.dbfile.close()
         self.is_closed = True
 
@@ -390,7 +390,7 @@ class HashReader(object):
         """
 
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key!r} should be bytes")
         dbfile = self.dbfile
 
         # Hash the key
@@ -457,7 +457,7 @@ class OrderedHashWriter(HashWriter):
 
     def add(self, key, value):
         if key <= self.lastkey:
-            raise ValueError("Keys must increase: %r..%r" % (self.lastkey, key))
+            raise ValueError(f"Keys must increase: {self.lastkey!r}..{key!r}")
         self.index.append(self.dbfile.tell())
         HashWriter.add(self, key, value)
         self.lastkey = key
@@ -496,8 +496,7 @@ class OrderedHashReader(HashReader):
         if pos is None:
             return
 
-        for item in self._ranges(pos=pos):
-            yield item
+        yield from self._ranges(pos=pos)
 
     def keys_from(self, key):
         """Yields an ordered series of keys equal to or greater than the given
@@ -540,13 +539,13 @@ class OrderedHashReader(HashReader):
         elif indextype == "q":
             self._get_pos = dbfile.get_long
         else:
-            raise Exception("Unknown index type %r" % indextype)
+            raise Exception(f"Unknown index type {indextype!r}")
 
     def closest_key_pos(self, key):
         # Given a key, return the position of that key OR the next highest key
         # if the given key does not exist
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key!r} should be bytes")
 
         indexbase = self.indexbase
         indexsize = self.indexsize
@@ -596,7 +595,7 @@ class FieldedOrderedHashWriter(HashWriter):
 
     def add(self, key, value):
         if key <= self.lastkey:
-            raise ValueError("Keys must increase: %r..%r" % (self.lastkey, key))
+            raise ValueError(f"Keys must increase: {self.lastkey!r}..{key!r}")
         self.poses.append(self.dbfile.tell() - self.fieldstart)
         HashWriter.add(self, key, value)
         self.lastkey = key
@@ -676,7 +675,7 @@ class FieldedOrderedHashReader(HashReader):
         # Given a key, return the position of that key OR the next highest key
         # if the given key does not exist
         if not isinstance(key, bytes_type):
-            raise TypeError("Key %r should be bytes" % key)
+            raise TypeError(f"Key {key!r} should be bytes")
 
         dbfile = self.dbfile
         key_at = self.key_at
@@ -693,7 +692,7 @@ class FieldedOrderedHashReader(HashReader):
         elif ixtype == "q":
             get_pos = dbfile.get_long
         else:
-            raise Exception("Unknown index type %r" % ixtype)
+            raise Exception(f"Unknown index type {ixtype!r}")
 
         # Do a binary search of the positions in the index array
         lo = 0
@@ -724,8 +723,7 @@ class FieldedOrderedHashReader(HashReader):
             return
 
         startpos, ixpos, ixsize, ixtype = self.fieldmap[fieldname]
-        for item in self._ranges(pos, ixpos):
-            yield item
+        yield from self._ranges(pos, ixpos)
 
     def terms_from(self, fieldname, btext):
         dbfile = self.dbfile

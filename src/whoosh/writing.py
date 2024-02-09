@@ -25,8 +25,9 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import with_statement
-import threading, time
+
+import threading
+import time
 from bisect import bisect_right
 from contextlib import contextmanager
 
@@ -38,7 +39,6 @@ from whoosh.index import LockError
 from whoosh.util import fib, random_name
 from whoosh.util.filelock import try_for
 from whoosh.util.text import utf8encode
-
 
 # Exceptions
 
@@ -67,6 +67,7 @@ def groupmanager(writer):
 
 def NO_MERGE(writer, segments):
     """This policy does not merge any existing segments."""
+    _ = writer
     return segments
 
 
@@ -124,6 +125,7 @@ def CLEAR(writer, segments):
     """This policy DELETES all existing segments and only writes the new
     segment.
     """
+    _ = writer
 
     return []
 
@@ -146,7 +148,7 @@ class PostingPool(SortingPool):
         self.fieldnames = set()
 
     def _new_run(self):
-        path = "%s.run" % random_name()
+        path = f"{random_name()}.run"
         f = self.tempstore.create_file(path).raw_file()
         return path, f
 
@@ -157,10 +159,9 @@ class PostingPool(SortingPool):
         return self.tempstore.delete_file(path)
 
     def add(self, item):
-        # item = (fieldname, tbytes, docnum, weight, vbytes)
-        assert isinstance(item[1], bytes_type), "tbytes=%r" % item[1]
+        assert isinstance(item[1], bytes_type), f"tbytes={item[1]!r}"
         if item[4] is not None:
-            assert isinstance(item[4], bytes_type), "vbytes=%r" % item[4]
+            assert isinstance(item[4], bytes_type), f"vbytes={item[4]!r}"
         self.fieldnames.add(item[0])
         size = (
             28
@@ -192,7 +193,7 @@ class PostingPool(SortingPool):
 # Writer base class
 
 
-class IndexWriter(object):
+class IndexWriter:
     """High-level object for writing to an index.
 
     To get a writer for a particular index, call
@@ -359,7 +360,7 @@ class IndexWriter(object):
 
             from datetime import datetime, timedelta
             from whoosh import index
-            from whoosh.fields import *
+            from whoosh.fields import Schema, DATETIME, NUMERIC, TEXT
 
             schema = Schema(date=DATETIME, size=NUMERIC(float), content=TEXT)
             myindex = index.create_in("indexdir", schema)
@@ -420,7 +421,7 @@ class IndexWriter(object):
             return default
 
     def _field_boost(self, fields, fieldname, default=1.0):
-        boostkw = "_%s_boost" % fieldname
+        boostkw = f"_{fieldname}_boost"
         if boostkw in fields:
             return float(fields[boostkw])
         else:
@@ -526,7 +527,7 @@ class SegmentWriter(IndexWriter):
         docbase=0,
         codec=None,
         compound=True,
-        **kwargs
+        **kwargs,
     ):
         # Lock the index
         self.writelock = None
@@ -552,7 +553,7 @@ class SegmentWriter(IndexWriter):
         self._setup_doc_offsets()
 
         # Internals
-        self._tempstorage = self.storage.temp_storage("%s.tmp" % self.indexname)
+        self._tempstorage = self.storage.temp_storage(f"{self.indexname}.tmp")
         newsegment = codec.new_segment(self.storage, self.indexname)
         self.newsegment = newsegment
         self.compound = compound and newsegment.should_assemble()
@@ -574,7 +575,7 @@ class SegmentWriter(IndexWriter):
         # Origin bitbucket issue: https://bitbucket.org/mchaput/whoosh/issues/483
         # newsegment might not be set due to LockError
         # so use getattr to be safe
-        return "<%s %r>" % (self.__class__.__name__, getattr(self, "newsegment", None))
+        return f"<{self.__class__.__name__} {getattr(self, 'newsegment', None)!r}>"
 
     def _check_state(self):
         if self.is_closed:
@@ -623,13 +624,13 @@ class SegmentWriter(IndexWriter):
         self._check_state()
         if self._added:
             raise Exception("Can't modify schema after adding data to writer")
-        super(SegmentWriter, self).add_field(fieldname, fieldspec, **kwargs)
+        super().add_field(fieldname, fieldspec, **kwargs)
 
     def remove_field(self, fieldname):
         self._check_state()
         if self._added:
             raise Exception("Can't modify schema after adding data to writer")
-        super(SegmentWriter, self).remove_field(fieldname)
+        super().remove_field(fieldname)
 
     def has_deletions(self):
         """
@@ -642,7 +643,7 @@ class SegmentWriter(IndexWriter):
     def delete_document(self, docnum, delete=True):
         self._check_state()
         if docnum >= sum(seg.doc_count_all() for seg in self.segments):
-            raise IndexingError("No document ID %r in this index" % docnum)
+            raise IndexingError(f"No document ID {docnum!r} in this index")
         segment, segdocnum = self._segment_and_docnum(docnum)
         segment.delete_document(segdocnum, delete=delete)
 
@@ -708,7 +709,7 @@ class SegmentWriter(IndexWriter):
 
             pdw.start_doc(self.docnum)
             # Set disjunction includes dynamic fields (can be different for each document)
-            for fieldname in fieldnames | set(s for s in stored if s in self.schema):
+            for fieldname in fieldnames | {s for s in stored if s in self.schema}:
                 fieldobj = schema[fieldname]
                 length = reader.doc_field_length(docnum, fieldname)
                 pdw.add_field(fieldname, fieldobj, stored.get(fieldname), length)
@@ -729,9 +730,9 @@ class SegmentWriter(IndexWriter):
     def add_reader(self, reader):
         self._check_state()
         basedoc = self.docnum
-        ndxnames = set(
+        ndxnames = {
             fname for fname in reader.indexed_field_names() if fname in self.schema
-        )
+        }
         fieldnames = set(self.schema.names()) | ndxnames
 
         docmap = self.write_per_doc(fieldnames, reader)
@@ -742,7 +743,7 @@ class SegmentWriter(IndexWriter):
         # Check if the caller gave us a bogus field
         for name in fieldnames:
             if name not in schema:
-                raise UnknownFieldError("No field named %r in %s" % (name, schema))
+                raise UnknownFieldError(f"No field named {name!r} in {schema}")
 
     def add_document(self, **fields):
         self._check_state()
@@ -786,7 +787,7 @@ class SegmentWriter(IndexWriter):
                     spellfield = field.spelling_fieldname(fieldname)
                     for word in field.spellable_words(value):
                         word = utf8encode(word)[0]
-                        # item = (fieldname, tbytes, docnum, weight, vbytes)
+
                         add_post((spellfield, word, 0, 1, vbytes))
 
                 vformat = field.vector
@@ -801,7 +802,7 @@ class SegmentWriter(IndexWriter):
                     perdocwriter.add_vector_items(fieldname, field, vitems)
 
                 # Allow a custom value for stored field/column
-                customval = fields.get("_stored_%s" % fieldname, value)
+                customval = fields.get(f"_stored_{fieldname}", value)
 
                 # Add the stored value and length for this field to the per-
                 # document writer
@@ -812,7 +813,7 @@ class SegmentWriter(IndexWriter):
                 if column and customval is not None:
                     cv = field.to_column_value(customval)
                     perdocwriter.add_column_value(fieldname, column, cv)
-        except Exception as ex:
+        except ValueError as ex:
             perdocwriter.cancel_doc()
             raise ex
 
@@ -830,7 +831,7 @@ class SegmentWriter(IndexWriter):
 
     def per_document_reader(self):
         if not self.perdocwriter.is_closed:
-            raise Exception("Per-doc writer is still open")
+            raise RuntimeError("Per-doc writer is still open")
         return self.codec.per_document_reader(self.storage, self.get_segment())
 
     def searcher(self, **kwargs):
@@ -838,10 +839,10 @@ class SegmentWriter(IndexWriter):
         # We have a write lock, nothing is changing. Only cache if kwargs is emtpy
         # and the SegmentWriter is still open.
         if kwargs or self.is_closed:
-            return super(SegmentWriter, self).searcher(**kwargs)
+            return super().searcher(**kwargs)
 
         if self._searcher is None:
-            s = super(SegmentWriter, self).searcher()
+            s = super().searcher()
             self._searcher = s
             s._orig_close = s.close  # called in _finish()
             s.close = lambda: None

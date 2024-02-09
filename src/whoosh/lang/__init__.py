@@ -1,5 +1,3 @@
-# coding=utf-8
-
 # Copyright 2012 Matt Chaput. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,6 +28,7 @@
 
 # Exceptions
 
+
 class NoStemmer(Exception):
     pass
 
@@ -40,50 +39,76 @@ class NoStopWords(Exception):
 
 # Data and functions for language names
 
-languages = ("ar", "da", "nl", "en", "fi", "fr", "de", "hu", "it", "no", "pt",
-             "ro", "ru", "es", "sv", "tr")
+languages = (
+    "ar",
+    "da",
+    "nl",
+    "en",
+    "fi",
+    "fr",
+    "de",
+    "hu",
+    "it",
+    "no",
+    "pt",
+    "ro",
+    "ru",
+    "es",
+    "sv",
+    "tr",
+)
 
 aliases = {
-           # By ISO 639-1 three letter codes
-           "ara": "ar",
-           "dan": "da", "nld": "nl", "eng": "en", "fin": "fi", "fra": "fr",
-           "deu": "de", "hun": "hu", "ita": "it", "nor": "no", "por": "pt",
-           "ron": "ro", "rus": "ru", "spa": "es", "swe": "sv", "tur": "tr",
-
-           # By name in English
-           "arabic": "ar",
-           "danish": "da",
-           "dutch": "nl",
-           "english": "en",
-           "finnish": "fi",
-           "french": "fr",
-           "german": "de",
-           "hungarian": "hu",
-           "italian": "it",
-           "norwegian": "no",
-           "portuguese": "pt",
-           "romanian": "ro",
-           "russian": "ru",
-           "spanish": "es",
-           "swedish": "sv",
-           "turkish": "tr",
-
-           # By name in own language
-           "العربية": "ar",
-           "dansk": "da",
-           "nederlands": "nl",
-           "suomi": "fi",
-           "français": "fr",
-           "deutsch": "de",
-           "magyar": "hu",
-           "italiano": "it",
-           "norsk": "no",
-           "português": "pt",
-           "русский язык": "ru",
-           "español": "es",
-           "svenska": "sv",
-           "türkçe": "tr",
-           }
+    # By ISO 639-1 three letter codes
+    "ara": "ar",
+    "dan": "da",
+    "nld": "nl",
+    "eng": "en",
+    "fin": "fi",
+    "fra": "fr",
+    "deu": "de",
+    "hun": "hu",
+    "ita": "it",
+    "nor": "no",
+    "por": "pt",
+    "ron": "ro",
+    "rus": "ru",
+    "spa": "es",
+    "swe": "sv",
+    "tur": "tr",
+    # By name in English
+    "arabic": "ar",
+    "danish": "da",
+    "dutch": "nl",
+    "english": "en",
+    "finnish": "fi",
+    "french": "fr",
+    "german": "de",
+    "hungarian": "hu",
+    "italian": "it",
+    "norwegian": "no",
+    "portuguese": "pt",
+    "romanian": "ro",
+    "russian": "ru",
+    "spanish": "es",
+    "swedish": "sv",
+    "turkish": "tr",
+    # By name in own language
+    "العربية": "ar",
+    "dansk": "da",
+    "nederlands": "nl",
+    "suomi": "fi",
+    "français": "fr",
+    "deutsch": "de",
+    "magyar": "hu",
+    "italiano": "it",
+    "norsk": "no",
+    "português": "pt",
+    "русский язык": "ru",
+    "español": "es",
+    "svenska": "sv",
+    "türkçe": "tr",
+}
 
 
 def two_letter_code(name):
@@ -95,6 +120,7 @@ def two_letter_code(name):
 
 
 # Getter functions
+
 
 def has_stemmer(lang):
     try:
@@ -115,19 +141,22 @@ def stemmer_for_language(lang):
         # Original porter stemming algorithm is several times faster than the
         # more correct porter2 algorithm in snowball package
         from .porter import stem as porter_stem
+
         return porter_stem
 
     tlc = two_letter_code(lang)
 
     if tlc == "ar":
         from .isri import ISRIStemmer
+
         return ISRIStemmer().stem
 
     from .snowball import classes as snowball_classes
+
     if tlc in snowball_classes:
         return snowball_classes[tlc]().stem
 
-    raise NoStemmer("No stemmer available for %r" % lang)
+    raise NoStemmer(f"No stemmer available for {lang!r}")
 
 
 def stopwords_for_language(lang):
@@ -137,4 +166,4 @@ def stopwords_for_language(lang):
     if tlc in stoplists:
         return stoplists[tlc]
 
-    raise NoStopWords("No stop-word list available for %r" % lang)
+    raise NoStopWords(f"No stop-word list available for {lang!r}")

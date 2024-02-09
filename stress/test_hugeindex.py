@@ -1,10 +1,7 @@
-from __future__ import with_statement
 import struct
 
 from nose.tools import assert_equal  # type: ignore @UnresolvedImport
-
 from whoosh import formats
-from whoosh.compat import range
 from whoosh.filedb.filepostings import FilePostingReader, FilePostingWriter
 from whoosh.util.testing import TempStorage
 
@@ -19,8 +16,8 @@ def test_huge_postfile():
         assert_equal(pf.tell(), gb5 + 4)
 
         fpw = FilePostingWriter(pf)
-        format = formats.Frequency(None)
-        offset = fpw.start(format)
+        f = formats.Frequency(None)
+        offset = fpw.start(f)
         for i in range(10):
             fpw.write(i, float(i), struct.pack("!I", i), 10)
         posttotal = fpw.finish()
@@ -28,7 +25,7 @@ def test_huge_postfile():
         fpw.close()
 
         pf = st.open_file("test.pst")
-        pfr = FilePostingReader(pf, offset, format)
+        pfr = FilePostingReader(pf, offset, f)
         i = 0
         while pfr.is_active():
             assert_equal(pfr.id(), i)

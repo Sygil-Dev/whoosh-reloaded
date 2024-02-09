@@ -83,10 +83,9 @@ from collections import defaultdict
 from heapq import heapify, heappush, heapreplace
 
 from whoosh import sorting
-from whoosh.compat import abstractmethod, iteritems, itervalues, range
+from whoosh.compat import abstractmethod, iteritems, itervalues
 from whoosh.searching import Results, TimeLimit
 from whoosh.util import now
-
 
 # Functions
 
@@ -101,7 +100,7 @@ def ilen(iterator):
 # Base class
 
 
-class Collector(object):
+class Collector:
     """Base class for collectors."""
 
     def prepare(self, top_searcher, q, context):

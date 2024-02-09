@@ -5,7 +5,7 @@
 
 version: 2
 updates:
-  # Enable version updates for npm
+  # Enable version updates for pip
   - package-ecosystem: 'pip'
     directory: '/'
     # Check the npm registry for updates once a week (Monday)

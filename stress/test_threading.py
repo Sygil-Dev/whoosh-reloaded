@@ -1,8 +1,9 @@
-from __future__ import with_statement
-import random, threading, time
+import random
+import threading
+import time
 
 from whoosh import fields, query
-from whoosh.compat import range, u, text_type
+from whoosh.compat import text_type, u
 from whoosh.util.testing import TempStorage
 
 

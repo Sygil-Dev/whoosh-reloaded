@@ -28,7 +28,7 @@
 from whoosh.util.text import rcompile
 
 
-class BaseVersion(object):
+class BaseVersion:
     @classmethod
     def parse(cls, text):
         obj = cls()
@@ -43,41 +43,41 @@ class BaseVersion(object):
 
     def __repr__(self):
         vs = ", ".join(repr(getattr(self, slot)) for slot in self.__slots__)
-        return "%s(%s)" % (self.__class__.__name__, vs)
+        return f"{self.__class__.__name__}({vs})"
 
     def tuple(self):
         return tuple(getattr(self, slot) for slot in self.__slots__)
 
     def __eq__(self, other):
         if not hasattr(other, "tuple"):
-            raise ValueError("Can't compare %r with %r" % (self, other))
+            raise ValueError(f"Can't compare {self!r} with {other!r}")
         return self.tuple() == other.tuple()
 
     def __lt__(self, other):
         if not hasattr(other, "tuple"):
-            raise ValueError("Can't compare %r with %r" % (self, other))
+            raise ValueError(f"Can't compare {self!r} with {other!r}")
         return self.tuple() < other.tuple()
 
     # It's dumb that you have to define these
 
     def __gt__(self, other):
         if not hasattr(other, "tuple"):
-            raise ValueError("Can't compare %r with %r" % (self, other))
+            raise ValueError(f"Can't compare {self!r} with {other!r}")
         return self.tuple() > other.tuple()
 
     def __ge__(self, other):
         if not hasattr(other, "tuple"):
-            raise ValueError("Can't compare %r with %r" % (self, other))
+            raise ValueError(f"Can't compare {self!r} with {other!r}")
         return self.tuple() >= other.tuple()
 
     def __le__(self, other):
         if not hasattr(other, "tuple"):
-            raise ValueError("Can't compare %r with %r" % (self, other))
+            raise ValueError(f"Can't compare {self!r} with {other!r}")
         return self.tuple() <= other.tuple()
 
     def __ne__(self, other):
         if not hasattr(other, "tuple"):
-            raise ValueError("Can't compare %r with %r" % (self, other))
+            raise ValueError(f"Can't compare {self!r} with {other!r}")
         return self.tuple() != other.tuple()
 
 
@@ -128,7 +128,7 @@ class SimpleVersion(BaseVersion):
     ]
 
     _ex_bits = {"a": 0, "b": 1, "c": 2, "rc": 10, "z": 15}
-    _bits_ex = dict((v, k) for k, v in _ex_bits.items())
+    _bits_ex = {v: k for k, v in _ex_bits.items()}
 
     __slots__ = ("major", "minor", "release", "ex", "exnum")
 

@@ -1,13 +1,10 @@
-from __future__ import with_statement
-from datetime import datetime, timedelta
 import random
+from datetime import datetime, timedelta, timezone
 
-from whoosh import fields, query, sorting, columns
-from whoosh.compat import u
-from whoosh.compat import permutations, range
+from whoosh import columns, fields, query, sorting
+from whoosh.compat import permutations, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
-
 
 try:
     import multiprocessing
@@ -255,7 +252,7 @@ def test_query_facet_overlap():
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         for i, ltr in enumerate(domain):
-            v = "%s %s" % (ltr, domain[8 - i])
+            v = f"{ltr} {domain[8 - i]}"
             w.add_document(num=i, v=v)
 
     with ix.searcher() as s:
@@ -332,8 +329,8 @@ def test_date_facet():
 
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    d1 = datetime(2011, 7, 13)
-    d2 = datetime(1984, 3, 29)
+    d1 = datetime(2011, 7, 13)  # noqa: DTZ001
+    d2 = datetime(1984, 3, 29)  # noqa: DTZ001
     w.add_document(id=0, date=d1)
     w.add_document(id=1, date=d1)
     w.add_document(id=2)
@@ -395,24 +392,36 @@ def test_daterange_facet():
     schema = fields.Schema(id=fields.STORED, date=fields.DATETIME)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(id=0, date=datetime(2001, 1, 15))
-    w.add_document(id=1, date=datetime(2001, 1, 10))
+    w.add_document(id=0, date=datetime(2001, 1, 15, tzinfo=timezone.utc))
+    w.add_document(id=1, date=datetime(2001, 1, 10, tzinfo=timezone.utc))
     w.add_document(id=2)
-    w.add_document(id=3, date=datetime(2001, 1, 3))
-    w.add_document(id=4, date=datetime(2001, 1, 8))
-    w.add_document(id=5, date=datetime(2001, 1, 6))
+    w.add_document(id=3, date=datetime(2001, 1, 3, tzinfo=timezone.utc))
+    w.add_document(id=4, date=datetime(2001, 1, 8, tzinfo=timezone.utc))
+    w.add_document(id=5, date=datetime(2001, 1, 6, tzinfo=timezone.utc))
     w.commit()
 
     with ix.searcher() as s:
         rf = sorting.DateRangeFacet(
-            "date", datetime(2001, 1, 1), datetime(2001, 1, 20), timedelta(days=5)
+            "date",
+            datetime(2001, 1, 1, tzinfo=timezone.utc),
+            datetime(2001, 1, 20, tzinfo=timezone.utc),
+            timedelta(days=5),
         )
         r = s.search(query.Every(), groupedby={"date": rf})
         dt = datetime
         assert r.groups("date") == {
-            (dt(2001, 1, 1, 0, 0), dt(2001, 1, 6, 0, 0)): [3],
-            (dt(2001, 1, 6, 0, 0), dt(2001, 1, 11, 0, 0)): [1, 4, 5],
-            (dt(2001, 1, 11, 0, 0), dt(2001, 1, 16, 0, 0)): [0],
+            (
+                dt(2001, 1, 1, 0, 0, tzinfo=timezone.utc),
+                dt(2001, 1, 6, 0, 0, tzinfo=timezone.utc),
+            ): [3],
+            (
+                dt(2001, 1, 6, 0, 0, tzinfo=timezone.utc),
+                dt(2001, 1, 11, 0, 0, tzinfo=timezone.utc),
+            ): [1, 4, 5],
+            (
+                dt(2001, 1, 11, 0, 0, tzinfo=timezone.utc),
+                dt(2001, 1, 16, 0, 0, tzinfo=timezone.utc),
+            ): [0],
             None: [2],
         }
 
@@ -424,30 +433,68 @@ def test_relative_daterange():
 
     schema = fields.Schema(id=fields.STORED, date=fields.DATETIME)
     ix = RamStorage().create_index(schema)
-    basedate = datetime(2001, 1, 1)
+    basedate = datetime(2001, 1, 1, tzinfo=timezone.utc)
     count = 0
     with ix.writer() as w:
-        while basedate < datetime(2001, 12, 1):
+        while basedate < datetime(2001, 12, 1, tzinfo=timezone.utc):
             w.add_document(id=count, date=basedate)
             basedate += timedelta(days=14, hours=16)
             count += 1
 
     with ix.searcher() as s:
         gap = relativedelta(months=1)
-        rf = sorting.DateRangeFacet("date", dt(2001, 1, 1), dt(2001, 12, 31), gap)
+        rf = sorting.DateRangeFacet(
+            "date",
+            dt(2001, 1, 1, tzinfo=timezone.utc),
+            dt(2001, 12, 31, tzinfo=timezone.utc),
+            gap,
+        )
         r = s.search(query.Every(), groupedby={"date": rf})
         assert r.groups("date") == {
-            (dt(2001, 1, 1), dt(2001, 2, 1)): [0, 1, 2],
-            (dt(2001, 2, 1), dt(2001, 3, 1)): [3, 4],
-            (dt(2001, 3, 1), dt(2001, 4, 1)): [5, 6],
-            (dt(2001, 4, 1), dt(2001, 5, 1)): [7, 8],
-            (dt(2001, 5, 1), dt(2001, 6, 1)): [9, 10],
-            (dt(2001, 6, 1), dt(2001, 7, 1)): [11, 12],
-            (dt(2001, 7, 1), dt(2001, 8, 1)): [13, 14],
-            (dt(2001, 8, 1), dt(2001, 9, 1)): [15, 16],
-            (dt(2001, 9, 1), dt(2001, 10, 1)): [17, 18],
-            (dt(2001, 10, 1), dt(2001, 11, 1)): [19, 20],
-            (dt(2001, 11, 1), dt(2001, 12, 1)): [21, 22],
+            (
+                dt(2001, 1, 1, tzinfo=timezone.utc),
+                dt(2001, 2, 1, tzinfo=timezone.utc),
+            ): [0, 1, 2],
+            (
+                dt(2001, 2, 1, tzinfo=timezone.utc),
+                dt(2001, 3, 1, tzinfo=timezone.utc),
+            ): [3, 4],
+            (
+                dt(2001, 3, 1, tzinfo=timezone.utc),
+                dt(2001, 4, 1, tzinfo=timezone.utc),
+            ): [5, 6],
+            (
+                dt(2001, 4, 1, tzinfo=timezone.utc),
+                dt(2001, 5, 1, tzinfo=timezone.utc),
+            ): [7, 8],
+            (
+                dt(2001, 5, 1, tzinfo=timezone.utc),
+                dt(2001, 6, 1, tzinfo=timezone.utc),
+            ): [9, 10],
+            (
+                dt(2001, 6, 1, tzinfo=timezone.utc),
+                dt(2001, 7, 1, tzinfo=timezone.utc),
+            ): [11, 12],
+            (
+                dt(2001, 7, 1, tzinfo=timezone.utc),
+                dt(2001, 8, 1, tzinfo=timezone.utc),
+            ): [13, 14],
+            (
+                dt(2001, 8, 1, tzinfo=timezone.utc),
+                dt(2001, 9, 1, tzinfo=timezone.utc),
+            ): [15, 16],
+            (
+                dt(2001, 9, 1, tzinfo=timezone.utc),
+                dt(2001, 10, 1, tzinfo=timezone.utc),
+            ): [17, 18],
+            (
+                dt(2001, 10, 1, tzinfo=timezone.utc),
+                dt(2001, 11, 1, tzinfo=timezone.utc),
+            ): [19, 20],
+            (
+                dt(2001, 11, 1, tzinfo=timezone.utc),
+                dt(2001, 12, 1, tzinfo=timezone.utc),
+            ): [21, 22],
         }
 
 
@@ -563,7 +610,7 @@ def test_multifacet():
         with ix.searcher() as s:
             facet = sorting.MultiFacet(["tag", "size"])
             r = s.search(query.Every(), groupedby={"tag/size": facet})
-            cats = r.groups(("tag/size"))
+            cats = r.groups("tag/size")
             assert cats == correct
 
 

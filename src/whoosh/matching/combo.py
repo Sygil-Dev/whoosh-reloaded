@@ -25,10 +25,9 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
+
 from array import array
 
-from whoosh.compat import range
 from whoosh.matching import mcore
 
 

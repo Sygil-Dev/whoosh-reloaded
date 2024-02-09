@@ -25,7 +25,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
+
 from array import array
 
 from whoosh import matching
@@ -38,7 +38,7 @@ class WrappingQuery(qcore.Query):
         self.child = child
 
     def __repr__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.child)
+        return f"{self.__class__.__name__}({self.child!r})"
 
     def __hash__(self):
         return hash(self.__class__.__name__) ^ hash(self.child)
@@ -102,7 +102,7 @@ class Not(qcore.Query):
         return other and self.__class__ is other.__class__ and self.query == other.query
 
     def __repr__(self):
-        return "%s(%s)" % (self.__class__.__name__, repr(self.query))
+        return f"{self.__class__.__name__}({repr(self.query)})"
 
     def __unicode__(self):
         return u("NOT ") + text_type(self.query)

@@ -25,10 +25,9 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.compat import u, text_type
 from whoosh.analysis.acore import Composable, Token
+from whoosh.compat import text_type, u
 from whoosh.util.text import rcompile
-
 
 default_pattern = rcompile(r"[\w\*]+(\.?[\w\*]+)*")
 
@@ -62,9 +61,9 @@ class IDTokenizer(Tokenizer):
         start_pos=0,
         start_char=0,
         mode="",
-        **kwargs
+        **kwargs,
     ):
-        assert isinstance(value, text_type), "%r is not unicode" % value
+        assert isinstance(value, text_type), f"{value!r} is not unicode"
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         t.text = value
         t.boost = 1.0
@@ -117,7 +116,7 @@ class RegexTokenizer(Tokenizer):
         start_char=0,
         tokenize=True,
         mode="",
-        **kwargs
+        **kwargs,
     ):
         """
         :param value: The unicode string to tokenize.
@@ -132,7 +131,7 @@ class RegexTokenizer(Tokenizer):
         :param tokenize: if True, the text should be tokenized.
         """
 
-        assert isinstance(value, text_type), "%s is not unicode" % repr(value)
+        assert isinstance(value, text_type), f"{repr(value)} is not unicode"
 
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
@@ -250,7 +249,7 @@ class CharsetTokenizer(Tokenizer):
         start_char=0,
         tokenize=True,
         mode="",
-        **kwargs
+        **kwargs,
     ):
         """
         :param value: The unicode string to tokenize.
@@ -265,7 +264,7 @@ class CharsetTokenizer(Tokenizer):
         :param tokenize: if True, the text should be tokenized.
         """
 
-        assert isinstance(value, text_type), "%r is not unicode" % value
+        assert isinstance(value, text_type), f"{value!r} is not unicode"
 
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
@@ -353,7 +352,7 @@ class PathTokenizer(Tokenizer):
         self.expr = rcompile(expression)
 
     def __call__(self, value, positions=False, start_pos=0, **kwargs):
-        assert isinstance(value, text_type), "%r is not unicode" % value
+        assert isinstance(value, text_type), f"{value!r} is not unicode"
         token = Token(positions, **kwargs)
         pos = start_pos
         for match in self.expr.finditer(value):

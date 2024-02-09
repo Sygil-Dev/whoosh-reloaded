@@ -19,4 +19,3 @@ Exceptions
 ==========
 
 .. autoexception:: TermNotFound
-

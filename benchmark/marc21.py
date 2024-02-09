@@ -1,10 +1,10 @@
-from __future__ import with_statement, print_function
-import fnmatch, logging, os.path, re
+import fnmatch
+import logging
+import os.path
+import re
 
 from whoosh import analysis, fields, index, qparser, query, scoring
-from whoosh.compat import range
 from whoosh.util import now
-
 
 log = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ def read_file(dbfile, tags=None):
         if not first5:
             return
         if len(first5) < 5:
-            raise Exception
+            raise ValueError("Invalid length")
         length = int(first5)
         chunk = dbfile.read(length - 5)
         yield parse_record(first5 + chunk, tags), pos
@@ -63,7 +63,7 @@ def parse_record(data, tags=None):
         start = dirstart + i * DIRECTORY_ENTRY_LEN
         end = start + DIRECTORY_ENTRY_LEN
         tag = data[start : start + 3]
-        if tags and not tag in tags:
+        if tags and tag not in tags:
             continue
 
         entry = data[start:end]
@@ -135,7 +135,7 @@ def uniform_title(d):
 
 
 subjectfields = (
-    "600 610 611 630 648 650 651 653 654 655 656 657 658 662 " "690 691 696 697 698 699"
+    "600 610 611 630 648 650 651 653 654 655 656 657 658 662 690 691 696 697 698 699"
 ).split()
 
 
@@ -191,7 +191,7 @@ def make_index(basedir, ixdir, procs=4, limitmb=128, multisegment=True, glob="*.
     mfields.update("100 110 111".split())  # Author
     mfields.add("245")  # Title
 
-    print("Indexing with %d processor(s) and %d MB per processor" % (procs, limitmb))
+    print(f"Indexing with {procs} processor(s) and {limitmb} MB per processor")
     c = 0
     t = now()
     ix = index.create_in(ixdir, schema)
@@ -241,7 +241,7 @@ def search(qstring, ixdir, basedir, limit=None, optimize=True, scores=True):
             r = s.search(q, limit=limit, optimize=optimize)
             for hit in r:
                 print_record(hit.rank, basedir, hit["file"], hit["pos"])
-            print("Found %d records in %0.06f seconds" % (len(r), r.runtime))
+            print(f"Found {len(r)} records in {r.runtime:0.06f} seconds")
         else:
             t = now()
             for i, docnum in enumerate(s.docs_for_query(q)):
@@ -302,7 +302,7 @@ if __name__ == "__main__":
         "-M",
         "--merge-segments",
         dest="multisegment",
-        help="If indexing with multiproc, merge the segments after" " indexing",
+        help="If indexing with multiproc, merge the segments after indexing",
         action="store_false",
         default=True,
     )

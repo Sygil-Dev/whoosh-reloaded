@@ -37,17 +37,17 @@ class RenamingUnpickler(pickle.Unpickler):
         pickle.Unpickler.__init__(self, f)
 
         if shortcuts:
-            objmap = dict((k % shortcuts, v % shortcuts) for k, v in objmap.items())
+            objmap = {k % shortcuts: v % shortcuts for k, v in objmap.items()}
         self._objmap = objmap
 
     def find_class(self, modulename, objname):
-        fqname = "%s.%s" % (modulename, objname)
+        fqname = f"{modulename}.{objname}"
         if fqname in self._objmap:
             fqname = self._objmap[fqname]
         try:
             obj = find_object(fqname)
         except ImportError:
-            raise ImportError("Couldn't find %r" % fqname)
+            raise ImportError(f"Couldn't find {fqname!r}")
         return obj
 
 
@@ -62,7 +62,7 @@ def find_object(name, blacklist=None, whitelist=None):
         for pre in blacklist:
             if name.startswith(pre):
                 raise TypeError(
-                    "%r: can't instantiate names starting with %r" % (name, pre)
+                    f"{name!r}: can't instantiate names starting with {pre!r}"
                 )
     if whitelist:
         passes = False
@@ -71,11 +71,11 @@ def find_object(name, blacklist=None, whitelist=None):
                 passes = True
                 break
         if not passes:
-            raise TypeError("Can't instantiate %r" % name)
+            raise TypeError(f"Can't instantiate {name!r}")
 
     lastdot = name.rfind(".")
 
-    assert lastdot > -1, "Name %r must be fully qualified" % name
+    assert lastdot > -1, f"Name {name!r} must be fully qualified"
     modname = name[:lastdot]
     clsname = name[lastdot + 1 :]
 

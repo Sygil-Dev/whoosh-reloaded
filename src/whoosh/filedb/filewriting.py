@@ -16,24 +16,23 @@
 
 from collections import defaultdict
 from marshal import dumps
-from build.lib.whoosh.support import unicode
 
 from whoosh.fields import UnknownFieldError
-from whoosh.filedb.fileindex import SegmentDeletionMixin, Segment, SegmentSet
+from whoosh.filedb import misc
+from whoosh.filedb.fileindex import Segment, SegmentDeletionMixin, SegmentSet
 from whoosh.filedb.filepostings import FilePostingWriter
 from whoosh.filedb.filetables import (
     FileListWriter,
     FileTableWriter,
-    StructHashWriter,
     LengthWriter,
+    StructHashWriter,
 )
-from whoosh.filedb import misc
-from whoosh.filedb.pools import TempfilePool, MultiPool
+from whoosh.filedb.pools import MultiPool, TempfilePool
 from whoosh.index import LockError
-from whoosh.util.filelock import try_for
+from whoosh.support import unicode
 from whoosh.util import fib
+from whoosh.util.filelock import try_for
 from whoosh.writing import IndexWriter
-
 
 # Merge policies
 
@@ -44,6 +43,7 @@ from whoosh.writing import IndexWriter
 
 def NO_MERGE(ix, writer, segments):
     """This policy does not merge any existing segments."""
+    _ = ix, writer
     return segments
 
 
@@ -86,7 +86,7 @@ class SegmentWriter(SegmentDeletionMixin, IndexWriter):
         blocklimit=128,
         timeout=0.0,
         delay=0.1,
-        **poolargs
+        **poolargs,
     ):
         self.lock = ix.storage.lock(ix.indexname + "_LOCK")
         if not try_for(self.lock.acquire, timeout=timeout, delay=delay):
@@ -213,7 +213,7 @@ class SegmentWriter(SegmentDeletionMixin, IndexWriter):
         # Check if the caller gave us a bogus field
         for name in fieldnames:
             if name not in schema:
-                raise UnknownFieldError("There is no field named %r" % name)
+                raise UnknownFieldError(f"There is no field named {name!r}")
 
         storedvalues = {}
 
@@ -258,7 +258,7 @@ class SegmentWriter(SegmentDeletionMixin, IndexWriter):
 
         offset = vpostwriter.start(vformat)
         for text, valuestring in vlist:
-            assert isinstance(text, unicode), "%r is not unicode" % text
+            assert isinstance(text, unicode), f"{text!r} is not unicode"
             vpostwriter.write(text, valuestring)
         vpostwriter.finish()
 

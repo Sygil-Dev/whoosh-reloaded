@@ -25,7 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from __future__ import division
 
 from whoosh import matching
 from whoosh.compat import text_type, u
@@ -41,14 +40,14 @@ class CompoundQuery(qcore.Query):
     def __init__(self, subqueries, boost=1.0):
         for subq in subqueries:
             if not isinstance(subq, qcore.Query):
-                raise qcore.QueryError("%r is not a query" % subq)
+                raise qcore.QueryError(f"{subq!r} is not a query")
         self.subqueries = subqueries
         self.boost = boost
 
     def __repr__(self):
-        r = "%s(%r" % (self.__class__.__name__, self.subqueries)
+        r = f"{self.__class__.__name__}({self.subqueries!r}"
         if hasattr(self, "boost") and self.boost != 1:
-            r += ", boost=%s" % self.boost
+            r += f", boost={self.boost}"
         r += ")"
         return r
 
@@ -118,7 +117,7 @@ class CompoundQuery(qcore.Query):
         return 0
 
     def normalize(self):
-        from whoosh.query import Every, TermRange, NumericRange
+        from whoosh.query import Every, NumericRange, TermRange
 
         # Normalize subqueries and merge nested instances of this class
         subqueries = []
@@ -361,7 +360,7 @@ class Or(CompoundQuery):
             # Implementation that pre-loads docnums and scores into an array
             cls = PreloadedOr
         else:
-            raise ValueError("Unknown matcher_type %r" % self.matcher_type)
+            raise ValueError(f"Unknown matcher_type {self.matcher_type!r}")
 
         return cls(
             subs, boost=self.boost, minmatch=self.minmatch, scale=self.scale
