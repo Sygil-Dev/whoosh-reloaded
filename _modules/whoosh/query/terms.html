@@ -143,7 +143,7 @@
 <span class="sd">    &gt;&gt;&gt; Term(&quot;content&quot;, u&quot;render&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fieldname</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text_type</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fieldname&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text_type</span><span class="p">,</span> <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">minquality</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
@@ -347,7 +347,7 @@
 <span class="k">class</span> <span class="nc">PatternQuery</span><span class="p">(</span><span class="n">MultiTerm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An intermediate base class for common methods of Prefix and Wildcard.&quot;&quot;&quot;</span>
 
-    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fieldname</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text_type</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fieldname&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text_type</span><span class="p">,</span> <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">constantscore</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
@@ -545,9 +545,13 @@
 <div class="viewcode-block" id="FuzzyTerm"><a class="viewcode-back" href="../../../api/query.html#whoosh.query.FuzzyTerm">[docs]</a><span class="k">class</span> <span class="nc">FuzzyTerm</span><span class="p">(</span><span class="n">ExpandingTerm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Matches documents containing words similar to the given term.&quot;&quot;&quot;</span>
 
-    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">fieldname</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text_type</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">prefixlength</span><span class="o">=</span><span class="nb">int</span>
-    <span class="p">)</span>
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;fieldname&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text_type</span><span class="p">,</span>
+        <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s2">&quot;maxdist&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s2">&quot;prefixlength&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">prefixlength</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">constantscore</span><span class="o">=</span><span class="kc">True</span>
