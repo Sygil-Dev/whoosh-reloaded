@@ -162,7 +162,7 @@ def test_buffered_update():
         w = writing.BufferedWriter(ix, period=None, limit=5)
         for i in range(10):
             for char in "abc":
-                fs = dict(id=char, payload=text_type(i) + char)
+                fs = {"id": char, "payload": text_type(i) + char}
                 w.update_document(**fs)
 
         with w.reader() as r:

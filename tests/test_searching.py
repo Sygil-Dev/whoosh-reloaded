@@ -937,7 +937,7 @@ def test_find_missing():
         qp = qparser.QueryParser("text", schema)
         q = qp.parse(u("NOT id:*"))
         r = s.search(q, limit=None)
-        assert list(h["text"] for h in r) == ["charlie", "echo", "golf"]
+        assert [h["text"] for h in r] == ["charlie", "echo", "golf"]
 
 
 def test_ngram_phrase():
@@ -1537,9 +1537,12 @@ def test_collapse_order():
         rating = sorting.FieldFacet("rating", reverse=True)
         tag = sorting.FieldFacet("tag")
 
-        check(dict(sortedby=price), "h b l c e g i k j d f a")
-        check(dict(sortedby=price, collapse=tag), "h b l c e d")
-        check(dict(sortedby=price, collapse=tag, collapse_order=rating), "h b l i k d")
+        check({"sortedby": price}, "h b l c e g i k j d f a")
+        check({"sortedby": price, "collapse": tag}, "h b l c e d")
+        check(
+            {"sortedby": price, "collapse": tag, "collapse_order": rating},
+            "h b l i k d",
+        )
 
 
 def test_collapse_order_nocolumn():
@@ -1576,9 +1579,12 @@ def test_collapse_order_nocolumn():
         rating = sorting.FieldFacet("rating", reverse=True)
         tag = sorting.FieldFacet("tag")
 
-        check(dict(sortedby=price), "h b l c e g i k j d f a")
-        check(dict(sortedby=price, collapse=tag), "h b l c e d")
-        check(dict(sortedby=price, collapse=tag, collapse_order=rating), "h b l i k d")
+        check({"sortedby": price}, "h b l c e g i k j d f a")
+        check({"sortedby": price, "collapse": tag}, "h b l c e d")
+        check(
+            {"sortedby": price, "collapse": tag, "collapse_order": rating},
+            "h b l i k d",
+        )
 
 
 def test_coord():

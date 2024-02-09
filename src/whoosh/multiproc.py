@@ -377,10 +377,7 @@ class SerialMpWriter(MpWriter):
 
         # Merge existing segments
         finalsegments = self._merge_segments(mergetype, optimize, merge)
-        results = []
-        for writer in self.tasks:
-            results.append(finish_subsegment(writer))
-
+        results = [finish_subsegment(writer) for writer in self.tasks]
         self._merge_subsegments(results, mergetype)
         self._close_segment()
         self._assemble_segment()

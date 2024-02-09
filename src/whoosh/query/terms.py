@@ -43,7 +43,7 @@ class Term(qcore.Query):
     >>> Term("content", u"render")
     """
 
-    __inittypes__ = dict(fieldname=str, text=text_type, boost=float)
+    __inittypes__ = {"fieldname": str, "text": text_type, "boost": float}
 
     def __init__(self, fieldname, text, boost=1.0, minquality=None):
         self.fieldname = fieldname
@@ -247,7 +247,7 @@ class MultiTerm(qcore.Query):
 class PatternQuery(MultiTerm):
     """An intermediate base class for common methods of Prefix and Wildcard."""
 
-    __inittypes__ = dict(fieldname=str, text=text_type, boost=float)
+    __inittypes__ = {"fieldname": str, "text": text_type, "boost": float}
 
     def __init__(self, fieldname, text, boost=1.0, constantscore=True):
         self.fieldname = fieldname
@@ -445,9 +445,13 @@ class ExpandingTerm(MultiTerm):
 class FuzzyTerm(ExpandingTerm):
     """Matches documents containing words similar to the given term."""
 
-    __inittypes__ = dict(
-        fieldname=str, text=text_type, boost=float, maxdist=float, prefixlength=int
-    )
+    __inittypes__ = {
+        "fieldname": str,
+        "text": text_type,
+        "boost": float,
+        "maxdist": float,
+        "prefixlength": int,
+    }
 
     def __init__(
         self, fieldname, text, boost=1.0, maxdist=1, prefixlength=1, constantscore=True

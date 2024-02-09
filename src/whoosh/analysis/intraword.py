@@ -278,13 +278,13 @@ class IntraWordFilter(Filter):
 
     is_morph = True
 
-    __inittypes__ = dict(
-        delims=text_type,
-        splitwords=bool,
-        splitnums=bool,
-        mergewords=bool,
-        mergenums=bool,
-    )
+    __inittypes__ = {
+        "delims": text_type,
+        "splitwords": bool,
+        "splitnums": bool,
+        "mergewords": bool,
+        "mergenums": bool,
+    }
 
     def __init__(
         self,

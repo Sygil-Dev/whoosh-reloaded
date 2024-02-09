@@ -57,7 +57,7 @@ class Format:
 
     posting_size = -1
     textual = True
-    __inittypes__ = dict(field_boost=float)
+    __inittypes__ = {"field_boost": float}
 
     def __init__(self, field_boost=1.0, **options):
         """
@@ -144,7 +144,7 @@ class Existence(Format):
     """
 
     posting_size = 0
-    __inittypes__ = dict(field_boost=float)
+    __inittypes__ = {"field_boost": float}
 
     def __init__(self, field_boost=1.0, **options):
         self.field_boost = field_boost
@@ -175,7 +175,7 @@ class Frequency(Format):
     """
 
     posting_size = _INT_SIZE
-    __inittypes__ = dict(field_boost=float, boost_as_freq=bool)
+    __inittypes__ = {"field_boost": float, "boost_as_freq": bool}
 
     def __init__(self, field_boost=1.0, boost_as_freq=False, **options):
         """

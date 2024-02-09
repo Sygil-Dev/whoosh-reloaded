@@ -288,7 +288,7 @@ def test_all_stored_fields():
     with ix.searcher() as s:
         assert s.doc_count_all() == 4
         assert s.doc_count() == 2
-        sfs = list((sf["a"], sf["b"]) for sf in s.all_stored_fields())
+        sfs = [(sf["a"], sf["b"]) for sf in s.all_stored_fields()]
         assert sfs == [("alfa", "bravo"), ("alpaca", "beagle")]
 
 

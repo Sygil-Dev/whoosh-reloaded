@@ -116,10 +116,7 @@ class DatastoreStorage(Storage):
 
     def list(self):
         query = DatastoreFile.all()
-        keys = []
-        for file in query:
-            keys.append(file.key().id_or_name())
-        return keys
+        return [file.key().id_or_name() for file in query]
 
     def clean(self):
         pass

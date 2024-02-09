@@ -291,53 +291,53 @@ def test_bundle(p=english.bundle):
 def test_ranges(p=english.torange):
     assert_timespan(
         p.date_from("last tuesday to next tuesday", basedate),
-        dict(year=2010, month=9, day=14),
-        dict(year=2010, month=9, day=21),
+        {"year": 2010, "month": 9, "day": 14},
+        {"year": 2010, "month": 9, "day": 21},
     )
     assert_timespan(
         p.date_from("last monday to dec 25", basedate),
-        dict(year=2010, month=9, day=13),
-        dict(year=None, month=12, day=25),
+        {"year": 2010, "month": 9, "day": 13},
+        {"year": None, "month": 12, "day": 25},
     )
     assert_timespan(
         p.date_from("oct 25 to feb 14", basedate),
-        dict(year=None, month=10, day=25),
-        dict(year=None, month=2, day=14),
+        {"year": None, "month": 10, "day": 25},
+        {"year": None, "month": 2, "day": 14},
     )
     assert_timespan(
         p.date_from("3am oct 12 to 5pm", basedate),
-        dict(year=None, month=10, day=12, hour=3),
-        dict(year=None, month=None, day=None, hour=17),
+        {"year": None, "month": 10, "day": 12, "hour": 3},
+        {"year": None, "month": None, "day": None, "hour": 17},
     )
     assert_timespan(
         p.date_from("3am feb 12 to 5pm today", basedate),
-        dict(year=None, month=2, day=12, hour=3),
-        dict(year=2010, month=9, day=20, hour=17),
+        {"year": None, "month": 2, "day": 12, "hour": 3},
+        {"year": 2010, "month": 9, "day": 20, "hour": 17},
     )
     assert_timespan(
         p.date_from("feb to oct", basedate),
-        dict(year=None, month=2),
-        dict(year=None, month=10),
+        {"year": None, "month": 2},
+        {"year": None, "month": 10},
     )
     assert_timespan(
         p.date_from("oct 25 2005 11am to 5pm tomorrow", basedate),
-        dict(year=2005, month=10, day=25, hour=11),
-        dict(year=2010, month=9, day=21, hour=17),
+        {"year": 2005, "month": 10, "day": 25, "hour": 11},
+        {"year": 2010, "month": 9, "day": 21, "hour": 17},
     )
     assert_timespan(
         p.date_from("oct 5 2005 to november 20", basedate),
-        dict(year=2005, month=10, day=5),
-        dict(year=None, month=11, day=20),
+        {"year": 2005, "month": 10, "day": 5},
+        {"year": None, "month": 11, "day": 20},
     )
     assert_timespan(
         p.date_from("2007 to 2010", basedate),
-        dict(year=2007, month=None, day=None),
-        dict(year=2010, month=None, day=None),
+        {"year": 2007, "month": None, "day": None},
+        {"year": 2010, "month": None, "day": None},
     )
     assert_timespan(
         p.date_from("2007 to oct 12", basedate),
-        dict(year=2007, month=None, day=None),
-        dict(year=None, month=10, day=12),
+        {"year": 2007, "month": None, "day": None},
+        {"year": None, "month": 10, "day": 12},
     )
 
     assert_datespan(
@@ -367,110 +367,122 @@ def test_final_dates(p=english):
 def test_final_ranges(p=english):
     assert_unamb_span(
         p.date_from("feb to nov", basedate),
-        dict(year=2010, month=2),
-        dict(year=2010, month=11),
+        {"year": 2010, "month": 2},
+        {"year": 2010, "month": 11},
     )
 
     # 2005 to 10 oct 2009 -> jan 1 2005 to oct 31 2009
     assert_unamb_span(
         p.date_from("2005 to 10 oct 2009", basedate),
-        dict(year=2005),
-        dict(year=2009, month=10, day=10),
+        {"year": 2005},
+        {"year": 2009, "month": 10, "day": 10},
     )
 
     # jan 12 to oct 10 2009 -> jan 12 2009 to oct 10 2009
     assert_unamb_span(
         p.date_from("jan 12 to oct 10 2009", basedate),
-        dict(year=2009, month=1, day=12),
-        dict(year=2009, month=10, day=10),
+        {"year": 2009, "month": 1, "day": 12},
+        {"year": 2009, "month": 10, "day": 10},
     )
 
     # jan to oct 2009 -> jan 1 2009 to oct 31 2009
     assert_unamb_span(
         p.date_from("jan to oct 2009", basedate),
-        dict(year=2009, month=1),
-        dict(year=2009, month=10, day=31),
+        {"year": 2009, "month": 1},
+        {"year": 2009, "month": 10, "day": 31},
     )
 
     # mar 2005 to oct -> mar 1 2005 to oct 31 basedate.year
     assert_unamb_span(
         p.date_from("mar 2005 to oct", basedate),
-        dict(year=2005, month=3),
-        dict(year=2010, month=10, day=31),
+        {"year": 2005, "month": 3},
+        {"year": 2010, "month": 10, "day": 31},
     )
 
     # jan 10 to jan 25 -> jan 10 basedate.year to jan 25 basedate.year
     assert_unamb_span(
         p.date_from("jan 10 to jan 25", basedate),
-        dict(year=2010, month=1, day=10),
-        dict(year=2010, month=1, day=25),
+        {"year": 2010, "month": 1, "day": 10},
+        {"year": 2010, "month": 1, "day": 25},
     )
 
     # jan 2005 to feb 2009 -> jan 1 2005 to feb 28 2009
     assert_unamb_span(
         p.date_from("jan 2005 to feb 2009", basedate),
-        dict(year=2005, month=1),
-        dict(year=2009, month=2),
+        {"year": 2005, "month": 1},
+        {"year": 2009, "month": 2},
     )
 
     # jan 5000 to mar -> jan 1 5000 to mar 5000
     assert_unamb_span(
         p.date_from("jan 5000 to mar", basedate),
-        dict(year=5000, month=1),
-        dict(year=5000, month=3),
+        {"year": 5000, "month": 1},
+        {"year": 5000, "month": 3},
     )
 
     # jun 5000 to jan -> jun 1 5000 to jan 31 5001
     assert_unamb_span(
         p.date_from("jun 5000 to jan", basedate),
-        dict(year=5000, month=6),
-        dict(year=5001, month=1),
+        {"year": 5000, "month": 6},
+        {"year": 5001, "month": 1},
     )
 
     # oct 2010 to feb -> oct 1 2010 to feb 28 2011
     assert_unamb_span(
         p.date_from("oct 2010 to feb", basedate),
-        dict(year=2010, month=10),
-        dict(year=2011, month=2),
+        {"year": 2010, "month": 10},
+        {"year": 2011, "month": 2},
     )
 
     assert_unamb_span(
         p.date_from("5pm to 3am", basedate),
-        dict(year=2010, month=9, day=20, hour=17),
-        dict(year=2010, month=9, day=21, hour=3),
+        {"year": 2010, "month": 9, "day": 20, "hour": 17},
+        {"year": 2010, "month": 9, "day": 21, "hour": 3},
     )
 
     assert_unamb_span(
         p.date_from("5am to 3 am tomorrow", basedate),
-        dict(year=2010, month=9, day=20, hour=5),
-        dict(year=2010, month=9, day=21, hour=3),
+        {"year": 2010, "month": 9, "day": 20, "hour": 5},
+        {"year": 2010, "month": 9, "day": 21, "hour": 3},
     )
 
     assert_unamb_span(
         p.date_from("3am to 5 pm tomorrow", basedate),
-        dict(year=2010, month=9, day=21, hour=3),
-        dict(year=2010, month=9, day=21, hour=17),
+        {"year": 2010, "month": 9, "day": 21, "hour": 3},
+        {"year": 2010, "month": 9, "day": 21, "hour": 17},
     )
 
     assert_unamb_span(
         p.date_from("-2hrs to +20min", basedate),
-        dict(
-            year=2010, month=9, day=20, hour=13, minute=16, second=6, microsecond=454000
-        ),
-        dict(
-            year=2010, month=9, day=20, hour=15, minute=36, second=6, microsecond=454000
-        ),
+        {
+            "year": 2010,
+            "month": 9,
+            "day": 20,
+            "hour": 13,
+            "minute": 16,
+            "second": 6,
+            "microsecond": 454000,
+        },
+        {
+            "year": 2010,
+            "month": 9,
+            "day": 20,
+            "hour": 15,
+            "minute": 36,
+            "second": 6,
+            "microsecond": 454000,
+        },
     )
 
     # Swap
     assert_unamb_span(
         p.date_from("oct 25 2009 to feb 14 2008", basedate),
-        dict(year=2008, month=2, day=14),
-        dict(year=2009, month=10, day=25),
+        {"year": 2008, "month": 2, "day": 14},
+        {"year": 2009, "month": 10, "day": 25},
     )
 
     assert_unamb_span(
         p.date_from("oct 25 5000 to tomorrow", basedate),
-        dict(year=2010, month=9, day=21),
-        dict(year=5000, month=10, day=25),
+        {"year": 2010, "month": 9, "day": 21},
+        {"year": 5000, "month": 10, "day": 25},
     )

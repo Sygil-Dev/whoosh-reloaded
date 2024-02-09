@@ -392,7 +392,7 @@ class CharsetFilter(Filter):
     http://www.sphinxsearch.com/docs/current.html#conf-charset-table.
     """
 
-    __inittypes__ = dict(charmap=dict)
+    __inittypes__ = {"charmap": dict}
 
     def __init__(self, charmap):
         """

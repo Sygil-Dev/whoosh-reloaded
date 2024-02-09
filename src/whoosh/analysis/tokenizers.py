@@ -222,7 +222,7 @@ class CharsetTokenizer(Tokenizer):
     http://www.sphinxsearch.com/docs/current.html#conf-charset-table.
     """
 
-    __inittype__ = dict(charmap=str)
+    __inittype__ = {"charmap": str}
 
     def __init__(self, charmap):
         """

@@ -1274,7 +1274,7 @@ class BaseGraphReader:
     # Convenience methods
 
     def list_arcs(self, address):
-        return list(arc.copy() for arc in self.iter_arcs(address))
+        return [arc.copy() for arc in self.iter_arcs(address)]
 
     def arc_dict(self, address):
         return {arc.label: arc.copy() for arc in self.iter_arcs(address)}
