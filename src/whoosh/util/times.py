@@ -27,7 +27,7 @@
 
 import calendar
 import copy
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from whoosh.compat import iteritems
 
@@ -171,7 +171,7 @@ class adatetime:
         )
 
     def date(self):
-        return date(self.year, self.month, self.day)
+        return date(self.year, self.month, self.day, tzinfo=timezone.utc)
 
     def copy(self):
         return adatetime(
@@ -237,7 +237,7 @@ class adatetime:
             s = 0
         if ms is None:
             ms = 0
-        return datetime(y, m, d, h, mn, s, ms)
+        return datetime(y, m, d, h, mn, s, ms, tzinfo=timezone.utc)
 
     def ceil(self):
         """Returns a ``datetime`` version of this object with all unspecified
@@ -275,7 +275,7 @@ class adatetime:
             s = 59
         if ms is None:
             ms = 999999
-        return datetime(y, m, d, h, mn, s, ms)
+        return datetime(y, m, d, h, mn, s, ms, tzinfo=timezone.utc)
 
     def disambiguated(self, basedate):
         """Returns either a ``datetime`` or unambiguous ``timespan`` version
@@ -514,4 +514,5 @@ def fix(at):
         minute=at.minute,
         second=at.second,
         microsecond=at.microsecond,
+        tzinfo=timezone.utc,
     )

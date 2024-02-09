@@ -27,7 +27,7 @@
 
 import re
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from whoosh.compat import iteritems, string_type
 from whoosh.qparser import plugins, syntax
@@ -89,7 +89,7 @@ class ParserBase:
 
     def date_from(self, text, dt=None, pos=0, debug=-9999):
         if dt is None:
-            dt = datetime.now()
+            dt = datetime.now(tz=timezone.utc)
 
         d, pos = self.parse(text, dt, pos, debug + 1)
         return d
@@ -661,7 +661,7 @@ class DateParser:
 
     def date_from(self, text, basedate=None, pos=0, debug=-9999, toend=True):
         if basedate is None:
-            basedate = datetime.utcnow()
+            basedate = datetime.now(tz=timezone.utc)
 
         parser = self.get_parser()
         if toend:

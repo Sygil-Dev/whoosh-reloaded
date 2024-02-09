@@ -500,12 +500,12 @@ def test_dismax():
 
 
 def test_exclusion():
-    from datetime import datetime
+    from datetime import datetime, timezone
 
     schema = fields.Schema(id=fields.ID(stored=True), date=fields.DATETIME)
     ix = RamStorage().create_index(schema)
-    dt1 = datetime(1950, 1, 1)
-    dt2 = datetime(1960, 1, 1)
+    dt1 = datetime(1950, 1, 1, tzinfo=timezone.utc)
+    dt2 = datetime(1960, 1, 1, tzinfo=timezone.utc)
     with ix.writer() as w:
         # Make 39 documents with dates != dt1 and then make a last document
         # with feed == dt1.

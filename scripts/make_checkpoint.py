@@ -7,7 +7,7 @@
 import os.path
 import random
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 
 from whoosh import fields, index
 from whoosh.compat import u
@@ -46,7 +46,12 @@ for segnum in range(3):
             frac += 0.15
             path = u(f"{segnum}/{num}")
             title = " ".join(random.choice(words) for _ in range(100))
-            dt = datetime(year=2000 + counter, month=(counter % 12) + 1, day=15)
+            dt = datetime(
+                year=2000 + counter,
+                month=(counter % 12) + 1,
+                day=15,
+                tzinfo=timezone.utc,
+            )
 
             w.add_document(
                 path=path,

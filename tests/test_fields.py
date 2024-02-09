@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from whoosh import fields, qparser, query
@@ -340,7 +340,7 @@ def test_nontext_document():
     )
     ix = RamStorage().create_index(schema)
 
-    dt = datetime.now()
+    dt = datetime.now(tz=timezone.utc)
     w = ix.writer()
     for i in range(50):
         w.add_document(id=i, num=i, date=dt + timedelta(days=i), even=not (i % 2))
@@ -365,7 +365,7 @@ def test_nontext_update():
     )
     ix = RamStorage().create_index(schema)
 
-    dt = datetime.now()
+    dt = datetime.now(tz=timezone.utc)
     w = ix.writer()
     for i in range(10):
         w.add_document(id=i, num=i, date=dt + timedelta(days=i))
@@ -391,7 +391,8 @@ def test_datetime():
     for month in range(1, 12):
         for day in range(1, 28):
             w.add_document(
-                id=u("%s-%s") % (month, day), date=datetime(2010, month, day, 14, 0, 0)
+                id=u("%s-%s") % (month, day),
+                date=datetime(2010, month, day, 14, 0, 0, tzinfo=timezone.utc),
             )
     w.commit()
 
@@ -409,8 +410,8 @@ def test_datetime():
         assert len(r) == 27
 
         q = qp.parse(u("date:[2010-05 to 2010-08]"))
-        startdt = datetime(2010, 5, 1, 0, 0, 0, 0)
-        enddt = datetime(2010, 8, 31, 23, 59, 59, 999999)
+        startdt = datetime(2010, 5, 1, 0, 0, 0, 0, tzinfo=timezone.utc)
+        enddt = datetime(2010, 8, 31, 23, 59, 59, 999999, tzinfo=timezone.utc)
         assert q.__class__ is query.NumericRange
         assert q.start == times.datetime_to_long(startdt)
         assert q.end == times.datetime_to_long(enddt)
@@ -694,9 +695,11 @@ def test_valid_date_string():
     query = field.parse_query("date", date_string)
 
     # Define the expected start and end dates
-    expected_start = datetime_to_long(datetime.datetime(2022, 1, 1))
+    expected_start = datetime_to_long(
+        datetime.datetime(2022, 1, 1, tzinfo=timezone.utc)
+    )
     expected_end = datetime_to_long(
-        datetime.datetime(2022, 1, 1)
+        datetime.datetime(2022, 1, 1, tzinfo=timezone.utc)
         + datetime.timedelta(days=1)
         - datetime.timedelta(microseconds=1)
     )

@@ -1,6 +1,6 @@
 import random
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 from whoosh import __version__, analysis, fields, index, qparser, query
@@ -629,15 +629,20 @@ def test_multivalue():
     )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(id=1, date=datetime(2001, 1, 1), num=5)
+        w.add_document(id=1, date=datetime(2001, 1, 1, tzinfo=timezone.utc), num=5)
         w.add_document(
-            id=2, date=[datetime(2002, 2, 2), datetime(2003, 3, 3)], num=[1, 2, 3, 12]
+            id=2,
+            date=[
+                datetime(2002, 2, 2, tzinfo=timezone.utc),
+                datetime(2003, 3, 3, tzinfo=timezone.utc),
+            ],
+            num=[1, 2, 3, 12],
         )
         w.add_document(txt=u("a b c").split())
 
     with ix.reader() as r:
         assert ("num", 3) in r
-        assert ("date", datetime(2003, 3, 3)) in r
+        assert ("date", datetime(2003, 3, 3, tzinfo=timezone.utc)) in r
         assert " ".join(r.field_terms("txt")) == "a b c"
 
 
