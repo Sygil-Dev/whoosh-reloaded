@@ -3,7 +3,7 @@ import threading
 import time
 
 from whoosh import fields, query
-from whoosh.compat import range, text_type, u
+from whoosh.compat import text_type, u
 from whoosh.util.testing import TempStorage
 
 

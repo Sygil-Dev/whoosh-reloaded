@@ -4,7 +4,7 @@ import time
 
 import pytest
 from whoosh import fields, formats, reading
-from whoosh.compat import b, range, u
+from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.reading import SegmentReader
 from whoosh.util.testing import TempIndex

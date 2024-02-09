@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 from whoosh import fields, qparser, query
-from whoosh.compat import b, range, u
+from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util import times
 from whoosh.util.testing import TempIndex

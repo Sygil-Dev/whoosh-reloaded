@@ -4,7 +4,7 @@ from array import array
 import pytest
 from whoosh import analysis, fields, formats, query
 from whoosh.codec import default_codec
-from whoosh.compat import array_tobytes, b, range, text_type, u
+from whoosh.compat import array_tobytes, b, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempStorage
 

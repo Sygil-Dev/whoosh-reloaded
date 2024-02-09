@@ -26,7 +26,6 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from whoosh import matching
-from whoosh.compat import range
 from whoosh.query import qcore
 from whoosh.query.wrappers import WrappingQuery
 

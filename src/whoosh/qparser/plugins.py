@@ -28,7 +28,7 @@
 import copy
 
 from whoosh import query
-from whoosh.compat import iteritems, range, u
+from whoosh.compat import iteritems, u
 from whoosh.qparser import syntax
 from whoosh.qparser.common import attach
 from whoosh.qparser.taggers import FnTagger, RegexTagger

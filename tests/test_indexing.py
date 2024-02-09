@@ -4,7 +4,7 @@ from datetime import datetime
 
 import pytest
 from whoosh import __version__, analysis, fields, index, qparser, query
-from whoosh.compat import b, permutations, range, text_type, u
+from whoosh.compat import b, permutations, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempIndex, TempStorage

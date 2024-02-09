@@ -28,7 +28,6 @@
 
 from array import array
 
-from whoosh.compat import range
 from whoosh.matching import mcore
 
 

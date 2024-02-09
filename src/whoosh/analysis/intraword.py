@@ -29,7 +29,7 @@ import re
 from collections import deque
 
 from whoosh.analysis.filters import Filter
-from whoosh.compat import range, text_type, u
+from whoosh.compat import text_type, u
 
 
 class CompoundWordFilter(Filter):

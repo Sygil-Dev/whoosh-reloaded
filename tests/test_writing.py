@@ -4,7 +4,7 @@ import time
 
 import pytest
 from whoosh import analysis, fields, query, writing
-from whoosh.compat import b, range, text_type, u
+from whoosh.compat import b, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 

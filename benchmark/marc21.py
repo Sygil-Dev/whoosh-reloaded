@@ -4,7 +4,6 @@ import os.path
 import re
 
 from whoosh import analysis, fields, index, qparser, query, scoring
-from whoosh.compat import range
 from whoosh.util import now
 
 log = logging.getLogger(__name__)

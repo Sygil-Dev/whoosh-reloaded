@@ -307,7 +307,7 @@ class ArrayValues(SequenceValues):
     def read(self, dbfile):
         typecode = u(dbfile.read(1))
         length = dbfile.read_int()
-        return dbfile.read_array(self.typecode, length)
+        return dbfile.read_array(typecode, length)
 
     def skip(self, dbfile):
         length = dbfile.read_int()

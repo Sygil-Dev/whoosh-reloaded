@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 from whoosh import fields, index
-from whoosh.compat import range, u
+from whoosh.compat import u
 
 if len(sys.argv) < 2:
     print("USAGE: make_checkpoint.py <dir>")

@@ -28,7 +28,7 @@
 from array import array
 from collections import defaultdict
 
-from whoosh.compat import iteritems, izip, range, string_type
+from whoosh.compat import iteritems, izip, string_type
 
 # Faceting objects
 

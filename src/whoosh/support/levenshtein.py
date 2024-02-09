@@ -2,8 +2,6 @@
 Contains functions implementing edit distance algorithms.
 """
 
-from whoosh.compat import range
-
 
 def levenshtein(seq1, seq2, limit=None):
     """Returns the Levenshtein edit distance between two strings."""
