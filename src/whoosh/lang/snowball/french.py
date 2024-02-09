@@ -148,7 +148,7 @@ class FrenchStemmer(_StandardStemmer):
     )
     __step4_suffixes = (u("i\xE8re"), u("I\xE8re"), "ion", "ier", "Ier", "e", u("\xEB"))
 
-    def stem(self, word):
+    def stem(self, word):  # noqa: C901
         """
         Stem a French word and return the stemmed form.
 
@@ -157,6 +157,10 @@ class FrenchStemmer(_StandardStemmer):
         :return: The stemmed form.
         :rtype: unicode
 
+        This method is too complex (74) -- ruff rule C901
+        This method has too many branches (79) -- ruff rule PLR0912
+        This method has too many statements (160) -- ruff rule PLR0915
+        Future edits to this method should reduce, not increase its complexity.
         """
         word = word.lower()
 
