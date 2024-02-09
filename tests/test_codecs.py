@@ -3,9 +3,15 @@ from array import array
 
 import pytest
 from whoosh import analysis, fields, formats, query
-from whoosh.codec import default_codec
+from whoosh.codec import default_codec, memory
+from whoosh.codec.memory import MemoryCodec, MemSegment, MemTermsReader, MemWriter
+from whoosh.codec.plaintext import PlainTextCodec
+from whoosh.codec.whoosh3 import W3Codec
 from whoosh.compat import array_tobytes, b, text_type, u
+from whoosh.fields import TEXT, Schema
 from whoosh.filedb.filestore import RamStorage
+from whoosh.reading import TermNotFound
+from whoosh.searching import Searcher
 from whoosh.util.testing import TempStorage
 
 
@@ -528,9 +534,6 @@ cde = "charlie delta echo"
 
 def test_plaintext_codec():
     pytest.importorskip("ast")
-    from whoosh.codec.plaintext import PlainTextCodec
-    from whoosh.codec.whoosh3 import W3Codec
-
     ana = analysis.StemmingAnalyzer()
     schema = fields.Schema(
         a=fields.TEXT(vector=True, sortable=True),
@@ -606,9 +609,6 @@ def test_plaintext_codec():
 
 
 def test_memory_codec():
-    from whoosh.codec import memory
-    from whoosh.searching import Searcher
-
     ana = analysis.StemmingAnalyzer()
     schema = fields.Schema(
         a=fields.TEXT(vector=True),
@@ -617,7 +617,7 @@ def test_memory_codec():
         d=fields.TEXT(analyzer=ana, spelling=True),
     )
 
-    codec = memory.MemoryCodec()
+    codec = MemoryCodec()
     with codec.writer(schema) as w:
         w.add_document(
             a=u("alfa bravo charlie"), b="hello", c=100, d=u("quelling whining echoing")
@@ -659,8 +659,6 @@ def test_memory_codec():
 
 
 def test_memory_multiwrite():
-    from whoosh.codec import memory
-
     domain = [
         "alfa bravo charlie delta",
         "bravo charlie delta echo",
@@ -670,7 +668,7 @@ def test_memory_multiwrite():
     ]
 
     schema = fields.Schema(line=fields.TEXT(stored=True))
-    codec = memory.MemoryCodec()
+    codec = MemoryCodec()
 
     for line in domain:
         with codec.writer(schema) as w:
@@ -686,9 +684,6 @@ def test_memory_multiwrite():
 
 # can add a new field to the schema before adding documents
 def test_add_new_field_to_schema():
-    from whoosh.codec.memory import MemoryCodec, MemWriter
-    from whoosh.fields import TEXT, Schema
-
     codec = MemoryCodec()
     schema = Schema(title=TEXT(stored=True), content=TEXT)
     ix = codec.storage.create_index(schema)
@@ -703,9 +698,6 @@ def test_add_new_field_to_schema():
 
 # can add a reader to the index
 def test_add_reader_to_index():
-    from whoosh.codec.memory import MemoryCodec, MemWriter
-    from whoosh.fields import TEXT, Schema
-
     # Define the schema for the index
     schema = Schema(title=TEXT(stored=True), content=TEXT)
 
@@ -722,3 +714,15 @@ def test_add_reader_to_index():
 
     # Assert that the reader was added to the index
     assert writer._added == True
+
+
+# If term not found, a TermNotFound exception should be raised
+def test_term_not_found_exception():
+    schema = fields.Schema(content=fields.TEXT)
+    storage = RamStorage().create()
+    index = storage.create_index(schema)
+    codec = MemoryCodec()
+    segment = MemSegment(codec, index)
+    reader = MemTermsReader(storage, segment)
+    with pytest.raises(TermNotFound):
+        list(reader.terms_from("unknown_field", "prefix"))

@@ -704,3 +704,16 @@ def test_sequence_complex():
         q = qp.parse('"(he OR she OR we~) would*"~3')
         r = s.search(q)
         assert r.scored_length()
+
+
+# When the regex matches an empty string, the method should return None.
+def test_regex_matches_empty_string_returns_none():
+    from whoosh.qparser.default import QueryParser
+    from whoosh.qparser.taggers import RegexTagger
+
+    parser = QueryParser("fieldname", "schema")
+    text = ""
+    pos = 0
+    tagger = RegexTagger(r"\b\w+\b")
+    result = tagger.match(parser, text, pos)
+    assert result is None

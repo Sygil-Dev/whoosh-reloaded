@@ -63,6 +63,8 @@ class RegexTagger(Tagger):
             if node is not None:
                 node = node.set_range(match.start(), match.end())
                 return node
+            else:
+                return None
 
     def create(self, parser, match):
         """When the regular expression matches, this method is called to

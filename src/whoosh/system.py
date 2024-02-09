@@ -72,7 +72,5 @@ unpack_double = _double_struct.unpack
 unpack_ushort_le = _ushort_le_struct.unpack
 unpack_uint_le = _uint_le_struct.unpack
 
-if sys.version_info[0] < 3:
-    emptybytes = ""
-else:
-    emptybytes = b""
+
+emptybytes = b""
