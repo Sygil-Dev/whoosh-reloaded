@@ -13,7 +13,13 @@ slavo_germ_exp = re.compile("W|K|CZ|WITZ")
 silent_starts = re.compile("GN|KN|PN|WR|PS")
 
 
-def double_metaphone(text):
+def double_metaphone(text):  # noqa: C901, PLR0912, PLR0915
+    """
+    This function is too complex (125) -- ruff rule C901
+    This function has too many branches (181) -- ruff rule PLR0912
+    This function has too many statements (318) -- ruff rule PLR0915
+    Future edits to this function should reduce, not increase its complexity.
+    """
     text = text.upper()
     slavo_germanic = bool(slavo_germ_exp.search(text))
 

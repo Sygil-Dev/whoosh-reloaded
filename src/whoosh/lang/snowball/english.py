@@ -142,7 +142,7 @@ class EnglishStemmer(_StandardStemmer):
         "succeeding": "succeed",
     }
 
-    def stem(self, word):
+    def stem(self, word):  # noqa: C901, PLR0912
         """
         Stem an English word and return the stemmed form.
 
@@ -151,6 +151,10 @@ class EnglishStemmer(_StandardStemmer):
         :return: The stemmed form.
         :rtype: unicode
 
+        This method is too complex (91) -- ruff rule C901
+        This method has too many branches (117) -- ruff rule PLR0912
+        This method has too many statements (254) -- ruff rule PLR0915
+        Future edits to this method should reduce, not increase its complexity.
         """
         word = word.lower()
 

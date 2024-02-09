@@ -128,7 +128,7 @@ class FinnishStemmer(_StandardStemmer):
         u("ej\xE4"),
     )
 
-    def stem(self, word):
+    def stem(self, word):  # noqa: C901
         """
         Stem a Finnish word and return the stemmed form.
 
@@ -137,6 +137,10 @@ class FinnishStemmer(_StandardStemmer):
         :return: The stemmed form.
         :rtype: unicode
 
+        This method is too complex (51) -- ruff rule C901
+        This method has too many branches (58) -- ruff rule PLR0912
+        This method has too many statements (148) -- ruff rule PLR0915
+        Future edits to this method should reduce, not increase its complexity.
         """
         word = word.lower()
 
