@@ -32,8 +32,6 @@ import time
 from bisect import insort
 from functools import wraps
 
-from whoosh.compat import range
-
 # These must be valid separate characters in CASE-INSENSTIVE filenames
 IDCHARS = "0123456789abcdefghijklmnopqrstuvwxyz"
 

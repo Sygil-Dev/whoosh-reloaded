@@ -1,7 +1,7 @@
 from random import choice, randint, sample
 
 from whoosh import fields, matching, qparser, query
-from whoosh.compat import b, permutations, range, u
+from whoosh.compat import b, permutations, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.query import And, Term
 from whoosh.scoring import WeightScorer

@@ -1106,10 +1106,10 @@ def test_quoted_prefix():
     expr = r"(^|(?<=[ (]))(?P<text>\w+|[*]):"
     qp.replace_plugin(plugins.FieldsPlugin(expr))
 
-    q = qp.parse(u("foo url:http://apple.com:8080/bar* baz"))
+    q = qp.parse(u("foo url:https://apple.com:8080/bar* baz"))
     assert isinstance(q, query.And)
     assert q[0] == query.Term("f", "foo")
-    assert q[1] == query.Prefix("url", "http://apple.com:8080/bar")
+    assert q[1] == query.Prefix("url", "https://apple.com:8080/bar")
     assert q[2] == query.Term("f", "baz")
     assert len(q) == 3
 
@@ -1123,4 +1123,4 @@ def test_multitoken_with_factory():
     qp = default.QueryParser("title", schema, group=og)
 
     querystring = "get my name/address"
-    userquery = qp.parse(querystring)
+    _ = qp.parse(querystring)

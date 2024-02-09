@@ -1,5 +1,4 @@
 from whoosh.automata.fsa import ANY, EPSILON, NFA
-from whoosh.compat import range
 
 
 def levenshtein_automaton(term, k, prefix=0):

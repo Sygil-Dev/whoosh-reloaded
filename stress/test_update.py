@@ -2,7 +2,7 @@ import random
 
 from nose.tools import assert_equal
 from whoosh import fields, query
-from whoosh.compat import range, text_type
+from whoosh.compat import text_type
 from whoosh.util.testing import TempIndex
 
 

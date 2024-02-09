@@ -1,5 +1,5 @@
 from whoosh import analysis, fields, formats
-from whoosh.compat import permutations, range, u
+from whoosh.compat import permutations, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.query import And, Or, Phrase, Term, spans
 from whoosh.util.testing import TempIndex

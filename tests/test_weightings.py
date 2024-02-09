@@ -3,7 +3,7 @@ import sys
 from random import choice, randint
 
 from whoosh import fields, query, scoring
-from whoosh.compat import permutations, range, u
+from whoosh.compat import permutations, u
 from whoosh.filedb.filestore import RamStorage
 
 

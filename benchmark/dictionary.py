@@ -1,5 +1,5 @@
 import gzip
-import os.path
+import os
 
 from whoosh import analysis, fields
 from whoosh.support.bench import Bench, Spec

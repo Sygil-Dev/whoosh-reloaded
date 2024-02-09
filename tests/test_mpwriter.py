@@ -3,7 +3,7 @@ from collections import deque
 
 import pytest
 from whoosh import fields, query
-from whoosh.compat import izip, permutations, range, text_type, u
+from whoosh.compat import izip, permutations, text_type, u
 from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempIndex
 

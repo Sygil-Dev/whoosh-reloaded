@@ -1,7 +1,7 @@
 import pytest
 from whoosh import analysis, fields, formats, highlight, qparser, query
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import permutations, range, text_type, u
+from whoosh.compat import permutations, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex, TempStorage
 

@@ -36,7 +36,7 @@ import sys
 from binascii import crc32
 from hashlib import md5  # type: ignore @UnresolvedImport
 
-from whoosh.compat import b, bytes_type, range
+from whoosh.compat import b, bytes_type
 from whoosh.system import _INT_SIZE, emptybytes
 from whoosh.util.numlists import GrowableArray
 
