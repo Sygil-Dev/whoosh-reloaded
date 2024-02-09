@@ -1,5 +1,5 @@
 import copy
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from whoosh import analysis, fields, index, qparser, query, scoring
@@ -366,7 +366,7 @@ def test_open_numeric_ranges():
 
 
 def test_open_date_ranges():
-    basedate = datetime(2011, 1, 24, 6, 25, 0, 0)
+    basedate = datetime(2011, 1, 24, 6, 25, 0, 0, tzinfo=timezone.utc)
     domain = [basedate + timedelta(days=n) for n in range(-20, 20)]
 
     schema = fields.Schema(date=fields.DATETIME(stored=True))
@@ -382,13 +382,17 @@ def test_open_date_ranges():
         q = qp.parse("[2011-01-10 to]")
         r = [hit["date"] for hit in s.search(q, limit=None)]
         assert len(r) > 0
-        target = [d for d in domain if d >= datetime(2011, 1, 10, 6, 25)]
+        target = [
+            d for d in domain if d >= datetime(2011, 1, 10, 6, 25, tzinfo=timezone.utc)
+        ]
         assert r == target
 
         q = qp.parse("[to 2011-01-30]")
         r = [hit["date"] for hit in s.search(q, limit=None)]
         assert len(r) > 0
-        target = [d for d in domain if d <= datetime(2011, 1, 30, 6, 25)]
+        target = [
+            d for d in domain if d <= datetime(2011, 1, 30, 6, 25, tzinfo=timezone.utc)
+        ]
         assert r == target
 
         # With date parser
@@ -399,13 +403,17 @@ def test_open_date_ranges():
         q = qp.parse("[10 jan 2011 to]")
         r = [hit["date"] for hit in s.search(q, limit=None)]
         assert len(r) > 0
-        target = [d for d in domain if d >= datetime(2011, 1, 10, 6, 25)]
+        target = [
+            d for d in domain if d >= datetime(2011, 1, 10, 6, 25, tzinfo=timezone.utc)
+        ]
         assert r == target
 
         q = qp.parse("[to 30 jan 2011]")
         r = [hit["date"] for hit in s.search(q, limit=None)]
         assert len(r) > 0
-        target = [d for d in domain if d <= datetime(2011, 1, 30, 6, 25)]
+        target = [
+            d for d in domain if d <= datetime(2011, 1, 30, 6, 25, tzinfo=timezone.utc)
+        ]
         assert r == target
 
 
@@ -420,7 +428,7 @@ def test_negated_unlimited_ranges():
 
     domain = text_type(ascii_letters)
 
-    dt = datetime.now()
+    dt = datetime.now(tz=timezone.utc)
     for i, letter in enumerate(domain):
         w.add_document(id=letter, num=i, date=dt + timedelta(days=i))
     w.commit()

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from whoosh.qparser.dateparse import (
     English,
@@ -8,7 +8,7 @@ from whoosh.qparser.dateparse import (
     timespan,
 )
 
-basedate = datetime(2010, 9, 20, 15, 16, 6, 454000)
+basedate = datetime(2010, 9, 20, 15, 16, 6, 454000, tzinfo=timezone.utc)
 english = English()
 
 

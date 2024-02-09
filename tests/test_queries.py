@@ -397,7 +397,7 @@ def test_requires():
 
 
 def test_highlight_daterange():
-    from datetime import datetime
+    from datetime import datetime, timezone
 
     schema = fields.Schema(
         id=fields.ID(unique=True, stored=True),
@@ -412,7 +412,7 @@ def test_highlight_daterange():
         id=u("1"),
         title=u("Life Aquatic"),
         content=u("A nautic film crew sets out to kill a gigantic shark."),
-        released=datetime(2004, 12, 25),
+        released=datetime(2004, 12, 25, tzinfo=timezone.utc),
     )
     w.update_document(
         id=u("2"),
@@ -420,7 +420,7 @@ def test_highlight_daterange():
         content=u(
             "Three brothers meet in India for a life changing train " + "journey."
         ),
-        released=datetime(2007, 10, 27),
+        released=datetime(2007, 10, 27, tzinfo=timezone.utc),
     )
     w.commit()
 
@@ -433,7 +433,7 @@ def test_highlight_daterange():
         == 'for a life changing <b class="match term0">train</b> journey'
     )
 
-    r = s.search(DateRange("released", datetime(2007, 1, 1), None))
+    r = s.search(DateRange("released", datetime(2007, 1, 1, tzinfo=timezone.utc), None))
     assert len(r) == 1
     assert r[0].highlights("content") == ""
 
