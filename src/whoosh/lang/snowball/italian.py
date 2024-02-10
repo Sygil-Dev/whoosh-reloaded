@@ -1,5 +1,3 @@
-from whoosh.compat import u
-
 from .bases import _StandardStemmer
 
 
@@ -22,7 +20,7 @@ class ItalianStemmer(_StandardStemmer):
 
     """
 
-    __vowels = u("aeiou\xE0\xE8\xEC\xF2\xF9")
+    __vowels = "aeiou\xE0\xE8\xEC\xF2\xF9"
     __step0_suffixes = (
         "gliela",
         "gliele",
@@ -94,9 +92,9 @@ class ItalianStemmer(_StandardStemmer):
         "ista",
         "iste",
         "isti",
-        u("ist\xE0"),
-        u("ist\xE8"),
-        u("ist\xEC"),
+        "ist\xE0",
+        "ist\xE8",
+        "ist\xEC",
         "ante",
         "anti",
         "enza",
@@ -109,7 +107,7 @@ class ItalianStemmer(_StandardStemmer):
         "osi",
         "osa",
         "ose",
-        u("it\xE0"),
+        "it\xE0",
         "ivo",
         "ivi",
         "iva",
@@ -179,16 +177,16 @@ class ItalianStemmer(_StandardStemmer):
         "ava",
         "avi",
         "avo",
-        u("er\xE0"),
+        "er\xE0",
         "ere",
-        u("er\xF2"),
+        "er\xF2",
         "ete",
         "eva",
         "evi",
         "evo",
-        u("ir\xE0"),
+        "ir\xE0",
         "ire",
-        u("ir\xF2"),
+        "ir\xF2",
         "ita",
         "ite",
         "iti",
@@ -221,11 +219,11 @@ class ItalianStemmer(_StandardStemmer):
 
         # All acute accents are replaced by grave accents.
         word = (
-            word.replace(u("\xE1"), u("\xE0"))
-            .replace(u("\xE9"), u("\xE8"))
-            .replace(u("\xED"), u("\xEC"))
-            .replace(u("\xF3"), u("\xF2"))
-            .replace(u("\xFA"), u("\xF9"))
+            word.replace("\xE1", "\xE0")
+            .replace("\xE9", "\xE8")
+            .replace("\xED", "\xEC")
+            .replace("\xF3", "\xF2")
+            .replace("\xFA", "\xF9")
         )
 
         # Every occurrence of 'u' after 'q'
@@ -318,7 +316,7 @@ class ItalianStemmer(_StandardStemmer):
                         word = "".join((word[:-2], "te"))
                         rv = "".join((rv[:-2], "te"))
 
-                    elif suffix == u("it\xE0"):
+                    elif suffix == "it\xE0":
                         word = word[:-3]
                         r2 = r2[:-3]
                         rv = rv[:-3]
@@ -358,9 +356,7 @@ class ItalianStemmer(_StandardStemmer):
                     break
 
         # STEP 3a
-        if rv.endswith(
-            ("a", "e", "i", "o", u("\xE0"), u("\xE8"), u("\xEC"), u("\xF2"))
-        ):
+        if rv.endswith(("a", "e", "i", "o", "\xE0", "\xE8", "\xEC", "\xF2")):
             word = word[:-1]
             rv = rv[:-1]
 

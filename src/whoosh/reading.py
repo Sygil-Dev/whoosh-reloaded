@@ -28,6 +28,7 @@
 """This module contains classes that allow reading from an index.
 """
 
+from abc import abstractmethod
 from bisect import bisect_right
 from heapq import heapify, heappop, heapreplace, nlargest
 from math import log
@@ -35,7 +36,6 @@ from math import log
 from cached_property import cached_property
 
 from whoosh import columns
-from whoosh.compat import abstractmethod, iteritems, next, zip_
 from whoosh.filedb.filestore import OverlayStorage
 from whoosh.matching import MultiMatcher
 from whoosh.support.levenshtein import distance
@@ -693,7 +693,7 @@ class SegmentReader(IndexReader):
         schema = self.schema
         sfs = self._perdoc.stored_fields(docnum)
         # Double-check with schema to filter out removed fields
-        return dict(item for item in iteritems(sfs) if item[0] in schema)
+        return dict(item for item in sfs.items() if item[0] in schema)
 
     # Delegate doc methods to the per-doc reader
 
@@ -1038,7 +1038,7 @@ class MultiReader(IndexReader):
         return False
 
     def leaf_readers(self):
-        return zip_(self.readers, self.doc_offsets)
+        return list(zip(self.readers, self.doc_offsets))
 
     def add_reader(self, reader):
         self.readers.append(reader)
@@ -1138,7 +1138,7 @@ class MultiReader(IndexReader):
         # Get the term infos for the sub-readers containing the term
         tis = [
             (r.term_info(fieldname, text), offset)
-            for r, offset in zip_(self.readers, self.doc_offsets)
+            for r, offset in zip(self.readers, self.doc_offsets)
             if term in r
         ]
 

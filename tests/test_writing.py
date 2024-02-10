@@ -4,9 +4,12 @@ import time
 
 import pytest
 from whoosh import analysis, fields, query, writing
-from whoosh.compat import b, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
+
+
+def u(s):
+    return s.decode("ascii") if isinstance(s, bytes) else s
 
 
 def test_no_stored():
@@ -26,7 +29,7 @@ def test_no_stored():
 
         w = ix.writer()
         for i in range(20):
-            w.add_document(id=text_type(i), text=" ".join(random.sample(domain, 5)))
+            w.add_document(id=str(i), text=" ".join(random.sample(domain, 5)))
         w.commit()
 
         with ix.reader() as r:
@@ -55,7 +58,7 @@ def test_asyncwriter():
         for i in range(20):
             w = writing.AsyncWriter(ix)
             writers.append(w)
-            w.add_document(id=text_type(i), text=" ".join(random.sample(domain, 5)))
+            w.add_document(id=str(i), text=" ".join(random.sample(domain, 5)))
             w.commit()
 
         # Wait for all writers to finish before checking the results
@@ -90,7 +93,7 @@ def test_asyncwriter_no_stored():
         for i in range(20):
             w = writing.AsyncWriter(ix)
             writers.append(w)
-            w.add_document(id=text_type(i), text=" ".join(random.sample(domain, 5)))
+            w.add_document(id=str(i), text=" ".join(random.sample(domain, 5)))
             w.commit()
 
         # Wait for all writers to finish before checking the results
@@ -122,7 +125,7 @@ def test_buffered():
             ix, period=None, limit=10, commitargs={"merge": False}
         )
         for i in range(20):
-            w.add_document(id=text_type(i), text=" ".join(random.sample(domain, 5)))
+            w.add_document(id=str(i), text=" ".join(random.sample(domain, 5)))
         time.sleep(0.1)
         w.close()
 
@@ -162,7 +165,7 @@ def test_buffered_update():
         w = writing.BufferedWriter(ix, period=None, limit=5)
         for i in range(10):
             for char in "abc":
-                fs = {"id": char, "payload": text_type(i) + char}
+                fs = {"id": char, "payload": str(i) + char}
                 w.update_document(**fs)
 
         with w.reader() as r:
@@ -446,7 +449,7 @@ def test_clear():
 
     with ix.searcher() as s:
         assert s.doc_count_all() == 1
-        assert list(s.reader().lexicon("a")) == [b("bar"), b("baz"), b("foo")]
+        assert list(s.reader().lexicon("a")) == [b"bar", b"baz", b"foo"]
 
 
 def test_spellable_list():

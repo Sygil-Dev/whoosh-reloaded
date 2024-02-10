@@ -34,8 +34,6 @@ import random
 from collections import defaultdict
 from math import log
 
-from whoosh.compat import iteritems
-
 # Expansion models
 
 
@@ -186,7 +184,7 @@ class Expander:
         if not self.topN_weight:
             return []
 
-        for word, weight in iteritems(self.topN_weight):
+        for word, weight in self.topN_weight.items():
             btext = field.to_bytes(word)
             if (fieldname, btext) in ixreader:
                 cf = ixreader.frequency(fieldname, btext)
@@ -212,7 +210,7 @@ def shingles(input, size=2):
     d = defaultdict(int)
     for shingle in (input[i : i + size] for i in range(len(input) - (size - 1))):
         d[shingle] += 1
-    return iteritems(d)
+    return d.items()
 
 
 def simhash(features, hashbits=32):

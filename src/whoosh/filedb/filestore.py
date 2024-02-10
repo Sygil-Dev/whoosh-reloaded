@@ -30,13 +30,22 @@ import errno
 import os
 import sys
 import tempfile
+from io import BytesIO
 from threading import Lock
 
-from whoosh.compat import BytesIO, memoryview_
 from whoosh.filedb.structfile import BufferFile, StructFile
 from whoosh.index import _DEF_INDEX_NAME, EmptyIndexError
 from whoosh.util import random_name
 from whoosh.util.filelock import FileLock
+
+
+def memoryview_(source, offset=None, length=None):
+    mv = memoryview(source)
+    if offset or length:
+        return mv[offset : offset + length]
+    else:
+        return mv
+
 
 # Exceptions
 

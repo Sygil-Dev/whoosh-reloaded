@@ -28,11 +28,11 @@
 
 import threading
 import time
+from abc import abstractmethod
 from bisect import bisect_right
 from contextlib import contextmanager
 
 from whoosh import columns
-from whoosh.compat import abstractmethod, bytes_type
 from whoosh.externalsort import SortingPool
 from whoosh.fields import UnknownFieldError
 from whoosh.index import LockError
@@ -159,9 +159,9 @@ class PostingPool(SortingPool):
         return self.tempstore.delete_file(path)
 
     def add(self, item):
-        assert isinstance(item[1], bytes_type), f"tbytes={item[1]!r}"
+        assert isinstance(item[1], bytes), f"tbytes={item[1]!r}"
         if item[4] is not None:
-            assert isinstance(item[4], bytes_type), f"vbytes={item[4]!r}"
+            assert isinstance(item[4], bytes), f"vbytes={item[4]!r}"
         self.fieldnames.add(item[0])
         size = (
             28

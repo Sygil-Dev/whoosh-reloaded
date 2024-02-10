@@ -29,7 +29,6 @@
 from array import array
 
 from whoosh import matching
-from whoosh.compat import text_type, u
 from whoosh.query import qcore
 
 
@@ -104,10 +103,8 @@ class Not(qcore.Query):
     def __repr__(self):
         return f"{self.__class__.__name__}({repr(self.query)})"
 
-    def __unicode__(self):
-        return u("NOT ") + text_type(self.query)
-
-    __str__ = __unicode__
+    def __str__(self):
+        return "NOT " + str(self.query)
 
     def __hash__(self):
         return hash(self.__class__.__name__) ^ hash(self.query) ^ hash(self.boost)

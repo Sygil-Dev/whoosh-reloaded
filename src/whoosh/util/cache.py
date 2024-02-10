@@ -27,18 +27,9 @@
 
 
 import functools
+from collections import Counter
 from heapq import nsmallest
 from operator import itemgetter
-
-from whoosh.compat import iteritems
-
-try:
-    from collections import Counter
-except ImportError:
-
-    class Counter(dict):
-        def __missing__(self, key):
-            return 0
 
 
 def unbound_cache(func):
@@ -86,7 +77,7 @@ def lfu_cache(maxsize=100):
                 stats[1] += 1  # Miss
                 if len(data) == maxsize:
                     for k, _ in nsmallest(
-                        maxsize // 10 or 1, iteritems(usecount), key=itemgetter(1)
+                        maxsize // 10 or 1, usecount.items(), key=itemgetter(1)
                     ):
                         del data[k]
                         del usecount[k]

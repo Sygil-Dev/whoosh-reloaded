@@ -32,19 +32,10 @@ This module implements a "codec" for writing/reading Whoosh X indexes.
 import struct
 from array import array
 from collections import defaultdict
+from pickle import dumps, loads
 
 from whoosh import columns, formats
 from whoosh.codec import base
-from whoosh.compat import (
-    b,
-    bytes_type,
-    dumps,
-    integer_types,
-    iteritems,
-    loads,
-    range,
-    string_type,
-)
 from whoosh.filedb import compound, filetables
 from whoosh.matching import LeafMatcher, ListMatcher, ReadTooFar
 from whoosh.reading import TermInfo, TermNotFound
@@ -72,7 +63,7 @@ except ImportError:
 
 # This byte sequence is written at the start of a posting list to identify the
 # codec/version
-WHOOSH3_HEADER_MAGIC = b("W3Bl")
+WHOOSH3_HEADER_MAGIC = b"W3Bl"
 
 # Column type to store field length info
 LENGTHS_COLUMN = columns.NumericColumn("B", default=0)
@@ -225,7 +216,7 @@ class W3PerDocWriter(base.PerDocWriterWithColumns):
         self._vpostfile = self._create_file(W3Codec.VPOSTS_EXT)
         # We'll use offset==0 as a marker for "no vectors", so we can't start
         # postings at position 0, so just write a few header bytes :)
-        self._vpostfile.write(b("VPST"))
+        self._vpostfile.write(b"VPST")
 
     def start_doc(self, docnum):
         if self._indoc:
@@ -551,7 +542,7 @@ class W3FieldCursor(base.FieldCursor):
         return self.next()
 
     def find(self, term):
-        if not isinstance(term, bytes_type):
+        if not isinstance(term, bytes):
             term = self._fieldobj.to_bytes(term)
         key = self._keycoder(self._fieldname, term)
         self._pos = self._tindex.closest_key_pos(key)
@@ -596,11 +587,11 @@ class W3TermsReader(base.TermsReader):
         self._postfile = postfile
 
         self._fieldunmap = [None] * len(self._fieldmap)
-        for fieldname, num in iteritems(self._fieldmap):
+        for fieldname, num in self._fieldmap.items():
             self._fieldunmap[num] = fieldname
 
     def _keycoder(self, fieldname, tbytes):
-        assert isinstance(tbytes, bytes_type), f"tbytes={tbytes!r}"
+        assert isinstance(tbytes, bytes), f"tbytes={tbytes!r}"
         fnum = self._fieldmap.get(fieldname, 65535)
         return pack_ushort(fnum) + tbytes
 
@@ -730,12 +721,12 @@ class W3PostingsWriter(base.PostingsWriter):
 
         # Check types
         if self._byteids:
-            assert isinstance(id_, string_type), f"id_={id_!r}"
+            assert isinstance(id_, str), f"id_={id_!r}"
         else:
-            assert isinstance(id_, integer_types), f"id_={id_!r}"
+            assert isinstance(id_, int), f"id_={id_!r}"
         assert isinstance(weight, (int, float)), f"weight={weight!r}"
-        assert isinstance(vbytes, bytes_type), f"vbytes={vbytes!r}"
-        assert length is None or isinstance(length, integer_types)
+        assert isinstance(vbytes, bytes), f"vbytes={vbytes!r}"
+        assert length is None or isinstance(length, int)
 
         self._ids.append(id_)
         self._weights.append(weight)
@@ -1176,7 +1167,7 @@ class W3LeafMatcher(LeafMatcher):
         elif fixedsize == 0:
             self._values = (None,) * self._blocklength
         else:
-            assert isinstance(vs, bytes_type)
+            assert isinstance(vs, bytes)
             self._values = tuple(
                 vs[i : i + fixedsize] for i in range(0, len(vs), fixedsize)
             )

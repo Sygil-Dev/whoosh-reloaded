@@ -26,29 +26,13 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from ast import literal_eval
+from pickle import dumps, loads
 
 from whoosh.codec import base
-from whoosh.compat import (
-    PY3,
-    b,
-    bytes_type,
-    dumps,
-    integer_types,
-    iteritems,
-    loads,
-    range,
-    text_type,
-)
 from whoosh.matching import ListMatcher
 from whoosh.reading import TermInfo, TermNotFound
 
-if not PY3:
-
-    class memoryview:
-        pass
-
-
-_reprable = (bytes_type, text_type, integer_types, float)
+_reprable = (bytes, str, int, float)
 
 
 # Mixin classes for producing and consuming the simple text format
@@ -56,15 +40,15 @@ _reprable = (bytes_type, text_type, integer_types, float)
 
 class LineWriter:
     def _print_line(self, indent, command, **kwargs):
-        self._dbfile.write(b("  ") * indent)
+        self._dbfile.write(b"  " * indent)
         self._dbfile.write(command.encode("latin1"))
-        for k, v in iteritems(kwargs):
+        for k, v in kwargs.items():
             if isinstance(v, memoryview):
                 v = bytes(v)
             if v is not None and not isinstance(v, _reprable):
                 raise TypeError(type(v))
             self._dbfile.write(f"\t{k}={v!r}".encode("latin1"))
-        self._dbfile.write(b("\n"))
+        self._dbfile.write(b"\n")
 
 
 class LineReader:

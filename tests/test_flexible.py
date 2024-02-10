@@ -1,5 +1,4 @@
 from whoosh import fields
-from whoosh.compat import b, u
 from whoosh.util.testing import TempIndex
 
 
@@ -7,16 +6,16 @@ def test_addfield():
     schema = fields.Schema(id=fields.ID(stored=True), content=fields.TEXT)
     with TempIndex(schema, "addfield") as ix:
         w = ix.writer()
-        w.add_document(id=u("a"), content=u("alfa"))
-        w.add_document(id=u("b"), content=u("bravo"))
-        w.add_document(id=u("c"), content=u("charlie"))
+        w.add_document(id="a", content="alfa")
+        w.add_document(id="b", content="bravo")
+        w.add_document(id="c", content="charlie")
         w.commit()
 
         ix.add_field("added", fields.KEYWORD(stored=True))
 
         w = ix.writer()
-        w.add_document(id=u("d"), content=u("delta"), added=u("fourth"))
-        w.add_document(id=u("e"), content=u("echo"), added=u("fifth"))
+        w.add_document(id="d", content="delta", added="fourth")
+        w.add_document(id="e", content="echo", added="fifth")
         w.commit(merge=False)
 
         with ix.searcher() as s:
@@ -29,21 +28,21 @@ def test_addfield_spelling():
     schema = fields.Schema(id=fields.ID(stored=True), content=fields.TEXT)
     with TempIndex(schema, "addfield") as ix:
         w = ix.writer()
-        w.add_document(id=u("a"), content=u("alfa"))
-        w.add_document(id=u("b"), content=u("bravo"))
-        w.add_document(id=u("c"), content=u("charlie"))
+        w.add_document(id="a", content="alfa")
+        w.add_document(id="b", content="bravo")
+        w.add_document(id="c", content="charlie")
         w.commit()
 
         ix.add_field("added", fields.KEYWORD(stored=True))
 
         w = ix.writer()
-        w.add_document(id=u("d"), content=u("delta"), added=u("fourth"))
-        w.add_document(id=u("e"), content=u("echo"), added=u("fifth"))
+        w.add_document(id="d", content="delta", added="fourth")
+        w.add_document(id="e", content="echo", added="fifth")
         w.commit(merge=False)
 
         with ix.searcher() as s:
-            assert s.document(id=u("d")) == {"id": "d", "added": "fourth"}
-            assert s.document(id=u("b")) == {"id": "b"}
+            assert s.document(id="d") == {"id": "d", "added": "fourth"}
+            assert s.document(id="b") == {"id": "b"}
 
 
 def test_removefield():
@@ -52,13 +51,13 @@ def test_removefield():
     )
     with TempIndex(schema, "removefield") as ix:
         w = ix.writer()
-        w.add_document(id=u("b"), content=u("bravo"), city=u("baghdad"))
-        w.add_document(id=u("c"), content=u("charlie"), city=u("cairo"))
-        w.add_document(id=u("d"), content=u("delta"), city=u("dakar"))
+        w.add_document(id="b", content="bravo", city="baghdad")
+        w.add_document(id="c", content="charlie", city="cairo")
+        w.add_document(id="d", content="delta", city="dakar")
         w.commit()
 
         with ix.searcher() as s:
-            assert s.document(id=u("c")) == {"id": "c", "city": "cairo"}
+            assert s.document(id="c") == {"id": "c", "city": "cairo"}
 
         w = ix.writer()
         w.remove_field("content")
@@ -70,8 +69,8 @@ def test_removefield():
         assert ixschema.stored_names() == ["id"]
 
         with ix.searcher() as s:
-            assert ("content", b("charlie")) not in s.reader()
-            assert s.document(id=u("c")) == {"id": u("c")}
+            assert ("content", b"charlie") not in s.reader()
+            assert s.document(id="c") == {"id": "c"}
 
 
 def test_optimize_away():
@@ -80,13 +79,13 @@ def test_optimize_away():
     )
     with TempIndex(schema, "optimizeaway") as ix:
         w = ix.writer()
-        w.add_document(id=u("b"), content=u("bravo"), city=u("baghdad"))
-        w.add_document(id=u("c"), content=u("charlie"), city=u("cairo"))
-        w.add_document(id=u("d"), content=u("delta"), city=u("dakar"))
+        w.add_document(id="b", content="bravo", city="baghdad")
+        w.add_document(id="c", content="charlie", city="cairo")
+        w.add_document(id="d", content="delta", city="dakar")
         w.commit()
 
         with ix.searcher() as s:
-            assert s.document(id=u("c")) == {"id": "c", "city": "cairo"}
+            assert s.document(id="c") == {"id": "c", "city": "cairo"}
 
         w = ix.writer()
         w.remove_field("content")
@@ -94,8 +93,8 @@ def test_optimize_away():
         w.commit(optimize=True)
 
         with ix.searcher() as s:
-            assert ("content", u("charlie")) not in s.reader()
-            assert s.document(id=u("c")) == {"id": u("c")}
+            assert ("content", "charlie") not in s.reader()
+            assert s.document(id="c") == {"id": "c"}
 
 
 if __name__ == "__main__":

@@ -1,7 +1,10 @@
 from whoosh import fields, formats
-from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
+
+
+def u(s):
+    return s.decode("ascii") if isinstance(s, bytes) else s
 
 
 def test_single_term():

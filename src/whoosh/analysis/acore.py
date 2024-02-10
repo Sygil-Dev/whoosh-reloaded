@@ -25,8 +25,6 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-from whoosh.compat import iteritems
-
 # Exceptions
 
 
@@ -126,9 +124,7 @@ class Token:
         self.__dict__.update(kwargs)
 
     def __repr__(self):
-        parms = ", ".join(
-            f"{name}={value!r}" for name, value in iteritems(self.__dict__)
-        )
+        parms = ", ".join(f"{name}={value!r}" for name, value in self.__dict__.items())
         return f"{self.__class__.__name__}({parms})"
 
     def copy(self):
@@ -153,7 +149,7 @@ class Composable:
         attrs = ""
         if self.__dict__:
             attrs = ", ".join(
-                f"{key}={value!r}" for key, value in iteritems(self.__dict__)
+                f"{key}={value!r}" for key, value in self.__dict__.items()
             )
         return self.__class__.__name__ + f"({attrs})"
 

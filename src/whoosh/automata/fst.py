@@ -43,19 +43,8 @@ import copy
 import sys
 from array import array
 from hashlib import sha1  # type: ignore @UnresolvedImport
+from io import BytesIO
 
-from whoosh.compat import (
-    BytesIO,
-    array_tobytes,
-    b,
-    bytes_type,
-    iteritems,
-    iterkeys,
-    izip,
-    range,
-    text_type,
-    u,
-)
 from whoosh.filedb.structfile import StructFile
 from whoosh.system import (
     _INT_SIZE,
@@ -67,6 +56,14 @@ from whoosh.system import (
 )
 from whoosh.util.text import utf8decode, utf8encode
 from whoosh.util.varints import varint
+
+
+def b(s):
+    return s.encode("latin-1")
+
+
+def u(s):
+    return s.decode("ascii") if isinstance(s, bytes) else s
 
 
 class FileVersionError(Exception):
@@ -266,7 +263,7 @@ class BytesValues(SequenceValues):
 
     @staticmethod
     def is_valid(v):
-        return isinstance(v, bytes_type)
+        return isinstance(v, bytes)
 
     @staticmethod
     def write(dbfile, v):
@@ -315,7 +312,7 @@ class ArrayValues(SequenceValues):
 
     @staticmethod
     def to_bytes(v):
-        return array_tobytes(v)
+        return v.tobytes()
 
 
 class IntListValues(SequenceValues):
@@ -379,7 +376,7 @@ class Node:
     def __iter__(self):
         if not self._edges:
             self._load()
-        return iterkeys(self._edges)
+        return self._edges.keys()
 
     def __contains__(self, key):
         if self._edges is None:
@@ -847,11 +844,11 @@ class UncompiledNode:
                 if arc.target:
                     d.update(pack_long(arc.target))
                 else:
-                    d.update(b("z"))
+                    d.update(b"z")
                 if arc.value:
                     d.update(vtype.to_bytes(arc.value))
                 if arc.accept:
-                    d.update(b("T"))
+                    d.update(b"T")
             self._digest = d.digest()
         return self._digest
 
@@ -1011,7 +1008,7 @@ class GraphWriter:
         self.node_count = 0
         self.fixed_count = 0
 
-        dbfile.write(b("GRPH"))
+        dbfile.write(b"GRPH")
         dbfile.write_int(self.version)
         dbfile.write_uint(0)
 
@@ -1308,7 +1305,7 @@ class GraphReader(BaseGraphReader):
 
         dbfile.seek(filebase)
         magic = dbfile.read(4)
-        if magic != b("GRPH"):
+        if magic != b"GRPH":
             raise FileVersionError
         self.version = dbfile.read_int()
         dbfile.seek(dbfile.read_uint())
@@ -1458,13 +1455,13 @@ def to_labels(key):
 
     # I hate the Python 3 bytes object so friggin much
     if keytype is tuple or keytype is list:
-        if not all(isinstance(e, bytes_type) for e in key):
+        if not all(isinstance(e, bytes) for e in key):
             raise TypeError(f"{key!r} contains a non-bytestring")
         if keytype is list:
             key = tuple(key)
-    elif isinstance(key, bytes_type):
+    elif isinstance(key, bytes):
         key = tuple(key[i : i + 1] for i in range(len(key)))
-    elif isinstance(key, text_type):
+    elif isinstance(key, str):
         key = tuple(utf8encode(key[i : i + 1])[0] for i in range(len(key)))
     else:
         raise TypeError(f"Don't know how to convert {key!r}")
@@ -1528,8 +1525,7 @@ def within(graph, text, k=1, prefix=0, address=None):
         arcs = graph.arc_dict(address)
         # Insertions
         stack.extend(
-            (arc.target, k, i, sofar + char, arc.accept)
-            for char, arc in iteritems(arcs)
+            (arc.target, k, i, sofar + char, arc.accept) for char, arc in arcs.items()
         )
 
         # Deletion, replacement, and transpo only work before the end
@@ -1540,7 +1536,7 @@ def within(graph, text, k=1, prefix=0, address=None):
         # Deletion
         stack.append((address, k, i + 1, sofar, False))
         # Replacement
-        for char2, arc in iteritems(arcs):
+        for char2, arc in arcs.items():
             if char2 != char:
                 stack.append((arc.target, k, i + 1, sofar + char2, arc.accept))
         # Transposition

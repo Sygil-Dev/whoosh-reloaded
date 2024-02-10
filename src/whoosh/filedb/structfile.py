@@ -27,11 +27,10 @@
 
 from array import array
 from copy import copy
+from io import BytesIO
+from pickle import dump, load
 from struct import calcsize
 
-from whoosh.compat import BytesIO, array_frombytes, array_tobytes, bytes_type
-from whoosh.compat import dump as dump_pickle
-from whoosh.compat import load as load_pickle
 from whoosh.system import (
     _FLOAT_SIZE,
     _INT_SIZE,
@@ -247,11 +246,11 @@ class StructFile:
 
     def write_pickle(self, obj, protocol=-1):
         """Writes a pickled representation of obj to the wrapped file."""
-        dump_pickle(obj, self.file, protocol)
+        dump(obj, self.file, protocol)
 
     def read_pickle(self):
         """Reads a pickled object from the wrapped file."""
-        return load_pickle(self.file)
+        return load(self.file)
 
     def write_sbyte(self, n):
         self.write(pack_sbyte(n))
@@ -287,7 +286,7 @@ class StructFile:
         if self.is_real:
             arry.tofile(self.file)
         else:
-            self.write(array_tobytes(arry))
+            self.write(arry.tobytes())
 
     def read_sbyte(self):
         return unpack_sbyte(self.read(1))[0]
@@ -321,7 +320,7 @@ class StructFile:
         if self.is_real:
             a.fromfile(self.file, length)
         else:
-            array_frombytes(a, self.read(length * _SIZEMAP[typecode]))
+            a.frombytes(self.read(length * _SIZEMAP[typecode]))
         if IS_LITTLE:
             a.byteswap()
         return a
@@ -374,11 +373,11 @@ class BufferFile(StructFile):
         return BufferFile(self.get(position, length), name=name)
 
     def get(self, position, length):
-        return bytes_type(self._buf[position : position + length])
+        return bytes(self._buf[position : position + length])
 
     def get_array(self, position, typecode, length):
         a = array(typecode)
-        array_frombytes(a, self.get(position, length * _SIZEMAP[typecode]))
+        a.frombytes(self.get(position, length * _SIZEMAP[typecode]))
         if IS_LITTLE:
             a.byteswap()
         return a

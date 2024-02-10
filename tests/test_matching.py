@@ -1,7 +1,7 @@
+from itertools import permutations
 from random import choice, randint, sample
 
 from whoosh import fields, matching, qparser, query
-from whoosh.compat import b, permutations, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.query import And, Term
 from whoosh.scoring import WeightScorer
@@ -258,41 +258,41 @@ def test_intersection():
     ix = st.create_index(schema)
 
     w = ix.writer()
-    w.add_document(key=u("a"), value=u("alpha bravo charlie delta"))
-    w.add_document(key=u("b"), value=u("echo foxtrot alpha bravo"))
-    w.add_document(key=u("c"), value=u("charlie delta golf hotel"))
+    w.add_document(key="a", value="alpha bravo charlie delta")
+    w.add_document(key="b", value="echo foxtrot alpha bravo")
+    w.add_document(key="c", value="charlie delta golf hotel")
     w.commit()
 
     w = ix.writer()
-    w.add_document(key=u("d"), value=u("india alpha bravo charlie"))
-    w.add_document(key=u("e"), value=u("delta bravo india bravo"))
+    w.add_document(key="d", value="india alpha bravo charlie")
+    w.add_document(key="e", value="delta bravo india bravo")
     w.commit()
 
     with ix.searcher() as s:
-        q = And([Term("value", u("bravo")), Term("value", u("delta"))])
+        q = And([Term("value", "bravo"), Term("value", "delta")])
         m = q.matcher(s)
         assert _keys(s, m.all_ids()) == ["a", "e"]
 
-        q = And([Term("value", u("bravo")), Term("value", u("alpha"))])
+        q = And([Term("value", "bravo"), Term("value", "alpha")])
         m = q.matcher(s)
         assert _keys(s, m.all_ids()) == ["a", "b", "d"]
 
 
 def test_random_intersections():
     domain = [
-        u("alpha"),
-        u("bravo"),
-        u("charlie"),
-        u("delta"),
-        u("echo"),
-        u("foxtrot"),
-        u("golf"),
-        u("hotel"),
-        u("india"),
-        u("juliet"),
-        u("kilo"),
-        u("lima"),
-        u("mike"),
+        "alpha",
+        "bravo",
+        "charlie",
+        "delta",
+        "echo",
+        "foxtrot",
+        "golf",
+        "hotel",
+        "india",
+        "juliet",
+        "kilo",
+        "lima",
+        "mike",
     ]
     segments = 5
     docsperseg = 50
@@ -311,7 +311,7 @@ def test_random_intersections():
         for j in range(docsperseg):
             docnum = i * docsperseg + j
             # Create a string of random words
-            doc = u(" ").join(choice(domain) for _ in range(randint(*fieldlimits)))
+            doc = " ".join(choice(domain) for _ in range(randint(*fieldlimits)))
             # Add the string to the index
             w.add_document(key=docnum, value=doc)
             # Add a (docnum, string) tuple to the documents list
@@ -455,7 +455,7 @@ def test_random_andnot():
 
 
 def test_current_terms():
-    domain = u("alfa bravo charlie delta").split()
+    domain = "alfa bravo charlie delta".split()
     schema = fields.Schema(text=fields.TEXT(stored=True))
     ix = RamStorage().create_index(schema)
     w = ix.writer()
@@ -469,8 +469,8 @@ def test_current_terms():
 
         while m.is_active():
             assert sorted(m.matching_terms()) == [
-                ("text", b("alfa")),
-                ("text", b("charlie")),
+                ("text", b"alfa"),
+                ("text", b"charlie"),
             ]
             m.next()
 
@@ -482,15 +482,15 @@ def test_dismax():
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
-        w.add_document(id=u("1"), title="alfa", body="bravo")
-        w.add_document(id=u("1"), title="charlie", body="bravo")
-        w.add_document(id=u("1"), title="alfa", body="alfa")
+        w.add_document(id="1", title="alfa", body="bravo")
+        w.add_document(id="1", title="charlie", body="bravo")
+        w.add_document(id="1", title="alfa", body="alfa")
 
     with ix.searcher() as s:
         qp = qparser.MultifieldParser(["title", "body"], schema)
         dp = qparser.DisMaxParser({"body": 1.0, "title": 2.5}, None)
 
-        query_text = u("alfa OR bravo")
+        query_text = "alfa OR bravo"
         qqp = qp.parse(query_text)
         qdp = dp.parse(query_text)
         rq = s.search(qqp, limit=1)
@@ -510,7 +510,7 @@ def test_exclusion():
         # Make 39 documents with dates != dt1 and then make a last document
         # with feed == dt1.
         for i in range(40):
-            w.add_document(id=u(str(i)), date=(dt2 if i >= 1 else dt1))
+            w.add_document(id=str(i), date=(dt2 if i >= 1 else dt1))
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("id", schema)

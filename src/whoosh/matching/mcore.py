@@ -49,9 +49,8 @@ these optimizations, the matcher's :meth:`Matcher.supports_block_quality()`
 method will return ``True``.
 """
 
+from abc import abstractmethod
 from itertools import repeat
-
-from whoosh.compat import abstractmethod, izip
 
 # Exceptions
 
@@ -507,7 +506,7 @@ class ListMatcher(Matcher):
         if values is None:
             values = repeat("")
 
-        return izip(self._ids, values)
+        return zip(self._ids, values)
 
     def value(self):
         if self._values:

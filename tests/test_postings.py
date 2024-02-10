@@ -1,6 +1,5 @@
 from whoosh import analysis, fields
 from whoosh.codec import default_codec
-from whoosh.compat import u
 from whoosh.formats import (
     CharacterBoosts,
     Characters,
@@ -38,7 +37,7 @@ def _roundtrip(content, format_, astype, ana=None):
 
 
 def test_existence_postings():
-    content = u("alfa bravo charlie")
+    content = "alfa bravo charlie"
     assert _roundtrip(content, Existence(), "frequency") == [
         ("alfa", 1),
         ("bravo", 1),
@@ -47,7 +46,7 @@ def test_existence_postings():
 
 
 def test_frequency_postings():
-    content = u("alfa bravo charlie bravo alfa alfa")
+    content = "alfa bravo charlie bravo alfa alfa"
     assert _roundtrip(content, Frequency(), "frequency") == [
         ("alfa", 3),
         ("bravo", 2),
@@ -56,7 +55,7 @@ def test_frequency_postings():
 
 
 def test_position_postings():
-    content = u("alfa bravo charlie bravo alfa alfa")
+    content = "alfa bravo charlie bravo alfa alfa"
     assert _roundtrip(content, Positions(), "positions") == [
         ("alfa", [0, 4, 5]),
         ("bravo", [1, 3]),
@@ -70,7 +69,7 @@ def test_position_postings():
 
 
 def test_character_postings():
-    content = u("alfa bravo charlie bravo alfa alfa")
+    content = "alfa bravo charlie bravo alfa alfa"
     assert _roundtrip(content, Characters(), "characters") == [
         ("alfa", [(0, 0, 4), (4, 25, 29), (5, 30, 34)]),
         ("bravo", [(1, 5, 10), (3, 19, 24)]),
@@ -91,7 +90,7 @@ def test_character_postings():
 def test_posboost_postings():
     pbs = PositionBoosts()
     ana = analysis.RegexTokenizer(r"\S+") | analysis.DelimitedAttributeFilter()
-    content = u("alfa^2 bravo^0.1 charlie^2 bravo^0.5 alfa alfa")
+    content = "alfa^2 bravo^0.1 charlie^2 bravo^0.5 alfa alfa"
     assert _roundtrip(content, pbs, "position_boosts", ana) == [
         ("alfa", [(0, 2), (4, 1), (5, 1)]),
         ("bravo", [(1, 0.1), (3, 0.5)]),
@@ -112,7 +111,7 @@ def test_posboost_postings():
 def test_charboost_postings():
     cbs = CharacterBoosts()
     ana = analysis.RegexTokenizer(r"\S+") | analysis.DelimitedAttributeFilter()
-    content = u("alfa^2 bravo^0.1 charlie^2 bravo^0.5 alfa alfa")
+    content = "alfa^2 bravo^0.1 charlie^2 bravo^0.5 alfa alfa"
     assert _roundtrip(content, cbs, "character_boosts", ana) == [
         ("alfa", [(0, 0, 4, 2), (4, 37, 41, 1), (5, 42, 46, 1)]),
         ("bravo", [(1, 7, 12, 0.1), (3, 27, 32, 0.5)]),

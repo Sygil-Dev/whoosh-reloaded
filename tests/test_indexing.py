@@ -1,10 +1,10 @@
 import random
 from collections import defaultdict
 from datetime import datetime, timezone
+from itertools import permutations
 
 import pytest
 from whoosh import __version__, analysis, fields, index, qparser, query
-from whoosh.compat import b, permutations, text_type, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempIndex, TempStorage
@@ -25,20 +25,20 @@ def test_creation():
     ix = st.create_index(s)
     w = ix.writer()
     w.add_document(
-        title=u("First"),
-        content=u("This is the first document"),
-        path=u("/a"),
-        tags=u("first second third"),
-        quick=u("First document"),
-        note=u("This is the first document"),
+        title="First",
+        content="This is the first document",
+        path="/a",
+        tags="first second third",
+        quick="First document",
+        note="This is the first document",
     )
     w.add_document(
-        content=u("Let's try this again"),
-        title=u("Second"),
-        path=u("/b"),
-        tags=u("Uno Dos Tres"),
-        quick=u("Second document"),
-        note=u("This is the second document"),
+        content="Let's try this again",
+        title="Second",
+        path="/b",
+        tags="Uno Dos Tres",
+        quick="Second document",
+        note="This is the second document",
     )
     w.commit()
 
@@ -47,9 +47,9 @@ def test_empty_commit():
     s = fields.Schema(id=fields.ID(stored=True))
     with TempIndex(s, "emptycommit") as ix:
         w = ix.writer()
-        w.add_document(id=u("1"))
-        w.add_document(id=u("2"))
-        w.add_document(id=u("3"))
+        w.add_document(id="1")
+        w.add_document(id="2")
+        w.add_document(id="3")
         w.commit()
 
         w = ix.writer()
@@ -70,7 +70,7 @@ def test_version_in():
         assert v[1] == index._CURRENT_TOC_VERSION
 
         with ix.writer() as w:
-            w.add_document(text=u("alfa"))
+            w.add_document(text="alfa")
 
         assert not ix.is_empty()
 
@@ -78,20 +78,20 @@ def test_version_in():
 def test_simple_indexing():
     schema = fields.Schema(text=fields.TEXT, id=fields.STORED)
     domain = (
-        u("alfa"),
-        u("bravo"),
-        u("charlie"),
-        u("delta"),
-        u("echo"),
-        u("foxtrot"),
-        u("golf"),
-        u("hotel"),
-        u("india"),
-        u("juliet"),
-        u("kilo"),
-        u("lima"),
-        u("mike"),
-        u("november"),
+        "alfa",
+        "bravo",
+        "charlie",
+        "delta",
+        "echo",
+        "foxtrot",
+        "golf",
+        "hotel",
+        "india",
+        "juliet",
+        "kilo",
+        "lima",
+        "mike",
+        "november",
     )
     docs = defaultdict(list)
     with TempIndex(schema, "simple") as ix:
@@ -100,7 +100,7 @@ def test_simple_indexing():
                 smp = random.sample(domain, 5)
                 for word in smp:
                     docs[word].append(i)
-                w.add_document(text=u(" ").join(smp), id=i)
+                w.add_document(text=" ".join(smp), id=i)
 
         with ix.searcher() as s:
             for word in domain:
@@ -119,12 +119,12 @@ def test_integrity():
     ix = st.create_index(s)
 
     w = ix.writer()
-    w.add_document(name=u("Yellow brown"), value=u("Blue red green purple?"))
-    w.add_document(name=u("Alpha beta"), value=u("Gamma delta epsilon omega."))
+    w.add_document(name="Yellow brown", value="Blue red green purple?")
+    w.add_document(name="Alpha beta", value="Gamma delta epsilon omega.")
     w.commit()
 
     w = ix.writer()
-    w.add_document(name=u("One two"), value=u("Three four five."))
+    w.add_document(name="One two", value="Three four five.")
     w.commit()
 
     tr = ix.reader()
@@ -139,12 +139,12 @@ def test_lengths():
     )
     with TempIndex(s, "testlengths") as ix:
         w = ix.writer()
-        items = u("ABCDEFG")
+        items = "ABCDEFG"
         from itertools import cycle, islice
 
         lengths = [10, 20, 2, 102, 45, 3, 420, 2]
         for length in lengths:
-            w.add_document(f2=u(" ").join(islice(cycle(items), length)))
+            w.add_document(f2=" ".join(islice(cycle(items), length)))
         w.commit()
 
         with ix.reader() as dr:
@@ -155,7 +155,7 @@ def test_lengths():
 
 
 def test_many_lengths():
-    domain = u("alfa bravo charlie delta echo").split()
+    domain = "alfa bravo charlie delta echo".split()
     schema = fields.Schema(text=fields.TEXT)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
@@ -180,9 +180,9 @@ def test_lengths_ram():
     st = RamStorage()
     ix = st.create_index(s)
     w = ix.writer()
-    w.add_document(f1=u("A B C D E"), f2=u("X Y Z"))
-    w.add_document(f1=u("B B B B C D D Q"), f2=u("Q R S T"))
-    w.add_document(f1=u("D E F"), f2=u("U V A B C D E"))
+    w.add_document(f1="A B C D E", f2="X Y Z")
+    w.add_document(f1="B B B B C D D Q", f2="Q R S T")
+    w.add_document(f1="D E F", f2="U V A B C D E")
     w.commit()
 
     dr = ix.reader()
@@ -207,22 +207,22 @@ def test_merged_lengths():
     )
     with TempIndex(s, "mergedlengths") as ix:
         w = ix.writer()
-        w.add_document(f1=u("A B C"), f2=u("X"))
-        w.add_document(f1=u("B C D E"), f2=u("Y Z"))
+        w.add_document(f1="A B C", f2="X")
+        w.add_document(f1="B C D E", f2="Y Z")
         w.commit()
 
         w = ix.writer()
-        w.add_document(f1=u("A"), f2=u("B C D E X Y"))
-        w.add_document(f1=u("B C"), f2=u("X"))
+        w.add_document(f1="A", f2="B C D E X Y")
+        w.add_document(f1="B C", f2="X")
         w.commit(merge=False)
 
         w = ix.writer()
-        w.add_document(f1=u("A B X Y Z"), f2=u("B C"))
-        w.add_document(f1=u("Y X"), f2=u("A B"))
+        w.add_document(f1="A B X Y Z", f2="B C")
+        w.add_document(f1="Y X", f2="A B")
         w.commit(merge=False)
 
         with ix.reader() as dr:
-            assert dr.stored_fields(0)["f1"] == u("A B C")
+            assert dr.stored_fields(0)["f1"] == "A B C"
             assert dr.doc_field_length(0, "f1") == 3
             assert dr.doc_field_length(2, "f2") == 6
             assert dr.doc_field_length(4, "f1") == 5
@@ -234,36 +234,36 @@ def test_frequency_keyword():
     ix = st.create_index(s)
 
     w = ix.writer()
-    w.add_document(content=u("A B C D E"))
-    w.add_document(content=u("B B B B C D D"))
-    w.add_document(content=u("D E F"))
+    w.add_document(content="A B C D E")
+    w.add_document(content="B B B B C D D")
+    w.add_document(content="D E F")
     w.commit()
 
     with ix.reader() as tr:
-        assert tr.doc_frequency("content", u("B")) == 2
-        assert tr.frequency("content", u("B")) == 5
-        assert tr.doc_frequency("content", u("E")) == 2
-        assert tr.frequency("content", u("E")) == 2
-        assert tr.doc_frequency("content", u("A")) == 1
-        assert tr.frequency("content", u("A")) == 1
-        assert tr.doc_frequency("content", u("D")) == 3
-        assert tr.frequency("content", u("D")) == 4
-        assert tr.doc_frequency("content", u("F")) == 1
-        assert tr.frequency("content", u("F")) == 1
-        assert tr.doc_frequency("content", u("Z")) == 0
-        assert tr.frequency("content", u("Z")) == 0
+        assert tr.doc_frequency("content", "B") == 2
+        assert tr.frequency("content", "B") == 5
+        assert tr.doc_frequency("content", "E") == 2
+        assert tr.frequency("content", "E") == 2
+        assert tr.doc_frequency("content", "A") == 1
+        assert tr.frequency("content", "A") == 1
+        assert tr.doc_frequency("content", "D") == 3
+        assert tr.frequency("content", "D") == 4
+        assert tr.doc_frequency("content", "F") == 1
+        assert tr.frequency("content", "F") == 1
+        assert tr.doc_frequency("content", "Z") == 0
+        assert tr.frequency("content", "Z") == 0
 
         stats = [
             (fname, text, ti.doc_frequency(), ti.weight()) for (fname, text), ti in tr
         ]
 
         assert stats == [
-            ("content", b("A"), 1, 1),
-            ("content", b("B"), 2, 5),
-            ("content", b("C"), 2, 2),
-            ("content", b("D"), 3, 4),
-            ("content", b("E"), 2, 2),
-            ("content", b("F"), 1, 1),
+            ("content", b"A", 1, 1),
+            ("content", b"B", 2, 5),
+            ("content", b"C", 2, 2),
+            ("content", b"D", 3, 4),
+            ("content", b"E", 2, 2),
+            ("content", b"F", 1, 1),
         ]
 
 
@@ -273,36 +273,36 @@ def test_frequency_text():
     ix = st.create_index(s)
 
     w = ix.writer()
-    w.add_document(content=u("alfa bravo charlie delta echo"))
-    w.add_document(content=u("bravo bravo bravo bravo charlie delta delta"))
-    w.add_document(content=u("delta echo foxtrot"))
+    w.add_document(content="alfa bravo charlie delta echo")
+    w.add_document(content="bravo bravo bravo bravo charlie delta delta")
+    w.add_document(content="delta echo foxtrot")
     w.commit()
 
     with ix.reader() as tr:
-        assert tr.doc_frequency("content", u("bravo")) == 2
-        assert tr.frequency("content", u("bravo")) == 5
-        assert tr.doc_frequency("content", u("echo")) == 2
-        assert tr.frequency("content", u("echo")) == 2
-        assert tr.doc_frequency("content", u("alfa")) == 1
-        assert tr.frequency("content", u("alfa")) == 1
-        assert tr.doc_frequency("content", u("delta")) == 3
-        assert tr.frequency("content", u("delta")) == 4
-        assert tr.doc_frequency("content", u("foxtrot")) == 1
-        assert tr.frequency("content", u("foxtrot")) == 1
-        assert tr.doc_frequency("content", u("zulu")) == 0
-        assert tr.frequency("content", u("zulu")) == 0
+        assert tr.doc_frequency("content", "bravo") == 2
+        assert tr.frequency("content", "bravo") == 5
+        assert tr.doc_frequency("content", "echo") == 2
+        assert tr.frequency("content", "echo") == 2
+        assert tr.doc_frequency("content", "alfa") == 1
+        assert tr.frequency("content", "alfa") == 1
+        assert tr.doc_frequency("content", "delta") == 3
+        assert tr.frequency("content", "delta") == 4
+        assert tr.doc_frequency("content", "foxtrot") == 1
+        assert tr.frequency("content", "foxtrot") == 1
+        assert tr.doc_frequency("content", "zulu") == 0
+        assert tr.frequency("content", "zulu") == 0
 
         stats = [
             (fname, text, ti.doc_frequency(), ti.weight()) for (fname, text), ti in tr
         ]
 
         assert stats == [
-            ("content", b("alfa"), 1, 1),
-            ("content", b("bravo"), 2, 5),
-            ("content", b("charlie"), 2, 2),
-            ("content", b("delta"), 3, 4),
-            ("content", b("echo"), 2, 2),
-            ("content", b("foxtrot"), 1, 1),
+            ("content", b"alfa", 1, 1),
+            ("content", b"bravo", 2, 5),
+            ("content", b"charlie", 2, 2),
+            ("content", b"delta", 3, 4),
+            ("content", b"echo", 2, 2),
+            ("content", b"foxtrot", 1, 1),
         ]
 
 
@@ -310,36 +310,28 @@ def test_deletion():
     s = fields.Schema(key=fields.ID, name=fields.TEXT, value=fields.TEXT)
     with TempIndex(s, "deletion") as ix:
         w = ix.writer()
-        w.add_document(
-            key=u("A"), name=u("Yellow brown"), value=u("Blue red green purple?")
-        )
-        w.add_document(
-            key=u("B"), name=u("Alpha beta"), value=u("Gamma delta epsilon omega.")
-        )
-        w.add_document(key=u("C"), name=u("One two"), value=u("Three four five."))
+        w.add_document(key="A", name="Yellow brown", value="Blue red green purple?")
+        w.add_document(key="B", name="Alpha beta", value="Gamma delta epsilon omega.")
+        w.add_document(key="C", name="One two", value="Three four five.")
         w.commit()
 
         w = ix.writer()
-        assert w.delete_by_term("key", u("B")) == 1
+        assert w.delete_by_term("key", "B") == 1
         w.commit(merge=False)
 
         assert ix.doc_count_all() == 3
         assert ix.doc_count() == 2
 
         w = ix.writer()
-        w.add_document(
-            key=u("A"), name=u("Yellow brown"), value=u("Blue red green purple?")
-        )
-        w.add_document(
-            key=u("B"), name=u("Alpha beta"), value=u("Gamma delta epsilon omega.")
-        )
-        w.add_document(key=u("C"), name=u("One two"), value=u("Three four five."))
+        w.add_document(key="A", name="Yellow brown", value="Blue red green purple?")
+        w.add_document(key="B", name="Alpha beta", value="Gamma delta epsilon omega.")
+        w.add_document(key="C", name="One two", value="Three four five.")
         w.commit()
 
         # This will match both documents with key == B, one of which is already
         # deleted. This should not raise an error.
         w = ix.writer()
-        assert w.delete_by_term("key", u("B")) == 1
+        assert w.delete_by_term("key", "B") == 1
         w.commit()
 
         ix.optimize()
@@ -355,14 +347,14 @@ def test_writer_reuse():
     ix = RamStorage().create_index(s)
 
     w = ix.writer()
-    w.add_document(key=u("A"))
-    w.add_document(key=u("B"))
-    w.add_document(key=u("C"))
+    w.add_document(key="A")
+    w.add_document(key="B")
+    w.add_document(key="C")
     w.commit()
 
     # You can't re-use a commited/canceled writer
-    pytest.raises(IndexingError, w.add_document, key=u("D"))
-    pytest.raises(IndexingError, w.update_document, key=u("B"))
+    pytest.raises(IndexingError, w.add_document, key="D")
+    pytest.raises(IndexingError, w.update_document, key="B")
     pytest.raises(IndexingError, w.delete_document, 0)
     pytest.raises(IndexingError, w.add_reader, None)
     pytest.raises(IndexingError, w.add_field, "name", fields.ID)
@@ -373,9 +365,9 @@ def test_writer_reuse():
 def test_update():
     # Test update with multiple unique keys
     SAMPLE_DOCS = [
-        {"id": u("test1"), "path": u("/test/1"), "text": u("Hello")},
-        {"id": u("test2"), "path": u("/test/2"), "text": u("There")},
-        {"id": u("test3"), "path": u("/test/3"), "text": u("Reader")},
+        {"id": "test1", "path": "/test/1", "text": "Hello"},
+        {"id": "test2", "path": "/test/2", "text": "There"},
+        {"id": "test3", "path": "/test/3", "text": "Reader"},
     ]
 
     schema = fields.Schema(
@@ -390,7 +382,7 @@ def test_update():
                 w.add_document(**doc)
 
         with ix.writer() as w:
-            w.update_document(id=u("test2"), path=u("test/1"), text=u("Replacement"))
+            w.update_document(id="test2", path="test/1", text="Replacement")
 
 
 def test_update2():
@@ -402,7 +394,7 @@ def test_update2():
         random.shuffle(nums)
         for i, n in enumerate(nums):
             w = ix.writer()
-            w.update_document(key=text_type(n % 10), p=text_type(i))
+            w.update_document(key=str(n % 10), p=str(i))
             w.commit()
 
         with ix.searcher() as s:
@@ -420,7 +412,7 @@ def test_update_numeric():
         random.shuffle(nums)
         for num in nums:
             with ix.writer() as w:
-                w.update_document(num=num, text=text_type(num))
+                w.update_document(num=num, text=str(num))
 
         with ix.searcher() as s:
             results = [d["text"] for _, d in s.iter_docs()]
@@ -430,13 +422,11 @@ def test_update_numeric():
 
 def test_reindex():
     sample_docs = [
-        {"id": u("test1"), "text": u("This is a document. Awesome, is it not?")},
-        {"id": u("test2"), "text": u("Another document. Astounding!")},
+        {"id": "test1", "text": "This is a document. Awesome, is it not?"},
+        {"id": "test2", "text": "Another document. Astounding!"},
         {
-            "id": u("test3"),
-            "text": u(
-                "A fascinating article on the behavior of domestic " "steak knives."
-            ),
+            "id": "test3",
+            "text": ("A fascinating article on the behavior of domestic steak knives."),
         },
     ]
 
@@ -459,18 +449,18 @@ def test_reindex():
 
 def test_noscorables1():
     values = [
-        u("alfa"),
-        u("bravo"),
-        u("charlie"),
-        u("delta"),
-        u("echo"),
-        u("foxtrot"),
-        u("golf"),
-        u("hotel"),
-        u("india"),
-        u("juliet"),
-        u("kilo"),
-        u("lima"),
+        "alfa",
+        "bravo",
+        "charlie",
+        "delta",
+        "echo",
+        "foxtrot",
+        "golf",
+        "hotel",
+        "india",
+        "juliet",
+        "kilo",
+        "lima",
     ]
     from random import choice, randint, sample
 
@@ -481,7 +471,7 @@ def test_noscorables1():
         w = ix.writer()
         for _ in range(times):
             w.add_document(
-                id=choice(values), tags=u(" ").join(sample(values, randint(2, 7)))
+                id=choice(values), tags=" ".join(sample(values, randint(2, 7)))
             )
         w.commit()
 
@@ -493,7 +483,7 @@ def test_noscorables2():
     schema = fields.Schema(field=fields.ID)
     with TempIndex(schema, "noscorables2") as ix:
         writer = ix.writer()
-        writer.add_document(field=u("foo"))
+        writer.add_document(field="foo")
         writer.commit()
 
 
@@ -504,42 +494,42 @@ def test_multi():
     with TempIndex(schema, "multi") as ix:
         writer = ix.writer()
         # Deleted 1
-        writer.add_document(id=u("1"), content=u("alfa bravo charlie"))
+        writer.add_document(id="1", content="alfa bravo charlie")
         # Deleted 1
-        writer.add_document(id=u("2"), content=u("bravo charlie delta echo"))
+        writer.add_document(id="2", content="bravo charlie delta echo")
         # Deleted 2
-        writer.add_document(id=u("3"), content=u("charlie delta echo foxtrot"))
+        writer.add_document(id="3", content="charlie delta echo foxtrot")
         writer.commit()
 
         writer = ix.writer()
         writer.delete_by_term("id", "1")
         writer.delete_by_term("id", "2")
-        writer.add_document(id=u("4"), content=u("apple bear cherry donut"))
-        writer.add_document(id=u("5"), content=u("bear cherry donut eggs"))
+        writer.add_document(id="4", content="apple bear cherry donut")
+        writer.add_document(id="5", content="bear cherry donut eggs")
         # Deleted 2
-        writer.add_document(id=u("6"), content=u("delta echo foxtrot golf"))
+        writer.add_document(id="6", content="delta echo foxtrot golf")
         # no d
-        writer.add_document(id=u("7"), content=u("echo foxtrot golf hotel"))
+        writer.add_document(id="7", content="echo foxtrot golf hotel")
         writer.commit(merge=False)
 
         writer = ix.writer()
         writer.delete_by_term("id", "3")
         writer.delete_by_term("id", "6")
-        writer.add_document(id=u("8"), content=u("cherry donut eggs falafel"))
-        writer.add_document(id=u("9"), content=u("donut eggs falafel grape"))
-        writer.add_document(id=u("A"), content=u(" foxtrot golf hotel india"))
+        writer.add_document(id="8", content="cherry donut eggs falafel")
+        writer.add_document(id="9", content="donut eggs falafel grape")
+        writer.add_document(id="A", content=" foxtrot golf hotel india")
         writer.commit(merge=False)
 
         assert ix.doc_count() == 6
 
         with ix.searcher() as s:
-            r = s.search(query.Prefix("content", u("d")), optimize=False)
+            r = s.search(query.Prefix("content", "d"), optimize=False)
             assert sorted([d["id"] for d in r]) == ["4", "5", "8", "9"]
 
-            r = s.search(query.Prefix("content", u("d")))
+            r = s.search(query.Prefix("content", "d"))
             assert sorted([d["id"] for d in r]) == ["4", "5", "8", "9"]
 
-            r = s.search(query.Prefix("content", u("d")), limit=None)
+            r = s.search(query.Prefix("content", "d"), limit=None)
             assert sorted([d["id"] for d in r]) == ["4", "5", "8", "9"]
 
 
@@ -547,9 +537,9 @@ def test_deleteall():
     schema = fields.Schema(text=fields.TEXT)
     with TempIndex(schema, "deleteall") as ix:
         w = ix.writer()
-        domain = u("alfa bravo charlie delta echo").split()
+        domain = "alfa bravo charlie delta echo".split()
         for i, ls in enumerate(permutations(domain)):
-            w.add_document(text=u(" ").join(ls))
+            w.add_document(text=" ".join(ls))
             if not i % 10:
                 w.commit()
                 w = ix.writer()
@@ -564,9 +554,7 @@ def test_deleteall():
 
         with ix.searcher() as s:
             r = s.search(
-                query.Or(
-                    [query.Term("text", u("alfa")), query.Term("text", u("bravo"))]
-                )
+                query.Or([query.Term("text", "alfa"), query.Term("text", "bravo")])
             )
             assert len(r) == 0
 
@@ -581,7 +569,7 @@ def test_simple_stored():
     schema = fields.Schema(a=fields.ID(stored=True), b=fields.ID(stored=False))
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(a=u("alfa"), b=u("bravo"))
+        w.add_document(a="alfa", b="bravo")
     with ix.searcher() as s:
         sf = s.stored_fields(0)
         assert sf == {"a": "alfa"}
@@ -591,11 +579,11 @@ def test_single():
     schema = fields.Schema(id=fields.ID(stored=True), text=fields.TEXT)
     with TempIndex(schema, "single") as ix:
         w = ix.writer()
-        w.add_document(id=u("1"), text=u("alfa"))
+        w.add_document(id="1", text="alfa")
         w.commit()
 
         with ix.searcher() as s:
-            assert ("text", u("alfa")) in s.reader()
+            assert ("text", "alfa") in s.reader()
             assert list(s.documents(id="1")) == [{"id": "1"}]
             assert list(s.documents(text="alfa")) == [{"id": "1"}]
             assert list(s.all_stored_fields()) == [{"id": "1"}]
@@ -607,13 +595,13 @@ def test_indentical_fields():
     )
     with TempIndex(schema, "identifields") as ix:
         w = ix.writer()
-        w.add_document(id=1, f1=u("alfa"), f2=u("alfa"), f3=u("alfa"))
+        w.add_document(id=1, f1="alfa", f2="alfa", f3="alfa")
         w.commit()
 
         with ix.searcher() as s:
-            assert list(s.lexicon("f1")) == [b("alfa")]
-            assert list(s.lexicon("f2")) == [b("alfa")]
-            assert list(s.lexicon("f3")) == [b("alfa")]
+            assert list(s.lexicon("f1")) == [b"alfa"]
+            assert list(s.lexicon("f2")) == [b"alfa"]
+            assert list(s.lexicon("f3")) == [b"alfa"]
             assert list(s.documents(f1="alfa")) == [{"id": 1}]
             assert list(s.documents(f2="alfa")) == [{"id": 1}]
             assert list(s.documents(f3="alfa")) == [{"id": 1}]
@@ -638,7 +626,7 @@ def test_multivalue():
             ],
             num=[1, 2, 3, 12],
         )
-        w.add_document(txt=u("a b c").split())
+        w.add_document(txt="a b c".split())
 
     with ix.reader() as r:
         assert ("num", 3) in r
@@ -663,8 +651,8 @@ def test_multi_language():
 
     # Fake documents
     corpus = [
-        (u("eng"), u("Such stuff as dreams are made on")),
-        (u("pig"), u("Otay ebay, roay otnay otay ebay")),
+        ("eng", "Such stuff as dreams are made on"),
+        ("pig", "Otay ebay, roay otnay otay ebay"),
     ]
 
     schema = fields.Schema(
@@ -705,9 +693,9 @@ def test_doc_boost():
     schema = fields.Schema(id=fields.STORED, a=fields.TEXT, b=fields.TEXT)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(id=0, a=u("alfa alfa alfa"), b=u("bravo"))
-    w.add_document(id=1, a=u("alfa"), b=u("bear"), _a_boost=5.0)
-    w.add_document(id=2, a=u("alfa alfa alfa alfa"), _boost=0.5)
+    w.add_document(id=0, a="alfa alfa alfa", b="bravo")
+    w.add_document(id=1, a="alfa", b="bear", _a_boost=5.0)
+    w.add_document(id=2, a="alfa alfa alfa alfa", _boost=0.5)
     w.commit()
 
     with ix.searcher() as s:
@@ -715,8 +703,8 @@ def test_doc_boost():
         assert [hit["id"] for hit in r] == [1, 0, 2]
 
     w = ix.writer()
-    w.add_document(id=3, a=u("alfa"), b=u("bottle"))
-    w.add_document(id=4, b=u("bravo"), _b_boost=2.0)
+    w.add_document(id=3, a="alfa", b="bottle")
+    w.add_document(id=4, b="bravo", _b_boost=2.0)
     w.commit(merge=False)
 
     with ix.searcher() as s:
@@ -733,16 +721,16 @@ def test_globfield_length_merge():
     with TempIndex(schema, "globlenmerge") as ix:
         with ix.writer() as w:
             w.add_document(
-                title=u("First document"),
-                path=u("/a"),
-                content_text=u("This is the first document we've added!"),
+                title="First document",
+                path="/a",
+                content_text="This is the first document we've added!",
             )
 
         with ix.writer() as w:
             w.add_document(
-                title=u("Second document"),
-                path=u("/b"),
-                content_text=u("The second document is even more interesting!"),
+                title="Second document",
+                path="/b",
+                content_text="The second document is even more interesting!",
             )
 
         with ix.searcher() as s:
@@ -788,14 +776,14 @@ def test_index_decimals():
 
     with ix.writer() as w:
         with pytest.raises(TypeError):
-            w.add_document(name=u("hello"), num=Decimal("3.2"))
+            w.add_document(name="hello", num=Decimal("3.2"))
 
     schema = fields.Schema(
         name=fields.KEYWORD(stored=True), num=fields.NUMERIC(Decimal, decimal_places=5)
     )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(name=u("hello"), num=Decimal("3.2"))
+        w.add_document(name="hello", num=Decimal("3.2"))
 
 
 def test_stored_tuple():

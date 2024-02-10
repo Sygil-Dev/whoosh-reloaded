@@ -2,7 +2,6 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 from whoosh import fields, qparser, query
-from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util import times
 from whoosh.util.testing import TempIndex
@@ -136,24 +135,24 @@ def test_index_numeric():
         w.add_document(a=1, b=1)
     with ix.searcher() as s:
         assert list(s.lexicon("a")) == [
-            b("\x00\x00\x00\x00\x01"),
-            b("\x04\x00\x00\x00\x00"),
-            b("\x08\x00\x00\x00\x00"),
-            b("\x0c\x00\x00\x00\x00"),
-            b("\x10\x00\x00\x00\x00"),
-            b("\x14\x00\x00\x00\x00"),
-            b("\x18\x00\x00\x00\x00"),
-            b("\x1c\x00\x00\x00\x00"),
+            b"\x00\x00\x00\x00\x01",
+            b"\x04\x00\x00\x00\x00",
+            b"\x08\x00\x00\x00\x00",
+            b"\x0c\x00\x00\x00\x00",
+            b"\x10\x00\x00\x00\x00",
+            b"\x14\x00\x00\x00\x00",
+            b"\x18\x00\x00\x00\x00",
+            b"\x1c\x00\x00\x00\x00",
         ]
         assert list(s.lexicon("b")) == [
-            b("\x00\x80\x00\x00\x01"),
-            b("\x04\x08\x00\x00\x00"),
-            b("\x08\x00\x80\x00\x00"),
-            b("\x0c\x00\x08\x00\x00"),
-            b("\x10\x00\x00\x80\x00"),
-            b("\x14\x00\x00\x08\x00"),
-            b("\x18\x00\x00\x00\x80"),
-            b("\x1c\x00\x00\x00\x08"),
+            b"\x00\x80\x00\x00\x01",
+            b"\x04\x08\x00\x00\x00",
+            b"\x08\x00\x80\x00\x00",
+            b"\x0c\x00\x08\x00\x00",
+            b"\x10\x00\x00\x80\x00",
+            b"\x14\x00\x00\x08\x00",
+            b"\x18\x00\x00\x00\x80",
+            b"\x1c\x00\x00\x00\x08",
         ]
 
 
@@ -166,17 +165,17 @@ def test_numeric():
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
-    w.add_document(id=u("a"), integer=5820, floating=1.2)
-    w.add_document(id=u("b"), integer=22, floating=2.3)
-    w.add_document(id=u("c"), integer=78, floating=3.4)
-    w.add_document(id=u("d"), integer=13, floating=4.5)
-    w.add_document(id=u("e"), integer=9, floating=5.6)
+    w.add_document(id="a", integer=5820, floating=1.2)
+    w.add_document(id="b", integer=22, floating=2.3)
+    w.add_document(id="c", integer=78, floating=3.4)
+    w.add_document(id="d", integer=13, floating=4.5)
+    w.add_document(id="e", integer=9, floating=5.6)
     w.commit()
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("integer", schema)
 
-        q = qp.parse(u("5820"))
+        q = qp.parse("5820")
         r = s.search(q)
         assert len(r) == 1
         assert r[0]["id"] == "a"
@@ -204,20 +203,20 @@ def test_decimal_numeric():
     # assert f.from_text(f.to_text(Decimal("123.56"))), Decimal("123.56"))
 
     w = ix.writer()
-    w.add_document(id=u("a"), deci=Decimal("123.56"))
-    w.add_document(id=u("b"), deci=Decimal("0.536255"))
-    w.add_document(id=u("c"), deci=Decimal("2.5255"))
-    w.add_document(id=u("d"), deci=Decimal("58"))
+    w.add_document(id="a", deci=Decimal("123.56"))
+    w.add_document(id="b", deci=Decimal("0.536255"))
+    w.add_document(id="c", deci=Decimal("2.5255"))
+    w.add_document(id="d", deci=Decimal("58"))
     w.commit()
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("deci", schema)
-        q = qp.parse(u("123.56"))
+        q = qp.parse("123.56")
         r = s.search(q)
         assert len(r) == 1
         assert r[0]["id"] == "a"
 
-        r = s.search(qp.parse(u("0.536255")))
+        r = s.search(qp.parse("0.536255"))
         assert len(r) == 1
         assert r[0]["id"] == "b"
 
@@ -226,20 +225,20 @@ def test_numeric_parsing():
     schema = fields.Schema(id=fields.ID(stored=True), number=fields.NUMERIC)
 
     qp = qparser.QueryParser("number", schema)
-    q = qp.parse(u("[10 to *]"))
+    q = qp.parse("[10 to *]")
     assert q == query.NullQuery
 
-    q = qp.parse(u("[to 400]"))
+    q = qp.parse("[to 400]")
     assert q.__class__ is query.NumericRange
     assert q.start is None
     assert q.end == 400
 
-    q = qp.parse(u("[10 to]"))
+    q = qp.parse("[10 to]")
     assert q.__class__ is query.NumericRange
     assert q.start == 10
     assert q.end is None
 
-    q = qp.parse(u("[10 to 400]"))
+    q = qp.parse("[10 to 400]")
     assert q.__class__ is query.NumericRange
     assert q.start == 10
     assert q.end == 400
@@ -391,7 +390,7 @@ def test_datetime():
     for month in range(1, 12):
         for day in range(1, 28):
             w.add_document(
-                id=u("%s-%s") % (month, day),
+                id=f"{month}-{day}",
                 date=datetime(2010, month, day, 14, 0, 0, tzinfo=timezone.utc),
             )
     w.commit()
@@ -409,7 +408,7 @@ def test_datetime():
         r = s.search(qp.parse("date:'2010 02'"))
         assert len(r) == 27
 
-        q = qp.parse(u("date:[2010-05 to 2010-08]"))
+        q = qp.parse("date:[2010-05 to 2010-08]")
         startdt = datetime(2010, 5, 1, 0, 0, 0, 0, tzinfo=timezone.utc)
         enddt = datetime(2010, 8, 31, 23, 59, 59, 999999, tzinfo=timezone.utc)
         assert q.__class__ is query.NumericRange
@@ -422,11 +421,11 @@ def test_boolean():
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
-    w.add_document(id=u("a"), done=True)
-    w.add_document(id=u("b"), done=False)
-    w.add_document(id=u("c"), done=True)
-    w.add_document(id=u("d"), done=False)
-    w.add_document(id=u("e"), done=True)
+    w.add_document(id="a", done=True)
+    w.add_document(id="b", done=False)
+    w.add_document(id="c", done=True)
+    w.add_document(id="d", done=False)
+    w.add_document(id="e", done=True)
     w.commit()
 
     with ix.searcher() as s:
@@ -443,7 +442,7 @@ def test_boolean():
         q = qp.parse("done:false")
         assert q.__class__ == query.Term
         assert q.text is False
-        assert schema["done"].to_bytes(False) == b("f")
+        assert schema["done"].to_bytes(False) == b"f"
         r = s.search(q)
         assert sorted([d["id"] for d in r]) == ["b", "d"]
         assert not any(d["done"] for d in r)
@@ -457,15 +456,15 @@ def test_boolean2():
     schema = fields.Schema(t=fields.TEXT(stored=True), b=fields.BOOLEAN(stored=True))
     ix = RamStorage().create_index(schema)
     writer = ix.writer()
-    writer.add_document(t=u("some kind of text"), b=False)
-    writer.add_document(t=u("some other kind of text"), b=False)
-    writer.add_document(t=u("some more text"), b=False)
-    writer.add_document(t=u("some again"), b=True)
+    writer.add_document(t="some kind of text", b=False)
+    writer.add_document(t="some other kind of text", b=False)
+    writer.add_document(t="some more text", b=False)
+    writer.add_document(t="some again", b=True)
     writer.commit()
 
     with ix.searcher() as s:
-        qf = qparser.QueryParser("b", None).parse(u("f"))
-        qt = qparser.QueryParser("b", None).parse(u("t"))
+        qf = qparser.QueryParser("b", None).parse("f")
+        qt = qparser.QueryParser("b", None).parse("t")
         r = s.search(qf)
         assert len(r) == 3
 
@@ -482,8 +481,8 @@ def test_boolean3():
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
-        w.add_document(t=u("with hardcopy"), b=True, c=u("alfa"))
-        w.add_document(t=u("no hardcopy"), b=False, c=u("bravo"))
+        w.add_document(t="with hardcopy", b=True, c="alfa")
+        w.add_document(t="no hardcopy", b=False, c="bravo")
 
     with ix.searcher() as s:
         q = query.Term("b", schema["b"].to_bytes(True))
@@ -499,10 +498,10 @@ def test_boolean_strings():
         w.add_document(i=1, b="True")
         w.add_document(i=2, b="false")
         w.add_document(i=3, b="False")
-        w.add_document(i=4, b=u("true"))
-        w.add_document(i=5, b=u("True"))
-        w.add_document(i=6, b=u("false"))
-        w.add_document(i=7, b=u("False"))
+        w.add_document(i=4, b="true")
+        w.add_document(i=5, b="True")
+        w.add_document(i=6, b="false")
+        w.add_document(i=7, b="False")
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("b", ix.schema)
@@ -579,15 +578,15 @@ def test_boolean_multifield():
     )
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(name=u("audi"), bit=True)
-        w.add_document(name=u("vw"), bit=False)
-        w.add_document(name=u("porsche"), bit=False)
-        w.add_document(name=u("ferrari"), bit=True)
-        w.add_document(name=u("citroen"), bit=False)
+        w.add_document(name="audi", bit=True)
+        w.add_document(name="vw", bit=False)
+        w.add_document(name="porsche", bit=False)
+        w.add_document(name="ferrari", bit=True)
+        w.add_document(name="citroen", bit=False)
 
     with ix.searcher() as s:
         qp = qparser.MultifieldParser(["name", "bit"], schema)
-        q = qp.parse(u("boop"))
+        q = qp.parse("boop")
 
         r = s.search(q)
         assert sorted(hit["name"] for hit in r) == ["audi", "ferrari"]
@@ -599,13 +598,13 @@ def test_idlist():
     ix = RamStorage().create_index(schema)
 
     with ix.writer() as w:
-        w.add_document(paths=u("here there everywhere"))
-        w.add_document(paths=u("here"))
-        w.add_document(paths=u("there"))
+        w.add_document(paths="here there everywhere")
+        w.add_document(paths="here")
+        w.add_document(paths="there")
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("paths", schema)
-        q = qp.parse(u("here"))
+        q = qp.parse("here")
 
         r = s.search(q)
         assert sorted(hit["paths"] for hit in r) == ["here", "here there everywhere"]
@@ -617,7 +616,7 @@ def test_missing_field():
 
     with ix.searcher() as s:
         with pytest.raises(KeyError):
-            s.document_numbers(id=u("test"))
+            s.document_numbers(id="test")
 
 
 def test_token_boost():
@@ -625,11 +624,11 @@ def test_token_boost():
 
     ana = RegexTokenizer() | DoubleMetaphoneFilter()
     field = fields.TEXT(analyzer=ana, phrase=False)
-    results = sorted(field.index(u("spruce view")))
+    results = sorted(field.index("spruce view"))
     assert results == [
-        (b("F"), 1, 1.0, b("\x00\x00\x00\x01")),
-        (b("FF"), 1, 0.5, b("\x00\x00\x00\x01")),
-        (b("SPRS"), 1, 1.0, b("\x00\x00\x00\x01")),
+        (b"F", 1, 1.0, b"\x00\x00\x00\x01"),
+        (b"FF", 1, 0.5, b"\x00\x00\x00\x01"),
+        (b"SPRS", 1, 1.0, b"\x00\x00\x00\x01"),
     ]
 
 
@@ -644,8 +643,9 @@ def test_pickle_idlist():
 
 
 def test_pickle_schema():
+    from pickle import dumps
+
     from whoosh import analysis
-    from whoosh.compat import dumps
     from whoosh.support.charset import accent_map
 
     freetext_analyzer = analysis.StemmingAnalyzer() | analysis.CharsetFilter(accent_map)

@@ -38,7 +38,6 @@ from array import array
 from decimal import Decimal
 
 from whoosh import analysis, columns, formats
-from whoosh.compat import bytes_type, itervalues, string_type, text_type, with_metaclass
 from whoosh.system import emptybytes, pack_byte
 from whoosh.util.numeric import NaN, from_sortable, to_sortable, typecode_max
 from whoosh.util.text import utf8decode, utf8encode
@@ -171,7 +170,7 @@ class FieldType:
                 "%s field %r cannot index without a format"
                 % (self.__class__.__name__, self)
             )
-        if not isinstance(value, (text_type, list, tuple)):
+        if not isinstance(value, (str, list, tuple)):
             raise ValueError(f"{value!r} is not unicode or sequence")
         assert isinstance(self.format, formats.Format)
 
@@ -218,7 +217,7 @@ class FieldType:
 
         if isinstance(value, (list, tuple)):
             value = value[0]
-        if not isinstance(value, bytes_type):
+        if not isinstance(value, bytes):
             value = utf8encode(value)[0]
         return value
 
@@ -704,7 +703,7 @@ class NUMERIC(FieldType):
             return x
 
         dc = self.decimal_places
-        if dc and isinstance(x, (string_type, Decimal)):
+        if dc and isinstance(x, (str, Decimal)):
             x = Decimal(x) * (10**dc)
         elif isinstance(x, Decimal):
             raise TypeError(
@@ -745,7 +744,7 @@ class NUMERIC(FieldType):
         # Try to avoid re-encoding; this sucks because on Python 2 we can't
         # tell the difference between a string and encoded bytes, so we have
         # to require the user use unicode when they mean string
-        if isinstance(x, bytes_type):
+        if isinstance(x, bytes):
             return x
 
         if x == emptybytes or x is None:
@@ -843,7 +842,7 @@ class DATETIME(NUMERIC):
     def prepare_datetime(self, x):
         from whoosh.util.times import floor
 
-        if isinstance(x, text_type):
+        if isinstance(x, str):
             # For indexing, support same strings as for query parsing --
             # convert unicode to datetime object
             x = self._parse_datestring(x)
@@ -851,13 +850,13 @@ class DATETIME(NUMERIC):
 
         if isinstance(x, datetime.datetime):
             return datetime_to_long(x)
-        elif isinstance(x, bytes_type):
+        elif isinstance(x, bytes):
             return x
         else:
             raise Exception(f"{x!r} is not a datetime")
 
     def to_column_value(self, x):
-        if isinstance(x, bytes_type):
+        if isinstance(x, bytes):
             raise Exception(f"{x!r} is not a datetime")
         if isinstance(x, (list, tuple)):
             x = x[0]
@@ -966,18 +965,18 @@ class BOOLEAN(FieldType):
         # otherwise call bool() on the query value. This lets you pass objects
         # as query values and do the right thing.
 
-        if isinstance(x, string_type) and x.lower() in self.trues:
+        if isinstance(x, str) and x.lower() in self.trues:
             x = True
-        elif isinstance(x, string_type) and x.lower() in self.falses:
+        elif isinstance(x, str) and x.lower() in self.falses:
             x = False
         else:
             x = bool(x)
         return x
 
     def to_bytes(self, x):
-        if isinstance(x, bytes_type):
+        if isinstance(x, bytes):
             return x
-        elif isinstance(x, string_type):
+        elif isinstance(x, str):
             x = x.lower() in self.trues
         else:
             x = bool(x)
@@ -985,7 +984,7 @@ class BOOLEAN(FieldType):
         return bs
 
     def index(self, bit, **kwargs):
-        if isinstance(bit, string_type):
+        if isinstance(bit, str):
             bit = bit.lower() in self.trues
         else:
             bit = bool(bit)
@@ -1446,7 +1445,7 @@ class Schema:
             return self._fields[name]
 
         # Check if the name matches a dynamic field
-        for expr, fieldtype in itervalues(self._dyn_fields):
+        for expr, fieldtype in self._dyn_fields.values():
             if expr.match(name):
                 return fieldtype
 
@@ -1604,7 +1603,7 @@ class Schema:
         return [name for name, field in self.items() if field.scorable]
 
 
-class SchemaClass(with_metaclass(MetaSchema, Schema)):
+class SchemaClass(Schema, metaclass=MetaSchema):
     """
     Allows you to define a schema using declarative syntax, similar to
     Django models::

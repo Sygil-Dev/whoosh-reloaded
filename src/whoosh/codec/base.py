@@ -29,11 +29,11 @@
 This module contains base classes/interfaces for "codec" objects.
 """
 
+from abc import abstractmethod
 from bisect import bisect_right
 
 from whoosh import columns
 from whoosh.automata import lev
-from whoosh.compat import abstractmethod, izip, unichr
 from whoosh.filedb.compound import CompoundStorage
 from whoosh.system import emptybytes
 from whoosh.util import random_name
@@ -367,7 +367,7 @@ class Automata:
 
     @staticmethod
     def find_matches(dfa, cur):
-        unull = unichr(0)
+        unull = chr(0)
 
         term = cur.text()
         if term is None:
@@ -769,12 +769,12 @@ class MultiPerDocumentReader(PerDocumentReader):
         return self._readers[x].is_deleted(y)
 
     def deleted_docs(self):
-        for r, offset in izip(self._readers, self._doc_offsets):
+        for r, offset in zip(self._readers, self._doc_offsets):
             for docnum in r.deleted_docs():
                 yield docnum + offset
 
     def all_doc_ids(self):
-        for r, offset in izip(self._readers, self._doc_offsets):
+        for r, offset in zip(self._readers, self._doc_offsets):
             for docnum in r.all_doc_ids():
                 yield docnum + offset
 

@@ -32,9 +32,9 @@ occurance of a term.
 """
 
 from collections import defaultdict
+from pickle import dumps, loads
 
 from whoosh.analysis import entoken, unstopped
-from whoosh.compat import b, dumps, iteritems, loads
 from whoosh.system import (
     _FLOAT_SIZE,
     _INT_SIZE,
@@ -199,9 +199,7 @@ class Frequency(Format):
             freqs[t.text] += 1
             weights[t.text] += t.boost
 
-        wvs = (
-            (w, freq, weights[w] * fb, pack_uint(freq)) for w, freq in iteritems(freqs)
-        )
+        wvs = ((w, freq, weights[w] * fb, pack_uint(freq)) for w, freq in freqs.items())
         return wvs
 
     def decode_frequency(self, valuestring):
@@ -233,7 +231,7 @@ class Positions(Format):
             poses[t.text].append(t.pos)
             weights[t.text] += t.boost
 
-        for w, poslist in iteritems(poses):
+        for w, poslist in poses.items():
             value = self.encode(poslist)
             yield (w, len(poslist), weights[w] * fb, value)
 
@@ -246,8 +244,8 @@ class Positions(Format):
         return pack_uint(len(deltas)) + dumps(deltas, 2)
 
     def decode_positions(self, valuestring):
-        if not valuestring.endswith(b(".")):
-            valuestring += b(".")
+        if not valuestring.endswith(b"."):
+            valuestring += b"."
         codes = loads(valuestring[_INT_SIZE:])
         position = 0
         positions = []
@@ -292,7 +290,7 @@ class Characters(Positions):
             seen[t.text].append((t.pos, t.startchar, t.endchar))
             weights[t.text] += t.boost
 
-        for w, poslist in iteritems(seen):
+        for w, poslist in seen.items():
             value = self.encode(poslist)
             yield (w, len(poslist), weights[w] * fb, value)
 
@@ -307,8 +305,8 @@ class Characters(Positions):
         return pack_uint(len(deltas)) + dumps(deltas, 2)
 
     def decode_characters(self, valuestring):
-        if not valuestring.endswith(b(".")):
-            valuestring += b(".")
+        if not valuestring.endswith(b"."):
+            valuestring += b"."
         codes = loads(valuestring[_INT_SIZE:])
         position = 0
         endchar = 0
@@ -321,8 +319,8 @@ class Characters(Positions):
         return posns_chars
 
     def decode_positions(self, valuestring):
-        if not valuestring.endswith(b(".")):
-            valuestring += b(".")
+        if not valuestring.endswith(b"."):
+            valuestring += b"."
         codes = loads(valuestring[_INT_SIZE:])
         position = 0
         posns = []
@@ -362,7 +360,7 @@ class PositionBoosts(Positions):
             boost = t.boost
             seen[t.text].append((pos, boost))
 
-        for w, poses in iteritems(seen):
+        for w, poses in seen.items():
             value = self.encode(poses)
             yield (w, len(poses), sum(p[1] for p in poses) * fb, value)
 
@@ -377,8 +375,8 @@ class PositionBoosts(Positions):
         return pack_uint(len(poses)) + pack_float(summedboost) + dumps(codes, 2)
 
     def decode_position_boosts(self, valuestring):
-        if not valuestring.endswith(b(".")):
-            valuestring += b(".")
+        if not valuestring.endswith(b"."):
+            valuestring += b"."
         codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE :])
         position = 0
         posns_boosts = []
@@ -388,8 +386,8 @@ class PositionBoosts(Positions):
         return posns_boosts
 
     def decode_positions(self, valuestring):
-        if not valuestring.endswith(b(".")):
-            valuestring += b(".")
+        if not valuestring.endswith(b"."):
+            valuestring += b"."
         codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE :])
         position = 0
         posns = []
@@ -427,7 +425,7 @@ class CharacterBoosts(Characters):
         for t in tokens(value, analyzer, kwargs):
             seen[t.text].append((t.pos, t.startchar, t.endchar, t.boost))
 
-        for w, poses in iteritems(seen):
+        for w, poses in seen.items():
             value, summedboost = self.encode(poses)
             yield (w, len(poses), summedboost, value)
 
@@ -452,8 +450,8 @@ class CharacterBoosts(Characters):
         )
 
     def decode_character_boosts(self, valuestring):
-        if not valuestring.endswith(b(".")):
-            valuestring += b(".")
+        if not valuestring.endswith(b"."):
+            valuestring += b"."
         codes = loads(valuestring[_INT_SIZE + _FLOAT_SIZE :])
         position = 0
         endchar = 0

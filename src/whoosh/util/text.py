@@ -28,8 +28,6 @@
 import codecs
 import re
 
-from whoosh.compat import byte, string_type, u
-
 # Note: these functions return a tuple of (text, length), so when you call
 # them, you have to add [0] on the end, e.g. str = utf8encode(unicode)[0]
 
@@ -38,6 +36,10 @@ utf8decode = codecs.getdecoder("utf-8")
 
 
 # Prefix encoding functions
+
+
+def byte(num):
+    return bytes((num,))
 
 
 def first_diff(a, b):
@@ -71,7 +73,7 @@ def prefix_encode_all(ls):
     as UTF-8.
     """
 
-    last = u("")
+    last = ""
     for w in ls:
         i = first_diff(last, w)
         yield chr(i) + w[i:].encode("utf-8")
@@ -81,7 +83,7 @@ def prefix_encode_all(ls):
 def prefix_decode_all(ls):
     """Decompresses a list of strings compressed by prefix_encode()."""
 
-    last = u("")
+    last = ""
     for w in ls:
         i = ord(w[0])
         decoded = last[:i] + w[1:].decode("utf-8")
@@ -125,7 +127,7 @@ def rcompile(pattern, flags=0, verbose=False):
     or a string to be compiled, and automatically adds the re.UNICODE flag.
     """
 
-    if not isinstance(pattern, string_type):
+    if not isinstance(pattern, str):
         # If it's not a string, assume it's already a compiled pattern
         return pattern
     if verbose:

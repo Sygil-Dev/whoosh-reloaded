@@ -1,5 +1,6 @@
+from itertools import permutations
+
 from whoosh import analysis, fields, formats
-from whoosh.compat import permutations, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.query import And, Or, Phrase, Term, spans
 from whoosh.util.testing import TempIndex
@@ -23,7 +24,7 @@ def get_index():
 
     w = _ix.writer()
     for ls in permutations(domain, 4):
-        w.add_document(text=u(" ").join(ls), _stored_text=ls)
+        w.add_document(text=" ".join(ls), _stored_text=ls)
     w.commit()
 
     return _ix
@@ -38,7 +39,7 @@ def test_multimatcher():
     for _ in range(3):
         w = ix.writer()
         for ls in permutations(domain):
-            w.add_document(content=u(" ").join(ls))
+            w.add_document(content=" ".join(ls))
         w.commit(merge=False)
 
     q = Term("content", "bravo")
@@ -61,7 +62,7 @@ def test_excludematcher():
     for _ in range(3):
         w = ix.writer()
         for ls in permutations(domain):
-            w.add_document(content=u(" ").join(ls))
+            w.add_document(content=" ".join(ls))
         w.commit(merge=False)
 
     w = ix.writer()
@@ -189,10 +190,10 @@ def test_near_unordered():
     st = RamStorage()
     ix = st.create_index(schema)
     w = ix.writer()
-    w.add_document(text=u("alfa bravo charlie delta echo"))
-    w.add_document(text=u("alfa bravo delta echo charlie"))
-    w.add_document(text=u("alfa charlie bravo delta echo"))
-    w.add_document(text=u("echo delta alfa foxtrot"))
+    w.add_document(text="alfa bravo charlie delta echo")
+    w.add_document(text="alfa bravo delta echo charlie")
+    w.add_document(text="alfa charlie bravo delta echo")
+    w.add_document(text="echo delta alfa foxtrot")
     w.commit()
 
     with ix.searcher() as s:
@@ -201,8 +202,8 @@ def test_near_unordered():
         )
         r = sorted(d["text"] for d in s.search(q))
         assert r == [
-            u("alfa bravo charlie delta echo"),
-            u("alfa charlie bravo delta echo"),
+            "alfa bravo charlie delta echo",
+            "alfa charlie bravo delta echo",
         ]
 
 
@@ -213,7 +214,7 @@ def test_span_near_tree():
     ix = st.create_index(schema)
     w = ix.writer()
     w.add_document(
-        text=u(
+        text=(
             "The Lucene library is by Doug Cutting and Whoosh was made by Matt Chaput"
         )
     )

@@ -1,5 +1,3 @@
-from whoosh.compat import u
-
 from .bases import _StandardStemmer
 
 
@@ -163,12 +161,12 @@ class EnglishStemmer(_StandardStemmer):
 
         # Map the different apostrophe characters to a single consistent one
         word = (
-            word.replace(u("\u2019"), u("\x27"))
-            .replace(u("\u2018"), u("\x27"))
-            .replace(u("\u201B"), u("\x27"))
+            word.replace("\u2019", "\x27")
+            .replace("\u2018", "\x27")
+            .replace("\u201B", "\x27")
         )
 
-        if word.startswith(u("\x27")):
+        if word.startswith("\x27"):
             word = word[1:]
 
         if word.startswith("y"):
