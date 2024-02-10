@@ -1,5 +1,3 @@
-from whoosh.compat import u
-
 from .bases import _ScandinavianStemmer
 
 
@@ -28,7 +26,7 @@ class DanishStemmer(_ScandinavianStemmer):
     """
 
     # The language's vowels and other important characters are defined.
-    __vowels = u("aeiouy\xE6\xE5\xF8")
+    __vowels = "aeiouy\xE6\xE5\xF8"
     __consonants = "bcdfghjklmnpqrstvwxz"
     __double_consonants = (
         "bb",
@@ -52,7 +50,7 @@ class DanishStemmer(_ScandinavianStemmer):
         "xx",
         "zz",
     )
-    __s_ending = u("abcdfghjklmnoprtvyz\xE5")
+    __s_ending = "abcdfghjklmnoprtvyz\xE5"
 
     # The different suffixes, divided into the algorithm's steps
     # and organized by length, are listed in tuples.
@@ -91,7 +89,7 @@ class DanishStemmer(_ScandinavianStemmer):
         "s",
     )
     __step2_suffixes = ("gd", "dt", "gt", "kt")
-    __step3_suffixes = ("elig", u("l\xF8st"), "lig", "els", "ig")
+    __step3_suffixes = ("elig", "l\xF8st", "lig", "els", "ig")
 
     def stem(self, word):
         """
@@ -140,7 +138,7 @@ class DanishStemmer(_ScandinavianStemmer):
 
         for suffix in self.__step3_suffixes:
             if r1.endswith(suffix):
-                if suffix == u("l\xF8st"):
+                if suffix == "l\xF8st":
                     word = word[:-1]
                     r1 = r1[:-1]
                 else:

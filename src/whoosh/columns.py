@@ -51,13 +51,14 @@ import struct
 import warnings
 from array import array
 from bisect import bisect_right
+from io import BytesIO
+from pickle import dumps, loads
 
 try:
     import zlib
 except ImportError:
     zlib = None
 
-from whoosh.compat import BytesIO, array_tobytes, b, bytes_type, dumps, loads
 from whoosh.filedb.structfile import StructFile
 from whoosh.idsets import BitSet, OnDiskBitSet
 from whoosh.system import emptybytes
@@ -327,7 +328,7 @@ class FixedBytesColumn(Column):
         self._fixedlen = fixedlen
 
         if default is None:
-            default = b("\x00") * fixedlen
+            default = b"\x00" * fixedlen
         elif len(default) != fixedlen:
             raise ValueError
         self._default = default
@@ -428,7 +429,7 @@ class RefBytesColumn(Column):
         self._fixedlen = fixedlen
 
         if default is None:
-            default = b("\x00") * fixedlen if fixedlen else emptybytes
+            default = b"\x00" * fixedlen if fixedlen else emptybytes
         elif fixedlen and len(default) != fixedlen:
             raise ValueError
         self._default = default
@@ -703,7 +704,7 @@ class BitColumn(Column):
             bits = self._bitset.bits
 
             if zlib and len(bits) <= self._compressat:
-                compressed = zlib.compress(array_tobytes(bits), 3)
+                compressed = zlib.compress(bits.tobytes(), 3)
                 dbfile.write(compressed)
                 dbfile.write_byte(1)
             else:
@@ -1253,7 +1254,7 @@ class VarBytesListColumn(ListColumn):
         def add(self, docnum, ls):
             out = [varint(len(ls))]
             for v in ls:
-                assert isinstance(v, bytes_type)
+                assert isinstance(v, bytes)
                 out.append(varint(len(v)))
                 out.append(v)
             self._child.add(docnum, emptybytes.join(out))

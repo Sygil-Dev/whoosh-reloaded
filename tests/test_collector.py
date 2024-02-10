@@ -1,6 +1,5 @@
 import pytest
 from whoosh import collectors, fields, query, searching
-from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
@@ -9,14 +8,14 @@ def test_add():
     schema = fields.Schema(id=fields.STORED, text=fields.TEXT)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(id=1, text=u("alfa bravo charlie"))
-    w.add_document(id=2, text=u("alfa bravo delta"))
-    w.add_document(id=3, text=u("alfa charlie echo"))
+    w.add_document(id=1, text="alfa bravo charlie")
+    w.add_document(id=2, text="alfa bravo delta")
+    w.add_document(id=3, text="alfa charlie echo")
     w.commit()
 
     with ix.searcher() as s:
-        assert s.doc_frequency("text", u("charlie")) == 2
-        r = s.search(query.Term("text", u("charlie")))
+        assert s.doc_frequency("text", "charlie") == 2
+        r = s.search(query.Term("text", "charlie"))
         assert [hit["id"] for hit in r] == [1, 3]
         assert len(r) == 2
 
@@ -25,12 +24,12 @@ def test_filter_that_matches_no_document():
     schema = fields.Schema(id=fields.STORED, text=fields.TEXT)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(id=1, text=u("alfa bravo charlie"))
-    w.add_document(id=2, text=u("alfa bravo delta"))
+    w.add_document(id=1, text="alfa bravo charlie")
+    w.add_document(id=2, text="alfa bravo delta")
     w.commit()
 
     with ix.searcher() as s:
-        r = s.search(query.Every(), filter=query.Term("text", u("echo")))
+        r = s.search(query.Every(), filter=query.Term("text", "echo"))
         assert [hit["id"] for hit in r] == []
         assert len(r) == 0
 
@@ -40,7 +39,7 @@ def test_timelimit():
     ix = RamStorage().create_index(schema)
     w = ix.writer()
     for _ in range(50):
-        w.add_document(text=u("alfa"))
+        w.add_document(text="alfa")
     w.commit()
 
     import time
@@ -57,7 +56,7 @@ def test_timelimit():
             return SlowMatcher(self.child.matcher(searcher, context))
 
     with ix.searcher() as s:
-        oq = query.Term("text", u("alfa"))
+        oq = query.Term("text", "alfa")
         sq = SlowQuery(oq)
 
         col = collectors.TimeLimitCollector(s.collector(limit=None), timelimit=0.1)
@@ -111,7 +110,7 @@ def test_timelimit_alarm():
     schema = fields.Schema(text=fields.TEXT)
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(text=u("Hello"))
+        w.add_document(text="Hello")
 
     with ix.searcher() as s:
         q = SlowQuery()
@@ -253,17 +252,15 @@ def test_filter_results_count():
     )
     with TempIndex(schema) as ix:
         with ix.writer() as w:
-            w.add_document(
-                id=1, django_ct=u("app.model1"), text=u("alfa bravo charlie")
-            )
-            w.add_document(id=2, django_ct=u("app.model1"), text=u("alfa bravo delta"))
-            w.add_document(id=3, django_ct=u("app.model2"), text=u("alfa charlie echo"))
+            w.add_document(id=1, django_ct="app.model1", text="alfa bravo charlie")
+            w.add_document(id=2, django_ct="app.model1", text="alfa bravo delta")
+            w.add_document(id=3, django_ct="app.model2", text="alfa charlie echo")
 
         with ix.searcher() as s:
-            q = query.Term("django_ct", u("app.model1"))
+            q = query.Term("django_ct", "app.model1")
             r1 = s.search(q, limit=None)
             assert len(r1) == 2
 
-            q = query.Term("text", u("alfa"))
+            q = query.Term("text", "alfa")
             r2 = s.search(q, filter=r1, limit=1)
             assert len(r2) == 2

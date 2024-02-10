@@ -1,5 +1,4 @@
 from whoosh import fields, query, sorting
-from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
@@ -14,21 +13,21 @@ def test_nested_parent():
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
-            w.add_document(name=u("iPad"), type=u("product"))
-            w.add_document(part=u("screen"), price=100)
-            w.add_document(part=u("battery"), price=50)
-            w.add_document(part=u("case"), price=20)
+            w.add_document(name="iPad", type="product")
+            w.add_document(part="screen", price=100)
+            w.add_document(part="battery", price=50)
+            w.add_document(part="case", price=20)
 
         with w.group():
-            w.add_document(name=u("iPhone"), type=u("product"))
-            w.add_document(part=u("screen"), price=60)
-            w.add_document(part=u("battery"), price=30)
-            w.add_document(part=u("case"), price=10)
+            w.add_document(name="iPhone", type="product")
+            w.add_document(part="screen", price=60)
+            w.add_document(part="battery", price=30)
+            w.add_document(part="case", price=10)
 
         with w.group():
-            w.add_document(name=u("Mac mini"), type=u("product"))
-            w.add_document(part=u("hard drive"), price=50)
-            w.add_document(part=u("case"), price=50)
+            w.add_document(name="Mac mini", type="product")
+            w.add_document(part="hard drive", price=50)
+            w.add_document(part="case", price=50)
 
     with ix.searcher() as s:
         price = s.schema["price"]
@@ -48,22 +47,21 @@ def test_scoring():
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
-            w.add_document(kind=u("class"), name=u("Index"))
-            w.add_document(kind=u("method"), name=u("add document"))
-            w.add_document(kind=u("method"), name=u("add reader"))
-            w.add_document(kind=u("method"), name=u("close"))
+            w.add_document(kind="class", name="Index")
+            w.add_document(kind="method", name="add document")
+            w.add_document(kind="method", name="add reader")
+            w.add_document(kind="method", name="close")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Accumulator"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("get result"))
+            w.add_document(kind="class", name="Accumulator")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="get result")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Calculator"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("add all"))
-            w.add_document(kind=u("method"), name=u("add some"))
-            w.add_document(kind=u("method"), name=u("multiply"))
-            w.add_document(kind=u("method"), name=u("close"))
-
+            w.add_document(kind="class", name="Calculator")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="add all")
+            w.add_document(kind="method", name="add some")
+            w.add_document(kind="method", name="multiply")
+            w.add_document(kind="method", name="close")
     with ix.searcher() as s:
         q = query.NestedParent(query.Term("kind", "class"), query.Term("name", "add"))
         r = s.search(q)
@@ -77,25 +75,25 @@ def test_missing():
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
-            w.add_document(kind=u("class"), name=u("Index"))
-            w.add_document(kind=u("method"), name=u("add document"))
-            w.add_document(kind=u("method"), name=u("add reader"))
-            w.add_document(kind=u("method"), name=u("close"))
+            w.add_document(kind="class", name="Index")
+            w.add_document(kind="method", name="add document")
+            w.add_document(kind="method", name="add reader")
+            w.add_document(kind="method", name="close")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Accumulator"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("get result"))
+            w.add_document(kind="class", name="Accumulator")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="get result")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Calculator"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("add all"))
-            w.add_document(kind=u("method"), name=u("add some"))
-            w.add_document(kind=u("method"), name=u("multiply"))
-            w.add_document(kind=u("method"), name=u("close"))
+            w.add_document(kind="class", name="Calculator")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="add all")
+            w.add_document(kind="method", name="add some")
+            w.add_document(kind="method", name="multiply")
+            w.add_document(kind="method", name="close")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Deleter"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("delete"))
+            w.add_document(kind="class", name="Deleter")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="delete")
 
     with ix.searcher() as s:
         q = query.NestedParent(query.Term("kind", "class"), query.Term("name", "add"))
@@ -127,25 +125,25 @@ def test_nested_delete():
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
-            w.add_document(kind=u("class"), name=u("Index"))
-            w.add_document(kind=u("method"), name=u("add document"))
-            w.add_document(kind=u("method"), name=u("add reader"))
-            w.add_document(kind=u("method"), name=u("close"))
+            w.add_document(kind="class", name="Index")
+            w.add_document(kind="method", name="add document")
+            w.add_document(kind="method", name="add reader")
+            w.add_document(kind="method", name="close")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Accumulator"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("get result"))
+            w.add_document(kind="class", name="Accumulator")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="get result")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Calculator"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("add all"))
-            w.add_document(kind=u("method"), name=u("add some"))
-            w.add_document(kind=u("method"), name=u("multiply"))
-            w.add_document(kind=u("method"), name=u("close"))
+            w.add_document(kind="class", name="Calculator")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="add all")
+            w.add_document(kind="method", name="add some")
+            w.add_document(kind="method", name="multiply")
+            w.add_document(kind="method", name="close")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Deleter"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("delete"))
+            w.add_document(kind="class", name="Deleter")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="delete")
 
     # Delete "Accumulator" class
     with ix.writer() as w:
@@ -194,25 +192,25 @@ def test_all_parents_deleted():
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
-            w.add_document(kind=u("class"), name=u("Index"))
-            w.add_document(kind=u("method"), name=u("add document"))
-            w.add_document(kind=u("method"), name=u("add reader"))
-            w.add_document(kind=u("method"), name=u("close"))
+            w.add_document(kind="class", name="Index")
+            w.add_document(kind="method", name="add document")
+            w.add_document(kind="method", name="add reader")
+            w.add_document(kind="method", name="close")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Accumulator"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("get result"))
+            w.add_document(kind="class", name="Accumulator")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="get result")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Calculator"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("add all"))
-            w.add_document(kind=u("method"), name=u("add some"))
-            w.add_document(kind=u("method"), name=u("multiply"))
-            w.add_document(kind=u("method"), name=u("close"))
+            w.add_document(kind="class", name="Calculator")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="add all")
+            w.add_document(kind="method", name="add some")
+            w.add_document(kind="method", name="multiply")
+            w.add_document(kind="method", name="close")
         with w.group():
-            w.add_document(kind=u("class"), name=u("Deleter"))
-            w.add_document(kind=u("method"), name=u("add"))
-            w.add_document(kind=u("method"), name=u("delete"))
+            w.add_document(kind="class", name="Deleter")
+            w.add_document(kind="method", name="add")
+            w.add_document(kind="method", name="delete")
 
     with ix.writer() as w:
         w.delete_by_term("name", "Index")
@@ -230,21 +228,21 @@ def test_everything_is_a_parent():
     schema = fields.Schema(
         id=fields.STORED, kind=fields.ID, name=fields.ID(stored=True)
     )
-    k = u("alfa")
+    k = "alfa"
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(id=0, kind=k, name=u("one"))
-        w.add_document(id=1, kind=k, name=u("two"))
-        w.add_document(id=2, kind=k, name=u("three"))
-        w.add_document(id=3, kind=k, name=u("four"))
-        w.add_document(id=4, kind=k, name=u("one"))
-        w.add_document(id=5, kind=k, name=u("two"))
-        w.add_document(id=6, kind=k, name=u("three"))
-        w.add_document(id=7, kind=k, name=u("four"))
-        w.add_document(id=8, kind=k, name=u("one"))
-        w.add_document(id=9, kind=k, name=u("two"))
-        w.add_document(id=10, kind=k, name=u("three"))
-        w.add_document(id=11, kind=k, name=u("four"))
+        w.add_document(id=0, kind=k, name="one")
+        w.add_document(id=1, kind=k, name="two")
+        w.add_document(id=2, kind=k, name="three")
+        w.add_document(id=3, kind=k, name="four")
+        w.add_document(id=4, kind=k, name="one")
+        w.add_document(id=5, kind=k, name="two")
+        w.add_document(id=6, kind=k, name="three")
+        w.add_document(id=7, kind=k, name="four")
+        w.add_document(id=8, kind=k, name="one")
+        w.add_document(id=9, kind=k, name="two")
+        w.add_document(id=10, kind=k, name="three")
+        w.add_document(id=11, kind=k, name="four")
 
     with ix.searcher() as s:
         pq = query.Term("kind", k)
@@ -258,21 +256,21 @@ def test_no_parents():
     schema = fields.Schema(
         id=fields.STORED, kind=fields.ID, name=fields.ID(stored=True)
     )
-    k = u("alfa")
+    k = "alfa"
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(id=0, kind=k, name=u("one"))
-        w.add_document(id=1, kind=k, name=u("two"))
-        w.add_document(id=2, kind=k, name=u("three"))
-        w.add_document(id=3, kind=k, name=u("four"))
-        w.add_document(id=4, kind=k, name=u("one"))
-        w.add_document(id=5, kind=k, name=u("two"))
-        w.add_document(id=6, kind=k, name=u("three"))
-        w.add_document(id=7, kind=k, name=u("four"))
-        w.add_document(id=8, kind=k, name=u("one"))
-        w.add_document(id=9, kind=k, name=u("two"))
-        w.add_document(id=10, kind=k, name=u("three"))
-        w.add_document(id=11, kind=k, name=u("four"))
+        w.add_document(id=0, kind=k, name="one")
+        w.add_document(id=1, kind=k, name="two")
+        w.add_document(id=2, kind=k, name="three")
+        w.add_document(id=3, kind=k, name="four")
+        w.add_document(id=4, kind=k, name="one")
+        w.add_document(id=5, kind=k, name="two")
+        w.add_document(id=6, kind=k, name="three")
+        w.add_document(id=7, kind=k, name="four")
+        w.add_document(id=8, kind=k, name="one")
+        w.add_document(id=9, kind=k, name="two")
+        w.add_document(id=10, kind=k, name="three")
+        w.add_document(id=11, kind=k, name="four")
 
     with ix.searcher() as s:
         pq = query.Term("kind", "bravo")
@@ -331,20 +329,20 @@ def test_nested_children():
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
         with w.group():
-            w.add_document(t=u("album"), album_name=u("alfa bravo charlie"))
-            w.add_document(t=u("track"), track=1, song_name=u("delta echo foxtrot"))
-            w.add_document(t=u("track"), track=2, song_name=u("golf hotel india"))
-            w.add_document(t=u("track"), track=3, song_name=u("juliet kilo lima"))
+            w.add_document(t="album", album_name="alfa bravo charlie")
+            w.add_document(t="track", track=1, song_name="delta echo foxtrot")
+            w.add_document(t="track", track=2, song_name="golf hotel india")
+            w.add_document(t="track", track=3, song_name="juliet kilo lima")
         with w.group():
-            w.add_document(t=u("album"), album_name=u("mike november oskar"))
-            w.add_document(t=u("track"), track=1, song_name=u("papa quebec romeo"))
-            w.add_document(t=u("track"), track=2, song_name=u("sierra tango ultra"))
-            w.add_document(t=u("track"), track=3, song_name=u("victor whiskey xray"))
+            w.add_document(t="album", album_name="mike november oskar")
+            w.add_document(t="track", track=1, song_name="papa quebec romeo")
+            w.add_document(t="track", track=2, song_name="sierra tango ultra")
+            w.add_document(t="track", track=3, song_name="victor whiskey xray")
         with w.group():
-            w.add_document(t=u("album"), album_name=u("yankee zulu one"))
-            w.add_document(t=u("track"), track=1, song_name=u("two three four"))
-            w.add_document(t=u("track"), track=2, song_name=u("five six seven"))
-            w.add_document(t=u("track"), track=3, song_name=u("eight nine ten"))
+            w.add_document(t="album", album_name="yankee zulu one")
+            w.add_document(t="track", track=1, song_name="two three four")
+            w.add_document(t="track", track=2, song_name="five six seven")
+            w.add_document(t="track", track=3, song_name="eight nine ten")
 
     with ix.searcher() as s:
         pq = query.Term("t", "album")

@@ -1,16 +1,21 @@
 import inspect
 import random
 import sys
+from io import BytesIO
+from pickle import dumps, loads
 
 import pytest
 from whoosh import columns, fields, query
 from whoosh.codec.whoosh3 import W3Codec
-from whoosh.compat import BytesIO, b, bytes_type, dumps, izip, loads, text_type, u
 from whoosh.filedb import compound
 from whoosh.filedb.filestore import RamStorage
 from whoosh.matching import ConstantScoreMatcher
 from whoosh.query import ColumnMatcher, ColumnQuery
 from whoosh.util.testing import TempIndex, TempStorage
+
+
+def b(s):
+    return s.encode("latin-1")
 
 
 def test_pickleability():
@@ -65,9 +70,9 @@ def test_multistream():
 
     f = st.open_file("test")
     msr = compound.CompoundStorage(f)
-    assert msr.open_file("a").read() == b("123456789abc")
-    assert msr.open_file("b").read() == b("abcdefghijk")
-    assert msr.open_file("c").read() == b("AaBbCcDdEeFfGgHh")
+    assert msr.open_file("a").read() == b"123456789abc"
+    assert msr.open_file("b").read() == b"abcdefghijk"
+    assert msr.open_file("c").read() == b"AaBbCcDdEeFfGgHh"
 
 
 def test_random_multistream():
@@ -77,21 +82,14 @@ def test_random_multistream():
         s = "".join(random.choice(letters) for _ in range(n))
         return s.encode("latin1")
 
-    domain = {}
-    for _ in range(100):
-        name = randstring(random.randint(5, 10))
-        value = randstring(2500)
-        domain[name] = value
-
+    domain = {randstring(random.randint(5, 10)): randstring(2500) for _ in range(100)}
     outfiles = {name: BytesIO(value) for name, value in domain.items()}
 
     with TempStorage() as st:
         msw = compound.CompoundWriter(st, buffersize=1024)
-        mfiles = {}
-        for name in domain:
-            mfiles[name] = msw.create_file(name)
+        mfiles = {name: msw.create_file(name) for name in domain}
         while outfiles:
-            name = random.choice(list(outfiles.keys()))
+            name = random.choice(list(outfiles))
             v = outfiles[name].read(1000)
             mfiles[name].write(v)
             if len(v) < 1000:
@@ -110,7 +108,7 @@ def _rt(c, values, default):
     # Continuous
     st = RamStorage()
     f = st.create_file("test1")
-    f.write(b("hello"))
+    f.write(b"hello")
     w = c.writer(f)
     for docnum, v in enumerate(values):
         w.add(docnum, v)
@@ -130,9 +128,9 @@ def _rt(c, values, default):
     target = [default] * doccount
 
     f = st.create_file("test2")
-    f.write(b("hello"))
+    f.write(b"hello")
     w = c.writer(f)
-    for docnum, v in izip(range(10, doccount, 7), values):
+    for docnum, v in zip(range(10, doccount, 7), values):
         target[docnum] = v
         w.add(docnum, v)
     w.finish(doccount)
@@ -151,21 +149,21 @@ def _rt(c, values, default):
 
 
 def test_roundtrip():
-    _rt(columns.VarBytesColumn(), [b("a"), b("ccc"), b("bbb"), b("e"), b("dd")], b(""))
+    _rt(columns.VarBytesColumn(), [b"a", b"ccc", b"bbb", b"e", b"dd"], b"")
     _rt(
         columns.FixedBytesColumn(5),
-        [b("aaaaa"), b("eeeee"), b("ccccc"), b("bbbbb"), b("eeeee")],
-        b("\x00") * 5,
+        [b"aaaaa", b"eeeee", b"ccccc", b"bbbbb", b"eeeee"],
+        b"\x00" * 5,
     )
     _rt(
         columns.RefBytesColumn(),
-        [b("a"), b("ccc"), b("bb"), b("ccc"), b("a"), b("bb")],
-        b(""),
+        [b"a", b"ccc", b"bb", b"ccc", b"a", b"bb"],
+        b"",
     )
     _rt(
         columns.RefBytesColumn(3),
-        [b("aaa"), b("bbb"), b("ccc"), b("aaa"), b("bbb"), b("ccc")],
-        b("\x00") * 3,
+        [b"aaa", b"bbb", b"ccc", b"aaa", b"bbb", b"ccc"],
+        b"\x00" * 3,
     )
     _rt(
         columns.StructColumn("ifH", (0, 0.0, 0)),
@@ -199,11 +197,11 @@ def test_roundtrip():
     _rt(c, [None, True, False, 100, -7, "hello"], None)
 
     c = columns.VarBytesListColumn()
-    _rt(c, [[b("garnet"), b("amethyst")], [b("pearl")]], [])
+    _rt(c, [[b"garnet", b"amethyst"], [b"pearl"]], [])
     _c = columns.VarBytesListColumn()
 
     c = columns.FixedBytesListColumn(4)
-    _rt(c, [[b("garn"), b("amet")], [b("pear")]], [])
+    _rt(c, [[b"garn", b"amet"], [b"pear"]], [])
 
 
 def test_multivalue():
@@ -212,8 +210,8 @@ def test_multivalue():
     )
     ix = RamStorage().create_index(schema)
     with ix.writer(codec=W3Codec()) as w:
-        w.add_document(s=u("alfa foxtrot charlie").split(), n=[100, 200, 300])
-        w.add_document(s=u("juliet bravo india").split(), n=[10, 20, 30])
+        w.add_document(s="alfa foxtrot charlie".split(), n=[100, 200, 300])
+        w.add_document(s="juliet bravo india".split(), n=[10, 20, 30])
 
     with ix.reader() as r:
         scr = r.column_reader("s")
@@ -228,23 +226,23 @@ def test_column_field():
         a=fields.TEXT(sortable=True), b=fields.COLUMN(columns.RefBytesColumn())
     )
     with TempIndex(schema, "columnfield") as ix:
-        cd = b("charlie delta")
+        cd = b"charlie delta"
         with ix.writer(codec=W3Codec()) as w:
-            w.add_document(a=u("alfa bravo"), b=cd)
-            w.add_document(a=u("bravo charlie"), b=b("delta echo"))
-            w.add_document(a=u("charlie delta"), b=b("echo foxtrot"))
+            w.add_document(a="alfa bravo", b=cd)
+            w.add_document(a="bravo charlie", b=b"delta echo")
+            w.add_document(a="charlie delta", b=b"echo foxtrot")
 
         with ix.reader() as r:
             assert r.has_column("a")
             assert r.has_column("b")
 
             cra = r.column_reader("a")
-            assert cra[0] == u("alfa bravo")
-            assert type(cra[0]) == text_type
+            assert cra[0] == "alfa bravo"
+            assert type(cra[0]) == str
 
             crb = r.column_reader("b")
             assert crb[0] == cd
-            assert type(crb[0]) == bytes_type
+            assert type(crb[0]) == bytes
 
 
 def test_column_query():
@@ -253,25 +251,25 @@ def test_column_query():
     )
     with TempIndex(schema, "ColumnQuery") as ix:
         with ix.writer(codec=W3Codec()) as w:
-            w.add_document(id=1, a=u("alfa"), b=10)
-            w.add_document(id=2, a=u("bravo"), b=20)
-            w.add_document(id=3, a=u("charlie"), b=30)
-            w.add_document(id=4, a=u("delta"), b=40)
-            w.add_document(id=5, a=u("echo"), b=50)
-            w.add_document(id=6, a=u("foxtrot"), b=60)
+            w.add_document(id=1, a="alfa", b=10)
+            w.add_document(id=2, a="bravo", b=20)
+            w.add_document(id=3, a="charlie", b=30)
+            w.add_document(id=4, a="delta", b=40)
+            w.add_document(id=5, a="echo", b=50)
+            w.add_document(id=6, a="foxtrot", b=60)
 
         with ix.searcher() as s:
 
             def check(q):
                 return [s.stored_fields(docnum)["id"] for docnum in q.docs(s)]
 
-            q = ColumnQuery("a", u("bravo"))
+            q = ColumnQuery("a", "bravo")
             assert check(q) == [2]
 
             q = ColumnQuery("b", 30)
             assert check(q) == [3]
 
-            q = ColumnQuery("a", lambda v: v != u("delta"))
+            q = ColumnQuery("a", lambda v: v != "delta")
             assert check(q) == [1, 2, 3, 5, 6]
 
             q = ColumnQuery("b", lambda v: v > 30)
@@ -302,7 +300,7 @@ def test_ref_switch():
             if i <= 65535 - 1:
                 assert v == hex(i).encode("latin1")
             else:
-                assert v == b("")
+                assert v == b""
         f.close()
 
     rw(255)
@@ -320,7 +318,7 @@ def test_ref_switch():
 
 
 def test_varbytes_offsets():
-    values = u("alfa bravo charlie delta echo foxtrot golf hotel").split()
+    values = "alfa bravo charlie delta echo foxtrot golf hotel".split()
     vlen = len(values)
 
     # Without offsets:

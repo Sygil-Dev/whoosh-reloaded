@@ -26,7 +26,6 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from whoosh.analysis.acore import Composable, Token
-from whoosh.compat import text_type, u
 from whoosh.util.text import rcompile
 
 default_pattern = rcompile(r"[\w\*]+(\.?[\w\*]+)*")
@@ -63,7 +62,7 @@ class IDTokenizer(Tokenizer):
         mode="",
         **kwargs,
     ):
-        assert isinstance(value, text_type), f"{value!r} is not unicode"
+        assert isinstance(value, str), f"{value!r} is not unicode"
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         t.text = value
         t.boost = 1.0
@@ -82,7 +81,7 @@ class RegexTokenizer(Tokenizer):
     Uses a regular expression to extract tokens from text.
 
     >>> rex = RegexTokenizer()
-    >>> [token.text for token in rex(u("hi there 3.141 big-time under_score"))]
+    >>> [token.text for token in rex("hi there 3.141 big-time under_score")]
     ["hi", "there", "3.141", "big", "time", "under_score"]
     """
 
@@ -131,7 +130,7 @@ class RegexTokenizer(Tokenizer):
         :param tokenize: if True, the text should be tokenized.
         """
 
-        assert isinstance(value, text_type), f"{repr(value)} is not unicode"
+        assert isinstance(value, str), f"{repr(value)} is not unicode"
 
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
@@ -264,7 +263,7 @@ class CharsetTokenizer(Tokenizer):
         :param tokenize: if True, the text should be tokenized.
         """
 
-        assert isinstance(value, text_type), f"{value!r} is not unicode"
+        assert isinstance(value, str), f"{value!r} is not unicode"
 
         t = Token(positions, chars, removestops=removestops, mode=mode, **kwargs)
         if not tokenize:
@@ -277,7 +276,7 @@ class CharsetTokenizer(Tokenizer):
                 t.endchar = start_char + len(value)
             yield t
         else:
-            text = u("")
+            text = ""
             charmap = self.charmap
             pos = start_pos
             startchar = currentchar = start_char
@@ -299,7 +298,7 @@ class CharsetTokenizer(Tokenizer):
                             t.endchar = currentchar
                         yield t
                     startchar = currentchar + 1
-                    text = u("")
+                    text = ""
 
                 currentchar += 1
 
@@ -352,7 +351,7 @@ class PathTokenizer(Tokenizer):
         self.expr = rcompile(expression)
 
     def __call__(self, value, positions=False, start_pos=0, **kwargs):
-        assert isinstance(value, text_type), f"{value!r} is not unicode"
+        assert isinstance(value, str), f"{value!r} is not unicode"
         token = Token(positions, **kwargs)
         pos = start_pos
         for match in self.expr.finditer(value):

@@ -8,8 +8,6 @@ class of Sun's `Minion search engine <https://minion.dev.java.net/>`_.
 
 import re
 
-from whoosh.compat import iteritems
-
 # Rule exceptions
 
 exceptions = [
@@ -1125,7 +1123,7 @@ def variations(word):
             num = int(
                 [
                     k
-                    for k, v in iteritems(match.groupdict())
+                    for k, v in match.groupdict().items()
                     if v is not None and k.startswith("_g")
                 ][0][2:]
             )

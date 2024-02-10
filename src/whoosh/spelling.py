@@ -33,7 +33,6 @@ from bisect import bisect_left
 from heapq import heappush, heapreplace
 
 from whoosh import highlight
-from whoosh.compat import iteritems
 
 # Corrector objects
 
@@ -170,7 +169,7 @@ class MultiCorrector(Corrector):
                     seen[sug] = op(seen[sug], score)
                 else:
                     seen[sug] = score
-        return iteritems(seen)
+        return seen.items()
 
 
 # Query correction

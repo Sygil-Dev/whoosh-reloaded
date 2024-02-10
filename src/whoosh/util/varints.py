@@ -27,8 +27,6 @@
 
 from array import array
 
-from whoosh.compat import array_tobytes
-
 # Varint cache
 
 # Build a cache of the varint byte sequences for the first N integers, so we
@@ -42,7 +40,7 @@ def _varint(i):
         a.append((i & 0x7F) | 0x80)
         i = i >> 7
     a.append(i)
-    return array_tobytes(a)
+    return a.tobytes()
 
 
 _varint_cache_size = 512

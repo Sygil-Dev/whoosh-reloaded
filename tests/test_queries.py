@@ -2,7 +2,6 @@ import copy
 
 import pytest
 from whoosh import fields, qparser, query
-from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.qparser import QueryParser
 from whoosh.query import (
@@ -29,8 +28,12 @@ from whoosh.query.spans import SpanContains, SpanFirst, SpanNear, SpanNot, SpanO
 from whoosh.util.testing import TempIndex
 
 
+def u(s):
+    return s.decode("ascii") if isinstance(s, bytes) else s
+
+
 def test_all_terms():
-    q = QueryParser("a", None).parse(u('hello b:there c:"my friend"'))
+    q = QueryParser("a", None).parse('hello b:there c:"my friend"')
     ts = q.all_terms(phrases=False)
     assert sorted(ts) == [("a", "hello"), ("b", "there")]
     ts = q.all_terms(phrases=True)
@@ -42,21 +45,21 @@ def test_existing_terms():
     ix = RamStorage().create_index(s)
 
     w = ix.writer()
-    w.add_document(key=u("a"), value=u("alfa bravo charlie delta echo"))
-    w.add_document(key=u("b"), value=u("foxtrot golf hotel india juliet"))
+    w.add_document(key="a", value="alfa bravo charlie delta echo")
+    w.add_document(key="b", value="foxtrot golf hotel india juliet")
     w.commit()
 
     r = ix.reader()
-    q = QueryParser("value", None).parse(u('alfa hotel tango "sierra bravo"'))
+    q = QueryParser("value", None).parse('alfa hotel tango "sierra bravo"')
 
     ts = q.existing_terms(r, phrases=False)
-    assert sorted(ts) == [("value", b("alfa")), ("value", b("hotel"))]
+    assert sorted(ts) == [("value", b"alfa"), ("value", b"hotel")]
 
     ts = q.existing_terms(r)
     assert sorted(ts) == [
-        ("value", b("alfa")),
-        ("value", b("bravo")),
-        ("value", b("hotel")),
+        ("value", b"alfa"),
+        ("value", b"bravo"),
+        ("value", b"hotel"),
     ]
 
 
@@ -65,8 +68,8 @@ def test_wildcard_existing_terms():
     ix = RamStorage().create_index(s)
 
     w = ix.writer()
-    w.add_document(key=u("a"), value=u("alfa bravo bear charlie delta"))
-    w.add_document(key=u("a"), value=u("boggle echo render rendering renders"))
+    w.add_document(key="a", value="alfa bravo bear charlie delta")
+    w.add_document(key="a", value="boggle echo render rendering renders")
     w.commit()
     r = ix.reader()
     qp = QueryParser("value", ix.schema)
@@ -76,25 +79,25 @@ def test_wildcard_existing_terms():
         for t in terms:
             assert t[0] == "value"
             z.append(t[1])
-        return b(" ").join(sorted(z))
+        return b" ".join(sorted(z))
 
-    q = qp.parse(u("b*"))
+    q = qp.parse("b*")
     ts = q.existing_terms(r)
     assert ts == set()
     ts = q.existing_terms(r, expand=True)
-    assert words(ts) == b("bear boggle bravo")
+    assert words(ts) == b"bear boggle bravo"
 
-    q = qp.parse(u("[a TO f]"))
+    q = qp.parse("[a TO f]")
     ts = q.existing_terms(r)
     assert ts == set()
     ts = q.existing_terms(r, expand=True)
-    assert words(ts) == b("alfa bear boggle bravo charlie delta echo")
+    assert words(ts) == b"alfa bear boggle bravo charlie delta echo"
 
     q = query.Variations("value", "render")
     ts = q.existing_terms(r, expand=False)
-    assert ts == {("value", b("render"))}
+    assert ts == {("value", b"render")}
     ts = q.existing_terms(r, expand=True)
-    assert words(ts) == b("render rendering renders")
+    assert words(ts) == b"render rendering renders"
 
 
 def test_replace():
@@ -120,12 +123,10 @@ def test_apply():
             return q
         return q.apply(visit)
 
-    before = And(
-        [Not(Term("a", u("b"))), Variations("a", u("c")), Not(FuzzyTerm("a", u("d")))]
-    )
+    before = And([Not(Term("a", "b")), Variations("a", "c"), Not(FuzzyTerm("a", "d"))])
     after = visit(before)
     assert after == And(
-        [Not(Term("a", u("B"))), Variations("a", u("C")), Not(FuzzyTerm("a", u("D")))]
+        [Not(Term("a", "B")), Variations("a", "C"), Not(FuzzyTerm("a", "D"))]
     )
 
     def term2var(q):
@@ -152,23 +153,23 @@ def test_accept():
 
     before = And(
         [
-            Term("a", u("b")),
-            Or([Term("c", u("d")), Phrase("a", [u("e"), u("f")])]),
-            Phrase("a", [u("g"), u("h")], boost=0.25),
+            Term("a", "b"),
+            Or([Term("c", "d"), Phrase("a", ["e", "f"])]),
+            Phrase("a", ["g", "h"], boost=0.25),
         ]
     )
     after = before.accept(boost_phrases)
     assert after == And(
         [
-            Term("a", u("b")),
-            Or([Term("c", u("d")), Phrase("a", [u("e"), u("f")], boost=2.0)]),
-            Phrase("a", [u("g"), u("h")], boost=0.5),
+            Term("a", "b"),
+            Or([Term("c", "d"), Phrase("a", ["e", "f"], boost=2.0)]),
+            Phrase("a", ["g", "h"], boost=0.5),
         ]
     )
 
-    before = Phrase("a", [u("b"), u("c")], boost=2.5)
+    before = Phrase("a", ["b", "c"], boost=2.5)
     after = before.accept(boost_phrases)
-    assert after == Phrase("a", [u("b"), u("c")], boost=5.0)
+    assert after == Phrase("a", ["b", "c"], boost=5.0)
 
 
 def test_simplify():
@@ -176,8 +177,8 @@ def test_simplify():
     ix = RamStorage().create_index(s)
 
     w = ix.writer()
-    w.add_document(k=u("1"), v=u("aardvark apple allan alfa bear bee"))
-    w.add_document(k=u("2"), v=u("brie glue geewhiz goop julia"))
+    w.add_document(k="1", v="aardvark apple allan alfa bear bee")
+    w.add_document(k="2", v="brie glue geewhiz goop julia")
     w.commit()
 
     r = ix.reader()
@@ -198,24 +199,22 @@ def test_simplify():
 
 
 def test_merge_ranges():
-    q = And([TermRange("f1", u("a"), None), TermRange("f1", None, u("z"))])
-    assert q.normalize() == TermRange("f1", u("a"), u("z"))
+    q = And([TermRange("f1", "a", None), TermRange("f1", None, "z")])
+    assert q.normalize() == TermRange("f1", "a", "z")
 
-    q = And(
-        [NumericRange("f1", None, u("aaaaa")), NumericRange("f1", u("zzzzz"), None)]
-    )
+    q = And([NumericRange("f1", None, "aaaaa"), NumericRange("f1", "zzzzz", None)])
     assert q.normalize() == q
 
-    q = And([TermRange("f1", u("a"), u("z")), TermRange("f1", "b", "x")])
-    assert q.normalize() == TermRange("f1", u("a"), u("z"))
+    q = And([TermRange("f1", "a", "z"), TermRange("f1", "b", "x")])
+    assert q.normalize() == TermRange("f1", "a", "z")
 
-    q = And([TermRange("f1", u("a"), u("m")), TermRange("f1", u("f"), u("q"))])
-    assert q.normalize() == TermRange("f1", u("f"), u("m"))
+    q = And([TermRange("f1", "a", "m"), TermRange("f1", "f", "q")])
+    assert q.normalize() == TermRange("f1", "f", "m")
 
-    q = Or([TermRange("f1", u("a"), u("m")), TermRange("f1", u("f"), u("q"))])
-    assert q.normalize() == TermRange("f1", u("a"), u("q"))
+    q = Or([TermRange("f1", "a", "m"), TermRange("f1", "f", "q")])
+    assert q.normalize() == TermRange("f1", "a", "q")
 
-    q = Or([TermRange("f1", u("m"), None), TermRange("f1", None, u("n"))])
+    q = Or([TermRange("f1", "m", None), TermRange("f1", None, "n")])
     assert q.normalize() == Every("f1")
 
     q = And([Every("f1"), Term("f1", "a"), Variations("f1", "b")])
@@ -223,23 +222,23 @@ def test_merge_ranges():
 
     q = Or(
         [
-            Term("f1", u("q")),
-            TermRange("f1", u("m"), None),
-            TermRange("f1", None, u("n")),
+            Term("f1", "q"),
+            TermRange("f1", "m", None),
+            TermRange("f1", None, "n"),
         ]
     )
     assert q.normalize() == Every("f1")
 
-    q = And([Or([Term("f1", u("a")), Term("f1", u("b"))]), Every("f1")])
+    q = And([Or([Term("f1", "a"), Term("f1", "b")]), Every("f1")])
     assert q.normalize() == Every("f1")
 
-    q = And([Term("f1", u("a")), And([Or([Every("f1")])])])
+    q = And([Term("f1", "a"), And([Or([Every("f1")])])])
     assert q.normalize() == Every("f1")
 
 
 def test_normalize_compound():
     def oq():
-        return Or([Term("a", u("a")), Term("a", u("b"))])
+        return Or([Term("a", "a"), Term("a", "b")])
 
     def nq(level):
         if level == 0:
@@ -249,27 +248,25 @@ def test_normalize_compound():
 
     q = nq(5)
     q = q.normalize()
-    assert q == Or([Term("a", u("a")), Term("a", u("b"))])
+    assert q == Or([Term("a", "a"), Term("a", "b")])
 
 
 def test_duplicates():
-    q = And([Term("a", u("b")), Term("a", u("b"))])
-    assert q.normalize() == Term("a", u("b"))
+    q = And([Term("a", "b"), Term("a", "b")])
+    assert q.normalize() == Term("a", "b")
 
-    q = And([Prefix("a", u("b")), Prefix("a", u("b"))])
-    assert q.normalize() == Prefix("a", u("b"))
+    q = And([Prefix("a", "b"), Prefix("a", "b")])
+    assert q.normalize() == Prefix("a", "b")
 
-    q = And(
-        [Variations("a", u("b")), And([Variations("a", u("b")), Term("a", u("b"))])]
-    )
-    assert q.normalize() == And([Variations("a", u("b")), Term("a", u("b"))])
+    q = And([Variations("a", "b"), And([Variations("a", "b"), Term("a", "b")])])
+    assert q.normalize() == And([Variations("a", "b"), Term("a", "b")])
 
-    q = And([Term("a", u("b")), Prefix("a", u("b")), Term("a", u("b"), boost=1.1)])
+    q = And([Term("a", "b"), Prefix("a", "b"), Term("a", "b", boost=1.1)])
     assert q.normalize() == q
 
     # Wildcard without * or ? normalizes to Term
-    q = And([Wildcard("a", u("b")), And([Wildcard("a", u("b")), Term("a", u("b"))])])
-    assert q.normalize() == Term("a", u("b"))
+    q = And([Wildcard("a", "b"), And([Wildcard("a", "b"), Term("a", "b")])])
+    assert q.normalize() == Term("a", "b")
 
 
 # TODO: FIX THIS
@@ -282,36 +279,36 @@ def test_query_copy_hash():
         assert hash(q1) == hash(q1a)
         assert q1 != q2
 
-    do(Term("a", u("b"), boost=1.1), Term("a", u("b"), boost=1.5))
+    do(Term("a", "b", boost=1.1), Term("a", "b", boost=1.5))
     do(
-        And([Term("a", u("b")), Term("c", u("d"))], boost=1.1),
-        And([Term("a", u("b")), Term("c", u("d"))], boost=1.5),
+        And([Term("a", "b"), Term("c", "d")], boost=1.1),
+        And([Term("a", "b"), Term("c", "d")], boost=1.5),
     )
     do(
-        Or([Term("a", u("b"), boost=1.1), Term("c", u("d"))]),
-        Or([Term("a", u("b"), boost=1.8), Term("c", u("d"))], boost=1.5),
+        Or([Term("a", "b", boost=1.1), Term("c", "d")]),
+        Or([Term("a", "b", boost=1.8), Term("c", "d")], boost=1.5),
     )
     do(
-        DisjunctionMax([Term("a", u("b"), boost=1.8), Term("c", u("d"))]),
-        DisjunctionMax([Term("a", u("b"), boost=1.1), Term("c", u("d"))], boost=1.5),
+        DisjunctionMax([Term("a", "b", boost=1.8), Term("c", "d")]),
+        DisjunctionMax([Term("a", "b", boost=1.1), Term("c", "d")], boost=1.5),
     )
-    do(Not(Term("a", u("b"), boost=1.1)), Not(Term("a", u("b"), boost=1.5)))
-    do(Prefix("a", u("b"), boost=1.1), Prefix("a", u("b"), boost=1.5))
-    do(Wildcard("a", u("b*x?"), boost=1.1), Wildcard("a", u("b*x?"), boost=1.5))
+    do(Not(Term("a", "b", boost=1.1)), Not(Term("a", "b", boost=1.5)))
+    do(Prefix("a", "b", boost=1.1), Prefix("a", "b", boost=1.5))
+    do(Wildcard("a", "b*x?", boost=1.1), Wildcard("a", "b*x?", boost=1.5))
     do(
-        FuzzyTerm("a", u("b"), constantscore=True),
-        FuzzyTerm("a", u("b"), constantscore=False),
+        FuzzyTerm("a", "b", constantscore=True),
+        FuzzyTerm("a", "b", constantscore=False),
     )
-    do(FuzzyTerm("a", u("b"), boost=1.1), FuzzyTerm("a", u("b"), boost=1.5))
-    do(TermRange("a", u("b"), u("c")), TermRange("a", u("b"), u("d")))
-    do(TermRange("a", None, u("c")), TermRange("a", None, None))
+    do(FuzzyTerm("a", "b", boost=1.1), FuzzyTerm("a", "b", boost=1.5))
+    do(TermRange("a", "b", "c"), TermRange("a", "b", "d"))
+    do(TermRange("a", None, "c"), TermRange("a", None, None))
     do(
-        TermRange("a", u("b"), u("c"), boost=1.1),
-        TermRange("a", u("b"), u("c"), boost=1.5),
+        TermRange("a", "b", "c", boost=1.1),
+        TermRange("a", "b", "c", boost=1.5),
     )
     do(
-        TermRange("a", u("b"), u("c"), constantscore=True),
-        TermRange("a", u("b"), u("c"), constantscore=False),
+        TermRange("a", "b", "c", constantscore=True),
+        TermRange("a", "b", "c", constantscore=False),
     )
     do(NumericRange("a", 1, 5), NumericRange("a", 1, 6))
     do(NumericRange("a", None, 5), NumericRange("a", None, None))
@@ -321,75 +318,75 @@ def test_query_copy_hash():
         NumericRange("a", 3, 6, constantscore=False),
     )
     # do(DateRange)
-    do(Variations("a", u("render")), Variations("a", u("renders")))
+    do(Variations("a", "render"), Variations("a", "renders"))
     do(
-        Variations("a", u("render"), boost=1.1),
-        Variations("a", u("renders"), boost=1.5),
+        Variations("a", "render", boost=1.1),
+        Variations("a", "renders", boost=1.5),
     )
-    do(Phrase("a", [u("b"), u("c"), u("d")]), Phrase("a", [u("b"), u("c"), u("e")]))
+    do(Phrase("a", ["b", "c", "d"]), Phrase("a", ["b", "c", "e"]))
     do(
-        Phrase("a", [u("b"), u("c"), u("d")], boost=1.1),
-        Phrase("a", [u("b"), u("c"), u("d")], boost=1.5),
+        Phrase("a", ["b", "c", "d"], boost=1.1),
+        Phrase("a", ["b", "c", "d"], boost=1.5),
     )
     do(
-        Phrase("a", [u("b"), u("c"), u("d")], slop=1),
-        Phrase("a", [u("b"), u("c"), u("d")], slop=2),
+        Phrase("a", ["b", "c", "d"], slop=1),
+        Phrase("a", ["b", "c", "d"], slop=2),
     )
     # do(Ordered)
     do(Every(), Every("a"))
     do(Every("a"), Every("b"))
     do(Every("a", boost=1.1), Every("a", boost=1.5))
-    do(NullQuery, Term("a", u("b")))
-    do(ConstantScoreQuery(Term("a", u("b"))), ConstantScoreQuery(Term("a", u("c"))))
+    do(NullQuery, Term("a", "b"))
+    do(ConstantScoreQuery(Term("a", "b")), ConstantScoreQuery(Term("a", "c")))
     do(
-        ConstantScoreQuery(Term("a", u("b")), score=2.0),
-        ConstantScoreQuery(Term("a", u("c")), score=2.1),
+        ConstantScoreQuery(Term("a", "b"), score=2.0),
+        ConstantScoreQuery(Term("a", "c"), score=2.1),
     )
     do(
-        Require(Term("a", u("b")), Term("c", u("d"))),
-        Require(Term("a", u("b"), boost=1.1), Term("c", u("d"))),
+        Require(Term("a", "b"), Term("c", "d")),
+        Require(Term("a", "b", boost=1.1), Term("c", "d")),
     )
     # do(Require)
     # do(AndMaybe)
     # do(AndNot)
     # do(Otherwise)
 
-    do(SpanFirst(Term("a", u("b")), limit=1), SpanFirst(Term("a", u("b")), limit=2))
+    do(SpanFirst(Term("a", "b"), limit=1), SpanFirst(Term("a", "b"), limit=2))
     do(
-        SpanNear(Term("a", u("b")), Term("c", u("d"))),
-        SpanNear(Term("a", u("b")), Term("c", u("e"))),
+        SpanNear(Term("a", "b"), Term("c", "d")),
+        SpanNear(Term("a", "b"), Term("c", "e")),
     )
     do(
-        SpanNear(Term("a", u("b")), Term("c", u("d")), slop=1),
-        SpanNear(Term("a", u("b")), Term("c", u("d")), slop=2),
+        SpanNear(Term("a", "b"), Term("c", "d"), slop=1),
+        SpanNear(Term("a", "b"), Term("c", "d"), slop=2),
     )
     do(
-        SpanNear(Term("a", u("b")), Term("c", u("d")), mindist=1),
-        SpanNear(Term("a", u("b")), Term("c", u("d")), mindist=2),
+        SpanNear(Term("a", "b"), Term("c", "d"), mindist=1),
+        SpanNear(Term("a", "b"), Term("c", "d"), mindist=2),
     )
     do(
-        SpanNear(Term("a", u("b")), Term("c", u("d")), ordered=True),
-        SpanNear(Term("a", u("b")), Term("c", u("d")), ordered=False),
+        SpanNear(Term("a", "b"), Term("c", "d"), ordered=True),
+        SpanNear(Term("a", "b"), Term("c", "d"), ordered=False),
     )
     do(
-        SpanNot(Term("a", u("b")), Term("a", u("c"))),
-        SpanNot(Term("a", u("b")), Term("a", u("d"))),
+        SpanNot(Term("a", "b"), Term("a", "c")),
+        SpanNot(Term("a", "b"), Term("a", "d")),
     )
     do(
-        SpanOr([Term("a", u("b")), Term("a", u("c")), Term("a", u("d"))]),
-        SpanOr([Term("a", u("b")), Term("a", u("c")), Term("a", u("e"))]),
+        SpanOr([Term("a", "b"), Term("a", "c"), Term("a", "d")]),
+        SpanOr([Term("a", "b"), Term("a", "c"), Term("a", "e")]),
     )
     do(
-        SpanContains(Term("a", u("b")), Term("a", u("c"))),
-        SpanContains(Term("a", u("b")), Term("a", u("d"))),
+        SpanContains(Term("a", "b"), Term("a", "c")),
+        SpanContains(Term("a", "b"), Term("a", "d")),
     )
     # do(SpanBefore)
     # do(SpanCondition)
 
 
 def test_requires():
-    a = Term("f", u("a"))
-    b = Term("f", u("b"))
+    a = Term("f", "a")
+    b = Term("f", "b")
     assert And([a, b]).requires() == {a, b}
     assert Or([a, b]).requires() == set()
     assert AndMaybe(a, b).requires() == {a}
@@ -409,15 +406,15 @@ def test_highlight_daterange():
 
     w = ix.writer()
     w.update_document(
-        id=u("1"),
-        title=u("Life Aquatic"),
-        content=u("A nautic film crew sets out to kill a gigantic shark."),
+        id="1",
+        title="Life Aquatic",
+        content="A nautic film crew sets out to kill a gigantic shark.",
         released=datetime(2004, 12, 25, tzinfo=timezone.utc),
     )
     w.update_document(
-        id=u("2"),
-        title=u("Darjeeling Limited"),
-        content=u(
+        id="2",
+        title="Darjeeling Limited",
+        content=(
             "Three brothers meet in India for a life changing train " + "journey."
         ),
         released=datetime(2007, 10, 27, tzinfo=timezone.utc),
@@ -425,7 +422,7 @@ def test_highlight_daterange():
     w.commit()
 
     s = ix.searcher()
-    r = s.search(Term("content", u("train")), terms=True)
+    r = s.search(Term("content", "train"), terms=True)
     assert len(r) == 1
     assert r[0]["id"] == "2"
     assert (
@@ -439,7 +436,7 @@ def test_highlight_daterange():
 
 
 def test_patterns():
-    domain = u(
+    domain = (
         "aaron able acre adage aether after ago ahi aim ajax akimbo "
         "alembic all amiga amount ampere"
     ).split()
@@ -452,33 +449,33 @@ def test_patterns():
     with ix.reader() as r:
         assert list(r.field_terms("word")) == domain
 
-        assert list(r.expand_prefix("word", "al")) == [b("alembic"), b("all")]
+        assert list(r.expand_prefix("word", "al")) == [b"alembic", b"all"]
         q = query.Prefix("word", "al")
-        assert q.simplify(r).__unicode__() == "(word:alembic OR word:all)"
+        assert str(q.simplify(r)) == "(word:alembic OR word:all)"
 
         q = query.Wildcard("word", "a*[ae]")
         assert (
-            q.simplify(r).__unicode__()
+            str(q.simplify(r))
             == "(word:able OR word:acre OR word:adage OR word:amiga OR word:ampere)"
         )
         assert q._find_prefix(q.text) == "a"
 
         q = query.Regex("word", "am.*[ae]")
-        assert q.simplify(r).__unicode__() == "(word:amiga OR word:ampere)"
+        assert str(q.simplify(r)) == "(word:amiga OR word:ampere)"
         assert q._find_prefix(q.text) == "am"
 
         q = query.Regex("word", "able|ago")
-        assert q.simplify(r).__unicode__() == "(word:able OR word:ago)"
+        assert str(q.simplify(r)) == "(word:able OR word:ago)"
         assert q._find_prefix(q.text) == ""
 
         # special case: ? may mean "zero occurences"
         q = query.Regex("word", "ah?i")
-        assert q.simplify(r).__unicode__() == "(word:ahi OR word:aim)"
+        assert str(q.simplify(r)) == "(word:ahi OR word:aim)"
         assert q._find_prefix(q.text) == "a"
 
         # special case: * may mean "zero occurences"
         q = query.Regex("word", "ah*i")
-        assert q.simplify(r).__unicode__() == "(word:ahi OR word:aim)"
+        assert str(q.simplify(r)) == "(word:ahi OR word:aim)"
         assert q._find_prefix(q.text) == "a"
 
 
@@ -488,7 +485,7 @@ def test_or_nots1():
     st = RamStorage()
     ix = st.create_index(schema)
     with ix.writer() as w:
-        w.add_document(a=u("alfa"), b=u("charlie"))
+        w.add_document(a="alfa", b="charlie")
 
     with ix.searcher() as s:
         q = query.And(
@@ -512,7 +509,7 @@ def test_or_nots2():
     st = RamStorage()
     ix = st.create_index(schema)
     with ix.writer() as w:
-        w.add_document(b=u("bravo"))
+        w.add_document(b="bravo")
 
     with ix.searcher() as s:
         q = query.Or([query.Term("a", "alfa"), query.Not(query.Term("b", "alfa"))])
@@ -526,9 +523,9 @@ def test_or_nots3():
     )
     with TempIndex(schema, "ornot") as ix:
         w = ix.writer()
-        w.add_document(title=u("a1"), itemtype=u("a"))
-        w.add_document(title=u("a2"), itemtype=u("a"))
-        w.add_document(title=u("b1"), itemtype=u("b"))
+        w.add_document(title="a1", itemtype="a")
+        w.add_document(title="a2", itemtype="a")
+        w.add_document(title="b1", itemtype="b")
         w.commit()
 
         q = Term("itemtype", "a") | Not(Term("itemtype", "a"))
@@ -544,16 +541,16 @@ def test_ornot_andnot():
     ix = st.create_index(schema)
 
     with ix.writer() as w:
-        w.add_document(id=0, a=u("word1 word1"))
-        w.add_document(id=1, a=u("word1 word2"))
-        w.add_document(id=2, a=u("word1 foo"))
-        w.add_document(id=3, a=u("foo word2"))
-        w.add_document(id=4, a=u("foo bar"))
+        w.add_document(id=0, a="word1 word1")
+        w.add_document(id=1, a="word1 word2")
+        w.add_document(id=2, a="word1 foo")
+        w.add_document(id=3, a="foo word2")
+        w.add_document(id=4, a="foo bar")
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("a", ix.schema)
-        q1 = qp.parse(u("NOT word1 NOT word2"))
-        q2 = qp.parse(u("NOT (word1 OR word2)"))
+        q1 = qp.parse("NOT word1 NOT word2")
+        q2 = qp.parse("NOT (word1 OR word2)")
 
         r1 = [hit["id"] for hit in s.search(q1, sortedby="id")]
         r2 = [hit["id"] for hit in s.search(q2, sortedby="id")]
@@ -576,11 +573,11 @@ def test_issue_355():
 
     with ix.searcher() as s:
         # Passing a bytestring for a numeric field
-        q = Term("seats", b("maker"))
+        q = Term("seats", b"maker")
         r1 = [hit["seats"] for hit in s.search(q, limit=5)]
 
         # Passing a unicode string for a numeric field
-        q = Term("seats", u("maker"))
+        q = Term("seats", "maker")
         r2 = [hit["seats"] for hit in s.search(q, limit=5)]
 
         # Passing a value too large for the numeric field
@@ -594,16 +591,14 @@ def test_sequence():
     schema = fields.Schema(id=fields.STORED, text=fields.TEXT)
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(id=0, text=u("alfa bravo charlie delta echo"))
-        w.add_document(id=1, text=u("bravo charlie delta echo alfa"))
-        w.add_document(id=2, text=u("charlie delta echo bravo"))
-        w.add_document(id=3, text=u("delta echo charlie"))
-        w.add_document(id=4, text=u("echo delta"))
+        w.add_document(id=0, text="alfa bravo charlie delta echo")
+        w.add_document(id=1, text="bravo charlie delta echo alfa")
+        w.add_document(id=2, text="charlie delta echo bravo")
+        w.add_document(id=3, text="delta echo charlie")
+        w.add_document(id=4, text="echo delta")
 
     with ix.searcher() as s:
-        seq = query.Sequence(
-            [query.Term("text", u("echo")), query.Term("text", u("alfa"))]
-        )
+        seq = query.Sequence([query.Term("text", "echo"), query.Term("text", "alfa")])
         q = query.And([query.Term("text", "bravo"), seq])
 
         r = s.search(q, limit=4)
@@ -615,14 +610,14 @@ def test_andmaybe():
     schema = fields.Schema(id=fields.STORED, text=fields.TEXT)
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(id=0, text=u("alfa bravo charlie delta echo"))
-        w.add_document(id=1, text=u("bravo charlie delta echo alfa"))
-        w.add_document(id=2, text=u("charlie delta echo bravo"))
-        w.add_document(id=3, text=u("delta echo charlie"))
-        w.add_document(id=4, text=u("echo delta"))
+        w.add_document(id=0, text="alfa bravo charlie delta echo")
+        w.add_document(id=1, text="bravo charlie delta echo alfa")
+        w.add_document(id=2, text="charlie delta echo bravo")
+        w.add_document(id=3, text="delta echo charlie")
+        w.add_document(id=4, text="echo delta")
 
     qp = qparser.QueryParser("text", schema)
-    q = qp.parse(u('bravo ANDMAYBE "echo alfa"'))
+    q = qp.parse('bravo ANDMAYBE "echo alfa"')
 
     with ix.searcher() as s:
         r = s.search(q)

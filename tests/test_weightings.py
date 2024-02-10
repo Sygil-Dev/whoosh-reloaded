@@ -1,10 +1,14 @@
 import inspect
 import sys
+from itertools import permutations
 from random import choice, randint
 
 from whoosh import fields, query, scoring
-from whoosh.compat import permutations, u
 from whoosh.filedb.filestore import RamStorage
+
+
+def u(s):
+    return s.decode("ascii") if isinstance(s, bytes) else s
 
 
 def _weighting_classes(ignore):

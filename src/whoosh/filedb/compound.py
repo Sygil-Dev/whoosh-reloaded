@@ -28,6 +28,7 @@
 import errno
 import os
 import sys
+from io import BytesIO
 from shutil import copyfileobj
 from threading import Lock
 
@@ -36,11 +37,18 @@ try:
 except ImportError:
     mmap = None
 
-from whoosh.compat import BytesIO, memoryview_
 from whoosh.filedb.filestore import FileStorage, StorageError
 from whoosh.filedb.structfile import BufferFile, StructFile
 from whoosh.system import emptybytes
 from whoosh.util import random_name
+
+
+def memoryview_(source, offset=None, length=None):
+    mv = memoryview(source)
+    if offset or length:
+        return mv[offset : offset + length]
+    else:
+        return mv
 
 
 class CompoundStorage(FileStorage):

@@ -1,7 +1,6 @@
 import random
 
 from whoosh import fields, matching, scoring
-from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.numeric import byte_to_length, length_to_byte
 
@@ -16,7 +15,7 @@ def test_max_field_length():
     ix = st.create_index(schema)
     for i in range(1, 200, 7):
         w = ix.writer()
-        w.add_document(t=u(" ").join(["word"] * i))
+        w.add_document(t=" ".join(["word"] * i))
         w.commit()
 
         with ix.reader() as r:
@@ -34,7 +33,7 @@ def test_minmax_field_length():
         count = random.randint(1, 100)
         least = min(count, least)
         most = max(count, most)
-        w.add_document(t=u(" ").join(["word"] * count))
+        w.add_document(t=" ".join(["word"] * count))
         w.commit()
 
         with ix.reader() as r:
@@ -46,46 +45,46 @@ def test_term_stats():
     schema = fields.Schema(t=fields.TEXT)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(t=u("alfa bravo charlie delta echo"))
-    w.add_document(t=u("bravo charlie delta echo foxtrot"))
-    w.add_document(t=u("charlie delta echo foxtrot golf"))
-    w.add_document(t=u("delta echo foxtrot"))
-    w.add_document(t=u("echo foxtrot golf hotel india juliet"))
-    w.add_document(t=u("foxtrot alfa alfa alfa"))
+    w.add_document(t="alfa bravo charlie delta echo")
+    w.add_document(t="bravo charlie delta echo foxtrot")
+    w.add_document(t="charlie delta echo foxtrot golf")
+    w.add_document(t="delta echo foxtrot")
+    w.add_document(t="echo foxtrot golf hotel india juliet")
+    w.add_document(t="foxtrot alfa alfa alfa")
     w.commit()
 
     with ix.reader() as r:
-        ti = r.term_info("t", u("alfa"))
+        ti = r.term_info("t", "alfa")
         assert ti.weight() == 4.0
         assert ti.doc_frequency() == 2
         assert ti.min_length() == 4
         assert ti.max_length() == 5
         assert ti.max_weight() == 3.0
 
-        assert r.term_info("t", u("echo")).min_length() == 3
+        assert r.term_info("t", "echo").min_length() == 3
 
         assert r.doc_field_length(3, "t") == 3
         assert r.min_field_length("t") == 3
         assert r.max_field_length("t") == 6
 
     w = ix.writer()
-    w.add_document(t=u("alfa"))
-    w.add_document(t=u("bravo charlie"))
-    w.add_document(t=u("echo foxtrot tango bravo"))
-    w.add_document(t=u("golf hotel"))
-    w.add_document(t=u("india"))
-    w.add_document(t=u("juliet alfa bravo charlie delta echo foxtrot"))
+    w.add_document(t="alfa")
+    w.add_document(t="bravo charlie")
+    w.add_document(t="echo foxtrot tango bravo")
+    w.add_document(t="golf hotel")
+    w.add_document(t="india")
+    w.add_document(t="juliet alfa bravo charlie delta echo foxtrot")
     w.commit(merge=False)
 
     with ix.reader() as r:
-        ti = r.term_info("t", u("alfa"))
+        ti = r.term_info("t", "alfa")
         assert ti.weight() == 6.0
         assert ti.doc_frequency() == 4
         assert ti.min_length() == 1
         assert ti.max_length() == 7
         assert ti.max_weight() == 3.0
 
-        assert r.term_info("t", u("echo")).min_length() == 3
+        assert r.term_info("t", "echo").min_length() == 3
 
         assert r.min_field_length("t") == 1
         assert r.max_field_length("t") == 7
@@ -95,43 +94,43 @@ def test_min_max_id():
     schema = fields.Schema(id=fields.STORED, t=fields.TEXT)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(id=0, t=u("alfa bravo charlie"))
-    w.add_document(id=1, t=u("bravo charlie delta"))
-    w.add_document(id=2, t=u("charlie delta echo"))
-    w.add_document(id=3, t=u("delta echo foxtrot"))
-    w.add_document(id=4, t=u("echo foxtrot golf"))
+    w.add_document(id=0, t="alfa bravo charlie")
+    w.add_document(id=1, t="bravo charlie delta")
+    w.add_document(id=2, t="charlie delta echo")
+    w.add_document(id=3, t="delta echo foxtrot")
+    w.add_document(id=4, t="echo foxtrot golf")
     w.commit()
 
     with ix.reader() as r:
-        ti = r.term_info("t", u("delta"))
+        ti = r.term_info("t", "delta")
         assert ti.min_id() == 1
         assert ti.max_id() == 3
 
-        ti = r.term_info("t", u("alfa"))
+        ti = r.term_info("t", "alfa")
         assert ti.min_id() == 0
         assert ti.max_id() == 0
 
-        ti = r.term_info("t", u("foxtrot"))
+        ti = r.term_info("t", "foxtrot")
         assert ti.min_id() == 3
         assert ti.max_id() == 4
 
     w = ix.writer()
-    w.add_document(id=5, t=u("foxtrot golf hotel"))
-    w.add_document(id=6, t=u("golf hotel alfa"))
-    w.add_document(id=7, t=u("hotel alfa bravo"))
-    w.add_document(id=8, t=u("alfa bravo charlie"))
+    w.add_document(id=5, t="foxtrot golf hotel")
+    w.add_document(id=6, t="golf hotel alfa")
+    w.add_document(id=7, t="hotel alfa bravo")
+    w.add_document(id=8, t="alfa bravo charlie")
     w.commit(merge=False)
 
     with ix.reader() as r:
-        ti = r.term_info("t", u("delta"))
+        ti = r.term_info("t", "delta")
         assert ti.min_id() == 1
         assert ti.max_id() == 3
 
-        ti = r.term_info("t", u("alfa"))
+        ti = r.term_info("t", "alfa")
         assert ti.min_id() == 0
         assert ti.max_id() == 8
 
-        ti = r.term_info("t", u("foxtrot"))
+        ti = r.term_info("t", "foxtrot")
         assert ti.min_id() == 3
         assert ti.max_id() == 5
 

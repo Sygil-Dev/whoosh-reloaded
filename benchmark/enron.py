@@ -2,6 +2,7 @@ import os.path
 import tarfile
 from email import message_from_string
 from marshal import dump, load
+from urllib.request import urlretrieve
 from zlib import compress, decompress
 
 try:
@@ -10,7 +11,6 @@ except ImportError:
     pass
 
 from whoosh import analysis, fields
-from whoosh.compat import next, urlretrieve
 from whoosh.support.bench import Bench, Spec
 from whoosh.util import now
 

@@ -1,6 +1,5 @@
 import random
 
-from whoosh.compat import b, iteritems
 from whoosh.filedb.filestore import RamStorage
 from whoosh.filedb.filetables import (
     HashReader,
@@ -9,6 +8,10 @@ from whoosh.filedb.filetables import (
     OrderedHashWriter,
 )
 from whoosh.util.testing import TempStorage
+
+
+def b(s):
+    return s.encode("latin-1")
 
 
 def test_hash_single():
@@ -103,7 +106,7 @@ def test_random_hash():
         samp = {randstring(): randstring() for _ in range(times)}
 
         hw = HashWriter(st.create_file("test.hsh"))
-        for k, v in iteritems(samp):
+        for k, v in samp.items():
             hw.add(k, v)
         hw.close()
 

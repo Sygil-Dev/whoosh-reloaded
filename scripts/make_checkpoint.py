@@ -10,7 +10,6 @@ import sys
 from datetime import datetime, timezone
 
 from whoosh import fields, index
-from whoosh.compat import u
 
 if len(sys.argv) < 2:
     print("USAGE: make_checkpoint.py <dir>")
@@ -28,7 +27,7 @@ schema = fields.Schema(
     ngrams=fields.NGRAMWORDS,
 )
 
-words = u(
+words = (
     "alfa bravo charlie delta echo foxtrot golf hotel india"
     "juliet kilo lima mike november oskar papa quebec romeo"
     "sierra tango"
@@ -44,7 +43,7 @@ for segnum in range(3):
     with ix.writer() as w:
         for num in range(100):
             frac += 0.15
-            path = u(f"{segnum}/{num}")
+            path = f"{segnum}/{num}"
             title = " ".join(random.choice(words) for _ in range(100))
             dt = datetime(
                 year=2000 + counter,

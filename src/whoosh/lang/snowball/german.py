@@ -1,5 +1,3 @@
-from whoosh.compat import u
-
 from .bases import _StandardStemmer
 
 
@@ -26,7 +24,7 @@ class GermanStemmer(_StandardStemmer):
 
     """
 
-    __vowels = u("aeiouy\xE4\xF6\xFC")
+    __vowels = "aeiouy\xE4\xF6\xFC"
     __s_ending = "bdfghklmnrt"
     __st_ending = "bdfghklmnt"
 
@@ -46,7 +44,7 @@ class GermanStemmer(_StandardStemmer):
         """
         word = word.lower()
 
-        word = word.replace(u("\xDF"), "ss")
+        word = word.replace("\xDF", "ss")
 
         # Every occurrence of 'u' and 'y'
         # between vowels is put into upper case.
@@ -146,9 +144,9 @@ class GermanStemmer(_StandardStemmer):
         # Umlaut accents are removed and
         # 'u' and 'y' are put back into lower case.
         word = (
-            word.replace(u("\xE4"), "a")
-            .replace(u("\xF6"), "o")
-            .replace(u("\xFC"), "u")
+            word.replace("\xE4", "a")
+            .replace("\xF6", "o")
+            .replace("\xFC", "u")
             .replace("U", "u")
             .replace("Y", "y")
         )

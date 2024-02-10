@@ -29,8 +29,6 @@ import calendar
 import copy
 from datetime import date, datetime, timedelta, timezone
 
-from whoosh.compat import iteritems
-
 
 class TimeError(Exception):
     pass
@@ -194,7 +192,7 @@ class adatetime:
         """
 
         newadatetime = self.copy()
-        for key, value in iteritems(kwargs):
+        for key, value in kwargs.items():
             if key in self.units:
                 setattr(newadatetime, key, value)
             else:

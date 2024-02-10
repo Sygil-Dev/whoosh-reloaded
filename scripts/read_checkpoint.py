@@ -6,7 +6,6 @@
 import sys
 
 from whoosh import index, query
-from whoosh.compat import u
 
 if len(sys.argv) < 2:
     print("USAGE: read_checkpoint.py <dir>")
@@ -14,7 +13,7 @@ if len(sys.argv) < 2:
 indexdir = sys.argv[1]
 print("Reading checkpoint index in", indexdir)
 
-words = u(
+words = (
     "alfa bravo charlie delta echo foxtrot golf hotel india"
     "juliet kilo lima mike november oskar papa quebec romeo"
     "sierra tango"

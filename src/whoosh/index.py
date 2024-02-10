@@ -31,12 +31,12 @@ an index.
 
 
 import os.path
+import pickle
 import re
 import sys
 from time import sleep, time
 
 from whoosh import __version__
-from whoosh.compat import pickle, string_type
 from whoosh.fields import ensure_schema
 from whoosh.legacy import toc_loaders
 from whoosh.system import _FLOAT_SIZE, _INT_SIZE, _LONG_SIZE
@@ -408,7 +408,7 @@ class FileIndex(Index):
 
         if not isinstance(storage, Storage):
             raise ValueError(f"{storage!r} is not a Storage object")
-        if not isinstance(indexname, string_type):
+        if not isinstance(indexname, str):
             raise ValueError(f"indexname {indexname!r} is not a string")
 
         if schema:

@@ -27,7 +27,6 @@
 
 
 from whoosh import matching
-from whoosh.compat import text_type, u
 from whoosh.query import qcore
 from whoosh.util import make_binary_tree, make_weighted_tree
 
@@ -51,13 +50,11 @@ class CompoundQuery(qcore.Query):
         r += ")"
         return r
 
-    def __unicode__(self):
-        r = u("(")
-        r += self.JOINT.join([text_type(s) for s in self.subqueries])
-        r += u(")")
+    def __str__(self):
+        r = "("
+        r += self.JOINT.join([str(s) for s in self.subqueries])
+        r += ")"
         return r
-
-    __str__ = __unicode__
 
     def __eq__(self, other):
         return (
@@ -248,7 +245,7 @@ class And(CompoundQuery):
     >>> Term("content", u"render") & Term("content", u"shade")
     """
 
-    # This is used by the superclass's __unicode__ method.
+    # This is used by the superclass's __str__ method.
     JOINT = " AND "
     intersect_merge = True
 
@@ -279,7 +276,7 @@ class Or(CompoundQuery):
     >>> Term("content", u"render") | Term("content", u"shade")
     """
 
-    # This is used by the superclass's __unicode__ method.
+    # This is used by the superclass's __str__ method.
     JOINT = " OR "
     intersect_merge = False
     TOO_MANY_CLAUSES = 1024
@@ -308,15 +305,13 @@ class Or(CompoundQuery):
         self.minmatch = minmatch
         self.scale = scale
 
-    def __unicode__(self):
-        r = u("(")
-        r += (self.JOINT).join([text_type(s) for s in self.subqueries])
-        r += u(")")
+    def __str__(self):
+        r = "("
+        r += (self.JOINT).join([str(s) for s in self.subqueries])
+        r += ")"
         if self.minmatch:
-            r += u(">%s") % self.minmatch
+            r += f">{self.minmatch}"
         return r
-
-    __str__ = __unicode__
 
     def normalize(self):
         norm = CompoundQuery.normalize(self)
@@ -457,15 +452,13 @@ class DisjunctionMax(CompoundQuery):
         CompoundQuery.__init__(self, subqueries, boost=boost)
         self.tiebreak = tiebreak
 
-    def __unicode__(self):
-        r = u("DisMax(")
-        r += " ".join(sorted(text_type(s) for s in self.subqueries))
-        r += u(")")
+    def __str__(self):
+        r = "DisMax("
+        r += " ".join(sorted(str(s) for s in self.subqueries))
+        r += ")"
         if self.tiebreak:
-            r += u("~") + text_type(self.tiebreak)
+            r += "~" + str(self.tiebreak)
         return r
-
-    __str__ = __unicode__
 
     def normalize(self):
         norm = CompoundQuery.normalize(self)

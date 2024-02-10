@@ -2,7 +2,6 @@ import os
 import threading
 import time
 
-from whoosh.compat import u
 from whoosh.util.filelock import try_for
 from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempStorage
@@ -34,8 +33,8 @@ def test_storage_creation():
 
     ix = st.create_index(schema)
     with ix.writer() as w:
-        w.add_document(text=u("alfa bravo"))
-        w.add_document(text=u("bracho charlie"))
+        w.add_document(text="alfa bravo")
+        w.add_document(text="bracho charlie")
 
     st.destroy()
     assert not os.path.exists(dirpath)

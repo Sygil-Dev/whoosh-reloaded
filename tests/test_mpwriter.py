@@ -1,9 +1,9 @@
 import random
 from collections import deque
+from itertools import permutations
 
 import pytest
 from whoosh import fields, query
-from whoosh.compat import izip, permutations, text_type, u
 from whoosh.util.numeric import byte_to_length, length_to_byte
 from whoosh.util.testing import TempIndex
 
@@ -38,7 +38,7 @@ def _do_basic(writerclass):
     docs = []
     # A ring buffer for creating string values
     buf = deque()
-    for ls in permutations(u("abcd")):
+    for ls in permutations("abcd"):
         word = "".join(ls)
         # Remember this word is in the index (to check lexicon)
         words.append(word)
@@ -71,7 +71,7 @@ def _do_basic(writerclass):
             r = s.reader()
 
             # Check the lexicon
-            for word, term in izip(words, r.field_terms("text")):
+            for word, term in zip(words, r.field_terms("text")):
                 assert word == term
             # Check the doc count
             assert r.doc_count_all() == len(docs)
@@ -151,23 +151,23 @@ def _do_merge(writerclass):
     with TempIndex(schema) as ix:
         w = ix.writer()
         for key in "abc":
-            w.add_document(key=u(key), value=u(domain[key]))
+            w.add_document(key=key, value=domain[key])
         w.commit()
 
         w = ix.writer()
         for key in "def":
-            w.add_document(key=u(key), value=u(domain[key]))
+            w.add_document(key=key, value=domain[key])
         w.commit(merge=False)
 
         w = writerclass(ix, procs=3)
         del domain["b"]
-        w.delete_by_term("key", u("b"))
+        w.delete_by_term("key", "b")
 
         domain["e"] = "xx yy zz"
-        w.update_document(key=u("e"), value=u(domain["e"]))
+        w.update_document(key="e", value=domain["e"])
 
         for key in "ghijk":
-            w.add_document(key=u(key), value=u(domain[key]))
+            w.add_document(key=key, value=domain[key])
         w.commit(optimize=True)
 
         assert len(ix._segments()) == 1
@@ -223,9 +223,9 @@ def test_no_score_no_store():
 
     schema = fields.Schema(a=fields.ID, b=fields.KEYWORD)
     domain = {}
-    keys = list(u("abcdefghijklmnopqrstuvwx"))
+    keys = list("abcdefghijklmnopqrstuvwx")
     random.shuffle(keys)
-    words = u("alfa bravo charlie delta").split()
+    words = "alfa bravo charlie delta".split()
     for i, key in enumerate(keys):
         domain[key] = words[i % len(words)]
 
@@ -245,14 +245,14 @@ def test_multisegment():
     from whoosh.multiproc import MpWriter
 
     schema = fields.Schema(a=fields.TEXT(stored=True, spelling=True, vector=True))
-    words = u("alfa bravo charlie delta echo").split()
+    words = "alfa bravo charlie delta echo".split()
     with TempIndex(schema) as ix:
         with ix.writer(procs=3, multisegment=True, batchsize=10) as w:
             assert w.__class__ == MpWriter
             assert w.multisegment
 
             for ls in permutations(words, 3):
-                w.add_document(a=u(" ").join(ls))
+                w.add_document(a=" ".join(ls))
 
         assert len(ix._segments()) == 3
 
@@ -269,7 +269,7 @@ def test_batchsize_eq_doccount():
     with TempIndex(schema) as ix:
         with ix.writer(procs=4, batchsize=10) as w:
             for i in range(10):
-                w.add_document(a=u(str(i)))
+                w.add_document(a=str(i))
 
 
 def test_finish_segment():
@@ -282,6 +282,6 @@ def test_finish_segment():
         w = MpWriter(ix, procs=2, batchsize=1, multisegment=False, limitmb=0.00001)
 
         for i in range(100):
-            w.add_document(a=text_type(i) * 10)
+            w.add_document(a=str(i) * 10)
 
         w.commit()

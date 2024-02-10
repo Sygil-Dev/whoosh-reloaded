@@ -34,7 +34,6 @@ import weakref
 from math import ceil
 
 from whoosh import classify, highlight, query, scoring
-from whoosh.compat import iteritems, iterkeys, itervalues
 from whoosh.idsets import BitSet, DocIdSet
 from whoosh.reading import TermNotFound
 
@@ -394,13 +393,13 @@ class Searcher:
         )
 
     def _kw_to_text(self, kw):
-        for k, v in iteritems(kw):
+        for k, v in kw.items():
             field = self.schema[k]
             kw[k] = field.to_bytes(v)
 
     def _query_for_kw(self, kw):
         subqueries = []
-        for key, value in iteritems(kw):
+        for key, value in kw.items():
             subqueries.append(query.Term(key, value))
         if subqueries:
             q = query.And(subqueries).normalize()
@@ -945,7 +944,7 @@ class Searcher:
 
         # Remap correctors dict according to aliases
         d = {}
-        for fieldname, corr in iteritems(correctors):
+        for fieldname, corr in correctors.items():
             fieldname = aliases.get(fieldname, fieldname)
             d[fieldname] = corr
         correctors = d
@@ -1572,7 +1571,7 @@ class Hit:
         return len(self.fields())
 
     def __iter__(self):
-        return iterkeys(self.fields())
+        return self.fields().keys()
 
     def __getitem__(self, fieldname):
         if fieldname in self.fields():
@@ -1598,13 +1597,13 @@ class Hit:
         return list(self.fields().values())
 
     def iteritems(self):
-        return iteritems(self.fields())
+        return self.fields().items()
 
     def iterkeys(self):
-        return iterkeys(self.fields())
+        return self.fields().keys()
 
     def itervalues(self):
-        return itervalues(self.fields())
+        return self.fields().values()
 
     def __delitem__(self, key):
         raise NotImplementedError("You cannot modify a search result")

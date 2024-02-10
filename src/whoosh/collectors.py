@@ -77,13 +77,13 @@ generally a good idea to create a new collector for each search.
 
 import os
 import threading
+from abc import abstractmethod
 from array import array
 from bisect import insort
 from collections import defaultdict
 from heapq import heapify, heappush, heapreplace
 
 from whoosh import sorting
-from whoosh.compat import abstractmethod, iteritems, itervalues
 from whoosh.searching import Results, TimeLimit
 from whoosh.util import now
 
@@ -816,7 +816,7 @@ class FacetCollector(WrappingCollector):
         WrappingCollector.set_subsearcher(self, subsearcher, offset)
 
         # Tell each categorizer about the new subsearcher and offset
-        for categorizer in itervalues(self.categorizers):
+        for categorizer in self.categorizers.values():
             categorizer.set_searcher(self.child.subsearcher, self.child.offset)
 
     def collect(self, sub_docnum):
@@ -828,7 +828,7 @@ class FacetCollector(WrappingCollector):
         sortkey = self.child.collect(sub_docnum)
 
         # For each facet we're grouping by
-        for name, categorizer in iteritems(self.categorizers):
+        for name, categorizer in self.categorizers.items():
             add = self.facetmaps[name].add
 
             # We have to do more work if the facet allows overlapping groups
