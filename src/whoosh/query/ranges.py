@@ -26,7 +26,6 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 
-from whoosh.compat import b, u
 from whoosh.query import compound, qcore, terms, wrappers
 from whoosh.util.times import datetime_to_long
 
@@ -46,14 +45,12 @@ class RangeMixin:
             self.constantscore,
         )
 
-    def __unicode__(self):
+    def __str__(self):
         startchar = "{" if self.startexcl else "["
         endchar = "}" if self.endexcl else "]"
         start = "" if self.start is None else self.start
         end = "" if self.end is None else self.end
-        return u("%s:%s%s TO %s%s") % (self.fieldname, startchar, start, end, endchar)
-
-    __str__ = __unicode__
+        return f"{self.fieldname}:{startchar}{start} TO {end}{endchar}"
 
     def __eq__(self, other):
         return (
@@ -192,7 +189,7 @@ class TermRange(RangeMixin, terms.MultiTerm):
         self.constantscore = constantscore
 
     def normalize(self):
-        if self.start in ("", None) and self.end in (u("\uffff"), None):
+        if self.start in ("", None) and self.end in ("\uffff", None):
             from whoosh.query import Every
 
             return Every(self.fieldname, boost=self.boost)
@@ -226,7 +223,7 @@ class TermRange(RangeMixin, terms.MultiTerm):
         endexcl = self.endexcl
 
         if self.start is None:
-            start = b("")
+            start = b""
         else:
             try:
                 start = field.to_bytes(self.start)
@@ -234,7 +231,7 @@ class TermRange(RangeMixin, terms.MultiTerm):
                 return
 
         if self.end is None:
-            end = b("\xFF\xFF\xFF\xFF")
+            end = b"\xFF\xFF\xFF\xFF"
         else:
             try:
                 end = field.to_bytes(self.end)

@@ -18,11 +18,11 @@ To open an existing index::
 """
 
 import time
+from io import BytesIO
 
 from google.appengine.api import memcache  # type: ignore @UnresolvedImport
 from google.appengine.ext import db  # type: ignore @UnresolvedImport
 
-from whoosh.compat import BytesIO
 from whoosh.filedb.filestore import ReadOnlyError, Storage
 from whoosh.filedb.structfile import StructFile
 from whoosh.index import _DEF_INDEX_NAME, TOC, FileIndex

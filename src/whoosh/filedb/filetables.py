@@ -36,7 +36,6 @@ import sys
 from binascii import crc32
 from hashlib import md5  # type: ignore @UnresolvedImport
 
-from whoosh.compat import b, bytes_type
 from whoosh.system import _INT_SIZE, emptybytes
 from whoosh.util.numlists import GrowableArray
 
@@ -97,7 +96,7 @@ class HashWriter:
     2 GB in length.
     """
 
-    def __init__(self, dbfile, magic=b("HSH3"), hashtype=0):
+    def __init__(self, dbfile, magic=b"HSH3", hashtype=0):
         """
         :param dbfile: a :class:`~whoosh.filedb.structfile.StructFile` object
             to write to.
@@ -135,8 +134,8 @@ class HashWriter:
         them using :meth:`HashReader.all`.
         """
 
-        assert isinstance(key, bytes_type)
-        assert isinstance(value, bytes_type)
+        assert isinstance(key, bytes)
+        assert isinstance(value, bytes)
 
         dbfile = self.dbfile
         pos = dbfile.tell()
@@ -224,7 +223,7 @@ class HashReader:
     :class:`HashWriter`.
     """
 
-    def __init__(self, dbfile, length=None, magic=b("HSH3"), startoffset=0):
+    def __init__(self, dbfile, length=None, magic=b"HSH3", startoffset=0):
         """
         :param dbfile: a :class:`~whoosh.filedb.structfile.StructFile` object
             to read from.
@@ -389,7 +388,7 @@ class HashReader:
         with the given key.
         """
 
-        if not isinstance(key, bytes_type):
+        if not isinstance(key, bytes):
             raise TypeError(f"Key {key!r} should be bytes")
         dbfile = self.dbfile
 
@@ -544,7 +543,7 @@ class OrderedHashReader(HashReader):
     def closest_key_pos(self, key):
         # Given a key, return the position of that key OR the next highest key
         # if the given key does not exist
-        if not isinstance(key, bytes_type):
+        if not isinstance(key, bytes):
             raise TypeError(f"Key {key!r} should be bytes")
 
         indexbase = self.indexbase
@@ -674,7 +673,7 @@ class FieldedOrderedHashReader(HashReader):
     def closest_term_pos(self, fieldname, key):
         # Given a key, return the position of that key OR the next highest key
         # if the given key does not exist
-        if not isinstance(key, bytes_type):
+        if not isinstance(key, bytes):
             raise TypeError(f"Key {key!r} should be bytes")
 
         dbfile = self.dbfile

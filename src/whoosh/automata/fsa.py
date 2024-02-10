@@ -3,10 +3,7 @@ import operator
 import sys
 from bisect import bisect_left
 
-from whoosh.compat import iteritems, next, text_type, unichr
-
-unull = unichr(0)
-
+unull = chr(0)
 
 # Marker constants
 
@@ -46,13 +43,13 @@ class FSA:
 
     def all_states(self):
         stateset = set(self.transitions)
-        for src, trans in iteritems(self.transitions):
+        for trans in self.transitions.values():
             stateset.update(trans.values())
         return stateset
 
     def all_labels(self):
         labels = set()
-        for src, trans in iteritems(self.transitions):
+        for trans in self.transitions.values():
             labels.update(trans)
         return labels
 
@@ -134,8 +131,8 @@ class NFA(FSA):
         self.final_states.add(state)
 
     def triples(self):
-        for src, trans in iteritems(self.transitions):
-            for label, dests in iteritems(trans):
+        for src, trans in self.transitions.items():
+            for label, dests in trans.items():
                 for dest in dests:
                     yield src, label, dest
 
@@ -175,9 +172,9 @@ class NFA(FSA):
 
     def embed(self, other):
         # Copy all transitions from the other NFA into this one
-        for s, othertrans in iteritems(other.transitions):
+        for s, othertrans in other.transitions.items():
             trans = self.transitions.setdefault(s, {})
-            for label, otherdests in iteritems(othertrans):
+            for label, otherdests in othertrans.items():
                 dests = trans.setdefault(label, set())
                 dests.update(otherdests)
 
@@ -286,7 +283,7 @@ class DFA(FSA):
         if label is None:
             label = b"\x00" if asbytes else "\0"
         else:
-            label = (label + 1) if asbytes else unichr(ord(label) + 1)
+            label = (label + 1) if asbytes else chr(ord(label) + 1)
         trans = self.transitions.get(s, {})
         if label in trans or s in self.defaults:
             return label
@@ -313,7 +310,7 @@ class DFA(FSA):
         while stack:
             src = stack.pop()
             seen.add(src)
-            for _, dest in iteritems(transitions[src]):
+            for dest in transitions[src].values():
                 reached.add(dest)
                 if dest not in seen:
                     stack.append(dest)
@@ -381,9 +378,9 @@ class DFA(FSA):
 
         # Apply mapping to existing transitions
         new_finals = {mapping[s] for s in final_states}
-        for state, d in iteritems(new_trans):
+        for state, d in new_trans.items():
             trans = transitions[state]
-            for label, dest in iteritems(trans):
+            for label, dest in trans.items():
                 d[label] = mapping[dest]
 
         # Remove dead states - non-final states with no outgoing arcs except
@@ -426,12 +423,12 @@ def renumber_dfa(dfa, base=0):
         return newnum
 
     newdfa = DFA(remap(dfa.initial))
-    for src, trans in iteritems(dfa.transitions):
-        for label, dest in iteritems(trans):
+    for src, trans in dfa.transitions.items():
+        for label, dest in trans.items():
             newdfa.add_transition(remap(src), label, remap(dest))
     for finalstate in dfa.final_states:
         newdfa.add_final_state(remap(finalstate))
-    for src, dest in iteritems(dfa.defaults):
+    for src, dest in dfa.defaults.items():
         newdfa.set_default_transition(remap(src), remap(dest))
     return newdfa
 
@@ -440,15 +437,15 @@ def u_to_utf8(dfa, base=0):
     c = itertools.count(base)
     transitions = dfa.transitions
 
-    for src, trans in iteritems(transitions):
+    for src, trans in transitions.items():
         trans = transitions[src]
-        for label, dest in list(iteritems(trans)):
+        for label, dest in list(trans.items()):
             if label is EPSILON:
                 continue
             elif label is ANY:
                 raise ValueError
             else:
-                assert isinstance(label, text_type)
+                assert isinstance(label, str)
                 label8 = label.encode("utf8")
                 for i, byte in enumerate(label8):
                     if i < len(label8) - 1:
@@ -490,8 +487,8 @@ def find_all_matches(dfa, lookup_func, first=unull):
 def reverse_nfa(n):
     s = object()
     nfa = NFA(s)
-    for src, trans in iteritems(n.transitions):
-        for label, destset in iteritems(trans):
+    for src, trans in n.transitions.items():
+        for label, destset in trans.items():
             for dest in destset:
                 nfa.add_transition(dest, label, src)
     for finalstate in n.final_states:
@@ -638,7 +635,7 @@ class DMNode:
         return hash(self.tuple())
 
     def tuple(self):
-        arcs = tuple(sorted(iteritems(self.arcs)))
+        arcs = tuple(sorted(self.arcs.items()))
         return arcs, self.final
 
 
@@ -703,5 +700,5 @@ def add_suffix(dfa, nodes, last, downto, seen):
             parent.arcs[inlabel] = this
 
         # Add the node's transitions to the DFA
-        for label, dest in iteritems(node.arcs):
+        for label, dest in node.arcs.items():
             dfa.add_transition(this, label, dest)

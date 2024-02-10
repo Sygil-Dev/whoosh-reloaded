@@ -1,4 +1,3 @@
-from whoosh.compat import b
 from whoosh.filedb.compound import CompoundStorage
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempStorage
@@ -26,17 +25,17 @@ def _test_simple_compound(st):
     with f.open_file("a") as af:
         for x in alist:
             assert x == af.read_int()
-        assert af.read() == b("")
+        assert af.read() == b""
 
     with f.open_file("b") as bf:
         for x in blist:
             assert x == bf.read_varint()
-        assert bf.read() == b("")
+        assert bf.read() == b""
 
     with f.open_file("c") as cf:
         for x in clist:
             assert x == cf.read_int()
-        assert cf.read() == b("")
+        assert cf.read() == b""
 
 
 def test_simple_compound_mmap():

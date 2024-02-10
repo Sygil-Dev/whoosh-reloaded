@@ -49,11 +49,7 @@ def random_name(size=28):
 
 
 def random_bytes(size=28):
-    gen = (random.randint(0, 255) for _ in range(size))
-    if sys.version_info[0] >= 3:
-        return bytes(gen)
-    else:
-        return array("B", gen).tostring()
+    return bytes(random.randint(0, 255) for _ in range(size))
 
 
 def make_binary_tree(fn, args, **kwargs):

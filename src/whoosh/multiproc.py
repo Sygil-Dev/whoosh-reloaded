@@ -25,11 +25,11 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
-
+import pickle
+import queue
 from multiprocessing import Process, Queue, cpu_count
 
 from whoosh.codec import base
-from whoosh.compat import pickle, queue
 from whoosh.externalsort import imerge
 from whoosh.util import random_name
 from whoosh.writing import SegmentWriter

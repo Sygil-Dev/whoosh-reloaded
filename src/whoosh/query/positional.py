@@ -30,7 +30,6 @@ import copy
 
 from whoosh import matching
 from whoosh.analysis import Token
-from whoosh.compat import u
 from whoosh.query import compound, qcore, terms
 
 
@@ -173,10 +172,8 @@ class Phrase(qcore.Query):
             self.boost,
         )
 
-    def __unicode__(self):
-        return u('%s:"%s"') % (self.fieldname, u(" ").join(self.words))
-
-    __str__ = __unicode__
+    def __str__(self):
+        return f"{self.fieldname}:\"{' '.join(self.words)}\""
 
     def __hash__(self):
         h = hash(self.fieldname) ^ hash(self.slop) ^ hash(self.boost)

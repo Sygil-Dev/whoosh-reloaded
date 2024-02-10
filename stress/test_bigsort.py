@@ -4,7 +4,6 @@ import shutil
 from datetime import datetime, timezone
 
 from whoosh import fields, index, query
-from whoosh.compat import text_type
 from whoosh.util import now
 
 
@@ -27,7 +26,7 @@ def test_bigsort():
         dt = datetime.fromtimestamp(
             random.randint(15839593, 1294102139), tz=timezone.utc
         )
-        w.add_document(id=text_type(i), date=dt)
+        w.add_document(id=str(i), date=dt)
     w.commit()
     print("Writing took ", now() - t)
 

@@ -1,20 +1,24 @@
 import gzip
 
 from whoosh import analysis, fields, highlight, query, spelling
-from whoosh.compat import u
 from whoosh.qparser import QueryParser
 from whoosh.support.levenshtein import levenshtein
 from whoosh.util.testing import TempIndex
 
+
+def u(s):
+    return s.decode("ascii") if isinstance(s, bytes) else s
+
+
 _wordlist = sorted(
-    u(
-        "render animation animate shader shading zebra koala"
-        "ready kismet reaction page delete quick fox jumped"
-        "over lazy dog wicked erase red team yellow under interest"
-        "open print acrid sear deaf feed grow heal jolly kilt"
-        "low zone xylophone crown vale brown neat meat reduction"
-        "blunder preaction lamppost"
-    ).split()
+    """
+    render animation animate shader shading zebra koala
+    ready kismet reaction page delete quick fox jumped
+    over lazy dog wicked erase red team yellow under interest
+    open print acrid sear deaf feed grow heal jolly kilt
+    low zone xylophone crown vale brown neat meat reduction
+    blunder preaction lamppost
+    """.split()
 )
 
 
@@ -168,7 +172,7 @@ def test_correct_query():
             q = qp.parse(qtext, ix.schema)
             c = s.correct_query(q, qtext)
             assert (
-                c.query.__unicode__()
+                str(c.query)
                 == '(a:alfa AND b:"brovo november" AND a:delta AND a:detail)'
             )
             assert c.string == 'alfa b:("brovo november" a:delta) detail'

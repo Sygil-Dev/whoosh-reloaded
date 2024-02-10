@@ -28,9 +28,9 @@
 
 import copy
 from array import array
+from operator import methodcaller
 
 from whoosh import matching
-from whoosh.compat import methodcaller, u
 from whoosh.reading import TermNotFound
 
 # Exceptions
@@ -169,7 +169,7 @@ class Query:
     # in this query
     error = None
 
-    def __unicode__(self):
+    def __str__(self):
         raise NotImplementedError(self.__class__.__name__)
 
     def __getitem__(self, item):
@@ -598,8 +598,8 @@ class _NullQuery(Query):
     def __init__(self):
         self.error = None
 
-    def __unicode__(self):
-        return u("<_NullQuery>")
+    def __str__(self):
+        return "<_NullQuery>"
 
     def __call__(self):
         return self
@@ -709,10 +709,8 @@ class Every(Query):
             and self.boost == other.boost
         )
 
-    def __unicode__(self):
-        return u("%s:*") % self.fieldname
-
-    __str__ = __unicode__
+    def __str__(self):
+        return f"{self.fieldname}:*"
 
     def __hash__(self):
         return hash(self.fieldname)

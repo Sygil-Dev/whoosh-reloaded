@@ -32,6 +32,7 @@ from binascii import crc32
 from collections import defaultdict
 from decimal import Decimal
 from hashlib import md5  # type: ignore @UnresolvedImport
+from pickle import dumps, loads
 from struct import Struct
 
 try:
@@ -41,20 +42,6 @@ except ImportError:
 
 from whoosh.automata.fst import GraphReader, GraphWriter
 from whoosh.codec import base
-from whoosh.compat import (
-    PY3,
-    array_frombytes,
-    array_tobytes,
-    b,
-    bytes_type,
-    dumps,
-    integer_types,
-    iteritems,
-    loads,
-    range,
-    string_type,
-    text_type,
-)
 from whoosh.filedb.filestore import Storage
 from whoosh.matching import LeafMatcher, ListMatcher, ReadTooFar
 from whoosh.reading import NoGraphError, TermInfo, TermNotFound
@@ -129,9 +116,9 @@ class HashWriter:
         self.extras = {}
 
         self.startoffset = dbfile.tell()
-        dbfile.write(b("HASH"))  # Magic tag
+        dbfile.write(b"HASH")  # Magic tag
         dbfile.write_byte(self.hashtype)  # Identify hashing function used
-        dbfile.write(b("\x00\x00\x00"))  # Unused bytes
+        dbfile.write(b"\x00\x00\x00")  # Unused bytes
         dbfile.write_long(0)  # Pointer to end of hashes
 
         self.header_size = 16 + 256 * header_entry_size
@@ -144,8 +131,8 @@ class HashWriter:
         self.hashes = defaultdict(list)
 
     def add(self, key, value):
-        assert isinstance(key, bytes_type)
-        assert isinstance(value, bytes_type)
+        assert isinstance(key, bytes)
+        assert isinstance(value, bytes)
 
         dbfile = self.dbfile
         pos = dbfile.tell()
@@ -226,7 +213,7 @@ class HashReader:
         dbfile.seek(startoffset)
         # Check magic tag
         magic = dbfile.read(4)
-        if magic != b("HASH"):
+        if magic != b"HASH":
             raise ValueError(f"Unknown file header {magic}")
 
         self.hashtype = dbfile.read_byte()  # Hash function type
@@ -335,7 +322,7 @@ class HashReader:
 
     def ranges_for_key(self, key):
         read = self.read
-        if not isinstance(key, bytes_type):
+        if not isinstance(key, bytes):
             raise TypeError(f"Key {key} should be bytes")
         keyhash = self.hash_func(key)
         hpos, hslots = self._hashtable_info(keyhash)
@@ -422,7 +409,7 @@ class OrderedHashReader(HashReader):
 
         lo = 0
         hi = self.indexlen
-        if not isinstance(key, bytes_type):
+        if not isinstance(key, bytes):
             raise TypeError(f"Key {key} should be bytes")
         while lo < hi:
             mid = (lo + hi) // 2
@@ -986,7 +973,7 @@ class PostingIndexBase(HashReader):
         dbfile.seek(self.indexbase + self.length * _LONG_SIZE)
         self.fieldmap = dbfile.read_pickle()
         self.names = [None] * len(self.fieldmap)
-        for name, num in iteritems(self.fieldmap):
+        for name, num in self.fieldmap.items():
             self.names[num] = name
 
     def _closest_key(self, key):
@@ -995,7 +982,7 @@ class PostingIndexBase(HashReader):
         indexbase = self.indexbase
         lo = 0
         hi = self.length
-        if not isinstance(key, bytes_type):
+        if not isinstance(key, bytes):
             raise TypeError(f"Key {key!r} should be bytes")
         while lo < hi:
             mid = (lo + hi) // 2
@@ -1101,7 +1088,7 @@ class W2TermsReader(PostingIndexBase):
             raise TermNotFound(f"No term {fieldname}:{text!r}")
 
         p = terminfo.postings
-        if isinstance(p, integer_types):
+        if isinstance(p, int):
             # terminfo.postings is an offset into the posting file
             pr = W2LeafMatcher(pf, p, format_, scorer=scorer, term=term)
         else:
@@ -1116,20 +1103,20 @@ class W2TermsReader(PostingIndexBase):
         return pack_ushort(fnum) + tbytes
 
     def keydecoder(self, v):
-        assert isinstance(v, bytes_type)
+        assert isinstance(v, bytes)
         return (self.names[unpack_ushort(v[:2])[0]], v[2:])
 
     def valuedecoder(self, v):
-        assert isinstance(v, bytes_type)
+        assert isinstance(v, bytes)
         return FileTermInfo.from_string(v)
 
     def frequency(self, fieldname, btext):
-        assert isinstance(btext, bytes_type)
+        assert isinstance(btext, bytes)
         datapos = self.range_for_key((fieldname, btext))[0]
         return FileTermInfo.read_weight(self.dbfile, datapos)
 
     def doc_frequency(self, fieldname, btext):
-        assert isinstance(btext, bytes_type)
+        assert isinstance(btext, bytes)
         datapos = self.range_for_key((fieldname, btext))[0]
         return FileTermInfo.read_doc_freq(self.dbfile, datapos)
 
@@ -1240,7 +1227,7 @@ class W2PerDocReader(base.PerDocumentReader):
 
 
 class ByteLengthsBase:
-    magic = b("~LN1")
+    magic = b"~LN1"
 
     def __init__(self):
         self.starts = {}
@@ -1320,7 +1307,7 @@ class InMemoryLengths(ByteLengthsBase):
     def from_file(cls, dbfile, doccount=None):
         obj = cls()
         obj._read_header(dbfile, doccount)
-        for fieldname, start in iteritems(obj.starts):
+        for fieldname, start in obj.starts.items():
             obj.lengths[fieldname] = dbfile.get_array(start, "B", obj._count)
         dbfile.close()
         return obj
@@ -1450,7 +1437,7 @@ class StoredFieldWriter:
         name_map = self.name_map
 
         vlist = [None] * len(names)
-        for k, v in iteritems(vdict):
+        for k, v in vdict.items():
             if k in name_map:
                 vlist[name_map[k]] = v
             else:
@@ -1497,7 +1484,7 @@ class StoredFieldReader:
             # Previous versions stored the list of names as a map of names to
             # positions... it seemed to make sense at the time...
             self.names = [None] * len(nameobj)
-            for name, pos in iteritems(nameobj):
+            for name, pos in nameobj.items():
                 self.names[pos] = name
         else:
             self.names = nameobj
@@ -1518,7 +1505,7 @@ class StoredFieldReader:
 
         dbfile.seek(self.basepos)
         for length in lengths:
-            vlist = loads(dbfile.read(length) + b("."))
+            vlist = loads(dbfile.read(length) + b".")
             vdict = {
                 names[i]: vlist[i] for i in range(len(vlist)) if vlist[i] is not None
             }
@@ -1538,7 +1525,7 @@ class StoredFieldReader:
             )
         position, length = unpack_stored_pointer(ptr)
         dbfile.seek(position)
-        vlist = loads(dbfile.read(length) + b("."))
+        vlist = loads(dbfile.read(length) + b".")
 
         names = self.names
         # Recreate a dictionary by putting the field names and values back
@@ -1562,9 +1549,9 @@ class W2Segment(base.Segment):
             deleted documents exist in this segment.
         """
 
-        assert isinstance(indexname, string_type)
+        assert isinstance(indexname, str)
         self.indexname = indexname
-        assert isinstance(doccount, integer_types)
+        assert isinstance(doccount, int)
         self.doccount = doccount
         self.segid = self._random_id() if segid is None else segid
         self.deleted = deleted
@@ -1614,7 +1601,7 @@ class W2Segment(base.Segment):
 
 
 class W2Block:
-    magic = b("Blk3")
+    magic = b"Blk3"
 
     infokeys = (
         "count",
@@ -1828,9 +1815,9 @@ class FileTermInfo(TermInfo):
 
     @classmethod
     def from_string(cls, s):
-        assert isinstance(s, bytes_type)
+        assert isinstance(s, bytes)
 
-        if isinstance(s, string_type):
+        if isinstance(s, str):
             hbyte = ord(s[0])  # Python 2.x - str
         else:
             hbyte = s[0]  # Python 3 - bytes
@@ -1846,10 +1833,10 @@ class FileTermInfo(TermInfo):
             if hbyte == 0:
                 p = unpack_long(pstr)[0]
             else:
-                p = loads(pstr + b("."))
+                p = loads(pstr + b".")
         else:
             # Old format was encoded as a variable length pickled tuple
-            v = loads(s + b("."))
+            v = loads(s + b".")
             if len(v) == 1:
                 w = df = 1
                 p = v[0]
@@ -1912,7 +1899,7 @@ def minimize_ids(arry, stringids, compression=0):
             arry = array(typecode, iter(arry))
         if not IS_LITTLE:
             arry.byteswap()
-        string = array_tobytes(arry)
+        string = arry.tobytes()
     if compression:
         string = zlib.compress(string, compression)
     return (typecode, string)
@@ -1925,7 +1912,7 @@ def deminimize_ids(typecode, count, string, compression=0):
         return loads(string)
     else:
         arry = array(typecode)
-        array_frombytes(arry, string)
+        arry.frombytes(string)
         if not IS_LITTLE:
             arry.byteswap()
         return arry
@@ -1933,11 +1920,11 @@ def deminimize_ids(typecode, count, string, compression=0):
 
 def minimize_weights(weights, compression=0):
     if all(w == 1.0 for w in weights):
-        string = b("")
+        string = b""
     else:
         if not IS_LITTLE:
             weights.byteswap()
-        string = array_tobytes(weights)
+        string = weights.tobytes()
     if string and compression:
         string = zlib.compress(string, compression)
     return string
@@ -1949,7 +1936,7 @@ def deminimize_weights(count, string, compression=0):
     if compression:
         string = zlib.decompress(string)
     arry = array("f")
-    array_frombytes(arry, string)
+    arry.frombytes(string)
     if not IS_LITTLE:
         arry.byteswap()
     return arry
@@ -1959,9 +1946,9 @@ def minimize_values(postingsize, values, compression=0):
     if postingsize < 0:
         string = dumps(values, -1)[2:]
     elif postingsize == 0:
-        string = b("")
+        string = b""
     else:
-        string = b("").join(values)
+        string = b"".join(values)
     if string and compression:
         string = zlib.compress(string, compression)
     return string
@@ -1981,7 +1968,6 @@ def deminimize_values(postingsize, count, string, compression=0):
 
 # Legacy field types
 
-from whoosh.compat import long_type
 from whoosh.fields import NUMERIC
 
 
@@ -2012,7 +1998,7 @@ class OLD_NUMERIC(NUMERIC):
         from whoosh import analysis, formats
 
         self.type = type
-        if self.type is long_type:
+        if self.type is int:
             # This will catch the Python 3 int type
             self._to_text = self._long_to_text
             self._from_text = self._text_to_long
@@ -2045,7 +2031,7 @@ class OLD_NUMERIC(NUMERIC):
     def __setstate__(self, d):
         self.__dict__.update(d)
         self.numtype = d["type"]
-        self.bits = 32 if (d["type"] is int and not PY3) else 64
+        self.bits = 64
 
     def prepare_number(self, x):
         if x is None or x == emptybytes:
@@ -2064,7 +2050,7 @@ class OLD_NUMERIC(NUMERIC):
         return x
 
     def to_bytes(self, x, shift=0):
-        if isinstance(x, bytes_type):
+        if isinstance(x, bytes):
             return x
         return utf8encode(self.to_text(x, shift))[0]
 
@@ -2132,9 +2118,7 @@ class OLD_NUMERIC(NUMERIC):
 
 class OLD_DATETIME(OLD_NUMERIC):
     def __init__(self, stored=False, unique=False):
-        OLD_NUMERIC.__init__(
-            self, type=long_type, stored=stored, unique=unique, shift_step=8
-        )
+        OLD_NUMERIC.__init__(self, type=int, stored=stored, unique=unique, shift_step=8)
 
     def to_text(self, x, shift=0):
         from datetime import datetime
@@ -2142,13 +2126,13 @@ class OLD_DATETIME(OLD_NUMERIC):
         from whoosh.util.times import floor
 
         try:
-            if isinstance(x, text_type):
+            if isinstance(x, str):
                 # For indexing, support same strings as for query parsing
                 x = self._parse_datestring(x)
                 x = floor(x)  # this makes most sense (unspecified = lowest)
             if isinstance(x, datetime):
                 x = datetime_to_long(x)
-            elif not isinstance(x, integer_types):
+            elif not isinstance(x, int):
                 raise TypeError()
         except ValueError:
             raise ValueError(f"DATETIME.to_text can't convert from {x!r}")
@@ -2236,13 +2220,13 @@ def text_to_int(text, signed=True):
 
 
 def long_to_text(x, shift=0, signed=True):
-    x = to_sortable(long_type, 64, signed, x)
+    x = to_sortable(int, 64, signed, x)
     return sortable_long_to_text(x, shift)
 
 
 def text_to_long(text, signed=True):
     x = text_to_sortable_long(text)
-    x = from_sortable(long_type, 64, signed, x)
+    x = from_sortable(int, 64, signed, x)
     return x
 
 

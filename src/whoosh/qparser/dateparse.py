@@ -29,7 +29,6 @@ import re
 import sys
 from datetime import datetime, timedelta, timezone
 
-from whoosh.compat import iteritems, string_type
 from whoosh.qparser import plugins, syntax
 from whoosh.qparser.taggers import Tagger
 from whoosh.support.relativedelta import relativedelta
@@ -79,7 +78,7 @@ class ParserBase:
     """Base class for date parser elements."""
 
     def to_parser(self, e):
-        if isinstance(e, string_type):
+        if isinstance(e, str):
             return Regex(e)
         else:
             return e
@@ -467,7 +466,7 @@ class Regex(ParserBase):
 
     def extract(self, match):
         d = match.groupdict()
-        for key, value in iteritems(d):
+        for key, value in d.items():
             try:
                 value = int(value)
                 d[key] = value

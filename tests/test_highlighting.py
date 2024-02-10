@@ -2,11 +2,14 @@ import pytest
 
 # from jieba.analyse import ChineseAnalyzer
 from whoosh import analysis, fields, highlight, qparser, query
-from whoosh.compat import u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.util.testing import TempIndex
 
-_doc = u("alfa bravo charlie delta echo foxtrot golf hotel india juliet " + "kilo lima")
+_doc = "alfa bravo charlie delta echo foxtrot golf hotel india juliet kilo lima"
+
+
+def u(s):
+    return s.decode("ascii") if isinstance(s, bytes) else s
 
 
 def test_null_fragment():
@@ -34,8 +37,8 @@ def test_phrase_strict():
     ix = RamStorage().create_index(schema)
     w = ix.writer()
     w.add_document(
-        id=u("1"),
-        title=u("strict phrase highlights phrase terms but not individual terms"),
+        id="1",
+        title="strict phrase highlights phrase terms but not individual terms",
     )
     w.commit()
 
@@ -81,7 +84,7 @@ def test_phrase_strict():
 
 
 def test_sentence_fragment():
-    text = u(
+    text = (
         "This is the first sentence. This one doesn't have the word. "
         + "This sentence is the second. Third sentence here."
     )
@@ -131,7 +134,7 @@ def test_html_escape():
     sa = analysis.StandardAnalyzer()
     wf = highlight.WholeFragmenter()
     hf = highlight.HtmlFormatter()
-    htext = highlight.highlight(u('alfa <bravo "charlie"> delta'), terms, sa, wf, hf)
+    htext = highlight.highlight('alfa <bravo "charlie"> delta', terms, sa, wf, hf)
     assert (
         htext
         == 'alfa &lt;<strong class="match term0">bravo</strong> "charlie"&gt; delta'
@@ -155,17 +158,17 @@ def test_workflow_easy():
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
-    w.add_document(id=u("1"), title=u("The man who wasn't there"))
-    w.add_document(id=u("2"), title=u("The dog who barked at midnight"))
-    w.add_document(id=u("3"), title=u("The invisible man"))
-    w.add_document(id=u("4"), title=u("The girl with the dragon tattoo"))
-    w.add_document(id=u("5"), title=u("The woman who disappeared"))
+    w.add_document(id="1", title="The man who wasn't there")
+    w.add_document(id="2", title="The dog who barked at midnight")
+    w.add_document(id="3", title="The invisible man")
+    w.add_document(id="4", title="The girl with the dragon tattoo")
+    w.add_document(id="5", title="The woman who disappeared")
     w.commit()
 
     with ix.searcher() as s:
         # Parse the user query
         parser = qparser.QueryParser("title", schema=ix.schema)
-        q = parser.parse(u("man"))
+        q = parser.parse("man")
         r = s.search(q, terms=True)
         assert len(r) == 2
 
@@ -180,17 +183,17 @@ def test_workflow_manual():
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
-    w.add_document(id=u("1"), title=u("The man who wasn't there"))
-    w.add_document(id=u("2"), title=u("The dog who barked at midnight"))
-    w.add_document(id=u("3"), title=u("The invisible man"))
-    w.add_document(id=u("4"), title=u("The girl with the dragon tattoo"))
-    w.add_document(id=u("5"), title=u("The woman who disappeared"))
+    w.add_document(id="1", title="The man who wasn't there")
+    w.add_document(id="2", title="The dog who barked at midnight")
+    w.add_document(id="3", title="The invisible man")
+    w.add_document(id="4", title="The girl with the dragon tattoo")
+    w.add_document(id="5", title="The woman who disappeared")
     w.commit()
 
     with ix.searcher() as s:
         # Parse the user query
         parser = qparser.QueryParser("title", schema=ix.schema)
-        q = parser.parse(u("man"))
+        q = parser.parse("man")
 
         # Extract the terms the user used in the field we're interested in
         terms = [text for fieldname, text in q.all_terms() if fieldname == "title"]
@@ -223,7 +226,7 @@ def test_unstored():
     schema = fields.Schema(text=fields.TEXT, tags=fields.KEYWORD)
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(text=u("alfa bravo charlie"), tags=u("delta echo"))
+    w.add_document(text="alfa bravo charlie", tags="delta echo")
     w.commit()
 
     hit = ix.searcher().search(query.Term("text", "bravo"))[0]
@@ -240,7 +243,7 @@ def test_multifilter():
     schema = fields.Schema(text=fields.TEXT(analyzer=ana, stored=True))
     with TempIndex(schema) as ix:
         w = ix.writer()
-        w.add_document(text=u("Our BabbleTron5000 is great"))
+        w.add_document(text="Our BabbleTron5000 is great")
         w.commit()
 
         with ix.searcher() as s:
@@ -253,7 +256,7 @@ def test_multifilter():
 
 
 def test_pinpoint():
-    domain = u(
+    domain = (
         "alfa bravo charlie delta echo foxtrot golf hotel india juliet "
         "kilo lima mike november oskar papa quebec romeo sierra tango"
     )
@@ -291,11 +294,11 @@ def test_highlight_wildcards():
     schema = fields.Schema(text=fields.TEXT(stored=True))
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(text=u("alfa bravo charlie delta cookie echo"))
+        w.add_document(text="alfa bravo charlie delta cookie echo")
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("text", ix.schema)
-        q = qp.parse(u("c*"))
+        q = qp.parse("c*")
         r = s.search(q)
         assert r.scored_length() == 1
         r.formatter = highlight.UppercaseFormatter()
@@ -307,11 +310,11 @@ def test_highlight_ngrams():
     schema = fields.Schema(text=fields.NGRAMWORDS(stored=True))
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(text=u("Multiplication and subtraction are good"))
+        w.add_document(text="Multiplication and subtraction are good")
 
     with ix.searcher() as s:
         qp = qparser.QueryParser("text", ix.schema)
-        q = qp.parse(u("multiplication"))
+        q = qp.parse("multiplication")
         r = s.search(q)
         assert r.scored_length() == 1
 
@@ -324,8 +327,8 @@ def test_highlight_ngrams():
 def test_issue324():
     sa = analysis.StemmingAnalyzer()
     result = highlight.highlight(
-        u("Indexed!\n1"),
-        [u("index")],
+        "Indexed!\n1",
+        ["index"],
         sa,
         fragmenter=highlight.ContextFragmenter(),
         formatter=highlight.UppercaseFormatter(),
@@ -337,25 +340,23 @@ def test_whole_noterms():
     schema = fields.Schema(text=fields.TEXT(stored=True), tag=fields.KEYWORD)
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(
-            text=u("alfa bravo charlie delta echo foxtrot golf"), tag=u("foo")
-        )
+        w.add_document(text="alfa bravo charlie delta echo foxtrot golf", tag="foo")
 
     with ix.searcher() as s:
-        r = s.search(query.Term("text", u("delta")))
+        r = s.search(query.Term("text", "delta"))
         assert len(r) == 1
 
         r.fragmenter = highlight.WholeFragmenter()
         r.formatter = highlight.UppercaseFormatter()
         hi = r[0].highlights("text")
-        assert hi == u("alfa bravo charlie DELTA echo foxtrot golf")
+        assert hi == "alfa bravo charlie DELTA echo foxtrot golf"
 
-        r = s.search(query.Term("tag", u("foo")))
+        r = s.search(query.Term("tag", "foo"))
         assert len(r) == 1
         r.fragmenter = highlight.WholeFragmenter()
         r.formatter = highlight.UppercaseFormatter()
         hi = r[0].highlights("text")
-        assert hi == u("")
+        assert hi == ""
 
         hi = r[0].highlights("text", minscore=0)
-        assert hi == u("alfa bravo charlie delta echo foxtrot golf")
+        assert hi == "alfa bravo charlie delta echo foxtrot golf"

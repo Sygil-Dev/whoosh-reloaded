@@ -28,8 +28,6 @@
 from array import array
 from collections import defaultdict
 
-from whoosh.compat import iteritems, izip, string_type
-
 # Faceting objects
 
 
@@ -783,7 +781,7 @@ class MultiFacet(FacetType):
     @classmethod
     def from_sortedby(cls, sortedby):
         multi = cls()
-        if isinstance(sortedby, string_type):
+        if isinstance(sortedby, str):
             multi._add(sortedby)
         elif isinstance(sortedby, (list, tuple)) or hasattr(sortedby, "__iter__"):
             for item in sortedby:
@@ -795,7 +793,7 @@ class MultiFacet(FacetType):
     def _add(self, item):
         if isinstance(item, FacetType):
             self.add_facet(item)
-        elif isinstance(item, string_type):
+        elif isinstance(item, str):
             self.add_field(item)
         else:
             raise Exception(f"Don't know what to do with facet {item!r}")
@@ -851,7 +849,7 @@ class MultiFacet(FacetType):
         def key_to_name(self, key):
             return tuple(
                 catter.key_to_name(keypart)
-                for catter, keypart in izip(self.catters, key)
+                for catter, keypart in zip(self.catters, key)
             )
 
 
@@ -882,7 +880,7 @@ class Facets:
         facets = cls()
         if isinstance(groupedby, (cls, dict)):
             facets.add_facets(groupedby)
-        elif isinstance(groupedby, string_type):
+        elif isinstance(groupedby, str):
             facets.add_field(groupedby)
         elif isinstance(groupedby, FacetType):
             facets.add_facet(groupedby.default_name(), groupedby)
@@ -1004,7 +1002,7 @@ class OrderedList(FacetMap):
 
     def as_dict(self):
         d = {}
-        for key, items in iteritems(self.dict):
+        for key, items in self.dict.items():
             d[key] = [docnum for _, docnum in sorted(items)]
         return d
 

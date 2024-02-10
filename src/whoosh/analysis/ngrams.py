@@ -28,7 +28,6 @@
 from whoosh.analysis.acore import Token
 from whoosh.analysis.filters import Filter, LowercaseFilter
 from whoosh.analysis.tokenizers import RegexTokenizer, Tokenizer
-from whoosh.compat import text_type
 
 # Tokenizer
 
@@ -79,7 +78,7 @@ class NgramTokenizer(Tokenizer):
         mode="",
         **kwargs,
     ):
-        assert isinstance(value, text_type), f"{value!r} is not unicode"
+        assert isinstance(value, str), f"{value!r} is not unicode"
 
         inlen = len(value)
         t = Token(positions, chars, removestops=removestops, mode=mode)

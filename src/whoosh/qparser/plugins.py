@@ -28,7 +28,6 @@
 import copy
 
 from whoosh import query
-from whoosh.compat import iteritems, u
 from whoosh.qparser import syntax
 from whoosh.qparser.common import attach
 from whoosh.qparser.taggers import FnTagger, RegexTagger
@@ -78,9 +77,7 @@ class TaggingPlugin(RegexTagger):
         return ()
 
     def create(self, parser, match):
-        # Groupdict keys can be unicode sometimes apparently? Convert them to
-        # str for use as keyword arguments. This should be Py3-safe.
-        kwargs = {str(k): v for k, v in iteritems(match.groupdict())}
+        kwargs = {str(k): v for k, v in match.groupdict().items()}
         return self.nodetype(**kwargs)
 
 
@@ -147,7 +144,7 @@ class WildcardPlugin(TaggingPlugin):
     # \u055E = Armenian question mark
     # \u061F = Arabic question mark
     # \u1367 = Ethiopic question mark
-    qmarks = u("?\u055E\u061F\u1367")
+    qmarks = "?\u055E\u061F\u1367"
     expr = f"(?P<text>[*{qmarks}])"
 
     def filters(self, parser):
@@ -629,8 +626,7 @@ class FunctionPlugin(TaggingPlugin):
         for part in parts:
             if "=" in part:
                 name, value = part.split("=", 1)
-                # Wrap with str() because Python 2.5 can't handle unicode kws
-                name = str(name.strip())
+                name = name.strip()
             else:
                 name = None
                 value = part
@@ -1223,7 +1219,7 @@ class FieldAliasPlugin(Plugin):
     def __init__(self, fieldmap):
         self.fieldmap = fieldmap
         self.reverse = {}
-        for key, values in iteritems(fieldmap):
+        for key, values in fieldmap.items():
             for value in values:
                 self.reverse[value] = key
 
@@ -1282,7 +1278,7 @@ class CopyFieldPlugin(Plugin):
         self.group = group
         if mirror:
             # Add in reversed mappings
-            map.update({v: k for k, v in iteritems(map)})
+            map.update({v: k for k, v in map.items()})
 
     def filters(self, parser):
         # Run after the fieldname filter (100) but before multifield (110)

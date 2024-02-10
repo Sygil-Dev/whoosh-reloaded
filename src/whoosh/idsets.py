@@ -5,8 +5,8 @@ An implementation of an object that acts like a collection of on/off bits.
 import operator
 from array import array
 from bisect import bisect_left, bisect_right
+from itertools import zip_longest
 
-from whoosh.compat import izip, izip_longest, next
 from whoosh.util.numeric import bytes_for_bits
 
 # Number of '1' bits in each byte (0-255)
@@ -284,7 +284,7 @@ class DocIdSet:
     """
 
     def __eq__(self, other):
-        for a, b in izip(self, other):
+        for a, b in zip(self, other):
             if a != b:
                 return False
         return True
@@ -596,7 +596,7 @@ class BitSet(BaseBitSet):
     def _logic(self, obj, op, other):
         objbits = obj.bits
         for i, (byte1, byte2) in enumerate(
-            izip_longest(objbits, other.bits, fillvalue=0)
+            zip_longest(objbits, other.bits, fillvalue=0)
         ):
             value = op(byte1, byte2) & 0xFF
             if i >= len(objbits):
@@ -942,7 +942,7 @@ class MultiIdSet(DocIdSet):
         return sum(len(idset) for idset in self.idsets)
 
     def __iter__(self):
-        for idset, offset in izip(self.idsets, self.offsets):
+        for idset, offset in zip(self.idsets, self.offsets):
             for docnum in idset:
                 yield docnum + offset
 

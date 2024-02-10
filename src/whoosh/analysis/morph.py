@@ -26,7 +26,6 @@
 # policies, either expressed or implied, of Matt Chaput.
 
 from whoosh.analysis.filters import Filter
-from whoosh.compat import integer_types
 from whoosh.lang.dmetaphone import double_metaphone
 from whoosh.lang.porter import stem
 from whoosh.util.cache import lfu_cache, unbound_cache
@@ -120,7 +119,7 @@ class StemFilter(Filter):
         else:
             stemfn = self.stemfn
 
-        if isinstance(self.cachesize, integer_types) and self.cachesize != 0:
+        if isinstance(self.cachesize, int) and self.cachesize != 0:
             if self.cachesize < 0:
                 self._stem = unbound_cache(stemfn)
             elif self.cachesize > 1:

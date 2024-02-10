@@ -4,7 +4,6 @@ import time
 
 import pytest
 from whoosh import fields, formats, reading
-from whoosh.compat import b, u
 from whoosh.filedb.filestore import RamStorage
 from whoosh.reading import SegmentReader
 from whoosh.util.testing import TempIndex
@@ -22,11 +21,11 @@ def _create_index():
 def _one_segment_index():
     ix = _create_index()
     w = ix.writer()
-    w.add_document(f1=u("A B C"), f2=u("1 2 3"), f3=u("X Y Z"))
-    w.add_document(f1=u("D E F"), f2=u("4 5 6"), f3=u("Q R S"))
-    w.add_document(f1=u("A E C"), f2=u("1 4 6"), f3=u("X Q S"))
-    w.add_document(f1=u("A A A"), f2=u("2 3 5"), f3=u("Y R Z"))
-    w.add_document(f1=u("A B"), f2=u("1 2"), f3=u("X Y"))
+    w.add_document(f1="A B C", f2="1 2 3", f3="X Y Z")
+    w.add_document(f1="D E F", f2="4 5 6", f3="Q R S")
+    w.add_document(f1="A E C", f2="1 4 6", f3="X Q S")
+    w.add_document(f1="A A A", f2="2 3 5", f3="Y R Z")
+    w.add_document(f1="A B", f2="1 2", f3="X Y")
     w.commit()
 
     return ix
@@ -35,17 +34,17 @@ def _one_segment_index():
 def _multi_segment_index():
     ix = _create_index()
     w = ix.writer()
-    w.add_document(f1=u("A B C"), f2=u("1 2 3"), f3=u("X Y Z"))
-    w.add_document(f1=u("D E F"), f2=u("4 5 6"), f3=u("Q R S"))
+    w.add_document(f1="A B C", f2="1 2 3", f3="X Y Z")
+    w.add_document(f1="D E F", f2="4 5 6", f3="Q R S")
     w.commit()
 
     w = ix.writer()
-    w.add_document(f1=u("A E C"), f2=u("1 4 6"), f3=u("X Q S"))
-    w.add_document(f1=u("A A A"), f2=u("2 3 5"), f3=u("Y R Z"))
+    w.add_document(f1="A E C", f2="1 4 6", f3="X Q S")
+    w.add_document(f1="A A A", f2="2 3 5", f3="Y R Z")
     w.commit(merge=False)
 
     w = ix.writer()
-    w.add_document(f1=u("A B"), f2=u("1 2"), f3=u("X Y"))
+    w.add_document(f1="A B", f2="1 2", f3="X Y")
     w.commit(merge=False)
 
     return ix
@@ -61,24 +60,24 @@ def _fstats(r):
 
 def test_readers():
     target = [
-        ("f1", b("A"), 4, 6),
-        ("f1", b("B"), 2, 2),
-        ("f1", b("C"), 2, 2),
-        ("f1", b("D"), 1, 1),
-        ("f1", b("E"), 2, 2),
-        ("f1", b("F"), 1, 1),
-        ("f2", b("1"), 3, 3),
-        ("f2", b("2"), 3, 3),
-        ("f2", b("3"), 2, 2),
-        ("f2", b("4"), 2, 2),
-        ("f2", b("5"), 2, 2),
-        ("f2", b("6"), 2, 2),
-        ("f3", b("Q"), 2, 2),
-        ("f3", b("R"), 2, 2),
-        ("f3", b("S"), 2, 2),
-        ("f3", b("X"), 3, 3),
-        ("f3", b("Y"), 3, 3),
-        ("f3", b("Z"), 2, 2),
+        ("f1", b"A", 4, 6),
+        ("f1", b"B", 2, 2),
+        ("f1", b"C", 2, 2),
+        ("f1", b"D", 1, 1),
+        ("f1", b"E", 2, 2),
+        ("f1", b"F", 1, 1),
+        ("f2", b"1", 3, 3),
+        ("f2", b"2", 3, 3),
+        ("f2", b"3", 2, 2),
+        ("f2", b"4", 2, 2),
+        ("f2", b"5", 2, 2),
+        ("f2", b"6", 2, 2),
+        ("f3", b"Q", 2, 2),
+        ("f3", b"R", 2, 2),
+        ("f3", b"S", 2, 2),
+        ("f3", b"X", 3, 3),
+        ("f3", b"Y", 3, 3),
+        ("f3", b"Z", 2, 2),
     ]
     target = sorted(target)
 
@@ -109,11 +108,11 @@ def test_term_inspection():
     with TempIndex(schema) as ix:
         with ix.writer() as w:
             w.add_document(
-                title=u("My document"),
-                content=u("AA AA BB BB CC AA AA AA BB BB CC DD EE EE"),
+                title="My document",
+                content="AA AA BB BB CC AA AA AA BB BB CC DD EE EE",
             )
             w.add_document(
-                title=u("My other document"), content=u("AA AB BB CC EE EE AX AX DD")
+                title="My other document", content="AA AB BB CC EE EE AX AX DD"
             )
 
         with ix.reader() as r:
@@ -121,52 +120,52 @@ def test_term_inspection():
             assert cterms == "aa ab ax bb cc dd ee"
 
             a_exp = list(r.expand_prefix("content", "a"))
-            assert a_exp == [b("aa"), b("ab"), b("ax")]
+            assert a_exp == [b"aa", b"ab", b"ax"]
 
             assert set(r.all_terms()) == {
-                ("content", b("aa")),
-                ("content", b("ab")),
-                ("content", b("ax")),
-                ("content", b("bb")),
-                ("content", b("cc")),
-                ("content", b("dd")),
-                ("content", b("ee")),
-                ("title", b("document")),
-                ("title", b("my")),
-                ("title", b("other")),
+                ("content", b"aa"),
+                ("content", b"ab"),
+                ("content", b"ax"),
+                ("content", b"bb"),
+                ("content", b"cc"),
+                ("content", b"dd"),
+                ("content", b"ee"),
+                ("title", b"document"),
+                ("title", b"my"),
+                ("title", b"other"),
             }
 
             # (text, doc_freq, index_freq)
             cstats = _fstats(r.iter_field("content"))
             assert cstats == [
-                (b("aa"), 2, 6),
-                (b("ab"), 1, 1),
-                (b("ax"), 1, 2),
-                (b("bb"), 2, 5),
-                (b("cc"), 2, 3),
-                (b("dd"), 2, 2),
-                (b("ee"), 2, 4),
+                (b"aa", 2, 6),
+                (b"ab", 1, 1),
+                (b"ax", 1, 2),
+                (b"bb", 2, 5),
+                (b"cc", 2, 3),
+                (b"dd", 2, 2),
+                (b"ee", 2, 4),
             ]
 
             prestats = _fstats(r.iter_field("content", prefix="c"))
-            assert prestats == [(b("cc"), 2, 3), (b("dd"), 2, 2), (b("ee"), 2, 4)]
+            assert prestats == [(b"cc", 2, 3), (b"dd", 2, 2), (b"ee", 2, 4)]
 
             assert list(r.most_frequent_terms("content")) == [
-                (6, b("aa")),
-                (5, b("bb")),
-                (4, b("ee")),
-                (3, b("cc")),
-                (2, b("dd")),
+                (6, b"aa"),
+                (5, b"bb"),
+                (4, b"ee"),
+                (3, b"cc"),
+                (2, b"dd"),
             ]
             assert list(r.most_frequent_terms("content", prefix="a")) == [
-                (6, b("aa")),
-                (2, b("ax")),
-                (1, b("ab")),
+                (6, b"aa"),
+                (2, b"ax"),
+                (1, b"ab"),
             ]
             assert list(r.most_distinctive_terms("content", 3)) == [
-                (1.3862943611198906, b("ax")),
-                (0.6931471805599453, b("ab")),
-                (0.0, b("ee")),
+                (1.3862943611198906, b"ax"),
+                (0.6931471805599453, b"ab"),
+                (0.0, b"ee"),
             ]
 
 
@@ -179,21 +178,19 @@ def test_vector_postings():
     ix = st.create_index(s)
 
     writer = ix.writer()
-    writer.add_document(
-        id=u("1"), content=u("the quick brown fox jumped over the " + "lazy dogs")
-    )
+    writer.add_document(id="1", content="the quick brown fox jumped over the lazy dogs")
     writer.commit()
     r = ix.reader()
 
     terms = list(r.vector_as("weight", 0, "content"))
     assert terms == [
-        (u("brown"), 1.0),
-        (u("dogs"), 1.0),
-        (u("fox"), 1.0),
-        (u("jumped"), 1.0),
-        (u("lazy"), 1.0),
-        (u("over"), 1.0),
-        (u("quick"), 1.0),
+        ("brown", 1.0),
+        ("dogs", 1.0),
+        ("fox", 1.0),
+        ("jumped", 1.0),
+        ("lazy", 1.0),
+        ("over", 1.0),
+        ("quick", 1.0),
     ]
 
 
@@ -208,17 +205,17 @@ def test_stored_fields():
     ix = st.create_index(s)
 
     writer = ix.writer()
-    writer.add_document(a=u("1"), b="a", c=u("zulu"), d=u("Alfa"))
-    writer.add_document(a=u("2"), b="b", c=u("yankee"), d=u("Bravo"))
-    writer.add_document(a=u("3"), b="c", c=u("xray"), d=u("Charlie"))
+    writer.add_document(a="1", b="a", c="zulu", d="Alfa")
+    writer.add_document(a="2", b="b", c="yankee", d="Bravo")
+    writer.add_document(a="3", b="c", c="xray", d="Charlie")
     writer.commit()
 
     with ix.searcher() as sr:
-        assert sr.stored_fields(0) == {"a": u("1"), "b": "a", "d": u("Alfa")}
-        assert sr.stored_fields(2) == {"a": u("3"), "b": "c", "d": u("Charlie")}
+        assert sr.stored_fields(0) == {"a": "1", "b": "a", "d": "Alfa"}
+        assert sr.stored_fields(2) == {"a": "3", "b": "c", "d": "Charlie"}
 
-        assert sr.document(a=u("1")) == {"a": u("1"), "b": "a", "d": u("Alfa")}
-        assert sr.document(a=u("2")) == {"a": u("2"), "b": "b", "d": u("Bravo")}
+        assert sr.document(a="1") == {"a": "1", "b": "a", "d": "Alfa"}
+        assert sr.document(a="2") == {"a": "2", "b": "b", "d": "Bravo"}
 
 
 def test_stored_fields2():
@@ -236,22 +233,22 @@ def test_stored_fields2():
 
     writer = ix.writer()
     writer.add_document(
-        content=u("Content of this document."),
-        title=u("This is the title"),
-        summary=u("This is the summary"),
-        path=u("/main"),
+        content="Content of this document.",
+        title="This is the title",
+        summary="This is the summary",
+        path="/main",
     )
     writer.add_document(
-        content=u("Second document."),
-        title=u("Second title"),
-        summary=u("Summary numero due"),
-        path=u("/second"),
+        content="Second document.",
+        title="Second title",
+        summary="Summary numero due",
+        path="/second",
     )
     writer.add_document(
-        content=u("Third document."),
-        title=u("Title 3"),
-        summary=u("Summary treo"),
-        path=u("/san"),
+        content="Third document.",
+        title="Title 3",
+        summary="Summary treo",
+        path="/san",
     )
     writer.commit()
 
@@ -275,10 +272,10 @@ def test_all_stored_fields():
     schema = fields.Schema(a=fields.ID(stored=True), b=fields.STORED)
     ix = RamStorage().create_index(schema)
     with ix.writer() as w:
-        w.add_document(a=u("alfa"), b=u("bravo"))
-        w.add_document(a=u("apple"), b=u("bear"))
-        w.add_document(a=u("alpaca"), b=u("beagle"))
-        w.add_document(a=u("aim"), b=u("box"))
+        w.add_document(a="alfa", b="bravo")
+        w.add_document(a="apple", b="bear")
+        w.add_document(a="alpaca", b="beagle")
+        w.add_document(a="aim", b="box")
 
     w = ix.writer()
     w.delete_by_term("a", "apple")
@@ -297,37 +294,37 @@ def test_first_id():
     ix = RamStorage().create_index(schema)
 
     w = ix.writer()
-    w.add_document(path=u("/a"))
-    w.add_document(path=u("/b"))
-    w.add_document(path=u("/c"))
+    w.add_document(path="/a")
+    w.add_document(path="/b")
+    w.add_document(path="/c")
     w.commit()
 
     r = ix.reader()
-    docid = r.first_id("path", u("/b"))
+    docid = r.first_id("path", "/b")
     assert r.stored_fields(docid) == {"path": "/b"}
 
     ix = RamStorage().create_index(schema)
     w = ix.writer()
-    w.add_document(path=u("/a"))
-    w.add_document(path=u("/b"))
-    w.add_document(path=u("/c"))
+    w.add_document(path="/a")
+    w.add_document(path="/b")
+    w.add_document(path="/c")
     w.commit(merge=False)
 
     w = ix.writer()
-    w.add_document(path=u("/d"))
-    w.add_document(path=u("/e"))
-    w.add_document(path=u("/f"))
+    w.add_document(path="/d")
+    w.add_document(path="/e")
+    w.add_document(path="/f")
     w.commit(merge=False)
 
     w = ix.writer()
-    w.add_document(path=u("/g"))
-    w.add_document(path=u("/h"))
-    w.add_document(path=u("/i"))
+    w.add_document(path="/g")
+    w.add_document(path="/h")
+    w.add_document(path="/i")
     w.commit(merge=False)
 
     r = ix.reader()
     assert r.__class__ == reading.MultiReader
-    docid = r.first_id("path", u("/e"))
+    docid = r.first_id("path", "/e")
     assert r.stored_fields(docid) == {"path": "/e"}
 
     with pytest.raises(NotImplementedError):
@@ -346,7 +343,7 @@ class RecoverReader(threading.Thread):
 
 
 class RecoverWriter(threading.Thread):
-    domain = u("alfa bravo charlie deleta echo foxtrot golf hotel india")
+    domain = "alfa bravo charlie deleta echo foxtrot golf hotel india"
     domain = domain.split()
 
     def __init__(self, ix):
@@ -375,9 +372,9 @@ def test_delete_recovery():
 def test_nonexclusive_read():
     schema = fields.Schema(text=fields.TEXT)
     with TempIndex(schema, "readlock") as ix:
-        for num in u("one two three four five").split():
+        for num in "one two three four five".split():
             w = ix.writer()
-            w.add_document(text=u("Test document %s") % num)
+            w.add_document(text=f"Test document {num}")
             w.commit(merge=False)
 
         def fn():
@@ -500,54 +497,54 @@ def _check_inspection_results(ix):
         assert cterms == "aa aé aú bb cc dd ee"
 
         a_exp = list(r.expand_prefix("content", "a"))
-        assert a_exp == [b("aa"), AE, AU]
+        assert a_exp == [b"aa", AE, AU]
 
         tset = set(r.all_terms())
         assert tset == {
-            ("content", b("aa")),
+            ("content", b"aa"),
             ("content", AE),
             ("content", AU),
-            ("content", b("bb")),
-            ("content", b("cc")),
-            ("content", b("dd")),
-            ("content", b("ee")),
-            ("title", b("document")),
-            ("title", b("my")),
-            ("title", b("other")),
+            ("content", b"bb"),
+            ("content", b"cc"),
+            ("content", b"dd"),
+            ("content", b"ee"),
+            ("title", b"document"),
+            ("title", b"my"),
+            ("title", b"other"),
         }
 
         # (text, doc_freq, index_freq)
         assert _fstats(r.iter_field("content")) == [
-            (b("aa"), 2, 6),
+            (b"aa", 2, 6),
             (AE, 1, 1),
             (AU, 1, 2),
-            (b("bb"), 2, 5),
-            (b("cc"), 2, 3),
-            (b("dd"), 2, 2),
-            (b("ee"), 2, 4),
+            (b"bb", 2, 5),
+            (b"cc", 2, 3),
+            (b"dd", 2, 2),
+            (b"ee", 2, 4),
         ]
         assert _fstats(r.iter_field("content", prefix="c")) == [
-            (b("cc"), 2, 3),
-            (b("dd"), 2, 2),
-            (b("ee"), 2, 4),
+            (b"cc", 2, 3),
+            (b"dd", 2, 2),
+            (b"ee", 2, 4),
         ]
 
         assert list(r.most_frequent_terms("content")) == [
-            (6, b("aa")),
-            (5, b("bb")),
-            (4, b("ee")),
-            (3, b("cc")),
-            (2, b("dd")),
+            (6, b"aa"),
+            (5, b"bb"),
+            (4, b"ee"),
+            (3, b"cc"),
+            (2, b"dd"),
         ]
         assert list(r.most_frequent_terms("content", prefix="a")) == [
-            (6, b("aa")),
+            (6, b"aa"),
             (2, AU),
             (1, AE),
         ]
         assert list(r.most_distinctive_terms("content", 3)) == [
             (1.3862943611198906, AU),
             (0.6931471805599453, AE),
-            (0.0, b("ee")),
+            (0.0, b"ee"),
         ]
 
 

@@ -1,5 +1,3 @@
-from whoosh.compat import u
-
 from .bases import _StandardStemmer
 
 
@@ -18,7 +16,7 @@ class DutchStemmer(_StandardStemmer):
            http://snowball.tartarus.org/algorithms/dutch/stemmer.html
     """
 
-    __vowels = u("aeiouy\xE8")
+    __vowels = "aeiouy\xE8"
     __step1_suffixes = ("heden", "ene", "en", "se", "s")
     __step3b_suffixes = ("baar", "lijk", "bar", "end", "ing", "ig")
 
@@ -38,16 +36,16 @@ class DutchStemmer(_StandardStemmer):
 
         # Vowel accents are removed.
         word = (
-            word.replace(u("\xE4"), "a")
-            .replace(u("\xE1"), "a")
-            .replace(u("\xEB"), "e")
-            .replace(u("\xE9"), "e")
-            .replace(u("\xED"), "i")
-            .replace(u("\xEF"), "i")
-            .replace(u("\xF6"), "o")
-            .replace(u("\xF3"), "o")
-            .replace(u("\xFC"), "u")
-            .replace(u("\xFA"), "u")
+            word.replace("\xE4", "a")
+            .replace("\xE1", "a")
+            .replace("\xEB", "e")
+            .replace("\xE9", "e")
+            .replace("\xED", "i")
+            .replace("\xEF", "i")
+            .replace("\xF6", "o")
+            .replace("\xF3", "o")
+            .replace("\xFC", "u")
+            .replace("\xFA", "u")
         )
 
         # An initial 'y', a 'y' after a vowel,

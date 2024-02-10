@@ -32,7 +32,6 @@ import re
 
 from whoosh import matching
 from whoosh.analysis import Token
-from whoosh.compat import bytes_type, text_type, u
 from whoosh.lang.morph_en import variations
 from whoosh.query import qcore
 
@@ -43,7 +42,7 @@ class Term(qcore.Query):
     >>> Term("content", u"render")
     """
 
-    __inittypes__ = {"fieldname": str, "text": text_type, "boost": float}
+    __inittypes__ = {"fieldname": str, "text": str, "boost": float}
 
     def __init__(self, fieldname, text, boost=1.0, minquality=None):
         self.fieldname = fieldname
@@ -67,20 +66,18 @@ class Term(qcore.Query):
         r += ")"
         return r
 
-    def __unicode__(self):
+    def __str__(self):
         text = self.text
-        if isinstance(text, bytes_type):
+        if isinstance(text, bytes):
             try:
                 text = text.decode("ascii")
             except UnicodeDecodeError:
                 text = repr(text)
 
-        t = u("%s:%s") % (self.fieldname, text)
+        t = f"{self.fieldname}:{text}"
         if self.boost != 1:
-            t += u("^") + text_type(self.boost)
+            t += "^" + str(self.boost)
         return t
-
-    __str__ = __unicode__
 
     def __hash__(self):
         return hash(self.fieldname) ^ hash(self.text) ^ hash(self.boost)
@@ -247,7 +244,7 @@ class MultiTerm(qcore.Query):
 class PatternQuery(MultiTerm):
     """An intermediate base class for common methods of Prefix and Wildcard."""
 
-    __inittypes__ = {"fieldname": str, "text": text_type, "boost": float}
+    __inittypes__ = {"fieldname": str, "text": str, "boost": float}
 
     def __init__(self, fieldname, text, boost=1.0, constantscore=True):
         self.fieldname = fieldname
@@ -317,10 +314,8 @@ class Prefix(PatternQuery):
     >>> Prefix("content", u"comp")
     """
 
-    def __unicode__(self):
+    def __str__(self):
         return f"{self.fieldname}:{self.text}*"
-
-    __str__ = __unicode__
 
     def _btexts(self, ixreader):
         return ixreader.expand_prefix(self.fieldname, self.text)
@@ -344,10 +339,8 @@ class Wildcard(PatternQuery):
 
     SPECIAL_CHARS = frozenset("*?[")
 
-    def __unicode__(self):
+    def __str__(self):
         return f"{self.fieldname}:{self.text}"
-
-    __str__ = __unicode__
 
     def _get_pattern(self):
         return fnmatch.translate(self.text)
@@ -390,10 +383,8 @@ class Regex(PatternQuery):
 
     SPECIAL_CHARS = frozenset("{}()[].?*+^$\\")
 
-    def __unicode__(self):
+    def __str__(self):
         return f'{self.fieldname}:r"{self.text}"'
-
-    __str__ = __unicode__
 
     def _get_pattern(self):
         return self.text
@@ -447,7 +438,7 @@ class FuzzyTerm(ExpandingTerm):
 
     __inittypes__ = {
         "fieldname": str,
-        "text": text_type,
+        "text": str,
         "boost": float,
         "maxdist": float,
         "prefixlength": int,
@@ -498,15 +489,13 @@ class FuzzyTerm(ExpandingTerm):
             self.prefixlength,
         )
 
-    def __unicode__(self):
-        r = u("%s:%s") % (self.fieldname, self.text) + u("~")
+    def __str__(self):
+        r = f"{self.fieldname}:{self.text}" + "~"
         if self.maxdist > 1:
-            r += u("%d") % self.maxdist
+            r += "%d" % self.maxdist
         if self.boost != 1.0:
-            r += u("^%f") % self.boost
+            r += f"^{self.boost:f}"
         return r
-
-    __str__ = __unicode__
 
     def __hash__(self):
         return (
@@ -571,10 +560,8 @@ class Variations(ExpandingTerm):
             if (fieldname, btext) in ixreader:
                 yield btext
 
-    def __unicode__(self):
-        return u("%s:<%s>") % (self.fieldname, self.text)
-
-    __str__ = __unicode__
+    def __str__(self):
+        return f"{self.fieldname}:<{self.text}>"
 
     def replace(self, fieldname, oldtext, newtext):
         q = copy.copy(self)

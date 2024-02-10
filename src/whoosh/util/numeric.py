@@ -31,7 +31,6 @@ from array import array
 from bisect import bisect_left
 from struct import pack, unpack
 
-from whoosh.compat import b, long_type
 from whoosh.system import (
     pack_byte,
     pack_double,
@@ -51,7 +50,7 @@ from whoosh.system import (
     unpack_ushort,
 )
 
-NaN = struct.unpack("<d", b("\xff\xff\xff\xff\xff\xff\xff\xff"))[0]
+NaN = struct.unpack("<d", b"\xff\xff\xff\xff\xff\xff\xff\xff")[0]
 
 typecode_max = {
     "b": 127,
@@ -96,6 +95,10 @@ typecode_unpack = {
 
 
 # Functions related to binary representations
+
+
+def b(s):
+    return s.encode("latin-1")
 
 
 def bits_required(maxnum):
@@ -145,7 +148,7 @@ _dpack, _dunpack = _dstruct.pack, _dstruct.unpack
 
 
 def to_sortable(numtype, intsize, signed, x):
-    if numtype is int or numtype is long_type:
+    if numtype is int:
         if signed:
             x += 1 << intsize - 1
         return x
@@ -154,7 +157,7 @@ def to_sortable(numtype, intsize, signed, x):
 
 
 def from_sortable(numtype, intsize, signed, x):
-    if numtype is int or numtype is long_type:
+    if numtype is int:
         if signed:
             x -= 1 << intsize - 1
         return x
