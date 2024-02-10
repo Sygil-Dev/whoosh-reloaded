@@ -105,8 +105,8 @@
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
 <span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">bisect_left</span><span class="p">,</span> <span class="n">bisect_right</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">zip_longest</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">izip</span><span class="p">,</span> <span class="n">izip_longest</span><span class="p">,</span> <span class="nb">next</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.numeric</span> <span class="kn">import</span> <span class="n">bytes_for_bits</span>
 
 <span class="c1"># Number of &#39;1&#39; bits in each byte (0-255)</span>
@@ -384,7 +384,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">b</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -696,7 +696,7 @@
     <span class="k">def</span> <span class="nf">_logic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="n">objbits</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">bits</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">byte1</span><span class="p">,</span> <span class="n">byte2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
-            <span class="n">izip_longest</span><span class="p">(</span><span class="n">objbits</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span> <span class="n">fillvalue</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">zip_longest</span><span class="p">(</span><span class="n">objbits</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span> <span class="n">fillvalue</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">byte1</span><span class="p">,</span> <span class="n">byte2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">objbits</span><span class="p">):</span>
@@ -1042,7 +1042,7 @@
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idset</span><span class="p">)</span> <span class="k">for</span> <span class="n">idset</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">idsets</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">idset</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idsets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">idset</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idsets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">docnum</span> <span class="ow">in</span> <span class="n">idset</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">docnum</span> <span class="o">+</span> <span class="n">offset</span>
 

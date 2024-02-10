@@ -149,11 +149,7 @@
 
 
 <span class="k">def</span> <span class="nf">random_bytes</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">28</span><span class="p">):</span>
-    <span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span><span class="o">.</span><span class="n">tostring</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="make_binary_tree"><a class="viewcode-back" href="../../api/util.html#whoosh.util.make_binary_tree">[docs]</a><span class="k">def</span> <span class="nf">make_binary_tree</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

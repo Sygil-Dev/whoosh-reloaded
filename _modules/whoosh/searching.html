@@ -134,7 +134,6 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
 
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">classify</span><span class="p">,</span> <span class="n">highlight</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">scoring</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">iterkeys</span><span class="p">,</span> <span class="n">itervalues</span>
 <span class="kn">from</span> <span class="nn">whoosh.idsets</span> <span class="kn">import</span> <span class="n">BitSet</span><span class="p">,</span> <span class="n">DocIdSet</span>
 <span class="kn">from</span> <span class="nn">whoosh.reading</span> <span class="kn">import</span> <span class="n">TermNotFound</span>
 
@@ -494,13 +493,13 @@
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_kw_to_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kw</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kw</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
             <span class="n">kw</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_query_for_kw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kw</span><span class="p">):</span>
         <span class="n">subqueries</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kw</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">subqueries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">Term</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">subqueries</span><span class="p">:</span>
             <span class="n">q</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="n">subqueries</span><span class="p">)</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
@@ -1045,7 +1044,7 @@
 
         <span class="c1"># Remap correctors dict according to aliases</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">corr</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">correctors</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">corr</span> <span class="ow">in</span> <span class="n">correctors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">fieldname</span> <span class="o">=</span> <span class="n">aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>
             <span class="n">d</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span> <span class="o">=</span> <span class="n">corr</span>
         <span class="n">correctors</span> <span class="o">=</span> <span class="n">d</span>
@@ -1672,7 +1671,7 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">():</span>
@@ -1698,13 +1697,13 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">itervalues</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">itervalues</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You cannot modify a search result&quot;</span><span class="p">)</span></div>

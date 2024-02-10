@@ -126,7 +126,6 @@
 <span class="c1"># policies, either expressed or implied, of Matt Chaput.</span>
 
 <span class="kn">from</span> <span class="nn">whoosh.analysis.filters</span> <span class="kn">import</span> <span class="n">Filter</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">integer_types</span>
 <span class="kn">from</span> <span class="nn">whoosh.lang.dmetaphone</span> <span class="kn">import</span> <span class="n">double_metaphone</span>
 <span class="kn">from</span> <span class="nn">whoosh.lang.porter</span> <span class="kn">import</span> <span class="n">stem</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.cache</span> <span class="kn">import</span> <span class="n">lfu_cache</span><span class="p">,</span> <span class="n">unbound_cache</span>
@@ -220,7 +219,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">stemfn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stemfn</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cachesize</span><span class="p">,</span> <span class="n">integer_types</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">cachesize</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cachesize</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">cachesize</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cachesize</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_stem</span> <span class="o">=</span> <span class="n">unbound_cache</span><span class="p">(</span><span class="n">stemfn</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">cachesize</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>

@@ -128,7 +128,6 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">query</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">iteritems</span><span class="p">,</span> <span class="n">u</span>
 <span class="kn">from</span> <span class="nn">whoosh.qparser</span> <span class="kn">import</span> <span class="n">syntax</span>
 <span class="kn">from</span> <span class="nn">whoosh.qparser.common</span> <span class="kn">import</span> <span class="n">attach</span>
 <span class="kn">from</span> <span class="nn">whoosh.qparser.taggers</span> <span class="kn">import</span> <span class="n">FnTagger</span><span class="p">,</span> <span class="n">RegexTagger</span>
@@ -178,9 +177,7 @@
         <span class="k">return</span> <span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="c1"># Groupdict keys can be unicode sometimes apparently? Convert them to</span>
-        <span class="c1"># str for use as keyword arguments. This should be Py3-safe.</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">())}</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodetype</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
@@ -247,7 +244,7 @@
     <span class="c1"># \u055E = Armenian question mark</span>
     <span class="c1"># \u061F = Arabic question mark</span>
     <span class="c1"># \u1367 = Ethiopic question mark</span>
-    <span class="n">qmarks</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;?</span><span class="se">\u055E\u061F\u1367</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">qmarks</span> <span class="o">=</span> <span class="s2">&quot;?</span><span class="se">\u055E\u061F\u1367</span><span class="s2">&quot;</span>
     <span class="n">expr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(?P&lt;text&gt;[*</span><span class="si">{</span><span class="n">qmarks</span><span class="si">}</span><span class="s2">])&quot;</span>
 
     <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
@@ -729,8 +726,7 @@
         <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">part</span><span class="p">:</span>
                 <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="c1"># Wrap with str() because Python 2.5 can&#39;t handle unicode kws</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">part</span>
@@ -1323,7 +1319,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldmap</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fieldmap</span> <span class="o">=</span> <span class="n">fieldmap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">fieldmap</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">fieldmap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">reverse</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
 
@@ -1382,7 +1378,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">group</span>
         <span class="k">if</span> <span class="n">mirror</span><span class="p">:</span>
             <span class="c1"># Add in reversed mappings</span>
-            <span class="nb">map</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="nb">map</span><span class="p">)})</span>
+            <span class="nb">map</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">map</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
 
     <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
         <span class="c1"># Run after the fieldname filter (100) but before multifield (110)</span>

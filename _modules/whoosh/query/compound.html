@@ -127,7 +127,6 @@
 
 
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">matching</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">text_type</span><span class="p">,</span> <span class="n">u</span>
 <span class="kn">from</span> <span class="nn">whoosh.query</span> <span class="kn">import</span> <span class="n">qcore</span>
 <span class="kn">from</span> <span class="nn">whoosh.util</span> <span class="kn">import</span> <span class="n">make_binary_tree</span><span class="p">,</span> <span class="n">make_weighted_tree</span>
 
@@ -151,13 +150,11 @@
         <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;)&quot;</span>
         <span class="k">return</span> <span class="n">r</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">JOINT</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">text_type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">])</span>
-        <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">JOINT</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">])</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;)&quot;</span>
         <span class="k">return</span> <span class="n">r</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -348,7 +345,7 @@
 <span class="sd">    &gt;&gt;&gt; Term(&quot;content&quot;, u&quot;render&quot;) &amp; Term(&quot;content&quot;, u&quot;shade&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># This is used by the superclass&#39;s __unicode__ method.</span>
+    <span class="c1"># This is used by the superclass&#39;s __str__ method.</span>
     <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; AND &quot;</span>
     <span class="n">intersect_merge</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -379,7 +376,7 @@
 <span class="sd">    &gt;&gt;&gt; Term(&quot;content&quot;, u&quot;render&quot;) | Term(&quot;content&quot;, u&quot;shade&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># This is used by the superclass&#39;s __unicode__ method.</span>
+    <span class="c1"># This is used by the superclass&#39;s __str__ method.</span>
     <span class="n">JOINT</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span>
     <span class="n">intersect_merge</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">TOO_MANY_CLAUSES</span> <span class="o">=</span> <span class="mi">1024</span>
@@ -408,15 +405,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span> <span class="o">=</span> <span class="n">minmatch</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">JOINT</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">text_type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">])</span>
-        <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="s2">&quot;(&quot;</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">JOINT</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">])</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;)&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;&gt;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minmatch</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">r</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
 
     <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="n">CompoundQuery</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -557,15 +552,13 @@
         <span class="n">CompoundQuery</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subqueries</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="n">boost</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span> <span class="o">=</span> <span class="n">tiebreak</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;DisMax(&quot;</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">text_type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">))</span>
-        <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="s2">&quot;DisMax(&quot;</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subqueries</span><span class="p">))</span>
+        <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;)&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">text_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;~&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tiebreak</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
 
     <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="n">CompoundQuery</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>

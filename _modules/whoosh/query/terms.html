@@ -132,7 +132,6 @@
 
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">matching</span>
 <span class="kn">from</span> <span class="nn">whoosh.analysis</span> <span class="kn">import</span> <span class="n">Token</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">bytes_type</span><span class="p">,</span> <span class="n">text_type</span><span class="p">,</span> <span class="n">u</span>
 <span class="kn">from</span> <span class="nn">whoosh.lang.morph_en</span> <span class="kn">import</span> <span class="n">variations</span>
 <span class="kn">from</span> <span class="nn">whoosh.query</span> <span class="kn">import</span> <span class="n">qcore</span>
 
@@ -143,7 +142,7 @@
 <span class="sd">    &gt;&gt;&gt; Term(&quot;content&quot;, u&quot;render&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fieldname&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text_type</span><span class="p">,</span> <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}</span>
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fieldname&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">minquality</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
@@ -167,20 +166,18 @@
         <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;)&quot;</span>
         <span class="k">return</span> <span class="n">r</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
                 <span class="n">text</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-        <span class="n">t</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">t</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;^&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">text_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
+            <span class="n">t</span> <span class="o">+=</span> <span class="s2">&quot;^&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">t</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
 
     <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">)</span> <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">^</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="p">)</span>
@@ -347,7 +344,7 @@
 <span class="k">class</span> <span class="nc">PatternQuery</span><span class="p">(</span><span class="n">MultiTerm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An intermediate base class for common methods of Prefix and Wildcard.&quot;&quot;&quot;</span>
 
-    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fieldname&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text_type</span><span class="p">,</span> <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}</span>
+    <span class="n">__inittypes__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fieldname&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">boost</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">constantscore</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span>
@@ -417,10 +414,8 @@
 <span class="sd">    &gt;&gt;&gt; Prefix(&quot;content&quot;, u&quot;comp&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">*&quot;</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
 
     <span class="k">def</span> <span class="nf">_btexts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ixreader</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ixreader</span><span class="o">.</span><span class="n">expand_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -444,10 +439,8 @@
 
     <span class="n">SPECIAL_CHARS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="s2">&quot;*?[&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
 
     <span class="k">def</span> <span class="nf">_get_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
@@ -490,10 +483,8 @@
 
     <span class="n">SPECIAL_CHARS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">()[].?*+^$</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="si">}</span><span class="s1">:r&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
 
     <span class="k">def</span> <span class="nf">_get_pattern</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
@@ -547,7 +538,7 @@
 
     <span class="n">__inittypes__</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;fieldname&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text_type</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="s2">&quot;boost&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="s2">&quot;maxdist&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="s2">&quot;prefixlength&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -598,15 +589,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">prefixlength</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">+</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;~&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxdist</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">:</span>
-            <span class="n">r</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;^</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">boost</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;^</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">boost</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">r</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
 
     <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -671,10 +660,8 @@
             <span class="k">if</span> <span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">btext</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ixreader</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">btext</span>
 
-    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:&lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-
-    <span class="fm">__str__</span> <span class="o">=</span> <span class="n">__unicode__</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldname</span><span class="si">}</span><span class="s2">:&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
 
     <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">oldtext</span><span class="p">,</span> <span class="n">newtext</span><span class="p">):</span>
         <span class="n">q</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>

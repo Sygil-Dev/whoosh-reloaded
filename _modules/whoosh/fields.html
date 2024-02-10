@@ -138,7 +138,6 @@
 <span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
 
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">analysis</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">formats</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">bytes_type</span><span class="p">,</span> <span class="n">itervalues</span><span class="p">,</span> <span class="n">string_type</span><span class="p">,</span> <span class="n">text_type</span><span class="p">,</span> <span class="n">with_metaclass</span>
 <span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">emptybytes</span><span class="p">,</span> <span class="n">pack_byte</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.numeric</span> <span class="kn">import</span> <span class="n">NaN</span><span class="p">,</span> <span class="n">from_sortable</span><span class="p">,</span> <span class="n">to_sortable</span><span class="p">,</span> <span class="n">typecode_max</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.text</span> <span class="kn">import</span> <span class="n">utf8decode</span><span class="p">,</span> <span class="n">utf8encode</span>
@@ -271,7 +270,7 @@
                 <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> field </span><span class="si">%r</span><span class="s2"> cannot index without a format&quot;</span>
                 <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">text_type</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2"> is not unicode or sequence&quot;</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">,</span> <span class="n">formats</span><span class="o">.</span><span class="n">Format</span><span class="p">)</span>
 
@@ -318,7 +317,7 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">utf8encode</span><span class="p">(</span><span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">value</span></div>
 
@@ -804,7 +803,7 @@
             <span class="k">return</span> <span class="n">x</span>
 
         <span class="n">dc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decimal_places</span>
-        <span class="k">if</span> <span class="n">dc</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">string_type</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">dc</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">)):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">dc</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
@@ -845,7 +844,7 @@
         <span class="c1"># Try to avoid re-encoding; this sucks because on Python 2 we can&#39;t</span>
         <span class="c1"># tell the difference between a string and encoded bytes, so we have</span>
         <span class="c1"># to require the user use unicode when they mean string</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">x</span>
 
         <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">emptybytes</span> <span class="ow">or</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -943,7 +942,7 @@
     <span class="k">def</span> <span class="nf">prepare_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">whoosh.util.times</span> <span class="kn">import</span> <span class="n">floor</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">text_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="c1"># For indexing, support same strings as for query parsing --</span>
             <span class="c1"># convert unicode to datetime object</span>
             <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_datestring</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -951,13 +950,13 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">datetime_to_long</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">x</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">!r}</span><span class="s2"> is not a datetime&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_column_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">!r}</span><span class="s2"> is not a datetime&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1066,18 +1065,18 @@
         <span class="c1"># otherwise call bool() on the query value. This lets you pass objects</span>
         <span class="c1"># as query values and do the right thing.</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">string_type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trues</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trues</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">string_type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">falses</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">falses</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span>
 
     <span class="k">def</span> <span class="nf">to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">x</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trues</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -1085,7 +1084,7 @@
         <span class="k">return</span> <span class="n">bs</span>
 
     <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bit</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bit</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bit</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">bit</span> <span class="o">=</span> <span class="n">bit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trues</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">bit</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">bit</span><span class="p">)</span>
@@ -1546,7 +1545,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
         <span class="c1"># Check if the name matches a dynamic field</span>
-        <span class="k">for</span> <span class="n">expr</span><span class="p">,</span> <span class="n">fieldtype</span> <span class="ow">in</span> <span class="n">itervalues</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dyn_fields</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">expr</span><span class="p">,</span> <span class="n">fieldtype</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dyn_fields</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">fieldtype</span>
 
@@ -1704,7 +1703,7 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">scorable</span><span class="p">]</span></div></div>
 
 
-<div class="viewcode-block" id="SchemaClass"><a class="viewcode-back" href="../../api/fields.html#whoosh.fields.SchemaClass">[docs]</a><span class="k">class</span> <span class="nc">SchemaClass</span><span class="p">(</span><span class="n">with_metaclass</span><span class="p">(</span><span class="n">MetaSchema</span><span class="p">,</span> <span class="n">Schema</span><span class="p">)):</span>
+<div class="viewcode-block" id="SchemaClass"><a class="viewcode-back" href="../../api/fields.html#whoosh.fields.SchemaClass">[docs]</a><span class="k">class</span> <span class="nc">SchemaClass</span><span class="p">(</span><span class="n">Schema</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaSchema</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Allows you to define a schema using declarative syntax, similar to</span>
 <span class="sd">    Django models::</span>

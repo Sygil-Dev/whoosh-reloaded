@@ -131,12 +131,12 @@
 
 
 <span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
 
 <span class="kn">from</span> <span class="nn">whoosh</span> <span class="kn">import</span> <span class="n">__version__</span>
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">pickle</span><span class="p">,</span> <span class="n">string_type</span>
 <span class="kn">from</span> <span class="nn">whoosh.fields</span> <span class="kn">import</span> <span class="n">ensure_schema</span>
 <span class="kn">from</span> <span class="nn">whoosh.legacy</span> <span class="kn">import</span> <span class="n">toc_loaders</span>
 <span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">_FLOAT_SIZE</span><span class="p">,</span> <span class="n">_INT_SIZE</span><span class="p">,</span> <span class="n">_LONG_SIZE</span>
@@ -508,7 +508,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">storage</span><span class="p">,</span> <span class="n">Storage</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">storage</span><span class="si">!r}</span><span class="s2"> is not a Storage object&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indexname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;indexname </span><span class="si">{</span><span class="n">indexname</span><span class="si">!r}</span><span class="s2"> is not a string&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">schema</span><span class="p">:</span>

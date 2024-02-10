@@ -136,7 +136,6 @@
 <span class="kn">from</span> <span class="nn">binascii</span> <span class="kn">import</span> <span class="n">crc32</span>
 <span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">md5</span>  <span class="c1"># type: ignore @UnresolvedImport</span>
 
-<span class="kn">from</span> <span class="nn">whoosh.compat</span> <span class="kn">import</span> <span class="n">b</span><span class="p">,</span> <span class="n">bytes_type</span>
 <span class="kn">from</span> <span class="nn">whoosh.system</span> <span class="kn">import</span> <span class="n">_INT_SIZE</span><span class="p">,</span> <span class="n">emptybytes</span>
 <span class="kn">from</span> <span class="nn">whoosh.util.numlists</span> <span class="kn">import</span> <span class="n">GrowableArray</span>
 
@@ -197,7 +196,7 @@
 <span class="sd">    2 GB in length.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">magic</span><span class="o">=</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;HSH3&quot;</span><span class="p">),</span> <span class="n">hashtype</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">magic</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;HSH3&quot;</span><span class="p">,</span> <span class="n">hashtype</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param dbfile: a :class:`~whoosh.filedb.structfile.StructFile` object</span>
 <span class="sd">            to write to.</span>
@@ -235,8 +234,8 @@
 <span class="sd">        them using :meth:`HashReader.all`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
 
         <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="n">dbfile</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
@@ -324,7 +323,7 @@
 <span class="sd">    :class:`HashWriter`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">magic</span><span class="o">=</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;HSH3&quot;</span><span class="p">),</span> <span class="n">startoffset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbfile</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">magic</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;HSH3&quot;</span><span class="p">,</span> <span class="n">startoffset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param dbfile: a :class:`~whoosh.filedb.structfile.StructFile` object</span>
 <span class="sd">            to read from.</span>
@@ -489,7 +488,7 @@
 <span class="sd">        with the given key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> should be bytes&quot;</span><span class="p">)</span>
         <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
 
@@ -644,7 +643,7 @@
     <span class="k">def</span> <span class="nf">closest_key_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="c1"># Given a key, return the position of that key OR the next highest key</span>
         <span class="c1"># if the given key does not exist</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> should be bytes&quot;</span><span class="p">)</span>
 
         <span class="n">indexbase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexbase</span>
@@ -774,7 +773,7 @@
     <span class="k">def</span> <span class="nf">closest_term_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="c1"># Given a key, return the position of that key OR the next highest key</span>
         <span class="c1"># if the given key does not exist</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">bytes_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Key </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2"> should be bytes&quot;</span><span class="p">)</span>
 
         <span class="n">dbfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbfile</span>
