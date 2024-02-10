@@ -608,7 +608,7 @@ def test_indentical_fields():
 
 
 def test_multivalue():
-    ana = analysis.StemmingAnalyzer()
+    ana = analysis.stemming_analyzer()
     schema = fields.Schema(
         id=fields.STORED,
         date=fields.DATETIME,
@@ -636,7 +636,7 @@ def test_multivalue():
 
 def test_multi_language():
     # Analyzer for English
-    ana_eng = analysis.StemmingAnalyzer()
+    ana_eng = analysis.stemming_analyzer()
 
     # analyzer for Pig Latin
     def stem_piglatin(w):
@@ -644,7 +644,9 @@ def test_multi_language():
             w = w[:-2]
         return w
 
-    ana_pig = analysis.StemmingAnalyzer(stoplist=["nday", "roay"], stemfn=stem_piglatin)
+    ana_pig = analysis.stemming_analyzer(
+        stoplist=["nday", "roay"], stemfn=stem_piglatin
+    )
 
     # Dictionary mapping languages to analyzers
     analyzers = {"eng": ana_eng, "pig": ana_pig}

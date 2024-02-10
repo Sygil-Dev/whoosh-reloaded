@@ -166,12 +166,11 @@ class FieldType:
         """
 
         if not self.format:
-            raise Exception(
-                "%s field %r cannot index without a format"
-                % (self.__class__.__name__, self)
+            raise ValueError(
+                f"{self.__class__.__name__} field {self} cannot index without a format"
             )
         if not isinstance(value, (str, list, tuple)):
-            raise ValueError(f"{value!r} is not unicode or sequence")
+            raise ValueError(f"{value} is not unicode or sequence")
         assert isinstance(self.format, formats.Format)
 
         if "mode" not in kwargs:
@@ -190,7 +189,7 @@ class FieldType:
         """
 
         if not self.analyzer:
-            raise Exception(f"{self.__class__} field has no analyzer")
+            raise ValueError(f"{self.__class__} field has no analyzer")
         return self.analyzer(value, **kwargs)
 
     def process_text(self, qstring, mode="", **kwargs):
@@ -203,7 +202,7 @@ class FieldType:
         """
 
         if not self.format:
-            raise Exception(f"{self} field has no format")
+            raise ValueError(f"{self} field has no format")
         return (t.text for t in self.tokenize(qstring, mode=mode, **kwargs))
 
     # Conversion
@@ -367,9 +366,38 @@ class FieldType:
     # Events
 
     def on_add(self, schema, fieldname):
+        """
+        This method is called when a field is added to a schema.
+
+        Parameters:
+            schema (Schema): The schema object to which the field is being added.
+            fieldname (str): The name of the field being added.
+
+        Returns:
+            None
+
+        Notes:
+            - This method can be overridden in subclasses to perform custom actions when a field is added.
+            - By default, this method does nothing.
+        """
         pass
 
     def on_remove(self, schema, fieldname):
+        """
+        This method is called when a field is removed from the schema.
+
+        Parameters:
+            schema (Schema): The schema object from which the field is being removed.
+            fieldname (str): The name of the field being removed.
+
+        Returns:
+            None
+
+        Notes:
+            - This method can be overridden in a custom field class to perform any necessary cleanup or
+              additional actions when a field is removed from the schema.
+            - By default, this method does nothing.
+        """
         pass
 
 
@@ -487,7 +515,7 @@ class ID(FieldType):
             document.
         """
 
-        self.analyzer = analyzer or analysis.IDAnalyzer()
+        self.analyzer = analyzer or analysis.id_analyzer()
         # Don't store any information other than the doc ID
         self.format = formats.Existence(field_boost=field_boost)
         self.stored = stored
@@ -512,7 +540,7 @@ class IDLIST(FieldType):
         """
 
         expression = expression or re.compile(r"[^\r\n\t ,;]+")
-        self.analyzer = analysis.RegexAnalyzer(expression=expression)
+        self.analyzer = analysis.regex_analyzer(expression=expression)
         # Don't store any information other than the doc ID
         self.format = formats.Existence(field_boost=field_boost)
         self.stored = stored
@@ -605,7 +633,7 @@ class NUMERIC(FieldType):
             raise TypeError(f"Can't use {numtype!r} as a type, use int or float")
         # Sanity check
         if numtype is float and decimal_places:
-            raise Exception(
+            raise ValueError(
                 "A float type and decimal_places argument %r are "
                 "incompatible" % decimal_places
             )
@@ -617,7 +645,7 @@ class NUMERIC(FieldType):
             bits = 64  # Floats are converted to 64 bit ints
         else:
             if bits not in intsizes:
-                raise Exception(f"Invalid bits {bits!r}, use 8, 16, 32, or 64")
+                raise ValueError(f"Invalid bits {bits!r}, use 8, 16, 32, or 64")
         # Type code for the *sortable* representation
         self.sortable_typecode = intcodes[intsizes.index(bits)]
         self._struct = struct.Struct(">" + str(self.sortable_typecode))
@@ -629,7 +657,7 @@ class NUMERIC(FieldType):
         self.decimal_places = decimal_places
         self.shift_step = shift_step
         self.signed = signed
-        self.analyzer = analysis.IDAnalyzer()
+        self.analyzer = analysis.id_analyzer()
         # Don't store any information other than the doc ID
         self.format = formats.Existence(field_boost=field_boost)
         self.min_value, self.max_value = self._min_max()
@@ -641,8 +669,8 @@ class NUMERIC(FieldType):
             else:
                 default = NaN
         elif not self.is_valid(default):
-            raise Exception(
-                f"The default {default!r} is not a valid number for this field"
+            raise ValueError(
+                f"The default {default} is not a valid number for this field"
             )
 
         self.default = default
@@ -853,11 +881,11 @@ class DATETIME(NUMERIC):
         elif isinstance(x, bytes):
             return x
         else:
-            raise Exception(f"{x!r} is not a datetime")
+            raise ValueError(f"{x} is not a datetime")
 
     def to_column_value(self, x):
         if isinstance(x, bytes):
-            raise Exception(f"{x!r} is not a datetime")
+            raise ValueError(f"{x} is not a datetime")
         if isinstance(x, (list, tuple)):
             x = x[0]
         return self.prepare_datetime(x)
@@ -897,7 +925,7 @@ class DATETIME(NUMERIC):
 
         at = fix(adatetime(year, month, day, hour, minute, second, microsecond))
         if is_void(at):
-            raise Exception(f"{qstring!r} is not a parseable date")
+            raise ValueError(f"{qstring} is not a parseable date")
         return at
 
     def parse_query(self, fieldname, qstring, boost=1.0):
@@ -1012,6 +1040,14 @@ class STORED(FieldType):
     stored = True
 
     def __init__(self):
+        """
+        Initialize a new instance of the class.
+
+        This method is called when a new object of the class is created. It does not take any arguments.
+
+        Usage:
+        field = Field()
+        """
         pass
 
 
@@ -1067,7 +1103,7 @@ class KEYWORD(FieldType):
         """
 
         if not analyzer:
-            analyzer = analysis.KeywordAnalyzer(lowercase=lowercase, commas=commas)
+            analyzer = analysis.keyword_analyzer(lowercase=lowercase, commas=commas)
         self.analyzer = analyzer
 
         # Store field lengths and weights along with doc ID
@@ -1111,7 +1147,7 @@ class TEXT(FieldType):
         """
         :param analyzer: The analysis.Analyzer to use to index the field
             contents. See the analysis module for more information. If you omit
-            this argument, the field uses analysis.StandardAnalyzer.
+            this argument, the field uses analysis.standard_analyzer.
         :param phrase: Whether the store positional information to allow phrase
             searching.
         :param chars: Whether to store character ranges along with positions.
@@ -1129,7 +1165,7 @@ class TEXT(FieldType):
             column type. If you pass a :class:`whoosh.columns.Column` instance
             instead of True, the field will use the given column type.
         :param lang: automaticaly configure a
-            :class:`whoosh.analysis.LanguageAnalyzer` for the given language.
+            :class:`whoosh.analysis.language_analyzer` for the given language.
             This is ignored if you also specify an ``analyzer``.
         :param vector: if this value evaluates to true, store a list of the
             terms in this field in each document. If the value is an instance
@@ -1141,9 +1177,9 @@ class TEXT(FieldType):
         if analyzer:
             self.analyzer = analyzer
         elif lang:
-            self.analyzer = analysis.LanguageAnalyzer(lang)
+            self.analyzer = analysis.language_analyzer(lang)
         else:
-            self.analyzer = analysis.StandardAnalyzer()
+            self.analyzer = analysis.standard_analyzer()
 
         if chars:
             formatclass = formats.Characters
@@ -1264,9 +1300,9 @@ class NGRAM(FieldType):
         if phrase:
             formatclass = formats.Positions
 
-        self.analyzer = analysis.NgramAnalyzer(minsize, maxsize)
+        self.analyzer = analysis.ngram_analyzer(minsize, maxsize)
         self.format = formatclass(field_boost=field_boost)
-        self.analyzer = analysis.NgramAnalyzer(minsize, maxsize)
+        self.analyzer = analysis.ngram_analyzer(minsize, maxsize)
         self.stored = stored
         self.queryor = queryor
         self.set_sortable(sortable)
@@ -1323,7 +1359,7 @@ class NGRAMWORDS(NGRAM):
             default is to combine N-grams with an And query.
         """
 
-        self.analyzer = analysis.NgramWordAnalyzer(minsize, maxsize, tokenizer, at=at)
+        self.analyzer = analysis.ngram_word_analyzer(minsize, maxsize, tokenizer, at=at)
         self.format = formats.Frequency(field_boost=field_boost)
         self.stored = stored
         self.queryor = queryor
@@ -1661,7 +1697,7 @@ def merge_fielddict(d1, d2):
         field1 = d1.get(name)
         field2 = d2.get(name)
         if field1 and field2 and field1 != field2:
-            raise Exception(f"Inconsistent field {name!r}: {field1!r} != {field2!r}")
+            raise ValueError(f"Inconsistent field {name}: {field1} != {field2}")
         out[name] = field1 or field2
     return out
 

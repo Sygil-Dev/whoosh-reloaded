@@ -635,7 +635,7 @@ def test_stop_phrase():
 
 
 def test_phrase_order():
-    tfield = fields.TEXT(stored=True, analyzer=analysis.SimpleAnalyzer())
+    tfield = fields.TEXT(stored=True, analyzer=analysis.simple_analyzer())
     schema = fields.Schema(text=tfield)
     storage = RamStorage()
     ix = storage.create_index(schema)
@@ -1277,7 +1277,7 @@ def test_scorer():
 
 
 def test_pos_scorer():
-    ana = analysis.SimpleAnalyzer()
+    ana = analysis.simple_analyzer()
     schema = fields.Schema(id=fields.STORED, key=fields.TEXT(analyzer=ana))
     ix = RamStorage().create_index(schema)
     w = ix.writer()

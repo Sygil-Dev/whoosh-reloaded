@@ -30,11 +30,46 @@ from whoosh.util import utf8decode, utf8encode
 
 
 def encode_termkey(term):
+    """
+    Encodes a term key.
+
+    This function takes a term tuple consisting of a field number and text, and encodes it into a byte string.
+    The field number is packed as an unsigned short, followed by the UTF-8 encoded text.
+
+    Parameters:
+    term (tuple): A tuple containing the field number and text.
+
+    Returns:
+    bytes: The encoded term key as a byte string.
+
+    Example:
+    >>> term = (1, "example")
+    >>> encode_termkey(term)
+    b'\x00\x01example'
+    """
     fieldnum, text = term
     return pack_ushort(fieldnum) + utf8encode(text)[0]
 
 
 def decode_termkey(key):
+    """
+    Decode a term key.
+
+    Args:
+        key (bytes): The term key to decode.
+
+    Returns:
+        tuple: A tuple containing the decoded term key. The first element is an
+        unsigned short integer, and the second element is a Unicode string.
+
+    Raises:
+        IndexError: If the key is too short to be decoded.
+
+    Example:
+        >>> key = b'\x00\x01hello'
+        >>> decode_termkey(key)
+        (1, 'hello')
+    """
     return (unpack_ushort(key[:_SHORT_SIZE])[0], utf8decode(key[_SHORT_SIZE:])[0])
 
 

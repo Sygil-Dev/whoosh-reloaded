@@ -508,9 +508,9 @@ def test_skip():
 #
 #
 # def test_special_spelled_field():
-#     from whoosh.analysis import StemmingAnalyzer
+#     from whoosh.analysis import stemming_analyzer
 #
-#     field = fields.TEXT(analyzer=StemmingAnalyzer(), spelling=True)
+#     field = fields.TEXT(analyzer=stemming_analyzer(), spelling=True)
 #     st, codec, seg = _make_codec()
 #
 #     fw = codec.field_writer(st, seg)
@@ -537,7 +537,7 @@ cde = "charlie delta echo"
 
 def test_plaintext_codec():
     pytest.importorskip("ast")
-    ana = analysis.StemmingAnalyzer()
+    ana = analysis.stemming_analyzer()
     schema = fields.Schema(
         a=fields.TEXT(vector=True, sortable=True),
         b=fields.STORED,
@@ -612,7 +612,7 @@ def test_plaintext_codec():
 
 
 def test_memory_codec():
-    ana = analysis.StemmingAnalyzer()
+    ana = analysis.stemming_analyzer()
     schema = fields.Schema(
         a=fields.TEXT(vector=True),
         b=fields.STORED,

@@ -15,7 +15,7 @@ def _roundtrip(content, format_, astype, ana=None):
     with TempStorage("roundtrip") as st:
         codec = default_codec()
         seg = codec.new_segment(st, "")
-        ana = ana or analysis.StandardAnalyzer()
+        ana = ana or analysis.standard_analyzer()
         field = fields.FieldType(format=format_, analyzer=ana)
 
         fw = codec.field_writer(st, seg)

@@ -46,7 +46,7 @@ Whoosh 2.5
 
 * Whoosh now includes pure-Python implementations of the Snowball stemmers and
   stop word lists for various languages adapted from NLTK. These are available
-  through the :class:` whoosh.analysis.LanguageAnalyzer` analyzer or through the
+  through the :class:` whoosh.analysis.language_analyzer` analyzer or through the
   ``lang=`` keyword argument to the
   :class:`~ whoosh.fields.TEXT` field.
 

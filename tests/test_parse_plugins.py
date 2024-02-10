@@ -190,7 +190,7 @@ def test_daterange_empty_field():
 
 
 def test_free_dates():
-    a = analysis.StandardAnalyzer(stoplist=None)
+    a = analysis.standard_analyzer(stoplist=None)
     schema = fields.Schema(text=fields.TEXT(analyzer=a), date=fields.DATETIME)
     qp = qparser.QueryParser("text", schema)
     basedate = datetime(2010, 9, 20, 15, 16, 6, 454000, tzinfo=timezone.utc)
@@ -332,7 +332,7 @@ def test_copyfield():
         str(qp.parse("hello c:matt")) == "((a:hello OR c:hello) AND (c:matt OR a:matt))"
     )
 
-    ana = analysis.RegexAnalyzer(r"\w+") | analysis.DoubleMetaphoneFilter()
+    ana = analysis.regex_analyzer(r"\w+") | analysis.DoubleMetaphoneFilter()
     fmt = formats.Frequency()
     ft = fields.FieldType(fmt, ana, multitoken_query="or")
     schema = fields.Schema(name=fields.KEYWORD, name_phone=ft)
@@ -434,7 +434,7 @@ def test_pseudofield():
 
 
 def test_fuzzy_plugin():
-    ana = analysis.StandardAnalyzer("\\S+")
+    ana = analysis.standard_analyzer("\\S+")
     schema = fields.Schema(f=fields.TEXT(analyzer=ana))
     qp = default.QueryParser("f", schema)
     qp.add_plugin(plugins.FuzzyTermPlugin())
@@ -665,7 +665,7 @@ def test_sequence_andmaybe():
 
 
 def test_sequence_complex():
-    ana = analysis.StandardAnalyzer(stoplist=None)
+    ana = analysis.standard_analyzer(stoplist=None)
     schema = fields.Schema(
         title=fields.TEXT(stored=True),
         path=fields.ID(stored=True),

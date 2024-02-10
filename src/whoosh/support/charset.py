@@ -1303,11 +1303,11 @@ def charset_table_to_dict(tablestring):
     character or None if the character is not a valid word character.
 
     The Sphinx charset table format is described at
-    http://www.sphinxsearch.com/docs/current.html#conf-charset-table.
+    https://www.sphinxsearch.com/docs/current.html#conf-charset-table.
     """
 
-    # map = {}
-    map = defaultdict(lambda: None)
+    # map_dict = {}
+    map_dict = defaultdict(lambda: None)
     for line in tablestring.split("\n"):
         if not line or line.startswith("#"):
             continue
@@ -1326,7 +1326,7 @@ def charset_table_to_dict(tablestring):
                     for fromord, tooord in zip(
                         range(start1, end1 + 1), range(start2, end2 + 1)
                     ):
-                        map[fromord] = chr(tooord)
+                        map_dict[fromord] = chr(tooord)
                 except ValueError:
                     pass
                 continue
@@ -1336,16 +1336,16 @@ def charset_table_to_dict(tablestring):
                 fromord = charspec_to_int(match.group(1))
                 toord = charspec_to_int(match.group(2))
                 try:
-                    map[fromord] = chr(toord)
+                    map_dict[fromord] = chr(toord)
                 except ValueError:
                     pass
                 continue
 
             match = _stray_char.match(item)
             if match:
-                ord = charspec_to_int(match.group(0))
+                ord_charspec = charspec_to_int(match.group(0))
                 try:
-                    map[ord] = chr(ord)
+                    map_dict[ord_charspec] = chr(ord_charspec)
                 except ValueError:
                     pass
                 continue
@@ -1355,8 +1355,8 @@ def charset_table_to_dict(tablestring):
                 start = charspec_to_int(match.group(1))
                 end = charspec_to_int(match.group(2))
                 try:
-                    for ord in range(start, end + 1):
-                        map[ord] = chr(ord)
+                    for ord_charspec in range(start, end + 1):
+                        map_dict[ord_charspec] = chr(ord_charspec)
                 except ValueError:
                     pass
                 continue
@@ -1366,13 +1366,13 @@ def charset_table_to_dict(tablestring):
                 fromord = charspec_to_int(match.group(1))
                 toord = charspec_to_int(match.group(2))
                 assert toord - fromord % 2 == 0
-                for ord in range(fromord, toord + 1, 2):
+                for ord_charspec in range(fromord, toord + 1, 2):
                     try:
-                        map[ord] = chr(ord + 1)
-                        map[ord + 1] = chr(ord + 1)
+                        map_dict[ord_charspec] = chr(ord_charspec + 1)
+                        map_dict[ord_charspec + 1] = chr(ord_charspec + 1)
                     except ValueError:
                         pass
                 continue
 
-            raise Exception(f"Don't know what to do with {item!r}")
-    return dict(map)
+            raise ValueError(f"Don't know what to do with {item}")
+    return dict(map_dict)

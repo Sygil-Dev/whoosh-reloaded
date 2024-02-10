@@ -389,7 +389,7 @@ def test_highlight_setters():
 
 
 def test_snippets():
-    ana = analysis.StemmingAnalyzer()
+    ana = analysis.stemming_analyzer()
     schema = fields.Schema(text=fields.TEXT(stored=True, analyzer=ana))
     ix = RamStorage().create_index(schema)
     w = ix.writer()
@@ -437,7 +437,7 @@ def test_snippets():
 
 
 def test_keyterms():
-    ana = analysis.StandardAnalyzer()
+    ana = analysis.standard_analyzer()
     vectorformat = formats.Frequency()
     schema = fields.Schema(
         path=fields.ID, content=fields.TEXT(analyzer=ana, vector=vectorformat)

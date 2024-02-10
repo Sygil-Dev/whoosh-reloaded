@@ -52,8 +52,8 @@ def load_110_toc(stream, gen, schema, version):
             "wcw2": "whoosh.codec.whoosh2",
         }
         objmap = {
-            "%(wf)s.NUMERIC": "%(wcw2)s.OLD_NUMERIC",
-            "%(wf)s.DATETIME": "%(wcw2)s.OLD_DATETIME",
+            "%(wf)s.NUMERIC": "%(wcw2)s.old_numeric",
+            "%(wf)s.DATETIME": "%(wcw2)s.old_datetime",
             "%(wsn)s.int_to_text": "%(wcw2)s.int_to_text",
             "%(wsn)s.text_to_int": "%(wcw2)s.text_to_int",
             "%(wsn)s.long_to_text": "%(wcw2)s.long_to_text",

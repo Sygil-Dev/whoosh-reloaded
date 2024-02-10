@@ -725,7 +725,7 @@ def test_numrange_multi():
 
 def test_nonexistant_fieldnames():
     # Need an analyzer that won't mangle a URL
-    a = analysis.SimpleAnalyzer("\\S+")
+    a = analysis.simple_analyzer("\\S+")
     schema = fields.Schema(id=fields.ID, text=fields.TEXT(analyzer=a))
 
     qp = default.QueryParser("text", schema)
@@ -747,7 +747,7 @@ def test_stopped():
 
 
 def test_analyzing_terms():
-    ana = analysis.StemmingAnalyzer()
+    ana = analysis.stemming_analyzer()
     schema = fields.Schema(text=fields.TEXT(analyzer=ana))
     qp = default.QueryParser("text", schema)
     q = qp.parse("Indexed!")
@@ -996,7 +996,7 @@ def test_star_paren():
 
 
 def test_dash():
-    ana = analysis.StandardAnalyzer("[^ \t\r\n()*?]+")
+    ana = analysis.standard_analyzer("[^ \t\r\n()*?]+")
     schema = fields.Schema(
         title=fields.TEXT(analyzer=ana), text=fields.TEXT(analyzer=ana), time=fields.ID
     )
@@ -1013,7 +1013,7 @@ def test_dash():
     assert str(q) == "(title:*ben-hayden* OR text:*ben-hayden* OR time:*Ben-Hayden*)"
 
 
-def test_bool_True():
+def test_bool_true():
     schema = fields.Schema(text=fields.TEXT, bool=fields.BOOLEAN)
     qp = default.QueryParser("text", schema)
     q = qp.parse("bool:True")

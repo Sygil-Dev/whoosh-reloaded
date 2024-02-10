@@ -46,6 +46,8 @@ from whoosh.util.times import (
 class DateParseError(Exception):
     "Represents an error in parsing date text."
 
+    pass
+
 
 # Utility functions
 

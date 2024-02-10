@@ -35,32 +35,59 @@ from whoosh.analysis.tokenizers import RegexTokenizer, Tokenizer
 class NgramTokenizer(Tokenizer):
     """Splits input text into N-grams instead of words.
 
-    >>> ngt = NgramTokenizer(4)
-    >>> [token.text for token in ngt("hi there")]
-    ["hi t", "i th", " the", "ther", "here"]
+    This tokenizer splits the input text into N-grams, where an N-gram is a
+    contiguous sequence of N characters. The N-grams emitted by this tokenizer
+    may contain whitespace, punctuation, and other characters. If you only want
+    sub-word N-grams without whitespace, you can combine a RegexTokenizer with
+    NgramFilter instead.
 
-    Note that this tokenizer does NOT use a regular expression to extract
-    words, so the grams emitted by it will contain whitespace, punctuation,
-    etc. You may want to massage the input or add a custom filter to this
-    tokenizer's output.
+    Example:
+        ngt = NgramTokenizer(4)
+        tokens = [token.text for token in ngt("hi there")]
+        # tokens = ["hi t", "i th", " the", "ther", "here"]
 
-    Alternatively, if you only want sub-word grams without whitespace, you
-    could combine a RegexTokenizer with NgramFilter instead.
+    Note:
+        This tokenizer does not use a regular expression to extract words, so
+        the N-grams emitted by it will contain whitespace, punctuation, etc.
+        You may want to massage the input or add a custom filter to this
+        tokenizer's output.
+
+    Args:
+        minsize (int): The minimum size of the N-grams.
+        maxsize (int, optional): The maximum size of the N-grams. If not
+            provided, maxsize will be set to minsize.
+
+    Attributes:
+        min (int): The minimum size of the N-grams.
+        max (int): The maximum size of the N-grams.
+
     """
 
     __inittypes__ = {"minsize": int, "maxsize": int}
 
     def __init__(self, minsize, maxsize=None):
         """
-        :param minsize: The minimum size of the N-grams.
-        :param maxsize: The maximum size of the N-grams. If you omit
-            this parameter, maxsize == minsize.
-        """
+        Initialize the NgramTokenizer.
 
+        Args:
+            minsize (int): The minimum size of the N-grams.
+            maxsize (int, optional): The maximum size of the N-grams. If not
+                provided, maxsize will be set to minsize.
+
+        """
         self.min = minsize
         self.max = maxsize or minsize
 
     def __eq__(self, other):
+        """
+        Check if two ngram objects are equal.
+
+        Args:
+            other (Ngram): The other ngram object to compare with.
+
+        Returns:
+            bool: True if the ngram objects are equal, False otherwise.
+        """
         if self.__class__ is other.__class__:
             if self.min == other.min and self.max == other.max:
                 return True
@@ -78,6 +105,37 @@ class NgramTokenizer(Tokenizer):
         mode="",
         **kwargs,
     ):
+        """
+        Tokenizes the given value into n-grams.
+
+        Args:
+            value (str): The input string to be tokenized.
+            positions (bool, optional): Whether to include position information in the tokens. Defaults to False.
+            chars (bool, optional): Whether to include character offset information in the tokens. Defaults to False.
+            keeporiginal (bool, optional): Whether to keep the original token text. Defaults to False.
+            removestops (bool, optional): Whether to remove stop words from the tokens. Defaults to True.
+            start_pos (int, optional): The starting position for position information. Defaults to 0.
+            start_char (int, optional): The starting character offset. Defaults to 0.
+            mode (str, optional): The tokenization mode. Defaults to "".
+
+        Yields:
+            Token: The generated tokens.
+
+        Raises:
+            AssertionError: If the input value is not a string.
+
+        Note:
+            This method tokenizes the input string into n-grams based on the specified parameters. It generates tokens
+            by sliding a window of size `self.min` to `self.max` over the input string. The generated tokens can include
+            position information, character offset information, and original token text depending on the specified
+            parameters.
+
+            If `mode` is set to "query", the method generates tokens by sliding a window of size `self.max` over the
+            input string. This is typically used for query tokenization.
+
+            If `mode` is not set to "query", the method generates tokens by sliding a window of size `self.min` to
+            `self.max` over the input string. This is typically used for indexing tokenization.
+        """
         assert isinstance(value, str), f"{value!r} is not unicode"
 
         inlen = len(value)
@@ -122,8 +180,6 @@ class NgramTokenizer(Tokenizer):
 
 
 # Filter
-
-
 class NgramFilter(Filter):
     """Splits token text into N-grams.
 
@@ -155,6 +211,15 @@ class NgramFilter(Filter):
             self.at = 1
 
     def __eq__(self, other):
+        """
+        Check if two ngrams objects are equal.
+
+        Args:
+            other (object): The object to compare with.
+
+        Returns:
+            bool: True if the two ngrams objects are equal, False otherwise.
+        """
         return (
             other
             and self.__class__ is other.__class__
@@ -163,6 +228,29 @@ class NgramFilter(Filter):
         )
 
     def __call__(self, tokens):
+        """
+        Tokenizes the given tokens into N-grams.
+
+        Args:
+            tokens (iterable): The input tokens to be tokenized.
+
+        Yields:
+            Token: The generated N-gram tokens.
+
+        Raises:
+            AssertionError: If the input tokens are not iterable.
+
+        Note:
+            This method tokenizes the input tokens into N-grams based on the specified parameters. It generates N-gram tokens by sliding a window of size `self.min` to `self.max` over the input tokens.
+
+            If the token's text length is less than `self.min`, the token is skipped.
+
+            If the token's mode is set to "query", the method generates N-gram tokens by sliding a window of size `self.max` over the token's text. This is typically used for query tokenization.
+
+            If the token's mode is not set to "query", the method generates N-gram tokens by sliding a window of size `self.min` to `self.max` over the token's text. This is typically used for indexing tokenization.
+
+            The generated N-gram tokens can include position information, character offset information, and original token text depending on the specified parameters.
+        """
         assert hasattr(tokens, "__iter__")
         at = self.at
         for t in tokens:
@@ -233,18 +321,44 @@ class NgramFilter(Filter):
 # Analyzers
 
 
-def NgramAnalyzer(minsize, maxsize=None):
-    """Composes an NgramTokenizer and a LowercaseFilter.
-
-    >>> ana = NgramAnalyzer(4)
-    >>> [token.text for token in ana("hi there")]
-    ["hi t", "i th", " the", "ther", "here"]
+def ngram_analyzer(minsize, maxsize=None):
     """
+    Composes an NgramTokenizer and a LowercaseFilter.
 
+    Args:
+        minsize (int): The minimum size of the n-grams.
+        maxsize (int, optional): The maximum size of the n-grams. Defaults to None.
+
+    Returns:
+        Analyzer: An analyzer that tokenizes text into n-grams and applies lowercase filtering.
+
+    Examples:
+        >>> ana = ngram_analyzer(4)
+        >>> [token.text for token in ana("hi there")]
+        ["hi t", "i th", " the", "ther", "here"]
+    """
     return NgramTokenizer(minsize, maxsize=maxsize) | LowercaseFilter()
 
 
-def NgramWordAnalyzer(minsize, maxsize=None, tokenizer=None, at=None):
+def ngram_word_analyzer(minsize, maxsize=None, tokenizer=None, at=None):
+    """
+    Creates an analyzer that tokenizes text into n-grams.
+
+    Args:
+        minsize (int): The minimum size of the n-grams.
+        maxsize (int, optional): The maximum size of the n-grams. Defaults to None.
+        tokenizer (Tokenizer, optional): The tokenizer to use. Defaults to None.
+        at (str, optional): The position at which to split the n-grams. Defaults to None.
+
+    Returns:
+        Analyzer: The n-gram word analyzer.
+
+    Example:
+        >>> analyzer = ngram_word_analyzer(2, 3)
+        >>> tokens = analyzer("Hello world")
+        >>> list(tokens)
+        ['he', 'el', 'll', 'lo', 'wo', 'or', 'rl', 'ld']
+    """
     if not tokenizer:
         tokenizer = RegexTokenizer()
     return tokenizer | LowercaseFilter() | NgramFilter(minsize, maxsize, at=at)
