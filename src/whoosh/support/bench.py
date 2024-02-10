@@ -67,12 +67,30 @@ class Module:
         return self.__class__.__name__
 
     def indexer(self, **kwargs):
+        """
+        This method is responsible for indexing the data using the specified keyword arguments.
+
+        Parameters:
+        - kwargs: Additional keyword arguments for configuring the indexing process.
+
+        Returns:
+        - None
+        """
         pass
 
     def index_document(self, d):
         raise NotImplementedError
 
     def finish(self, **kwargs):
+        """
+        Finish the benchmark and perform any necessary cleanup.
+
+        Args:
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            None
+        """
         pass
 
     def _process_result(self, d):
@@ -86,6 +104,9 @@ class Module:
             return d
 
     def searcher(self):
+        """
+        This method returns a searcher object.
+        """
         pass
 
     def query(self):
@@ -114,6 +135,9 @@ class Spec:
         raise NotImplementedError
 
     def setup(self):
+        """
+        Performs the setup for the benchmark.
+        """
         pass
 
     def print_results(self, ls):
@@ -198,7 +222,7 @@ class XappyModule(Module):
         conn = self.bench.spec.xappy_connection(path)
         return conn
 
-    def index_document(self, conn, d):
+    def index_document(self, conn=None, d=None):
         if hasattr(self.bench, "process_document_xappy"):
             self.bench.process_document_xappy(d)
         doc = xappy.UnprocessedDocument()
@@ -216,13 +240,13 @@ class XappyModule(Module):
         path = os.path.join(self.options.dir, f"{self.options.indexname}_xappy")
         return xappy.SearchConnection(path)
 
-    def query(self, conn):
+    def query(self, conn=None):
         return conn.query_parse(" ".join(self.args))
 
-    def find(self, conn, q):
+    def find(self, conn=None, q=None):
         return conn.search(q, 0, int(self.options.limit))
 
-    def findterms(self, conn, terms):
+    def findterms(self, conn=None, terms=None):
         limit = int(self.options.limit)
         for term in terms:
             q = conn.query_field(self.bench.spec.main_field, term)
@@ -327,12 +351,12 @@ class ZcatalogModule(Module):
             FileStorage,  # type: ignore # type: ignore @UnresolvedImport
         )
 
-        dir = os.path.join(self.options.dir, f"{self.options.indexname}_zcatalog")
-        if os.path.exists(dir):
-            rmtree(dir)
-        os.mkdir(dir)
+        directory = os.path.join(self.options.dir, f"{self.options.indexname}_zcatalog")
+        if os.path.exists(directory):
+            rmtree(directory)
+        os.mkdir(directory)
 
-        storage = FileStorage(os.path.join(dir, "index"))
+        storage = FileStorage(os.path.join(directory, "index"))
         db = DB(storage)
         conn = db.open()
 
@@ -400,12 +424,12 @@ class NucularModule(Module):
 
         from nucular import Nucular  # type: ignore # type: ignore @UnresolvedImport
 
-        dir = os.path.join(self.options.dir, f"{self.options.indexname}_nucular")
+        directory = os.path.join(self.options.dir, f"{self.options.indexname}_nucular")
         if create:
-            if os.path.exists(dir):
-                shutil.rmtree(dir)
-            os.mkdir(dir)
-        self.archive = Nucular.Nucular(dir)
+            if os.path.exists(directory):
+                shutil.rmtree(directory)
+            os.mkdir(directory)
+        self.archive = Nucular.Nucular(directory)
         if create:
             self.archive.create()
         self.count = 0
@@ -431,8 +455,10 @@ class NucularModule(Module):
     def searcher(self):
         from nucular import Nucular  # type: ignore # type: ignore @UnresolvedImport
 
-        dir = os.path.join(self.options.dir, f"{self.options.indexname}_nucular")
-        self.archive = Nucular.Nucular(dir)
+        directory = os.path.join(
+            self.options.directory, f"{self.options.indexname}_nucular"
+        )
+        self.archive = Nucular.Nucular(directory)
 
     def query(self):
         return " ".join(self.args)
