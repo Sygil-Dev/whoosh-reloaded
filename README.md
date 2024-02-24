@@ -14,11 +14,9 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Sygil-Dev_whoosh-reloaded&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Sygil-Dev_whoosh-reloaded)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Sygil-Dev_whoosh-reloaded&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=Sygil-Dev_whoosh-reloaded)
 
-
 --------------------------------------
 
 > **Notice:** This repository (**whoosh-reloaded**) is a fork and continuation of the Whoosh project.
-
 
 > This fork **is actively maintained** by the Sygil-Dev Organization.
 
@@ -64,8 +62,8 @@ Installing Whoosh
 If you have ``setuptools`` or ``pip`` installed, you can use ``easy_install``
 or ``pip`` to download and install Whoosh automatically::
 
-    # install the old version from PyPI
-    $ pip install Whoosh
+    # Install the stable version from Pypi
+    $ pip install whoosh-reloaded
 
     # Install the development version from GitHub.
     $ pip install git+https://github.com/Sygil-Dev/whoosh-reloaded.git
@@ -79,6 +77,7 @@ You can check out the latest version of the source code on GitHub using git:
 
 Contributing
 ============
+
 We use pre-commit to format the code and run some checks before committing to avoid common mistakes. To install it, run the following commands:
 
 ```bash
@@ -101,7 +100,6 @@ Learning more
 
 * File bug reports and issues at https://github.com/Sygil-Dev/whoosh-reloaded/issues
 
-
 Maintainers
 ===========
 
@@ -110,4 +108,5 @@ Maintainers
 
 Discord Server
 ==============
+
 - [Sygil-Dev - Resources](https://discord.gg/H5mftKP5S9)
