@@ -49,9 +49,9 @@ if __name__ == "__main__":
             "loguru==0.7.2",
         ],
         tests_require=[
-            "pytest==8.0.0",
+            "pytest==8.0.1",
             "nose==1.3.7",
-            "pre-commit==3.6.0",
+            "pre-commit==3.6.2",
         ],
         cmdclass={"test": PyTest},
         classifiers=[
