@@ -38,25 +38,6 @@ _RANGE = 4
 def parse_glob(
     pattern, _glob_multi="*", _glob_single="?", _glob_range1="[", _glob_range2="]"
 ):
-    """
-    Parse a glob pattern and generate tokens representing the pattern.
-
-    Args:
-        pattern (str): The glob pattern to parse.
-        _glob_multi (str, optional): The character representing multiple wildcard. Defaults to "*".
-        _glob_single (str, optional): The character representing single wildcard. Defaults to "?".
-        _glob_range1 (str, optional): The character representing the start of a character range. Defaults to "[".
-        _glob_range2 (str, optional): The character representing the end of a character range. Defaults to "]".
-
-    Yields:
-        tuple: A tuple containing the token type and additional information.
-            The token types are:
-                - _STAR: Represents the multiple wildcard.
-                - _QUEST: Represents the single wildcard.
-                - _RANGE: Represents a character range.
-                - _LIT: Represents a literal character.
-
-    """
     pos = 0
     last = None
     while pos < len(pattern):
@@ -91,21 +72,6 @@ def parse_glob(
 
 
 def glob_automaton(pattern):
-    """
-    Constructs a non-deterministic finite automaton (NFA) from a glob pattern.
-
-    Args:
-        pattern (str): The glob pattern to convert into an NFA.
-
-    Returns:
-        NFA: The constructed NFA.
-
-    Raises:
-        None.
-
-    Examples:
-        >>> nfa = glob_automaton("*.txt")
-    """
     nfa = NFA(0)
     i = -1
     for i, (op, arg) in enumerate(parse_glob(pattern)):

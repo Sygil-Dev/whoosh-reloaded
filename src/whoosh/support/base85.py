@@ -25,41 +25,19 @@ for i in range(len(b85chars)):
 
 
 def to_base85(x, islong=False):
-    """
-    Encodes the given integer using base 85.
+    "Encodes the given integer using base 85."
 
-    Parameters:
-    - x: The integer to be encoded.
-    - islong: A boolean indicating whether the integer is a long integer or not. Default is False.
-
-    Returns:
-    - The base 85 encoded string.
-
-    Example:
-    >>> to_base85(12345)
-    '3qo'
-    """
     size = 10 if islong else 5
     rems = ""
-    for _ in range(size):
+    for i in range(size):
         rems = b85chars[x % 85] + rems
         x //= 85
     return rems
 
 
 def from_base85(text):
-    """
-    Decodes the given base 85 text into an integer.
+    "Decodes the given base 85 text into an integer."
 
-    Parameters:
-    text (str): The base 85 encoded text to be decoded.
-
-    Returns:
-    int: The decoded integer value.
-
-    Raises:
-    KeyError: If the input text contains characters not present in the base 85 encoding table.
-    """
     acc = 0
     for c in text:
         acc = acc * 85 + b85dec[c]
@@ -67,28 +45,9 @@ def from_base85(text):
 
 
 # Bytes encoding and decoding functions
+
+
 def b85encode(text, pad=False):
-    """
-    Encode the given text using Base85 encoding.
-
-    Args:
-        text (str): The text to be encoded.
-        pad (bool, optional): Whether to pad the encoded output. Defaults to False.
-
-    Returns:
-        str: The Base85 encoded string.
-
-    Raises:
-        None
-
-    Example:
-        >>> b85encode("Hello World")
-        '87cURD]j7BEbo80'
-
-    Note:
-        Base85 encoding is a binary-to-text encoding scheme that represents binary data in an ASCII string format.
-        It is commonly used in various applications such as data compression and data transmission.
-    """
     l = len(text)
     r = l % 4
     if r:
@@ -116,39 +75,6 @@ def b85encode(text, pad=False):
 
 
 def b85decode(text):
-    """
-    Decode a base85 encoded string.
-
-    Args:
-        text (str): The base85 encoded string to decode.
-
-    Returns:
-        bytes: The decoded binary data.
-
-    Raises:
-        TypeError: If the input string contains invalid base85 characters.
-        OverflowError: If the decoded value exceeds the maximum representable value.
-
-    Example:
-        >>> encoded = "9jqo^BlbD-BleB1DJ+*+F(f,q"
-        >>> decoded = b85decode(encoded)
-        >>> print(decoded)
-        b'Hello, World!'
-
-    This function decodes a base85 encoded string and returns the corresponding binary data.
-    Base85 encoding is a method of representing binary data as ASCII text using 85 different characters.
-    The function takes a base85 encoded string as input and returns the decoded binary data.
-
-    The function raises a TypeError if the input string contains invalid base85 characters.
-    It also raises an OverflowError if the decoded value exceeds the maximum representable value.
-
-    Example usage:
-    >>> encoded = "9jqo^BlbD-BleB1DJ+*+F(f,q"
-    >>> decoded = b85decode(encoded)
-    >>> print(decoded)
-    b'Hello, World!'
-    """
-
     l = len(text)
     out = []
     for i in range(0, len(text), 5):

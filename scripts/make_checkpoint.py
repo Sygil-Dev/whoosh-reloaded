@@ -1,28 +1,8 @@
 #!python
 
-"""
-This script creates a "checkpoint" index using the Whoosh library. The checkpoint index captures the index format created by a certain version of Whoosh.
+# Make a "checkpoint" index, capturing the index format created by a certain
+# version of Whoosh
 
-Usage: make_checkpoint.py <dir>
-
-Parameters:
-    <dir> (str): The directory where the checkpoint index will be created.
-
-The script generates a checkpoint index with the following fields:
-- path: A unique identifier for each document.
-- num: An integer field stored in the index.
-- frac: A float field stored in the index.
-- dt: A datetime field stored in the index.
-- tag: A keyword field.
-- title: A text field stored in the index.
-- ngrams: A field for generating n-grams from the title.
-
-The script creates a directory if it doesn't exist and initializes the index with the specified schema. It then adds documents to the index with randomly generated data. The number of documents and the data for each document are determined by the loop iterations.
-
-Finally, the script deletes specific documents from the index and prints the total number of documents in the index.
-
-Note: The Whoosh library must be installed in order to run this script.
-"""
 
 import os.path
 import random

@@ -33,7 +33,7 @@ separation.
 
 ::
 
-    >>> my_analyzer = standard_analyzer() | NgramFilter(minsize=2, maxsize=4)
+    >>> my_analyzer = StandardAnalyzer() | NgramFilter(minsize=2, maxsize=4)
     >>> [token.text for token in my_analyzer(u"rendering shaders")]
     [u'ren', u'rend', u'end', u'ende', u'nde', u'nder', u'der', u'deri', u'eri',
     u'erin', u'rin', u'ring', u'ing', u'sha', u'shad', u'had', u'hade', u'ade',

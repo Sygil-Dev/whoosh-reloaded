@@ -7,16 +7,16 @@
 Analyzers
 =========
 
-.. autofunction:: id_analyzer
-.. autofunction:: keyword_analyzer
-.. autofunction:: regex_analyzer
-.. autofunction:: simple_analyzer
-.. autofunction:: standard_analyzer
-.. autofunction:: stemming_analyzer
-.. autofunction:: fancy_analyzer
-.. autofunction:: ngram_analyzer
-.. autofunction:: ngram_word_analyzer
-.. autofunction:: language_analyzer
+.. autofunction:: IDAnalyzer
+.. autofunction:: KeywordAnalyzer
+.. autofunction:: RegexAnalyzer
+.. autofunction:: SimpleAnalyzer
+.. autofunction:: StandardAnalyzer
+.. autofunction:: StemmingAnalyzer
+.. autofunction:: FancyAnalyzer
+.. autofunction:: NgramAnalyzer
+.. autofunction:: NgramWordAnalyzer
+.. autofunction:: LanguageAnalyzer
 
 
 Tokenizers

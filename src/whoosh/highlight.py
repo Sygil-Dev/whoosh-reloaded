@@ -39,8 +39,8 @@ The highlighting system has four main elements.
 
 * **Order functions** control in what order the top-scoring fragments are
   presented to the user. For example, you can show the fragments in the order
-  they appear in the document (first) or show higher-scoring fragments first
-  (score)
+  they appear in the document (FIRST) or show higher-scoring fragments first
+  (SCORE)
 
 * **Formatters** turn the fragment objects into human-readable output, such as
   an HTML string.
@@ -360,7 +360,7 @@ class SentenceFragmenter(Fragmenter):
     When highlighting with this fragmenter, you should use an analyzer that
     does NOT remove stop words, for example::
 
-        sa = standard_analyzer(stoplist=None)
+        sa = StandardAnalyzer(stoplist=None)
     """
 
     def __init__(self, maxchars=200, sentencechars=".!?", charlimit=DEFAULT_CHARLIMIT):
@@ -584,12 +584,12 @@ class PinpointFragmenter(Fragmenter):
 
             currentlen = right - left
             while j < len(tokens) - 1 and currentlen < maxchars:
-                next_token = tokens[j + 1]
-                ec = next_token.endchar
+                next = tokens[j + 1]
+                ec = next.endchar
                 if ec - right <= surround and ec - left <= maxchars:
                     j += 1
                     right = ec
-                    currentlen += ec - next_token.startchar
+                    currentlen += ec - next.startchar
                 else:
                     break
 
@@ -623,22 +623,22 @@ class BasicFragmentScorer(FragmentScorer):
 # Fragment sorters
 
 
-def score(fragment):
+def SCORE(fragment):
     "Sorts higher scored passages first."
     return 1
 
 
-def first(fragment):
+def FIRST(fragment):
     "Sorts passages from earlier in the document first."
     return fragment.startchar
 
 
-def longer(fragment):
+def LONGER(fragment):
     "Sorts longer passages first."
     return 0 - len(fragment)
 
 
-def shorter(fragment):
+def SHORTER(fragment):
     "Sort shorter passages first."
     return len(fragment)
 
@@ -934,7 +934,7 @@ def highlight(
     top=3,
     scorer=None,
     minscore=1,
-    order=first,
+    order=FIRST,
     mode="query",
 ):
     if scorer is None:
@@ -965,7 +965,7 @@ class Highlighter:
         scorer=None,
         formatter=None,
         always_retokenize=False,
-        order=first,
+        order=FIRST,
     ):
         self.fragmenter = fragmenter or ContextFragmenter()
         self.scorer = scorer or BasicFragmentScorer()

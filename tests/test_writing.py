@@ -395,7 +395,7 @@ def test_add_reader_spelling():
     # Test whether add_spell_word() items get copied over in a merge
 
     # Because b is stemming and spelled, it will use add_spell_word()
-    ana = analysis.stemming_analyzer()
+    ana = analysis.StemmingAnalyzer()
     schema = fields.Schema(
         a=fields.TEXT(analyzer=ana), b=fields.TEXT(analyzer=ana, spelling=True)
     )
@@ -455,7 +455,7 @@ def test_clear():
 def test_spellable_list():
     # Make sure a spellable field works with a list of pre-analyzed tokens
 
-    ana = analysis.stemming_analyzer()
+    ana = analysis.StemmingAnalyzer()
     schema = fields.Schema(
         Location=fields.STORED,
         Lang=fields.STORED,

@@ -85,7 +85,7 @@ Using analyzers
 When you create a field in a schema, you can specify your analyzer as a keyword
 argument to the field object::
 
-    schema = Schema(content=TEXT(analyzer=stemming_analyzer()))
+    schema = Schema(content=TEXT(analyzer=StemmingAnalyzer()))
 
 
 Advanced Analysis
@@ -276,8 +276,8 @@ be removed from the stream or left in.
 
 ::
 
-    >>> from whoosh.analysis import standard_analyzer
-    >>> analyzer = standard_analyzer()
+    >>> from whoosh.analysis import StandardAnalyzer
+    >>> analyzer = StandardAnalyzer()
     >>> [(t.text, t.stopped) for t in analyzer(u"This is a test")]
     [(u'test', False)]
     >>> [(t.text, t.stopped) for t in analyzer(u"This is a test", removestops=False)]

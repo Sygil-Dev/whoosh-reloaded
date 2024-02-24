@@ -31,9 +31,9 @@ Whoosh provides some useful predefined field types:
     This type is for body text. It indexes (and optionally stores) the text and
     stores term positions to allow phrase searching.
 
-    ``TEXT`` fields use :class:`~ whoosh.analysis.standard_analyzer` by default. To specify a different
+    ``TEXT`` fields use :class:`~ whoosh.analysis.StandardAnalyzer` by default. To specify a different
     analyzer, use the ``analyzer`` keyword argument to the constructor, e.g.
-    ``TEXT(analyzer=analysis.stemming_analyzer())``. See :doc:`analysis`.
+    ``TEXT(analyzer=analysis.StemmingAnalyzer())``. See :doc:`analysis`.
 
     By default, ``TEXT`` fields store position information for each indexed term, to
     allow you to search for phrases. If you don't need to be able to search for
@@ -104,12 +104,12 @@ Creating a Schema
 To create a schema::
 
     from whoosh.fields import Schema, TEXT, KEYWORD, ID, STORED
-    from whoosh.analysis import stemming_analyzer
+    from whoosh.analysis import StemmingAnalyzer
 
     schema = Schema(from_addr=ID(stored=True),
                     to_addr=ID(stored=True),
                     subject=TEXT(stored=True),
-                    body=TEXT(analyzer=stemming_analyzer()),
+                    body=TEXT(analyzer=StemmingAnalyzer()),
                     tags=KEYWORD)
 
 If you aren't specifying any constructor keyword arguments to one of the

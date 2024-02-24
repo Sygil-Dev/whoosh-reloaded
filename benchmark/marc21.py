@@ -1,9 +1,9 @@
 import fnmatch
 import logging
-import os
+import os.path
 import re
 
-from whoosh import analysis, fields, index, qparser, scoring
+from whoosh import analysis, fields, index, qparser, query, scoring
 from whoosh.util import now
 
 log = logging.getLogger(__name__)
@@ -21,20 +21,6 @@ isbn_regex = re.compile(r"[-0-9xX]+")
 
 
 def read_file(dbfile, tags=None):
-    """
-    Reads records from a database file.
-
-    Args:
-        dbfile (file): The file object representing the database file.
-        tags (list, optional): A list of tags to filter the records. Defaults to None.
-
-    Yields:
-        tuple: A tuple containing the parsed record and its position in the file.
-
-    Raises:
-        ValueError: If the length of the record is invalid.
-
-    """
     while True:
         pos = dbfile.tell()
         first5 = dbfile.read(5)
@@ -48,23 +34,6 @@ def read_file(dbfile, tags=None):
 
 
 def read_record(filename, pos, tags=None):
-    """
-    Read a MARC21 record from a file.
-
-    Args:
-        filename (str): The path to the MARC21 file.
-        pos (int): The position in the file where the record starts.
-        tags (list[str], optional): A list of tags to include in the parsed record.
-            If None, all tags will be included. Defaults to None.
-
-    Returns:
-        dict: A dictionary representing the parsed MARC21 record.
-
-    Raises:
-        FileNotFoundError: If the specified file does not exist.
-        ValueError: If the specified position is invalid.
-
-    """
     f = open(filename, "rb")
     f.seek(pos)
     first5 = f.read(5)
@@ -74,32 +43,6 @@ def read_record(filename, pos, tags=None):
 
 
 def parse_record(data, tags=None):
-    """
-    Parse a MARC21 record from the given data.
-
-    Args:
-        data (str): The MARC21 record data.
-        tags (list[str], optional): List of tags to include in the parsed result. If not provided, all tags will be included.
-
-    Returns:
-        dict: A dictionary representing the parsed MARC21 record, where the keys are the tags and the values are the corresponding data.
-
-    Raises:
-        AssertionError: If the length of the leader is not equal to LEADER_LEN.
-        AssertionError: If the dataoffset is not greater than 0.
-        AssertionError: If the dataoffset is not less than the length of the data.
-        AssertionError: If the difference between dirend and dirstart is not divisible by DIRECTORY_ENTRY_LEN.
-
-    Example:
-        data = "..."
-        tags = ["245", "260"]
-        result = parse_record(data, tags)
-        # Returns:
-        # {
-        #     "245": ["Title"],
-        #     "260": ["Publisher"]
-        # }
-    """
     leader = data[:LEADER_LEN]
     assert len(leader) == LEADER_LEN
 
@@ -140,16 +83,6 @@ def parse_record(data, tags=None):
 
 
 def subfield(vs, code):
-    """
-    Extracts the value of a subfield from a list of subfields.
-
-    Parameters:
-    - vs (list): The list of subfields to search in.
-    - code (str): The code of the subfield to extract.
-
-    Returns:
-    - str or None: The value of the subfield if found, None otherwise.
-    """
     for v in vs:
         if v.startswith(code):
             return v[1:]
@@ -157,56 +90,14 @@ def subfield(vs, code):
 
 
 def joinsubfields(vs):
-    """
-    Joins the subfields of a MARC21 record.
-
-    This function takes a list of subfields and joins them into a single string,
-    excluding any subfields starting with "6".
-
-    Args:
-        vs (list): A list of subfields.
-
-    Returns:
-        str: The joined subfields as a single string.
-
-    Example:
-        >>> subfields = ['a', 'b', 'c', '6d', 'e']
-        >>> joinsubfields(subfields)
-        'a b c e'
-    """
     return " ".join(v[1:] for v in vs if v and v[0] != "6")
 
 
 def getfields(d, *tags):
-    """
-    Retrieve the values from a dictionary `d` for the given `tags`.
-
-    Args:
-        d (dict): The dictionary to retrieve values from.
-        tags (str): Variable number of tags to retrieve values for.
-
-    Returns:
-        generator: A generator that yields the values for the given tags.
-
-    Example:
-        >>> d = {'tag1': 'value1', 'tag2': 'value2', 'tag3': 'value3'}
-        >>> fields = getfields(d, 'tag1', 'tag3')
-        >>> list(fields)
-        ['value1', 'value3']
-    """
     return (d[tag] for tag in tags if tag in d)
 
 
 def title(d):
-    """
-    Extracts the title from a MARC21 record dictionary.
-
-    Args:
-        d (dict): The MARC21 record dictionary.
-
-    Returns:
-        str: The extracted title, or None if no title is found.
-    """
     title = None
     if "245" in d:
         svs = d["245"]
@@ -219,24 +110,6 @@ def title(d):
 
 
 def isbn(d):
-    """
-    Extracts the ISBN number from the MARC21 record.
-
-    Parameters:
-    - d (dict): The MARC21 record dictionary.
-
-    Returns:
-    - str: The extracted ISBN number without hyphens.
-
-    Example:
-    >>> record = {
-    ...     "020": {
-    ...         "a": "978-0132350884"
-    ...     }
-    ... }
-    >>> isbn(record)
-    '9780132350884'
-    """
     if "020" in d:
         num = subfield(d["020"], "a")
         if num:
@@ -246,18 +119,6 @@ def isbn(d):
 
 
 def author(d):
-    """
-    Returns the author information from the given dictionary.
-
-    Parameters:
-    - d (dict): The dictionary containing the MARC21 record.
-
-    Returns:
-    - str: The author information.
-
-    Raises:
-    - KeyError: If the dictionary does not contain any author fields (100, 110, or 111).
-    """
     if "100" in d:
         return joinsubfields(d["100"])
     elif "110" in d:
@@ -267,27 +128,6 @@ def author(d):
 
 
 def uniform_title(d):
-    """
-    Returns the uniform title from the MARC21 record dictionary.
-
-    Parameters:
-    - d (dict): The MARC21 record dictionary.
-
-    Returns:
-    - str: The uniform title.
-
-    Raises:
-    - None.
-
-    Examples:
-    >>> record = {"130": ["Uniform Title"]}
-    >>> uniform_title(record)
-    'Uniform Title'
-
-    >>> record = {"240": ["Uniform Title"]}
-    >>> uniform_title(record)
-    'Uniform Title'
-    """
     if "130" in d:
         return joinsubfields(d["130"])
     elif "240" in d:
@@ -300,139 +140,35 @@ subjectfields = (
 
 
 def subjects(d):
-    """
-    Returns a string containing the joined subfields of the given document's subject fields.
-
-    Parameters:
-    - d: The document to extract subject fields from.
-
-    Returns:
-    A string containing the joined subfields of the subject fields.
-    """
     return " ".join(joinsubfields(vs) for vs in getfields(d, *subjectfields))
 
 
 def physical(d):
-    """
-    Returns the physical description of a MARC21 record.
-
-    Parameters:
-    - d (dict): The MARC21 record dictionary.
-
-    Returns:
-    - str: The physical description of the record.
-    """
     return joinsubfields(d["300"])
 
 
 def location(d):
-    """
-    Returns the location of a record in the MARC21 format.
-
-    Parameters:
-    - d (dict): The MARC21 record dictionary.
-
-    Returns:
-    - str: The location of the record.
-    """
     return joinsubfields(d["852"])
 
 
 def publisher(d):
-    """
-    Extracts the publisher information from the MARC21 record.
-
-    Args:
-        d (dict): The MARC21 record dictionary.
-
-    Returns:
-        str: The publisher information, or None if not found.
-    """
     if "260" in d:
         return subfield(d["260"], "b")
 
 
 def pubyear(d):
-    """
-    Extracts the publication year from a MARC21 record.
-
-    Args:
-        d (dict): The MARC21 record dictionary.
-
-    Returns:
-        str: The publication year, or None if not found.
-    """
     if "260" in d:
         return subfield(d["260"], "c")
 
 
 def uni(v):
-    """
-    Converts a byte string to a Unicode string.
-
-    Parameters:
-    v (bytes): The byte string to be converted.
-
-    Returns:
-    str: The converted Unicode string.
-
-    Raises:
-    None
-
-    Examples:
-    >>> uni(b'hello')
-    'hello'
-    >>> uni(None)
-    ''
-    """
     return "" if v is None else v.decode("utf-8", "replace")
 
 
 # Indexing and searching
+
+
 def make_index(basedir, ixdir, procs=4, limitmb=128, multisegment=True, glob="*.mrc"):
-    """
-    Create an index for MARC21 records.
-
-    Args:
-        basedir (str): The base directory containing the MARC21 files.
-        ixdir (str): The directory to store the index.
-        procs (int, optional): The number of processors to use for indexing. Defaults to 4.
-        limitmb (int, optional): The memory limit per processor in megabytes. Defaults to 128.
-        multisegment (bool, optional): Whether to use multisegment indexing. Defaults to True.
-        glob (str, optional): The file pattern to match for indexing. Defaults to "*.mrc".
-
-    Returns:
-        None
-
-    Raises:
-        OSError: If the specified `ixdir` directory does not exist and cannot be created.
-
-    Notes:
-        This function creates an index for MARC21 records using the Whoosh library. It takes the base directory
-        containing the MARC21 files (`basedir`), the directory to store the index (`ixdir`), and optional parameters
-        for configuring the indexing process.
-
-        The `procs` parameter specifies the number of processors to use for indexing. By default, it is set to 4.
-
-        The `limitmb` parameter sets the memory limit per processor in megabytes. The default value is 128.
-
-        The `multisegment` parameter determines whether to use multisegment indexing. If set to True (default), the
-        index will be split into multiple segments for better performance.
-
-        The `glob` parameter specifies the file pattern to match for indexing. By default, it is set to "*.mrc".
-
-        If the specified `ixdir` directory does not exist, it will be created before creating the index.
-
-        The function uses a multi-lingual stop words list for text analysis and defines a schema for the index
-        containing fields for title, author, subject, file, and position.
-
-        The MARC fields to extract are specified in the `mfields` set.
-
-        The function prints the indexing configuration and starts the indexing process. It creates the index in the
-        specified `ixdir` directory and uses the Whoosh writer to add documents to the index.
-
-        After indexing is complete, the function returns None.
-    """
     if not os.path.exists(ixdir):
         os.mkdir(ixdir)
 
@@ -441,7 +177,7 @@ def make_index(basedir, ixdir, procs=4, limitmb=128, multisegment=True, glob="*.
         "de la der und le die et en al no von di du da " "del zur ein".split()
     )
     # Schema
-    ana = analysis.stemming_analyzer(stoplist=stoplist)
+    ana = analysis.StemmingAnalyzer(stoplist=stoplist)
     schema = fields.Schema(
         title=fields.TEXT(analyzer=ana),
         author=fields.TEXT(phrase=False),
@@ -484,22 +220,6 @@ def make_index(basedir, ixdir, procs=4, limitmb=128, multisegment=True, glob="*.
 
 
 def print_record(no, basedir, filename, pos):
-    """
-    Print the record information.
-
-    Args:
-        no (int): The record number.
-        basedir (str): The base directory.
-        filename (str): The name of the file.
-        pos (int): The position of the record.
-
-    Returns:
-        None
-
-    Raises:
-        None
-
-    """
     path = os.path.join(basedir, filename)
     record = read_record(path, pos)
     print("% 5d. %s" % (no + 1, title(record)))
@@ -512,24 +232,6 @@ def print_record(no, basedir, filename, pos):
 
 
 def search(qstring, ixdir, basedir, limit=None, optimize=True, scores=True):
-    """
-    Perform a search on the index using the given query string.
-
-    Args:
-        qstring (str): The query string to search for.
-        ixdir (str): The directory path where the index is located.
-        basedir (str): The base directory path.
-        limit (int, optional): The maximum number of results to return. Defaults to None.
-        optimize (bool, optional): Whether to optimize the search. Defaults to True.
-        scores (bool, optional): Whether to include scores in the search results. Defaults to True.
-
-    Returns:
-        None
-
-    Raises:
-        None
-
-    """
     ix = index.open_dir(ixdir)
     qp = qparser.QueryParser("title", ix.schema)
     q = qp.parse(qstring)

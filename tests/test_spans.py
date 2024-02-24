@@ -16,7 +16,7 @@ def get_index():
         return _ix
 
     charfield = fields.FieldType(
-        formats.Characters(), analysis.simple_analyzer(), scorable=True, stored=True
+        formats.Characters(), analysis.SimpleAnalyzer(), scorable=True, stored=True
     )
     schema = fields.Schema(text=charfield)
     st = RamStorage()
@@ -93,10 +93,10 @@ def test_span_term():
 
             ids = set()
             while m.is_active():
-                matcher_id = m.id()
+                id = m.id()
                 sps = m.spans()
-                ids.add(matcher_id)
-                original = list(s.stored_fields(matcher_id)["text"])
+                ids.add(id)
+                original = list(s.stored_fields(id)["text"])
                 assert word in original
 
                 if word != "bravo":
@@ -208,7 +208,7 @@ def test_near_unordered():
 
 
 def test_span_near_tree():
-    ana = analysis.simple_analyzer()
+    ana = analysis.SimpleAnalyzer()
     schema = fields.Schema(text=fields.TEXT(analyzer=ana, stored=True))
     st = RamStorage()
     ix = st.create_index(schema)

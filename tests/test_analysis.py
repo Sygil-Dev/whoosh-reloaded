@@ -432,8 +432,8 @@ def test_url():
     sample = "Visit https://github.com/sygil-dev/whoosh-reloaded or urn:isbn:5930502 or http://www.apple.com/."
 
     anas = [
-        analysis.simple_analyzer(analysis.url_pattern),
-        analysis.standard_analyzer(analysis.url_pattern, stoplist=None),
+        analysis.SimpleAnalyzer(analysis.url_pattern),
+        analysis.StandardAnalyzer(analysis.url_pattern, stoplist=None),
     ]
     for ana in anas:
         ts = [t.text for t in ana(sample)]
@@ -543,14 +543,14 @@ def test_language_analyzer():
     ]
 
     for lang, source, target in domain:
-        ana = analysis.language_analyzer(lang)
+        ana = analysis.LanguageAnalyzer(lang)
         words = [t.text for t in ana(source)]
         assert words == target
 
 
 @pytest.mark.skipif("sys.version_info < (2,6)")
 def test_la_pickleability():
-    ana = analysis.language_analyzer("en")
+    ana = analysis.LanguageAnalyzer("en")
     _ = dumps(ana, -1)
 
 
@@ -558,7 +558,7 @@ def test_charset_pickeability():
     from whoosh.support import charset
 
     charmap = charset.charset_table_to_dict(charset.default_charset)
-    ana = analysis.standard_analyzer() | analysis.CharsetFilter(charmap)
+    ana = analysis.StandardAnalyzer() | analysis.CharsetFilter(charmap)
     _ = dumps(ana, -1)
 
     ana = analysis.CharsetTokenizer(charmap)
@@ -638,7 +638,7 @@ def test_stop_lang():
 def test_issue358():
     t = analysis.RegexTokenizer(r"\w+")
     with pytest.raises(analysis.CompositionError):
-        _ = t | analysis.standard_analyzer()
+        _ = t | analysis.StandardAnalyzer()
 
 
 def test_ngramwords_tokenizer():

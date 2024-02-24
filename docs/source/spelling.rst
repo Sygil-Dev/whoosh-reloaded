@@ -37,7 +37,7 @@ However, if you have an analyzer that modifies the indexed words (such as
 stemming), you can add ``spelling=True`` to a field to have it store separate
 unmodified versions of the terms for spelling suggestions::
 
-    ana = analysis.stemming_analyzer()
+    ana = analysis.StemmingAnalyzer()
     schema = fields.Schema(text=TEXT(analyzer=ana, spelling=True))
 
 You can then use the :meth:` whoosh.searching.Searcher.corrector` method

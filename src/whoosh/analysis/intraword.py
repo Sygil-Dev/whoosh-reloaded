@@ -43,49 +43,27 @@ class CompoundWordFilter(Filter):
     The ``keep_compound`` argument lets you decide whether to keep the
     compound word in the token stream along with the word segments.
 
-    Args:
-        wordset (object): An object with a ``__contains__`` method, such as a
-            set, containing strings to look for inside the tokens.
-        keep_compound (bool, optional): If True (the default), the original compound
-            token will be retained in the stream before the subwords.
-
-    Example:
-        >>> cwf = CompoundWordFilter(wordset, keep_compound=True)
-        >>> analyzer = RegexTokenizer(r"\S+") | cwf
-        >>> [t.text for t in analyzer("I do not like greeneggs and ham")]
-        ["I", "do", "not", "like", "greeneggs", "green", "eggs", "and", "ham"]
-        >>> cwf.keep_compound = False
-        >>> [t.text for t in analyzer("I do not like greeneggs and ham")]
-        ["I", "do", "not", "like", "green", "eggs", "and", "ham"]
+    >>> cwf = CompoundWordFilter(wordset, keep_compound=True)
+    >>> analyzer = RegexTokenizer(r"\S+") | cwf
+    >>> [t.text for t in analyzer("I do not like greeneggs and ham")
+    ["I", "do", "not", "like", "greeneggs", "green", "eggs", "and", "ham"]
+    >>> cwf.keep_compound = False
+    >>> [t.text for t in analyzer("I do not like greeneggs and ham")
+    ["I", "do", "not", "like", "green", "eggs", "and", "ham"]
     """
 
     def __init__(self, wordset, keep_compound=True):
         """
-        Initialize the CompoundWordFilter.
-
-        Args:
-            wordset (object): An object with a ``__contains__`` method, such as a
-                set, containing strings to look for inside the tokens.
-            keep_compound (bool, optional): If True (the default), the original compound
-                token will be retained in the stream before the subwords.
+        :param wordset: an object with a ``__contains__`` method, such as a
+            set, containing strings to look for inside the tokens.
+        :param keep_compound: if True (the default), the original compound
+            token will be retained in the stream before the subwords.
         """
 
         self.wordset = wordset
         self.keep_compound = keep_compound
 
     def subwords(self, s, memo):
-        """
-        Recursively break a compound word into its individual parts.
-
-        Args:
-            s (str): The compound word to be broken down.
-            memo (dict): A dictionary to store previously computed subwords.
-
-        Returns:
-            list or None: A list of subwords if the compound word can be broken down,
-                None otherwise.
-        """
-
         if s in self.wordset:
             return [s]
         if s in memo:
@@ -104,16 +82,6 @@ class CompoundWordFilter(Filter):
         return None
 
     def __call__(self, tokens):
-        """
-        Apply the CompoundWordFilter to a stream of tokens.
-
-        Args:
-            tokens (iterable): The input stream of tokens.
-
-        Yields:
-            Token: The modified tokens after applying the filter.
-        """
-
         keep_compound = self.keep_compound
         memo = {}
         subwords = self.subwords
@@ -130,45 +98,27 @@ class CompoundWordFilter(Filter):
 
 
 class BiWordFilter(Filter):
-    """Merges adjacent tokens into "bi-word" tokens.
+    """Merges adjacent tokens into "bi-word" tokens, so that for example::
 
-    This filter merges adjacent tokens into "bi-word" tokens. For example, the tokens
-    "the", "sign", "of", "four" would be transformed into "the-sign", "sign-of", "of-four".
+        "the", "sign", "of", "four"
 
-    Bi-word tokens can be used to create fields for pseudo-phrase searching. If all the
-    terms in a query match the document, it probably contains the phrase. Using bi-word
-    tokens can make the searching faster than actually doing a phrase search on individual
-    word terms.
+    becomes::
 
-    The `BiWordFilter` is much faster than using the otherwise equivalent `ShingleFilter(2)`.
+        "the-sign", "sign-of", "of-four"
 
-    Args:
-        sep (str): The separator to use when merging adjacent tokens. Default is "-".
+    This can be used to create fields for pseudo-phrase searching, where if
+    all the terms match the document probably contains the phrase, but the
+    searching is faster than actually doing a phrase search on individual word
+    terms.
 
+    The ``BiWordFilter`` is much faster than using the otherwise equivalent
+    ``ShingleFilter(2)``.
     """
 
     def __init__(self, sep="-"):
-        """
-        Initializes the IntrawordFilter with the specified separator character.
-
-        Args:
-            sep (str): The separator character used to split words. Defaults to "-".
-        """
         self.sep = sep
 
     def __call__(self, tokens):
-        """Merges adjacent tokens into bi-word tokens.
-
-        This method takes a stream of tokens and merges adjacent tokens into "bi-word" tokens.
-        It yields the bi-word tokens as it iterates through the input token stream.
-
-        Args:
-            tokens (iterable): The input token stream.
-
-        Yields:
-            Token: The bi-word tokens.
-
-        """
         sep = self.sep
         prev_text = None
         prev_startchar = None
@@ -383,15 +333,6 @@ class IntraWordFilter(Filter):
         self.mergenums = mergenums
 
     def __eq__(self, other):
-        """
-        Check if this object is equal to another object.
-
-        Args:
-            other: The object to compare with.
-
-        Returns:
-            bool: True if the objects are equal, False otherwise.
-        """
         return (
             other
             and self.__class__ is other.__class__
@@ -399,16 +340,6 @@ class IntraWordFilter(Filter):
         )
 
     def _split(self, string):
-        """
-        Splits the given string into indexable substrings based on the specified boundaries.
-
-        Args:
-            string (str): The input string to be split.
-
-        Yields:
-            tuple: A tuple containing the start and end indices of each indexable substring.
-
-        """
         bound = self.boundary
 
         # Yields (startchar, endchar) pairs for each indexable substring in
@@ -460,21 +391,6 @@ class IntraWordFilter(Filter):
                     yield (part_start, part_end)
 
     def _merge(self, parts):
-        """
-        Merges consecutive parts in the given list based on their type (alpha or digit).
-
-        Args:
-            parts (list): The list of parts to be merged. Each part is a tuple of the form (text, pos, startchar, endchar).
-
-        Returns:
-            None. The original list of parts is modified in-place.
-
-        Example:
-            parts = [('hello', 0, 0, 4), ('world', 1, 6, 10), ('123', 2, 12, 14)]
-            _merge(parts)
-            print(parts)
-            # Output: [('helloworld', 0, 0, 10), ('123', 2, 12, 14)]
-        """
         mergewords = self.mergewords
         mergenums = self.mergenums
 
@@ -533,18 +449,6 @@ class IntraWordFilter(Filter):
             insert_item(buf, len(parts), pos)
 
     def __call__(self, tokens):
-        """
-        Applies the intraword filter to the given tokens.
-
-        This filter renumbers tokens as it expands them. It splits tokens on delimiters, word and/or number boundaries,
-        and merges consecutive runs of all-letters and/or all-numbers if the options are set.
-
-        Parameters:
-        - tokens (list): The list of tokens to be processed.
-
-        Returns:
-        - generator: A generator that yields the processed tokens.
-        """
         mergewords = self.mergewords
         mergenums = self.mergenums
 

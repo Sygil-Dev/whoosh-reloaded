@@ -77,14 +77,14 @@ analyzer as the inverted index. Alternatively, you can pass a Format subclass
 and Whoosh will instantiate it for you.
 
 For example, to store term vectors using the same settings as the inverted
-index (Positions format and standard_analyzer)::
+index (Positions format and StandardAnalyzer)::
 
     from whoosh.fields import Schema, TEXT
 
     schema = Schema(content=TEXT(vector=True))
 
 To store term vectors that use the same analyzer as the inverted index
-(standard_analyzer by default) but only store term frequency::
+(StandardAnalyzer by default) but only store term frequency::
 
     from whoosh.formats import Frequency
 
@@ -351,7 +351,7 @@ Fixed bug where files could be deleted before a reader could open them  in
 threaded situations.
 
 New :class:` whoosh.analysis.NgramFilter` filter,
-:class:` whoosh.analysis.ngram_word_analyzer` analyzer, and
+:class:` whoosh.analysis.NgramWordAnalyzer` analyzer, and
 :class:` whoosh.fields.NGRAMWORDS` field type allow producing n-grams from
 tokenized text.
 

@@ -103,15 +103,6 @@ class Filter(Composable):
     """
 
     def __eq__(self, other):
-        """
-        Compare this object with another object for equality.
-
-        Args:
-            other: The object to compare with.
-
-        Returns:
-            bool: True if the objects are equal, False otherwise.
-        """
         return (
             other
             and self.__class__ is other.__class__
@@ -119,27 +110,9 @@ class Filter(Composable):
         )
 
     def __ne__(self, other):
-        """
-        Check if the current object is not equal to another object.
-
-        Parameters:
-        - other: The object to compare with.
-
-        Returns:
-        - bool: True if the objects are not equal, False otherwise.
-        """
         return self != other
 
     def __call__(self, tokens):
-        """
-        Applies the filter to the given list of tokens.
-
-        Args:
-            tokens (list): The list of tokens to be filtered.
-
-        Returns:
-            list: The filtered list of tokens.
-        """
         raise NotImplementedError
 
 
@@ -147,35 +120,18 @@ class PassFilter(Filter):
     """An identity filter: passes the tokens through untouched."""
 
     def __call__(self, tokens):
-        """
-        Apply the pass filter to the given tokens.
-
-        Parameters:
-        tokens (list): The list of tokens to be filtered.
-
-        Returns:
-        list: The filtered list of tokens, which is the same as the input list.
-        """
         return tokens
 
 
 class LoggingFilter(Filter):
     """Prints the contents of every filter that passes through as a debug
     log entry.
-
-    This filter is used to log the contents of each token that passes through it. It can be helpful for debugging purposes or for monitoring the tokenization process.
-
-    Args:
-        logger (Logger, optional): The logger to use for logging the token contents. If not provided, the "whoosh.analysis" logger is used.
-
     """
 
     def __init__(self, logger=None):
         """
-        Initializes a new instance of the LoggingFilter class.
-
-        Args:
-            logger (Logger, optional): The logger to use. If omitted, the "whoosh.analysis" logger is used.
+        :param target: the logger to use. If omitted, the "whoosh.analysis"
+            logger is used.
         """
 
         if logger is None:
@@ -185,17 +141,6 @@ class LoggingFilter(Filter):
         self.logger = logger
 
     def __call__(self, tokens):
-        """
-        Applies the filter to the given tokens.
-
-        Args:
-            tokens (iterable): The tokens to filter.
-
-        Yields:
-            Token: The filtered tokens.
-
-        """
-
         logger = self.logger
         for t in tokens:
             logger.debug(repr(t))
@@ -205,22 +150,6 @@ class LoggingFilter(Filter):
 class MultiFilter(Filter):
     """Chooses one of two or more sub-filters based on the 'mode' attribute
     of the token stream.
-
-    This class is used to apply different filters to a token stream based on
-    the value of the 'mode' attribute of each token. It allows you to associate
-    different filters with different 'mode' attribute values and apply the
-    appropriate filter to each token.
-
-    Attributes:
-        default_filter (Filter): The default filter to use when no matching
-            'mode' attribute is found. Defaults to PassFilter().
-        filters (dict): A dictionary that maps 'mode' attribute values to
-            instantiated filters.
-
-    Example:
-        >>> iwf_for_index = IntraWordFilter(mergewords=True, mergenums=False)
-        >>> iwf_for_query = IntraWordFilter(mergewords=False, mergenums=False)
-        >>> mf = MultiFilter(index=iwf_for_index, query=iwf_for_query)
     """
 
     default_filter = PassFilter()
@@ -229,25 +158,16 @@ class MultiFilter(Filter):
         """Use keyword arguments to associate mode attribute values with
         instantiated filters.
 
-        Args:
-            **kwargs: Keyword arguments where the key is the 'mode' attribute
-                value and the value is the instantiated filter.
+        >>> iwf_for_index = IntraWordFilter(mergewords=True, mergenums=False)
+        >>> iwf_for_query = IntraWordFilter(mergewords=False, mergenums=False)
+        >>> mf = MultiFilter(index=iwf_for_index, query=iwf_for_query)
 
-        Note:
-            This class expects that the value of the mode attribute is consistent
-            among all tokens in a token stream.
+        This class expects that the value of the mode attribute is consistent
+        among all tokens in a token stream.
         """
         self.filters = kwargs
 
     def __eq__(self, other):
-        """Check if two MultiFilter instances are equal.
-
-        Args:
-            other (MultiFilter): The other MultiFilter instance to compare.
-
-        Returns:
-            bool: True if the two MultiFilter instances are equal, False otherwise.
-        """
         return (
             other
             and self.__class__ is other.__class__
@@ -255,17 +175,6 @@ class MultiFilter(Filter):
         )
 
     def __call__(self, tokens):
-        """Apply the appropriate filter to each token in the token stream.
-
-        Args:
-            tokens (iterable): An iterable of tokens.
-
-        Returns:
-            iterable: An iterable of filtered tokens.
-
-        Note:
-            Only the first token is used to determine the appropriate filter to apply.
-        """
         # Only selects on the first token
         t = next(tokens)
         selected_filter = self.filters.get(t.mode, self.default_filter)
@@ -275,12 +184,9 @@ class MultiFilter(Filter):
 class TeeFilter(Filter):
     r"""Interleaves the results of two or more filters (or filter chains).
 
-    This filter takes the output of multiple filters or filter chains and interleaves them together.
-    It is useful when you want to apply different transformations to the same input and combine the results.
+    NOTE: because it needs to create copies of each token for each sub-filter,
+    this filter is quite slow.
 
-    NOTE: This filter can be slow because it needs to create copies of each token for each sub-filter.
-
-    Usage:
     >>> target = "ALFA BRAVO CHARLIE"
     >>> # In one branch, we'll lower-case the tokens
     >>> f1 = LowercaseFilter()
@@ -301,41 +207,14 @@ class TeeFilter(Filter):
     """
 
     def __init__(self, *filters):
-        """
-        Initialize the TeeFilter with the provided filters.
-
-        Args:
-            *filters: Variable number of filters or filter chains to be interleaved.
-
-        Raises:
-            ValueError: If less than two filters are provided.
-        """
         if len(filters) < 2:
             raise ValueError("TeeFilter requires two or more filters")
         self.filters = filters
 
     def __eq__(self, other):
-        """
-        Check if two TeeFilter instances are equal.
-
-        Args:
-            other: Another TeeFilter instance.
-
-        Returns:
-            bool: True if the two instances are equal, False otherwise.
-        """
         return self.__class__ is other.__class__ and self.filters == other.fitlers
 
     def __call__(self, tokens):
-        """
-        Apply the TeeFilter to the input tokens.
-
-        Args:
-            tokens: The input tokens to be filtered.
-
-        Yields:
-            Token: The interleaved tokens from the filters.
-        """
         from itertools import tee
 
         count = len(self.filters)
@@ -360,119 +239,36 @@ class TeeFilter(Filter):
 class ReverseTextFilter(Filter):
     """Reverses the text of each token.
 
-    This filter takes a stream of tokens and reverses the text of each token.
-    It can be used as part of an analysis pipeline to modify the text of tokens.
-
-    Example:
-        >>> ana = RegexTokenizer() | ReverseTextFilter()
-        >>> [token.text for token in ana("hello there")]
-        ["olleh", "ereht"]
-
+    >>> ana = RegexTokenizer() | ReverseTextFilter()
+    >>> [token.text for token in ana("hello there")]
+    ["olleh", "ereht"]
     """
 
     def __call__(self, tokens):
-        """Apply the reverse text transformation to each token.
-
-        Args:
-            tokens (iterable): A stream of tokens.
-
-        Yields:
-            Token: A token with the reversed text.
-
-        """
         for t in tokens:
             t.text = t.text[::-1]
             yield t
 
 
 class LowercaseFilter(Filter):
-    """A filter that uses unicode.lower() to lowercase token text.
+    """Uses unicode.lower() to lowercase token text.
 
-    This filter converts the text of each token to lowercase using the unicode.lower() method.
-    It is commonly used in text analysis pipelines to normalize the case of tokens.
-
-    Example:
-        >>> rext = RegexTokenizer()
-        >>> stream = rext("This is a TEST")
-        >>> [token.text for token in LowercaseFilter(stream)]
-        ["this", "is", "a", "test"]
-
-    Usage:
-        1. Create an instance of the LowercaseFilter class.
-        2. Pass a stream of tokens to the instance using the __call__ method.
-        3. Iterate over the filtered tokens to access the lowercase text.
-
-    Note:
-        The LowercaseFilter modifies the text of each token in-place. It does not create new tokens.
-
+    >>> rext = RegexTokenizer()
+    >>> stream = rext("This is a TEST")
+    >>> [token.text for token in LowercaseFilter(stream)]
+    ["this", "is", "a", "test"]
     """
 
     def __call__(self, tokens):
-        """Applies the lowercase transformation to each token in the stream.
-
-        Args:
-            tokens (iterable): A stream of tokens.
-
-        Yields:
-            Token: A token with its text converted to lowercase.
-
-        """
         for t in tokens:
             t.text = t.text.lower()
             yield t
 
 
 class StripFilter(Filter):
-    """Calls unicode.strip() on the token text.
-
-    This filter is used to remove leading and trailing whitespace from the token text.
-    It is typically used in text analysis pipelines to clean up the tokenized text.
-
-    Example usage:
-    -------------
-    from whoosh.analysis import Token, Tokenizer, TokenFilter
-
-    class MyTokenizer(Tokenizer):
-        def __call__(self, value, positions=False, chars=False, keeporiginal=False, removestops=True,
-                     start_pos=0, start_char=0, mode='', **kwargs):
-            # Tokenize the value
-            tokens = self.tokenizer(value, positions=positions, chars=chars,
-                                    keeporiginal=keeporiginal, removestops=removestops,
-                                    start_pos=start_pos, start_char=start_char, mode=mode, **kwargs)
-
-            # Apply the StripFilter to remove leading and trailing whitespace
-            tokens = StripFilter()(tokens)
-
-            return tokens
-
-    # Create an instance of MyTokenizer
-    tokenizer = MyTokenizer()
-
-    # Tokenize a text
-    text = "   Hello, World!   "
-    tokens = tokenizer(text)
-
-    # Print the tokens
-    for token in tokens:
-        print(token.text)
-
-    Output:
-    -------
-    Hello,
-    World!
-
-    """
+    """Calls unicode.strip() on the token text."""
 
     def __call__(self, tokens):
-        """Applies the strip() method to the token text.
-
-        Args:
-            tokens (iterable of whoosh.analysis.Token): The input tokens.
-
-        Yields:
-            whoosh.analysis.Token: The modified tokens with leading and trailing whitespace removed.
-
-        """
         for t in tokens:
             t.text = t.text.strip()
             yield t
@@ -484,58 +280,33 @@ class StopFilter(Filter):
 
     Make sure you precede this filter with a :class:`LowercaseFilter`.
 
-    Args:
-        stoplist (collection, optional): A collection of words to remove from the stream.
-            This is converted to a frozenset. The default is a list of
-            common English stop words.
-        minsize (int, optional): The minimum length of token texts. Tokens with
-            text smaller than this will be stopped. The default is 2.
-        maxsize (int, optional): The maximum length of token texts. Tokens with text
-            larger than this will be stopped. Use None to allow any length.
-        renumber (bool, optional): Change the 'pos' attribute of unstopped tokens
-            to reflect their position with the stopped words removed.
-        lang (str, optional): Automatically get a list of stop words for the given
-            language.
+    >>> stopper = RegexTokenizer() | StopFilter()
+    >>> [token.text for token in stopper(u"this is a test")]
+    ["test"]
+    >>> es_stopper = RegexTokenizer() | StopFilter(lang="es")
+    >>> [token.text for token in es_stopper(u"el lapiz es en la mesa")]
+    ["lapiz", "mesa"]
 
-    Attributes:
-        stops (frozenset): The set of stop words.
-        min (int): The minimum length of token texts.
-        max (int): The maximum length of token texts.
-        renumber (bool): Indicates whether the 'pos' attribute of unstopped tokens
-            should be changed to reflect their position with the stopped words removed.
-
-    Examples:
-        >>> stopper = RegexTokenizer() | StopFilter()
-        >>> [token.text for token in stopper(u"this is a test")]
-        ["test"]
-        >>> es_stopper = RegexTokenizer() | StopFilter(lang="es")
-        >>> [token.text for token in es_stopper(u"el lapiz es en la mesa")]
-        ["lapiz", "mesa"]
-
-    Note:
-        The list of available languages is in `whoosh.lang.languages`.
-        You can use :func:`whoosh.lang.has_stopwords` to check if a given language
-        has a stop word list available.
+    The list of available languages is in `whoosh.lang.languages`.
+    You can use :func:`whoosh.lang.has_stopwords` to check if a given language
+    has a stop word list available.
     """
 
     def __init__(
         self, stoplist=STOP_WORDS, minsize=2, maxsize=None, renumber=True, lang=None
     ):
         """
-        Initialize the StopFilter.
-
-        Args:
-            stoplist (collection, optional): A collection of words to remove from the stream.
-                This is converted to a frozenset. The default is a list of
-                common English stop words.
-            minsize (int, optional): The minimum length of token texts. Tokens with
-                text smaller than this will be stopped. The default is 2.
-            maxsize (int, optional): The maximum length of token texts. Tokens with text
-                larger than this will be stopped. Use None to allow any length.
-            renumber (bool, optional): Change the 'pos' attribute of unstopped tokens
-                to reflect their position with the stopped words removed.
-            lang (str, optional): Automatically get a list of stop words for the given
-                language
+        :param stoplist: A collection of words to remove from the stream.
+            This is converted to a frozenset. The default is a list of
+            common English stop words.
+        :param minsize: The minimum length of token texts. Tokens with
+            text smaller than this will be stopped. The default is 2.
+        :param maxsize: The maximum length of token texts. Tokens with text
+            larger than this will be stopped. Use None to allow any length.
+        :param renumber: Change the 'pos' attribute of unstopped tokens
+            to reflect their position with the stopped words removed.
+        :param lang: Automatically get a list of stop words for the given
+            language
         """
 
         stops = set()
@@ -552,15 +323,6 @@ class StopFilter(Filter):
         self.renumber = renumber
 
     def __eq__(self, other):
-        """
-        Compare the StopFilter with another object for equality.
-
-        Args:
-            other (object): The object to compare with.
-
-        Returns:
-            bool: True if the objects are equal, False otherwise.
-        """
         return (
             other
             and self.__class__ is other.__class__
@@ -570,15 +332,6 @@ class StopFilter(Filter):
         )
 
     def __call__(self, tokens):
-        """
-        Apply the StopFilter to the tokens.
-
-        Args:
-            tokens (iterable): The input tokens.
-
-        Yields:
-            Token: The filtered tokens.
-        """
         stoplist = self.stops
         minsize = self.min
         maxsize = self.max
@@ -610,65 +363,45 @@ class StopFilter(Filter):
 
 
 class CharsetFilter(Filter):
-    """
-    Translates the text of tokens by calling unicode.translate() using the
+    """Translates the text of tokens by calling unicode.translate() using the
     supplied character mapping object. This is useful for case and accent
     folding.
 
-    The `whoosh.support.charset` module has a useful map for accent folding.
+    The ``whoosh.support.charset`` module has a useful map for accent folding.
 
-    Example usage:
-
-    ```python
-    from whoosh.support.charset import accent_map
-    from whoosh.analysis import RegexTokenizer
-
-    retokenizer = RegexTokenizer()
-    chfilter = CharsetFilter(accent_map)
-    tokens = chfilter(retokenizer(u'café'))
-    [t.text for t in tokens]
-    # Output: [u'cafe']
-    ```
+    >>> from whoosh.support.charset import accent_map
+    >>> retokenizer = RegexTokenizer()
+    >>> chfilter = CharsetFilter(accent_map)
+    >>> [t.text for t in chfilter(retokenizer(u'café'))]
+    [u'cafe']
 
     Another way to get a character mapping object is to convert a Sphinx
-    charset table file using `whoosh.support.charset.charset_table_to_dict`.
+    charset table file using
+    :func:`whoosh.support.charset.charset_table_to_dict`.
 
-    Example usage:
-
-    ```python
-    from whoosh.support.charset import charset_table_to_dict, default_charset
-    from whoosh.analysis import RegexTokenizer
-
-    retokenizer = RegexTokenizer()
-    charmap = charset_table_to_dict(default_charset)
-    chfilter = CharsetFilter(charmap)
-    tokens = chfilter(retokenizer(u'Stra\\xdfe'))
-    [t.text for t in tokens]
-    # Output: [u'strase']
-    ```
+    >>> from whoosh.support.charset import charset_table_to_dict
+    >>> from whoosh.support.charset import default_charset
+    >>> retokenizer = RegexTokenizer()
+    >>> charmap = charset_table_to_dict(default_charset)
+    >>> chfilter = CharsetFilter(charmap)
+    >>> [t.text for t in chfilter(retokenizer(u'Stra\\xdfe'))]
+    [u'strase']
 
     The Sphinx charset table format is described at
-    https://www.sphinxsearch.com/docs/current.html#conf-charset-table.
+    http://www.sphinxsearch.com/docs/current.html#conf-charset-table.
     """
 
     __inittypes__ = {"charmap": dict}
 
     def __init__(self, charmap):
         """
-        Initializes a CharsetFilter object.
-
-        :param charmap: A dictionary mapping from integer character numbers to
+        :param charmap: a dictionary mapping from integer character numbers to
             unicode characters, as required by the unicode.translate() method.
         """
+
         self.charmap = charmap
 
     def __eq__(self, other):
-        """
-        Checks if two CharsetFilter objects are equal.
-
-        :param other: The other CharsetFilter object to compare.
-        :return: True if the two objects are equal, False otherwise.
-        """
         return (
             other
             and self.__class__ is other.__class__
@@ -676,12 +409,6 @@ class CharsetFilter(Filter):
         )
 
     def __call__(self, tokens):
-        """
-        Applies the CharsetFilter to a sequence of tokens.
-
-        :param tokens: An iterable sequence of tokens.
-        :return: A generator that yields the transformed tokens.
-        """
         assert hasattr(tokens, "__iter__")
         charmap = self.charmap
         for t in tokens:
@@ -696,61 +423,37 @@ class DelimitedAttributeFilter(Filter):
     The defaults are set up to use the ``^`` character as a delimiter and store
     the value after the ``^`` as the boost for the token.
 
-    Args:
-        delimiter (str): A string that, when present in a token's text, separates
-            the actual text from the "data" payload.
-        attribute (str): The name of the attribute in which to store the data on
-            the token.
-        default (Any): The value to use for the attribute for tokens that don't have
-            delimited data.
-        type (type): The type of the data, for example ``str`` or ``float``. This is
-            used to convert the string value of the data before storing it in the
-            attribute.
+    >>> daf = DelimitedAttributeFilter(delimiter="^", attribute="boost")
+    >>> ana = RegexTokenizer("\\\\S+") | DelimitedAttributeFilter()
+    >>> for t in ana(u("image render^2 file^0.5"))
+    ...    print("%r %f" % (t.text, t.boost))
+    'image' 1.0
+    'render' 2.0
+    'file' 0.5
 
-    Example:
-        >>> daf = DelimitedAttributeFilter(delimiter="^", attribute="boost")
-        >>> ana = RegexTokenizer("\\\\S+") | DelimitedAttributeFilter()
-        >>> for t in ana(u("image render^2 file^0.5")):
-        ...    print("%r %f" % (t.text, t.boost))
-        'image' 1.0
-        'render' 2.0
-        'file' 0.5
-
-    Note:
-        You need to make sure your tokenizer includes the delimiter and data as part
-        of the token!
+    Note that you need to make sure your tokenizer includes the delimiter and
+    data as part of the token!
     """
 
     def __init__(self, delimiter="^", attribute="boost", default=1.0, type=float):
         """
-        Initialize the DelimitedAttributeFilter.
-
-        Args:
-            delimiter (str): A string that, when present in a token's text, separates
-                the actual text from the "data" payload.
-            attribute (str): The name of the attribute in which to store the data on
-                the token.
-            default (Any): The value to use for the attribute for tokens that don't have
-                delimited data.
-            type (type): The type of the data, for example ``str`` or ``float``. This is
-                used to convert the string value of the data before storing it in the
-                attribute.
+        :param delimiter: a string that, when present in a token's text,
+            separates the actual text from the "data" payload.
+        :param attribute: the name of the attribute in which to store the
+            data on the token.
+        :param default: the value to use for the attribute for tokens that
+            don't have delimited data.
+        :param type: the type of the data, for example ``str`` or ``float``.
+            This is used to convert the string value of the data before
+            storing it in the attribute.
         """
+
         self.delim = delimiter
         self.attr = attribute
         self.default = default
         self.type = type
 
     def __eq__(self, other):
-        """
-        Compare the DelimitedAttributeFilter with another object for equality.
-
-        Args:
-            other (Any): The object to compare with.
-
-        Returns:
-            bool: True if the objects are equal, False otherwise.
-        """
         return (
             other
             and self.__class__ is other.__class__
@@ -760,15 +463,6 @@ class DelimitedAttributeFilter(Filter):
         )
 
     def __call__(self, tokens):
-        """
-        Apply the DelimitedAttributeFilter to a sequence of tokens.
-
-        Args:
-            tokens (Iterable[Token]): The sequence of tokens to filter.
-
-        Yields:
-            Token: The filtered tokens.
-        """
         delim = self.delim
         attr = self.attr
         default = self.default
@@ -791,59 +485,33 @@ class DelimitedAttributeFilter(Filter):
 class SubstitutionFilter(Filter):
     """Performs a regular expression substitution on the token text.
 
-    This filter applies a regular expression substitution to the text of each token.
-    It is particularly useful for removing or replacing specific patterns of text within tokens.
-    The filter utilizes the `re.sub()` method to perform the substitution.
+    This is especially useful for removing text from tokens, for example
+    hyphens::
 
-    Example usage:
-    --------------
-    # Create an analyzer that removes hyphens from tokens
-    tokenizer = RegexTokenizer(r"\\S+")
-    substitution_filter = SubstitutionFilter("-", "")
-    analyzer = tokenizer | substitution_filter
+        ana = RegexTokenizer(r"\\S+") | SubstitutionFilter("-", "")
 
-    Parameters:
-    -----------
-    pattern : str or Pattern
-        A pattern string or compiled regular expression object describing the text to replace.
-    replacement : str
-        The substitution text.
+    Because it has the full power of the re.sub() method behind it, this filter
+    can perform some fairly complex transformations. For example, to take
+    tokens like ``'a=b', 'c=d', 'e=f'`` and change them to ``'b=a', 'd=c',
+    'f=e'``::
 
-    Methods:
-    --------
-    __call__(tokens)
-        Applies the substitution filter to the given tokens.
-
+        # Analyzer that swaps the text on either side of an equal sign
+        rt = RegexTokenizer(r"\\S+")
+        sf = SubstitutionFilter("([^/]*)/(./*)", r"\\2/\\1")
+        ana = rt | sf
     """
 
     def __init__(self, pattern, replacement):
         """
-        Initializes a SubstitutionFilter object.
-
-        Parameters:
-        -----------
-        pattern : str or Pattern
-            A pattern string or compiled regular expression object describing the text to replace.
-        replacement : str
-            The substitution text.
+        :param pattern: a pattern string or compiled regular expression object
+            describing the text to replace.
+        :param replacement: the substitution text.
         """
+
         self.pattern = rcompile(pattern)
         self.replacement = replacement
 
     def __eq__(self, other):
-        """
-        Checks if two SubstitutionFilter objects are equal.
-
-        Parameters:
-        -----------
-        other : SubstitutionFilter
-            The other SubstitutionFilter object to compare.
-
-        Returns:
-        --------
-        bool
-            True if the two SubstitutionFilter objects are equal, False otherwise.
-        """
         return (
             other
             and self.__class__ is other.__class__
@@ -852,19 +520,6 @@ class SubstitutionFilter(Filter):
         )
 
     def __call__(self, tokens):
-        """
-        Applies the substitution filter to the given tokens.
-
-        Parameters:
-        -----------
-        tokens : iterable
-            An iterable of Token objects.
-
-        Yields:
-        -------
-        Token
-            The modified Token objects after applying the substitution filter.
-        """
         pattern = self.pattern
         replacement = self.replacement
 

@@ -50,13 +50,13 @@ analyzer chain.
     >>> [token.text for token in stemmer(stream)]
     [u"fundament", u"willow"]
 
-The :func:` whoosh.analysis.stemming_analyzer` is a pre-packaged analyzer that
+The :func:` whoosh.analysis.StemmingAnalyzer` is a pre-packaged analyzer that
 combines a tokenizer, lower-case filter, optional stop filter, and stem filter::
 
     from whoosh import fields
-    from whoosh.analysis import stemming_analyzer
+    from whoosh.analysis import StemmingAnalyzer
 
-    stem_ana = stemming_analyzer()
+    stem_ana = StemmingAnalyzer()
     schema = fields.Schema(title=TEXT(analyzer=stem_ana, stored=True),
                            content=TEXT(analyzer=stem_ana))
 
@@ -170,12 +170,12 @@ text. For example, it will filter the tokens ``u'café', u'resumé', ...`` to
 ``u'cafe', u'resume', ...``. This is usually the method you'll want to use
 unless you need to use a charset to tokenize terms::
 
-    from whoosh.analysis import CharsetFilter, stemming_analyzer
+    from whoosh.analysis import CharsetFilter, StemmingAnalyzer
     from whoosh import fields
     from whoosh.support.charset import accent_map
 
     # For example, to add an accent-folding filter to a stemming analyzer:
-    my_analyzer = stemming_analyzer() | CharsetFilter(accent_map)
+    my_analyzer = StemmingAnalyzer() | CharsetFilter(accent_map)
 
     # To use this analyzer in your schema:
     my_schema = fields.Schema(content=fields.TEXT(analyzer=my_analyzer))
@@ -197,7 +197,7 @@ required by ``CharsetTokenizer`` and ``CharsetFilter``::
     from whoosh.analysis import CharsetFilter
     from whoosh.support.charset import default_charset, charset_table_to_dict
     charmap = charset_table_to_dict(default_charset)
-    my_analyzer = stemming_analyzer() | CharsetFilter(charmap)
+    my_analyzer = StemmingAnalyzer() | CharsetFilter(charmap)
 
 (The Sphinx charset table format is described at
 http://www.sphinxsearch.com/docs/current.html#conf-charset-table )

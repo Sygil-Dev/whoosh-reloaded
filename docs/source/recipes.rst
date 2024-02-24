@@ -61,17 +61,17 @@ Find every document
 iTunes-style search-as-you-type
 -------------------------------
 
-Use the :class:` whoosh.analysis.ngram_word_analyzer` as the analyzer for the
+Use the :class:` whoosh.analysis.NgramWordAnalyzer` as the analyzer for the
 field you want to search as the user types. You can save space in the index by
 turning off positions in the field using ``phrase=False``, since phrase
 searching on N-gram fields usually doesn't make much sense::
 
     # For example, to search the "title" field as the user types
-    analyzer = analysis.ngram_word_analyzer()
+    analyzer = analysis.NgramWordAnalyzer()
     title_field = fields.TEXT(analyzer=analyzer, phrase=False)
     schema = fields.Schema(title=title_field)
 
-See the documentation for the :class:`~ whoosh.analysis.ngram_word_analyzer` class
+See the documentation for the :class:`~ whoosh.analysis.NgramWordAnalyzer` class
 for information on the available options.
 
 

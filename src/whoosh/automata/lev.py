@@ -2,18 +2,6 @@ from whoosh.automata.fsa import ANY, EPSILON, NFA
 
 
 def levenshtein_automaton(term, k, prefix=0):
-    """
-    Generate a Levenshtein automaton for a given term and maximum edit distance.
-
-    Args:
-        term (str): The term to generate the automaton for.
-        k (int): The maximum edit distance allowed.
-        prefix (int, optional): The length of the prefix to match exactly. Defaults to 0.
-
-    Returns:
-        NFA: The generated Levenshtein automaton.
-
-    """
     nfa = NFA((0, 0))
     if prefix:
         for i in range(prefix):

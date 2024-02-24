@@ -402,7 +402,7 @@ class Regex(PatternQuery):
         lp = len(prefix)
         if lp < len(text) and text[lp] in "*?":
             # we stripped something starting from * or ? - they both MAY mean
-            # "0 times". As we had stripped starting from first special char,
+            # "0 times". As we had stripped starting from FIRST special char,
             # that implies there were only ordinary chars left of it. Thus,
             # the very last of them is not part of the real prefix:
             prefix = prefix[:-1]

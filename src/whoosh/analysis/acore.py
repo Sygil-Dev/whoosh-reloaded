@@ -29,16 +29,6 @@
 
 
 class CompositionError(Exception):
-    """
-    Exception raised when there is an error in the composition of analysis components.
-
-    This exception is raised when there is an error in the composition of analysis components,
-    such as when incompatible components are combined together.
-
-    Attributes:
-        message -- explanation of the error
-    """
-
     pass
 
 
@@ -46,15 +36,7 @@ class CompositionError(Exception):
 
 
 def unstopped(tokenstream):
-    """
-    Removes tokens from a token stream where token.stopped = True.
-
-    Parameters:
-    - tokenstream (generator): A generator of tokens.
-
-    Returns:
-    - generator: A generator of tokens where token.stopped = False.
-    """
+    """Removes tokens from a token stream where token.stopped = True."""
     return (t for t in tokenstream if not t.stopped)
 
 
@@ -66,26 +48,8 @@ def entoken(
     with the attributes filled in with reasonable values (for example, if
     ``positions`` or ``chars`` is True, the function assumes each token was
     separated by one space).
-
-    Args:
-        textstream (Iterable[str]): A sequence of unicode strings.
-        positions (bool, optional): Whether to include position information in the Token objects. Defaults to False.
-        chars (bool, optional): Whether to include character information in the Token objects. Defaults to False.
-        start_pos (int, optional): The starting position for the Token objects. Defaults to 0.
-        start_char (int, optional): The starting character position for the Token objects. Defaults to 0.
-        **kwargs: Additional keyword arguments to be passed to the Token objects.
-
-    Yields:
-        Token: A Token object with the attributes filled in based on the input parameters.
-
-    Examples:
-        >>> textstream = ["Hello", "world"]
-        >>> for token in entoken(textstream, positions=True, chars=True):
-        ...     print(token.text, token.pos, token.startchar, token.endchar)
-        ...
-        Hello 0 0 5
-        world 1 5 10
     """
+
     pos = start_pos
     char = start_char
     t = Token(positions=positions, chars=chars, **kwargs)
@@ -106,6 +70,8 @@ def entoken(
 
 
 # Token object
+
+
 class Token:
     """
     Represents a "token" (usually a word) extracted from the source text being
@@ -139,18 +105,14 @@ class Token:
         self, positions=False, chars=False, removestops=True, mode="", **kwargs
     ):
         """
-        Initializes a Token object.
-
         :param positions: Whether tokens should have the token position in the
             'pos' attribute.
         :param chars: Whether tokens should have character offsets in the
             'startchar' and 'endchar' attributes.
-        :param removestops: Whether to remove stop words from the stream (if
+        :param removestops: whether to remove stop words from the stream (if
             the tokens pass through a stop filter).
-        :param mode: Contains a string describing the purpose for which the
+        :param mode: contains a string describing the purpose for which the
             analyzer is being called, i.e. 'index' or 'query'.
-        :param kwargs: Additional keyword arguments to be stored as attributes
-            of the Token object.
         """
 
         self.positions = positions
@@ -162,22 +124,10 @@ class Token:
         self.__dict__.update(kwargs)
 
     def __repr__(self):
-        """
-        Returns a string representation of the Token object.
-
-        :return: A string representation of the Token object.
-        """
-
         parms = ", ".join(f"{name}={value!r}" for name, value in self.__dict__.items())
         return f"{self.__class__.__name__}({parms})"
 
     def copy(self):
-        """
-        Creates a copy of the Token object.
-
-        :return: A copy of the Token object.
-        """
-
         # This is faster than using the copy module
         return Token(**self.__dict__)
 
@@ -186,37 +136,9 @@ class Token:
 
 
 class Composable:
-    """
-    A base class for composable objects in the analysis pipeline.
-
-    Composable objects can be combined using the '|' operator to create composite analyzers.
-
-    Attributes:
-        is_morph (bool): Indicates whether the composable object has morphological analysis.
-
-    Methods:
-        __or__(self, other): Combines the current composable object with another composable object to create a composite analyzer.
-        __repr__(self): Returns a string representation of the composable object.
-        has_morph(self): Checks if the composable object has morphological analysis.
-
-    """
-
     is_morph = False
 
     def __or__(self, other):
-        """
-        Combines the current composable object with another composable object to create a composite analyzer.
-
-        Args:
-            other (Composable): The composable object to be combined with.
-
-        Returns:
-            CompositeAnalyzer: The composite analyzer created by combining the two composable objects.
-
-        Raises:
-            TypeError: If the 'other' object is not an instance of Composable.
-
-        """
         from whoosh.analysis.analyzers import CompositeAnalyzer
 
         if not isinstance(other, Composable):
@@ -224,13 +146,6 @@ class Composable:
         return CompositeAnalyzer(self, other)
 
     def __repr__(self):
-        """
-        Returns a string representation of the composable object.
-
-        Returns:
-            str: The string representation of the composable object.
-
-        """
         attrs = ""
         if self.__dict__:
             attrs = ", ".join(
@@ -239,11 +154,4 @@ class Composable:
         return self.__class__.__name__ + f"({attrs})"
 
     def has_morph(self):
-        """
-        Checks if the composable object has morphological analysis.
-
-        Returns:
-            bool: True if the composable object has morphological analysis, False otherwise.
-
-        """
         return self.is_morph

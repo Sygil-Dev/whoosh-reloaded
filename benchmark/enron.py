@@ -14,12 +14,10 @@ from whoosh import analysis, fields
 from whoosh.support.bench import Bench, Spec
 from whoosh.util import now
 
+# Benchmark class
+
 
 class Enron(Spec):
-    """
-    The Enron class provides functionality for downloading, caching, and processing the Enron email archive.
-    """
-
     name = "enron"
 
     enron_archive_url = "http://www.cs.cmu.edu/~enron/enron_mail_082109.tar.gz"
@@ -42,16 +40,10 @@ class Enron(Spec):
 
     cachefile = None
 
+    # Functions for downloading and then reading the email archive and caching
+    # the messages in an easier-to-digest format
+
     def download_archive(self, archive):
-        """
-        Downloads the Enron email archive from the specified URL and saves it to the given file path.
-
-        Args:
-            archive (str): The file path to save the downloaded archive.
-
-        Raises:
-            FileNotFoundError: If the archive file does not exist.
-        """
         print(f"Downloading Enron email archive to {archive}...")
         t = now()
         urlretrieve(self.enron_archive_url, archive)
@@ -59,15 +51,6 @@ class Enron(Spec):
 
     @staticmethod
     def get_texts(archive):
-        """
-        Generator function that yields the text content of each email in the given archive.
-
-        Args:
-            archive (str): The file path of the archive.
-
-        Yields:
-            str: The text content of each email.
-        """
         archive = tarfile.open(archive, "r:gz")
         while True:
             entry = next(archive)
@@ -81,16 +64,6 @@ class Enron(Spec):
 
     @staticmethod
     def get_messages(archive, headers=True):
-        """
-        Generator function that yields the parsed messages from the given email archive.
-
-        Args:
-            archive (str): The file path of the archive.
-            headers (bool, optional): Whether to include message headers. Defaults to True.
-
-        Yields:
-            dict: The dictionary representation of each message.
-        """
         header_to_field = Enron.header_to_field
         for text in Enron.get_texts(archive):
             message = message_from_string(text)
@@ -110,16 +83,6 @@ class Enron(Spec):
             yield d
 
     def cache_messages(self, archive, cache):
-        """
-        Caches the messages from the given email archive into a pickle file.
-
-        Args:
-            archive (str): The file path of the archive.
-            cache (str): The file path to save the cached messages.
-
-        Raises:
-            FileNotFoundError: If the archive file does not exist.
-        """
         print(f"Caching messages in {cache}...")
 
         if not os.path.exists(archive):
@@ -137,9 +100,6 @@ class Enron(Spec):
         print(f"Cached messages in {now() - t} seconds")
 
     def setup(self):
-        """
-        Sets up the Enron email archive by downloading it if necessary and caching the messages.
-        """
         archive = os.path.abspath(
             os.path.join(self.options.dir, self.enron_archive_filename)
         )
@@ -156,15 +116,6 @@ class Enron(Spec):
             print("Cache is OK")
 
     def documents(self):
-        """
-        Generator function that yields the cached messages from the pickle file.
-
-        Yields:
-            dict: The dictionary representation of each message.
-
-        Raises:
-            FileNotFoundError: If the message cache does not exist.
-        """
         if not os.path.exists(self.cache_filename):
             raise FileNotFoundError("Message cache does not exist, use --setup")
 
@@ -179,13 +130,7 @@ class Enron(Spec):
         f.close()
 
     def whoosh_schema(self):
-        """
-        Returns the Whoosh schema for indexing the Enron email archive.
-
-        Returns:
-            whoosh.fields.Schema: The schema for indexing the emails.
-        """
-        ana = analysis.stemming_analyzer(maxsize=40, cachesize=None)
+        ana = analysis.StemmingAnalyzer(maxsize=40, cachesize=None)
         storebody = self.options.storebody
         schema = fields.Schema(
             body=fields.TEXT(analyzer=ana, stored=storebody),
@@ -200,15 +145,6 @@ class Enron(Spec):
         return schema
 
     def xappy_indexer_connection(self, path):
-        """
-        Creates and returns an Xapian indexer connection for indexing the Enron email archive.
-
-        Args:
-            path (str): The path to the Xapian index.
-
-        Returns:
-            xappy.IndexerConnection: The Xapian indexer connection.
-        """
         conn = xappy.IndexerConnection(path)
         conn.add_field_action("body", xappy.FieldActions.INDEX_FREETEXT, language="en")
         if self.options.storebody:
@@ -228,12 +164,6 @@ class Enron(Spec):
         return conn
 
     def zcatalog_setup(self, cat):
-        """
-        Sets up the ZCatalog indexes for indexing the Enron email archive.
-
-        Args:
-            cat (zcatalog.catalog.Catalog): The ZCatalog catalog.
-        """
         from zcatalog import indexes  # type: ignore
 
         for name in ("date", "frm"):
@@ -242,27 +172,12 @@ class Enron(Spec):
             cat[name] = indexes.TextIndex(field_name=name)
 
     def process_document_whoosh(self, d):
-        """
-        Processes a document for indexing with Whoosh.
-
-        Args:
-            d (dict): The document to process.
-        """
         d["filepos"] = self.filepos
         if self.options.storebody:
             mf = self.main_field
             d[f"_stored_{mf}"] = compress(d[mf], 9)
 
     def process_result_whoosh(self, d):
-        """
-        Processes a search result from Whoosh.
-
-        Args:
-            d (dict): The search result.
-
-        Returns:
-            dict: The processed search result.
-        """
         mf = self.main_field
         if mf in d:
             d.fields()[mf] = decompress(d[mf])
@@ -276,12 +191,6 @@ class Enron(Spec):
         return d
 
     def process_document_xapian(self, d):
-        """
-        Processes a document for indexing with Xapian.
-
-        Args:
-            d (dict): The document to process.
-        """
         d[self.main_field] = " ".join([d.get(name, "") for name in self.field_order])
 
 

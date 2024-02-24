@@ -16,7 +16,7 @@ text = "How do I use a velocity field for particles"
 
 
 def create_index():
-    analyzer = analysis.standard_analyzer()
+    analyzer = analysis.StandardAnalyzer()
     vector_format = formats.Frequency()
     schema = fields.Schema(
         path=fields.ID(stored=True),
@@ -94,7 +94,7 @@ def test_more_like_this(model=classify.Bo2Model):
     schema = fields.Schema(id=fields.ID(stored=True), text=fields.TEXT(stored=True))
     _check(schema)
 
-    ana = analysis.standard_analyzer()
+    ana = analysis.StandardAnalyzer()
     schema = fields.Schema(
         id=fields.ID(stored=True),
         text=fields.TEXT(analyzer=ana, vector=formats.Frequency()),
