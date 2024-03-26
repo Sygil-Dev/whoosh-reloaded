@@ -176,9 +176,11 @@ class MultiFilter(Filter):
 
     def __call__(self, tokens):
         # Only selects on the first token
-        t = next(tokens)
-        selected_filter = self.filters.get(t.mode, self.default_filter)
-        return selected_filter(chain([t], tokens))
+        t = next(tokens, None)
+        if t is not None:
+            selected_filter = self.filters.get(t.mode, self.default_filter)
+            return selected_filter(chain([t], tokens))
+        return []
 
 
 class TeeFilter(Filter):
