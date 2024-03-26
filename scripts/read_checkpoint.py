@@ -1,7 +1,20 @@
 #!python
 
-# Read a "checkpoint" index, to check backwards compatibility
+"""
+This script reads a "checkpoint" index to check for backwards compatibility.
 
+The script takes a directory path as a command-line argument and reads the checkpoint index located in that directory.
+It then performs various checks on the index to ensure its integrity and compatibility.
+
+Usage: read_checkpoint.py <dir>
+
+Args:
+    <dir> (str): The directory path where the checkpoint index is located.
+
+Example:
+    $ python read_checkpoint.py /path/to/index
+
+"""
 
 import sys
 

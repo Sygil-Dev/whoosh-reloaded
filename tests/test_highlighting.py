@@ -14,7 +14,7 @@ def u(s):
 
 def test_null_fragment():
     terms = frozenset(("bravo", "india"))
-    sa = analysis.StandardAnalyzer()
+    sa = analysis.standard_analyzer()
     nf = highlight.WholeFragmenter()
     uc = highlight.UppercaseFormatter()
     htext = highlight.highlight(_doc, terms, sa, nf, uc)
@@ -89,7 +89,7 @@ def test_sentence_fragment():
         + "This sentence is the second. Third sentence here."
     )
     terms = ("sentence",)
-    sa = analysis.StandardAnalyzer(stoplist=None)
+    sa = analysis.standard_analyzer(stoplist=None)
     sf = highlight.SentenceFragmenter()
     uc = highlight.UppercaseFormatter()
     htext = highlight.highlight(text, terms, sa, sf, uc)
@@ -101,7 +101,7 @@ def test_sentence_fragment():
 
 def test_context_fragment():
     terms = frozenset(("bravo", "india"))
-    sa = analysis.StandardAnalyzer()
+    sa = analysis.standard_analyzer()
     cf = highlight.ContextFragmenter(surround=6)
     uc = highlight.UppercaseFormatter()
     htext = highlight.highlight(_doc, terms, sa, cf, uc)
@@ -110,7 +110,7 @@ def test_context_fragment():
 
 def test_context_at_start():
     terms = frozenset(["alfa"])
-    sa = analysis.StandardAnalyzer()
+    sa = analysis.standard_analyzer()
     cf = highlight.ContextFragmenter(surround=15)
     uc = highlight.UppercaseFormatter()
     htext = highlight.highlight(_doc, terms, sa, cf, uc)
@@ -119,7 +119,7 @@ def test_context_at_start():
 
 def test_html_format():
     terms = frozenset(("bravo", "india"))
-    sa = analysis.StandardAnalyzer()
+    sa = analysis.standard_analyzer()
     cf = highlight.ContextFragmenter(surround=6)
     hf = highlight.HtmlFormatter()
     htext = highlight.highlight(_doc, terms, sa, cf, hf)
@@ -131,7 +131,7 @@ def test_html_format():
 
 def test_html_escape():
     terms = frozenset(["bravo"])
-    sa = analysis.StandardAnalyzer()
+    sa = analysis.standard_analyzer()
     wf = highlight.WholeFragmenter()
     hf = highlight.HtmlFormatter()
     htext = highlight.highlight('alfa <bravo "charlie"> delta', terms, sa, wf, hf)
@@ -143,7 +143,7 @@ def test_html_escape():
 
 def test_maxclasses():
     terms = frozenset(("alfa", "bravo", "charlie", "delta", "echo"))
-    sa = analysis.StandardAnalyzer()
+    sa = analysis.standard_analyzer()
     cf = highlight.ContextFragmenter(surround=6)
     hf = highlight.HtmlFormatter(tagname="b", termclass="t", maxclasses=2)
     htext = highlight.highlight(_doc, terms, sa, cf, hf)
@@ -325,7 +325,7 @@ def test_highlight_ngrams():
 
 
 def test_issue324():
-    sa = analysis.StemmingAnalyzer()
+    sa = analysis.stemming_analyzer()
     result = highlight.highlight(
         "Indexed!\n1",
         ["index"],

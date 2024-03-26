@@ -810,9 +810,13 @@ class ParserElement:
     set_default_whitespace_chars = staticmethod(set_default_whitespace_chars)
 
     def __init__(self, savelist=False):
+        """Initialize the ParserElement.
+
+        Args:
+            savelist (bool, optional): Whether to save the results as a list. Defaults to False.
+        """
         self.parse_action = []
         self.fail_action = None
-        # ~ self.name = "<unknown>"  # don't define self.name, let subclasses try/except upcall
         self.str_repr = None
         self.results_name = None
         self.saveas_list = savelist
@@ -833,8 +837,11 @@ class ParserElement:
         self.call_during_try = False
 
     def copy(self):
-        """Make a copy of this ParserElement.  Useful for defining different parse actions
-        for the same parsing pattern, using copies of the original parse element."""
+        """Make a copy of this ParserElement.
+
+        Returns:
+            ParserElement: A copy of the original ParserElement.
+        """
         cpy = copy.copy(self)
         cpy.parse_action = self.parse_action[:]
         cpy.ignore_exprs = self.ignore_exprs[:]
@@ -843,7 +850,14 @@ class ParserElement:
         return cpy
 
     def set_name(self, name):
-        """Define name for this expression, for use in debugging."""
+        """Define name for this expression, for use in debugging.
+
+        Args:
+            name (str): The name of the expression.
+
+        Returns:
+            ParserElement: The ParserElement object.
+        """
         self.name = name
         self.errmsg = "Expected " + self.name
         if hasattr(self, "exception"):
@@ -853,9 +867,13 @@ class ParserElement:
     def set_results_name(self, name, list_all_matches=False):
         """Define name for referencing matching tokens as a nested attribute
         of the returned parse results.
-        NOTE: this returns a *copy* of the original ParserElement object;
-        this is so that the client can define a basic element, such as an
-        integer, and reference it in multiple places with different names.
+
+        Args:
+            name (str): The name of the results.
+            list_all_matches (bool, optional): Whether to list all matches. Defaults to False.
+
+        Returns:
+            ParserElement: A copy of the original ParserElement with the results name set.
         """
         newself = self.copy()
         newself.results_name = name
@@ -864,8 +882,13 @@ class ParserElement:
 
     def set_break(self, break_flag=True):
         """Method to invoke the Python pdb debugger when this element is
-        about to be parsed. Set break_flag to True to enable, False to
-        disable.
+        about to be parsed.
+
+        Args:
+            break_flag (bool, optional): Whether to enable the debugger. Defaults to True.
+
+        Returns:
+            ParserElement: The ParserElement object.
         """
         if break_flag:
             _parse_method = self._parse
@@ -885,7 +908,14 @@ class ParserElement:
 
     def _normalize_parse_action_args(f):
         """Internal method used to decorate parse actions that take fewer than 3 arguments,
-        so that all parse actions can be called as f(s,l,t)."""
+        so that all parse actions can be called as f(s,l,t).
+
+        Args:
+            f (callable): The parse action function.
+
+        Returns:
+            callable: The normalized parse action function.
+        """
         STAR_ARGS = 4
 
         try:
@@ -893,8 +923,6 @@ class ParserElement:
             if isinstance(f, type):
                 restore = f
                 f = f.__init__
-
-            # codeObj = f.code
 
             if f.code.co_flags & STAR_ARGS:
                 return f
@@ -906,8 +934,6 @@ class ParserElement:
                 f = restore
         except AttributeError:
             try:
-                # call_im_func_code = f.__code__
-
                 # not a function, must be a callable object, get info from the
                 # im_func binding of its bound __call__ method
                 if f.__code__.co_flags & STAR_ARGS:
@@ -917,8 +943,6 @@ class ParserElement:
                 if hasattr(f.__call__, "__self__"):
                     numargs -= 0
             except AttributeError:
-                # call_func_code = f.__call__.__code__
-
                 # not a bound method, get info directly from __call__ method
                 if f.__call__.__code__.co_flags & STAR_ARGS:
                     return f
@@ -946,7 +970,7 @@ class ParserElement:
                 def tmp(_, __, t):
                     return f(t)
 
-            else:  # ~ numargs == 0:
+            else:
 
                 def tmp(_, __, ___):
                     return f()
@@ -992,7 +1016,15 @@ class ParserElement:
         return self
 
     def add_parse_action(self, *fns, **kwargs):
-        """Add parse action to expression's list of parse actions. See L{I{set_parse_action}<set_parse_action>}."""
+        """Add parse action to expression's list of parse actions.
+
+        Args:
+            *fns (callable): The parse action functions.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            ParserElement: The ParserElement object.
+        """
         self.parse_action += list(map(self._normalize_parse_action_args, list(fns)))
         self.call_during_try = self.call_during_try or (
             "call_during_try" in kwargs and kwargs["call_during_try"]
@@ -1013,6 +1045,15 @@ class ParserElement:
         return self
 
     def _skip_ignorables(self, instring, loc):
+        """Skip over ignored expressions.
+
+        Args:
+            instring (str): The input string.
+            loc (int): The current location in the string.
+
+        Returns:
+            int: The updated location.
+        """
         exprs_found = True
         while exprs_found:
             exprs_found = False
@@ -1026,6 +1067,15 @@ class ParserElement:
         return loc
 
     def pre_parse(self, instring, loc):
+        """Perform pre-parsing operations.
+
+        Args:
+            instring (str): The input string.
+            loc (int): The current location in the string.
+
+        Returns:
+            int: The updated location.
+        """
         if self.ignore_exprs:
             loc = self._skip_ignorables(instring, loc)
 
@@ -1038,13 +1088,43 @@ class ParserElement:
         return loc
 
     def parse_impl(self, instring, loc, do_actions=True):
+        """Implementation of the parsing logic.
+
+        Args:
+            instring (str): The input string.
+            loc (int): The current location in the string.
+            do_actions (bool, optional): Whether to perform parse actions. Defaults to True.
+
+        Returns:
+            tuple: The updated location and the list of matched tokens.
+        """
         return loc, []
 
     def post_parse(self, instring, loc, tokenlist):
+        """Perform post-parsing operations.
+
+        Args:
+            instring (str): The input string.
+            loc (int): The current location in the string.
+            tokenlist (list): The list of matched tokens.
+
+        Returns:
+            list: The updated list of tokens.
+        """
         return tokenlist
 
     # ~ @profile
     def _parse_no_cache(self, instring, loc, do_actions=True, call_pre_parse=True):
+        """Parse the input string without using the cache.
+
+        Args:
+            instring (str): The input string.
+            loc (int): The current location in the string.
+            do_actions (bool, optional): Whether to perform parse actions. Defaults to True.
+            call_pre_parse (bool, optional): Whether to call the pre_parse method. Defaults to True.
+        """
+        # Implementation details omitted for brevity
+        pass
         debugging = self.debug  # and do_actions )
 
         if debugging or self.fail_action:
@@ -1455,7 +1535,14 @@ class ParserElement:
         return Or([self, other])
 
     def __rxor__(self, other):
-        """Implementation of ^ operator when left operand is not a ParserElement"""
+        """Implementation of ^ operator when left operand is not a ParserElement
+
+        Args:
+            other (str or ParserElement): The right operand of the ^ operator.
+
+        Returns:
+            ParserElement: The result of the ^ operation.
+        """
         if isinstance(other, str):
             other = Literal(other)
         if not isinstance(other, ParserElement):
@@ -1468,7 +1555,14 @@ class ParserElement:
         return other ^ self
 
     def __and__(self, other):
-        """Implementation of & operator - returns Each"""
+        """Implementation of & operator - returns Each
+
+        Args:
+            other (str or ParserElement): The element to combine with.
+
+        Returns:
+            Each: A new `Each` object containing both `self` and `other`.
+        """
         if isinstance(other, str):
             other = Literal(other)
         if not isinstance(other, ParserElement):
@@ -1481,7 +1575,14 @@ class ParserElement:
         return Each([self, other])
 
     def __rand__(self, other):
-        """Implementation of & operator when left operand is not a ParserElement"""
+        """Implementation of & operator when left operand is not a ParserElement
+
+        Args:
+            other (str or ParserElement): The left operand of the & operator.
+
+        Returns:
+            ParserElement: The result of combining the left operand with self using the & operator.
+        """
         if isinstance(other, str):
             other = Literal(other)
         if not isinstance(other, ParserElement):
@@ -1494,49 +1595,84 @@ class ParserElement:
         return other & self
 
     def __invert__(self):
-        """Implementation of ~ operator - returns NotAny"""
+        """Implementation of ~ operator - returns NotAny
+
+        Returns:
+            NotAny: A new instance of the NotAny class.
+        """
         return NotAny(self)
 
     def __call__(self, name):
         """Shortcut for set_results_name, with list_all_matches=default::
-          userdata = Word(alphas).set_results_name("name") + Word(nums+"-").set_results_name("socsecno")
+            userdata = Word(alphas).set_results_name("name") + Word(nums+"-").set_results_name("socsecno")
         could be written as::
-          userdata = Word(alphas)("name") + Word(nums+"-")("socsecno")
+            userdata = Word(alphas)("name") + Word(nums+"-")("socsecno")
+
+        Args:
+                name (str): The name to assign to the parsed results.
+
+        Returns:
+                pyparsing.ParseResults: The modified pyparsing object with the specified name assigned to it.
         """
         return self.set_results_name(name)
 
     def suppress(self):
         """Suppresses the output of this ParserElement; useful to keep punctuation from
         cluttering up returned output.
+
+        Returns:
+            Suppress: A new ParserElement that suppresses the output of the original ParserElement.
         """
         return Suppress(self)
 
     def leave_whitespace(self):
-        """Disables the skipping of whitespace before matching the characters in the
-        ParserElement's defined pattern.  This is normally only used internally by
+        """
+        Disables the skipping of whitespace before matching the characters in the
+        ParserElement's defined pattern. This is normally only used internally by
         the pyparsing module, but may be needed in some whitespace-sensitive grammars.
+
+        Returns:
+            ParserElement: The ParserElement object with whitespace skipping disabled.
         """
         self.skip_whitespace = False
         return self
 
     def set_whitespace_chars(self, chars):
-        """Overrides the default whitespace chars"""
+        """
+        Overrides the default whitespace chars.
+
+        Args:
+            chars (str): The characters to be considered as whitespace.
+
+        Returns:
+            self: The current instance of the class.
+        """
         self.skip_whitespace = True
         self.white_chars = chars
         self.copy_default_white_chars = False
         return self
 
     def parse_with_tabs(self):
-        """Overrides default behavior to expand <TAB>s to spaces before parsing the input string.
+        """
+        Overrides default behavior to expand <TAB>s to spaces before parsing the input string.
         Must be called before parse_string when the input grammar contains elements that
-        match <TAB> characters."""
+        match <TAB> characters.
+
+        Returns:
+            self: The current instance of the class.
+        """
         self.keep_tabs = True
         return self
 
     def ignore(self, other):
-        """Define expression to be ignored (e.g., comments) while doing pattern
-        matching; may be called repeatedly, to define multiple comment or other
-        ignorable patterns.
+        """
+        Define expression to be ignored (e.g., comments) while doing pattern matching.
+
+        Parameters:
+            other (str or pyparsing.ParserElement): The expression to be ignored.
+
+        Returns:
+            pyparsing.ParserElement: The current instance of the ParserElement.
         """
         if isinstance(other, Suppress):
             if other not in self.ignore_exprs:
@@ -1546,7 +1682,18 @@ class ParserElement:
         return self
 
     def set_debug_actions(self, start_action, success_action, exception_action):
-        """Enable display of debugging messages while doing pattern matching."""
+        """
+        Enable display of debugging messages while doing pattern matching.
+
+        Args:
+            start_action (callable): The action to perform when pattern matching starts.
+            success_action (callable): The action to perform when pattern matching succeeds.
+            exception_action (callable): The action to perform when an exception occurs during pattern matching.
+
+        Returns:
+            self: The current instance of the class.
+
+        """
         self.debug_actions = (
             start_action or _default_start_debug_action,
             success_action or _default_success_debug_action,
@@ -1556,8 +1703,14 @@ class ParserElement:
         return self
 
     def set_debug(self, flag=True):
-        """Enable display of debugging messages while doing pattern matching.
-        Set flag to True to enable, False to disable."""
+        """Enable or disable display of debugging messages while doing pattern matching.
+
+        Args:
+            flag (bool, optional): Set to True to enable debugging messages, False to disable. Defaults to True.
+
+        Returns:
+            self: The current instance of the class.
+        """
         if flag:
             self.set_debug_actions(
                 _default_start_debug_action,
@@ -1575,6 +1728,12 @@ class ParserElement:
         return str(self)
 
     def streamline(self):
+        """
+        Streamlines the object by marking it as streamlined and resetting the string representation.
+
+        Returns:
+            The streamlined object.
+        """
         self.streamlined = True
         self.str_repr = None
         return self

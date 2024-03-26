@@ -6,267 +6,7 @@ import operator
 from array import array
 
 #: Table of the number of '1' bits in each byte (0-255)
-BYTE_COUNTS = array(
-    "B",
-    [
-        0,
-        1,
-        1,
-        2,
-        1,
-        2,
-        2,
-        3,
-        1,
-        2,
-        2,
-        3,
-        2,
-        3,
-        3,
-        4,
-        1,
-        2,
-        2,
-        3,
-        2,
-        3,
-        3,
-        4,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        1,
-        2,
-        2,
-        3,
-        2,
-        3,
-        3,
-        4,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        1,
-        2,
-        2,
-        3,
-        2,
-        3,
-        3,
-        4,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        4,
-        5,
-        5,
-        6,
-        5,
-        6,
-        6,
-        7,
-        1,
-        2,
-        2,
-        3,
-        2,
-        3,
-        3,
-        4,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        4,
-        5,
-        5,
-        6,
-        5,
-        6,
-        6,
-        7,
-        2,
-        3,
-        3,
-        4,
-        3,
-        4,
-        4,
-        5,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        4,
-        5,
-        5,
-        6,
-        5,
-        6,
-        6,
-        7,
-        3,
-        4,
-        4,
-        5,
-        4,
-        5,
-        5,
-        6,
-        4,
-        5,
-        5,
-        6,
-        5,
-        6,
-        6,
-        7,
-        4,
-        5,
-        5,
-        6,
-        5,
-        6,
-        6,
-        7,
-        5,
-        6,
-        6,
-        7,
-        6,
-        7,
-        7,
-        8,
-    ],
-)
+BYTE_COUNTS = array("B", [bin(byte).count("1") for byte in range(256)])
 
 
 class BitVector:
@@ -302,6 +42,14 @@ class BitVector:
     """
 
     def __init__(self, size, source=None, bits=None):
+        """
+        Initializes a BitVector object.
+
+        Args:
+            size (int): The size of the BitVector.
+            source (iterable, optional): An iterable of integers representing bit positions to turn on. Defaults to None.
+            bits (array, optional): An array of bytes representing the bit values. Defaults to None.
+        """
         self.size = size
 
         if bits:
@@ -310,51 +58,123 @@ class BitVector:
             self.bits = array("B", ([0x00] * ((size >> 3) + 1)))
 
         if source:
-            set = self.set
+            set_var = self.set
             for num in source:
-                set(num)
+                set_var(num)
 
         self.bcount = None
 
     def __eq__(self, other):
+        """
+        Checks if two BitVector objects are equal.
+
+        Args:
+            other (BitVector): The other BitVector object to compare.
+
+        Returns:
+            bool: True if the BitVector objects are equal, False otherwise.
+        """
         if isinstance(other, BitVector):
             return self.bits == other.bits
         return False
 
     def __repr__(self):
+        """
+        Returns a string representation of the BitVector object.
+
+        Returns:
+            str: A string representation of the BitVector object.
+        """
         return f"<BitVector {self.__str__()}>"
 
     def __len__(self):
-        # This returns the count of "on" bits instead of the size to
-        # make BitVector exchangeable with a set() object.
+        """
+        Returns the number of "on" bits in the BitVector.
+
+        Returns:
+            int: The number of "on" bits in the BitVector.
+        """
         return self.count()
 
     def __contains__(self, index):
+        """
+        Checks if a given index is present in the BitVector.
+
+        Args:
+            index (int): The index to check.
+
+        Returns:
+            bool: True if the index is present in the BitVector, False otherwise.
+        """
         return self[index]
 
     def __iter__(self):
+        """
+        Returns an iterator over the "on" bits in the BitVector.
+
+        Yields:
+            int: The indices of the "on" bits in the BitVector.
+        """
         get = self.__getitem__
         for i in range(0, self.size):
             if get(i):
                 yield i
 
     def __str__(self):
+        """
+        Returns a string representation of the BitVector object.
+
+        Returns:
+            str: A string representation of the BitVector object.
+        """
         get = self.__getitem__
         return "".join("1" if get(i) else "0" for i in range(0, self.size))
 
     def __nonzero__(self):
+        """
+        Checks if the BitVector has any "on" bits.
+
+        Returns:
+            bool: True if the BitVector has any "on" bits, False otherwise.
+        """
         return self.count() > 0
 
     def __getitem__(self, index):
+        """
+        Returns the value of the bit at the given index.
+
+        Args:
+            index (int): The index of the bit to retrieve.
+
+        Returns:
+            bool: True if the bit is "on", False otherwise.
+        """
         return self.bits[index >> 3] & (1 << (index & 7)) != 0
 
     def __setitem__(self, index, value):
+        """
+        Sets the value of the bit at the given index.
+
+        Args:
+            index (int): The index of the bit to set.
+            value (bool): The value to set the bit to.
+        """
         if value:
             self.set(index)
         else:
             self.clear(index)
 
     def _logic(self, op, bitv):
+        """
+        Performs a bit-wise logic operation between two BitVector objects.
+
+        Args:
+            op (function): The bit-wise logic operation to perform.
+            bitv (BitVector): The other BitVector object to perform the operation with.
+
+        Returns:
+            BitVector: The result of the bit-wise logic operation.
+        """
         if self.size != bitv.size:
             raise ValueError("Can't combine bitvectors of different sizes")
         res = BitVector(size=self.size)
@@ -363,47 +183,124 @@ class BitVector:
         return res
 
     def union(self, other):
+        """
+        Performs a union operation between two BitVector objects.
+
+        Args:
+            other (BitVector): The other BitVector object to perform the union with.
+
+        Returns:
+            BitVector: The result of the union operation.
+        """
         return self.__or__(other)
 
     def intersection(self, other):
+        """
+        Performs an intersection operation between two BitVector objects.
+
+        Args:
+            other (BitVector): The other BitVector object to perform the intersection with.
+
+        Returns:
+            BitVector: The result of the intersection operation.
+        """
         return self.__and__(other)
 
     def __and__(self, other):
+        """
+        Performs a bit-wise AND operation between two BitVector objects.
+
+        Args:
+            other (BitVector): The other BitVector object to perform the AND operation with.
+
+        Returns:
+            BitVector: The result of the bit-wise AND operation.
+        """
         if not isinstance(other, BitVector):
             other = BitVector(self.size, source=other)
         return self._logic(operator.__and__, other)
 
     def __or__(self, other):
+        """
+        Performs a bit-wise OR operation between two BitVector objects.
+
+        Args:
+            other (BitVector): The other BitVector object to perform the OR operation with.
+
+        Returns:
+            BitVector: The result of the bit-wise OR operation.
+        """
         if not isinstance(other, BitVector):
             other = BitVector(self.size, source=other)
         return self._logic(operator.__or__, other)
 
     def __ror__(self, other):
+        """
+        Performs a bit-wise OR operation between a BitVector object and another object.
+
+        Args:
+            other (BitVector): The other object to perform the OR operation with.
+
+        Returns:
+            BitVector: The result of the bit-wise OR operation.
+        """
         return self.__or__(other)
 
     def __rand__(self, other):
+        """
+        Performs a bit-wise AND operation between a BitVector object and another object.
+
+        Args:
+            other (BitVector): The other object to perform the AND operation with.
+
+        Returns:
+            BitVector: The result of the bit-wise AND operation.
+        """
         return self.__and__(other)
 
     def __xor__(self, other):
+        """
+        Performs a bit-wise XOR operation between two BitVector objects.
+
+        Args:
+            other (BitVector): The other BitVector object to perform the XOR operation with.
+
+        Returns:
+            BitVector: The result of the bit-wise XOR operation.
+        """
         if not isinstance(other, BitVector):
             other = BitVector(self.size, source=other)
         return self._logic(operator.__xor__, other)
 
     def __invert__(self):
+        """
+        Performs a bit-wise inversion operation on the BitVector.
+
+        Returns:
+            BitVector: The result of the bit-wise inversion operation.
+        """
         return BitVector(
             self.size, source=(x for x in range(self.size) if x not in self)
         )
 
     def count(self):
-        """Returns the number of "on" bits in the bit array."""
+        """
+        Returns the number of "on" bits in the BitVector.
 
+        Returns:
+            int: The number of "on" bits in the BitVector.
+        """
         if self.bcount is None:
             self.bcount = sum(BYTE_COUNTS[b & 0xFF] for b in self.bits)
         return self.bcount
 
     def set(self, index):
-        """Turns the bit at the given position on."""
+        """
+        Turns the bit at the given position on.
 
+        Args:
+            index (int): The index of the bit to turn on.
+        """
         if index >= self.size:
             raise IndexError(
                 f"Position {repr(index)} greater than the size of the vector"
@@ -412,23 +309,33 @@ class BitVector:
         self.bcount = None
 
     def clear(self, index):
-        """Turns the bit at the given position off."""
+        """
+        Turns the bit at the given position off.
 
+        Args:
+            index (int): The index of the bit to turn off.
+        """
         self.bits[index >> 3] &= ~(1 << (index & 7))
         self.bcount = None
 
     def set_from(self, iterable):
-        """Takes an iterable of integers representing positions, and turns
-        on the bits at those positions.
         """
+        Turns on the bits at the positions specified by an iterable of integers.
 
-        set = self.set
+        Args:
+            iterable (iterable): An iterable of integers representing positions.
+        """
+        set_var = self.set
         for index in iterable:
-            set(index)
+            set_var(index)
 
     def copy(self):
-        """Returns a copy of this BitArray."""
+        """
+        Returns a copy of the BitVector.
 
+        Returns:
+            BitVector: A copy of the BitVector.
+        """
         return BitVector(self.size, bits=self.bits)
 
 

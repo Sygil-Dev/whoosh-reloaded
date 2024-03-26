@@ -648,7 +648,9 @@ def test_pickle_schema():
     from whoosh import analysis
     from whoosh.support.charset import accent_map
 
-    freetext_analyzer = analysis.StemmingAnalyzer() | analysis.CharsetFilter(accent_map)
+    freetext_analyzer = analysis.stemming_analyzer() | analysis.CharsetFilter(
+        accent_map
+    )
 
     schema = fields.Schema(
         path=fields.ID(stored=True, unique=True),

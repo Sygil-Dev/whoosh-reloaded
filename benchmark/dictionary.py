@@ -6,11 +6,26 @@ from whoosh.support.bench import Bench, Spec
 
 
 class VulgarTongue(Spec):
+    """
+    A class representing a VulgarTongue dictionary.
+
+    Attributes:
+        name (str): The name of the dictionary.
+        filename (str): The filename of the dictionary file.
+        headline_field (str): The field name for the headline.
+    """
+
     name = "dictionary"
     filename = "dcvgr10.txt.gz"
     headline_field = "head"
 
     def documents(self):
+        """
+        Generator function that yields documents from the dictionary file.
+
+        Yields:
+            dict: A dictionary representing a document with 'head' and 'body' fields.
+        """
         path = os.path.join(self.options.dir, self.filename)
         f = gzip.GzipFile(path)
 
@@ -28,7 +43,13 @@ class VulgarTongue(Spec):
             yield {"head": head, "body": head + body}
 
     def whoosh_schema(self):
-        ana = analysis.StemmingAnalyzer()
+        """
+        Returns the Whoosh schema for the VulgarTongue dictionary.
+
+        Returns:
+            Schema: The Whoosh schema for the dictionary.
+        """
+        ana = analysis.stemming_analyzer()
 
         schema = fields.Schema(
             head=fields.ID(stored=True), body=fields.TEXT(analyzer=ana, stored=True)
@@ -36,6 +57,12 @@ class VulgarTongue(Spec):
         return schema
 
     def zcatalog_setup(self, cat):
+        """
+        Sets up the ZCatalog indexes for the VulgarTongue dictionary.
+
+        Args:
+            cat (ZCatalog): The ZCatalog instance.
+        """
         from zcatalog import indexes  # type: ignore @UnresolvedImport
 
         cat["head"] = indexes.FieldIndex(field_name="head")

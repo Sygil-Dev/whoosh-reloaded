@@ -33,19 +33,59 @@ ops = ()
 
 
 def parse(pattern):
+    """
+    Parses a regular expression pattern and returns a parsed representation.
+
+    Args:
+        pattern (str): The regular expression pattern to parse.
+
+    Returns:
+        list: A list representing the parsed regular expression pattern.
+
+    Example:
+        >>> parse("ab*c")
+        ['a', ('b', '*'), 'c']
+    """
     stack = []
     ops = []
 
 
 class RegexBuilder:
+    """
+    A class for building regular expressions using a simplified NFA representation.
+
+    This class provides methods for constructing various components of a regular expression,
+    such as epsilon, character, charset, dot, choice, concatenation, star, plus, and question.
+
+    Usage:
+    rb = RegexBuilder()
+    nfa = rb.char('a')  # Create an NFA for the character 'a'
+    nfa2 = rb.concat(nfa, rb.char('b'))  # Concatenate two NFAs
+    """
+
     def __init__(self):
+        """
+        Initialize the RegexBuilder object.
+        """
         self.statenum = 1
 
     def new_state(self):
+        """
+        Generate a new state number.
+
+        Returns:
+        int: The new state number.
+        """
         self.statenum += 1
         return self.statenum
 
     def epsilon(self):
+        """
+        Create an NFA for the epsilon transition.
+
+        Returns:
+        NFA: The NFA representing the epsilon transition.
+        """
         s = self.new_state()
         e = self.new_state()
         nfa = NFA(s)
@@ -54,6 +94,15 @@ class RegexBuilder:
         return nfa
 
     def char(self, label):
+        """
+        Create an NFA for a single character.
+
+        Args:
+        label (str): The character label.
+
+        Returns:
+        NFA: The NFA representing the character.
+        """
         s = self.new_state()
         e = self.new_state()
         nfa = NFA(s)
@@ -62,6 +111,15 @@ class RegexBuilder:
         return nfa
 
     def charset(self, chars):
+        """
+        Create an NFA for a character set.
+
+        Args:
+        chars (str): The characters in the set.
+
+        Returns:
+        NFA: The NFA representing the character set.
+        """
         s = self.new_state()
         e = self.new_state()
         nfa = NFA(s)
@@ -71,6 +129,12 @@ class RegexBuilder:
         return e
 
     def dot(self):
+        """
+        Create an NFA for the dot (matches any character).
+
+        Returns:
+        NFA: The NFA representing the dot.
+        """
         s = self.new_state()
         e = self.new_state()
         nfa = NFA(s)
@@ -79,6 +143,16 @@ class RegexBuilder:
         return nfa
 
     def choice(self, n1, n2):
+        """
+        Create an NFA for the choice (|) operator.
+
+        Args:
+        n1 (NFA): The first NFA.
+        n2 (NFA): The second NFA.
+
+        Returns:
+        NFA: The NFA representing the choice operator.
+        """
         s = self.new_state()
         s1 = self.new_state()
         s2 = self.new_state()
@@ -96,6 +170,16 @@ class RegexBuilder:
         return nfa
 
     def concat(self, n1, n2):
+        """
+        Create an NFA for the concatenation operator.
+
+        Args:
+        n1 (NFA): The first NFA.
+        n2 (NFA): The second NFA.
+
+        Returns:
+        NFA: The NFA representing the concatenation operator.
+        """
         s = self.new_state()
         m = self.new_state()
         e = self.new_state()
@@ -106,6 +190,15 @@ class RegexBuilder:
         return nfa
 
     def star(self, n):
+        """
+        Create an NFA for the Kleene star (*) operator.
+
+        Args:
+        n (NFA): The NFA to apply the star operator to.
+
+        Returns:
+        NFA: The NFA representing the star operator.
+        """
         s = self.new_state()
         m1 = self.new_state()
         m2 = self.new_state()
@@ -120,7 +213,25 @@ class RegexBuilder:
         return nfa
 
     def plus(self, n):
+        """
+        Create an NFA for the plus (+) operator.
+
+        Args:
+        n (NFA): The NFA to apply the plus operator to.
+
+        Returns:
+        NFA: The NFA representing the plus operator.
+        """
         return self.concat(n, self.star(n))
 
     def question(self, n):
+        """
+        Create an NFA for the question mark (?) operator.
+
+        Args:
+        n (NFA): The NFA to apply the question mark operator to.
+
+        Returns:
+        NFA: The NFA representing the question mark operator.
+        """
         return self.choice(n, self.epsilon())

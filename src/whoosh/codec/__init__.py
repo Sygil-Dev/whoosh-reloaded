@@ -27,6 +27,21 @@
 
 
 def default_codec(*args, **kwargs):
+    """
+    Returns the default codec for Whoosh.
+
+    This function imports and returns the W3Codec class from the whoosh.codec.whoosh3 module.
+
+    Parameters:
+    *args: positional arguments to be passed to the W3Codec constructor.
+    **kwargs: keyword arguments to be passed to the W3Codec constructor.
+
+    Returns:
+    W3Codec: an instance of the W3Codec class.
+
+    Example:
+    codec = default_codec()
+    """
     from whoosh.codec.whoosh3 import W3Codec
 
     return W3Codec(*args, **kwargs)

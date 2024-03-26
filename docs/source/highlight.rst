@@ -15,8 +15,8 @@ The highlighting system works as a pipeline, with four component types.
 
 * **Order functions** control in what order the top-scoring fragments are
   presented to the user. For example, you can show the fragments in the order
-  they appear in the document (FIRST) or show higher-scoring fragments first
-  (SCORE)
+  they appear in the document (first) or show higher-scoring fragments first
+  (score)
 
 * **Formatters** turn the fragment objects into human-readable output, such as
   an HTML string.
@@ -199,19 +199,19 @@ fragments with lower values appear before fragments with higher values).
 
 The ``highlight`` module has the following order functions.
 
-``FIRST`` (the default)
+``first`` (the default)
     Show fragments in the order they appear in the document.
 
-``SCORE``
+``score``
     Show highest scoring fragments first.
 
-The ``highlight`` module also includes ``LONGER`` (longer fragments first) and
-``SHORTER`` (shorter fragments first), but they probably aren't as generally
+The ``highlight`` module also includes ``longer`` (longer fragments first) and
+``shorter`` (shorter fragments first), but they probably aren't as generally
 useful.
 
 To use a different order::
 
-    results.order = highlight.SCORE
+    results.order = highlight.score
 
 
 Formatter
@@ -371,7 +371,7 @@ an analyzer::
     from whoosh.highlight import highlight
 
     excerpts = highlight(text, terms, analyzer, fragmenter, formatter, top=3,
-                         scorer=BasicFragmentScorer, minscore=1, order=FIRST)
+                         scorer=BasicFragmentScorer, minscore=1, order=first)
 
 ``text``
     The original text of the document.

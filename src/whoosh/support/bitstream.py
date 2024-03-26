@@ -1,7 +1,7 @@
 """
 
 From a post by Patrick Maupin on the Python mailing list:
-http://mail.python.org/pipermail/python-list/2003-November/237481.html
+https://mail.python.org/pipermail/python-list/2003-November/237481.html
 """
 
 from array import array
@@ -13,6 +13,15 @@ _bitsperlong = _LONG_SIZE * 8
 
 class BitStreamReader:
     def __init__(self, source):
+        """
+        Initializes a BitStreamReader object.
+
+        Parameters:
+        - source: The source data to read from.
+
+        The BitStreamReader reads binary data from the given source and provides methods to seek, tell, and read bits from the data.
+        """
+
         self._totalbits = len(source) * _bitsperlong
         self._position = 0
 
@@ -24,16 +33,47 @@ class BitStreamReader:
         self._bitstream = bits
 
     def seek(self, offset):
+        """
+        Sets the current position in the bitstream.
+
+        Parameters:
+        - offset: The new position to set.
+
+        The offset is specified in bits from the beginning of the bitstream.
+        """
+
         self._position = offset
 
     def tell(self):
+        """
+        Returns the current position in the bitstream.
+
+        Returns:
+        - The current position in bits from the beginning of the bitstream.
+        """
+
         return self._position
 
     def read(self, numbits):
+        """
+        Reads the specified number of bits from the bitstream.
+
+        Parameters:
+        - numbits: The number of bits to read.
+
+        Returns:
+        - The value of the read bits.
+
+        Raises:
+        - IndexError: If the specified number of bits exceeds the available bits in the bitstream.
+
+        The read method reads the specified number of bits from the current position in the bitstream and advances the position accordingly.
+        """
+
         position = self._position
 
         if position < 0 or position + numbits > self._totalbits:
-            raise (IndexError, "Invalid bitarray._position/numbits")
+            raise IndexError("Invalid bitarray._position/numbits")
 
         longaddress, bitoffset = divmod(position, _bitsperlong)
 

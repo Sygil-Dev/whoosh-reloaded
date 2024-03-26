@@ -186,7 +186,7 @@ def test_correct_query():
 
 def test_spelling_field():
     text = "rendering shading modeling reactions"
-    ana = analysis.StemmingAnalyzer()
+    ana = analysis.stemming_analyzer()
     schema = fields.Schema(text=fields.TEXT(analyzer=ana, spelling=True))
 
     assert schema["text"].spelling
@@ -214,7 +214,7 @@ def test_spelling_field():
 
 
 def test_correct_spell_field():
-    ana = analysis.StemmingAnalyzer()
+    ana = analysis.stemming_analyzer()
     schema = fields.Schema(text=fields.TEXT(analyzer=ana, spelling=True))
     with TempIndex(schema) as ix:
         with ix.writer() as w:
@@ -328,7 +328,7 @@ def test_very_long_words():
     strings1 = [u(chr(i) * length) for i in range(65, 70)]
     strings2 = [u(chr(i) * length) for i in range(71, 75)]
 
-    ana = analysis.StemmingAnalyzer()
+    ana = analysis.stemming_analyzer()
     schema = fields.Schema(
         text=fields.TEXT(
             analyzer=ana,

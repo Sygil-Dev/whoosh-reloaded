@@ -45,7 +45,7 @@ involved in analysis:
   generator.
 
 * Analyzers are convenience functions/classes that "package up" a tokenizer and
-  zero or more filters into a single unit. For example, the StandardAnalyzer
+  zero or more filters into a single unit. For example, the standard_analyzer
   combines a RegexTokenizer, LowercaseFilter, and StopFilter.
 
   Every analyzer is a callable that takes a string and returns a token
@@ -69,14 +69,14 @@ from whoosh.analysis.acore import (
 )
 from whoosh.analysis.analyzers import (
     Analyzer,
-    FancyAnalyzer,
-    IDAnalyzer,
-    KeywordAnalyzer,
-    LanguageAnalyzer,
-    RegexAnalyzer,
-    SimpleAnalyzer,
-    StandardAnalyzer,
-    StemmingAnalyzer,
+    fancy_analyzer,
+    id_analyzer,
+    keyword_analyzer,
+    language_analyzer,
+    regex_analyzer,
+    simple_analyzer,
+    standard_analyzer,
+    stemming_analyzer,
 )
 from whoosh.analysis.filters import (
     STOP_WORDS,
@@ -103,10 +103,10 @@ from whoosh.analysis.intraword import (
 )
 from whoosh.analysis.morph import DoubleMetaphoneFilter, PyStemmerFilter, StemFilter
 from whoosh.analysis.ngrams import (
-    NgramAnalyzer,
     NgramFilter,
     NgramTokenizer,
-    NgramWordAnalyzer,
+    ngram_analyzer,
+    ngram_word_analyzer,
 )
 from whoosh.analysis.tokenizers import (
     CharsetTokenizer,

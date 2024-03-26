@@ -13,7 +13,7 @@ of documents at once (batch indexing).
 The following settings and alternate workflows can make batch indexing faster.
 
 
-StemmingAnalyzer cache
+stemming_analyzer cache
 ======================
 
 The stemming analyzer by default uses a least-recently-used (LRU) cache to limit
