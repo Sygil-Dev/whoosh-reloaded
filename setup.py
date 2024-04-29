@@ -49,7 +49,7 @@ if __name__ == "__main__":
             "loguru==0.7.2",
         ],
         tests_require=[
-            "pytest==8.1.1",
+            "pytest==8.2.0",
             "nose==1.3.7",
             "pre-commit==3.7.0",
         ],
