@@ -45,7 +45,7 @@ if __name__ == "__main__":
         url="https://github.com/Sygil-Dev/whoosh-reloaded",
         zip_safe=True,
         install_requires=[
-            "cached-property==2.0",
+            "cached-property==2.0.1",
             "loguru==0.7.2",
         ],
         tests_require=[
