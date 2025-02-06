@@ -146,6 +146,8 @@ def test_dmy(d=english.dmy):
     assert_adatetime(d.date_from("yesterday", basedate), year=2010, month=9, day=19)
     assert_adatetime(d.date_from("this month", basedate), year=2010, month=9)
     assert_adatetime(d.date_from("this year", basedate), year=2010)
+    assert_adatetime(d.date_from("last month", basedate), year=2010, month=8)
+    assert_adatetime(d.date_from("last year", basedate), year=2009)
 
     assert d.date_from("now", basedate) == basedate
 
