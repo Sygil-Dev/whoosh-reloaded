@@ -67,6 +67,7 @@ With the ``DateParserPlugin``, users can use date queries such as::
     -1 week to now
     now to +2h
     -1y6mo to +2 yrs 23d
+    last year
 
 Normally, as with other types of queries containing spaces, the users need
 to quote date queries containing spaces using single quotes::
