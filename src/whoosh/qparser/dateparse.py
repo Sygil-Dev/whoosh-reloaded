@@ -729,6 +729,12 @@ class English(DateParser):
         thismonth = Regex(
             "this month", lambda p, dt: adatetime(year=dt.year, month=dt.month)
         )
+
+        lastyear = Regex("last year", lambda p, dt: adatetime(year=dt.year - 1))
+        lastmonth = Regex(
+            "last month", lambda p, dt: adatetime(year=dt.year, month=dt.month - 1)
+        )
+
         today = Regex(
             "today", lambda p, dt: adatetime(year=dt.year, month=dt.month, day=dt.day)
         )
@@ -767,6 +773,8 @@ class English(DateParser):
                 yesterday,
                 thisyear,
                 thismonth,
+                lastyear,
+                lastmonth,
                 today,
                 now,
             ),
