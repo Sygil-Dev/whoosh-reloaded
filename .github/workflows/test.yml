@@ -7,19 +7,19 @@ jobs:
   codespell_and_ruff:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: pip install --user codespell[toml] ruff
     # TODO: Fix lint issues and remove `--exit-zero` from the line below.
-    - run: ruff --exit-zero --output-format=github --target-version=py38 .
+    - run: ruff check --exit-zero --output-format=github --target-version=py38 .
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, "3.10", 3.11, 3.12]
+        python-version: [3.8, 3.9, "3.10", 3.11, 3.12, 3.13, 3.14, 3.14t]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -28,7 +28,7 @@ jobs:
         pip install pytest pytest-cov pytest-sugar coverage cached-property
     - name: Install Whoosh
       run: |
-        pip install -e .
+        pip install --editable .
     - name: Run tests
       run: |
         pytest --cov=./ --cov-report=xml --cov-report=html
