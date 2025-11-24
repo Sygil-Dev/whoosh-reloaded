@@ -51,7 +51,7 @@ if __name__ == "__main__":
         tests_require=[
             "pytest==9.0.1",
             "nose==1.3.7",
-            "pre-commit==4.4.0",
+            "pre-commit==4.5.0",
         ],
         cmdclass={"test": PyTest},
         classifiers=[
