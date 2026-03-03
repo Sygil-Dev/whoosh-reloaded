@@ -573,10 +573,35 @@ class ListMatcher(Matcher):
         else:
             return self.weight()
 
+
 class SkipListMatcher(ListMatcher):
-    def __init__(self, ids, **kwargs):
-        super().__init__(ids, **kwargs)
+    def __init__(
+        self,
+        ids,
+        weights=None,
+        values=None,
+        format=None,
+        scorer=None,
+        position=0,
+        all_weights=None,
+        term=None,
+        terminfo=None,
+    ):
+        super().__init__(
+            ids, weights, values, format, scorer, position, all_weights, term, terminfo
+        )
         self._skiplist = SkipList(ids)
+
+    def copy(self):
+        return self.__class__(
+            self._ids,
+            self._weights,
+            self._values,
+            self._format,
+            self._scorer,
+            self._i,
+            self._all_weights,
+        )
 
     def skip_to(self, id):
         if not self.is_active():
@@ -586,9 +611,10 @@ class SkipListMatcher(ListMatcher):
 
         node = self._skiplist.skip_to(id)
         if node is not None:
-           self._i = bisect_left(self._ids, node.doc_id, self._i)
+            self._i = bisect_left(self._ids, node.doc_id, self._i)
         else:
             self._i = len(self._ids)
+
 
 # Term/vector leaf posting matcher middleware
 

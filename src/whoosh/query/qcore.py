@@ -735,4 +735,4 @@ class Every(Query):
                 doclist.update(pr.all_ids())
             doclist = sorted(doclist)
 
-        return matching.ListMatcher(doclist, all_weights=self.boost)
+        return matching.SkipListMatcher(doclist, all_weights=self.boost)

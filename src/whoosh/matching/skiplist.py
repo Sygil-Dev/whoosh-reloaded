@@ -1,5 +1,8 @@
 import random
 
+_rng = random.Random(42)
+
+
 class SkipNode:
     __slots__ = ("doc_id", "forward")
 
@@ -18,7 +21,7 @@ class SkipList:
 
     def _random_level(self):
         level = 0
-        while random.random() < self.p and level < self.max_level:
+        while _rng.random() < self.p and level < self.max_level:
             level += 1
         return level
     
@@ -60,4 +63,3 @@ class SkipList:
     def __contains__(self, doc_id):
         node = self.skip_to(doc_id)
         return node is not None and node.doc_id == doc_id
-    

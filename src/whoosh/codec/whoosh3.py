@@ -37,7 +37,7 @@ from pickle import dumps, loads
 from whoosh import columns, formats
 from whoosh.codec import base
 from whoosh.filedb import compound, filetables
-from whoosh.matching import LeafMatcher, ListMatcher, ReadTooFar
+from whoosh.matching import LeafMatcher, ListMatcher, ReadTooFar, SkipListMatcher
 from whoosh.reading import TermInfo, TermNotFound
 from whoosh.system import (
     _FLOAT_SIZE,
@@ -111,9 +111,9 @@ class W3Codec(base.Codec):
     def postings_reader(self, dbfile, terminfo, format_, term=None, scorer=None):
         if terminfo.is_inlined():
             # If the postings were inlined into the terminfo object, pull them
-            # out and use a ListMatcher to wrap them in a Matcher interface
+            # out and use a SkipListMatcher to wrap them in a Matcher interface
             ids, weights, values = terminfo.inlined_postings()
-            m = ListMatcher(
+            m = SkipListMatcher(
                 ids,
                 weights,
                 values,

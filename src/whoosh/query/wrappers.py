@@ -178,7 +178,7 @@ class ConstantScoreQuery(WrappingQuery):
             return m
         else:
             ids = array("I", m.all_ids())
-            return matching.ListMatcher(ids, all_weights=self.score, term=m.term())
+            return matching.SkipListMatcher(ids, all_weights=self.score, term=m.term())
 
 
 class WeightingQuery(WrappingQuery):
