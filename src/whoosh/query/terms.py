@@ -281,8 +281,6 @@ class PatternQuery(MultiTerm):
         raise NotImplementedError
 
     def _find_prefix(self, text):
-        # Subclasses/instances should set the SPECIAL_CHARS attribute to a set
-        # of characters that mark the end of the literal prefix
         specialchars = self.SPECIAL_CHARS
         i = 0
         for i, char in enumerate(text):
@@ -363,6 +361,50 @@ class Wildcard(PatternQuery):
         else:
             return self
 
+    _NGRAM_SIZE = 3
+
+    @staticmethod
+    def _extract_literals(text, special_chars):
+        segments = []
+        current = []
+        for char in text:
+            if char in special_chars:
+                if current:
+                    segments.append("".join(current))
+                    current = []
+            else:
+                current.append(char)
+        if current:
+            segments.append("".join(current))
+        return segments
+
+    def _btexts(self, ixreader):
+        field = ixreader.schema[self.fieldname]
+        exp = re.compile(self._get_pattern())
+        prefix = self._find_prefix(self.text)
+
+        if prefix:
+            candidates = ixreader.expand_prefix(self.fieldname, prefix)
+        else:
+            ngram_size = self._NGRAM_SIZE
+            literals = self._extract_literals(self.text, self.SPECIAL_CHARS)
+            ngrams = set()
+            for segment in literals:
+                for i in range(len(segment) - ngram_size + 1):
+                    ngrams.add(segment[i:i + ngram_size])
+            if ngrams:
+                candidates = ixreader.terms_by_ngrams(
+                    self.fieldname, ngrams, ngram_size
+                )
+            else:
+                candidates = ixreader.lexicon(self.fieldname)
+
+        from_bytes = field.from_bytes
+        for btext in candidates:
+            text = from_bytes(btext)
+            if exp.match(text):
+                yield btext
+
     def matcher(self, searcher, context=None):
         if self.text == "*":
             from whoosh.query import Every
@@ -371,8 +413,6 @@ class Wildcard(PatternQuery):
             return eq.matcher(searcher, context)
         else:
             return PatternQuery.matcher(self, searcher, context)
-
-    # _btexts() implemented in PatternQuery
 
 
 class Regex(PatternQuery):
