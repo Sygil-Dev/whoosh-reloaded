@@ -51,7 +51,8 @@ method will return ``True``.
 
 from abc import abstractmethod
 from itertools import repeat
-
+from whoosh.matching.skiplist import SkipList
+from bisect import bisect_left
 # Exceptions
 
 
@@ -572,6 +573,22 @@ class ListMatcher(Matcher):
         else:
             return self.weight()
 
+class SkipListMatcher(ListMatcher):
+    def __init__(self, ids, **kwargs):
+        super().__init__(ids, **kwargs)
+        self._skiplist = SkipList(ids)
+
+    def skip_to(self, id):
+        if not self.is_active():
+            raise ReadTooFar
+        if id < self.id():
+            return
+
+        node = self._skiplist.skip_to(id)
+        if node is not None:
+           self._i = bisect_left(self._ids, node.doc_id, self._i)
+        else:
+            self._i = len(self._ids)
 
 # Term/vector leaf posting matcher middleware
 
