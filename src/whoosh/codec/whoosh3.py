@@ -39,6 +39,7 @@ from whoosh.codec import base
 from whoosh.filedb import compound, filetables
 from whoosh.matching import LeafMatcher, ListMatcher, ReadTooFar
 from whoosh.reading import TermInfo, TermNotFound
+from whoosh.support.bloom import BloomFilter
 from whoosh.system import (
     _FLOAT_SIZE,
     _INT_SIZE,
@@ -81,11 +82,15 @@ class W3Codec(base.Codec):
     POSTS_EXT = ".pst"  # Term postings
     VPOSTS_EXT = ".vps"  # Vector postings
     COLUMN_EXT = ".col"  # Per-document value columns
+    BLOOM_EXT = ".blm"  # Bloom filter for negative term lookups
 
-    def __init__(self, blocklimit=128, compression=3, inlinelimit=1):
+    def __init__(self, blocklimit=128, compression=3, inlinelimit=1,
+                 bloom_enabled=True, bloom_false_positive_rate=0.01):
         self._blocklimit = blocklimit
         self._compression = compression
         self._inlinelimit = inlinelimit
+        self._bloom_enabled = bloom_enabled
+        self._bloom_fpr = bloom_false_positive_rate
 
     # def automata(self):
 
@@ -139,7 +144,24 @@ class W3Codec(base.Codec):
 
         postfile = segment.open_file(storage, self.POSTS_EXT)
 
-        return W3TermsReader(self, tifile, tilen, postfile)
+        # Load Bloom filter if available
+        bloom = None
+        if self._bloom_enabled:
+            blmname = segment.make_filename(self.BLOOM_EXT)
+            try:
+                if storage.file_exists(blmname):
+                    blmlen = storage.file_length(blmname)
+                    blmfile = storage.open_file(blmname)
+                    try:
+                        bloom_data = blmfile.read(blmlen)
+                        bloom = BloomFilter.from_bytes(bloom_data)
+                    finally:
+                        blmfile.close()
+            except Exception:
+                # If the Bloom filter can't be loaded, we just skip it
+                bloom = None
+
+        return W3TermsReader(self, tifile, tilen, postfile, bloom=bloom)
 
     # Graph methods provided by CodecWithGraph
 
@@ -320,6 +342,12 @@ class W3FieldWriter(base.FieldWriter):
         self._infield = False
         self.is_closed = False
 
+        # Bloom filter tracking: collect all term keys during writing
+        self._bloom_enabled = codec._bloom_enabled
+        self._bloom_fpr = codec._bloom_fpr
+        self._bloom_keys = [] if self._bloom_enabled else None
+        self._bloom_term_count = 0
+
     def _create_file(self, ext):
         return self._segment.create_file(self._storage, ext)
 
@@ -356,6 +384,11 @@ class W3FieldWriter(base.FieldWriter):
         valbytes = terminfo.to_bytes()
         self._tindex.add(keybytes, valbytes)
 
+        # Track key for Bloom filter
+        if self._bloom_keys is not None:
+            self._bloom_keys.append(keybytes)
+            self._bloom_term_count += 1
+
     # FieldWriterWithGraph.add_spell_word
 
     def finish_field(self):
@@ -367,6 +400,20 @@ class W3FieldWriter(base.FieldWriter):
     def close(self):
         self._tindex.close()
         self._postfile.close()
+
+        # Write Bloom filter file
+        if self._bloom_keys is not None and self._bloom_term_count > 0:
+            bloom = BloomFilter(
+                expected_items=self._bloom_term_count,
+                false_positive_rate=self._bloom_fpr,
+            )
+            for key in self._bloom_keys:
+                bloom.add(key)
+            blmfile = self._segment.create_file(self._storage, W3Codec.BLOOM_EXT)
+            bloom.write_to_file(blmfile)
+            blmfile.close()
+            self._bloom_keys = None
+
         self.is_closed = True
 
 
@@ -579,12 +626,13 @@ class W3FieldCursor(base.FieldCursor):
 
 
 class W3TermsReader(base.TermsReader):
-    def __init__(self, codec, dbfile, length, postfile):
+    def __init__(self, codec, dbfile, length, postfile, bloom=None):
         self._codec = codec
         self._dbfile = dbfile
         self._tindex = filetables.OrderedHashReader(dbfile, length)
         self._fieldmap = self._tindex.extras["fieldmap"]
         self._postfile = postfile
+        self._bloom = bloom
 
         self._fieldunmap = [None] * len(self._fieldmap)
         for fieldname, num in self._fieldmap.items():
@@ -603,7 +651,12 @@ class W3TermsReader(base.TermsReader):
         return self._tindex.range_for_key(self._keycoder(fieldname, tbytes))
 
     def __contains__(self, term):
-        return self._keycoder(*term) in self._tindex
+        key = self._keycoder(*term)
+        # Fast rejection via Bloom filter: if the key is definitely not in
+        # the filter, skip the expensive on-disk hash table lookup
+        if self._bloom is not None and key not in self._bloom:
+            return False
+        return key in self._tindex
 
     def indexed_field_names(self):
         return self._fieldmap.keys()
@@ -644,20 +697,34 @@ class W3TermsReader(base.TermsReader):
 
     def term_info(self, fieldname, tbytes):
         key = self._keycoder(fieldname, tbytes)
+        # Bloom filter short-circuit: avoid disk read for absent terms
+        if self._bloom is not None and key not in self._bloom:
+            raise TermNotFound(f"No term {fieldname}:{tbytes!r}")
         try:
             return W3TermInfo.from_bytes(self._tindex[key])
         except KeyError:
             raise TermNotFound(f"No term {fieldname}:{tbytes!r}")
 
     def frequency(self, fieldname, tbytes):
+        # Bloom filter short-circuit for frequency lookups
+        if self._bloom is not None:
+            key = self._keycoder(fieldname, tbytes)
+            if key not in self._bloom:
+                return 0
         datapos = self._range_for_key(fieldname, tbytes)[0]
         return W3TermInfo.read_weight(self._dbfile, datapos)
 
     def doc_frequency(self, fieldname, tbytes):
+        # Bloom filter short-circuit for doc_frequency lookups
+        if self._bloom is not None:
+            key = self._keycoder(fieldname, tbytes)
+            if key not in self._bloom:
+                return 0
         datapos = self._range_for_key(fieldname, tbytes)[0]
         return W3TermInfo.read_doc_freq(self._dbfile, datapos)
 
     def matcher(self, fieldname, tbytes, format_, scorer=None):
+        # term_info already uses the Bloom filter, so no extra check needed
         terminfo = self.term_info(fieldname, tbytes)
         m = self._codec.postings_reader(
             self._postfile, terminfo, format_, term=(fieldname, tbytes), scorer=scorer
