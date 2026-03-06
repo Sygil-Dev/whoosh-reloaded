@@ -260,8 +260,10 @@ class IndexReader:
             yield btext
 
     def _get_ngram_index(self, fieldname, size=3):
-        if not hasattr(self, '_ngram_cache'):
-            self._ngram_cache = {}
+        cache = getattr(self, '_ngram_cache', None)
+        if cache is None:
+            cache = {}
+            self._ngram_cache = cache
         key = (fieldname, size)
         if key not in self._ngram_cache:
             ngram_map = {}
@@ -277,6 +279,11 @@ class IndexReader:
         return self._ngram_cache[key]
 
     def terms_by_ngrams(self, fieldname, text_ngrams, size=3):
+        """Yields term bytestrings from the given field whose text contains
+        all of the specified n-grams. Builds and caches a reverse n-gram
+        index on first call for each (fieldname, size) pair.
+        """
+
         if not text_ngrams:
             return self.lexicon(fieldname)
 

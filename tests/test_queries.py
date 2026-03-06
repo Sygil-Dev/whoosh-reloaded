@@ -879,3 +879,154 @@ def test_numeric_range_with_negative_boost():
     assert nr.endexcl == False
     assert nr.boost == -1.0
     assert nr.constantscore == True
+
+
+def test_wildcard_ngram_suffix():
+    domain = "action caption fiction function mention option station".split()
+    schema = fields.Schema(word=fields.KEYWORD(stored=True))
+    ix = RamStorage().create_index(schema)
+    with ix.writer() as w:
+        for word in domain:
+            w.add_document(word=word)
+
+    with ix.reader() as r:
+        q = query.Wildcard("word", "*tion")
+        assert q._find_prefix(q.text) == ""
+        result = sorted(str(q.simplify(r)).split(" OR "))
+        assert result == [
+            "(word:action",
+            "word:caption",
+            "word:fiction",
+            "word:function",
+            "word:mention",
+            "word:option",
+            "word:station)",
+        ]
+
+
+def test_wildcard_ngram_infix():
+    domain = "prefix suffix infix fixture fixation postfix".split()
+    schema = fields.Schema(word=fields.KEYWORD(stored=True))
+    ix = RamStorage().create_index(schema)
+    with ix.writer() as w:
+        for word in domain:
+            w.add_document(word=word)
+
+    with ix.reader() as r:
+        q = query.Wildcard("word", "*fix*")
+        assert q._find_prefix(q.text) == ""
+        simplified = str(q.simplify(r))
+        terms = {t.strip("() ") for t in simplified.split(" OR ")}
+        assert terms == {
+            "word:prefix",
+            "word:suffix",
+            "word:infix",
+            "word:fixture",
+            "word:fixation",
+            "word:postfix",
+        }
+
+
+def test_wildcard_ngram_charclass():
+    domain = "able acre adage after amiga ampere".split()
+    schema = fields.Schema(word=fields.KEYWORD(stored=True))
+    ix = RamStorage().create_index(schema)
+    with ix.writer() as w:
+        for word in domain:
+            w.add_document(word=word)
+
+    with ix.reader() as r:
+        q = query.Wildcard("word", "[am]*re")
+        assert q._find_prefix(q.text) == ""
+        simplified = str(q.simplify(r))
+        terms = {t.strip("() ") for t in simplified.split(" OR ")}
+        assert terms == {"word:acre", "word:ampere"}
+
+
+def test_wildcard_ngram_bigram_fallback():
+    domain = "cab dab jab tab grab stab".split()
+    schema = fields.Schema(word=fields.KEYWORD(stored=True))
+    ix = RamStorage().create_index(schema)
+    with ix.writer() as w:
+        for word in domain:
+            w.add_document(word=word)
+
+    with ix.reader() as r:
+        q = query.Wildcard("word", "*ab")
+        assert q._find_prefix(q.text) == ""
+        simplified = str(q.simplify(r))
+        terms = {t.strip("() ") for t in simplified.split(" OR ")}
+        assert terms == {
+            "word:cab",
+            "word:dab",
+            "word:jab",
+            "word:tab",
+            "word:grab",
+            "word:stab",
+        }
+
+
+def test_wildcard_ngram_cache_reuse():
+    domain = "action caption fiction function mention option station".split()
+    schema = fields.Schema(word=fields.KEYWORD(stored=True))
+    ix = RamStorage().create_index(schema)
+    with ix.writer() as w:
+        for word in domain:
+            w.add_document(word=word)
+
+    with ix.reader() as r:
+        q1 = query.Wildcard("word", "*tion")
+        list(q1._btexts(r))
+        assert hasattr(r, '_ngram_cache')
+        cached_keys = set(r._ngram_cache.keys())
+
+        q2 = query.Wildcard("word", "*ment*")
+        list(q2._btexts(r))
+        assert set(r._ngram_cache.keys()) == cached_keys
+
+
+def test_extract_literals():
+    extract = query.Wildcard._extract_literals
+    specials = query.Wildcard.SPECIAL_CHARS
+
+    assert extract("hello", specials) == ["hello"]
+    assert extract("*world", specials) == ["world"]
+    assert extract("hello*world", specials) == ["hello", "world"]
+    assert extract("*tion", specials) == ["tion"]
+    assert extract("[abc]def", specials) == ["def"]
+    assert extract("[abc]def[xyz]ghi", specials) == ["def", "ghi"]
+    assert extract("pre[abc]post", specials) == ["pre", "post"]
+    assert extract("*[abc]*", specials) == []
+    assert extract("a?b", specials) == ["a", "b"]
+    assert extract("te[st]ing", specials) == ["te", "ing"]
+
+
+def test_wildcard_ngram_no_match():
+    domain = "apple banana cherry".split()
+    schema = fields.Schema(word=fields.KEYWORD(stored=True))
+    ix = RamStorage().create_index(schema)
+    with ix.writer() as w:
+        for word in domain:
+            w.add_document(word=word)
+
+    with ix.reader() as r:
+        q = query.Wildcard("word", "*xyz*")
+        assert q._find_prefix(q.text) == ""
+        simplified = str(q.simplify(r))
+        assert simplified == "<_NullQuery>"
+
+
+def test_wildcard_ngram_single_char_fallback():
+    domain = "a ab abc abcd".split()
+    schema = fields.Schema(word=fields.KEYWORD(stored=True))
+    ix = RamStorage().create_index(schema)
+    with ix.writer() as w:
+        for word in domain:
+            w.add_document(word=word)
+
+    with ix.reader() as r:
+        q = query.Wildcard("word", "*b")
+        assert q._find_prefix(q.text) == ""
+        simplified = str(q.simplify(r))
+        terms = {t.strip("() ") for t in simplified.split(" OR ")}
+        assert terms == {"word:ab"}

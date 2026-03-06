@@ -362,18 +362,29 @@ class Wildcard(PatternQuery):
             return self
 
     _NGRAM_SIZE = 3
+    _MIN_NGRAM_SIZE = 2
 
     @staticmethod
     def _extract_literals(text, special_chars):
         segments = []
         current = []
-        for char in text:
+        i = 0
+        while i < len(text):
+            char = text[i]
+            if char == "[":
+                if current:
+                    segments.append("".join(current))
+                    current = []
+                close = text.find("]", i + 1)
+                i = (close + 1) if close != -1 else (i + 1)
+                continue
             if char in special_chars:
                 if current:
                     segments.append("".join(current))
                     current = []
             else:
                 current.append(char)
+            i += 1
         if current:
             segments.append("".join(current))
         return segments
@@ -386,17 +397,19 @@ class Wildcard(PatternQuery):
         if prefix:
             candidates = ixreader.expand_prefix(self.fieldname, prefix)
         else:
-            ngram_size = self._NGRAM_SIZE
             literals = self._extract_literals(self.text, self.SPECIAL_CHARS)
-            ngrams = set()
-            for segment in literals:
-                for i in range(len(segment) - ngram_size + 1):
-                    ngrams.add(segment[i:i + ngram_size])
-            if ngrams:
-                candidates = ixreader.terms_by_ngrams(
-                    self.fieldname, ngrams, ngram_size
-                )
-            else:
+            candidates = None
+            for ngram_size in range(self._NGRAM_SIZE, self._MIN_NGRAM_SIZE - 1, -1):
+                ngrams = set()
+                for segment in literals:
+                    for i in range(len(segment) - ngram_size + 1):
+                        ngrams.add(segment[i:i + ngram_size])
+                if ngrams:
+                    candidates = ixreader.terms_by_ngrams(
+                        self.fieldname, ngrams, ngram_size
+                    )
+                    break
+            if candidates is None:
                 candidates = ixreader.lexicon(self.fieldname)
 
         from_bytes = field.from_bytes
