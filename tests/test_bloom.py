@@ -272,7 +272,7 @@ class TestBloomCodecIntegration:
         tw = codec.field_writer(st, seg)
         tw.start_field("content", fieldobj)
         for i in range(100):
-            tw.start_term(f"term{i}".encode())
+            tw.start_term(f"term{i:03d}".encode())
             tw.add(i, 1.0, b"", 3)
             tw.finish_term()
         tw.finish_field()
@@ -281,11 +281,11 @@ class TestBloomCodecIntegration:
         tr = codec.terms_reader(st, seg)
         # Existing terms should be found
         for i in range(100):
-            assert ("content", f"term{i}".encode()) in tr
+            assert ("content", f"term{i:03d}".encode()) in tr
 
         # Non-existing terms should NOT be found (no false negatives)
         for i in range(100, 200):
-            assert ("content", f"term{i}".encode()) not in tr
+            assert ("content", f"term{i:03d}".encode()) not in tr
 
         tr.close()
 
