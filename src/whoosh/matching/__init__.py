@@ -48,6 +48,7 @@ from whoosh.matching.mcore import (
     NullMatcher,
     NullMatcherClass,
     ReadTooFar,
+    SkipListMatcher,
 )
 from whoosh.matching.wrappers import (
     ConstantScoreWrapperMatcher,
