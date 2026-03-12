@@ -50,9 +50,10 @@ method will return ``True``.
 """
 
 from abc import abstractmethod
-from itertools import repeat
-from whoosh.matching.skiplist import SkipList
 from bisect import bisect_left
+from itertools import repeat
+
+from whoosh.matching.skiplist import SkipList
 # Exceptions
 
 
@@ -575,6 +576,10 @@ class ListMatcher(Matcher):
 
 
 class SkipListMatcher(ListMatcher):
+    """A :class:`ListMatcher` that uses a skip list to accelerate
+    :meth:`skip_to` operations over large posting lists.
+    """
+
     def __init__(
         self,
         ids,
@@ -588,7 +593,8 @@ class SkipListMatcher(ListMatcher):
         terminfo=None,
     ):
         super().__init__(
-            ids, weights, values, format, scorer, position, all_weights, term, terminfo
+            ids, weights, values, format, scorer, position, all_weights,
+            term, terminfo,
         )
         self._skiplist = SkipList(ids)
 
@@ -601,15 +607,19 @@ class SkipListMatcher(ListMatcher):
             self._scorer,
             self._i,
             self._all_weights,
+            self._term,
+            self._terminfo,
         )
 
-    def skip_to(self, id):
+    def skip_to(self, target_id):
+        """Move this matcher to the first document ID >= *target_id*."""
+
         if not self.is_active():
             raise ReadTooFar
-        if id < self.id():
+        if target_id < self.id():
             return
 
-        node = self._skiplist.skip_to(id)
+        node = self._skiplist.skip_to(target_id)
         if node is not None:
             self._i = bisect_left(self._ids, node.doc_id, self._i)
         else:
