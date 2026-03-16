@@ -4,8 +4,8 @@ Whoosh |release| documentation
 
 Whoosh was created by `Matt Chaput <mailto:matt@whoosh.ca>`_.
 You can view outstanding issues on the
-`Whoosh Bitbucket page <https://github.com/Sygil-Dev/whoosh-reloaded>`_
-and get help on the `Whoosh mailing list <http://groups.google.com/group/whoosh-reloaded>`_.
+`Whoosh Github page <https://github.com/de-odex/whoosh-novo>`_
+and get help on the `Whoosh mailing list <http://groups.google.com/group/whoosh>`_.
 
 
 Contents

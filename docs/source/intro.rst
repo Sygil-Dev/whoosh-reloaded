@@ -56,5 +56,5 @@ Getting help with Whoosh
 ------------------------
 
 You can view outstanding issues on the
-`Whoosh Github page <http://github.com/Sygil-Dev/whoosh-reloaded>`_
+`Whoosh Github page <https://github.com/de-odex/whoosh-novo>`_
 and get help on the `Whoosh mailing list <http://groups.google.com/group/whoosh>`_.

@@ -430,7 +430,7 @@ def test_porter2():
 
 
 def test_url():
-    sample = "Visit https://github.com/sygil-dev/whoosh-reloaded or urn:isbn:5930502 or http://www.apple.com/."
+    sample = "Visit https://github.com/de-odex/whoosh-novo or urn:isbn:5930502 or http://www.apple.com/."
 
     anas = [
         analysis.SimpleAnalyzer(analysis.url_pattern),
@@ -440,7 +440,7 @@ def test_url():
         ts = [t.text for t in ana(sample)]
         assert ts == [
             "visit",
-            "https://github.com/sygil-dev/whoosh-reloaded",
+            "https://github.com/de-odex/whoosh-novo",
             "or",
             "urn:isbn:5930502",
             "or",

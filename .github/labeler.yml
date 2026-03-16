@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   triage:
-    if: github.repository == 'Sygil-Dev/whoosh-reloaded'
+    if: github.repository == 'de-odex/whoosh-novo'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

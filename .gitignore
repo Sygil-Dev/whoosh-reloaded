@@ -11,7 +11,7 @@ eggs/
 /test.py
 /.vscode/settings.json
 /.coverage
-/whoosh-reloaded.code-workspace
+/whoosh-novo.code-workspace
 /.vscode/launch.json
 *.coverage.DESKTOP-*
 /coverage.xml
