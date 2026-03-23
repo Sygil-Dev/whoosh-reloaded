@@ -42,7 +42,7 @@ test = [
   "pytest-sugar~=1.1.0",
 ]
 cov = [
-  "pytest-cov~=7.0.0",
+  "pytest-cov~=7.1.0",
 ]
 dev = [
   { include-group = "test" },
