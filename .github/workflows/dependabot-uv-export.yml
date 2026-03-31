@@ -1,0 +1,48 @@
+name: "Dependabot: uv export"
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dependabot-uv-export-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  export:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Export requirements files
+        run: |
+          uv export --frozen --output-file=requirements-dev.txt
+          uv export --frozen --no-default-groups --output-file=requirements.txt
+
+      - name: Commit exported files
+        run: |
+          if git diff --quiet -- requirements-dev.txt requirements.txt; then
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add requirements-dev.txt requirements.txt
+          git commit -m "chore: refresh exported requirements"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

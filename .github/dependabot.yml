@@ -5,10 +5,10 @@
 
 version: 2
 updates:
-  # Enable version updates for pip
-  - package-ecosystem: 'pip'
+  # Enable version updates for uv
+  - package-ecosystem: 'uv'
     directory: '/'
-    # Check the npm registry for updates once a week (Monday)
+    # Check for updates daily
     schedule:
       interval: 'daily'
 
