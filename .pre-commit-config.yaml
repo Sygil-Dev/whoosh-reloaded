@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-ast
       - id: check-builtin-literals
@@ -13,7 +13,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.6.6"
+    rev: "0.11.2"
     hooks:
       - id: uv-lock
       - id: uv-sync
@@ -24,13 +24,13 @@ repos:
           ["--frozen", "--no-default-groups", "--output-file=requirements.txt"]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.11.0
+    rev: v0.15.8
     hooks:
       - id: ruff
         args: [--fix]
       - id: ruff-format
 
   - repo: https://github.com/ikamensh/flynt/
-    rev: "8334ff9fdd81ea3ba3269ec38a6073d13c8069a5" # 1.0.2, was untagged
+    rev: "1.0.6"
     hooks:
       - id: flynt
