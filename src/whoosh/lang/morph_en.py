@@ -614,7 +614,7 @@ rules = (
     ),
     # (e.g., baseless, shoeless)
     (
-        r"[%s].*(eless)" % vowels,
+        rf"[{vowels}].*(eless)",
         "e,es,er,ers,est,ed,ing,ings,eing,eings,ely,eness,enesses,ement,ements,eness,enesses,eful",
     ),
     # (e.g., gutless, hatless, spotless)
@@ -624,37 +624,37 @@ rules = (
     ),
     # (e.g., thoughtless, worthless)
     (
-        r"[%s].*?(less)" % vowels,
+        rf"[{vowels}].*?(less)",
         ",s,er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,ful",
     ),
     # (e.g., baseness, toeness)
     (
-        r"[%s].*(eness)" % vowels,
+        rf"[{vowels}].*(eness)",
         "e,es,er,ers,est,ed,ing,ings,eing,eings,ely,enesses,ement,ements,eless,eful",
     ),
     # (e.g., bluntness, grayness)
     (
-        r"[%s].*(ness)" % vowels,
+        rf"[{vowels}].*(ness)",
         ",s,er,ers,est,ed,ing,ings,ly,nesses,ment,ments,less,ful",
     ),
     # (e.g., albatross, kiss)
     (
-        r"[%s]ss" % vowels,
+        rf"[{vowels}]ss",
         "es,er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful",
     ),
     # (e.g., joyous, fractious, gaseous)
-    (r"[%s].*(ous)" % vowels, "ly,ness"),
+    (rf"[{vowels}].*(ous)", "ly,ness"),
     # (e.g., tries, unties, jollies, beauties)
     (
         r"(ies)",
         "y,ie,yer,yers,ier,iers,iest,ied,ying,yings,yness,iness,ieness,ynesses,inesses,ienesses,iment,iement,iments,iements,yless,iless,ieless,yful,iful,ieful",
     ),
     # (e.g., crisis, kinesis)
-    (r"[%s].*(sis)" % vowels, "ses,sises,sisness,sisment,sisments,sisless,sisful"),
+    (rf"[{vowels}].*(sis)", "ses,sises,sisness,sisment,sisments,sisless,sisful"),
     # (e.g., bronchitis, bursitis)
-    (r"[%s].*(is)" % vowels, "es,ness,ment,ments,less,ful"),
+    (rf"[{vowels}].*(is)", "es,ness,ment,ments,less,ful"),
     (
-        r"[%s].*[cs]h(es)" % vowels,
+        rf"[{vowels}].*[cs]h(es)",
         ",e,er,ers,est,ed,ing,ings,ly,ely,ness,eness,nesses,enesses,ment,ement,ments,ements,less,eless,ful,eful",
     ),
     # (e.g., tokenizes) // adds British variations
@@ -669,12 +669,12 @@ rules = (
     ),
     # (e.g., aches, arches)
     (
-        r"[%s].*[jsxz](es)" % vowels,
+        rf"[{vowels}].*[jsxz](es)",
         ",e,er,ers,est,ed,ing,ings,ly,ely,ness,eness,nesses,enesses,ment,ement,ments,ements,less,eless,ful,eful",
     ),
     # (e.g., judges, abridges)
     (
-        r"[%s].*dg(es)" % vowels,
+        rf"[{vowels}].*dg(es)",
         "e,er,ers,est,ed,ing,ings,ely,eness,enesses,ment,ments,ement,ements,eless,eful",
     ),
     # (e.g., trees, races, likes, agrees) covers all other -es words
@@ -684,21 +684,21 @@ rules = (
     # (e.g., pigments, depigments, repigments)
     (r"pigment(s)", ",*"),
     # (e.g., judgments, abridgments)
-    (r"[%s].*dg(ments)" % vowels, "ment,*ments"),
+    (rf"[{vowels}].*dg(ments)", "ment,*ments"),
     # (e.g., merriments, embodiments) -iment in turn will generate y and *y (redo y)
     (rf"[{vowels}].*[{cons}]iment(s)", ",*"),
     # (e.g., atonements, entrapments)
-    (r"[%s].*ment(s)" % vowels, ",*"),
+    (rf"[{vowels}].*ment(s)", ",*"),
     # (e.g., viewers, meters, traders, transfers)
-    (r"[%s].*er(s)" % vowels, ",*"),
+    (rf"[{vowels}].*er(s)", ",*"),
     # (e.g., unflags) polysyllables
     (rf"[{vowels}].*[{cons}][{vowels}][bdglmnprt](s)", ",*"),
     # (e.g., frogs) monosyllables
     (rf"[{vowels}][{cons}][bdglmnprt](s)", ",*"),
     # (e.g., killings, muggings)
-    (r"[%s].*ing(s)" % vowels, ",*"),
+    (rf"[{vowels}].*ing(s)", ",*"),
     # (e.g., hulls, tolls)
-    (r"[%s].*ll(s)" % vowels, ",*"),
+    (rf"[{vowels}].*ll(s)", ",*"),
     # e.g., boas, polkas, spas) don't generate latin endings
     (r"a(s)", ",er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful"),
     # (e.g., beads, toads)
@@ -734,7 +734,7 @@ rules = (
     (r"ye()", "s,r,rs,st,d,ing,ings,ly,ness,nesses,ment,ments,less,ful"),
     # (e.g., judge, abridge)
     (
-        r"[%s].*dg(e)" % vowels,
+        rf"[{vowels}].*dg(e)",
         "es,er,ers,est,ed,ing,ings,ely,eness,enesses,ment,ments,less,ful,ement,ements,eless,eful",
     ),
     # (e.g., true, due, imbue)
@@ -767,7 +767,7 @@ rules = (
     (r"ee(d)", "ds,der,ders,ded,ding,dings,dly,dness,dnesses,dment,dments,dless,dful"),
     # (e.g., tried)
     (
-        r"[%s](ied)" % cons,
+        rf"[{cons}](ied)",
         "y,ie,ies,ier,iers,iest,ying,yings,ily,yly,iness,yness,inesses,ynesses,iment,iments,iless,iful,yment,yments,yless,yful",
     ),
     # (e.g., controlled, fulfilled, rebelled)
@@ -777,12 +777,12 @@ rules = (
     ),
     # (e.g., pulled, filled, fulled)
     (
-        r"[%s].*l(led)" % vowels,
+        rf"[{vowels}].*l(led)",
         "&,&s,&er,&ers,&est,&ing,&ings,&y,&ness,&nesses,&ment,&ments,&ful",
     ),
     # (e.g., hissed, grossed)
     (
-        r"[%s].*s(sed)" % vowels,
+        rf"[{vowels}].*s(sed)",
         "&,&es,&er,&ers,&est,&ing,&ings,&ly,&ness,&nesses,&ment,&ments,&less,&ful",
     ),
     # (e.g., hugged, trekked)
@@ -802,7 +802,7 @@ rules = (
     ),
     # (e.g., spoiled, tooled, tracked, roasted, atoned, abridged)
     (
-        r"[%s].*(ed)" % vowels,
+        rf"[{vowels}].*(ed)",
         ",e,s,es,er,ers,est,ing,ings,ly,ely,ness,eness,nesses,enesses,ment,ement,ments,ements,less,eless,ful,eful",
     ),
     # (e.g., bed, sled) words with a single e as the only vowel
@@ -822,12 +822,12 @@ rules = (
     ),
     # (e.g., puller, filler, fuller)
     (
-        r"[%s].*l(ler)" % vowels,
+        rf"[{vowels}].*l(ler)",
         "&,&s,&est,&ed,&ing,&ings,ly,lely,&ness,&nesses,&ment,&ments,&ful,&ers,&ered,&ering,&erings,&erly,&erness,&ernesses,&erments,&erless,&erful",
     ),
     # (e.g., hisser, grosser)
     (
-        r"[%s].*s(ser)" % vowels,
+        rf"[{vowels}].*s(ser)",
         "&,&es,&est,&ed,&ing,&ings,&ly,&ness,&nesses,&ment,&ments,&less,&ful,&ers,&ered,&ering,&erings,&erly,&erness,&ernesses,&erment,&erments,&erless,&erful",
     ),
     # (e.g., bigger, trekker, hitter)
@@ -847,23 +847,23 @@ rules = (
     ),
     # (e.g., actioner, atoner, icer, trader, accruer, churchgoer, prefer)
     (
-        r"[%s].*(er)" % vowels,
+        rf"[{vowels}].*(er)",
         ",e,s,es,est,ed,ing,ings,ly,ely,ness,eness,nesses,enesses,ment,ments,less,ful,ement,ements,eless,eful,ers,ered,erred,ering,erring,erings,errings,erly,erness,ernesses,erment,erments,erless,erful,erer,erers,erest,errer,errers,errest",
     ),
     # Words ending in -EST
     # (e.g., sliest, happiest, wittiest)
     (
-        r"[%s](iest)" % cons,
+        rf"[{cons}](iest)",
         "y,ies,ier,iers,ied,ying,yings,ily,yly,iness,yness,inesses,ynesses,iment,iments,iless,iful",
     ),
     # (e.g., fullest)
     (
-        r"[%s].*l(lest)" % vowels,
+        rf"[{vowels}].*l(lest)",
         "&,&s,&er,&ers,&ed,&ing,&ings,ly,&ness,&nesses,&ment,&ments,&ful",
     ),
     # (e.g.,  grossest)
     (
-        r"[%s].*s(sest)" % vowels,
+        rf"[{vowels}].*s(sest)",
         "&,&es,&er,&ers,&ed,&ing,&ings,&ly,&ness,&nesses,&ment,&ments,&less,&ful",
     ),
     # (e.g., biggest)
@@ -873,7 +873,7 @@ rules = (
     ),
     # (e.g., basest, archest, rashest)
     (
-        r"[%s].*([cs]h|[jsxz])(est)" % vowels,
+        rf"[{vowels}].*([cs]h|[jsxz])(est)",
         "e,es,er,ers,ed,ing,ings,ly,ely,ness,eness,nesses,enesses,ment,ments,less,ful,ement,ements,eless,eful,ests,ester,esters,ested,esting,estings,estly,estness,estnesses,estment,estments,estless,estful",
     ),
     # (e.g., severest, Xinterest, merest)
@@ -883,7 +883,7 @@ rules = (
     ),
     # (e.g., slickest, coolest, ablest, amplest, protest, quest)
     (
-        r"[%s].*(est)" % vowels,
+        rf"[{vowels}].*(est)",
         ",e,s,es,er,ers,ed,ing,ings,ly,ely,ness,eness,nesses,enesses,ment,ments,less,ful,ement,ements,eless,eful,ests,ester,esters,ested,esting,estings,estly,estness,estnesses,estment,estments,estless,estful",
     ),
     # (e.g., rest, test)
@@ -892,25 +892,25 @@ rules = (
     # (e.g., beautiful, plentiful)
     (rf"[{vowels}].*[{cons}](iful)", "ifully,ifulness,*y"),
     # (e.g., hopeful, sorrowful)
-    (r"[%s].*(ful)" % vowels, "fully,fulness,,*"),
+    (rf"[{vowels}].*(ful)", "fully,fulness,,*"),
     # Words ending in -ICAL
-    (r"[%s].*(ical)" % vowels, "ic,ics,ically"),
+    (rf"[{vowels}].*(ical)", "ic,ics,ically"),
     # Words ending in -IC
-    (r"[%s].*(ic)" % vowels, "ics,ical,ically"),
+    (rf"[{vowels}].*(ic)", "ics,ical,ically"),
     # Words ending in -ING
     # (e.g., dying, crying, supplying)
     (
-        r"[%s](ying)" % cons,
+        rf"[{cons}](ying)",
         "yings,ie,y,ies,ier,iers,iest,ied,iely,yly,ieness,yness,ienesses,ynesses,iment,iments,iless,iful",
     ),
     # (e.g., pulling, filling, fulling)
     (
-        r"[%s].*l(ling)" % vowels,
+        rf"[{vowels}].*l(ling)",
         ",*,&,&s,&er,&ers,&est,&ed,&ings,&ness,&nesses,&ment,&ments,&ful",
     ),
     # (e.g., hissing, grossing, processing)
     (
-        r"[%s].*s(sing)" % vowels,
+        rf"[{vowels}].*s(sing)",
         "&,&s,&er,&ers,&est,&ed,&ings,&ly,&ness,&nesses,&ment,&ments,&less,&ful",
     ),
     # (e.g., hugging, trekking)
@@ -925,12 +925,12 @@ rules = (
     ),
     # (e.g., ageing, aweing)
     (
-        r"[%s].*(eing)" % vowels,
+        rf"[{vowels}].*(eing)",
         "e,es,er,ers,est,ed,eings,ely,eness,enesses,ement,ements,eless,eful",
     ),
     # (e.g., toying, playing)
     (
-        r"[%s].*y(ing)" % vowels,
+        rf"[{vowels}].*y(ing)",
         ",s,er,ers,est,ed,ings,ly,ingly,ness,nesses,ment,ments,less,ful",
     ),
     # (e.g., editing, crediting, expediting, siting, exciting)
@@ -955,17 +955,17 @@ rules = (
     ),
     # (e.g., icing, aging, achieving, amazing, housing)
     (
-        r"[%s][cgsvz](ing)" % vowels,
+        rf"[{vowels}][cgsvz](ing)",
         "*e,ings,inger,ingers,ingest,inged,inging,ingings,ingly,ingness,ingnesses,ingment,ingments,ingless,ingful",
     ),
     # (e.g., dancing, troubling, arguing, bluing, carving)
     (
-        r"[%s][clsuv](ing)" % cons,
+        rf"[{cons}][clsuv](ing)",
         "*e,ings,inger,ingers,ingest,inged,inging,ingings,ingly,ingness,ingnesses,ingment,ingments,ingless,ingful",
     ),
     # (e.g., charging, bulging)
     (
-        r"[%s].*[lr]g(ing)" % vowels,
+        rf"[{vowels}].*[lr]g(ing)",
         "*e,ings,inger,ingers,ingest,inged,inging,ingings,ingly,ingness,ingnesses,ingment,ingments,ingless,ingful",
     ),
     # (e.g., farming, harping, interesting, bedspring, redwing)
@@ -975,7 +975,7 @@ rules = (
     ),
     # (e.g., spoiling, reviling, autoing, egging, hanging, hingeing)
     (
-        r"[%s].*(ing)" % vowels,
+        rf"[{vowels}].*(ing)",
         ",*,*e,ings,inger,ingers,ingest,inged,inging,ingings,ingly,ingness,ingnesses,ingment,ingments,ingless,ingful",
     ),
     # (e.g., wing, thing) monosyllables
@@ -994,7 +994,7 @@ rules = (
     # (e.g., segment, bisegment, cosegment, pigment, depigment, repigment)
     (r"segment|pigment", "s,ed,ing,ings,er,ers,ly,ness,nesses,less,ful"),
     # (e.g., judgment, abridgment)
-    (r"[%s].*dg(ment)" % vowels, "*e"),
+    (rf"[{vowels}].*dg(ment)", "*e"),
     # (e.g., merriment, embodiment)
     (rf"[{vowels}].*[{cons}](iment)", "*y"),
     # (e.g., atonement, entrapment)
@@ -1002,24 +1002,24 @@ rules = (
     # Words ending in -O
     # (e.g., taboo, rodeo)
     (
-        r"[%s]o()" % vowels,
+        rf"[{vowels}]o()",
         "s,er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful",
     ),
     # (e.g., tomato, bonito)
     (
-        r"[%s].*o()" % vowels,
+        rf"[{vowels}].*o()",
         "s,es,er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful",
     ),
     # Words ending in -UM
     # (e.g., datum, quantum, tedium, strum, [oil]drum, vacuum)
     (
-        r"[%s].*(um)" % vowels,
+        rf"[{vowels}].*(um)",
         "a,ums,umer,ummer,umers,ummers,umed,ummed,uming,umming,umings,ummings,umness,umments,umless,umful",
     ),
     # Words ending in -Y
     # (e.g., ably, horribly, wobbly)
     (
-        r"[%s].*b(ly)" % vowels,
+        rf"[{vowels}].*b(ly)",
         "le,les,ler,lers,lest,led,ling,lings,leness,lenesses,lement,lements,leless,leful",
     ),
     # (e.g., happily, dizzily)
@@ -1028,36 +1028,36 @@ rules = (
         "y,ies,ier,iers,iest,ied,ying,yings,yness,iness,ynesses,inesses,iment,iments,iless,iful",
     ),
     # (e.g., peaceful+ly)
-    (r"[%s].*ful(ly)" % vowels, ",*"),
+    (rf"[{vowels}].*ful(ly)", ",*"),
     # (e.g., fully, folly, coolly, fatally, dally)
     (
-        r"[%s].*l(ly)" % vowels,
+        rf"[{vowels}].*l(ly)",
         ",*,lies,lier,liers,liest,lied,lying,lyings,liness,linesses,liment,liments,liless,liful,*l",
     ),
     # (e.g., monopoly, Xcephaly, holy)
     (
-        r"[%s](ly)" % vowels,
+        rf"[{vowels}](ly)",
         "lies,lier,liers,liest,lied,lying,lyings,liness,linesses,liment,liments,liless,liful",
     ),
     # (e.g., frequently, comely, deeply, apply, badly)
     (
-        r"[%s].*(ly)" % vowels,
+        rf"[{vowels}].*(ly)",
         ",*,lies,lier,liers,liest,lied,lying,lyings,liness,linesses,lyless,lyful",
     ),
     # (e.g., happy, ply, spy, cry)
     (
-        r"[%s](y)" % cons,
+        rf"[{cons}](y)",
         "ies,ier,iers,iest,ied,ying,yings,ily,yness,iness,ynesses,inesses,iment,iments,iless,iful,yment,yments,yless,yful",
     ),
     # (e.g., betray, gay, stay)
     (
-        r"[%s]y()" % vowels,
+        rf"[{vowels}]y()",
         "s,er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful",
     ),
     # Root rules
     # (e.g., fix, arch, rash)
     (
-        r"[%s].*(ch|sh|[jxz])()" % vowels,
+        rf"[{vowels}].*(ch|sh|[jxz])()",
         "es,er,ers,est,ed,ing,ings,ly,ness,nesses,ment,ments,less,ful",
     ),
     # (e.g., unflag, open, besot)
@@ -1076,7 +1076,7 @@ rules = (
         ",s,tas,tum,tums,ton,tons,tic,tical",
     ),
     # (e.g., chordata, data, errata, sonata, toccata)
-    (r"[%s].*t(a)" % vowels, "as,ae,um,ums,on,ons,ic,ical"),
+    (rf"[{vowels}].*t(a)", "as,ae,um,ums,on,ons,ic,ical"),
     # (e.g., polka, spa, schema, ova, polyhedra)
     (
         rf"[{vowels}].*[{cons}](a)",
@@ -1084,7 +1084,7 @@ rules = (
     ),
     # (e.g., full)
     (
-        r"[%s].*ll()" % vowels,
+        rf"[{vowels}].*ll()",
         "s,er,ers,est,ed,ing,ings,y,ness,nesses,ment,ments,-less,ful",
     ),
     # (e.g., spoon, rhythm)
