@@ -67,7 +67,7 @@ def test_version_in():
         assert ix.is_empty()
 
         v = index.version(st)
-        assert v[0] == __version__
+        assert v[0] == __version__[:3]
         assert v[1] == index._CURRENT_TOC_VERSION
 
         with ix.writer() as w:

@@ -24,6 +24,9 @@ Whoosh-Novo
 > [!WARNING]
 > Compatibility will be best-effort, limited to maintained Python versions (>=3.10). I am a solo amateur developer; mistakes will probably be made more often than usual.
 
+> [!NOTE]
+> The first PyPI release is planned as `3.0.0a1`. This is an alpha intended to flush out old runtime bugs and any API drift introduced while adding typing annotations. If you depend on strict source compatibility, wait for a later prerelease.
+
 ### Motivation:
 - Update Whoosh to have type annotations
   - Aim for 100% standard Pyright conformance, and as much strict Pyright conformance as possible
@@ -76,7 +79,7 @@ Installing Whoosh
 If you have ``pip`` installed, you can use it to download and install
 Whoosh automatically::
 
-    # Install the stable version from PyPI
+    # Install the alpha release from PyPI
     $ pip install whoosh-novo
 
     # Install the development version from GitHub.
