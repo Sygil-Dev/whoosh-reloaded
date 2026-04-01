@@ -1,7 +1,6 @@
 Whoosh-Novo
 ===========
-<!-- TODO: docs... -->
-<!-- [![Docs](https://img.shields.io/website?url=https%3A%2F%2Fde-odex.github.io%2Fwhoosh-novo%2F&label=docs)](https://de-odex.github.io/whoosh-novo/) -->
+[![Docs](https://img.shields.io/website?url=https%3A%2F%2Fde-odex.github.io%2Fwhoosh-novo%2F&label=docs)](https://de-odex.github.io/whoosh-novo/)
 [![PyPI version](https://img.shields.io/pypi/v/Whoosh-Novo.svg)](https://pypi.org/project/Whoosh-Novo/)
 [![Python versions](https://img.shields.io/pypi/pyversions/Whoosh-Novo.svg)](https://pypi.org/project/Whoosh-Novo/)
 [![License](https://img.shields.io/pypi/l/Whoosh-Novo)](https://github.com/de-odex/whoosh-novo/blob/main/LICENSE.txt)
