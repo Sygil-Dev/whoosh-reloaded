@@ -1,3 +1,5 @@
+Whoosh-Novo
+===========
 [![CodeFactor](https://www.codefactor.io/repository/github/de-odex/whoosh-novo/badge)](https://www.codefactor.io/repository/github/de-odex/whoosh-novo)
 [![codecov](https://codecov.io/gh/de-odex/whoosh-novo/graph/badge.svg?token=RZ426ERMZD)](https://codecov.io/gh/de-odex/whoosh-novo)
 <!-- [![Documentation Status](https://readthedocs.org/projects/whoosh-reloaded/badge/?version=latest)](https://whoosh-reloaded.readthedocs.io/en/latest/?badge=latest) -->
@@ -20,13 +22,13 @@
 > This repository (**whoosh-novo**) is a fork and continuation of the Whoosh project, succeeding [Whoosh-Reloaded](https://github.com/Sygil-Dev/whoosh-reloaded) which is no longer maintained.
 
 > [!WARNING]
-> Compatibility will be best-effort, limited to maintained python versions (>=3.9). I am an amateur solo developer; mistakes will probably be made more often than usual.
+> Compatibility will be best-effort, limited to maintained Python versions (>=3.10). I am a solo amateur developer; mistakes will probably be made more often than usual.
 
 ### Motivation:
-- update whoosh to have type annotations
-  - aim for 100% standard pyright conformance, and as much strict pyright conformance as possible
-- proposals for feature changes and additions
-  - probably will not be merged into `main` without external consultation
+- Update Whoosh to have type annotations
+  - Aim for 100% standard Pyright conformance, and as much strict Pyright conformance as possible
+- Proposals for feature changes and additions
+  - Probably will not be merged into `main` without external consultation
 
 --------------------------------------
 
