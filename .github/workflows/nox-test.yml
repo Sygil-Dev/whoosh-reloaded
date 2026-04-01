@@ -50,3 +50,16 @@ jobs:
         run: nox --session test
         env:
           NOXPYTHON: ${{ matrix.env }}
+
+  tests-pass:
+    # used for auto-merge.yml
+    name: tests-pass
+    runs-on: ubuntu-latest
+    needs: [nox-test]
+    if: ${{ always() }}
+    steps:
+      - name: Fail if any matrix job failed
+        run: |
+          '${{ needs.nox-test.result }}' -eq 'success' `
+            || (Write-Error "Matrix did not fully pass"; exit 1)
+        shell: pwsh
