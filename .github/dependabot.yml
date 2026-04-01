@@ -5,14 +5,17 @@
 
 version: 2
 updates:
-  # Enable version updates for uv
   - package-ecosystem: 'uv'
     directory: '/'
-    # Check for updates daily
     schedule:
       interval: 'daily'
 
   - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+
+  - package-ecosystem: 'pre-commit'
     directory: '/'
     schedule:
       interval: 'daily'
