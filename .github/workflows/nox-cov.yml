@@ -5,7 +5,31 @@ on:
   push:
     branches: ["main"]
     tags-ignore: ["**"]
+    paths:
+      - ".github/workflows/nox-test.yml"
+      - ".github/workflows/nox-cov.yml"
+      - "src/**"
+      - "tests/**"
+      - "noxfile.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "requirements.txt"
+      - "requirements-dev.txt"
+      - "codecov.yml"
+      - "MANIFEST.in"
   pull_request:
+    paths:
+      - ".github/workflows/nox-test.yml"
+      - ".github/workflows/nox-cov.yml"
+      - "src/**"
+      - "tests/**"
+      - "noxfile.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - "requirements.txt"
+      - "requirements-dev.txt"
+      - "codecov.yml"
+      - "MANIFEST.in"
 
 concurrency:
   group: nox-cov-${{ github.ref }}
