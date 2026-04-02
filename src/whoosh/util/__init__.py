@@ -27,32 +27,35 @@
 
 
 import random
-import sys
 import time
 from bisect import insort
+from collections.abc import Callable, Sequence
 from functools import wraps
+from threading import Lock
+from typing import Any, Concatenate, ParamSpec, Protocol, SupportsIndex, TypeVar
 
 # These must be valid separate characters in CASE-INSENSTIVE filenames
 IDCHARS = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 
-if hasattr(time, "perf_counter"):
-    now = time.perf_counter
-elif sys.platform == "win32":
-    now = time.clock
-else:
-    now = time.time
+now = time.perf_counter
 
 
-def random_name(size=28):
+def random_name(size: SupportsIndex = 28) -> str:
     return "".join(random.choice(IDCHARS) for _ in range(size))
 
 
-def random_bytes(size=28):
+def random_bytes(size: SupportsIndex = 28) -> bytes:
     return bytes(random.randint(0, 255) for _ in range(size))
 
 
-def make_binary_tree(fn, args, **kwargs):
+T = TypeVar("T")
+R = TypeVar("R")
+P = ParamSpec("P")
+
+
+# TODO: Resolve Any types after type annotating whoosh.query.compound
+def make_binary_tree(fn: Callable[[T, T], T], args: Sequence[T], **kwargs: Any) -> T:
     """Takes a function/class that takes two positional arguments and a list of
     arguments and returns a binary tree of results/instances.
 
@@ -77,7 +80,10 @@ def make_binary_tree(fn, args, **kwargs):
     )
 
 
-def make_weighted_tree(fn, ls, **kwargs):
+# TODO: Resolve Any types after type annotating whoosh.query.compound
+def make_weighted_tree(
+    fn: Callable[[Any, Any], Any], ls: list[tuple[Any, Any]], **kwargs: Any
+):
     """Takes a function/class that takes two positional arguments and a list of
     (weight, argument) tuples and returns a huffman-like weighted tree of
     results/instances.
@@ -96,10 +102,10 @@ def make_weighted_tree(fn, ls, **kwargs):
 
 # Fibonacci function
 
-_fib_cache = {}
+_fib_cache: dict[int, int] = {}
 
 
-def fib(n):
+def fib(n: int) -> int:
     """Returns the nth value in the Fibonacci sequence."""
 
     if n <= 2:
@@ -114,26 +120,40 @@ def fib(n):
 # Decorators
 
 
-def synchronized(func):
+class _SupportsSyncLock(Protocol):
+    _sync_lock: Lock
+
+
+class _SupportsClosed(Protocol):
+    closed: bool
+
+
+def synchronized(
+    func: Callable[Concatenate[_SupportsSyncLock, P], R],
+) -> Callable[Concatenate[_SupportsSyncLock, P], R]:
     """Decorator for storage-access methods, which synchronizes on a threading
     lock. The parent object must have 'is_closed' and '_sync_lock' attributes.
     """
 
     @wraps(func)
-    def synchronized_wrapper(self, *args, **kwargs):
+    def synchronized_wrapper(
+        self: _SupportsSyncLock, *args: P.args, **kwargs: P.kwargs
+    ) -> R:
         with self._sync_lock:
             return func(self, *args, **kwargs)
 
     return synchronized_wrapper
 
 
-def unclosed(method):
+def unclosed(
+    method: Callable[Concatenate[_SupportsClosed, P], R],
+) -> Callable[Concatenate[_SupportsClosed, P], R]:
     """
     Decorator to check if the object is closed.
     """
 
     @wraps(method)
-    def unclosed_wrapper(self, *args, **kwargs):
+    def unclosed_wrapper(self: _SupportsClosed, *args: P.args, **kwargs: P.kwargs) -> R:
         if self.closed:
             raise ValueError("Operation on a closed object")
         return method(self, *args, **kwargs)
