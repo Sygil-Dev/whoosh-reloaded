@@ -24,12 +24,14 @@
 # The views and conclusions contained in the software and documentation are
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
+from __future__ import annotations
 
 import math
 import struct
 from array import array
 from bisect import bisect_left
 from struct import pack, unpack
+from typing import TYPE_CHECKING, Literal, overload
 
 from whoosh.system import (
     pack_byte,
@@ -49,6 +51,9 @@ from whoosh.system import (
     unpack_ulong,
     unpack_ushort,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Generator
 
 NaN = struct.unpack("<d", b"\xff\xff\xff\xff\xff\xff\xff\xff")[0]
 
@@ -97,11 +102,11 @@ typecode_unpack = {
 # Functions related to binary representations
 
 
-def b(s):
+def b(s: str) -> bytes:
     return s.encode("latin-1")
 
 
-def bits_required(maxnum):
+def bits_required(maxnum: int) -> int:
     """Returns the number of bits required to represent the given (unsigned)
     integer.
     """
@@ -109,7 +114,7 @@ def bits_required(maxnum):
     return max(1, math.ceil(math.log(maxnum, 2)))
 
 
-def typecode_required(maxnum):
+def typecode_required(maxnum: int) -> Literal["B", "H", "i", "I", "q", "Q"]:
     if maxnum < 256:
         return "B"
     elif maxnum < 2**16:
@@ -124,7 +129,7 @@ def typecode_required(maxnum):
         return "Q"
 
 
-def max_value(bitcount):
+def max_value(bitcount: int) -> int:
     """Returns the maximum (unsigned) integer representable in the given number
     of bits.
     """
@@ -132,8 +137,8 @@ def max_value(bitcount):
     return ~(~0 << bitcount)
 
 
-def bytes_for_bits(bitcount):
-    r = int(math.ceil((bitcount + 1) / 8.0))
+def bytes_for_bits(bitcount: int) -> int:
+    r = math.ceil((bitcount + 1) / 8.0)
     return r
 
 
@@ -147,16 +152,40 @@ _qpack, _qunpack = _qstruct.pack, _qstruct.unpack
 _dpack, _dunpack = _dstruct.pack, _dstruct.unpack
 
 
-def to_sortable(numtype, intsize, signed, x):
+@overload
+def to_sortable(numtype: type[int], intsize: int, signed: bool, x: int) -> int: ...
+
+
+@overload
+def to_sortable(numtype: type[float], intsize: int, signed: bool, x: float) -> int: ...
+
+
+def to_sortable(
+    numtype: type[int | float], intsize: int, signed: bool, x: float
+) -> int:
     if numtype is int:
+        assert isinstance(x, int)
         if signed:
             x += 1 << intsize - 1
         return x
     else:
+        assert isinstance(x, float)
         return float_to_sortable_long(x, signed)
 
 
-def from_sortable(numtype, intsize, signed, x):
+@overload
+def from_sortable(numtype: type[int], intsize: int, signed: bool, x: int) -> int: ...
+
+
+@overload
+def from_sortable(
+    numtype: type[float], intsize: int, signed: bool, x: int
+) -> float: ...
+
+
+def from_sortable(
+    numtype: type[int | float], intsize: int, signed: bool, x: int
+) -> int | float:
     if numtype is int:
         if signed:
             x -= 1 << intsize - 1
@@ -165,8 +194,8 @@ def from_sortable(numtype, intsize, signed, x):
         return sortable_long_to_float(x, signed)
 
 
-def float_to_sortable_long(x, signed):
-    x = _qunpack(_dpack(x))[0]
+def float_to_sortable_long(xf: float, signed: bool) -> int:
+    x: int = _qunpack(_dpack(xf))[0]
     if x < 0:
         x ^= 0x7FFFFFFFFFFFFFFF
     if signed:
@@ -175,19 +204,21 @@ def float_to_sortable_long(x, signed):
     return x
 
 
-def sortable_long_to_float(x, signed):
+def sortable_long_to_float(x: int, signed: bool) -> float:
     if signed:
         x -= 1 << 63
     if x < 0:
         x ^= 0x7FFFFFFFFFFFFFFF
-    x = _dunpack(_qpack(x))[0]
-    return x
+    xf: float = _dunpack(_qpack(x))[0]
+    return xf
 
 
 # Functions for generating tiered ranges
 
 
-def split_ranges(intsize, step, start, end):
+def split_ranges(
+    intsize: Literal[8, 16, 32, 64], step: int, start: int, end: int
+) -> Generator[tuple[int, int, int], None, None]:
     """Splits a range of numbers (from ``start`` to ``end``, inclusive)
     into a sequence of trie ranges of the form ``(start, end, shift)``. The
     consumer of these tuples is expected to shift the ``start`` and ``end``
@@ -202,7 +233,7 @@ def split_ranges(intsize, step, start, end):
     while True:
         diff = 1 << (shift + step)
         mask = ((1 << step) - 1) << shift
-        setbits = lambda x: x | ((1 << shift) - 1)
+        setbits: Callable[[int], int] = lambda x, shift_=shift: x | ((1 << shift_) - 1)
 
         haslower = (start & mask) != 0
         hasupper = (end & mask) != mask
@@ -225,7 +256,16 @@ def split_ranges(intsize, step, start, end):
         shift += step
 
 
-def tiered_ranges(numtype, intsize, signed, start, end, shift_step, startexcl, endexcl):
+def tiered_ranges(
+    numtype: type[int | float],
+    intsize: Literal[8, 16, 32, 64],
+    signed: bool,
+    start: float | None,
+    end: float | None,
+    shift_step: int,
+    startexcl: bool,
+    endexcl: bool,
+) -> tuple[tuple[int, int, int]] | Generator[tuple[int, int, int], None, None]:
     assert numtype in (int, float)
     assert intsize in (8, 16, 32, 64)
 
@@ -254,7 +294,7 @@ def tiered_ranges(numtype, intsize, signed, start, end, shift_step, startexcl, e
 # Float-to-byte encoding/decoding
 
 
-def float_to_byte(value, mantissabits=5, zeroexp=2):
+def float_to_byte(value: float, mantissabits: int = 5, zeroexp: int = 2) -> bytes:
     """Encodes a floating point number in a single byte."""
 
     # Assume int size == float size
@@ -277,10 +317,9 @@ def float_to_byte(value, mantissabits=5, zeroexp=2):
     return b(result)
 
 
-def byte_to_float(b, mantissabits=5, zeroexp=2):
+def byte_to_float(b: int | bytes, mantissabits: int = 5, zeroexp: int = 2) -> float:
     """Decodes a floating point number stored in a single byte."""
-    if type(b) is not int:
-        b = ord(b)
+    b = ord(b) if isinstance(b, bytes) else b
     if b == 0:
         return 0.0
 
@@ -593,7 +632,7 @@ _length_byte_cache = array(
 )
 
 
-def length_to_byte(length):
+def length_to_byte(length: int | None) -> int:
     if length is None:
         return 0
     if length >= 106374:
