@@ -35,11 +35,13 @@ until it was cleaned up. Using OS-level file locks fixes this.
 
 import errno
 import os
-import sys
 import time
+from abc import ABC, abstractmethod
+from collections.abc import Callable
+from typing import Any
 
 
-def try_for(fn, timeout=5.0, delay=0.1):
+def try_for(fn: Callable[[], Any], timeout: float = 5.0, delay: float = 0.1) -> Any:
     """Calls ``fn`` every ``delay`` seconds until it returns True or
     ``timeout`` seconds elapse. Returns True if the lock was acquired, or False
     if the timeout was reached.
@@ -58,22 +60,27 @@ def try_for(fn, timeout=5.0, delay=0.1):
     return v
 
 
-class LockBase:
+class LockBase(ABC):
     """Base class for file locks."""
 
-    def __init__(self, filename):
+    fd: int | None
+    filename: str
+    locked: bool
+
+    def __init__(self, filename: str):
         self.fd = None
         self.filename = filename
         self.locked = False
 
-    def __del__(self):
-        if hasattr(self, "fd") and self.fd:
+    def __del__(self) -> None:
+        if self.fd is not None:
             try:
                 self.release()
             except:
                 pass
 
-    def acquire(self, blocking=False):
+    @abstractmethod
+    def acquire(self, blocking: bool = False) -> bool:
         """Acquire the lock. Returns True if the lock was acquired.
 
         :param blocking: if True, call blocks until the lock is acquired.
@@ -82,77 +89,80 @@ class LockBase:
         """
         pass
 
-    def release(self):
+    @abstractmethod
+    def release(self) -> None:
         pass
 
 
-class FcntlLock(LockBase):
-    """File lock based on UNIX-only fcntl module."""
+if os.name != "nt":
+    import fcntl
 
-    def acquire(self, blocking=False):
-        import fcntl  # type: ignore @UnresolvedImport
+    class FcntlLock(LockBase):
+        """File lock based on UNIX-only fcntl module."""
 
-        flags = os.O_CREAT | os.O_WRONLY
-        self.fd = os.open(self.filename, flags)
+        def acquire(self, blocking: bool = False) -> bool:
+            flags = os.O_CREAT | os.O_WRONLY
+            self.fd = os.open(self.filename, flags)
 
-        mode = fcntl.LOCK_EX
-        if not blocking:
-            mode |= fcntl.LOCK_NB
+            mode = fcntl.LOCK_EX
+            if not blocking:
+                mode |= fcntl.LOCK_NB
 
-        try:
-            fcntl.flock(self.fd, mode)
-            self.locked = True
-            return True
-        except OSError:
-            e = sys.exc_info()[1]
-            if e.errno not in (errno.EAGAIN, errno.EACCES):
-                raise
+            try:
+                fcntl.flock(self.fd, mode)
+                self.locked = True
+                return True
+            except OSError as exc:
+                if exc.errno not in (errno.EAGAIN, errno.EACCES):
+                    raise
+                os.close(self.fd)
+                self.fd = None
+                return False
+
+        def release(self) -> None:
+            if self.fd is None:
+                raise Exception("Lock was not acquired")
+
+            fcntl.flock(self.fd, fcntl.LOCK_UN)
             os.close(self.fd)
             self.fd = None
-            return False
 
-    def release(self):
-        if self.fd is None:
-            raise Exception("Lock was not acquired")
-
-        import fcntl  # type: ignore @UnresolvedImport
-
-        fcntl.flock(self.fd, fcntl.LOCK_UN)
-        os.close(self.fd)
-        self.fd = None
+else:
+    FcntlLock = LockBase
 
 
-class MsvcrtLock(LockBase):
-    """File lock based on Windows-only msvcrt module."""
+if os.name == "nt":
+    import msvcrt
 
-    def acquire(self, blocking=False):
-        import msvcrt  # type: ignore @UnresolvedImport
+    class MsvcrtLock(LockBase):
+        """File lock based on Windows-only msvcrt module."""
 
-        flags = os.O_CREAT | os.O_WRONLY
-        mode = msvcrt.LK_NBLCK
-        if blocking:
-            mode = msvcrt.LK_LOCK
+        def acquire(self, blocking: bool = False) -> bool:
+            flags = os.O_CREAT | os.O_WRONLY
+            mode = msvcrt.LK_NBLCK
+            if blocking:
+                mode = msvcrt.LK_LOCK
 
-        self.fd = os.open(self.filename, flags)
-        try:
-            msvcrt.locking(self.fd, mode, 1)
-            return True
-        except OSError:
-            e = sys.exc_info()[1]
-            if e.errno not in (errno.EAGAIN, errno.EACCES, errno.EDEADLK):
-                raise
+            self.fd = os.open(self.filename, flags)
+            try:
+                msvcrt.locking(self.fd, mode, 1)
+                return True
+            except OSError as exc:
+                if exc.errno not in (errno.EAGAIN, errno.EACCES, errno.EDEADLK):
+                    raise
+                os.close(self.fd)
+                self.fd = None
+                return False
+
+        def release(self) -> None:
+            if self.fd is None:
+                raise Exception("Lock was not acquired")
+            msvcrt.locking(self.fd, msvcrt.LK_UNLCK, 1)
             os.close(self.fd)
             self.fd = None
-            return False
 
-    def release(self):
-        import msvcrt  # type: ignore @UnresolvedImport
-
-        if self.fd is None:
-            raise Exception("Lock was not acquired")
-        msvcrt.locking(self.fd, msvcrt.LK_UNLCK, 1)
-        os.close(self.fd)
-        self.fd = None
+else:
+    MsvcrtLock = LockBase
 
 
 if os.name == "nt":
