@@ -28,17 +28,30 @@
 
 import functools
 from collections import Counter
+from collections.abc import Callable, Hashable
 from heapq import nsmallest
 from operator import itemgetter
+from typing import Protocol, TypeVar, cast
+
+R = TypeVar("R")
+R_co = TypeVar("R_co", covariant=True)
 
 
-def unbound_cache(func):
+class _CachedFunction(Protocol[R_co]):
+    def __call__(self, *args: Hashable) -> R_co: ...
+
+    def cache_info(self) -> tuple[int, int, int, int]: ...
+
+    def cache_clear(self) -> None: ...
+
+
+def unbound_cache(func: Callable[..., R]) -> Callable[..., R]:
     """Caching decorator with an unbounded cache size."""
 
-    cache = {}
+    cache: dict[tuple[Hashable, ...], R] = {}
 
     @functools.wraps(func)
-    def caching_wrapper(*args):
+    def caching_wrapper(*args: Hashable) -> R:
         try:
             return cache[args]
         except KeyError:
@@ -49,7 +62,7 @@ def unbound_cache(func):
     return caching_wrapper
 
 
-def lfu_cache(maxsize=100):
+def lfu_cache(maxsize: int = 100) -> Callable[[Callable[..., R]], _CachedFunction[R]]:
     """A simple cache that, when the cache is full, deletes the least frequently
     used 10% of the cached values.
 
@@ -63,13 +76,13 @@ def lfu_cache(maxsize=100):
     Access the underlying function with f.__wrapped__.
     """
 
-    def decorating_function(user_function):
+    def decorating_function(user_function: Callable[..., R]) -> _CachedFunction[R]:
         stats = [0, 0]  # Hits, misses
-        data = {}
-        usecount = Counter()
+        data: dict[tuple[Hashable, ...], R] = {}
+        usecount: Counter[tuple[Hashable, ...]] = Counter()
 
         @functools.wraps(user_function)
-        def wrapper(*args):
+        def wrapper(*args: Hashable) -> R:
             try:
                 result = data[args]
                 stats[0] += 1  # Hit
@@ -87,15 +100,16 @@ def lfu_cache(maxsize=100):
                 usecount[args] += 1
             return result
 
-        def cache_info():
+        def cache_info() -> tuple[int, int, int, int]:
             return stats[0], stats[1], maxsize, len(data)
 
-        def cache_clear():
+        def cache_clear() -> None:
             data.clear()
             usecount.clear()
 
-        wrapper.cache_info = cache_info
-        wrapper.cache_clear = cache_clear
-        return wrapper
+        cached_wrapper = cast("_CachedFunction[R]", wrapper)
+        cached_wrapper.cache_info = cache_info
+        cached_wrapper.cache_clear = cache_clear
+        return cached_wrapper
 
     return decorating_function
