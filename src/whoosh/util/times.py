@@ -24,17 +24,26 @@
 # The views and conclusions contained in the software and documentation are
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
+from __future__ import annotations
 
 import calendar
 import copy
 from datetime import date, datetime, timedelta, timezone
+from typing import TYPE_CHECKING, ClassVar, Literal
+
+if TYPE_CHECKING:
+    from collections.abc import Collection
 
 
 class TimeError(Exception):
     pass
 
 
-def relative_days(current_wday, wday, dir):
+def relative_days(
+    current_wday: Literal[0, 1, 2, 3, 4, 5, 6],
+    wday: Literal[0, 1, 2, 3, 4, 5, 6],
+    dir: Literal[-1, 1],
+) -> Literal[-7, 7, 0, 6, 5, 4, 3, 2, 1, -6, -5, -4, -3, -2, -1]:
     """Returns the number of days (positive or negative) to the "next" or
     "last" of a certain weekday. ``current_wday`` and ``wday`` are numbers,
     i.e. 0 = monday, 1 = tuesday, 2 = wednesday, etc.
@@ -58,14 +67,14 @@ def relative_days(current_wday, wday, dir):
         return (current_wday + 7 - wday) % 7 * -1
 
 
-def timedelta_to_usecs(td):
+def timedelta_to_usecs(td: timedelta) -> int:
     total = td.days * 86400000000  # Microseconds in a day
     total += td.seconds * 1000000  # Microseconds in a second
     total += td.microseconds
     return total
 
 
-def datetime_to_long(dt):
+def datetime_to_long(dt: datetime) -> int:
     """Converts a datetime object to a long integer representing the number
     of microseconds since ``datetime.min``.
     """
@@ -73,7 +82,7 @@ def datetime_to_long(dt):
     return timedelta_to_usecs(dt.replace(tzinfo=None) - dt.min)
 
 
-def long_to_datetime(x):
+def long_to_datetime(x: int) -> datetime:
     """Converts a long integer representing the number of microseconds since
     ``datetime.min`` to a datetime object.
     """
@@ -96,20 +105,28 @@ class adatetime:
     None, meaning unspecified.
     """
 
-    units = frozenset(
+    year: int | None
+    month: int | None
+    day: int | None
+    hour: int | None
+    minute: int | None
+    second: int | None
+    microsecond: int | None
+
+    units: ClassVar[frozenset[str]] = frozenset(
         ("year", "month", "day", "hour", "minute", "second", "microsecond")
     )
 
     def __init__(
         self,
-        year=None,
-        month=None,
-        day=None,
-        hour=None,
-        minute=None,
-        second=None,
-        microsecond=None,
-    ):
+        year: datetime | int | None = None,
+        month: int | None = None,
+        day: int | None = None,
+        hour: int | None = None,
+        minute: int | None = None,
+        second: int | None = None,
+        microsecond: int | None = None,
+    ) -> None:
         if isinstance(year, datetime):
             dt = year
             self.year, self.month, self.day = dt.year, dt.month, dt.day
@@ -142,7 +159,7 @@ class adatetime:
             self.hour, self.minute, self.second = hour, minute, second
             self.microsecond = microsecond
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not other.__class__ is self.__class__:
             if not is_ambiguous(self) and isinstance(other, datetime):
                 return fix(self) == other
@@ -150,10 +167,20 @@ class adatetime:
                 return False
         return all(getattr(self, unit) == getattr(other, unit) for unit in self.units)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}{self.tuple()!r}"
 
-    def tuple(self):
+    def tuple(
+        self,
+    ) -> tuple[
+        int | None,
+        int | None,
+        int | None,
+        int | None,
+        int | None,
+        int | None,
+        int | None,
+    ]:
         """Returns the attributes of the ``adatetime`` object as a tuple of
         ``(year, month, day, hour, minute, second, microsecond)``.
         """
@@ -168,10 +195,10 @@ class adatetime:
             self.microsecond,
         )
 
-    def date(self):
-        return date(self.year, self.month, self.day, tzinfo=timezone.utc)
+    def date(self) -> date:
+        return self.floor().date()
 
-    def copy(self):
+    def copy(self) -> adatetime:
         return adatetime(
             year=self.year,
             month=self.month,
@@ -182,7 +209,7 @@ class adatetime:
             microsecond=self.microsecond,
         )
 
-    def replace(self, **kwargs):
+    def replace(self, **kwargs: int | None) -> adatetime:
         """Returns a copy of this object with the attributes given as keyword
         arguments replaced.
 
@@ -199,7 +226,7 @@ class adatetime:
                 raise KeyError(f"Unknown argument {key!r}")
         return newadatetime
 
-    def floor(self):
+    def floor(self) -> datetime:
         """Returns a ``datetime`` version of this object with all unspecified
         (None) attributes replaced by their lowest values.
 
@@ -237,7 +264,7 @@ class adatetime:
             ms = 0
         return datetime(y, m, d, h, mn, s, ms, tzinfo=timezone.utc)
 
-    def ceil(self):
+    def ceil(self) -> datetime:
         """Returns a ``datetime`` version of this object with all unspecified
         (None) attributes replaced by their highest values.
 
@@ -275,7 +302,9 @@ class adatetime:
             ms = 999999
         return datetime(y, m, d, h, mn, s, ms, tzinfo=timezone.utc)
 
-    def disambiguated(self, basedate):
+    def disambiguated(
+        self, basedate: adatetime | datetime | None = None
+    ) -> datetime | timespan:
         """Returns either a ``datetime`` or unambiguous ``timespan`` version
         of this object.
 
@@ -292,7 +321,9 @@ class adatetime:
 
         dt = self
         if not is_ambiguous(dt):
-            return fix(dt)
+            fixed = fix(dt)
+            assert isinstance(fixed, datetime)
+            return fixed
         return timespan(dt, dt).disambiguated(basedate)
 
 
@@ -302,7 +333,7 @@ class adatetime:
 class timespan:
     """A span of time between two ``datetime`` or ``adatetime`` objects."""
 
-    def __init__(self, start, end):
+    def __init__(self, start: adatetime | datetime, end: adatetime | datetime) -> None:
         """
         :param start: a ``datetime`` or ``adatetime`` object representing the
             start of the time span.
@@ -318,15 +349,18 @@ class timespan:
         self.start = copy.copy(start)
         self.end = copy.copy(end)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not other.__class__ is self.__class__:
             return False
+        assert isinstance(other, timespan)
         return self.start == other.start and self.end == other.end
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.start!r}, {self.end!r})"
 
-    def disambiguated(self, basedate, debug=0):
+    def disambiguated(
+        self, basedate: adatetime | datetime | None = None, debug: int = 0
+    ) -> timespan:
         """Returns an unambiguous version of this object.
 
         >>> start = adatetime(year=2009, month=2)
@@ -345,15 +379,27 @@ class timespan:
         # - Support "next february", "last april", etc.
 
         start, end = copy.copy(self.start), copy.copy(self.end)
+        if basedate is None:
+            basedate = datetime.now(tz=timezone.utc)
+
+        basedate_year = basedate.year
+        basedate_month = basedate.month
+        basedate_day = basedate.day
+        assert basedate_year is not None
+        assert basedate_month is not None
+        assert basedate_day is not None
         start_year_was_amb = start.year is None
         end_year_was_amb = end.year is None
 
         if has_no_date(start) and has_no_date(end):
             # The start and end points are just times, so use the basedate
             # for the date information.
-            by, bm, bd = basedate.year, basedate.month, basedate.day
-            start = start.replace(year=by, month=bm, day=bd)
-            end = end.replace(year=by, month=bm, day=bd)
+            start = start.replace(
+                year=basedate_year, month=basedate_month, day=basedate_day
+            )
+            end = end.replace(
+                year=basedate_year, month=basedate_month, day=basedate_day
+            )
         else:
             # If one side has a year and the other doesn't, the decision
             # of what year to assign to the ambiguous side is kind of
@@ -363,12 +409,16 @@ class timespan:
 
             if start.year is None and end.year is None:
                 # No year on either side, use the basedate
-                start.year = end.year = basedate.year
+                assert isinstance(start, adatetime)
+                assert isinstance(end, adatetime)
+                start.year = end.year = basedate_year
             elif start.year is None:
                 # No year in the start, use the year from the end
+                assert isinstance(start, adatetime)
                 start.year = end.year
             elif end.year is None:
-                end.year = max(start.year, basedate.year)
+                assert isinstance(end, adatetime)
+                end.year = max(start.year, basedate_year)
 
         if start.year == end.year:
             # Once again, if one side has a month and day but the other side
@@ -383,15 +433,17 @@ class timespan:
             start_dm = not (start.month is None and start.day is None)
             end_dm = not (end.month is None and end.day is None)
             if end_dm and not start_dm:
-                if start.floor().time() > end.ceil().time():
-                    start.month = basedate.month
-                    start.day = basedate.day
+                assert isinstance(start, adatetime)
+                if floor(start).time() > ceil(end).time():
+                    start.month = basedate_month
+                    start.day = basedate_day
                 else:
                     start.month = end.month
                     start.day = end.day
             elif start_dm and not end_dm:
-                end.month = basedate.month
-                end.day = basedate.day
+                assert isinstance(end, adatetime)
+                end.month = basedate_month
+                end.day = basedate_day
 
         if floor(start).date() > ceil(end).date():
             # If the disambiguated dates are out of order:
@@ -401,8 +453,12 @@ class timespan:
             #   after the start
             # - If a year was specified for both, just swap the start and end
             if start_year_was_amb:
+                assert isinstance(start, adatetime)
+                assert end.year is not None
                 start.year = end.year - 1
             elif end_year_was_amb:
+                assert isinstance(end, adatetime)
+                assert start.year is not None
                 end.year = start.year + 1
             else:
                 start, end = end, start
@@ -421,19 +477,23 @@ class timespan:
 # Functions for working with datetime/adatetime objects
 
 
-def floor(at):
+def floor(at: adatetime | datetime) -> datetime:
     if isinstance(at, datetime):
         return at
     return at.floor()
 
 
-def ceil(at):
+def ceil(at: adatetime | datetime) -> datetime:
     if isinstance(at, datetime):
         return at
     return at.ceil()
 
 
-def fill_in(at, basedate, units=adatetime.units):
+def fill_in(
+    at: adatetime | datetime,
+    basedate: adatetime | datetime,
+    units: Collection[str] = adatetime.units,
+) -> adatetime | datetime:
     """Returns a copy of ``at`` with any unspecified (None) units filled in
     with values from ``basedate``.
     """
@@ -441,7 +501,7 @@ def fill_in(at, basedate, units=adatetime.units):
     if isinstance(at, datetime):
         return at
 
-    args = {}
+    args: dict[str, int | None] = {}
     for unit in units:
         v = getattr(at, unit)
         if v is None:
@@ -450,7 +510,7 @@ def fill_in(at, basedate, units=adatetime.units):
     return fix(adatetime(**args))
 
 
-def has_no_date(at):
+def has_no_date(at: adatetime | datetime) -> bool:
     """Returns True if the given object is an ``adatetime`` where ``year``,
     ``month``, and ``day`` are all None.
     """
@@ -460,7 +520,7 @@ def has_no_date(at):
     return at.year is None and at.month is None and at.day is None
 
 
-def has_no_time(at):
+def has_no_time(at: adatetime | datetime) -> bool:
     """Returns True if the given object is an ``adatetime`` where ``hour``,
     ``minute``, ``second`` and ``microsecond`` are all None.
     """
@@ -475,7 +535,7 @@ def has_no_time(at):
     )
 
 
-def is_ambiguous(at):
+def is_ambiguous(at: adatetime | datetime) -> bool:
     """Returns True if the given object is an ``adatetime`` with any of its
     attributes equal to None.
     """
@@ -485,7 +545,7 @@ def is_ambiguous(at):
     return any((getattr(at, attr) is None) for attr in adatetime.units)
 
 
-def is_void(at):
+def is_void(at: adatetime | datetime) -> bool:
     """Returns True if the given object is an ``adatetime`` with all of its
     attributes equal to None.
     """
@@ -495,7 +555,7 @@ def is_void(at):
     return all((getattr(at, attr) is None) for attr in adatetime.units)
 
 
-def fix(at):
+def fix(at: adatetime | datetime) -> adatetime | datetime:
     """If the given object is an ``adatetime`` that is unambiguous (because
     all its attributes are specified, that is, not equal to None), returns a
     ``datetime`` version of it. Otherwise returns the ``adatetime`` object
@@ -504,13 +564,27 @@ def fix(at):
 
     if is_ambiguous(at) or isinstance(at, datetime):
         return at
+    year = at.year
+    month = at.month
+    day = at.day
+    hour = at.hour
+    minute = at.minute
+    second = at.second
+    microsecond = at.microsecond
+    assert year is not None
+    assert month is not None
+    assert day is not None
+    assert hour is not None
+    assert minute is not None
+    assert second is not None
+    assert microsecond is not None
     return datetime(
-        year=at.year,
-        month=at.month,
-        day=at.day,
-        hour=at.hour,
-        minute=at.minute,
-        second=at.second,
-        microsecond=at.microsecond,
+        year=year,
+        month=month,
+        day=day,
+        hour=hour,
+        minute=minute,
+        second=second,
+        microsecond=microsecond,
         tzinfo=timezone.utc,
     )
