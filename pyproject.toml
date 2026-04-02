@@ -29,6 +29,7 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = [
   "cached-property~=2.0.1",
+  "typing-extensions~=4.12.2",
 ]
 
 [dependency-groups]
