@@ -25,12 +25,26 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Matt Chaput.
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from typing_extensions import Self
+
 from whoosh.util.text import rcompile
+
+if TYPE_CHECKING:
+    from re import Pattern
+
+# TODO: refactor or use external library for versions
 
 
 class BaseVersion:
+    _version_exp: Pattern[str]
+    _parts: list[tuple[str, type]]
+
     @classmethod
-    def parse(cls, text):
+    def parse(cls, text: str) -> Self:
         obj = cls()
         match = cls._version_exp.match(text)
         if match:
@@ -42,43 +56,43 @@ class BaseVersion:
         return obj
 
     def __repr__(self):
-        vs = ", ".join(repr(getattr(self, slot)) for slot in self.__slots__)
+        vs = ", ".join(repr(getattr(self, slot)) for slot in self.__slots__)  # type: ignore
         return f"{self.__class__.__name__}({vs})"
 
     def tuple(self):
-        return tuple(getattr(self, slot) for slot in self.__slots__)
+        return tuple(getattr(self, slot) for slot in self.__slots__)  # type: ignore
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not hasattr(other, "tuple"):
             raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() == other.tuple()
+        return self.tuple() == other.tuple()  # type: ignore
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
         if not hasattr(other, "tuple"):
             raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() < other.tuple()
+        return self.tuple() < other.tuple()  # type: ignore
 
     # It's dumb that you have to define these
 
-    def __gt__(self, other):
+    def __gt__(self, other: object) -> bool:
         if not hasattr(other, "tuple"):
             raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() > other.tuple()
+        return self.tuple() > other.tuple()  # type: ignore
 
-    def __ge__(self, other):
+    def __ge__(self, other: object) -> bool:
         if not hasattr(other, "tuple"):
             raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() >= other.tuple()
+        return self.tuple() >= other.tuple()  # type: ignore
 
-    def __le__(self, other):
+    def __le__(self, other: object) -> bool:
         if not hasattr(other, "tuple"):
             raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() <= other.tuple()
+        return self.tuple() <= other.tuple()  # type: ignore
 
-    def __ne__(self, other):
+    def __ne__(self, other: object) -> bool:
         if not hasattr(other, "tuple"):
             raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() != other.tuple()
+        return self.tuple() != other.tuple()  # type: ignore
 
 
 class SimpleVersion(BaseVersion):
@@ -132,7 +146,14 @@ class SimpleVersion(BaseVersion):
 
     __slots__ = ("major", "minor", "release", "ex", "exnum")
 
-    def __init__(self, major=1, minor=0, release=0, ex="z", exnum=0):
+    def __init__(
+        self,
+        major: int = 1,
+        minor: int = 0,
+        release: int = 0,
+        ex: str = "z",
+        exnum: int = 0,
+    ):
         self.major = major
         self.minor = minor
         self.release = release
@@ -158,7 +179,7 @@ class SimpleVersion(BaseVersion):
         return n
 
     @classmethod
-    def from_int(cls, n):
+    def from_int(cls, n: int):
         major = (n & (1023 << 34)) >> 34
         minor = (n & (1023 << 24)) >> 24
         release = (n & (1023 << 14)) >> 14
