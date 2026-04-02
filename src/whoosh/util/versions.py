@@ -27,24 +27,30 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-from typing_extensions import Self
+from collections.abc import Callable
+from typing import TYPE_CHECKING, ClassVar
 
 from whoosh.util.text import rcompile
 
 if TYPE_CHECKING:
     from re import Pattern
 
+    from typing_extensions import Self
+
 # TODO: refactor or use external library for versions
+
+VersionPart = int | str
+VersionTuple = tuple[VersionPart, ...]
+VersionParser = Callable[[str], VersionPart]
 
 
 class BaseVersion:
-    _version_exp: Pattern[str]
-    _parts: list[tuple[str, type]]
+    _version_exp: ClassVar[Pattern[str]]
+    _parts: ClassVar[tuple[tuple[str, VersionParser], ...]] = ()
+    __slots__: ClassVar[tuple[str, ...]] = ()
 
     @classmethod
-    def parse(cls, text: str) -> Self:
+    def parse(cls: type[Self], text: str) -> Self:
         obj = cls()
         match = cls._version_exp.match(text)
         if match:
@@ -55,44 +61,37 @@ class BaseVersion:
                     setattr(obj, groupname, typ(v))
         return obj
 
-    def __repr__(self):
-        vs = ", ".join(repr(getattr(self, slot)) for slot in self.__slots__)  # type: ignore
+    def __repr__(self) -> str:
+        vs = ", ".join(repr(getattr(self, slot)) for slot in self.__slots__)
         return f"{self.__class__.__name__}({vs})"
 
-    def tuple(self):
-        return tuple(getattr(self, slot) for slot in self.__slots__)  # type: ignore
+    def tuple(self) -> VersionTuple:
+        return tuple(getattr(self, slot) for slot in self.__slots__)
+
+    def _other_tuple(self, other: object) -> VersionTuple:
+        if not isinstance(other, BaseVersion):
+            raise ValueError(f"Can't compare {self!r} with {other!r}")
+        return other.tuple()
 
     def __eq__(self, other: object) -> bool:
-        if not hasattr(other, "tuple"):
-            raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() == other.tuple()  # type: ignore
+        return self.tuple() == self._other_tuple(other)
 
     def __lt__(self, other: object) -> bool:
-        if not hasattr(other, "tuple"):
-            raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() < other.tuple()  # type: ignore
+        return self.tuple() < self._other_tuple(other)
 
     # It's dumb that you have to define these
 
     def __gt__(self, other: object) -> bool:
-        if not hasattr(other, "tuple"):
-            raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() > other.tuple()  # type: ignore
+        return self.tuple() > self._other_tuple(other)
 
     def __ge__(self, other: object) -> bool:
-        if not hasattr(other, "tuple"):
-            raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() >= other.tuple()  # type: ignore
+        return self.tuple() >= self._other_tuple(other)
 
     def __le__(self, other: object) -> bool:
-        if not hasattr(other, "tuple"):
-            raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() <= other.tuple()  # type: ignore
+        return self.tuple() <= self._other_tuple(other)
 
     def __ne__(self, other: object) -> bool:
-        if not hasattr(other, "tuple"):
-            raise ValueError(f"Can't compare {self!r} with {other!r}")
-        return self.tuple() != other.tuple()  # type: ignore
+        return self.tuple() != self._other_tuple(other)
 
 
 class SimpleVersion(BaseVersion):
@@ -133,18 +132,24 @@ class SimpleVersion(BaseVersion):
     )
 
     # (groupid, method, skippable, default)
-    _parts = [
+    major: int
+    minor: int
+    release: int
+    ex: str
+    exnum: int
+
+    _parts: ClassVar[tuple[tuple[str, VersionParser], ...]] = (
         ("major", int),
         ("minor", int),
         ("release", int),
         ("ex", str),
         ("exnum", int),
-    ]
+    )
 
-    _ex_bits = {"a": 0, "b": 1, "c": 2, "rc": 10, "z": 15}
-    _bits_ex = {v: k for k, v in _ex_bits.items()}
+    _ex_bits: ClassVar[dict[str, int]] = {"a": 0, "b": 1, "c": 2, "rc": 10, "z": 15}
+    _bits_ex: ClassVar[dict[int, str]] = {v: k for k, v in _ex_bits.items()}
 
-    __slots__ = ("major", "minor", "release", "ex", "exnum")
+    __slots__: ClassVar[tuple[str, ...]] = ("major", "minor", "release", "ex", "exnum")
 
     def __init__(
         self,
@@ -160,7 +165,7 @@ class SimpleVersion(BaseVersion):
         self.ex = ex
         self.exnum = exnum
 
-    def to_int(self):
+    def to_int(self) -> int:
         assert self.major < 1024
         n = self.major << 34
 
@@ -179,7 +184,7 @@ class SimpleVersion(BaseVersion):
         return n
 
     @classmethod
-    def from_int(cls, n: int):
+    def from_int(cls: type[Self], n: int) -> Self:
         major = (n & (1023 << 34)) >> 34
         minor = (n & (1023 << 24)) >> 24
         release = (n & (1023 << 14)) >> 14
