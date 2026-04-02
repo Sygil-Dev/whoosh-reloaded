@@ -29,21 +29,38 @@ import os.path
 import shutil
 import sys
 import tempfile
+from collections.abc import Generator
+from collections.abc import Set as AbstractSet
 from contextlib import contextmanager
+from types import TracebackType
+from typing import TYPE_CHECKING, Any
 
 from whoosh.filedb.filestore import FileStorage
 from whoosh.util import now, random_name
 
+if TYPE_CHECKING:
+    from whoosh.fields import Schema
+    from whoosh.index import Index
+
+
+SuppressedExceptions = AbstractSet[type[BaseException]]
+
 
 class TempDir:
+    basename: str
+    parentdir: str | None
+    dir: str
+    suppress: SuppressedExceptions
+    keepdir: bool
+
     def __init__(
         self,
-        basename="",
-        parentdir=None,
-        ext=".whoosh",
-        suppress=frozenset(),
-        keepdir=False,
-    ):
+        basename: str = "",
+        parentdir: str | None = None,
+        ext: str = ".whoosh",
+        suppress: SuppressedExceptions = frozenset(),
+        keepdir: bool = False,
+    ) -> None:
         self.basename = basename or random_name(8)
         self.parentdir = parentdir
 
@@ -52,21 +69,27 @@ class TempDir:
         self.suppress = suppress
         self.keepdir = keepdir
 
-    def __enter__(self):
+    def __enter__(self) -> str:
         if not os.path.exists(self.dir):
             os.makedirs(self.dir)
         return self.dir
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         pass
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> bool | None:
         self.cleanup()
         if not self.keepdir:
             try:
                 shutil.rmtree(self.dir)
             except OSError:
-                e = sys.exc_info()[1]
+                pass
+                # e = sys.exc_info()[1]
                 # sys.stderr.write("Can't remove temp dir: " + str(e) + "\n")
                 # if exc_type is None:
                 #    raise
@@ -78,39 +101,114 @@ class TempDir:
                 return False
 
 
-class TempStorage(TempDir):
-    def __init__(self, debug=False, **kwargs):
-        TempDir.__init__(self, **kwargs)
+class TempStorage:
+    basename: str
+    dir: TempDir
+    store: FileStorage | None
+
+    def __init__(
+        self,
+        basename: str = "",
+        parentdir: str | None = None,
+        ext: str = ".whoosh",
+        suppress: SuppressedExceptions = frozenset(),
+        keepdir: bool = False,
+        debug: bool = False,
+    ) -> None:
+        self.dir = TempDir(basename, parentdir, ext, suppress, keepdir)
+        self.basename = self.dir.basename
         self._debug = debug
+        self.store = None
 
-    def cleanup(self):
-        self.store.close()
+    def __enter__(self) -> FileStorage:
+        dirpath = self.dir.__enter__()
+        try:
+            self.store = FileStorage(dirpath, debug=self._debug)
+            return self.store
+        except BaseException:
+            self.dir.__exit__(*sys.exc_info())
+            raise
 
-    def __enter__(self):
-        dirpath = TempDir.__enter__(self)
-        self.store = FileStorage(dirpath, debug=self._debug)
-        return self.store
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> bool | None:
+        store = self.store
+        self.store = None
+        try:
+            if store is not None:
+                store.close()
+        except BaseException:
+            if not self.dir.__exit__(*sys.exc_info()):
+                raise
+            return True
+        return self.dir.__exit__(exc_type, exc_val, exc_tb)
 
 
-class TempIndex(TempStorage):
-    def __init__(self, schema, ixname="", storage_debug=False, **kwargs):
-        TempStorage.__init__(self, basename=ixname, debug=storage_debug, **kwargs)
+class TempIndex:
+    basename: str
+    storage: TempStorage
+    schema: "Schema"
+    index: "Index | None"
+
+    def __init__(
+        self,
+        schema: "Schema",
+        ixname: str = "",
+        storage_debug: bool = False,
+        parentdir: str | None = None,
+        ext: str = ".whoosh",
+        suppress: SuppressedExceptions = frozenset(),
+        keepdir: bool = False,
+    ) -> None:
+        self.storage = TempStorage(
+            basename=ixname,
+            parentdir=parentdir,
+            ext=ext,
+            suppress=suppress,
+            keepdir=keepdir,
+            debug=storage_debug,
+        )
+        self.basename = self.storage.basename
         self.schema = schema
+        self.index = None
 
-    def __enter__(self):
-        fstore = TempStorage.__enter__(self)
-        return fstore.create_index(self.schema, indexname=self.basename)
+    def __enter__(self) -> "Index":
+        store = self.storage.__enter__()
+        try:
+            self.index = store.create_index(self.schema, indexname=self.basename)
+            return self.index
+        except BaseException:
+            self.storage.__exit__(*sys.exc_info())
+            raise
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> bool | None:
+        index = self.index
+        self.index = None
+        try:
+            if index is not None:
+                index.close()
+        except BaseException:
+            if not self.storage.__exit__(*sys.exc_info()):
+                raise
+            return True
+        return self.storage.__exit__(exc_type, exc_val, exc_tb)
 
 
-def is_abstract_method(attr):
+def is_abstract_method(attr: object) -> bool:
     """Returns True if the given object has __isabstractmethod__ == True."""
 
-    return hasattr(attr, "__isabstractmethod__") and getattr(
-        attr, "__isabstractmethod__"
-    )
+    return bool(getattr(attr, "__isabstractmethod__", False))
 
 
-def check_abstract_methods(base, subclass):
+def check_abstract_methods(base: type[Any], subclass: type[Any]) -> None:
     """Raises AssertionError if ``subclass`` does not override a method on
     ``base`` that is marked as an abstract method.
     """
@@ -126,7 +224,7 @@ def check_abstract_methods(base, subclass):
 
 
 @contextmanager
-def timing(name=None):
+def timing(name: str | None = None) -> Generator[None, None, None]:
     t = now()
     yield
     t = now() - t
