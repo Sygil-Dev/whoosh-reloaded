@@ -29,7 +29,7 @@ from ast import literal_eval
 from pickle import dumps, loads
 
 from whoosh.codec import base
-from whoosh.matching import ListMatcher
+from whoosh.matching import ListMatcher, SkipListMatcher
 from whoosh.reading import TermInfo, TermNotFound
 
 _reprable = (bytes, str, int, float)
@@ -273,7 +273,7 @@ class PlainPerDocReader(base.PerDocumentReader, LineReader):
             values.append(c["v"])
             c = self._find_line(3, "VPOST")
 
-        return ListMatcher(
+        return SkipListMatcher(
             ids,
             weights,
             values,
@@ -433,7 +433,7 @@ class PlainTermsReader(base.TermsReader, LineReader):
             values.append(c["v"])
             c = self._find_line(3, "POST")
 
-        return ListMatcher(ids, weights, values, format_, scorer=scorer)
+        return SkipListMatcher(ids, weights, values, format_, scorer=scorer)
 
     def close(self):
         self._dbfile.close()

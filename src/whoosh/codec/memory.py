@@ -30,7 +30,7 @@ from bisect import bisect_left
 from threading import Lock
 
 from whoosh.codec import base
-from whoosh.matching import ListMatcher
+from whoosh.matching import ListMatcher, SkipListMatcher
 from whoosh.reading import SegmentReader, TermInfo, TermNotFound
 from whoosh.writing import SegmentWriter
 
@@ -182,7 +182,7 @@ class MemPerDocReader(base.PerDocumentReader):
     def vector(self, docnum, fieldname, format_):
         items = self._segment._vectors[docnum][fieldname]
         ids, weights, values = zip(*items)
-        return ListMatcher(ids, weights, values, format_)
+        return SkipListMatcher(ids, weights, values, format_)
 
     def stored_fields(self, docnum):
         return self._segment._stored[docnum]
@@ -284,7 +284,7 @@ class MemTermsReader(base.TermsReader):
     def matcher(self, fieldname, btext, format_, scorer=None):
         items = self._invindex[fieldname][btext]
         ids, weights, values = zip(*items)
-        return ListMatcher(ids, weights, values, format_, scorer=scorer)
+        return SkipListMatcher(ids, weights, values, format_, scorer=scorer)
 
     def indexed_field_names(self):
         return self._invindex.keys()
