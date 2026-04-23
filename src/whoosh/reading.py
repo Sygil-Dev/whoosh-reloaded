@@ -259,6 +259,50 @@ class IndexReader:
                 return
             yield btext
 
+    def _get_ngram_index(self, fieldname, size=3):
+        cache = getattr(self, '_ngram_cache', None)
+        if cache is None:
+            cache = {}
+            self._ngram_cache = cache
+        key = (fieldname, size)
+        if key not in self._ngram_cache:
+            ngram_map = {}
+            from_bytes = self.schema[fieldname].from_bytes
+            for btext in self.lexicon(fieldname):
+                text = from_bytes(btext)
+                for i in range(len(text) - size + 1):
+                    gram = text[i:i + size]
+                    if gram not in ngram_map:
+                        ngram_map[gram] = set()
+                    ngram_map[gram].add(btext)
+            self._ngram_cache[key] = ngram_map
+        return self._ngram_cache[key]
+
+    def terms_by_ngrams(self, fieldname, text_ngrams, size=3):
+        """Yields term bytestrings from the given field whose text contains
+        all of the specified n-grams. Builds and caches a reverse n-gram
+        index on first call for each (fieldname, size) pair.
+        """
+
+        if not text_ngrams:
+            return self.lexicon(fieldname)
+
+        ngram_map = self._get_ngram_index(fieldname, size)
+
+        candidates = None
+        for gram in text_ngrams:
+            if gram in ngram_map:
+                if candidates is None:
+                    candidates = set(ngram_map[gram])
+                else:
+                    candidates &= ngram_map[gram]
+            else:
+                return iter([])
+
+        if candidates is not None:
+            return iter(sorted(candidates))
+        return self.lexicon(fieldname)
+
     def field_terms(self, fieldname):
         """Yields all term values (converted from on-disk bytes) in the given
         field.
