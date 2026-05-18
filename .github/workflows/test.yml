@@ -40,7 +40,7 @@ jobs:
         retention-days: 7
 
     - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v6.0.0
+      uses: codecov/codecov-action@v6.0.1
       with:
         directory: ./
         env_vars: OS,PYTHON
