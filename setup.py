@@ -4,28 +4,9 @@ import os.path
 import sys
 
 from setuptools import find_packages, setup
-from setuptools.command.test import test as TestCommand
-
-try:
-    import pytest
-except ImportError:
-    pytest = None
 
 sys.path.insert(0, os.path.abspath("src"))
 from whoosh import versionstring
-
-
-class PyTest(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        # import here, cause outside the eggs aren't loaded
-        import pytest
-
-        pytest.main(self.test_args)
 
 
 if __name__ == "__main__":
@@ -48,12 +29,7 @@ if __name__ == "__main__":
             "cached-property==2.0.1",
             "loguru==0.7.3",
         ],
-        tests_require=[
-            "pytest==9.1.1",
-            "nose==1.3.7",
-            "pre-commit==4.6.2",
-        ],
-        cmdclass={"test": PyTest},
+        python_requires=">=3.8",
         classifiers=[
             "Programming Language :: Python :: 3",
             "Development Status :: 5 - Production/Stable",
@@ -66,6 +42,8 @@ if __name__ == "__main__":
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
+            "Programming Language :: Python :: 3.13",
+            "Programming Language :: Python :: 3.14",
             "Topic :: Software Development :: Libraries :: Python Modules",
             "Topic :: Text Processing :: Indexing",
         ],
