@@ -99,6 +99,13 @@ def test_multifilter():
     assert [t.text for t in ana(text, mode="b")] == ["ALFA", "BRAVO", "CHARLIE"]
 
 
+def test_multifilter_empty_stream():
+    mf = analysis.MultiFilter(a=analysis.LowercaseFilter(), b=analysis.PassFilter())
+    assert list(mf(iter([]))) == []
+    ana = analysis.RegexTokenizer(r"\S+") | mf
+    assert list(ana("", mode="a")) == []
+
+
 def test_tee_filter():
     target = "Alfa Bravo Charlie"
     f1 = analysis.LowercaseFilter()
