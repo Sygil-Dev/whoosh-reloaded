@@ -46,7 +46,7 @@ if __name__ == "__main__":
         zip_safe=True,
         install_requires=[
             "cached-property==2.0.1",
-            "loguru==0.7.3",
+            "loguru==0.8.0",
         ],
         tests_require=[
             "pytest==9.2.0",
